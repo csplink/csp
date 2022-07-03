@@ -1,0 +1,27 @@
+﻿<sc:DockControl
+    x:Class="CSP.Apps.Dev.Views.Windows.PropertyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:sc="clr-namespace:CSP.Components;assembly=CSP.Components"
+    x:Name="PropertyDockWindow"
+    d:DesignHeight="1000"
+    d:DesignWidth="500"
+    syncfusion:DockingManager.Header="属性"
+    syncfusion:DockingManager.SideInDockedMode="Bottom"
+    syncfusion:DockingManager.TargetNameInDockedMode="SolutionExplorerDockWindow"
+    mc:Ignorable="d">
+    <Grid>
+        <syncfusion:PropertyGrid
+            x:Name="Property"
+            DescriptionPanelHeight="80"
+            DescriptionPanelVisibility="Visible"
+            EnableGrouping="True"
+            EnableToolTip="False"
+            PropertyNameColumnDefinition="Auto"
+            UpdateSourceMode="ReturnOrLostFocus" />
+    </Grid>
+</sc:DockControl>

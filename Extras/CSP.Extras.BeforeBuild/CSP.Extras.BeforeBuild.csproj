@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<Authors>xqyjlj</Authors>
+		<Copyright>copyright © 2021-2022 xqyjlj&lt;xqyjlj@126.com&gt; </Copyright>
+	</PropertyGroup>
+
+</Project>

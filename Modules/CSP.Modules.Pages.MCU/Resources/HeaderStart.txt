@@ -1,0 +1,6 @@
+#ifndef __${file}
+#define __${file}
+
+#ifdef __cplusplus
+extern "C" {
+#endif

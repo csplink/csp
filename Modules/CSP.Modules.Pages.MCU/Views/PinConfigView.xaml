@@ -1,0 +1,80 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Pages.MCU.Views.PinConfigView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:resource="clr-namespace:CSP.Resources;assembly=CSP.Resources"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DesignHeight="1000"
+    d:DesignWidth="1670"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    syncfusion:DockingManager.Header="MCU引脚配置页"
+    syncfusion:DockingManager.State="Document"
+    syncfusion:DocumentContainer.AllowPin="True"
+    syncfusion:DocumentContainer.ShowPin="True"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="MCUViewDataTemplate">
+            <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUView" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <syncfusion:TabControlExt IsLazyLoaded="True" TabListContextMenuOptions="None">
+            <syncfusion:TabItemExt
+                Width="200"
+                Height="30"
+                CanClose="False">
+                <syncfusion:TabItemExt.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="0,0,5,0" Source="{x:Static resource:Icon.Chip}" />
+                        <TextBlock VerticalAlignment="Center" Text="引脚视图" />
+                    </StackPanel>
+                </syncfusion:TabItemExt.Header>
+                <syncfusion:SfDiagram
+                    Background="Transparent"
+                    Menu="{x:Null}"
+                    Tool="SingleSelect">
+
+                    <!--  Initialize Nodes  -->
+                    <syncfusion:SfDiagram.Nodes>
+                        <syncfusion:NodeCollection>
+                            <syncfusion:NodeViewModel
+                                ContentTemplate="{StaticResource MCUViewDataTemplate}"
+                                OffsetX="500"
+                                OffsetY="500"
+                                PortVisibility="Visible" />
+                        </syncfusion:NodeCollection>
+                    </syncfusion:SfDiagram.Nodes>
+                </syncfusion:SfDiagram>
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt
+                Width="200"
+                Height="30"
+                CanClose="False">
+                <syncfusion:TabItemExt.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="0,0,5,0" Source="{x:Static resource:Icon.Time}" />
+                        <TextBlock VerticalAlignment="Center" Text="时钟视图" />
+                    </StackPanel>
+                </syncfusion:TabItemExt.Header>
+                <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.ClockView" />
+            </syncfusion:TabItemExt>
+            <syncfusion:TabItemExt
+                Width="200"
+                Height="30"
+                CanClose="False">
+                <syncfusion:TabItemExt.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="0,0,5,0" Source="{x:Static resource:Icon.System}" />
+                        <TextBlock VerticalAlignment="Center" Text="系统视图" />
+                    </StackPanel>
+                </syncfusion:TabItemExt.Header>
+                <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.SystemView" />
+            </syncfusion:TabItemExt>
+        </syncfusion:TabControlExt>
+    </Grid>
+</UserControl>

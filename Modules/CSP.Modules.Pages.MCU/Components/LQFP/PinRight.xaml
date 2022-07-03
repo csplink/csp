@@ -1,0 +1,58 @@
+﻿<lqfp:PinBase
+    x:Class="CSP.Modules.Pages.MCU.Components.LQFP.PinRight"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lqfp="clr-namespace:CSP.Modules.Pages.MCU.Components.LQFP"
+    Width="500"
+    Height="30">
+
+    <lqfp:PinBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Syncfusion.Themes.MaterialLight.WPF;component/MSControl/Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CSP.Modules.Pages.MCU;component/Resources/Themes/ButtonPinMaterialLightThemes.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </lqfp:PinBase.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+        <Border
+            Grid.Column="0"
+            Margin="0,0.5"
+            Background="Black">
+            <Button
+                x:Name="ButtonPin"
+                Margin="0,1.5,1.5,1.5"
+                Padding="0,4.61"
+                x:FieldModifier="private"
+                Background="#b9c4ca"
+                Click="OnPinNameClick"
+                Content="Pin"
+                Cursor="Hand"
+                FontSize="14">
+                <Button.ContextMenu>
+                    <ContextMenu Name="ButtonPinContextMenu" />
+                </Button.ContextMenu>
+                <Button.Style>
+                    <Style BasedOn="{StaticResource WPFButtonStyle}" TargetType="Button">
+                        <Setter Property="Template" Value="{StaticResource ButtonPinTemplate}" />
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Border>
+        <TextBlock
+            x:Name="TextBlockNote"
+            Grid.Column="1"
+            Width="400"
+            Padding="10,0,0,0"
+            VerticalAlignment="Center"
+            x:FieldModifier="private"
+            FontSize="20"
+            Text="Note"
+            TextAlignment="Left" />
+    </Grid>
+</lqfp:PinBase>
