@@ -4,10 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:lqfp="clr-namespace:CSP.Modules.Pages.MCU.Components.LQFP"
     xmlns:prism="http://prismlibrary.com/"
+    Width="1360"
+    Height="1360"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <DockPanel>
         <Grid
             Width="500"
+            Height="360"
             Margin="0,500,0,500"
             DockPanel.Dock="Left">
             <Grid.RowDefinitions>
@@ -87,6 +90,7 @@
                 Direction="Left" />
         </Grid>
         <Grid
+            Width="360"
             Height="500"
             Margin="0,0,500,0"
             DockPanel.Dock="Bottom">
@@ -167,6 +171,7 @@
         </Grid>
         <Grid
             Width="500"
+            Height="360"
             Margin="0,500,0,0"
             DockPanel.Dock="Right">
             <Grid.RowDefinitions>
@@ -245,6 +250,7 @@
                 Direction="Right" />
         </Grid>
         <Grid
+            Width="360"
             Height="500"
             Margin="0,0,0,0"
             DockPanel.Dock="Top">
@@ -323,7 +329,10 @@
                 DataContext="{Binding Pins[36]}"
                 Direction="Top" />
         </Grid>
-        <Border Width="360" Height="360">
+        <Border
+            Width="360"
+            Height="360"
+            ToolTip="111111">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Offset="1" Color="Black" />

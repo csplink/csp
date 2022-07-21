@@ -9,7 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-		<PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="20.2.0.36" />
+		<PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="20.2.0.39" />
 	</ItemGroup>
 
 	<ItemGroup>
