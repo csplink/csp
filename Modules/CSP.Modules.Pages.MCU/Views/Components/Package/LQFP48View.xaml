@@ -332,14 +332,7 @@
         <Border
             Width="360"
             Height="360"
-            ToolTip="111111">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="1" Color="Black" />
-                    <GradientStop Offset="0.128" Color="#FF3C3535" />
-                    <GradientStop Offset="0.508" Color="#FF0C0B0B" />
-                </LinearGradientBrush>
-            </Border.Background>
+            ToolTip="111111" Background="#FF47474B">
             <Grid>
                 <Canvas
                     Width="50"
@@ -350,7 +343,7 @@
                     <Ellipse
                         Width="25"
                         Height="25"
-                        Fill="Black" />
+                        Fill="White" />
                 </Canvas>
                 <StackPanel
                     Margin="20,20,20,20"

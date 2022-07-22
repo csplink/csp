@@ -7,16 +7,6 @@
     Height="30"
     Margin="-235,235,-235,235"
     RenderTransformOrigin="0.5,0.5">
-
-    <lqfp:PinBase.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Syncfusion.Themes.MaterialLight.WPF;component/MSControl/Button.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/CSP.Modules.Pages.MCU;component/Resources/Themes/ButtonPinMaterialLightThemes.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </lqfp:PinBase.Resources>
-
     <lqfp:PinBase.RenderTransform>
         <TransformGroup>
             <ScaleTransform />
@@ -33,7 +23,6 @@
         <TextBlock
             x:Name="TextBlockNote"
             Grid.Column="0"
-            Width="400"
             Padding="0,0,10,0"
             VerticalAlignment="Center"
             x:FieldModifier="private"
@@ -46,7 +35,7 @@
             Background="Black">
             <Button
                 x:Name="ButtonPin"
-                Margin="1.5,1.5,0,1.5"
+                Margin="1.5,1.5,-2,1.5"
                 Padding="0,4.61"
                 x:FieldModifier="private"
                 Background="#b9c4ca"
@@ -57,11 +46,6 @@
                 <Button.ContextMenu>
                     <ContextMenu Name="ButtonPinContextMenu" />
                 </Button.ContextMenu>
-                <Button.Style>
-                    <Style BasedOn="{StaticResource WPFButtonStyle}" TargetType="Button">
-                        <Setter Property="Template" Value="{StaticResource ButtonPinTemplate}" />
-                    </Style>
-                </Button.Style>
             </Button>
         </Border>
     </Grid>
