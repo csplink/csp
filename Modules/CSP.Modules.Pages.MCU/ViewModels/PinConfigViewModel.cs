@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CSP.Database;
+﻿using CSP.Database;
 using CSP.Database.Components;
 using CSP.Database.Models.MCU;
 using CSP.Events;
@@ -12,6 +10,8 @@ using Prism.Mvvm;
 using Prism.Regions;
 using Serilog;
 using Syncfusion.Windows.PropertyGrid;
+using System;
+using System.Collections.Generic;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {

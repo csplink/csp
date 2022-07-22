@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using CSP.Database;
+﻿using CSP.Database;
 using CSP.Database.Models.MCU;
 using CSP.Events;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 {

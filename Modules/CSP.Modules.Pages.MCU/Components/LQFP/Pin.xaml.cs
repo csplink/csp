@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using CSP.Modules.Pages.MCU.Enums;
+﻿using CSP.Modules.Pages.MCU.Enums;
+using System.Windows;
 
 namespace CSP.Modules.Pages.MCU.Components.LQFP
 {

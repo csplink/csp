@@ -1,7 +1,6 @@
-﻿using System;
+﻿using CSP.Database.Models.MCU;
+using System;
 using System.IO;
-using CSP.Database.Models.MCU;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Services.Generate
 {

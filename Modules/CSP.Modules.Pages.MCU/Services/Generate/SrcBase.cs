@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using CSP.Modules.Pages.MCU.Services.Generate.Models;
+﻿using CSP.Modules.Pages.MCU.Services.Generate.Models;
+using System.Collections.Generic;
 
 namespace CSP.Modules.Pages.MCU.Services.Generate
 {
