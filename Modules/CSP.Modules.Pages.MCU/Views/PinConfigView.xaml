@@ -29,9 +29,11 @@
                         <TextBlock VerticalAlignment="Center" Text="引脚视图" />
                     </StackPanel>
                 </syncfusion:TabItemExt.Header>
-                <panAndZoom:ZoomBorder Stretch="None">
-                    <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUView" />
-                </panAndZoom:ZoomBorder>
+                <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                    <panAndZoom:ZoomBorder Stretch="None">
+                        <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUView" />
+                    </panAndZoom:ZoomBorder>
+                </ScrollViewer>
             </syncfusion:TabItemExt>
             <syncfusion:TabItemExt
                 Width="200"

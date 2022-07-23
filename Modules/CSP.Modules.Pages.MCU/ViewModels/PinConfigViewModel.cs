@@ -42,7 +42,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            MCUHelper.LoadMcu("STMicroelectronics", "STM32F030C6Tx");
+            MCUHelper.LoadMcu("STMicroelectronics", "STM32F401RETx");
 
             AddCustomEditor();
             AddModules();
@@ -67,20 +67,20 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             if (MCUHelper.MCU.Modules == null)
             {
-                Log.Error(new ArgumentNullException("Modules 为 NULL"), "Modules 为 NULL");
+                Log.Error(new ArgumentNullException(nameof(MCUHelper.MCU.Modules)), "Modules 为 NULL");
                 return;
             }
 
             foreach (var module in MCUHelper.MCU.Modules)
             {
                 var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne, IsExpanded = true };
-                infoModule.CallBack += (string value) =>
+                infoModule.CallBack += value =>
                 {
                 };
                 foreach (var category in module.Categories)
                 {
                     var infoCategory = new SolutionExplorerEvent.Model(category.Name) { Image = Icon.BlockTwo, IsExpanded = true };
-                    infoCategory.CallBack += (string value) =>
+                    infoCategory.CallBack += value =>
                     {
                         RegionUtil.RequestNavigate(_regionManager, "Region.MCU.PinConfig.MCUConfig", $"Page.MCU.PinConfig.MCUConfig.{value}");
                     };
@@ -111,7 +111,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             // if (manager?.target == null)
             //     return;
 
-            GenerateService.Generate(mcu, $"./test");
+            GenerateService.Generate(mcu, "./test");
         }
     }
 }
