@@ -1,9 +1,11 @@
 ﻿<UserControl
     x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.LQFP64View"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:prism="http://prismlibrary.com/"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:lqfp="clr-namespace:CSP.Modules.Pages.MCU.Components.LQFP"
+    xmlns:prism="http://prismlibrary.com/"
+    Width="1480"
+    Height="1480"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <DockPanel>
         <Grid
@@ -402,7 +404,7 @@
                         FontStyle="Italic"
                         FontWeight="Bold"
                         Foreground="AliceBlue"
-                        Text="LQFP48" />
+                        Text="LQFP64" />
                 </StackPanel>
             </Grid>
         </Border>
