@@ -61,7 +61,7 @@ namespace CSP.Apps.Dev
 
 #if DEBUG
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
-            IniFile.PathMCUDb = $"{solutionDir}.buildResources/Database/MCU";
+            IniFile.PathMCUDb = $"{solutionDir}/../csp_mcu_db";
 #else
             IniFile.PathMCUDb = "./Database/MCU";
 #endif
