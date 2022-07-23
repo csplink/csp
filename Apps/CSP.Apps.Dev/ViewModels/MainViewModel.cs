@@ -42,13 +42,13 @@ namespace CSP.Apps.Dev.ViewModels
             }
         }
 
-        public DelegateCommand OnNewProject
+        public DelegateCommand OnNewMCU
         {
             get
             {
                 return new DelegateCommand(() =>
                 {
-                    DialogUtil.ShowModalDialog(_dialogService, "Dialog.NewProject", null, (IDialogResult result) =>
+                    DialogUtil.ShowModalDialog(_dialogService, "Dialog.NewMCU", null, (IDialogResult result) =>
                     {
                     }, "DialogWindow");
                 });

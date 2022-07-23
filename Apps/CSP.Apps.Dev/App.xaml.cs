@@ -19,8 +19,8 @@ namespace CSP.Apps.Dev
 
             moduleCatalog.AddModule<CSPModule>();
             // moduleCatalog.AddModule<Modules.Dialogs.NewProject.NewProjectModule>();
-            // moduleCatalog.AddModule<Modules.Dialogs.NewMCUProject.NewMCUProjectModule>();
-            //
+            moduleCatalog.AddModule<Modules.Dialogs.NewMCU.NewMCUModule>();
+
             moduleCatalog.AddModule<Modules.Pages.MCU.MCUModule>();
         }
 

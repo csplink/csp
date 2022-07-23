@@ -1,0 +1,95 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Dialogs.NewMCU.Views.Components.MCUFilterBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DesignHeight="1000"
+    d:DesignWidth="300"
+    mc:Ignorable="d av">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="30,30,30,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Margin="0,0,30,0"
+                VerticalAlignment="Center"
+                Text="MCU名" />
+            <syncfusion:ComboBoxAdv
+                x:Name="ComboBoxMCUName"
+                Grid.Column="1"
+                Height="24"
+                x:FieldModifier="private"
+                AutoCompleteMode="Suggest"
+                DefaultText="在此键入想要搜索的MCU"
+                EnableToken="True"
+                IsEditable="True"
+                SelectionChanged="OnComboBoxSelectionChanged" />
+        </Grid>
+        <ScrollViewer
+            Grid.Row="1"
+            Margin="10,10,10,10"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Expander Header="公司" IsExpanded="True">
+                    <syncfusion:CheckListBox
+                        x:Name="CheckListBoxCompanies"
+                        av:ItemsSource="{av:SampleData ItemCount=5}"
+                        IsSelectAllEnabled="False"
+                        ItemChecked="OnCheckListBoxItemChecked"
+                        Tag="公司" />
+                </Expander>
+                <Separator />
+                <Expander Header="内核" IsExpanded="True">
+                    <syncfusion:CheckListBox
+                        x:Name="CheckListBoxCore"
+                        av:ItemsSource="{av:SampleData ItemCount=5}"
+                        IsSelectAllEnabled="False"
+                        ItemChecked="OnCheckListBoxItemChecked"
+                        Tag="内核" />
+                </Expander>
+                <Separator />
+                <Expander Header="系列" IsExpanded="True">
+                    <syncfusion:CheckListBox
+                        x:Name="CheckListBoxSeries"
+                        av:ItemsSource="{av:SampleData ItemCount=5}"
+                        IsSelectAllEnabled="False"
+                        ItemChecked="OnCheckListBoxItemChecked"
+                        Tag="系列" />
+                </Expander>
+                <Separator />
+                <Expander Header="产品线" IsExpanded="True">
+                    <syncfusion:CheckListBox
+                        x:Name="CheckListBoxLine"
+                        av:ItemsSource="{av:SampleData ItemCount=5}"
+                        IsSelectAllEnabled="False"
+                        ItemChecked="OnCheckListBoxItemChecked"
+                        Tag="产品线" />
+                </Expander>
+                <Separator />
+                <Expander Header="封装" IsExpanded="True">
+                    <syncfusion:CheckListBox
+                        x:Name="CheckListBoxPackage"
+                        av:ItemsSource="{av:SampleData ItemCount=5}"
+                        IsSelectAllEnabled="False"
+                        ItemChecked="OnCheckListBoxItemChecked"
+                        Tag="封装" />
+                </Expander>
+                <Separator />
+                <Expander Header="其他" IsExpanded="True" />
+                <Separator />
+                <Expander Header="外设" IsExpanded="True" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

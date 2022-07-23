@@ -24,6 +24,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Components\CSP.Components\CSP.Components.csproj" />
 		<ProjectReference Include="..\..\Events\CSP.Events\CSP.Events.csproj" />
+		<ProjectReference Include="..\..\Modules\CSP.Modules.Dialogs.NewMCU\CSP.Modules.Dialogs.NewMCU.csproj" />
 		<ProjectReference Include="..\..\Modules\CSP.Modules.Pages.MCU\CSP.Modules.Pages.MCU.csproj" />
 		<ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
 	</ItemGroup>
