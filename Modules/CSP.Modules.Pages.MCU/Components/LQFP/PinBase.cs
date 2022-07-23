@@ -215,6 +215,9 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 
             ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Speed.Source.Clear();
             ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Speed.Value = "";
+
+            PinNote.Text = "";
+
             if (functionName == null)
             {
                 return;
