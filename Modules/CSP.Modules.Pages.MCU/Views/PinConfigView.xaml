@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:panAndZoom="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:resource="clr-namespace:CSP.Resources;assembly=CSP.Resources"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
@@ -30,9 +29,7 @@
                     </StackPanel>
                 </syncfusion:TabItemExt.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Disabled">
-                    <panAndZoom:ZoomBorder Stretch="None">
-                        <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUView" />
-                    </panAndZoom:ZoomBorder>
+                    <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUView" />
                 </ScrollViewer>
             </syncfusion:TabItemExt>
             <syncfusion:TabItemExt
