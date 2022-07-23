@@ -28,6 +28,12 @@
             set => Ini.AddKey("Path", "MCUDbUrl", value);
         }
 
+        public static string PathRepository
+        {
+            get => Ini.ReadKey("Path", "Repository", Path.Repository);
+            set => Ini.AddKey("Path", "Repository", value);
+        }
+
         public static void Save()
         {
             Ini.Save();

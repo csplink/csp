@@ -133,4 +133,8 @@
     <value>https://gitee.com/misfra/misfra_mcu_db</value>
     <comment>MCU数据库网址</comment>
   </data>
+  <data name="Repository" xml:space="preserve">
+    <value>./Repository</value>
+    <comment>仓库路径</comment>
+  </data>
 </root>

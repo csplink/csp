@@ -95,5 +95,14 @@ namespace CSP.Resources {
                 return ResourceManager.GetString("MCUDbUrl", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 ./Repository 的本地化字符串。
+        /// </summary>
+        internal static string Repository {
+            get {
+                return ResourceManager.GetString("Repository", resourceCulture);
+            }
+        }
     }
 }

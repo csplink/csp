@@ -18,7 +18,7 @@ namespace CSP.Apps.Dev
             base.ConfigureModuleCatalog(moduleCatalog);
 
             moduleCatalog.AddModule<CSPModule>();
-            // moduleCatalog.AddModule<Modules.Dialogs.NewProject.NewProjectModule>();
+
             moduleCatalog.AddModule<Modules.Dialogs.NewMCU.NewMCUModule>();
 
             moduleCatalog.AddModule<Modules.Pages.MCU.MCUModule>();
@@ -62,8 +62,7 @@ namespace CSP.Apps.Dev
 #if DEBUG
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
             IniFile.PathMCUDb = $"{solutionDir}/../csp_mcu_db";
-#else
-            IniFile.PathMCUDb = "./Database/MCU";
+            IniFile.PathRepository = $"{solutionDir}/..";
 #endif
         }
     }

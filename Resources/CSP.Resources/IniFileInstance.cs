@@ -67,6 +67,7 @@ namespace CSP.Resources
             AddKey("Path", "MCUDb", Path.MCUDb);
             AddKey("Path", "MCUDbUrl", Path.MCUDbUrl);
             AddKey("Path", "LogFile", Path.LogFile);
+            AddKey("Path", "Repository", Path.Repository);
 
             Save();
         }
