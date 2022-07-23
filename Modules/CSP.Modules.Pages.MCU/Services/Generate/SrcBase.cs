@@ -17,6 +17,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
                         ReadUserFunctions(fileData);
                         ReadUserVariables(fileData);
                         ReadUserExterns(fileData);
+                        ReadUserInit(fileData);
                     }
                 }
             }
@@ -26,28 +27,39 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
         #region functions
 
-        internal const string EndregionFunctions = "\r\n// endregion functions";
-        internal const string EndregionUserFunctions = "\r\n// endregion user functions";
-        internal const string RegionFunctions = "// region functions\r\n";
-        internal const string RegionUserFunctions = "// region user functions\r\n";
+        internal const string EndregionFunctions = "\n// endregion functions";
+        internal const string EndregionUserFunctions = "\n// endregion user functions";
+        internal const string RegionFunctions = "// region functions\n";
+        internal const string RegionUserFunctions = "// region user functions\n";
 
         #endregion functions
 
         #region variables
 
-        internal const string EndregionUserVariables = "\r\n// endregion user variables";
-        internal const string EndregionVariables = "\r\n// endregion variables";
-        internal const string RegionUserVariables = "// region user variables\r\n";
-        internal const string RegionVariables = "// region variables\r\n";
+        internal const string EndregionUserVariables = "\n// endregion user variables";
+        internal const string EndregionVariables = "\n// endregion variables";
+        internal const string RegionUserVariables = "// region user variables\n";
+        internal const string RegionVariables = "// region variables\n";
 
         #endregion variables
+
+        #region init
+
+        internal const string EndregionUserInit = "\n// endregion user init";
+        internal const string EndregionInit = "\n// endregion init";
+        internal const string RegionUserInit = "// region user init\n";
+        internal const string RegionInit = "// region init\n";
+
+        #endregion init
 
         #endregion region
 
         internal List<FunctionModel> Functions { get; } = new();
         internal string UserFunctions { get; set; }
         internal string UserVariables { get; set; }
+        internal string UserInit { get; set; }
         internal List<VariableModel> Variables { get; } = new();
+        internal List<string> Init { get; } = new();
 
         public void AddFunction(FunctionModel function)
         {
@@ -59,6 +71,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             Variables.Add(variable);
         }
 
+        public void AddInit(string init)
+        {
+            Init.Add(init);
+        }
+
         public string Generate()
         {
             var content = "";
@@ -66,19 +83,19 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             content += RegionCopyright;
             content += Copyright;
             content += EndregionCopyright;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #region includes
 
             content += RegionIncludes;
             content += GenerateIncludes();
             content += EndregionIncludes;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserIncludes;
             content += UserIncludes;
             content += EndregionUserIncludes;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion includes
 
@@ -87,12 +104,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             content += RegionMacros;
             content += GenerateMacros();
             content += EndregionMacros;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserMacros;
             content += UserMacros;
             content += EndregionUserMacros;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion macros
 
@@ -101,12 +118,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             content += RegionExterns;
             content += GenerateExterns();
             content += EndregionExterns;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserExterns;
             content += UserExterns;
             content += EndregionUserExterns;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion externs
 
@@ -115,12 +132,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             content += RegionFunctionDeclarations;
             content += GenerateFunctionDeclarations();
             content += EndregionFunctionDeclarations;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserFunctionDeclarations;
             content += UserFunctionDeclarations;
             content += EndregionUserFunctionDeclarations;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion function_declarations
 
@@ -129,12 +146,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             content += RegionVariables;
             content += GenerateVariables();
             content += EndregionVariables;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserVariables;
             content += UserVariables;
             content += EndregionUserVariables;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion variables
 
@@ -143,14 +160,28 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             content += RegionFunctions;
             content += GenerateFunctions();
             content += EndregionFunctions;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserFunctions;
             content += UserFunctions;
             content += EndregionUserFunctions;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion functions
+
+            #region init
+
+            content += RegionInit;
+            content += GenerateInit();
+            content += EndregionInit;
+            content += "\n\n";
+
+            content += RegionUserInit;
+            content += UserInit;
+            content += EndregionUserInit;
+            content += "\n\n";
+
+            #endregion init
 
             return content;
         }
@@ -160,12 +191,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (Functions.Count == 0)
                 return "";
 
-            var rtn = "\r\n";
+            var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var function in Functions)
             {
-                rtn += function + "\r\n";
+                rtn += function + "\n";
             }
 
             return rtn;
@@ -176,12 +207,28 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (Variables.Count == 0)
                 return "";
 
-            var rtn = "\r\n";
+            var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var variable in Variables)
             {
-                rtn += variable + "\r\n";
+                rtn += variable + "\n";
+            }
+
+            return rtn;
+        }
+
+        public string GenerateInit()
+        {
+            if (Init.Count == 0)
+                return "";
+
+            var rtn = "\n";
+
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var init in Init)
+            {
+                rtn += $"INIT_BOARD_EXPORT({init}());\n";
             }
 
             return rtn;
@@ -197,6 +244,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             Variables.Remove(variable);
         }
 
+        public void RemoveInit(string init)
+        {
+            Init.Remove(init);
+        }
+
         private void ReadUserExterns(string data)
         {
             UserExterns = ReadUser(data, RegionUserExterns, EndregionUserExterns);
@@ -210,6 +262,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
         private void ReadUserVariables(string data)
         {
             UserVariables = ReadUser(data, RegionUserVariables, EndregionUserVariables);
+        }
+
+        private void ReadUserInit(string data)
+        {
+            UserInit = ReadUser(data, RegionUserInit, EndregionUserInit);
         }
     }
 }

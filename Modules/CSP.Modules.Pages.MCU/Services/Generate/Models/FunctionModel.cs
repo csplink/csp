@@ -44,12 +44,19 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
                 }
             }
 
-            var rtn = $"{Type} {Name}({parameter})\r\n";
-            rtn += "{\r\n";
+            var rtn = $"{Type} {Name}({parameter})\n";
+            rtn += "{\n";
 
             foreach (var function in FunctionUses)
             {
                 rtn += $"    {function}";
+            }
+
+            switch (Type)
+            {
+                case "int":
+                    rtn += "\n    return RT_EOK;\n";
+                    break;
             }
 
             rtn += "}";
@@ -66,7 +73,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
                 var parameter = "";
 
                 if (Name.IsNullOrEmpty())
-                    return "\r\n";
+                    return "\n";
 
                 var count = Parameters.Count;
                 for (var i = 0; i < count; i++)
@@ -88,7 +95,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
                     }
                 }
 
-                var rtn = $"{Name}({parameter});\r\n";
+                var rtn = $"{Name}({parameter});\n";
                 return rtn;
             }
         }

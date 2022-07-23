@@ -13,22 +13,22 @@
             content += RegionCopyright;
             content += Copyright;
             content += EndregionCopyright;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += Resources.Files.HeaderStart.Replace("${file}", $"CSP_{File}".ToUpper().Replace(".", "_") + "__");
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #region includes
 
             content += RegionIncludes;
             content += GenerateIncludes();
             content += EndregionIncludes;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserIncludes;
             content += UserIncludes;
             content += EndregionUserIncludes;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion includes
 
@@ -37,12 +37,12 @@
             content += RegionMacros;
             content += GenerateMacros();
             content += EndregionMacros;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserMacros;
             content += UserMacros;
             content += EndregionUserMacros;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion macros
 
@@ -51,12 +51,12 @@
             content += RegionExterns;
             content += GenerateExterns();
             content += EndregionExterns;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserExterns;
             content += UserExterns;
             content += EndregionUserExterns;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion externs
 
@@ -65,17 +65,17 @@
             content += RegionFunctionDeclarations;
             content += GenerateFunctionDeclarations();
             content += EndregionFunctionDeclarations;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             content += RegionUserFunctionDeclarations;
             content += UserFunctionDeclarations;
             content += EndregionFunctionDeclarations;
-            content += "\r\n\r\n";
+            content += "\n\n";
 
             #endregion function_declarations
 
             content += Resources.Files.HeaderEnd;
-            content += "\r\n";
+            content += "\n";
 
             return content;
         }

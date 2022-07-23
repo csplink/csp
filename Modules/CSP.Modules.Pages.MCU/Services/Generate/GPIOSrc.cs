@@ -22,7 +22,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             var function = new FunctionModel
             {
                 Name = "csp_gpio_init",
-                Type = "void"
+                Type = "int"
             };
             function.Parameters.Add(new FunctionModel.ParameterModel()
             {
@@ -95,6 +95,8 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             }
 
             AddFunction(function);
+
+            AddInit("csp_gpio_init");
         }
     }
 }

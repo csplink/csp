@@ -99,53 +99,53 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
         #region copyright
 
-        internal const string EndregionCopyright = "\r\n// endregion copyright";
-        internal const string RegionCopyright = "// region copyright\r\n";
+        internal const string EndregionCopyright = "\n// endregion copyright";
+        internal const string RegionCopyright = "// region copyright\n";
 
         #endregion copyright
 
         #region includes
 
-        internal const string EndregionIncludes = "\r\n// endregion includes";
-        internal const string EndregionUserIncludes = "\r\n// endregion user includes";
-        internal const string RegionIncludes = "// region includes\r\n";
-        internal const string RegionUserIncludes = "// region user includes\r\n";
+        internal const string EndregionIncludes = "\n// endregion includes";
+        internal const string EndregionUserIncludes = "\n// endregion user includes";
+        internal const string RegionIncludes = "// region includes\n";
+        internal const string RegionUserIncludes = "// region user includes\n";
 
         #endregion includes
 
         #region types
 
-        internal const string EndregionTypes = "\r\n// endregion types";
-        internal const string EndregionUserTypes = "\r\n// endregion user types";
-        internal const string RegionTypes = "// region types\r\n";
-        internal const string RegionUserTypes = "// region user types\r\n";
+        internal const string EndregionTypes = "\n// endregion types";
+        internal const string EndregionUserTypes = "\n// endregion user types";
+        internal const string RegionTypes = "// region types\n";
+        internal const string RegionUserTypes = "// region user types\n";
 
         #endregion types
 
         #region macros
 
-        internal const string EndregionMacros = "\r\n// endregion macros";
-        internal const string EndregionUserMacros = "\r\n// endregion user macros";
-        internal const string RegionMacros = "// region macros\r\n";
-        internal const string RegionUserMacros = "// region user macros\r\n";
+        internal const string EndregionMacros = "\n// endregion macros";
+        internal const string EndregionUserMacros = "\n// endregion user macros";
+        internal const string RegionMacros = "// region macros\n";
+        internal const string RegionUserMacros = "// region user macros\n";
 
         #endregion macros
 
         #region externs
 
-        internal const string EndregionExterns = "\r\n// endregion externs";
-        internal const string EndregionUserExterns = "\r\n// endregion user externs";
-        internal const string RegionExterns = "// region externs\r\n";
-        internal const string RegionUserExterns = "// region user externs\r\n";
+        internal const string EndregionExterns = "\n// endregion externs";
+        internal const string EndregionUserExterns = "\n// endregion user externs";
+        internal const string RegionExterns = "// region externs\n";
+        internal const string RegionUserExterns = "// region user externs\n";
 
         #endregion externs
 
         #region function_declarations
 
-        internal const string EndregionFunctionDeclarations = "\r\n// endregion function declarations";
-        internal const string EndregionUserFunctionDeclarations = "\r\n// endregion user function declarations";
-        internal const string RegionFunctionDeclarations = "// region function declarations\r\n";
-        internal const string RegionUserFunctionDeclarations = "// region user function declarations\r\n";
+        internal const string EndregionFunctionDeclarations = "\n// endregion function declarations";
+        internal const string EndregionUserFunctionDeclarations = "\n// endregion user function declarations";
+        internal const string RegionFunctionDeclarations = "// region function declarations\n";
+        internal const string RegionUserFunctionDeclarations = "// region user function declarations\n";
 
         #endregion function_declarations
 
@@ -176,12 +176,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (Externs.Count == 0)
                 return "";
 
-            var rtn = "\r\n";
+            var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var ext in Externs)
             {
-                rtn += ext + "\r\n";
+                rtn += ext + "\n";
             }
 
             return rtn;
@@ -192,12 +192,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (FunctionDeclarations.Count == 0)
                 return "";
 
-            var rtn = "\r\n";
+            var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var functionDeclaration in FunctionDeclarations)
             {
-                rtn += functionDeclaration + "\r\n";
+                rtn += functionDeclaration + "\n";
             }
 
             return rtn;
@@ -208,12 +208,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (Includes.Count == 0)
                 return "";
 
-            var rtn = "\r\n";
+            var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var include in Includes)
             {
-                rtn += include + "\r\n";
+                rtn += include + "\n";
             }
 
             return rtn;
@@ -224,12 +224,12 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (Macros.Count == 0)
                 return "";
 
-            var rtn = "\r\n";
+            var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var macro in Macros)
             {
-                rtn += macro + "\r\n";
+                rtn += macro + "\n";
             }
 
             return rtn;
