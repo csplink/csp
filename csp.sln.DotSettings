@@ -15,7 +15,11 @@
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UnusedType_002EGlobal/@EntryIndexedValue">DO_NOT_SHOW</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=Xaml_002EBindingWithoutContextNotResolved/@EntryIndexedValue">DO_NOT_SHOW</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/Naming/CSharpAutoNaming/IsNotificationDisabled/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=GPIO/@EntryIndexedValue">GPIO</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=IO/@EntryIndexedValue">IO</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=IP/@EntryIndexedValue">IP</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=MCU/@EntryIndexedValue">MCU</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=MDK/@EntryIndexedValue">MDK</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/XamlNaming/Abbreviations/=MCU/@EntryIndexedValue">MCU</s:String>
 	<s:Boolean x:Key="/Default/Environment/ExternalSources/Decompiler/DecompilerLegalNoticeAccepted/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/ExternalSources/Decompiler/ShowCompilerGeneratedCode/@EntryValue">True</s:Boolean>
@@ -34,4 +38,5 @@
 	<s:String x:Key="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue">Decompiler</s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/UpgradeFromExceptionReport/UpgradePerformed/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/Housekeeping/WhatsNewShown/WhatsNewShownIndexedEntry/=RS0/@EntryIndexedValue">2022.1</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Uvprojx/@EntryIndexedValue">True</s:Boolean>
 </wpf:ResourceDictionary>
