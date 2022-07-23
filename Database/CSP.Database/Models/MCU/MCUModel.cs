@@ -179,9 +179,6 @@ namespace CSP.Database.Models.MCU
                 }
             }
 
-            [XmlElement("Object")]
-            public ObjectModel Object { get; set; }
-
             [XmlAttribute("Position")]
             public int Position
             {

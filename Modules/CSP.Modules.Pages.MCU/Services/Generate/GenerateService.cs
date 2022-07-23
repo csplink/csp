@@ -9,10 +9,10 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
         public static void Generate(MCUModel mcu, string path)
         {
             if (mcu == null)
-                throw new ArgumentNullException("mcu null");
+                throw new ArgumentNullException(nameof(mcu));
 
-            var pathInc = $"{path}/misfra_studio/inc";
-            var pathSrc = $"{path}/misfra_studio/src";
+            var pathInc = $"{path}/csp/inc";
+            var pathSrc = $"{path}/csp/src";
 
             if (!Directory.Exists(pathInc))
                 Directory.CreateDirectory(pathInc);
@@ -38,10 +38,10 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
         public static void GenerateGPIO(MCUModel mcu, string path)
         {
             if (mcu == null)
-                throw new ArgumentNullException("mcu null");
+                throw new ArgumentNullException(nameof(mcu));
 
-            var pathInc = $"{path}/misfra_studio/inc/ms_gpio.h";
-            var pathSrc = $"{path}/misfra_studio/src/ms_gpio.c";
+            var pathInc = $"{path}/csp/inc/gpio.h";
+            var pathSrc = $"{path}/csp/src/csp_gpio.c";
 
             var gpioInc = new GPIOInc(mcu);
             var inc = gpioInc.Generate();

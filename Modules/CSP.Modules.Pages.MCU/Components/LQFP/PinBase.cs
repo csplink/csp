@@ -251,28 +251,28 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 
                                 switch (parameter.Key)
                                 {
-                                    case "md_gpio_mode_t":
+                                    case "chal_gpio_mode_e":
                                         {
                                             ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Mode.Source = map;
                                             Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Mode));
                                         }
                                         break;
 
-                                    case "md_gpio_speed_t":
+                                    case "chal_gpio_speed_e":
                                         {
                                             ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Speed.Source = map;
                                             Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Speed));
                                         }
                                         break;
 
-                                    case "md_gpio_level_t":
+                                    case "chal_gpio_level_e":
                                         {
                                             ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Level.Source = map;
                                             Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Level));
                                         }
                                         break;
 
-                                    case "md_gpio_pull_t":
+                                    case "chal_gpio_pull_e":
                                         {
                                             ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Pull.Source = map;
                                             Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Pull));

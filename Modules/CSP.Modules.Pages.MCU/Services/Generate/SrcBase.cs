@@ -5,7 +5,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 {
     public class SrcBase : GenerateBase
     {
-        public SrcBase(string path = null) : base(path)
+        protected SrcBase(string path = null) : base(path)
         {
             if (!IsSys)
             {

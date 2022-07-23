@@ -7,13 +7,13 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
     {
         public GPIOSrc(MCUModel mcu = null, string path = null) : base(path)
         {
-            File = "ms_gpio.c";
+            File = "csp_gpio.c";
             Brief = "This file provides code for the configuration of all used GPIO.";
 
             AddInclude(new IncModel()
             {
                 IsSys = false,
-                Name = "ms_gpio.h"
+                Name = "csp/gpio.h"
             });
 
             if (mcu == null)
@@ -21,7 +21,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
             var function = new FunctionModel
             {
-                Name = "ms_gpio_init",
+                Name = "csp_gpio_init",
                 Type = "void"
             };
             function.Parameters.Add(new FunctionModel.ParameterModel()
@@ -34,24 +34,15 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             {
                 if (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked)
                 {
-                    var variable = new VariableModel
-                    {
-                        Name = $"{pin.Name}",
-                        IsStatic = false,
-                        Type = "md_gpio_obj_t",
-                        Value = $"{{{pin.Object.Value}}}"
-                    };
-                    AddVariable(variable);
-
                     switch (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function)
                     {
                         case "GPIO-Input":
                             {
                                 var functionUse = new FunctionModel.FunctionUseModel
                                 {
-                                    Name = "md_gpio_set_mode"
+                                    Name = "chal_gpio_init"
                                 };
-                                functionUse.Parameters.Add($"&{pin.Name}");
+                                functionUse.Parameters.Add(pin.Name);
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
                                 functionUse.Parameters.Add("-1");
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
@@ -63,17 +54,17 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
                             {
                                 var functionUse = new FunctionModel.FunctionUseModel
                                 {
-                                    Name = "md_gpio_write"
+                                    Name = "chal_gpio_write_pin"
                                 };
-                                functionUse.Parameters.Add($"&{pin.Name}");
+                                functionUse.Parameters.Add(pin.Name);
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.Value);
                                 function.FunctionUses.Add(functionUse);
 
                                 functionUse = new FunctionModel.FunctionUseModel
                                 {
-                                    Name = "md_gpio_set_mode"
+                                    Name = "chal_gpio_init"
                                 };
-                                functionUse.Parameters.Add($"&{pin.Name}");
+                                functionUse.Parameters.Add(pin.Name);
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.Value);
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
@@ -85,9 +76,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
                             {
                                 var functionUse = new FunctionModel.FunctionUseModel
                                 {
-                                    Name = "md_gpio_set_mode"
+                                    Name = "chal_gpio_init"
                                 };
-                                functionUse.Parameters.Add($"&{pin.Name}");
+                                functionUse.Parameters.Add(pin.Name);
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
                                 functionUse.Parameters.Add("-1");
                                 functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);

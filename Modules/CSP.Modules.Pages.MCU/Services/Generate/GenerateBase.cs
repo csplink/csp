@@ -9,7 +9,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
     {
         internal readonly bool IsSys;
 
-        public GenerateBase(string path = null)
+        protected GenerateBase(string path = null)
         {
             string fileData = null;
 
@@ -32,7 +32,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
             if (IsSys)
             {
-                Copyright = CSP.Modules.Pages.MCU.Resources.Files.Copyright;
+                Copyright = Resources.Files.Copyright;
                 UpdateCopyright();
             }
             else
@@ -156,22 +156,22 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             Externs.Add(ext);
         }
 
-        public void AddFunctionDeclaration(FunctionDeclarationModel function)
+        protected void AddFunctionDeclaration(FunctionDeclarationModel function)
         {
             FunctionDeclarations.Add(function);
         }
 
-        public void AddInclude(IncModel inc)
+        protected void AddInclude(IncModel inc)
         {
             Includes.Add(inc);
         }
 
-        public void AddMacro(MacroModel macro)
+        protected void AddMacro(MacroModel macro)
         {
             Macros.Add(macro);
         }
 
-        public string GenerateExterns()
+        protected string GenerateExterns()
         {
             if (Externs.Count == 0)
                 return "";
@@ -187,7 +187,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             return rtn;
         }
 
-        public string GenerateFunctionDeclarations()
+        protected string GenerateFunctionDeclarations()
         {
             if (FunctionDeclarations.Count == 0)
                 return "";
@@ -203,7 +203,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             return rtn;
         }
 
-        public string GenerateIncludes()
+        protected string GenerateIncludes()
         {
             if (Includes.Count == 0)
                 return "";
@@ -219,7 +219,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             return rtn;
         }
 
-        public string GenerateMacros()
+        protected string GenerateMacros()
         {
             if (Macros.Count == 0)
                 return "";
@@ -258,11 +258,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
         internal static string ReadUser(string value, string region, string endregion)
         {
             if (value.IsNullOrEmpty())
-                throw new ArgumentNullException("data null");
+                throw new ArgumentNullException(nameof(value));
             if (region.IsNullOrEmpty())
-                throw new ArgumentNullException("region null");
+                throw new ArgumentNullException(nameof(region));
             if (endregion.IsNullOrEmpty())
-                throw new ArgumentNullException("endregion null");
+                throw new ArgumentNullException(nameof(endregion));
 
             if (value.Contains(region) && value.Contains(endregion))
             {

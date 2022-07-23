@@ -2,7 +2,7 @@
 {
     public class IncBase : GenerateBase
     {
-        public IncBase(string path = null) : base(path)
+        protected IncBase(string path = null) : base(path)
         {
         }
 
@@ -15,7 +15,7 @@
             content += EndregionCopyright;
             content += "\r\n\r\n";
 
-            content += CSP.Modules.Pages.MCU.Resources.Files.HeaderStart.Replace("${file}", File.ToUpper().Replace(".", "_") + "__");
+            content += Resources.Files.HeaderStart.Replace("${file}", $"CSP_{File}".ToUpper().Replace(".", "_") + "__");
             content += "\r\n\r\n";
 
             #region includes
@@ -74,7 +74,7 @@
 
             #endregion function_declarations
 
-            content += CSP.Modules.Pages.MCU.Resources.Files.HeaderEnd;
+            content += Resources.Files.HeaderEnd;
             content += "\r\n";
 
             return content;
