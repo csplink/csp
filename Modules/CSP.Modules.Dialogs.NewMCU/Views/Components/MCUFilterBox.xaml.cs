@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using CSP.Database.Models.MCU;
+using CSP.Utils.Extensions;
+using Syncfusion.Windows.Tools.Controls;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using CSP.Database.Models.MCU;
-using Syncfusion.Windows.Tools.Controls;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Dialogs.NewMCU.Views.Components
 {

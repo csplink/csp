@@ -8,7 +8,6 @@ using CSP.Utils;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using Serilog;
 using Syncfusion.Windows.PropertyGrid;
 using System;
 using System.Collections.Generic;
@@ -65,12 +64,9 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         {
             var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows, IsExpanded = true };
 
-            if (MCUHelper.MCU.Modules == null)
-            {
-                Log.Error(new ArgumentNullException(nameof(MCUHelper.MCU.Modules)), "Modules 为 NULL");
-                return;
-            }
+            DebugUtil.Assert(MCUHelper.MCU.Modules != null, new ArgumentNullException(nameof(MCUHelper.MCU.Modules)));
 
+            // ReSharper disable once PossibleNullReferenceException
             foreach (var module in MCUHelper.MCU.Modules)
             {
                 var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne, IsExpanded = true };

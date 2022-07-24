@@ -1,6 +1,5 @@
-﻿using CSP.Utils.Extensions;
+﻿using CSP.Utils;
 using Prism.Mvvm;
-using Serilog;
 using System;
 using System.IO;
 using System.Windows;
@@ -22,11 +21,8 @@ namespace CSP.Services.Models
 
         internal static void Create(string path, ProjectModel model)
         {
-            if (path == null)
-                Log.Error(new ArgumentNullException(nameof(path)), "path 为 NULL");
-
-            if (model == null)
-                Log.Error(new ArgumentNullException(nameof(model)), "ProjectModel 为 NULL");
+            DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(model != null, new ArgumentNullException(nameof(model)));
 
             var dir = Path.GetDirectoryName(path);
             if (!Directory.Exists(dir))
@@ -48,8 +44,7 @@ namespace CSP.Services.Models
 
         internal static ProjectModel Load(string path)
         {
-            if (path.IsNullOrEmpty())
-                Log.Error(new ArgumentNullException(nameof(path)), $"路径 \"{path}\" 不存在");
+            DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path)) return null;
 
@@ -60,17 +55,14 @@ namespace CSP.Services.Models
             try
             {
                 rtn = (ProjectModel)deserializer.Deserialize(reader);
-                if (rtn == null)
-                {
-                    Log.Error(new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
-                    return null;
-                }
             }
             catch (InvalidOperationException e)
             {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
+
+            DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
 
             return rtn;
         }

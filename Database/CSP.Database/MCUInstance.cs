@@ -1,7 +1,7 @@
 ﻿using CSP.Database.Models.MCU;
 using CSP.Resources;
+using CSP.Utils;
 using CSP.Utils.Extensions;
-using Serilog;
 using System;
 using System.Collections.Generic;
 
@@ -54,20 +54,16 @@ namespace CSP.Database
 
         public void LoadMCU(string company, string name)
         {
-            if (company.IsNullOrEmpty())
-                Log.Error(new ArgumentNullException(nameof(company)), "\"Company\" 参数为 NULL");
-            if (name.IsNullOrEmpty())
-                Log.Error(new ArgumentNullException(nameof(name)), "\"Name\" 参数为 NULL");
+            DebugUtil.Assert(!company.IsNullOrEmpty(), new ArgumentNullException(nameof(company)));
+            DebugUtil.Assert(!name.IsNullOrEmpty(), new ArgumentNullException(nameof(name)));
 
             Company = company;
             Name = name;
 
             var path = $"{IniFile.PathMCUDb}/Company/{company}/MCU/{name}.xml";
             MCU = MCUModel.Load(path);
-            if (MCU == null)
-            {
-                Log.Error(new ArgumentNullException(nameof(MCU)), $"MCU \"{name}\" 读取失败");
-            }
+
+            DebugUtil.Assert(MCU != null, new ArgumentNullException(nameof(MCU)), $"MCU \"{name}\" 读取失败");
 
             LoadIP();
         }
@@ -77,10 +73,7 @@ namespace CSP.Database
             var path = $"{IniFile.PathMCUDb}/Company/{Company}/IP/{Name}-IP.xml";
             IP = IPModel.Load(path);
 
-            if (IP == null)
-            {
-                Log.Error(new ArgumentNullException(nameof(IP)), $"IP \"{Name}\" 读取失败");
-            }
+            DebugUtil.Assert(IP != null, new ArgumentNullException(nameof(IP)), $"MCU \"{Name}\" 读取失败");
         }
 
         private void LoadMaps()

@@ -1,5 +1,5 @@
 ﻿using CSP.Services.Models;
-using Serilog;
+using CSP.Utils;
 using System;
 
 namespace CSP.Services
@@ -13,8 +13,8 @@ namespace CSP.Services
 
         public static void Create(string path, ProjectModel model)
         {
-            if (path == null)
-                Log.Error(new ArgumentNullException(nameof(path)), "Path NULL");
+            DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(model != null, new ArgumentNullException(nameof(model)));
 
             Path = path;
             Name = System.IO.Path.GetFileNameWithoutExtension(path);
@@ -29,8 +29,7 @@ namespace CSP.Services
 
         public static ProjectModel Load(string path)
         {
-            if (path == null)
-                Log.Error(new ArgumentNullException(nameof(path)), "Path NULL");
+            DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
 
             Path = path;
             Name = System.IO.Path.GetFileNameWithoutExtension(path);

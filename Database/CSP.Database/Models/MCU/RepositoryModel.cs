@@ -1,6 +1,6 @@
-﻿using CSP.Utils.Extensions;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
 using Prism.Mvvm;
-using Serilog;
 using System;
 using System.IO;
 using System.Windows;
@@ -19,8 +19,7 @@ namespace CSP.Database.Models.MCU
 
         internal static RepositoryModel Load(string path)
         {
-            if (path.IsNullOrEmpty())
-                Log.Error(new ArgumentNullException(nameof(path)), $"路径 \"{path}\" 不存在");
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;
@@ -31,11 +30,6 @@ namespace CSP.Database.Models.MCU
             try
             {
                 rtn = (RepositoryModel)deserializer.Deserialize(reader);
-                if (rtn == null)
-                {
-                    Log.Error(new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
-                    return null;
-                }
             }
             catch (InvalidOperationException e)
             {
@@ -43,8 +37,11 @@ namespace CSP.Database.Models.MCU
                 return null;
             }
 
-            // 补充辅助值
+            DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
+            if (rtn == null)
+                return null;
 
+            // 补充辅助值
             foreach (var company in rtn.Companies)
             {
                 foreach (var series in company.Series)

@@ -2,8 +2,12 @@
 
 namespace CSP.Database
 {
-    public class MDKHelper
+    public static class MDKHelper
     {
-        public static ProjectModel Load(string path) => ProjectModel.Load(path);
+        private static readonly MDKInstance Instance = MDKInstance.Instance;
+
+        private static UvprojxModel Uvprojx { get => Instance.Uvprojx; }
+
+        public static UvprojxModel Load(string path) => Instance.Load(path);
     }
 }

@@ -1,5 +1,5 @@
-﻿using CSP.Utils.Extensions;
-using Serilog;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,8 +18,7 @@ namespace CSP.Database.Models.MCU
 
         internal static IPModel Load(string path)
         {
-            if (path.IsNullOrEmpty())
-                Log.Error(new ArgumentNullException(nameof(path)), $"路径 \"{path}\" 不存在");
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;
@@ -31,17 +30,16 @@ namespace CSP.Database.Models.MCU
             try
             {
                 rtn = (IPModel)deserializer.Deserialize(reader);
-                if (rtn == null)
-                {
-                    Log.Error(new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
-                    return null;
-                }
             }
             catch (InvalidOperationException e)
             {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
+
+            DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
+            if (rtn == null)
+                return null;
 
             //给辅助变量赋值,将变量转化为字典形式
             foreach (var mode in rtn.GPIO.ModesTemp)

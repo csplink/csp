@@ -11,7 +11,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (mcu == null)
                 throw new ArgumentNullException(nameof(mcu));
 
-            var pathInc = $"{path}/csp/inc";
+            var pathInc = $"{path}/csp/inc/csp";
             var pathSrc = $"{path}/csp/src";
 
             if (!Directory.Exists(pathInc))
@@ -40,7 +40,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (mcu == null)
                 throw new ArgumentNullException(nameof(mcu));
 
-            var pathInc = $"{path}/csp/inc/gpio.h";
+            var pathInc = $"{path}/csp/inc/csp/gpio.h";
             var pathSrc = $"{path}/csp/src/csp_gpio.c";
 
             var gpioInc = new GPIOInc(mcu);

@@ -1,5 +1,5 @@
-﻿using CSP.Utils.Extensions;
-using Serilog;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
 using System;
 using System.IO;
 using System.Windows;
@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace CSP.Database.Models.MDK
 {
     [XmlRoot("Project", IsNullable = false)]
-    public class ProjectModel
+    public class UvprojxModel
     {
         public string SchemaVersion { get; set; }
 
@@ -25,26 +25,20 @@ namespace CSP.Database.Models.MDK
 
         public LayerInfoModel LayerInfo { get; set; }
 
-        internal static ProjectModel Load(string path)
+        internal static UvprojxModel Load(string path)
         {
-            if (path.IsNullOrEmpty())
-                Log.Error(new ArgumentNullException(nameof(path)), $"路径 \"{path}\" 不存在");
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;
 
-            var deserializer = new XmlSerializer(typeof(ProjectModel));
+            var deserializer = new XmlSerializer(typeof(UvprojxModel));
             var reader = new StreamReader(path);
 
-            ProjectModel rtn;
+            UvprojxModel rtn;
             try
             {
-                rtn = (ProjectModel)deserializer.Deserialize(reader);
-                if (rtn == null)
-                {
-                    Log.Error(new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
-                    return null;
-                }
+                rtn = (UvprojxModel)deserializer.Deserialize(reader);
             }
             catch (InvalidOperationException e)
             {
@@ -52,7 +46,14 @@ namespace CSP.Database.Models.MDK
                 return null;
             }
 
+            DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
+
             return rtn;
+        }
+
+        internal static UvprojxModel ChangeProjectName(UvprojxModel project, string Name, int index)
+        {
+            return project;
         }
 
         public class TargetModel
