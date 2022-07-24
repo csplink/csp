@@ -47,12 +47,34 @@ namespace CSP.Database.Models.MDK
             }
 
             DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
+            if (rtn == null)
+                return null;
+
+            DebugUtil.Assert(rtn.Targets.Length >= 1, new ArgumentOutOfRangeException(nameof(rtn.Targets)));
+            DebugUtil.Assert(rtn.RTE.components.Length >= 1, new ArgumentOutOfRangeException(nameof(rtn.RTE.components)));
+
+            var targetInfos = rtn.RTE.components[0].targetInfos;
+            DebugUtil.Assert(targetInfos.Length >= 1, new ArgumentOutOfRangeException(nameof(targetInfos)));
+
+            var layers = rtn.LayerInfo.Layers;
+            DebugUtil.Assert(layers.Length >= 1, new ArgumentOutOfRangeException(nameof(layers)));
 
             return rtn;
         }
 
-        internal static UvprojxModel ChangeProjectName(UvprojxModel project, string Name, int index)
+        internal static UvprojxModel ChangeProjectName(UvprojxModel project, string dest)
         {
+            project.Targets[0].TargetName = dest;
+            project.Targets[0].TargetOption.TargetCommonOption.OutputName = dest;
+
+            if (project.Targets[0].TargetOption.TargetArmAds.LDads.umfTarg == "1")
+                project.Targets[0].TargetOption.TargetArmAds.LDads.ScatterFile = $".\\Objects\\{dest}.sct";
+
+            foreach (var component in project.RTE.components)
+                component.targetInfos[0].name = dest;
+
+            project.LayerInfo.Layers[0].LayName = dest;
+
             return project;
         }
 
