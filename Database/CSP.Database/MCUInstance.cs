@@ -18,7 +18,6 @@ namespace CSP.Database
         private MCUInstance()
         {
             Repository = RepositoryModel.Load($"{IniFile.PathMCUDb}/Repository.xml");
-            LoadMaps();
         }
 
         public static MCUInstance Instance => Lazy.Value;
@@ -66,6 +65,7 @@ namespace CSP.Database
             DebugUtil.Assert(MCU != null, new ArgumentNullException(nameof(MCU)), $"MCU \"{name}\" 读取失败");
 
             LoadIP();
+            LoadMaps();
         }
 
         private void LoadIP()
@@ -80,7 +80,7 @@ namespace CSP.Database
         {
             foreach (var name in MapNames)
             {
-                _maps.Add(name, MapModel.Load($"{IniFile.PathMCUDb}/Map/{name}.xml"));
+                _maps.Add(name, MapModel.Load($"{IniFile.PathMCUDb}/Company/{Company}/Map/{MCU.Line}/{name}.xml"));
             }
         }
 
