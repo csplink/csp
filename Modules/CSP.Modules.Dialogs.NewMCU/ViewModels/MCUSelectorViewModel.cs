@@ -53,6 +53,7 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         private MCUModel _mcu;
         private RepositoryModel _repository;
         private RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel _selectedMCU;
+        private Style _markdownStyle = MdXaml.MarkdownStyle.Sasabune;
 
         public MCUSelectorViewModel()
         {
@@ -63,6 +64,12 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         {
             get => _mcu;
             set => SetProperty(ref _mcu, value);
+        }
+
+        public Style MarkdownStyle
+        {
+            get => _markdownStyle;
+            set => SetProperty(ref _markdownStyle, value);
         }
 
         public DelegateCommand OnNew

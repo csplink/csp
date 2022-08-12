@@ -78,6 +78,7 @@ namespace CSP.Database
 
         private void LoadMaps()
         {
+            _maps.Clear();
             foreach (var name in MapNames)
             {
                 _maps.Add(name, MapModel.Load($"{IniFile.PathMCUDb}/Company/{Company}/Map/{MCU.Line}/{name}.xml"));

@@ -8,13 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MdXaml" Version="1.15.0" />
 		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
 		<PackageReference Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
 		<PackageReference Include="Syncfusion.Shared.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.SfInput.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.SfRichTextBoxAdv.WPF" Version="20.2.0.39" />
 	</ItemGroup>
 
 	<ItemGroup>
