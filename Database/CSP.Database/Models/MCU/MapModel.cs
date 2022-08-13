@@ -64,10 +64,9 @@ namespace CSP.Database.Models.MCU
 
         public class EnumerateModel
         {
-            [XmlElement("Comments")]
             public string Comments { get; set; }
 
-            [XmlAttribute("Name")]
+            [XmlAttribute]
             public string Name { get; set; }
 
             [XmlIgnore]
@@ -79,10 +78,9 @@ namespace CSP.Database.Models.MCU
 
             public class ValueModel
             {
-                [XmlElement("Comments")]
                 public string Comments { get; set; }
 
-                [XmlAttribute("Name")]
+                [XmlAttribute]
                 public string Name { get; set; }
             }
 
@@ -93,7 +91,7 @@ namespace CSP.Database.Models.MCU
                 [XmlIgnore]
                 public Dictionary<string, string> Source { get; set; } = new();
 
-                [XmlAttribute("Value")]
+                [XmlAttribute]
                 public string Value
                 {
                     get => _value;

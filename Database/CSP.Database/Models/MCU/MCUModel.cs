@@ -21,10 +21,10 @@ namespace CSP.Database.Models.MCU
         [XmlArrayItem("Document")]
         public DocumentModel[] Applications { get; set; }
 
-        [XmlAttribute("ClockTree")]
+        [XmlAttribute]
         public string ClockTree { get; set; }
 
-        [XmlAttribute("Company")]
+        [XmlAttribute]
         public string Company { get; set; }
 
         [XmlArray("DataSheets")]
@@ -35,36 +35,34 @@ namespace CSP.Database.Models.MCU
         [XmlArrayItem("Document")]
         public DocumentModel[] Errata { get; set; }
 
-        [XmlAttribute("HasPowerPad")]
+        [XmlAttribute]
         public bool HasPowerPad { get; set; }
 
-        [XmlElement("Illustrate")]
         public string Illustrate { get; set; }
 
-        [XmlElement("Introduction")]
         public string Introduction { get; set; }
 
-        [XmlAttribute("IoType")]
+        [XmlAttribute]
         public string IoType { get; set; }
 
-        [XmlAttribute("Line")]
+        [XmlAttribute]
         public string Line { get; set; }
 
         [XmlArray("Modules")]
         [XmlArrayItem("Module")]
         public ModuleModel[] Modules { get; set; }
 
-        [XmlAttribute("Name")]
+        [XmlAttribute]
         public string Name { get; set; }
 
-        [XmlAttribute("Package")]
+        [XmlAttribute]
         public string Package { get; set; }
 
         [XmlArray("Pins")]
         [XmlArrayItem("Pin")]
         public PinModel[] Pins { get; set; }
 
-        [XmlAttribute("Price")]
+        [XmlAttribute]
         public float Price { get; set; }
 
         [XmlArray("Programs")]
@@ -75,10 +73,9 @@ namespace CSP.Database.Models.MCU
         [XmlArrayItem("Document")]
         public DocumentModel[] References { get; set; }
 
-        [XmlAttribute("Series")]
+        [XmlAttribute]
         public string Series { get; set; }
 
-        [XmlElement("Url")]
         public string Url { get; set; }
 
         internal static MCUModel Load(string path)
@@ -123,10 +120,9 @@ namespace CSP.Database.Models.MCU
 
         public class DocumentModel
         {
-            [XmlAttribute("Name")]
+            [XmlAttribute]
             public string Name { get; set; }
 
-            [XmlElement("Url")]
             public string Url { get; set; }
         }
 
@@ -136,12 +132,12 @@ namespace CSP.Database.Models.MCU
             [XmlArrayItem("Category")]
             public CategoryModel[] Categories { get; set; }
 
-            [XmlAttribute("Name")]
+            [XmlAttribute]
             public string Name { get; set; }
 
             public class CategoryModel
             {
-                [XmlAttribute("Name")]
+                [XmlAttribute]
                 public string Name { get; set; }
             }
         }
@@ -166,7 +162,7 @@ namespace CSP.Database.Models.MCU
             [XmlIgnore]
             public PropertyEvent.Model GPIOProperty { get; set; } = new();
 
-            [XmlAttribute("Name")]
+            [XmlAttribute]
             public string Name
             {
                 get => _name;
@@ -177,7 +173,7 @@ namespace CSP.Database.Models.MCU
                 }
             }
 
-            [XmlAttribute("Position")]
+            [XmlAttribute]
             public int Position
             {
                 get => _position;
@@ -188,7 +184,7 @@ namespace CSP.Database.Models.MCU
                 }
             }
 
-            [XmlAttribute("Type")]
+            [XmlAttribute]
             public string Type { get; set; }
 
             public class DataContextModel : BindableBase
@@ -204,7 +200,7 @@ namespace CSP.Database.Models.MCU
                 private MapModel.EnumerateModel.ValuePropertyGridComboEditorModel _speed = new();
 
                 [Display(Name = "功能", Description = "GPIO 功能", GroupName = "系统")]
-                [XmlAttribute("Function")]
+                [XmlAttribute]
                 public string Function
                 {
                     get => _function;
@@ -212,7 +208,6 @@ namespace CSP.Database.Models.MCU
                 }
 
                 [Display(Name = "锁定", Description = "锁定", GroupName = "基础")]
-                [XmlElement("IsLocked")]
                 public bool IsLocked
                 {
                     get => _isLocked;
@@ -220,7 +215,6 @@ namespace CSP.Database.Models.MCU
                 }
 
                 [Display(Name = "标签", Description = "GPIO 标签, 用于宏定义", GroupName = "基础")]
-                [XmlAttribute("Label")]
                 public string Label
                 {
                     get => _label;
@@ -228,7 +222,6 @@ namespace CSP.Database.Models.MCU
                 }
 
                 [Display(Name = "电平", Description = "GPIO 电平", GroupName = "系统")]
-                [XmlElement("Level")]
                 public MapModel.EnumerateModel.ValuePropertyGridComboEditorModel Level
                 {
                     get => _level;
@@ -236,7 +229,6 @@ namespace CSP.Database.Models.MCU
                 }
 
                 [Display(Name = "模式", Description = "GPIO 模式", GroupName = "系统")]
-                [XmlElement("Mode")]
                 public MapModel.EnumerateModel.ValuePropertyGridComboEditorModel Mode
                 {
                     get => _mode;
@@ -245,7 +237,6 @@ namespace CSP.Database.Models.MCU
 
                 [ReadOnly(true)]
                 [Display(Name = "名称", Description = "GPIO 名称", GroupName = "基础")]
-                [XmlAttribute("Name")]
                 public string Name
                 {
                     get => _name;
@@ -254,7 +245,6 @@ namespace CSP.Database.Models.MCU
 
                 [ReadOnly(true)]
                 [Display(Name = "引脚序号", Description = "GPIO 引脚序号", GroupName = "基础")]
-                [XmlAttribute("Position")]
                 public int Position
                 {
                     get => _position;
@@ -262,7 +252,6 @@ namespace CSP.Database.Models.MCU
                 }
 
                 [Display(Name = "上下拉", Description = "GPIO 上下拉", GroupName = "系统")]
-                [XmlElement("Pull")]
                 public MapModel.EnumerateModel.ValuePropertyGridComboEditorModel Pull
                 {
                     get => _pull;
@@ -270,7 +259,6 @@ namespace CSP.Database.Models.MCU
                 }
 
                 [Display(Name = "速度", Description = "GPIO 速度", GroupName = "系统")]
-                [XmlElement("Speed")]
                 public MapModel.EnumerateModel.ValuePropertyGridComboEditorModel Speed
                 {
                     get => _speed;
@@ -286,16 +274,16 @@ namespace CSP.Database.Models.MCU
                 [XmlAttribute("Mode")]
                 public string ModeName { get; set; }
 
-                [XmlAttribute("Name")]
+                [XmlAttribute]
                 public string Name { get; set; }
 
-                [XmlAttribute("Type")]
+                [XmlAttribute]
                 public string Type { get; set; }
             }
 
             public class ObjectModel
             {
-                [XmlAttribute("Value")]
+                [XmlAttribute]
                 public string Value { get; set; }
             }
         }

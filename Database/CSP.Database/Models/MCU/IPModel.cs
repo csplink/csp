@@ -13,7 +13,6 @@ namespace CSP.Database.Models.MCU
     [XmlRoot("IP", IsNullable = false)]
     public class IPModel
     {
-        [XmlElement("GPIO")]
         public IpGpioModel GPIO { get; set; }
 
         internal static IPModel Load(string path)
@@ -66,7 +65,7 @@ namespace CSP.Database.Models.MCU
 
             public class IpGpioModeModel
             {
-                [XmlAttribute("Name")]
+                [XmlAttribute]
                 public string Name { get; set; }
 
                 [XmlIgnore]
@@ -76,12 +75,12 @@ namespace CSP.Database.Models.MCU
                 [XmlArrayItem("Parameter")]
                 public IpGpioModeParameterModel[] ParametersTemp { get; set; }
 
-                [XmlAttribute("Type")]
+                [XmlAttribute]
                 public string Type { get; set; }
 
                 public class IpGpioModeParameterModel
                 {
-                    [XmlAttribute("Enumerate")]
+                    [XmlAttribute]
                     public string Enumerate { get; set; }
 
                     [XmlArray("Values")]

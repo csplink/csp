@@ -65,7 +65,7 @@ namespace CSP.Database.Models.MCU
 
         public class CompanyModel
         {
-            [XmlAttribute("Name")]
+            [XmlAttribute]
             public string Name { get; set; }
 
             [XmlArray("Series")]
@@ -78,7 +78,7 @@ namespace CSP.Database.Models.MCU
                 [XmlArrayItem("Line")]
                 public LineModel[] Lines { get; set; }
 
-                [XmlAttribute("Name")]
+                [XmlAttribute]
                 public string Name { get; set; }
 
                 public class LineModel
@@ -87,7 +87,7 @@ namespace CSP.Database.Models.MCU
                     [XmlArrayItem("MCU")]
                     public MCUModel[] MCU { get; set; }
 
-                    [XmlAttribute("Name")]
+                    [XmlAttribute]
                     public string Name { get; set; }
 
                     public class MCUModel
@@ -95,28 +95,27 @@ namespace CSP.Database.Models.MCU
                         [XmlIgnore]
                         public string Company { get; set; }
 
-                        [XmlAttribute("Core")]
+                        [XmlAttribute]
                         public string Core { get; set; }
 
-                        [XmlElement("Current")]
                         public CurrentModel Current { get; set; }
 
-                        [XmlAttribute("Flash")]
+                        [XmlAttribute]
                         public float Flash { get; set; }
 
-                        [XmlAttribute("Frequency")]
+                        [XmlAttribute]
                         public float Frequency { get; set; }
 
-                        [XmlAttribute("IO")]
+                        [XmlAttribute]
                         public int IO { get; set; }
 
                         [XmlIgnore]
                         public string Line { get; set; }
 
-                        [XmlAttribute("Name")]
+                        [XmlAttribute]
                         public string Name { get; set; }
 
-                        [XmlAttribute("Package")]
+                        [XmlAttribute]
                         public string Package { get; set; }
 
                         [XmlArray("Peripherals")]
@@ -126,51 +125,49 @@ namespace CSP.Database.Models.MCU
                         [XmlIgnore]
                         public float Price { get; set; }
 
-                        [XmlAttribute("Ram")]
+                        [XmlAttribute]
                         public float Ram { get; set; }
 
                         [XmlIgnore]
                         public string Series { get; set; }
 
-                        [XmlElement("Temperature")]
                         public TemperatureModel Temperature { get; set; }
 
-                        [XmlElement("Voltage")]
                         public VoltageModel Voltage { get; set; }
 
                         public class CurrentModel
                         {
-                            [XmlAttribute("Lowest")]
+                            [XmlAttribute]
                             public float Lowest { get; set; }
 
-                            [XmlAttribute("Run")]
+                            [XmlAttribute]
                             public float Run { get; set; }
                         }
 
                         public class PeripheralModel
                         {
-                            [XmlAttribute("Number")]
+                            [XmlAttribute]
                             public int Number { get; set; }
 
-                            [XmlAttribute("Type")]
+                            [XmlAttribute]
                             public string Type { get; set; }
                         }
 
                         public class TemperatureModel : BindableBase
                         {
-                            [XmlAttribute("Max")]
+                            [XmlAttribute]
                             public float Max { get; set; }
 
-                            [XmlAttribute("Min")]
+                            [XmlAttribute]
                             public float Min { get; set; }
                         }
 
                         public class VoltageModel : BindableBase
                         {
-                            [XmlAttribute("Max")]
+                            [XmlAttribute]
                             public float Max { get; set; }
 
-                            [XmlAttribute("Min")]
+                            [XmlAttribute]
                             public float Min { get; set; }
                         }
                     }
