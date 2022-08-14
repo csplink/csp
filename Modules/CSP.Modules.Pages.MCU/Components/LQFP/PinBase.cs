@@ -329,7 +329,9 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinNote == null)
                 return;
 
-            PinNote.Text = ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label.IsNullOrEmpty() ? ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function : $"{((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label}: ({((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function})";
+            PinNote.Text = ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label.IsNullOrEmpty() ?
+                ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function :
+                $"{((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label}: ({((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function})";
         }
 
         private void UpdateProperty()

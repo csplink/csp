@@ -24,13 +24,16 @@ namespace CSP.Apps.Dev.Views.Windows
 
         private void OnPropertyReceive(PropertyEvent.Model model)
         {
-            Property.HidePropertiesCollection.Clear();
-            var properties = model.Data.GetType().GetProperties();
-            foreach (var info in properties)
+            if (model.ShowList != null)
             {
-                if (!model.ShowList.Contains(info.Name))
+                Property.HidePropertiesCollection.Clear();
+                var properties = model.Data.GetType().GetProperties();
+                foreach (var info in properties)
                 {
-                    Property.HidePropertiesCollection.Add(info.Name);
+                    if (!model.ShowList.Contains(info.Name))
+                    {
+                        Property.HidePropertiesCollection.Add(info.Name);
+                    }
                 }
             }
 

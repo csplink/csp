@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EA80773-B477-4A69-9C63-50BAB6227CB9}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
@@ -79,7 +80,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Page", "Page", "{A0D5DCF6-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSP.Modules.Pages.MCU.Tests", "Modules\CSP.Modules.Pages.MCU.Tests\CSP.Modules.Pages.MCU.Tests.csproj", "{175DCBAB-451E-4C67-A2B1-A473AFF7CF6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSP.Modules.Dialogs.NewMCU", "Modules\CSP.Modules.Dialogs.NewMCU\CSP.Modules.Dialogs.NewMCU.csproj", "{10F568BF-5409-4EBE-B9EE-2ACF00B0C9D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSP.Modules.Dialogs.NewMCU", "Modules\CSP.Modules.Dialogs.NewMCU\CSP.Modules.Dialogs.NewMCU.csproj", "{10F568BF-5409-4EBE-B9EE-2ACF00B0C9D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dialogs", "Dialogs", "{0CB3B1F5-2E0A-4EDC-BA06-31059A655EBF}"
 EndProject

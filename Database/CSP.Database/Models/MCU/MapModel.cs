@@ -62,6 +62,13 @@ namespace CSP.Database.Models.MCU
             return rtn;
         }
 
+        internal static MapModel Transform(string path)
+        {
+            var map = new MapModel();
+
+            return map;
+        }
+
         public class EnumerateModel
         {
             public string Comments { get; set; }
