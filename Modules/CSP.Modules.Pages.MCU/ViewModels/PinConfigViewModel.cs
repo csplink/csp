@@ -55,7 +55,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             {
                 Editor = new ValuePropertyGridComboEditor(),
                 HasPropertyType = true,
-                PropertyType = typeof(MapModel.EnumerateModel.ValuePropertyGridComboEditorModel)
+                PropertyType = typeof(MapModel.GroupModel.ValuePropertyGridComboEditorModel)
             };
             _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }

@@ -133,7 +133,7 @@ namespace CSP.Events
 
         public override bool IsReadOnly
         {
-            get => false;
+            get => true;
         }
 
         public override Type PropertyType { get; }

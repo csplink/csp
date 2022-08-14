@@ -13,7 +13,7 @@ namespace CSP.Database.Components
 
         public override void Attach(PropertyViewItem property, PropertyItem info)
         {
-            if (info.Value is not Models.MCU.MapModel.EnumerateModel.ValuePropertyGridComboEditorModel value)
+            if (info.Value is not Models.MCU.MapModel.GroupModel.ValuePropertyGridComboEditorModel value)
                 return;
 
             var binding = new Binding("Value.Source")

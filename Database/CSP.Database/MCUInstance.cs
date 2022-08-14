@@ -92,15 +92,15 @@ namespace CSP.Database
 
             foreach (var pin in MCU.Pins)
             {
-                if (pin.Functions != null)
+                if (pin.Functions == null)
+                    continue;
+
+                // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+                foreach (var function in pin.Functions)
                 {
-                    // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-                    foreach (var function in pin.Functions)
+                    if (!function.Value.ModeName.IsNullOrEmpty() && IP.GPIO.Modes.ContainsKey(function.Value.ModeName))
                     {
-                        if (!function.Value.ModeName.IsNullOrEmpty() && IP.GPIO.Modes.ContainsKey(function.Value.ModeName))
-                        {
-                            function.Value.Mode = IP.GPIO.Modes[function.Value.ModeName];
-                        }
+                        function.Value.Mode = IP.GPIO.Modes[function.Value.ModeName];
                     }
                 }
             }

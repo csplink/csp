@@ -21,5 +21,11 @@ namespace CSP.Database
         {
             Instance.LoadMCU(company, name);
         }
+
+        public static void GenerateMap(string source, string dest)
+        {
+            var model = MapModel.Transform(source);
+            MapModel.Create(dest, model);
+        }
     }
 }

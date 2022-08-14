@@ -32,5 +32,14 @@ namespace CSP.Database.Tests
             Assert.False(MCUHelper.MCU == null);
             Assert.False(MCUHelper.IP == null);
         }
+
+        [Fact]
+        public void GenerateMapTest()
+        {
+            var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
+            IniFile.PathMCUDb = $"{solutionDir}/../csp_mcu_db";
+            IniFile.PathRepository = $"{solutionDir}/..";
+            MCUHelper.GenerateMap($"{IniFile.PathRepository}/csp_hal_apm32f1/drivers/csp_hal/inc/chal/gpio.h", @"./GPIO.xml");
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace CSP.Database.Models.MCU
             {
                 foreach (var parameter in mode.ParametersTemp)
                 {
-                    mode.Parameters.Add(parameter.Enumerate, parameter);
+                    mode.Parameters.Add(parameter.Group, parameter);
                 }
 
                 rtn.GPIO.Modes.Add(mode.Name, mode);
@@ -81,7 +81,7 @@ namespace CSP.Database.Models.MCU
                 public class IpGpioModeParameterModel
                 {
                     [XmlAttribute]
-                    public string Enumerate { get; set; }
+                    public string Group { get; set; }
 
                     [XmlArray("Values")]
                     [XmlArrayItem("Value")]
