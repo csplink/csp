@@ -1,5 +1,6 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
+using Syncfusion.Windows.Controls.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,17 +12,17 @@ namespace CSP.Events
     public class PropertyDetails : BindableBase, ICustomTypeDescriptor
     {
         private IDictionary<string, object> _details = new Dictionary<string, object>();
-        private IDictionary<string, List<Attribute>> _attributes = new Dictionary<string, List<Attribute>>();
+        private IDictionary<string, Dictionary<string, Attribute>> _attributes = new Dictionary<string, Dictionary<string, Attribute>>();
 
         #region Properties
 
         public IDictionary<string, object> Details
         {
-            get => _details;
+            get { return _details; }
             set => SetProperty(ref _details, value);
         }
 
-        public IDictionary<string, List<Attribute>> Attributes
+        public IDictionary<string, Dictionary<string, Attribute>> Attributes
         {
             get => _attributes;
             set => SetProperty(ref _attributes, value);
@@ -80,11 +81,13 @@ namespace CSP.Events
         {
             var details = Details.Select(element =>
             {
-                _attributes.TryGetValue(element.Key, out var attribute);
+                Attributes.TryGetValue(element.Key, out var attributes);
+                attributes ??= new Dictionary<string, Attribute> { { "DisplayName", new DisplayNameAttribute(element.Key) } };
                 return new CustomPropertyDescriptor(this,
                                                     element.Key,
+                                                    ((DisplayNameAttribute)attributes["DisplayName"]).DisplayName,
                                                     element.Value.GetType(),
-                                                    attribute == null ? Array.Empty<Attribute>() : attribute.ToArray());
+                                                    attributes.Values.ToArray());
             });
             // ReSharper disable once CoVariantArrayConversion
             return new PropertyDescriptorCollection(details.ToArray());
@@ -114,12 +117,14 @@ namespace CSP.Events
 
         public CustomPropertyDescriptor(PropertyDetails propertyDetails,
                                         string propertyName,
+                                        string propertyDisplayName,
                                         Type propertyType,
                                         Attribute[] propertyAttributes)
             : base(propertyName, propertyAttributes)
         {
             this._propertyDetails = propertyDetails;
             PropertyType = propertyType;
+            DisplayName = propertyDisplayName;
         }
 
         #endregion Constructors
@@ -131,9 +136,11 @@ namespace CSP.Events
             get => typeof(PropertyDetails);
         }
 
+        public override string DisplayName { get; }
+
         public override bool IsReadOnly
         {
-            get => true;
+            get => false;
         }
 
         public override Type PropertyType { get; }
@@ -174,7 +181,7 @@ namespace CSP.Events
         public class Model : BindableBase
         {
             public object Data { get; set; }
-            public List<string> ShowList { get; set; } = new();
+            public List<string> ShowList { get; } = new();
         }
     }
 }

@@ -30,69 +30,69 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
                 Type = "void"
             });
 
-            foreach (var pin in mcu.Pins)
-            {
-                if (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked)
-                {
-                    switch (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function)
-                    {
-                        case "GPIO-Input":
-                            {
-                                var functionUse = new FunctionModel.FunctionUseModel
-                                {
-                                    Name = "chal_gpio_init"
-                                };
-                                functionUse.Parameters.Add(pin.Name);
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
-                                functionUse.Parameters.Add("-1");
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
-                                function.FunctionUses.Add(functionUse);
-                            }
-                            break;
-
-                        case "GPIO-Output":
-                            {
-                                var functionUse = new FunctionModel.FunctionUseModel
-                                {
-                                    Name = "chal_gpio_write_pin"
-                                };
-                                functionUse.Parameters.Add(pin.Name);
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.Value);
-                                function.FunctionUses.Add(functionUse);
-
-                                functionUse = new FunctionModel.FunctionUseModel
-                                {
-                                    Name = "chal_gpio_init"
-                                };
-                                functionUse.Parameters.Add(pin.Name);
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.Value);
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
-                                function.FunctionUses.Add(functionUse);
-                            }
-                            break;
-
-                        case "GPIO-Analog":
-                            {
-                                var functionUse = new FunctionModel.FunctionUseModel
-                                {
-                                    Name = "chal_gpio_init"
-                                };
-                                functionUse.Parameters.Add(pin.Name);
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
-                                functionUse.Parameters.Add("-1");
-                                functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
-                                function.FunctionUses.Add(functionUse);
-                            }
-                            break;
-
-                        case "GPIO-EXTI":
-                            {
-                            }
-                            break;
-                    }
-                }
-            }
+            // foreach (var pin in mcu.Pins)
+            // {
+            //     if (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked)
+            //     {
+            //         switch (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function)
+            //         {
+            //             case "GPIO-Input":
+            //                 {
+            //                     var functionUse = new FunctionModel.FunctionUseModel
+            //                     {
+            //                         Name = "chal_gpio_init"
+            //                     };
+            //                     functionUse.Parameters.Add(pin.Name);
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add("-1");
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     function.FunctionUses.Add(functionUse);
+            //                 }
+            //                 break;
+            //
+            //             case "GPIO-Output":
+            //                 {
+            //                     var functionUse = new FunctionModel.FunctionUseModel
+            //                     {
+            //                         Name = "chal_gpio_write_pin"
+            //                     };
+            //                     functionUse.Parameters.Add(pin.Name);
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.Value);
+            //                     function.FunctionUses.Add(functionUse);
+            //
+            //                     functionUse = new FunctionModel.FunctionUseModel
+            //                     {
+            //                         Name = "chal_gpio_init"
+            //                     };
+            //                     functionUse.Parameters.Add(pin.Name);
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.Value);
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     function.FunctionUses.Add(functionUse);
+            //                 }
+            //                 break;
+            //
+            //             case "GPIO-Analog":
+            //                 {
+            //                     var functionUse = new FunctionModel.FunctionUseModel
+            //                     {
+            //                         Name = "chal_gpio_init"
+            //                     };
+            //                     functionUse.Parameters.Add(pin.Name);
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add("-1");
+            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     function.FunctionUses.Add(functionUse);
+            //                 }
+            //                 break;
+            //
+            //             case "GPIO-EXTI":
+            //                 {
+            //                 }
+            //                 break;
+            //         }
+            //     }
+            // }
 
             AddFunction(function);
 

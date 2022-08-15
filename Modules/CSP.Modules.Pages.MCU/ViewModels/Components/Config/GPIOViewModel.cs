@@ -1,6 +1,7 @@
 ﻿using CSP.Database;
 using CSP.Database.Models.MCU;
 using CSP.Events;
+using CSP.Modules.Pages.MCU.Components.LQFP;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -40,12 +41,12 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             if (mcu == null)
                 return;
 
-            foreach (var item in mcu.Pins)
+            foreach (var pin in mcu.Pins)
             {
-                ((MCUModel.PinModel.DataContextModel)item.GPIOProperty.Data).PropertyChanged += OnGPIOPropertyChanged;
-                if (((MCUModel.PinModel.DataContextModel)item.GPIOProperty.Data).IsLocked)
+                pin.BaseProperty.PropertyChanged += OnGPIOPropertyChanged;
+                if (pin.BaseProperty.IsLocked)
                 {
-                    GPIOCollection.Add((MCUModel.PinModel.DataContextModel)item.GPIOProperty.Data);
+                    GPIOCollection.Add(pin.BaseProperty);
                 }
             }
         }
@@ -68,7 +69,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 
                 if (value.Position - 1 < MCUHelper.MCU.Pins.Length)
                 {
-                    _eventAggregator.GetEvent<PropertyEvent>().Publish(MCUHelper.MCU.Pins[value.Position - 1].GPIOProperty);
+                    //  _eventAggregator.GetEvent<PropertyEvent>().Publish(MCUHelper.MCU.Pins[value.Position - 1].GPIOProperty);
                 }
             }
         }

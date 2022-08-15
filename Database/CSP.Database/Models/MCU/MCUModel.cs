@@ -147,11 +147,6 @@ namespace CSP.Database.Models.MCU
             private string _name;
             private int _position;
 
-            public PinModel()
-            {
-                GPIOProperty.Data = new DataContextModel();
-            }
-
             [XmlIgnore]
             public Dictionary<string, FunctionModel> Functions { get; } = new();
 
@@ -160,7 +155,10 @@ namespace CSP.Database.Models.MCU
             public FunctionModel[] FunctionsTemp { get; set; }
 
             [XmlIgnore]
-            public PropertyEvent.Model GPIOProperty { get; set; } = new();
+            public PropertyDetails GPIOProperty { get; } = new();
+
+            [XmlIgnore]
+            public DataContextModel BaseProperty { get; } = new();
 
             [XmlAttribute]
             public string Name
@@ -169,7 +167,7 @@ namespace CSP.Database.Models.MCU
                 set
                 {
                     _name = value;
-                    ((DataContextModel)GPIOProperty.Data).Name = value;
+                    BaseProperty.Name = value;
                 }
             }
 
@@ -180,7 +178,7 @@ namespace CSP.Database.Models.MCU
                 set
                 {
                     _position = value;
-                    ((DataContextModel)GPIOProperty.Data).Position = value;
+                    BaseProperty.Position = value;
                 }
             }
 
@@ -192,20 +190,8 @@ namespace CSP.Database.Models.MCU
                 private string _function;
                 private bool _isLocked;
                 private string _label;
-                private MapModel.GroupModel.ValuePropertyGridComboEditorModel _level = new();
-                private MapModel.GroupModel.ValuePropertyGridComboEditorModel _mode = new();
                 private string _name;
                 private int _position;
-                private MapModel.GroupModel.ValuePropertyGridComboEditorModel _pull = new();
-                private MapModel.GroupModel.ValuePropertyGridComboEditorModel _speed = new();
-                private PropertyDetails _properties = new();
-
-                [XmlIgnore]
-                public PropertyDetails Properties
-                {
-                    get => _properties;
-                    set => SetProperty(ref _properties, value);
-                }
 
                 [Display(Name = "功能", Description = "GPIO 功能", GroupName = "系统")]
                 [XmlAttribute]
@@ -229,20 +215,6 @@ namespace CSP.Database.Models.MCU
                     set => SetProperty(ref _label, value);
                 }
 
-                [Display(Name = "电平", Description = "GPIO 电平", GroupName = "系统")]
-                public MapModel.GroupModel.ValuePropertyGridComboEditorModel Level
-                {
-                    get => _level;
-                    set => SetProperty(ref _level, value);
-                }
-
-                [Display(Name = "模式", Description = "GPIO 模式", GroupName = "系统")]
-                public MapModel.GroupModel.ValuePropertyGridComboEditorModel Mode
-                {
-                    get => _mode;
-                    set => SetProperty(ref _mode, value);
-                }
-
                 [ReadOnly(true)]
                 [Display(Name = "名称", Description = "GPIO 名称", GroupName = "基础")]
                 public string Name
@@ -257,20 +229,6 @@ namespace CSP.Database.Models.MCU
                 {
                     get => _position;
                     set => _ = SetProperty(ref _position, value);
-                }
-
-                [Display(Name = "上下拉", Description = "GPIO 上下拉", GroupName = "系统")]
-                public MapModel.GroupModel.ValuePropertyGridComboEditorModel Pull
-                {
-                    get => _pull;
-                    set => SetProperty(ref _pull, value);
-                }
-
-                [Display(Name = "速度", Description = "GPIO 速度", GroupName = "系统")]
-                public MapModel.GroupModel.ValuePropertyGridComboEditorModel Speed
-                {
-                    get => _speed;
-                    set => SetProperty(ref _speed, value);
                 }
             }
 

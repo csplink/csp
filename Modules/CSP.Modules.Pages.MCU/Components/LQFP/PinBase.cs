@@ -15,7 +15,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 {
     public class PinBase : UserControl
     {
-        public static readonly DependencyProperty PinProperty = DependencyProperty.Register("Pin",
+        public static readonly DependencyProperty PinProperty = DependencyProperty.Register(nameof(Pin),
             typeof(MCUModel.PinModel),
             typeof(PinBase),
             new FrameworkPropertyMetadata(new MCUModel.PinModel(), OnPinChanged) { BindsTwoWayByDefault = true });
@@ -176,7 +176,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                 return;
 
             PinName.Content = pin.Name;
-            PinNote.Text = ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label;
+            PinNote.Text = pin.BaseProperty.Label;
 
             InitPinNameStatus(pin.Type);
 
@@ -192,7 +192,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                 menu.Click += OnMenuFunctionClick;
             }
 
-            ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).PropertyChanged += OnPinPropertyChanged;
+            pin.BaseProperty.PropertyChanged += OnPinPropertyChanged;
         }
 
         private void SetFunction(string functionName)
@@ -200,21 +200,10 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinName == null || PinNote == null || RightContextMenu == null)
                 return;
 
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Function = functionName;
+            Pin.BaseProperty.Function = functionName;
 
-            Pin.GPIOProperty.ShowList.Clear();
-
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Level.Source.Clear();
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Level.Value = "";
-
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Mode.Source.Clear();
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Mode.Value = "";
-
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Pull.Source.Clear();
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Pull.Value = "";
-
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Speed.Source.Clear();
-            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Speed.Value = "";
+            Pin.GPIOProperty.Attributes.Clear();
+            Pin.GPIOProperty.Details.Clear();
 
             PinNote.Text = "";
 
@@ -252,36 +241,12 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                                     }
                                 }
 
-                                switch (parameter.Key)
+                                var model = new MapModel.GroupModel.ValuePropertyGridComboEditorModel
                                 {
-                                    case "chal_gpio_mode_e":
-                                        {
-                                            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Mode.Source = map;
-                                            Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Mode));
-                                        }
-                                        break;
-
-                                    case "chal_gpio_speed_e":
-                                        {
-                                            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Speed.Source = map;
-                                            Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Speed));
-                                        }
-                                        break;
-
-                                    case "chal_gpio_level_e":
-                                        {
-                                            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Level.Source = map;
-                                            Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Level));
-                                        }
-                                        break;
-
-                                    case "chal_gpio_pull_e":
-                                        {
-                                            ((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Pull.Source = map;
-                                            Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Pull));
-                                        }
-                                        break;
-                                }
+                                    Source = map
+                                };
+                                Pin.GPIOProperty.Details.Add(parameter.Key, model);
+                                Pin.GPIOProperty.Attributes.Add(parameter.Key, gpio.Attributes[parameter.Key]);
                             }
                         }
                     }
@@ -296,7 +261,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (menuLock == null || PinName == null)
                 return;
 
-            ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked = value;
+            Pin.BaseProperty.IsLocked = value;
 
             menuLock.Header = value ? "解锁" : "锁定";
             if (pin.Type != null)
@@ -329,31 +294,19 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinNote == null)
                 return;
 
-            PinNote.Text = ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label.IsNullOrEmpty() ?
-                ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function :
-                $"{((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label}: ({((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function})";
+            PinNote.Text = Pin.BaseProperty.Label.IsNullOrEmpty() ?
+                Pin.BaseProperty.Function :
+                $"{Pin.BaseProperty.Label}: ({Pin.BaseProperty.Function})";
         }
 
         private void UpdateProperty()
         {
-            if (!((MCUModel.PinModel.DataContextModel)Pin.GPIOProperty.Data).Function.IsNullOrEmpty())
+            var p = new PropertyEvent.Model
             {
-                if (!Pin.GPIOProperty.ShowList.Contains(nameof(MCUModel.PinModel.DataContextModel.Label)))
-                {
-                    Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Label));
-                }
-            }
+                Data = Pin.GPIOProperty
+            };
 
-            if (!Pin.GPIOProperty.ShowList.Contains(nameof(MCUModel.PinModel.DataContextModel.Name)))
-            {
-                Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Name));
-            }
-            if (!Pin.GPIOProperty.ShowList.Contains(nameof(MCUModel.PinModel.DataContextModel.Position)))
-            {
-                Pin.GPIOProperty.ShowList.Add(nameof(MCUModel.PinModel.DataContextModel.Position));
-            }
-
-            _eventAggregator.GetEvent<PropertyEvent>().Publish(Pin.GPIOProperty);
+            _eventAggregator.GetEvent<PropertyEvent>().Publish(p);
         }
     }
 }

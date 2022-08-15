@@ -32,7 +32,7 @@ namespace CSP.Database.Models.MCU
         public PropertyModel[] Properties { get; set; }
 
         [XmlIgnore]
-        public Dictionary<string, List<Attribute>> Attributes { get; set; } = new();
+        public Dictionary<string, Dictionary<string, Attribute>> Attributes { get; set; } = new();
 
         internal static MapModel Load(string path)
         {
@@ -71,12 +71,12 @@ namespace CSP.Database.Models.MCU
 
             foreach (var property in rtn.Properties)
             {
-                var attributes = new List<Attribute>
+                var attributes = new Dictionary<string, Attribute>
                 {
-                    new DisplayNameAttribute(property.Name),
-                    new DescriptionAttribute(property.Description),
-                    new CategoryAttribute(property.Category),
-                    new ReadOnlyAttribute(property.ReadOnly)
+                    {"DisplayName", new DisplayNameAttribute(property.DisplayName) },
+                    {"Description", new DescriptionAttribute(property.Description) },
+                    {"Category",new CategoryAttribute(property.Category) },
+                    {"ReadOnly", new ReadOnlyAttribute(property.ReadOnly) }
                 };
                 rtn.Attributes.Add(property.Group, attributes);
             }
@@ -204,7 +204,7 @@ namespace CSP.Database.Models.MCU
             [XmlAttribute]
             public string Group { get; set; }
 
-            public string Name { get; set; }
+            public string DisplayName { get; set; }
 
             public string Description { get; set; }
 

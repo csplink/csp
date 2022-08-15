@@ -1,4 +1,5 @@
 ﻿using CSP.Database.Models.MCU;
+using CSP.Modules.Pages.MCU.Components.LQFP;
 using CSP.Modules.Pages.MCU.Services.Generate.Models;
 using CSP.Utils.Extensions;
 
@@ -34,14 +35,14 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
             foreach (var pin in mcu.Pins)
             {
-                if (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked)
+                if (pin.BaseProperty.IsLocked)
                 {
-                    if (!((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label.IsNullOrEmpty())
+                    if (!pin.BaseProperty.Label.IsNullOrEmpty())
                     {
-                        var macro = new MacroModel()
+                        var macro = new MacroModel
                         {
-                            Name = ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Label,
-                            Value = ((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Name
+                            Name = pin.BaseProperty.Label,
+                            Value = pin.BaseProperty.Name
                         };
                         AddMacro(macro);
                     }
