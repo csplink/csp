@@ -766,7 +766,7 @@
                 Width="1080"
                 Height="1080"
                 Background="#FF47474B"
-                ToolTip="111111">
+                ToolTip="{Binding Name}">
                 <Grid>
                     <Canvas
                         Width="50"
@@ -786,7 +786,7 @@
                         <TextBlock
                             Margin="0,20,0,0"
                             HorizontalAlignment="Center"
-                            FontSize="25"
+                            FontSize="60"
                             FontStyle="Italic"
                             FontWeight="Bold"
                             Foreground="AliceBlue"
@@ -794,18 +794,18 @@
                         <TextBlock
                             Margin="0,20,0,0"
                             HorizontalAlignment="Center"
-                            FontSize="25"
+                            FontSize="60"
                             FontWeight="Bold"
                             Foreground="AliceBlue"
                             Text="{Binding Name}" />
                         <TextBlock
                             Margin="0,20,0,0"
                             HorizontalAlignment="Center"
-                            FontSize="25"
+                            FontSize="60"
                             FontStyle="Italic"
                             FontWeight="Bold"
                             Foreground="AliceBlue"
-                            Text="LQFP64" />
+                            Text="LQFP144" />
                     </StackPanel>
                 </Grid>
             </Border>

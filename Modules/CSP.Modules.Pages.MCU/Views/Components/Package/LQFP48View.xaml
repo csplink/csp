@@ -286,7 +286,7 @@
                 Width="360"
                 Height="360"
                 Background="#FF47474B"
-                ToolTip="111111">
+                ToolTip="{Binding Name}">
                 <Grid>
                     <Canvas
                         Width="50"
