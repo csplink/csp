@@ -85,7 +85,6 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         x:FieldModifier="private"
-                        Stretch="UniformToFill"
                         StretchDirection="Both" />
                     <TextBlock
                         x:Name="TextBlock"

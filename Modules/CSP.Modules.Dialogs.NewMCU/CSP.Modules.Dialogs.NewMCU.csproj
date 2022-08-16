@@ -26,6 +26,7 @@
 	<ItemGroup>
 		<Resource Include="Resources\Images\LQFP48.png" />
 		<Resource Include="Resources\Images\LQFP64.png" />
+		<Resource Include="Resources\Images\LQFP144.png" />
 	</ItemGroup>
 
 </Project>
