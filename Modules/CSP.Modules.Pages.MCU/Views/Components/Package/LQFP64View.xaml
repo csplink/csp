@@ -46,7 +46,6 @@
                     DataContext="{Binding Pins[2]}"
                     Direction="Left" />
                 <lqfp:Pin
-                    x:Name="Pin4"
                     Grid.Row="3"
                     DataContext="{Binding Pins[3]}"
                     Direction="Left" />

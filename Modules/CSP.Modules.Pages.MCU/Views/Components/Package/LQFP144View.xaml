@@ -1,0 +1,814 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.LQFP144View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lqfp="clr-namespace:CSP.Modules.Pages.MCU.Components.LQFP"
+    xmlns:panAndZoom="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
+    xmlns:prism="http://prismlibrary.com/"
+    Width="2080"
+    Height="2080"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <panAndZoom:ZoomBorder Stretch="None">
+        <DockPanel>
+            <Grid
+                Width="500"
+                Height="1080"
+                Margin="0,500,0,500"
+                DockPanel.Dock="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <lqfp:Pin
+                    Grid.Row="0"
+                    DataContext="{Binding Pins[0]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="1"
+                    DataContext="{Binding Pins[1]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="2"
+                    DataContext="{Binding Pins[2]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="3"
+                    DataContext="{Binding Pins[3]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="4"
+                    DataContext="{Binding Pins[4]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="5"
+                    DataContext="{Binding Pins[5]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="6"
+                    DataContext="{Binding Pins[6]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="7"
+                    DataContext="{Binding Pins[7]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="8"
+                    DataContext="{Binding Pins[8]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="9"
+                    DataContext="{Binding Pins[9]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="10"
+                    DataContext="{Binding Pins[10]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="11"
+                    DataContext="{Binding Pins[11]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="12"
+                    DataContext="{Binding Pins[12]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="13"
+                    DataContext="{Binding Pins[13]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="14"
+                    DataContext="{Binding Pins[14]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="15"
+                    DataContext="{Binding Pins[15]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="16"
+                    DataContext="{Binding Pins[16]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="17"
+                    DataContext="{Binding Pins[17]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="18"
+                    DataContext="{Binding Pins[18]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="19"
+                    DataContext="{Binding Pins[19]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="20"
+                    DataContext="{Binding Pins[20]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="21"
+                    DataContext="{Binding Pins[21]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="22"
+                    DataContext="{Binding Pins[22]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="23"
+                    DataContext="{Binding Pins[23]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="24"
+                    DataContext="{Binding Pins[24]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="25"
+                    DataContext="{Binding Pins[25]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="26"
+                    DataContext="{Binding Pins[26]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="27"
+                    DataContext="{Binding Pins[27]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="28"
+                    DataContext="{Binding Pins[28]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="29"
+                    DataContext="{Binding Pins[29]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="30"
+                    DataContext="{Binding Pins[30]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="31"
+                    DataContext="{Binding Pins[31]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="32"
+                    DataContext="{Binding Pins[32]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="33"
+                    DataContext="{Binding Pins[33]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="34"
+                    DataContext="{Binding Pins[34]}"
+                    Direction="Left" />
+                <lqfp:Pin
+                    Grid.Row="35"
+                    DataContext="{Binding Pins[35]}"
+                    Direction="Left" />
+            </Grid>
+            <Grid
+                Width="1080"
+                Height="500"
+                Margin="0,0,500,0"
+                DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <lqfp:Pin
+                    Grid.Column="0"
+                    DataContext="{Binding Pins[36]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="1"
+                    DataContext="{Binding Pins[37]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="2"
+                    DataContext="{Binding Pins[38]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="3"
+                    DataContext="{Binding Pins[39]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="4"
+                    DataContext="{Binding Pins[40]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="5"
+                    DataContext="{Binding Pins[41]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="6"
+                    DataContext="{Binding Pins[42]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="7"
+                    DataContext="{Binding Pins[43]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="8"
+                    DataContext="{Binding Pins[44]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="9"
+                    DataContext="{Binding Pins[45]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="10"
+                    DataContext="{Binding Pins[46]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="11"
+                    DataContext="{Binding Pins[47]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="12"
+                    DataContext="{Binding Pins[48]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="13"
+                    DataContext="{Binding Pins[49]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="14"
+                    DataContext="{Binding Pins[50]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="15"
+                    DataContext="{Binding Pins[51]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="16"
+                    DataContext="{Binding Pins[52]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="17"
+                    DataContext="{Binding Pins[53]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="18"
+                    DataContext="{Binding Pins[54]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="19"
+                    DataContext="{Binding Pins[55]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="20"
+                    DataContext="{Binding Pins[56]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="21"
+                    DataContext="{Binding Pins[57]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="22"
+                    DataContext="{Binding Pins[58]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="23"
+                    DataContext="{Binding Pins[59]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="24"
+                    DataContext="{Binding Pins[60]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="25"
+                    DataContext="{Binding Pins[61]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="26"
+                    DataContext="{Binding Pins[62]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="27"
+                    DataContext="{Binding Pins[63]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="28"
+                    DataContext="{Binding Pins[64]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="29"
+                    DataContext="{Binding Pins[65]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="30"
+                    DataContext="{Binding Pins[66]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="31"
+                    DataContext="{Binding Pins[67]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="32"
+                    DataContext="{Binding Pins[68]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="33"
+                    DataContext="{Binding Pins[69]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="34"
+                    DataContext="{Binding Pins[70]}"
+                    Direction="Bottom" />
+                <lqfp:Pin
+                    Grid.Column="35"
+                    DataContext="{Binding Pins[71]}"
+                    Direction="Bottom" />
+            </Grid>
+            <Grid
+                Width="500"
+                Height="1080"
+                Margin="0,500,0,0"
+                DockPanel.Dock="Right">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <lqfp:Pin
+                    Grid.Row="0"
+                    DataContext="{Binding Pins[72]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="1"
+                    DataContext="{Binding Pins[73]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="2"
+                    DataContext="{Binding Pins[74]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="3"
+                    DataContext="{Binding Pins[75]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="4"
+                    DataContext="{Binding Pins[76]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="5"
+                    DataContext="{Binding Pins[77]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="6"
+                    DataContext="{Binding Pins[78]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="7"
+                    DataContext="{Binding Pins[79]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="8"
+                    DataContext="{Binding Pins[80]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="9"
+                    DataContext="{Binding Pins[81]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="10"
+                    DataContext="{Binding Pins[82]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="11"
+                    DataContext="{Binding Pins[83]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="12"
+                    DataContext="{Binding Pins[84]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="13"
+                    DataContext="{Binding Pins[85]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="14"
+                    DataContext="{Binding Pins[86]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="15"
+                    DataContext="{Binding Pins[87]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="16"
+                    DataContext="{Binding Pins[88]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="17"
+                    DataContext="{Binding Pins[89]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="18"
+                    DataContext="{Binding Pins[90]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="19"
+                    DataContext="{Binding Pins[91]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="20"
+                    DataContext="{Binding Pins[92]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="21"
+                    DataContext="{Binding Pins[93]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="22"
+                    DataContext="{Binding Pins[94]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="23"
+                    DataContext="{Binding Pins[95]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="24"
+                    DataContext="{Binding Pins[96]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="25"
+                    DataContext="{Binding Pins[97]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="26"
+                    DataContext="{Binding Pins[98]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="27"
+                    DataContext="{Binding Pins[99]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="28"
+                    DataContext="{Binding Pins[100]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="29"
+                    DataContext="{Binding Pins[101]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="30"
+                    DataContext="{Binding Pins[102]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="31"
+                    DataContext="{Binding Pins[103]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="32"
+                    DataContext="{Binding Pins[104]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="33"
+                    DataContext="{Binding Pins[105]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="34"
+                    DataContext="{Binding Pins[106]}"
+                    Direction="Right" />
+                <lqfp:Pin
+                    Grid.Row="35"
+                    DataContext="{Binding Pins[107]}"
+                    Direction="Right" />
+            </Grid>
+            <Grid
+                Width="1080"
+                Height="500"
+                Margin="0,0,0,0"
+                DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <lqfp:Pin
+                    Grid.Column="0"
+                    DataContext="{Binding Pins[143]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="1"
+                    DataContext="{Binding Pins[142]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="2"
+                    DataContext="{Binding Pins[141]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="3"
+                    DataContext="{Binding Pins[140]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="4"
+                    DataContext="{Binding Pins[139]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="5"
+                    DataContext="{Binding Pins[138]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="6"
+                    DataContext="{Binding Pins[137]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="7"
+                    DataContext="{Binding Pins[136]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="8"
+                    DataContext="{Binding Pins[135]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="9"
+                    DataContext="{Binding Pins[134]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="10"
+                    DataContext="{Binding Pins[133]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="11"
+                    DataContext="{Binding Pins[132]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="12"
+                    DataContext="{Binding Pins[131]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="13"
+                    DataContext="{Binding Pins[130]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="14"
+                    DataContext="{Binding Pins[129]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="15"
+                    DataContext="{Binding Pins[128]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="16"
+                    DataContext="{Binding Pins[127]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="17"
+                    DataContext="{Binding Pins[126]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="18"
+                    DataContext="{Binding Pins[125]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="19"
+                    DataContext="{Binding Pins[124]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="20"
+                    DataContext="{Binding Pins[123]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="21"
+                    DataContext="{Binding Pins[122]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="22"
+                    DataContext="{Binding Pins[121]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="23"
+                    DataContext="{Binding Pins[120]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="24"
+                    DataContext="{Binding Pins[119]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="25"
+                    DataContext="{Binding Pins[118]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="26"
+                    DataContext="{Binding Pins[117]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="27"
+                    DataContext="{Binding Pins[116]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="28"
+                    DataContext="{Binding Pins[115]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="29"
+                    DataContext="{Binding Pins[114]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="30"
+                    DataContext="{Binding Pins[113]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="31"
+                    DataContext="{Binding Pins[112]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="32"
+                    DataContext="{Binding Pins[111]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="33"
+                    DataContext="{Binding Pins[110]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="34"
+                    DataContext="{Binding Pins[109]}"
+                    Direction="Top" />
+                <lqfp:Pin
+                    Grid.Column="35"
+                    DataContext="{Binding Pins[108]}"
+                    Direction="Top" />
+            </Grid>
+            <Border
+                Width="1080"
+                Height="1080"
+                Background="#FF47474B"
+                ToolTip="111111">
+                <Grid>
+                    <Canvas
+                        Width="50"
+                        Height="50"
+                        Margin="20,20,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
+                        <Ellipse
+                            Width="25"
+                            Height="25"
+                            Fill="White" />
+                    </Canvas>
+                    <StackPanel
+                        Margin="20,20,20,20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="25"
+                            FontStyle="Italic"
+                            FontWeight="Bold"
+                            Foreground="AliceBlue"
+                            Text="{Binding Company}" />
+                        <TextBlock
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="25"
+                            FontWeight="Bold"
+                            Foreground="AliceBlue"
+                            Text="{Binding Name}" />
+                        <TextBlock
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="25"
+                            FontStyle="Italic"
+                            FontWeight="Bold"
+                            Foreground="AliceBlue"
+                            Text="LQFP64" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DockPanel>
+    </panAndZoom:ZoomBorder>
+</UserControl>

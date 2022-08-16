@@ -25,6 +25,7 @@ namespace CSP.Modules.Pages.MCU
             RegionUtil.RegisterForNavigation<GPIOView>(containerRegistry, "Page.MCU.PinConfig.MCUConfig.GPIO");
             RegionUtil.RegisterForNavigation<LQFP48View>(containerRegistry, "Page.MCU.Package.LQFP48");
             RegionUtil.RegisterForNavigation<LQFP64View>(containerRegistry, "Page.MCU.Package.LQFP64");
+            RegionUtil.RegisterForNavigation<LQFP144View>(containerRegistry, "Page.MCU.Package.LQFP144");
         }
     }
 }
