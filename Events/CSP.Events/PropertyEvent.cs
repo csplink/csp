@@ -1,6 +1,5 @@
 ﻿using Prism.Events;
 using Prism.Mvvm;
-using Syncfusion.Windows.Controls.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -176,12 +175,7 @@ namespace CSP.Events
         #endregion Override members
     }
 
-    public class PropertyEvent : PubSubEvent<PropertyEvent.Model>
+    public class PropertyEvent : PubSubEvent<object>
     {
-        public class Model : BindableBase
-        {
-            public object Data { get; set; }
-            public List<string> ShowList { get; } = new();
-        }
     }
 }

@@ -301,12 +301,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 
         private void UpdateProperty()
         {
-            var p = new PropertyEvent.Model
-            {
-                Data = Pin.GPIOProperty
-            };
-
-            _eventAggregator.GetEvent<PropertyEvent>().Publish(p);
+            _eventAggregator.GetEvent<PropertyEvent>().Publish(Pin.GPIOProperty);
         }
     }
 }

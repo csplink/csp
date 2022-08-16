@@ -22,22 +22,9 @@ namespace CSP.Apps.Dev.Views.Windows
             Property.CustomEditorCollection.Add(editor);
         }
 
-        private void OnPropertyReceive(PropertyEvent.Model model)
+        private void OnPropertyReceive(object property)
         {
-            if (model.ShowList != null)
-            {
-                Property.HidePropertiesCollection.Clear();
-                var properties = model.Data.GetType().GetProperties();
-                foreach (var info in properties)
-                {
-                    if (!model.ShowList.Contains(info.Name))
-                    {
-                        Property.HidePropertiesCollection.Add(info.Name);
-                    }
-                }
-            }
-
-            Property.SelectedObject = model.Data;
+            Property.SelectedObject = property;
         }
     }
 }
