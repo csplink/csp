@@ -56,7 +56,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                 TextBlockIntroduction.Text = "NULL";
                 TextBlockPrice.Text = "NULL";
                 TextBlock.Text = "NULL";
-                image.Source = null;
+                Image.Source = null;
             }
 
             if (e.NewValue is not MCUModel value)
@@ -75,7 +75,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             TextBlock.Text = value.Package;
 
             var path = new Uri(@"pack://application:,,,/CSP.Modules.Dialogs.NewMCU;component/Resources/Images/" + value.Package + @".png");
-            image.Source = new BitmapImage(path);
+            Image.Source = new BitmapImage(path);
         }
     }
 }

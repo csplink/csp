@@ -78,7 +78,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Image
-                        x:Name="image"
+                        x:Name="Image"
                         Grid.Column="0"
                         MaxWidth="80"
                         MaxHeight="80"
