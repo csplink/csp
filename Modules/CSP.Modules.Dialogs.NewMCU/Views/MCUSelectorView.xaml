@@ -13,7 +13,11 @@
     d:DesignWidth="1920"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d av">
-    <syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy, Mode=TwoWay}">
+    <syncfusion:SfBusyIndicator
+        AnimationType="ArrowTrack"
+        IsBusy="{Binding IsBusy, Mode=TwoWay}"
+        ViewboxHeight="100"
+        ViewboxWidth="100">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
