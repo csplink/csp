@@ -13,113 +13,115 @@
     d:DesignWidth="1920"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d av">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="5*" />
-            </Grid.ColumnDefinitions>
-            <components:MCUFilterBox
-                x:Name="MCUFilterBox"
-                Grid.Column="0"
-                x:FieldModifier="private"
-                Repository="{Binding Repository}" />
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="5" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <syncfusion:TabControlExt
-                        Margin="0,20,0,0"
-                        IsLazyLoaded="True"
-                        TabListContextMenuOptions="None">
-                        <syncfusion:TabItemExt
-                            Width="200"
-                            Height="30"
-                            CanClose="False">
-                            <syncfusion:TabItemExt.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="特性" />
-                                </StackPanel>
-                            </syncfusion:TabItemExt.Header>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="100" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <components:InfoBox Grid.Row="0" MCU="{Binding MCU}" />
-                                <mdXaml:MarkdownScrollViewer
-                                    Grid.Row="1"
-                                    Background="{x:Null}"
-                                    Markdown="{Binding MCU.Illustrate}" />
-                            </Grid>
-                        </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt
-                            Width="200"
-                            Height="30"
-                            CanClose="False">
-                            <syncfusion:TabItemExt.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="框图" />
-                                </StackPanel>
-                            </syncfusion:TabItemExt.Header>
-                        </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt
-                            Width="200"
-                            Height="30"
-                            CanClose="False">
-                            <syncfusion:TabItemExt.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="文档" />
-                                </StackPanel>
-                            </syncfusion:TabItemExt.Header>
-                        </syncfusion:TabItemExt>
-                        <syncfusion:TabItemExt
-                            Width="200"
-                            Height="30"
-                            CanClose="False">
-                            <syncfusion:TabItemExt.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="购买" />
-                                </StackPanel>
-                            </syncfusion:TabItemExt.Header>
-                        </syncfusion:TabItemExt>
-                    </syncfusion:TabControlExt>
+    <syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy, Mode=TwoWay}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <components:MCUFilterBox
+                    x:Name="MCUFilterBox"
+                    Grid.Column="0"
+                    x:FieldModifier="private"
+                    Repository="{Binding Repository}" />
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="5" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <syncfusion:TabControlExt
+                            Margin="0,20,0,0"
+                            IsLazyLoaded="True"
+                            TabListContextMenuOptions="None">
+                            <syncfusion:TabItemExt
+                                Width="200"
+                                Height="30"
+                                CanClose="False">
+                                <syncfusion:TabItemExt.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Text="特性" />
+                                    </StackPanel>
+                                </syncfusion:TabItemExt.Header>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="100" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <components:InfoBox Grid.Row="0" MCU="{Binding MCU}" />
+                                    <mdXaml:MarkdownScrollViewer
+                                        Grid.Row="1"
+                                        Background="{x:Null}"
+                                        Markdown="{Binding MCU.Illustrate}" />
+                                </Grid>
+                            </syncfusion:TabItemExt>
+                            <syncfusion:TabItemExt
+                                Width="200"
+                                Height="30"
+                                CanClose="False">
+                                <syncfusion:TabItemExt.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Text="框图" />
+                                    </StackPanel>
+                                </syncfusion:TabItemExt.Header>
+                            </syncfusion:TabItemExt>
+                            <syncfusion:TabItemExt
+                                Width="200"
+                                Height="30"
+                                CanClose="False">
+                                <syncfusion:TabItemExt.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Text="文档" />
+                                    </StackPanel>
+                                </syncfusion:TabItemExt.Header>
+                            </syncfusion:TabItemExt>
+                            <syncfusion:TabItemExt
+                                Width="200"
+                                Height="30"
+                                CanClose="False">
+                                <syncfusion:TabItemExt.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Text="购买" />
+                                    </StackPanel>
+                                </syncfusion:TabItemExt.Header>
+                            </syncfusion:TabItemExt>
+                        </syncfusion:TabControlExt>
+                    </Grid>
+                    <GridSplitter
+                        Grid.Row="1"
+                        Height="5"
+                        Margin="0,5,0,5"
+                        HorizontalAlignment="Stretch" />
+                    <components:MCUBox
+                        Grid.Row="2"
+                        CompanyFilter="{Binding Path=CompanyFilter, ElementName=MCUFilterBox}"
+                        CoreFilter="{Binding Path=CoreFilter, ElementName=MCUFilterBox}"
+                        LineFilter="{Binding Path=LineFilter, ElementName=MCUFilterBox}"
+                        PackageFilter="{Binding Path=PackageFilter, ElementName=MCUFilterBox}"
+                        Repository="{Binding Repository}"
+                        SearchText="{Binding Path=SearchText, ElementName=MCUFilterBox}"
+                        SelectedMCU="{Binding SelectedMCU}"
+                        SeriesFilter="{Binding Path=SeriesFilter, ElementName=MCUFilterBox}" />
                 </Grid>
-                <GridSplitter
-                    Grid.Row="1"
-                    Height="5"
-                    Margin="0,5,0,5"
-                    HorizontalAlignment="Stretch" />
-                <components:MCUBox
-                    Grid.Row="2"
-                    CompanyFilter="{Binding Path=CompanyFilter, ElementName=MCUFilterBox}"
-                    CoreFilter="{Binding Path=CoreFilter, ElementName=MCUFilterBox}"
-                    LineFilter="{Binding Path=LineFilter, ElementName=MCUFilterBox}"
-                    PackageFilter="{Binding Path=PackageFilter, ElementName=MCUFilterBox}"
-                    Repository="{Binding Repository}"
-                    SearchText="{Binding Path=SearchText, ElementName=MCUFilterBox}"
-                    SelectedMCU="{Binding SelectedMCU}"
-                    SeriesFilter="{Binding Path=SeriesFilter, ElementName=MCUFilterBox}" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel
+                    Margin="0,10,10,10"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Command="{Binding OnNew}"
+                        Content="新建" />
+                </StackPanel>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
-            <StackPanel
-                Margin="0,10,10,10"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="30"
-                    Command="{Binding OnNew}"
-                    Content="新建" />
-            </StackPanel>
-        </Grid>
-    </Grid>
+    </syncfusion:SfBusyIndicator>
 </UserControl>

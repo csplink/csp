@@ -14,10 +14,10 @@ namespace CSP.Database
         private readonly Dictionary<string, MapModel> _maps = new();
         private IPModel _ip;
         private MCUModel _mcu;
+        private RepositoryModel _repository;
 
         private MCUInstance()
         {
-            Repository = RepositoryModel.Load($"{IniFile.PathMCUDb}/Repository.xml");
         }
 
         public static MCUInstance Instance => Lazy.Value;
@@ -44,7 +44,8 @@ namespace CSP.Database
         }
 
         public string Name { get; private set; }
-        public RepositoryModel Repository { get; }
+
+        public RepositoryModel Repository => _repository ??= RepositoryModel.Load($"{IniFile.PathMCUDb}/Repository.xml");
 
         public MapModel GetMap(string name)
         {

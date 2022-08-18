@@ -54,10 +54,13 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         private RepositoryModel _repository;
         private RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel _selectedMCU;
         private Style _markdownStyle = MdXaml.MarkdownStyle.Sasabune;
+        private bool _isBusy;
 
         public MCUSelectorViewModel()
         {
+            IsBusy = true;
             _repository = MCUHelper.Repository;
+            IsBusy = false;
         }
 
         public MCUModel MCU
@@ -70,6 +73,12 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         {
             get => _markdownStyle;
             set => SetProperty(ref _markdownStyle, value);
+        }
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
         }
 
         public DelegateCommand OnNew
