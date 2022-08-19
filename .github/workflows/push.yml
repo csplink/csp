@@ -4,16 +4,16 @@ name: push verification
 on: push
 env:
   solution: csp.sln
-  buildConfiguration: 'Release'
+  buildConfiguration: "Release"
 
 jobs:
-  build:
+  build_and_test:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: build
-      uses: ./.github/actions/build
-      timeout-minutes: 20
-      with:
-        solution: ${{ env.solution }}
-        buildConfiguration: ${{ env.buildConfiguration }}
+      - uses: actions/checkout@v3
+      - name: build_and_test
+        uses: ./.github/actions/build_and_test
+        timeout-minutes: 20
+        with:
+          solution: ${{ env.solution }}
+          buildConfiguration: ${{ env.buildConfiguration }}

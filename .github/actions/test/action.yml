@@ -1,5 +1,5 @@
-name: "build"
-description: "build the solution"
+name: "test"
+description: "test the solution"
 inputs:
   solution:
     description: "The relative path to the solution file"
@@ -23,10 +23,4 @@ runs:
 
     - name: build
       shell: pwsh
-      run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --no-restore -p:Platform="Any CPU" -p:TreatWarningsAsErrors=True
-
-    - name: upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: csp-${{ github.run_number }}
-        path: ${{ github.workspace }}/Apps/CSP.Apps.Dev/bin/${{ inputs.buildConfiguration }}
+      run: dotnet test ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --verbosity normal --blame-crash

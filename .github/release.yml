@@ -5,11 +5,10 @@ changelog:
     labels:
       - ignore-for-release
   categories:
-    - title: Key Changes 
+    - title: Key Changes
       labels:
         - release notes
-    - title: Breaking Changes 
+    - title: Breaking Changes
       labels:
         - breaking change
         - visual breaking change
-     
