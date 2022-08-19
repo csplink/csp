@@ -4,7 +4,7 @@ name: push verification
 on: push
 env:
   solution: csp.sln
-  buildConfiguration: "Release"
+  buildConfiguration: Release
 
 jobs:
   build_and_test:

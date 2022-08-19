@@ -16,6 +16,12 @@ runs:
         dotnet-version: |
           6.x
 
+    - name: download repository
+      uses: actions/checkout@v3
+      with:
+        repository: xqyjlj/csp_hal_apm32f1
+        path: Apps/.repository/csp_hal_apm32f1
+
     - name: restore dependencies
       shell: pwsh
       run: dotnet restore ${{ inputs.solution }}
@@ -32,4 +38,4 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: csp-${{ github.run_number }}
-        path: ${{ github.workspace }}/Apps/CSP.Apps.Dev/bin/${{ inputs.buildConfiguration }}
+        path: ${{ github.workspace }}/Apps/CSP.Apps.Dev/bin/${{ inputs.buildConfiguration }}/net6.0-windows
