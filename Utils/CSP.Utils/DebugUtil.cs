@@ -11,7 +11,7 @@ namespace CSP.Utils
 #else
             if(!condition)
             {
-                Log.Error(exception, message);
+                Serilog.Log.Error(exception, message);
             }
 #endif
         }
