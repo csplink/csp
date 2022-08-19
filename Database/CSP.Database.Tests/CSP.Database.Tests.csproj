@@ -25,4 +25,8 @@
 		<ProjectReference Include="..\CSP.Database\CSP.Database.csproj" />
 	</ItemGroup>
 
+	<Target Name="EchoSolutionDir" BeforeTargets="PrepareForBuild">
+		<Exec Command="echo $(SolutionDir)&gt; $(OutputPath)\SolutionDir.txt" />
+	</Target>
+
 </Project>
