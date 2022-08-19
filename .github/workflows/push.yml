@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/checkout@v3
         with:
-          repository: "https://github.com/xqyjlj/csp_mcu_db"
+          repository: xqyjlj/csp_mcu_db
       - name: build_and_test
         uses: ./.github/actions/build_and_test
         timeout-minutes: 20
