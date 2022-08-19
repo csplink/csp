@@ -18,17 +18,13 @@ runs:
           5.x
           6.x
 
-    - name: Restore dependencies
+    - name: list source
       shell: pwsh
-      run: dotnet restore ${{ inputs.solution }}
+      run: dotnet nuget list source
 
-    - name: Build
+    - name: build
       shell: pwsh
       run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} -p:Platform="Any CPU"
-
-    - name: Test
-      shell: pwsh
-      run: dotnet test ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --verbosity normal
 
     - name: upload artifact
       uses: actions/upload-artifact@v2
