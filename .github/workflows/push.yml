@@ -1,6 +1,6 @@
 # .github/workflows/push.yml
 
-name: Pull Request Verification
+name: push verification
 on: push
 env:
   solution: csp.sln
@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: build
       uses: ./.github/actions/build
       timeout-minutes: 20
