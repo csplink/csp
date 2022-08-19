@@ -30,7 +30,11 @@ runs:
       shell: pwsh
       run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --no-restore -p:Platform="Any CPU" -p:TreatWarningsAsErrors=True
 
-    - name: build
+    - name: msbuild
+      shell: pwsh
+      run: dotnet msbuild -property:Configuration=${{ inputs.buildConfiguration }}
+
+    - name: test
       shell: pwsh
       run: dotnet test ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --no-build --verbosity normal --blame-crash
 

@@ -20,6 +20,10 @@ runs:
       shell: pwsh
       run: dotnet restore ${{ inputs.solution }}
 
-    - name: build
+    - name: msbuild
+      shell: pwsh
+      run: dotnet msbuild -property:Configuration=${{ inputs.buildConfiguration }}
+
+    - name: test
       shell: pwsh
       run: dotnet test ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --verbosity normal --blame-crash

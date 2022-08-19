@@ -24,6 +24,10 @@ runs:
       shell: pwsh
       run: dotnet build ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --no-restore -p:Platform="Any CPU" -p:TreatWarningsAsErrors=True
 
+    - name: msbuild
+      shell: pwsh
+      run: dotnet msbuild -property:Configuration=${{ inputs.buildConfiguration }}
+
     - name: upload artifact
       uses: actions/upload-artifact@v2
       with:
