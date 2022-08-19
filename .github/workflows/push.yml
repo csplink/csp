@@ -1,0 +1,19 @@
+# .github/workflows/push.yml
+
+name: Pull Request Verification
+on: push
+env:
+  solution: csp.sln
+  buildConfiguration: 'Release'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: build
+      uses: ./.github/actions/build
+      timeout-minutes: 20
+      with:
+        solution: ${{ env.solution }}
+        buildConfiguration: ${{ env.buildConfiguration }}
