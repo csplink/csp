@@ -70,16 +70,22 @@
                                             <Button
                                                 Margin="10,5"
                                                 Padding="5"
+                                                Command="{Binding OnOpenUrl}"
+                                                CommandParameter="{Binding MCU.CompanyUrl}"
                                                 Content="{Binding MCU.Company}"
                                                 FontSize="14" />
                                             <Button
                                                 Margin="10,5"
                                                 Padding="5"
+                                                Command="{Binding OnOpenUrl}"
+                                                CommandParameter="{Binding MCU.Url}"
                                                 Content="{Binding MCU.Name}"
                                                 FontSize="14" />
                                             <Button
                                                 Margin="10,5"
                                                 Padding="5"
+                                                Command="{Binding OnOpenUrl}"
+                                                CommandParameter="{Binding MCU.RepositoryUrl}"
                                                 Content="仓库地址"
                                                 FontSize="14" />
                                             <TextBlock

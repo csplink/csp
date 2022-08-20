@@ -9,6 +9,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -178,6 +179,20 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
                     var path = new Uri(@"pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/csp-logo.ico");
                     PackageBitmapImage = new BitmapImage(path);
                 }
+            }
+        }
+
+        public DelegateCommand<object> OnOpenUrl
+        {
+            get
+            {
+                return new DelegateCommand<object>((obj) =>
+                {
+                    if (obj is not string url)
+                        return;
+
+                    Util.OpenUrl(url);
+                });
             }
         }
     }
