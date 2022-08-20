@@ -1,0 +1,29 @@
+name: "test"
+description: "test the solution"
+inputs:
+  solution:
+    description: "The relative path to the solution file"
+    required: true
+  buildConfiguration:
+    description: "The configuration to use when building"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: |
+          6.x
+
+    - name: restore dependencies
+      shell: pwsh
+      run: dotnet restore ${{ inputs.solution }}
+
+    - name: msbuild
+      shell: pwsh
+      run: dotnet msbuild -property:Configuration=${{ inputs.buildConfiguration }}
+
+    - name: test
+      shell: pwsh
+      run: dotnet test ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --verbosity normal --blame-crash

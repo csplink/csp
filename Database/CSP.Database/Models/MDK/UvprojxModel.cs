@@ -921,6 +921,8 @@ namespace CSP.Database.Models.MDK
 
                 public PackageModel package { get; set; }
 
+                [XmlArray("targetInfos")]
+                [XmlArrayItem("targetInfo")]
                 public TargetInfoModel[] targetInfos { get; set; }
 
                 public class PackageModel

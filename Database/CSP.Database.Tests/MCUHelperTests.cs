@@ -13,6 +13,15 @@ namespace CSP.Database.Tests
         public MCUHelperTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
+
+            var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
+#if DEBUG
+            IniFile.PathMCUDb = $"{solutionDir}/../csp_mcu_db";
+            IniFile.PathRepository = $"{solutionDir}/..";
+#else
+            IniFile.PathMCUDb = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/Release/net6.0-windows/Database/MCU";
+            IniFile.PathRepository = $"{solutionDir}/.repository";
+#endif
         }
 
         public void Dispose()
@@ -23,8 +32,6 @@ namespace CSP.Database.Tests
         [Fact]
         public void Test()
         {
-            var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
-            IniFile.PathMCUDb = $"{solutionDir}.buildResources/Database/MCU";
             MCUHelper.LoadMcu("STMicroelectronics", "STM32F030C6Tx");
 
             Assert.False(MCUHelper.Repository == null);
@@ -36,9 +43,6 @@ namespace CSP.Database.Tests
         [Fact]
         public void GenerateMapTest()
         {
-            var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
-            IniFile.PathMCUDb = $"{solutionDir}/../csp_mcu_db";
-            IniFile.PathRepository = $"{solutionDir}/..";
             MCUHelper.GenerateMap($"{IniFile.PathRepository}/csp_hal_apm32f1/drivers/csp_hal/inc/chal/gpio.h", @"./GPIO.xml");
         }
     }
