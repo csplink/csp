@@ -1,7 +1,8 @@
-# .github/workflows/pull_request.yml
+# .github/workflows/push_and_pr.yml
 
-name: pull request verification
-on: pull_request
+name: push and pull_request verification
+on: [push, pull_request]
+
 env:
   solution: csp.sln
   buildConfiguration: Release
