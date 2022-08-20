@@ -8,7 +8,7 @@ namespace CSP.Apps.Dev.Views
         public MainView()
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo("zh-Hans");
-            ThemesUtil.SetThemes(this, "MaterialLight");
+            ThemesUtil.SetThemes(this, "Office2019Colorful");
             InitializeComponent();
         }
 

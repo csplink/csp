@@ -21,8 +21,6 @@
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.Themes.MaterialDark.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.Themes.MaterialLight.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
 	</ItemGroup>
 

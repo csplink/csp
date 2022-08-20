@@ -7,7 +7,7 @@ namespace CSP.Apps.Dev.Views.Windows
     {
         public DialogWindowView()
         {
-            ThemesUtil.SetThemes(this, "MaterialLight");
+            ThemesUtil.SetThemes(this, "Office2019Colorful");
 
             InitializeComponent();
         }
