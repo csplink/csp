@@ -1,12 +1,14 @@
 name: Bug汇报
-description: 汇报一个BUG
+description: 汇报一个 BUG
 labels: ["bug", "evaluation required"]
+title: '[Bug]: '
 body:
   - type: markdown
     attributes:
       value: |
-        感谢您花时间填写此Bug报告！
-        为了方便进行Bug定位，我们需要知道如何重现该Bug。
+        感谢您花时间填写此 Bug 报告！
+        为了方便进行 Bug 定位，我们需要知道如何重现该 Bug。
+
   - type: textarea
     id: bug-explanation
     attributes:
@@ -20,11 +22,21 @@ body:
       placeholder: 在此键入...
     validations:
       required: true
+
   - type: input
     id: version
     attributes:
       label: 版本
       description: 您运行的是哪个版本？
       placeholder: "示例: 1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: system
+    attributes:
+      label: 系统
+      description: 您运行的是哪个系统？
+      placeholder: "示例: windows-10 x64"
     validations:
       required: true
