@@ -10,6 +10,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace CSP.Modules.Dialogs.NewMCU.ViewModels
 {
@@ -55,6 +56,8 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         private RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel _selectedMCU;
         private Style _markdownStyle = MdXaml.MarkdownStyle.Sasabune;
         private bool _isBusy;
+        private BitmapImage _packageBitmapImage;
+        private Visibility _tabControlVisibility = Visibility.Collapsed;
 
         public MCUSelectorViewModel()
         {
@@ -66,7 +69,11 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         public MCUModel MCU
         {
             get => _mcu;
-            set => SetProperty(ref _mcu, value);
+            set
+            {
+                SetProperty(ref _mcu, value);
+                TabControlVisibility = value == null ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
 
         public Style MarkdownStyle
@@ -79,6 +86,18 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
+        }
+
+        public BitmapImage PackageBitmapImage
+        {
+            get => _packageBitmapImage;
+            set => SetProperty(ref _packageBitmapImage, value);
+        }
+
+        public Visibility TabControlVisibility
+        {
+            get => _tabControlVisibility;
+            set => SetProperty(ref _tabControlVisibility, value);
         }
 
         public DelegateCommand OnNew
@@ -147,8 +166,18 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
                 }
 
                 MCUHelper.LoadMcu(value.Company.ToLower(), value.Name.ToLower());
-
                 MCU = MCUHelper.MCU;
+
+                try
+                {
+                    var path = new Uri(@"pack://application:,,,/CSP.Modules.Dialogs.NewMCU;component/Resources/Images/" + value.Package + @".png");
+                    PackageBitmapImage = new BitmapImage(path);
+                }
+                catch
+                {
+                    var path = new Uri(@"pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/csp-logo.ico");
+                    PackageBitmapImage = new BitmapImage(path);
+                }
             }
         }
     }
