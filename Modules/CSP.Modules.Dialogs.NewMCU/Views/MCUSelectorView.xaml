@@ -85,14 +85,27 @@
                                             <TextBlock
                                                 Margin="10,5"
                                                 FontSize="14"
-                                                Foreground="Black"
                                                 Text="{Binding MCU.Price, StringFormat=价格：{0:F4}(CNY) /10kU}" />
                                         </StackPanel>
                                     </ScrollViewer>
-                                    <mdXaml:MarkdownScrollViewer
-                                        Grid.Column="1"
-                                        Background="{x:Null}"
-                                        Markdown="{Binding MCU.Illustrate}" />
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock
+                                            Margin="10,5"
+                                            FontSize="20"
+                                            FontWeight="Bold"
+                                            TextWrapping="Wrap">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}: {1}">
+                                                    <Binding Path="MCU.Name" />
+                                                    <Binding Path="MCU.Introduction" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <mdXaml:MarkdownScrollViewer
+                                            Margin="10,5"
+                                            Background="{x:Null}"
+                                            Markdown="{Binding MCU.Illustrate}" />
+                                    </StackPanel>
                                 </Grid>
                             </syncfusion:TabItemExt>
                             <syncfusion:TabItemExt
