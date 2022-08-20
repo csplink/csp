@@ -1,6 +1,6 @@
-# .github/workflows/push.yml
+# .github/workflows/pull_request.yml
 
-name: push verification
+name: pull request verification
 on: pull_request
 env:
   solution: csp.sln
