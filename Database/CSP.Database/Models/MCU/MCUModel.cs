@@ -78,6 +78,12 @@ namespace CSP.Database.Models.MCU
 
         public string Url { get; set; }
 
+        public string CompanyUrl { get; set; }
+
+        public string RepositoryUrl { get; set; }
+
+        public HALModel HAL { get; set; }
+
         internal static MCUModel Load(string path)
         {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
@@ -252,6 +258,15 @@ namespace CSP.Database.Models.MCU
                 [XmlAttribute]
                 public string Value { get; set; }
             }
+        }
+
+        public class HALModel
+        {
+            [XmlAttribute]
+            public string Name { get; set; }
+
+            [XmlAttribute]
+            public string Version { get; set; }
         }
     }
 }
