@@ -6,7 +6,12 @@
 		<UseWPF>true</UseWPF>
 		<Authors>xqyjlj</Authors>
 		<Copyright>copyright © 2021-2022 xqyjlj&lt;xqyjlj@126.com&gt; </Copyright>
+		<ApplicationIcon>Resources\Images\csp-logo.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<Resource Include="Resources\Images\csp-logo.ico" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
