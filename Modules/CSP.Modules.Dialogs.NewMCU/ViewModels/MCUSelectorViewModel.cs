@@ -1,6 +1,7 @@
 ﻿using CSP.Database;
 using CSP.Database.Models.MCU;
 using CSP.Models.Interfaces;
+using CSP.Modules.Dialogs.NewMCU.Models;
 using CSP.Services;
 using CSP.Services.Models;
 using CSP.Utils;
@@ -9,7 +10,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -59,6 +60,12 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
         private bool _isBusy;
         private BitmapImage _packageBitmapImage;
         private Visibility _tabControlVisibility = Visibility.Collapsed;
+        private ObservableCollection<DocumentModel> _documents = new();
+        private readonly DocumentModel _datasheetsDocumentNode = new("数据手册");
+        private readonly DocumentModel _referencesDocumentNode = new("参考手册");
+        private readonly DocumentModel _programsDocumentNode = new("编程手册");
+        private readonly DocumentModel _errataDocumentNode = new("勘误手册");
+        private readonly DocumentModel _applicationsDocumentNode = new("应用手册");
 
         public MCUSelectorViewModel()
         {
@@ -179,6 +186,8 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
                     var path = new Uri(@"pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/csp-logo.ico");
                     PackageBitmapImage = new BitmapImage(path);
                 }
+
+                LoadDocuments();
             }
         }
 
@@ -194,6 +203,44 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
                     Util.OpenUrl(url);
                 });
             }
+        }
+
+        public ObservableCollection<DocumentModel> Documents
+        {
+            get => _documents;
+            set => SetProperty(ref _documents, value);
+        }
+
+        private void LoadDocuments()
+        {
+            Documents.Clear();
+            _datasheetsDocumentNode.Children.Clear();
+            _referencesDocumentNode.Children.Clear();
+            _programsDocumentNode.Children.Clear();
+            _errataDocumentNode.Children.Clear();
+            _applicationsDocumentNode.Children.Clear();
+
+            if (MCU.DataSheets != null)
+                foreach (var item in MCU.DataSheets)
+                    _datasheetsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+            if (MCU.References != null)
+                foreach (var item in MCU.References)
+                    _referencesDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+            if (MCU.Programs != null)
+                foreach (var item in MCU.Programs)
+                    _programsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+            if (MCU.Errata != null)
+                foreach (var item in MCU.Errata)
+                    _errataDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+            if (MCU.Applications != null)
+                foreach (var item in MCU.Applications)
+                    _applicationsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+
+            Documents.Add(_datasheetsDocumentNode);
+            Documents.Add(_referencesDocumentNode);
+            Documents.Add(_programsDocumentNode);
+            Documents.Add(_errataDocumentNode);
+            Documents.Add(_applicationsDocumentNode);
         }
     }
 }
