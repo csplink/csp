@@ -12,8 +12,8 @@
     d:DesignWidth="500"
     prism:ViewModelLocator.AutoWireViewModel="True"
     syncfusion:DockingManager.DesiredWidthInDockedMode="250"
-    syncfusion:DockingManager.Header="解决方案资源管理器"
-    syncfusion:DockingManager.SideInDockedMode="Right"
+    syncfusion:DockingManager.Header="资源管理器"
+    syncfusion:DockingManager.SideInDockedMode="Left"
     syncfusion:DockingManager.State="Dock"
     mc:Ignorable="d">
 

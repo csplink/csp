@@ -5,14 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:sc="clr-namespace:CSP.Components;assembly=CSP.Components"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     x:Name="PropertyDockWindow"
     d:DesignHeight="1000"
     d:DesignWidth="500"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    syncfusion:DockingManager.DesiredWidthInDockedMode="250"
     syncfusion:DockingManager.Header="属性"
-    syncfusion:DockingManager.SideInDockedMode="Bottom"
-    syncfusion:DockingManager.TargetNameInDockedMode="SolutionExplorerDockWindow"
+    syncfusion:DockingManager.SideInDockedMode="Right"
+    syncfusion:DockingManager.State="Dock"
     mc:Ignorable="d">
     <Grid>
         <syncfusion:PropertyGrid
