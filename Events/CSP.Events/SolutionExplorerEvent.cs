@@ -55,7 +55,7 @@ namespace CSP.Events
                     };
                 }
 
-                _name = info.Name;
+                Name = info.Name;
             }
 
             public ObservableCollection<Model> Children

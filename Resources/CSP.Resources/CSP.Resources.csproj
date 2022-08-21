@@ -42,6 +42,7 @@
 		<Resource Include="Icon\Warning.png" />
 		<Resource Include="Icon\Xml.png" />
 		<Resource Include="Icon\YellowFolder.png" />
+		<Resource Include="Icon\Pdf.png" />
 	</ItemGroup>
 
 	<ItemGroup>

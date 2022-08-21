@@ -136,6 +136,38 @@
                                         <TextBlock VerticalAlignment="Center" Text="文档" />
                                     </StackPanel>
                                 </syncfusion:TabItemExt.Header>
+                                <Grid>
+                                    <syncfusion:SfTreeView
+                                        x:Name="TreeView"
+                                        AutoExpandMode="AllNodes"
+                                        BorderThickness="1"
+                                        ChildPropertyName="Children"
+                                        FullRowSelect="True"
+                                        ItemsSource="{Binding Documents}"
+                                        SelectionChanged="OnSelectionChanged">
+                                        <syncfusion:SfTreeView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="20" />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image
+                                                        Grid.Column="0"
+                                                        Width="16"
+                                                        Height="16"
+                                                        VerticalAlignment="Center"
+                                                        Source="{Binding Image}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Margin="5,0,0,0"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding Name}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </syncfusion:SfTreeView.ItemTemplate>
+                                    </syncfusion:SfTreeView>
+                                </Grid>
                             </syncfusion:TabItemExt>
                             <syncfusion:TabItemExt
                                 Width="200"

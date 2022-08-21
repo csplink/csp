@@ -111,6 +111,11 @@ namespace CSP.Resources
             get => Instance.New;
         }
 
+        public static BitmapImage Pdf
+        {
+            get => Instance.Pdf;
+        }
+
         public static BitmapImage PlayOne
         {
             get => Instance.PlayOne;
@@ -155,5 +160,6 @@ namespace CSP.Resources
         {
             get => Instance.YellowFolder;
         }
+
     }
 }
