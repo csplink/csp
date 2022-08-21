@@ -27,7 +27,6 @@
             <Button
                 x:Name="ButtonPin"
                 Margin="-2,1.5,1.5,1.5"
-                Padding="0,4.61"
                 x:FieldModifier="private"
                 Background="#b9c4ca"
                 Click="OnPinNameClick"
