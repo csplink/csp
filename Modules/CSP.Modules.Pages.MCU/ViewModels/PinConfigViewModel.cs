@@ -41,10 +41,19 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            MCUHelper.LoadMcu("STMicroelectronics", "STM32F401RETx");
+            MCUHelper.LoadMcu("Geehy", "APM32F103ZET6");
 
             AddCustomEditor();
             AddModules();
+            try
+            {
+                var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{MCUHelper.MCU.Package}View");
+                RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.PinConfig.MCUView", type);
+            }
+            catch
+            {
+                MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
+            }
 
             _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
         }

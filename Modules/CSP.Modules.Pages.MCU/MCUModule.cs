@@ -15,7 +15,6 @@ namespace CSP.Modules.Pages.MCU
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
-            RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.PinConfig.MCUView", typeof(LQFP64View));
             RegionUtil.RegisterViewWithRegion(regionManager, "Region.Window.Document", typeof(MCUConfigView));
         }
 
