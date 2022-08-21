@@ -1,0 +1,9 @@
+﻿<prism:PrismApplication
+    x:Class="CSP.Apps.Dev.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Exit="OnAppExit"
+    Startup="OnAppStartup">
+    <Application.Resources />
+</prism:PrismApplication>

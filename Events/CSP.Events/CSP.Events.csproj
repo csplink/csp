@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Authors>xqyjlj</Authors>
+		<Copyright>copyright © 2021-2022 xqyjlj&lt;xqyjlj@126.com&gt; </Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+		<PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="20.2.0.39" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Models\CSP.Models\CSP.Models.csproj" />
+	</ItemGroup>
+
+</Project>

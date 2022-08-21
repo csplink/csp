@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Dialogs.NewMCU.Views.Components.MCUBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DesignHeight="450"
+    d:DesignWidth="1600"
+    mc:Ignorable="d av">
+    <Grid>
+        <syncfusion:SfDataGrid
+            x:Name="DataGridMCU"
+            av:ItemsSource="{av:SampleData ItemCount=5}"
+            x:FieldModifier="private"
+            AllowResizingColumns="True"
+            AllowResizingHiddenColumns="True"
+            AutoGenerateColumns="False"
+            ColumnSizer="Star"
+            SelectionChanged="OnDataGridMCUSelectionChanged">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn HeaderText="MCU" MappingName="Name" />
+                <syncfusion:GridTextColumn HeaderText="价格￥/10k" MappingName="Price" />
+                <syncfusion:GridTextColumn HeaderText="封装" MappingName="Package" />
+                <syncfusion:GridTextColumn HeaderText="内核" MappingName="Core" />
+                <syncfusion:GridTextColumn HeaderText="Flash" MappingName="Flash" />
+                <syncfusion:GridTextColumn HeaderText="Ram" MappingName="Ram" />
+                <syncfusion:GridTextColumn HeaderText="IO" MappingName="IO" />
+                <syncfusion:GridTextColumn HeaderText="Fmhz" MappingName="Frequency" />
+                <syncfusion:GridTextColumn HeaderText="T℃Min" MappingName="Temperature.Min" />
+                <syncfusion:GridTextColumn HeaderText="T℃Max" MappingName="Temperature.Max" />
+                <syncfusion:GridTextColumn HeaderText="VvMin" MappingName="Voltage.Min" />
+                <syncfusion:GridTextColumn HeaderText="VvMax" MappingName="Voltage.Max" />
+                <syncfusion:GridTextColumn HeaderText="IμAL" MappingName="Current.Lowest" />
+                <syncfusion:GridTextColumn HeaderText="ImAR" MappingName="Current.Run" />
+            </syncfusion:SfDataGrid.Columns>
+        </syncfusion:SfDataGrid>
+    </Grid>
+</UserControl>

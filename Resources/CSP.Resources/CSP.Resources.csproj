@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<Authors>xqyjlj</Authors>
+		<Copyright>copyright © 2021-2022 xqyjlj&lt;xqyjlj@126.com&gt; </Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ini-parser-netstandard" Version="2.5.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Icon\BlockEight.png" />
+		<Resource Include="Icon\BlockFive.png" />
+		<Resource Include="Icon\BlockFour.png" />
+		<Resource Include="Icon\BlockNine.png" />
+		<Resource Include="Icon\BlockOne.png" />
+		<Resource Include="Icon\BlocksAndArrows.png" />
+		<Resource Include="Icon\BlockSeven.png" />
+		<Resource Include="Icon\BlockSix.png" />
+		<Resource Include="Icon\BlockTen.png" />
+		<Resource Include="Icon\BlockThree.png" />
+		<Resource Include="Icon\BlockTwo.png" />
+		<Resource Include="Icon\C.png" />
+		<Resource Include="Icon\Chip.png" />
+		<Resource Include="Icon\CSharp.png" />
+		<Resource Include="Icon\Error.png" />
+		<Resource Include="Icon\Git.png" />
+		<Resource Include="Icon\Information.png" />
+		<Resource Include="Icon\Json.png" />
+		<Resource Include="Icon\Lib.png" />
+		<Resource Include="Icon\Log.png" />
+		<Resource Include="Icon\New.png" />
+		<Resource Include="Icon\PlayOne.png" />
+		<Resource Include="Icon\PPT.png" />
+		<Resource Include="Icon\Setting.png" />
+		<Resource Include="Icon\System.png" />
+		<Resource Include="Icon\Time.png" />
+		<Resource Include="Icon\Timer.png" />
+		<Resource Include="Icon\Warning.png" />
+		<Resource Include="Icon\Xml.png" />
+		<Resource Include="Icon\YellowFolder.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="path.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Path.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Path.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>path.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

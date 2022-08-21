@@ -1,0 +1,19 @@
+﻿<syncfusion:ChromelessWindow
+    x:Class="CSP.Apps.Dev.Views.Windows.DialogWindowView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Title="{Binding Title}"
+    Width="{Binding Width}"
+    Height="{Binding Height}"
+    MinWidth="{Binding MinWidth}"
+    MinHeight="{Binding MinHeight}"
+    Icon="pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/csp-logo.ico"
+    IconAlignment="Left"
+    ShowInTaskbar="{Binding ShowInTaskbar}"
+    SizeToContent="{Binding SizeToContent}"
+    UseNativeChrome="True"
+    WindowStartupLocation="CenterScreen"
+    WindowState="{Binding WindowState}">
+    <Grid />
+</syncfusion:ChromelessWindow>

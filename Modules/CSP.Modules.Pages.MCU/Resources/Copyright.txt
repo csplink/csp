@@ -1,0 +1,17 @@
+﻿/**
+ * @file ${file}
+ * @brief ${brief}
+ * @author ${author}
+ * @version 0.0
+ * @date ${year}-${month}-${day} ${hour}:${minute}:${second}
+ * @copyright Copyright © 2021-${year} misfra team
+ * @SPDX-License-Identifier: Apache-2.0
+ *
+ * ************************************************************************************
+ * @par ChangeLog:
+ * <table>
+ * <tr><th>Date       <th>Version <th>Author            <th>Description
+ * <tr><td>${year}-${month}-${day} <td>0.0     <td>${author}               <td>generate by misfra stduio
+ * </table>
+ * ************************************************************************************
+ */
