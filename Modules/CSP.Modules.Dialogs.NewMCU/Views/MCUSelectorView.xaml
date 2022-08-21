@@ -43,6 +43,7 @@
                     <Grid Grid.Row="0">
                         <syncfusion:TabControlExt
                             Margin="0,20,0,0"
+                            EnableLabelEdit="False"
                             IsLazyLoaded="True"
                             TabListContextMenuOptions="None"
                             Visibility="{Binding TabControlVisibility}">
@@ -88,10 +89,12 @@
                                                 CommandParameter="{Binding MCU.RepositoryUrl}"
                                                 Content="仓库地址"
                                                 FontSize="14" />
-                                            <TextBlock
+                                            <Button
                                                 Margin="10,5"
-                                                FontSize="14"
-                                                Text="{Binding MCU.Price, StringFormat=价格：{0:F4}(CNY) /10kU}" />
+                                                Padding="5"
+                                                Content="{Binding MCU.Price}"
+                                                ContentStringFormat="价格：{0:F4}(CNY) /10kU"
+                                                FontSize="14" />
                                         </StackPanel>
                                     </ScrollViewer>
                                     <StackPanel Grid.Column="1">
