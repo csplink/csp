@@ -2,8 +2,7 @@
 {
     public partial class GPIOView
     {
-        public GPIOView()
-        {
+        public GPIOView() {
             InitializeComponent();
         }
     }

@@ -10,19 +10,16 @@ namespace CSP.Database.Tests
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public MDKHelperTests(ITestOutputHelper testOutputHelper)
-        {
+        public MDKHelperTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             IniFile.Save();
         }
 
         [Fact]
-        public void Load()
-        {
+        public void Load() {
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
             var path = $"{solutionDir}/Database/CSP.Database.Tests/test/STM32F401RE.uvprojx";
             var model = MDKHelper.Load(path);

@@ -4,8 +4,7 @@ namespace CSP.Utils
 {
     public class Util
     {
-        public static void OpenUrl(string url)
-        {
+        public static void OpenUrl(string url) {
             Process p = new();
             p.StartInfo.FileName = "cmd.exe";
             p.StartInfo.UseShellExecute = false;

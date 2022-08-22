@@ -13,32 +13,24 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
 
         public string Type { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             var parameter = "";
 
             var count = Parameters.Count;
-            for (var i = 0; i < count; i++)
-            {
-                if (count == 1)
-                {
-                    if (Parameters[0].Name.IsNullOrEmpty())
-                    {
+            for (var i = 0; i < count; i++) {
+                if (count == 1) {
+                    if (Parameters[0].Name.IsNullOrEmpty()) {
                         parameter += $"{Parameters[0].Type}";
                     }
-                    else
-                    {
+                    else {
                         parameter += $"{Parameters[0].Type} {Parameters[0].Name}";
                     }
                 }
-                else
-                {
-                    if (i == count - 1)
-                    {
+                else {
+                    if (i == count - 1) {
                         parameter += $"{Parameters[i].Type} {Parameters[i].Name}";
                     }
-                    else
-                    {
+                    else {
                         parameter += $"{Parameters[i].Type} {Parameters[i].Name}, ";
                     }
                 }
@@ -47,13 +39,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
             var rtn = $"{Type} {Name}({parameter})\n";
             rtn += "{\n";
 
-            foreach (var function in FunctionUses)
-            {
+            foreach (var function in FunctionUses) {
                 rtn += $"    {function}";
             }
 
-            switch (Type)
-            {
+            switch (Type) {
                 case "int":
                     rtn += "\n    return RT_EOK;\n";
                     break;
@@ -68,28 +58,22 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
             public string Name { get; set; }
             public List<string> Parameters { get; } = new();
 
-            public override string ToString()
-            {
+            public override string ToString() {
                 var parameter = "";
 
                 if (Name.IsNullOrEmpty())
                     return "\n";
 
                 var count = Parameters.Count;
-                for (var i = 0; i < count; i++)
-                {
-                    if (count == 1)
-                    {
+                for (var i = 0; i < count; i++) {
+                    if (count == 1) {
                         parameter += $"{Parameters[0]}";
                     }
-                    else
-                    {
-                        if (i == count - 1)
-                        {
+                    else {
+                        if (i == count - 1) {
                             parameter += $"{Parameters[i]}";
                         }
-                        else
-                        {
+                        else {
                             parameter += $"{Parameters[i]}, ";
                         }
                     }

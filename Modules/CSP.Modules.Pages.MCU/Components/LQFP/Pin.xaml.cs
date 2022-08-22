@@ -10,19 +10,16 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             typeof(Pin),
             new FrameworkPropertyMetadata(DirectionEnum.Top, OnDirectionChanged) { BindsTwoWayByDefault = true });
 
-        public Pin()
-        {
+        public Pin() {
             InitializeComponent();
         }
 
-        public DirectionEnum Direction
-        {
+        public DirectionEnum Direction {
             get => (DirectionEnum)GetValue(DirectionProperty);
             set => SetValue(DirectionProperty, value);
         }
 
-        private static void OnDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnDirectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (d is not Pin pin)
                 return;
             if (e.NewValue is not DirectionEnum direction)

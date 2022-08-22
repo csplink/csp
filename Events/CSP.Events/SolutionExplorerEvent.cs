@@ -22,12 +22,10 @@ namespace CSP.Events
             private string _name;
             private string _path;
 
-            public Model()
-            {
+            public Model() {
             }
 
-            public Model(string path)
-            {
+            public Model(string path) {
                 if (path.IsNullOrEmpty())
                     throw new ArgumentNullException(nameof(path));
 
@@ -35,14 +33,11 @@ namespace CSP.Events
 
                 var info = new FileInfo(path);
 
-                if ((info.Attributes & FileAttributes.Directory) != 0)
-                {
+                if ((info.Attributes & FileAttributes.Directory) != 0) {
                     Image = Icon.YellowFolder;
                 }
-                else
-                {
-                    Image = System.IO.Path.GetExtension(info.Name).ToLower() switch
-                    {
+                else {
+                    Image = System.IO.Path.GetExtension(info.Name).ToLower() switch {
                         ".c" => Icon.C,
                         ".dll" => Icon.Setting,
                         ".log" => Icon.Log,
@@ -58,33 +53,28 @@ namespace CSP.Events
                 Name = info.Name;
             }
 
-            public ObservableCollection<Model> Children
-            {
+            public ObservableCollection<Model> Children {
                 get => _children;
                 set => SetProperty(ref _children, value);
             }
 
-            public BitmapImage Image
-            {
+            public BitmapImage Image {
                 get => _image;
                 set => SetProperty(ref _image, value);
             }
 
-            public bool IsExpanded
-            {
+            public bool IsExpanded {
                 get => _isExpanded;
 
                 set => SetProperty(ref _isExpanded, value);
             }
 
-            public string Name
-            {
+            public string Name {
                 get => _name;
                 set => SetProperty(ref _name, value);
             }
 
-            public string Path
-            {
+            public string Path {
                 get => _path;
                 set => SetProperty(ref _path, value);
             }

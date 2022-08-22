@@ -27,6 +27,8 @@ namespace CSP.Database.Models.MCU
         [XmlAttribute]
         public string Company { get; set; }
 
+        public string CompanyUrl { get; set; }
+
         [XmlArray("DataSheets")]
         [XmlArrayItem("Document")]
         public DocumentModel[] DataSheets { get; set; }
@@ -34,6 +36,8 @@ namespace CSP.Database.Models.MCU
         [XmlArray("Errata")]
         [XmlArrayItem("Document")]
         public DocumentModel[] Errata { get; set; }
+
+        public HALModel HAL { get; set; }
 
         [XmlAttribute]
         public bool HasPowerPad { get; set; }
@@ -73,19 +77,14 @@ namespace CSP.Database.Models.MCU
         [XmlArrayItem("Document")]
         public DocumentModel[] References { get; set; }
 
+        public string RepositoryUrl { get; set; }
+
         [XmlAttribute]
         public string Series { get; set; }
 
         public string Url { get; set; }
 
-        public string CompanyUrl { get; set; }
-
-        public string RepositoryUrl { get; set; }
-
-        public HALModel HAL { get; set; }
-
-        internal static MCUModel Load(string path)
-        {
+        internal static MCUModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path)) return null;
@@ -94,12 +93,10 @@ namespace CSP.Database.Models.MCU
             var reader = new StreamReader(path);
 
             MCUModel rtn;
-            try
-            {
+            try {
                 rtn = (MCUModel)deserializer.Deserialize(reader);
             }
-            catch (InvalidOperationException e)
-            {
+            catch (InvalidOperationException e) {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
@@ -110,12 +107,9 @@ namespace CSP.Database.Models.MCU
 
             //给辅助变量赋值,将变量转化为字典形式
             // ReSharper disable once LoopCanBePartlyConvertedToQuery
-            foreach (var pin in rtn.Pins)
-            {
-                if (pin.FunctionsTemp != null)
-                {
-                    foreach (var functions in pin.FunctionsTemp)
-                    {
+            foreach (var pin in rtn.Pins) {
+                if (pin.FunctionsTemp != null) {
+                    foreach (var functions in pin.FunctionsTemp) {
                         pin.Functions.Add(functions.Name, functions);
                     }
                 }
@@ -130,6 +124,15 @@ namespace CSP.Database.Models.MCU
             public string Name { get; set; }
 
             public string Url { get; set; }
+        }
+
+        public class HALModel
+        {
+            [XmlAttribute]
+            public string Name { get; set; }
+
+            [XmlAttribute]
+            public string Version { get; set; }
         }
 
         public class ModuleModel
@@ -154,6 +157,9 @@ namespace CSP.Database.Models.MCU
             private int _position;
 
             [XmlIgnore]
+            public DataContextModel BaseProperty { get; } = new();
+
+            [XmlIgnore]
             public Dictionary<string, FunctionModel> Functions { get; } = new();
 
             [XmlArray("Functions")]
@@ -163,26 +169,19 @@ namespace CSP.Database.Models.MCU
             [XmlIgnore]
             public PropertyDetails GPIOProperty { get; } = new();
 
-            [XmlIgnore]
-            public DataContextModel BaseProperty { get; } = new();
-
             [XmlAttribute]
-            public string Name
-            {
+            public string Name {
                 get => _name;
-                set
-                {
+                set {
                     _name = value;
                     BaseProperty.Name = value;
                 }
             }
 
             [XmlAttribute]
-            public int Position
-            {
+            public int Position {
                 get => _position;
-                set
-                {
+                set {
                     _position = value;
                     BaseProperty.Position = value;
                 }
@@ -201,38 +200,33 @@ namespace CSP.Database.Models.MCU
 
                 [Display(Name = "功能", Description = "GPIO 功能", GroupName = "系统")]
                 [XmlAttribute]
-                public string Function
-                {
+                public string Function {
                     get => _function;
                     set => SetProperty(ref _function, value);
                 }
 
                 [Display(Name = "锁定", Description = "锁定", GroupName = "基础")]
-                public bool IsLocked
-                {
+                public bool IsLocked {
                     get => _isLocked;
                     set => SetProperty(ref _isLocked, value);
                 }
 
                 [Display(Name = "标签", Description = "GPIO 标签, 用于宏定义", GroupName = "基础")]
-                public string Label
-                {
+                public string Label {
                     get => _label;
                     set => SetProperty(ref _label, value);
                 }
 
                 [ReadOnly(true)]
                 [Display(Name = "名称", Description = "GPIO 名称", GroupName = "基础")]
-                public string Name
-                {
+                public string Name {
                     get => _name;
                     set => SetProperty(ref _name, value);
                 }
 
                 [ReadOnly(true)]
                 [Display(Name = "引脚序号", Description = "GPIO 引脚序号", GroupName = "基础")]
-                public int Position
-                {
+                public int Position {
                     get => _position;
                     set => _ = SetProperty(ref _position, value);
                 }
@@ -258,15 +252,6 @@ namespace CSP.Database.Models.MCU
                 [XmlAttribute]
                 public string Value { get; set; }
             }
-        }
-
-        public class HALModel
-        {
-            [XmlAttribute]
-            public string Name { get; set; }
-
-            [XmlAttribute]
-            public string Version { get; set; }
         }
     }
 }

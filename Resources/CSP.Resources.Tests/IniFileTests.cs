@@ -8,19 +8,16 @@ namespace CSP.Resources.Tests
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public IniFileTests(ITestOutputHelper testOutputHelper)
-        {
+        public IniFileTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             IniFile.Save();
         }
 
         [Fact]
-        public void Test()
-        {
+        public void Test() {
             IniFile.PathMCUDb = "./";
             Assert.False(IniFile.PathMCUDb != "./");
         }

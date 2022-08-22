@@ -12,32 +12,27 @@ namespace CSP.Modules.Pages.MCU.Tests.Services.Generate
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public GPIOSrcTests(ITestOutputHelper testOutputHelper)
-        {
+        public GPIOSrcTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
         [Fact]
-        public void Test()
-        {
+        public void Test() {
             var gpioSrc = new GPIOSrc();
 
-            var ext = new ExternModel()
-            {
+            var ext = new ExternModel() {
                 Name = "PA0",
                 Type = "md_gpio_obj_t"
             };
             gpioSrc.AddExtern(ext);
 
-            ext = new ExternModel()
-            {
+            ext = new ExternModel() {
                 Name = "PA1",
                 Type = "md_gpio_obj_t"
             };
             gpioSrc.AddExtern(ext);
 
-            var variable = new VariableModel()
-            {
+            var variable = new VariableModel() {
                 Name = "PA0",
                 IsStatic = false,
                 Type = "md_gpio_obj_t",
@@ -45,8 +40,7 @@ namespace CSP.Modules.Pages.MCU.Tests.Services.Generate
             };
             gpioSrc.AddVariable(variable);
 
-            variable = new VariableModel()
-            {
+            variable = new VariableModel() {
                 Name = "PA1",
                 IsStatic = false,
                 Type = "md_gpio_obj_t",
@@ -54,19 +48,16 @@ namespace CSP.Modules.Pages.MCU.Tests.Services.Generate
             };
             gpioSrc.AddVariable(variable);
 
-            var function = new FunctionModel
-            {
+            var function = new FunctionModel {
                 Name = "ms_gpio_init",
                 Type = "void"
             };
-            function.Parameters.Add(new FunctionModel.ParameterModel()
-            {
+            function.Parameters.Add(new FunctionModel.ParameterModel() {
                 Name = "",
                 Type = "void"
             });
 
-            var functionUse = new FunctionModel.FunctionUseModel
-            {
+            var functionUse = new FunctionModel.FunctionUseModel {
                 Name = "md_gpio_set_mode"
             };
             functionUse.Parameters.Add("&PA0");
@@ -75,8 +66,7 @@ namespace CSP.Modules.Pages.MCU.Tests.Services.Generate
             functionUse.Parameters.Add("MD_GPIO_PULL_DOWN");
             function.FunctionUses.Add(functionUse);
 
-            functionUse = new FunctionModel.FunctionUseModel
-            {
+            functionUse = new FunctionModel.FunctionUseModel {
                 Name = "md_gpio_set_mode"
             };
 

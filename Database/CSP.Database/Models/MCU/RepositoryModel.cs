@@ -17,8 +17,7 @@ namespace CSP.Database.Models.MCU
         [XmlArrayItem("Company")]
         public CompanyModel[] Companies { get; set; }
 
-        internal static RepositoryModel Load(string path)
-        {
+        internal static RepositoryModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
@@ -27,12 +26,10 @@ namespace CSP.Database.Models.MCU
             var deserializer = new XmlSerializer(typeof(RepositoryModel));
             var reader = new StreamReader(path);
             RepositoryModel rtn;
-            try
-            {
+            try {
                 rtn = (RepositoryModel)deserializer.Deserialize(reader);
             }
-            catch (InvalidOperationException e)
-            {
+            catch (InvalidOperationException e) {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
@@ -42,14 +39,10 @@ namespace CSP.Database.Models.MCU
                 return null;
 
             // 补充辅助值
-            foreach (var company in rtn.Companies)
-            {
-                foreach (var series in company.Series)
-                {
-                    foreach (var line in series.Lines)
-                    {
-                        foreach (var mcu in line.MCU)
-                        {
+            foreach (var company in rtn.Companies) {
+                foreach (var series in company.Series) {
+                    foreach (var line in series.Lines) {
+                        foreach (var mcu in line.MCU) {
                             mcu.Company = company.Name;
                             mcu.Series = series.Name;
                             mcu.Line = line.Name;

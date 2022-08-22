@@ -37,8 +37,7 @@ $Data
     }
 }";
 
-        public static void Init()
-        {
+        public static void Init() {
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
             var resourcesIconPath = $"{solutionDir}Resources/CSP.Resources/Icon.cs";
             var resourcesIconInstancePath = $"{solutionDir}Resources/CSP.Resources/IconInstance.cs";
@@ -49,10 +48,8 @@ $Data
 
             DirectoryInfo d = new(resourcesIconDir);
             FileSystemInfo[] fsInfos = d.GetFileSystemInfos();
-            foreach (var fsInfo in fsInfos)
-            {
-                if (fsInfo is not DirectoryInfo)
-                {
+            foreach (var fsInfo in fsInfos) {
+                if (fsInfo is not DirectoryInfo) {
                     var name = fsInfo.Name.Replace(".png", "");
                     iconInstanceData += IconInstanceDataTemplate.Replace("$Data", name);
                     iconData += IconDataTemplate.Replace("$Data", name);

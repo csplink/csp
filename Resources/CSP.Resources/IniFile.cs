@@ -4,38 +4,32 @@
     {
         private static readonly IniFileInstance Ini = new();
 
-        public static string PathGit
-        {
+        public static string PathGit {
             get => Ini.ReadKey("Path", "Git", Path.Git);
             set => Ini.AddKey("Path", "Git", value);
         }
 
-        public static string PathLogFile
-        {
+        public static string PathLogFile {
             get => Ini.ReadKey("Path", "LogFile", Path.LogFile);
             set => Ini.AddKey("Path", "LogFile", value);
         }
 
-        public static string PathMCUDb
-        {
+        public static string PathMCUDb {
             get => Ini.ReadKey("Path", "MCUDb", Path.MCUDb);
             set => Ini.AddKey("Path", "MCUDb", value);
         }
 
-        public static string PathMCUDbUrl
-        {
+        public static string PathMCUDbUrl {
             get => Ini.ReadKey("Path", "MCUDbUrl", Path.MCUDbUrl);
             set => Ini.AddKey("Path", "MCUDbUrl", value);
         }
 
-        public static string PathRepository
-        {
+        public static string PathRepository {
             get => Ini.ReadKey("Path", "Repository", Path.Repository);
             set => Ini.AddKey("Path", "Repository", value);
         }
 
-        public static void Save()
-        {
+        public static void Save() {
             Ini.Save();
         }
     }

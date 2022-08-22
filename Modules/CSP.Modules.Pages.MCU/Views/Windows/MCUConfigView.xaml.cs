@@ -2,8 +2,7 @@
 {
     public partial class MCUConfigView
     {
-        public MCUConfigView()
-        {
+        public MCUConfigView() {
             InitializeComponent();
         }
     }

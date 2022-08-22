@@ -6,8 +6,7 @@
 
         public string Type { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"extern {Type} {Name};";
         }
     }

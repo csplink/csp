@@ -10,8 +10,7 @@ namespace CSP.Database.Tests
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public MCUHelperTests(ITestOutputHelper testOutputHelper)
-        {
+        public MCUHelperTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
 
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
@@ -24,14 +23,12 @@ namespace CSP.Database.Tests
 #endif
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             IniFile.Save();
         }
 
         [Fact]
-        public void Test()
-        {
+        public void Test() {
             MCUHelper.LoadMcu("STMicroelectronics", "STM32F030C6Tx");
 
             Assert.False(MCUHelper.Repository == null);
@@ -41,8 +38,7 @@ namespace CSP.Database.Tests
         }
 
         [Fact]
-        public void GenerateMapTest()
-        {
+        public void GenerateMapTest() {
             MCUHelper.GenerateMap($"{IniFile.PathRepository}/csp_hal_apm32f1/drivers/csp_hal/inc/chal/gpio.h", @"./GPIO.xml");
         }
     }

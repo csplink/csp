@@ -7,17 +7,14 @@ namespace CSP.Apps.Dev.ViewModels
     {
         #region INavigationAware
 
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
+        public bool IsNavigationTarget(NavigationContext navigationContext) {
             return true;
         }
 
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
+        public void OnNavigatedFrom(NavigationContext navigationContext) {
         }
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
+        public void OnNavigatedTo(NavigationContext navigationContext) {
         }
 
         #endregion INavigationAware

@@ -5,13 +5,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 {
     public class GPIOSrc : SrcBase
     {
-        public GPIOSrc(MCUModel mcu = null, string path = null) : base(path)
-        {
+        public GPIOSrc(MCUModel mcu = null, string path = null) : base(path) {
             File = "csp_gpio.c";
             Brief = "This file provides code for the configuration of all used GPIO.";
 
-            AddInclude(new IncModel()
-            {
+            AddInclude(new IncModel() {
                 IsSys = false,
                 Name = "csp/gpio.h"
             });
@@ -19,13 +17,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (mcu == null)
                 return;
 
-            var function = new FunctionModel
-            {
+            var function = new FunctionModel {
                 Name = "csp_gpio_init",
                 Type = "int"
             };
-            function.Parameters.Add(new FunctionModel.ParameterModel()
-            {
+            function.Parameters.Add(new FunctionModel.ParameterModel() {
                 Name = "",
                 Type = "void"
             });

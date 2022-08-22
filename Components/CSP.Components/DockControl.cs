@@ -15,28 +15,23 @@ namespace CSP.Components
             typeof(DockControl),
             new FrameworkPropertyMetadata('a', OnKeyChanged) { BindsTwoWayByDefault = true });
 
-        public DockControl()
-        {
+        public DockControl() {
         }
 
-        public Image Icon
-        {
+        public Image Icon {
             get => (Image)GetValue(IconProperty);
             set => SetValue(IconProperty, value);
         }
 
-        public char Key
-        {
+        public char Key {
             get => (char)GetValue(KeyProperty);
             set => SetValue(KeyProperty, value);
         }
 
-        private static void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         }
 
-        private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         }
     }
 }

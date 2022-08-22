@@ -50,188 +50,150 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
         private readonly List<string> _featureFilter = new();
         private readonly List<string> _mcuList = new();
 
-        public MCUFilterBox()
-        {
+        public MCUFilterBox() {
             InitializeComponent();
         }
 
-        public ObservableCollection<string> CompanyFilter
-        {
+        public ObservableCollection<string> CompanyFilter {
             get => (ObservableCollection<string>)GetValue(CompanyFilterProperty);
             set => SetValue(CompanyFilterProperty, value);
         }
 
-        public ObservableCollection<string> CoreFilter
-        {
+        public ObservableCollection<string> CoreFilter {
             get => (ObservableCollection<string>)GetValue(CoreFilterProperty);
             set => SetValue(CoreFilterProperty, value);
         }
 
-        public ObservableCollection<string> LineFilter
-        {
+        public ObservableCollection<string> LineFilter {
             get => (ObservableCollection<string>)GetValue(LineFilterProperty);
             set => SetValue(LineFilterProperty, value);
         }
 
-        public ObservableCollection<string> PackageFilter
-        {
+        public ObservableCollection<string> PackageFilter {
             get => (ObservableCollection<string>)GetValue(PackageFilterProperty);
             set => SetValue(PackageFilterProperty, value);
         }
 
-        public RepositoryModel Repository
-        {
+        public RepositoryModel Repository {
             get => (RepositoryModel)GetValue(RepositoryProperty);
             set => SetValue(RepositoryProperty, value);
         }
 
-        public string SearchText
-        {
+        public string SearchText {
             get => (string)GetValue(SearchTextProperty);
             set => SetValue(SearchTextProperty, value);
         }
 
-        public ObservableCollection<string> SeriesFilter
-        {
+        public ObservableCollection<string> SeriesFilter {
             get => (ObservableCollection<string>)GetValue(SeriesFilterProperty);
             set => SetValue(SeriesFilterProperty, value);
         }
 
-        private static void OnCompanyFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnCompanyFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnCompanyFilterValueChanged(e);
         }
 
-        private static void OnCoreFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnCoreFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnCoreFilterValueChanged(e);
         }
 
-        private static void OnLineFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnLineFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnLineFilterValueChanged(e);
         }
 
-        private static void OnPackageFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnPackageFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnPackageFilterValueChanged(e);
         }
 
-        private static void OnRepositoryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnRepositoryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnRepositoryValueChanged(e);
         }
 
-        private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnSearchTextValueChanged(e);
         }
 
-        private static void OnSeriesFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnSeriesFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUFilterBox)d).OnSeriesFilterValueChanged(e);
         }
 
-        private void AddFeatureCollection(string key, string value)
-        {
+        private void AddFeatureCollection(string key, string value) {
             if (_featureCollection[key] == null)
                 return;
 
-            if (!_featureCollection[key].Contains(value))
-            {
+            if (!_featureCollection[key].Contains(value)) {
                 _featureCollection[key].Add(value);
             }
         }
 
-        private void OnCheckListBoxItemChecked(object sender, ItemCheckedEventArgs e)
-        {
+        private void OnCheckListBoxItemChecked(object sender, ItemCheckedEventArgs e) {
             if (sender is not CheckListBox listBox)
                 return;
 
             if (e.Item is not CheckListBoxItem item)
                 return;
 
-            if (e.Checked)
-            {
+            if (e.Checked) {
                 _featureFilter.Add(item.Content.ToString());
             }
-            else
-            {
+            else {
                 _featureFilter.Remove(item.Content.ToString());
             }
 
-            switch (listBox.Tag)
-            {
-                case "公司":
-                    {
-                        if (e.Checked)
-                        {
+            switch (listBox.Tag) {
+                case "公司": {
+                        if (e.Checked) {
                             CompanyFilter.Add(item.Content.ToString());
                         }
-                        else
-                        {
+                        else {
                             CompanyFilter.Remove(item.Content.ToString());
                         }
                     }
                     break;
 
-                case "内核":
-                    {
-                        if (e.Checked)
-                        {
+                case "内核": {
+                        if (e.Checked) {
                             CoreFilter.Add(item.Content.ToString());
                         }
-                        else
-                        {
+                        else {
                             CoreFilter.Remove(item.Content.ToString());
                         }
                     }
                     break;
 
-                case "系列":
-                    {
-                        if (e.Checked)
-                        {
+                case "系列": {
+                        if (e.Checked) {
                             SeriesFilter.Add(item.Content.ToString());
                         }
-                        else
-                        {
+                        else {
                             SeriesFilter.Remove(item.Content.ToString());
                         }
                     }
                     break;
 
-                case "产品线":
-                    {
-                        if (e.Checked)
-                        {
+                case "产品线": {
+                        if (e.Checked) {
                             LineFilter.Add(item.Content.ToString());
                         }
-                        else
-                        {
+                        else {
                             LineFilter.Remove(item.Content.ToString());
                         }
                     }
                     break;
 
-                case "封装":
-                    {
-                        if (e.Checked)
-                        {
+                case "封装": {
+                        if (e.Checked) {
                             PackageFilter.Add(item.Content.ToString());
                         }
-                        else
-                        {
+                        else {
                             PackageFilter.Remove(item.Content.ToString());
                         }
                     }
                     break;
             }
 
-            switch (listBox.Tag)
-            {
-                case "公司":
-                    {
+            switch (listBox.Tag) {
+                case "公司": {
                         UpdateCheckListBoxItemStatus(CheckListBoxCore);
                         UpdateCheckListBoxItemStatus(CheckListBoxSeries);
                         UpdateCheckListBoxItemStatus(CheckListBoxLine);
@@ -239,8 +201,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                     }
                     break;
 
-                case "内核":
-                    {
+                case "内核": {
                         UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
                         UpdateCheckListBoxItemStatus(CheckListBoxSeries);
                         UpdateCheckListBoxItemStatus(CheckListBoxLine);
@@ -248,8 +209,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                     }
                     break;
 
-                case "系列":
-                    {
+                case "系列": {
                         UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
                         UpdateCheckListBoxItemStatus(CheckListBoxCore);
                         UpdateCheckListBoxItemStatus(CheckListBoxLine);
@@ -257,8 +217,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                     }
                     break;
 
-                case "产品线":
-                    {
+                case "产品线": {
                         UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
                         UpdateCheckListBoxItemStatus(CheckListBoxSeries);
                         UpdateCheckListBoxItemStatus(CheckListBoxCore);
@@ -266,8 +225,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                     }
                     break;
 
-                case "封装":
-                    {
+                case "封装": {
                         UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
                         UpdateCheckListBoxItemStatus(CheckListBoxCore);
                         UpdateCheckListBoxItemStatus(CheckListBoxSeries);
@@ -277,8 +235,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             }
         }
 
-        private void OnComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void OnComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (sender is not ComboBoxAdv comboBox)
                 return;
 
@@ -291,24 +248,19 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             UpdateCheckListBoxItemStatus(CheckListBoxPackage);
         }
 
-        private void OnCompanyFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnCompanyFilterValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void OnCoreFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnCoreFilterValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void OnLineFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnLineFilterValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void OnPackageFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnPackageFilterValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void OnRepositoryValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnRepositoryValueChanged(DependencyPropertyChangedEventArgs e) {
             if (e.NewValue is not RepositoryModel value)
                 return;
 
@@ -317,35 +269,29 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             var coreList = new ObservableCollection<string>();
             var packageList = new ObservableCollection<string>();
 
-            foreach (var company in value.Companies)
-            {
+            foreach (var company in value.Companies) {
                 if (!_featureCollection.ContainsKey(company.Name))
                     _featureCollection.Add(company.Name, new List<string>());
 
-                CheckListBoxCompanies.Items.Add(new CheckListBoxItem
-                {
+                CheckListBoxCompanies.Items.Add(new CheckListBoxItem {
                     Content = company.Name
                 });
 
-                foreach (var series in company.Series)
-                {
+                foreach (var series in company.Series) {
                     if (!_featureCollection.ContainsKey(series.Name))
                         _featureCollection.Add(series.Name, new List<string>());
 
-                    CheckListBoxSeries.Items.Add(new CheckListBoxItem
-                    {
+                    CheckListBoxSeries.Items.Add(new CheckListBoxItem {
                         Content = series.Name
                     });
                     AddFeatureCollection(company.Name, series.Name);
                     AddFeatureCollection(series.Name, company.Name);
 
-                    foreach (var line in series.Lines)
-                    {
+                    foreach (var line in series.Lines) {
                         if (!_featureCollection.ContainsKey(line.Name))
                             _featureCollection.Add(line.Name, new List<string>());
 
-                        CheckListBoxLine.Items.Add(new CheckListBoxItem
-                        {
+                        CheckListBoxLine.Items.Add(new CheckListBoxItem {
                             Content = line.Name
                         });
 
@@ -354,8 +300,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                         AddFeatureCollection(line.Name, company.Name);
                         AddFeatureCollection(line.Name, series.Name);
 
-                        foreach (var mcu in line.MCU)
-                        {
+                        foreach (var mcu in line.MCU) {
                             if (!_featureCollection.ContainsKey(mcu.Core))
                                 _featureCollection.Add(mcu.Core, new List<string>());
 
@@ -400,59 +345,44 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
 
             ComboBoxMCUName.ItemsSource = _mcuList;
 
-            foreach (var item in coreList)
-            {
-                CheckListBoxCore.Items.Add(new CheckListBoxItem
-                {
+            foreach (var item in coreList) {
+                CheckListBoxCore.Items.Add(new CheckListBoxItem {
                     Content = item
                 });
             }
 
-            foreach (var item in packageList)
-            {
-                CheckListBoxPackage.Items.Add(new CheckListBoxItem
-                {
+            foreach (var item in packageList) {
+                CheckListBoxPackage.Items.Add(new CheckListBoxItem {
                     Content = item
                 });
             }
         }
 
-        private void OnSearchTextValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnSearchTextValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void OnSeriesFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnSeriesFilterValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void UpdateCheckListBoxItemStatus(CheckListBox listBox)
-        {
-            foreach (CheckListBoxItem listBoxItem in listBox.Items)
-            {
-                if (listBoxItem.Content is string data)
-                {
-                    if (SearchText.IsNullOrEmpty())
-                    {
+        private void UpdateCheckListBoxItemStatus(CheckListBox listBox) {
+            foreach (CheckListBoxItem listBoxItem in listBox.Items) {
+                if (listBoxItem.Content is string data) {
+                    if (SearchText.IsNullOrEmpty()) {
                         if (_featureFilter.Contains(data) ||
                             _featureCollection[data].Intersect(_featureFilter).Any() ||
-                            _featureFilter.Count == 0)
-                        {
+                            _featureFilter.Count == 0) {
                             listBoxItem.IsEnabled = true;
                         }
-                        else
-                        {
+                        else {
                             listBoxItem.IsSelected = false;
                             listBoxItem.IsEnabled = false;
                         }
                     }
-                    else
-                    {
-                        if (_featureCollection[data].Contains(SearchText))
-                        {
+                    else {
+                        if (_featureCollection[data].Contains(SearchText)) {
                             listBoxItem.IsEnabled = true;
                         }
-                        else
-                        {
+                        else {
                             listBoxItem.IsSelected = false;
                             listBoxItem.IsEnabled = false;
                         }

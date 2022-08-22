@@ -6,8 +6,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 {
     public class GenerateService
     {
-        public static void Generate(MCUModel mcu, string path)
-        {
+        public static void Generate(MCUModel mcu, string path) {
             if (mcu == null)
                 throw new ArgumentNullException(nameof(mcu));
 
@@ -19,14 +18,10 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (!Directory.Exists(pathSrc))
                 Directory.CreateDirectory(pathSrc);
 
-            foreach (var module in mcu.Modules)
-            {
-                foreach (var category in module.Categories)
-                {
-                    switch (category.Name.ToUpper())
-                    {
-                        case "GPIO":
-                            {
+            foreach (var module in mcu.Modules) {
+                foreach (var category in module.Categories) {
+                    switch (category.Name.ToUpper()) {
+                        case "GPIO": {
                                 GenerateGPIO(mcu, path);
                             }
                             break;
@@ -35,8 +30,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             }
         }
 
-        public static void GenerateGPIO(MCUModel mcu, string path)
-        {
+        public static void GenerateGPIO(MCUModel mcu, string path) {
             if (mcu == null)
                 throw new ArgumentNullException(nameof(mcu));
 

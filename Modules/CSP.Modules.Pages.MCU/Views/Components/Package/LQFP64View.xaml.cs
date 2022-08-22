@@ -2,8 +2,7 @@
 {
     public partial class LQFP64View
     {
-        public LQFP64View()
-        {
+        public LQFP64View() {
             InitializeComponent();
         }
     }
