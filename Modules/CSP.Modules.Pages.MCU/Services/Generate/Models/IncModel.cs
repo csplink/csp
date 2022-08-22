@@ -5,8 +5,7 @@
         public bool IsSys { get; set; }
         public string Name { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return IsSys ? $"#include <{Name}>" : $"#include \"{Name}\"";
         }
     }

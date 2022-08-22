@@ -4,8 +4,7 @@ namespace CSP.Extras.BeforeBuild
 {
     internal static class AppStartup
     {
-        private static void Main(string[] args)
-        {
+        private static void Main(string[] args) {
             Icon.Init();
         }
     }

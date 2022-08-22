@@ -2,8 +2,7 @@
 {
     public partial class LQFP144View
     {
-        public LQFP144View()
-        {
+        public LQFP144View() {
             InitializeComponent();
         }
     }

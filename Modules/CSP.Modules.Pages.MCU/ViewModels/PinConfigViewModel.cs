@@ -18,17 +18,14 @@ namespace CSP.Modules.Pages.MCU.ViewModels
     {
         #region INavigationAware
 
-        public bool IsNavigationTarget(NavigationContext navigationContext)
-        {
+        public bool IsNavigationTarget(NavigationContext navigationContext) {
             return false;
         }
 
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
+        public void OnNavigatedFrom(NavigationContext navigationContext) {
         }
 
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
+        public void OnNavigatedTo(NavigationContext navigationContext) {
         }
 
         #endregion INavigationAware
@@ -36,8 +33,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
 
-        public PinConfigViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
-        {
+        public PinConfigViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
@@ -45,23 +41,19 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             AddCustomEditor();
             AddModules();
-            try
-            {
+            try {
                 var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{MCUHelper.MCU.Package}View");
                 RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.PinConfig.MCUView", type);
             }
-            catch
-            {
+            catch {
                 MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
             }
 
             _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
         }
 
-        private void AddCustomEditor()
-        {
-            CustomEditor editor = new()
-            {
+        private void AddCustomEditor() {
+            CustomEditor editor = new() {
                 Editor = new ValuePropertyGridComboEditor(),
                 HasPropertyType = true,
                 PropertyType = typeof(MapModel.GroupModel.ValuePropertyGridComboEditorModel)
@@ -69,24 +61,19 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }
 
-        private void AddModules()
-        {
+        private void AddModules() {
             var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows, IsExpanded = true };
 
             DebugUtil.Assert(MCUHelper.MCU.Modules != null, new ArgumentNullException(nameof(MCUHelper.MCU.Modules)));
 
             // ReSharper disable once PossibleNullReferenceException
-            foreach (var module in MCUHelper.MCU.Modules)
-            {
+            foreach (var module in MCUHelper.MCU.Modules) {
                 var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne, IsExpanded = true };
-                infoModule.CallBack += value =>
-                {
+                infoModule.CallBack += value => {
                 };
-                foreach (var category in module.Categories)
-                {
+                foreach (var category in module.Categories) {
                     var infoCategory = new SolutionExplorerEvent.Model(category.Name) { Image = Icon.BlockTwo, IsExpanded = true };
-                    infoCategory.CallBack += value =>
-                    {
+                    infoCategory.CallBack += value => {
                         RegionUtil.RequestNavigate(_regionManager, "Region.MCU.PinConfig.MCUConfig", $"Page.MCU.PinConfig.MCUConfig.{value}");
                     };
                     infoModule.Children.Add(infoCategory);
@@ -99,8 +86,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _eventAggregator.GetEvent<SolutionExplorerEvent>().Publish(list);
         }
 
-        private void OnEventGenerate(string message)
-        {
+        private void OnEventGenerate(string message) {
             if (message != "Events.Generate")
                 return;
 

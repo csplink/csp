@@ -7,8 +7,7 @@ namespace CSP.Utils.Extensions
 {
     public static class StringExtension
     {
-        public static byte[] FromHexToByteArray(this string str)
-        {
+        public static byte[] FromHexToByteArray(this string str) {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -22,8 +21,7 @@ namespace CSP.Utils.Extensions
             return returnBytes;
         }
 
-        public static string FromHexToText(this string str, Encoding encoding)
-        {
+        public static string FromHexToText(this string str, Encoding encoding) {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (encoding == null)
@@ -33,8 +31,7 @@ namespace CSP.Utils.Extensions
             return encoding.GetString(bytes);
         }
 
-        public static byte[] FromTextToByteArray(this string str, Encoding encoding)
-        {
+        public static byte[] FromTextToByteArray(this string str, Encoding encoding) {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (encoding == null)
@@ -43,8 +40,7 @@ namespace CSP.Utils.Extensions
             return encoding.GetBytes(str);
         }
 
-        public static string FromTextToHex(this string str, Encoding encoding)
-        {
+        public static string FromTextToHex(this string str, Encoding encoding) {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
             if (encoding == null)
@@ -53,8 +49,7 @@ namespace CSP.Utils.Extensions
             return BitConverter.ToString(encoding.GetBytes(str)).Replace("-", " ");
         }
 
-        public static bool IsLegalHex(this string str)
-        {
+        public static bool IsLegalHex(this string str) {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 
@@ -64,8 +59,7 @@ namespace CSP.Utils.Extensions
             return str.All(item => hexSet.Contains<char>(item));
         }
 
-        public static bool IsNullOrEmpty(this string s)
-        {
+        public static bool IsNullOrEmpty(this string s) {
             return string.IsNullOrEmpty(s);
         }
 
@@ -81,8 +75,7 @@ namespace CSP.Utils.Extensions
         /// <returns>
         /// 被分割后的字符串
         /// </returns>
-        public static string[] Split(this string str, int count)
-        {
+        public static string[] Split(this string str, int count) {
             if (str == null)
                 throw new ArgumentNullException(nameof(str));
 

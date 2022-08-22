@@ -11,32 +11,24 @@ namespace CSP.Modules.Pages.MCU.Services.Generate.Models
 
         public string Type { get; set; }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             var parameter = "";
 
             var count = Parameters.Count;
-            for (var i = 0; i < count; i++)
-            {
-                if (count == 1)
-                {
-                    if (Parameters[0].Name.IsNullOrEmpty())
-                    {
+            for (var i = 0; i < count; i++) {
+                if (count == 1) {
+                    if (Parameters[0].Name.IsNullOrEmpty()) {
                         parameter += $"{Parameters[0].Type}";
                     }
-                    else
-                    {
+                    else {
                         parameter += $"{Parameters[0].Type} {Parameters[0].Name}";
                     }
                 }
-                else
-                {
-                    if (i == count - 1)
-                    {
+                else {
+                    if (i == count - 1) {
                         parameter += $"{Parameters[i].Type} {Parameters[i].Name}";
                     }
-                    else
-                    {
+                    else {
                         parameter += $"{Parameters[i].Type} {Parameters[i].Name}, ";
                     }
                 }

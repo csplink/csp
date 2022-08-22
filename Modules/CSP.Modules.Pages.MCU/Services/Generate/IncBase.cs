@@ -2,12 +2,10 @@
 {
     public class IncBase : GenerateBase
     {
-        protected IncBase(string path = null) : base(path)
-        {
+        protected IncBase(string path = null) : base(path) {
         }
 
-        public string Generate()
-        {
+        public string Generate() {
             var content = "";
 
             content += RegionCopyright;

@@ -52,103 +52,84 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
         private readonly ObservableCollection<RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel> _mcuCollection = new();
         private ICollectionViewAdv _dataGridMCUView;
 
-        public MCUBox()
-        {
+        public MCUBox() {
             InitializeComponent();
         }
 
-        public ObservableCollection<string> CompanyFilter
-        {
+        public ObservableCollection<string> CompanyFilter {
             get => (ObservableCollection<string>)GetValue(CompanyFilterProperty);
             set => SetValue(CompanyFilterProperty, value);
         }
 
-        public ObservableCollection<string> CoreFilter
-        {
+        public ObservableCollection<string> CoreFilter {
             get => (ObservableCollection<string>)GetValue(CoreFilterProperty);
             set => SetValue(CoreFilterProperty, value);
         }
 
-        public ObservableCollection<string> LineFilter
-        {
+        public ObservableCollection<string> LineFilter {
             get => (ObservableCollection<string>)GetValue(LineFilterProperty);
             set => SetValue(LineFilterProperty, value);
         }
 
-        public ObservableCollection<string> PackageFilter
-        {
+        public ObservableCollection<string> PackageFilter {
             get => (ObservableCollection<string>)GetValue(PackageFilterProperty);
             set => SetValue(PackageFilterProperty, value);
         }
 
-        public RepositoryModel Repository
-        {
+        public RepositoryModel Repository {
             get => (RepositoryModel)GetValue(RepositoryProperty);
             set => SetValue(RepositoryProperty, value);
         }
 
-        public string SearchText
-        {
+        public string SearchText {
             get => (string)GetValue(SearchTextProperty);
             set => SetValue(SearchTextProperty, value);
         }
 
-        public RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel SelectedMCU
-        {
+        public RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel SelectedMCU {
             get => (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel)GetValue(SelectedMCUProperty);
             set => SetValue(SelectedMCUProperty, value);
         }
 
-        public ObservableCollection<string> SeriesFilter
-        {
+        public ObservableCollection<string> SeriesFilter {
             get => (ObservableCollection<string>)GetValue(SeriesFilterProperty);
             set => SetValue(SeriesFilterProperty, value);
         }
 
-        private static void OnCompanyFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnCompanyFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnCompanyFilterValueChanged(e);
         }
 
-        private static void OnCoreFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnCoreFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnCoreFilterValueChanged(e);
         }
 
-        private static void OnLineFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnLineFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnLineFilterValueChanged(e);
         }
 
-        private static void OnPackageFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnPackageFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnPackageFilterValueChanged(e);
         }
 
-        private static void OnRepositoryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnRepositoryChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnRepositoryValueChanged(e);
         }
 
-        private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnSearchTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnSearchTextValueChanged(e);
         }
 
-        private static void OnSelectedMCUChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnSelectedMCUChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnSelectedMCUValueChanged(e);
         }
 
-        private static void OnSeriesFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        private static void OnSeriesFilterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((MCUBox)d).OnSeriesFilterValueChanged(e);
         }
 
-        private void OnCompanyFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is ObservableCollection<string> oldValue)
-            {
+        private void OnCompanyFilterValueChanged(DependencyPropertyChangedEventArgs e) {
+            if (e.OldValue is ObservableCollection<string> oldValue) {
                 oldValue.CollectionChanged -= OnFilterCollectionChanged;
             }
 
@@ -158,10 +139,8 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             newValue.CollectionChanged += OnFilterCollectionChanged;
         }
 
-        private void OnCoreFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is ObservableCollection<string> oldValue)
-            {
+        private void OnCoreFilterValueChanged(DependencyPropertyChangedEventArgs e) {
+            if (e.OldValue is ObservableCollection<string> oldValue) {
                 oldValue.CollectionChanged -= OnFilterCollectionChanged;
             }
 
@@ -171,23 +150,19 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             newValue.CollectionChanged += OnFilterCollectionChanged;
         }
 
-        private void OnDataGridMCUSelectionChanged(object sender, GridSelectionChangedEventArgs e)
-        {
+        private void OnDataGridMCUSelectionChanged(object sender, GridSelectionChangedEventArgs e) {
             if (sender is not SfDataGrid grid)
                 return;
 
-            if (grid.SelectedItem == null)
-            {
+            if (grid.SelectedItem == null) {
                 SelectedMCU = null;
             }
-            else
-            {
+            else {
                 SelectedMCU = (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel)grid.SelectedItem;
             }
         }
 
-        private bool OnDataGridMCUViewFilterRecords(object o)
-        {
+        private bool OnDataGridMCUViewFilterRecords(object o) {
             if (o is not RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel item)
                 return false;
 
@@ -201,8 +176,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
                 return true;
 
             var rtn = true;
-            if (SearchText?.Length > 0)
-            {
+            if (SearchText?.Length > 0) {
                 var str = SearchText.ToUpper();
                 rtn &= item.Name.ToUpper().Contains(str);
             }
@@ -225,15 +199,12 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             return rtn;
         }
 
-        private void OnFilterCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
+        private void OnFilterCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
             RefreshDataGridMCUViewFilter();
         }
 
-        private void OnLineFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is ObservableCollection<string> oldValue)
-            {
+        private void OnLineFilterValueChanged(DependencyPropertyChangedEventArgs e) {
+            if (e.OldValue is ObservableCollection<string> oldValue) {
                 oldValue.CollectionChanged -= OnFilterCollectionChanged;
             }
 
@@ -243,10 +214,8 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             newValue.CollectionChanged += OnFilterCollectionChanged;
         }
 
-        private void OnPackageFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is ObservableCollection<string> oldValue)
-            {
+        private void OnPackageFilterValueChanged(DependencyPropertyChangedEventArgs e) {
+            if (e.OldValue is ObservableCollection<string> oldValue) {
                 oldValue.CollectionChanged -= OnFilterCollectionChanged;
             }
 
@@ -256,21 +225,16 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             newValue.CollectionChanged += OnFilterCollectionChanged;
         }
 
-        private void OnRepositoryValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnRepositoryValueChanged(DependencyPropertyChangedEventArgs e) {
             if (e.NewValue is not RepositoryModel value)
                 return;
 
             _mcuCollection.Clear();
 
-            foreach (RepositoryModel.CompanyModel company in value.Companies)
-            {
-                foreach (RepositoryModel.CompanyModel.SeriesModel series in company.Series)
-                {
-                    foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel line in series.Lines)
-                    {
-                        foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel mcu in line.MCU)
-                        {
+            foreach (RepositoryModel.CompanyModel company in value.Companies) {
+                foreach (RepositoryModel.CompanyModel.SeriesModel series in company.Series) {
+                    foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel line in series.Lines) {
+                        foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel mcu in line.MCU) {
                             _mcuCollection.Add(mcu);
                         }
                     }
@@ -280,19 +244,15 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             DataGridMCU.ItemsSource = _mcuCollection;
         }
 
-        private void OnSearchTextValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnSearchTextValueChanged(DependencyPropertyChangedEventArgs e) {
             RefreshDataGridMCUViewFilter();
         }
 
-        private void OnSelectedMCUValueChanged(DependencyPropertyChangedEventArgs e)
-        {
+        private void OnSelectedMCUValueChanged(DependencyPropertyChangedEventArgs e) {
         }
 
-        private void OnSeriesFilterValueChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.OldValue is ObservableCollection<string> oldValue)
-            {
+        private void OnSeriesFilterValueChanged(DependencyPropertyChangedEventArgs e) {
+            if (e.OldValue is ObservableCollection<string> oldValue) {
                 oldValue.CollectionChanged -= OnFilterCollectionChanged;
             }
 
@@ -302,13 +262,10 @@ namespace CSP.Modules.Dialogs.NewMCU.Views.Components
             newValue.CollectionChanged += OnFilterCollectionChanged;
         }
 
-        private void RefreshDataGridMCUViewFilter()
-        {
-            if (_dataGridMCUView == null)
-            {
+        private void RefreshDataGridMCUViewFilter() {
+            if (_dataGridMCUView == null) {
                 _dataGridMCUView = DataGridMCU.View;
-                if (_dataGridMCUView != null)
-                {
+                if (_dataGridMCUView != null) {
                     _dataGridMCUView.Filter = OnDataGridMCUViewFilterRecords;
                 }
             }

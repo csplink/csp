@@ -11,15 +11,13 @@ namespace CSP.Modules.Pages.MCU
 {
     public class MCUModule : IModule
     {
-        public void OnInitialized(IContainerProvider containerProvider)
-        {
+        public void OnInitialized(IContainerProvider containerProvider) {
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
             RegionUtil.RegisterViewWithRegion(regionManager, "Region.Window.Document", typeof(MCUConfigView));
         }
 
-        public void RegisterTypes(IContainerRegistry containerRegistry)
-        {
+        public void RegisterTypes(IContainerRegistry containerRegistry) {
             RegionUtil.RegisterForNavigation<PinConfigView>(containerRegistry, "Page.MCU.PinConfig");
             RegionUtil.RegisterForNavigation<GPIOView>(containerRegistry, "Page.MCU.PinConfig.MCUConfig.GPIO");
             RegionUtil.RegisterForNavigation<LQFP48View>(containerRegistry, "Page.MCU.Package.LQFP48");

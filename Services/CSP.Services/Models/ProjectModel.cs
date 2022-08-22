@@ -19,8 +19,7 @@ namespace CSP.Services.Models
         [XmlElement(ElementName = "Version")]
         public string Version { get; set; }
 
-        internal static void Create(string path, ProjectModel model)
-        {
+        internal static void Create(string path, ProjectModel model) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
             DebugUtil.Assert(model != null, new ArgumentNullException(nameof(model)));
 
@@ -42,8 +41,7 @@ namespace CSP.Services.Models
             writer.Close();
         }
 
-        internal static ProjectModel Load(string path)
-        {
+        internal static ProjectModel Load(string path) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path)) return null;
@@ -52,12 +50,10 @@ namespace CSP.Services.Models
             var reader = new StreamReader(path);
 
             ProjectModel rtn;
-            try
-            {
+            try {
                 rtn = (ProjectModel)deserializer.Deserialize(reader);
             }
-            catch (InvalidOperationException e)
-            {
+            catch (InvalidOperationException e) {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }

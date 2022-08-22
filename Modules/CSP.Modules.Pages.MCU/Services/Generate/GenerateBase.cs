@@ -9,34 +9,27 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
     {
         internal readonly bool IsSys;
 
-        protected GenerateBase(string path = null)
-        {
+        protected GenerateBase(string path = null) {
             string fileData = null;
 
-            if (path == null)
-            {
+            if (path == null) {
                 IsSys = true;
             }
-            else
-            {
-                if (!System.IO.File.Exists(path))
-                {
+            else {
+                if (!System.IO.File.Exists(path)) {
                     IsSys = true;
                 }
-                else
-                {
+                else {
                     fileData = System.IO.File.ReadAllText(path);
                     IsSys = false;
                 }
             }
 
-            if (IsSys)
-            {
+            if (IsSys) {
                 Copyright = Resources.Files.Copyright;
                 UpdateCopyright();
             }
-            else
-            {
+            else {
                 ReadCopyright(fileData);
                 ReadUserIncludes(fileData);
                 ReadUserMacros(fileData);
@@ -48,14 +41,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
         private string _file;
 
-        internal string File
-        {
+        internal string File {
             get => _file;
-            set
-            {
+            set {
                 _file = value;
-                if (IsSys)
-                {
+                if (IsSys) {
                     if (!File.IsNullOrEmpty())
                         Copyright = Copyright.Replace("${file}", File);
                 }
@@ -68,14 +58,11 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
         private string _brief;
 
-        internal string Brief
-        {
+        internal string Brief {
             get => _brief;
-            set
-            {
+            set {
                 _brief = value;
-                if (IsSys)
-                {
+                if (IsSys) {
                     if (!Brief.IsNullOrEmpty())
                         Copyright = Copyright.Replace("${brief}", Brief);
                 }
@@ -151,112 +138,27 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
         #endregion region
 
-        public void AddExtern(ExternModel ext)
-        {
+        public void AddExtern(ExternModel ext) {
             Externs.Add(ext);
         }
 
-        protected void AddFunctionDeclaration(FunctionDeclarationModel function)
-        {
-            FunctionDeclarations.Add(function);
-        }
-
-        protected void AddInclude(IncModel inc)
-        {
-            Includes.Add(inc);
-        }
-
-        protected void AddMacro(MacroModel macro)
-        {
-            Macros.Add(macro);
-        }
-
-        protected string GenerateExterns()
-        {
-            if (Externs.Count == 0)
-                return "";
-
-            var rtn = "\n";
-
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var ext in Externs)
-            {
-                rtn += ext + "\n";
-            }
-
-            return rtn;
-        }
-
-        protected string GenerateFunctionDeclarations()
-        {
-            if (FunctionDeclarations.Count == 0)
-                return "";
-
-            var rtn = "\n";
-
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var functionDeclaration in FunctionDeclarations)
-            {
-                rtn += functionDeclaration + "\n";
-            }
-
-            return rtn;
-        }
-
-        protected string GenerateIncludes()
-        {
-            if (Includes.Count == 0)
-                return "";
-
-            var rtn = "\n";
-
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var include in Includes)
-            {
-                rtn += include + "\n";
-            }
-
-            return rtn;
-        }
-
-        protected string GenerateMacros()
-        {
-            if (Macros.Count == 0)
-                return "";
-
-            var rtn = "\n";
-
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var macro in Macros)
-            {
-                rtn += macro + "\n";
-            }
-
-            return rtn;
-        }
-
-        public void RemoveExtern(ExternModel ext)
-        {
+        public void RemoveExtern(ExternModel ext) {
             Externs.Remove(ext);
         }
 
-        public void RemoveFunctionDeclaration(FunctionDeclarationModel function)
-        {
+        public void RemoveFunctionDeclaration(FunctionDeclarationModel function) {
             FunctionDeclarations.Remove(function);
         }
 
-        public void RemoveInclude(IncModel inc)
-        {
+        public void RemoveInclude(IncModel inc) {
             Includes.Remove(inc);
         }
 
-        public void RemoveMacro(MacroModel macro)
-        {
+        public void RemoveMacro(MacroModel macro) {
             Macros.Remove(macro);
         }
 
-        internal static string ReadUser(string value, string region, string endregion)
-        {
+        internal static string ReadUser(string value, string region, string endregion) {
             if (value.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(value));
             if (region.IsNullOrEmpty())
@@ -264,8 +166,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             if (endregion.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(endregion));
 
-            if (value.Contains(region) && value.Contains(endregion))
-            {
+            if (value.Contains(region) && value.Contains(endregion)) {
                 var begin = value.IndexOf(region, StringComparison.Ordinal) + region.Length;
                 var end = value.IndexOf(endregion, StringComparison.Ordinal);
 
@@ -275,28 +176,91 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             return "";
         }
 
-        private void ReadCopyright(string data)
-        {
+        protected void AddFunctionDeclaration(FunctionDeclarationModel function) {
+            FunctionDeclarations.Add(function);
+        }
+
+        protected void AddInclude(IncModel inc) {
+            Includes.Add(inc);
+        }
+
+        protected void AddMacro(MacroModel macro) {
+            Macros.Add(macro);
+        }
+
+        protected string GenerateExterns() {
+            if (Externs.Count == 0)
+                return "";
+
+            var rtn = "\n";
+
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var ext in Externs) {
+                rtn += ext + "\n";
+            }
+
+            return rtn;
+        }
+
+        protected string GenerateFunctionDeclarations() {
+            if (FunctionDeclarations.Count == 0)
+                return "";
+
+            var rtn = "\n";
+
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var functionDeclaration in FunctionDeclarations) {
+                rtn += functionDeclaration + "\n";
+            }
+
+            return rtn;
+        }
+
+        protected string GenerateIncludes() {
+            if (Includes.Count == 0)
+                return "";
+
+            var rtn = "\n";
+
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var include in Includes) {
+                rtn += include + "\n";
+            }
+
+            return rtn;
+        }
+
+        protected string GenerateMacros() {
+            if (Macros.Count == 0)
+                return "";
+
+            var rtn = "\n";
+
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var macro in Macros) {
+                rtn += macro + "\n";
+            }
+
+            return rtn;
+        }
+
+        private void ReadCopyright(string data) {
             Copyright = ReadUser(data, RegionCopyright, EndregionCopyright);
         }
 
-        private void ReadUserFunctionDeclarations(string data)
-        {
+        private void ReadUserFunctionDeclarations(string data) {
             UserFunctionDeclarations = ReadUser(data, RegionUserFunctionDeclarations, EndregionUserFunctionDeclarations);
         }
 
-        private void ReadUserIncludes(string data)
-        {
+        private void ReadUserIncludes(string data) {
             UserIncludes = ReadUser(data, RegionUserIncludes, EndregionUserIncludes);
         }
 
-        private void ReadUserMacros(string data)
-        {
+        private void ReadUserMacros(string data) {
             UserMacros = ReadUser(data, RegionUserMacros, EndregionUserMacros);
         }
 
-        private void UpdateCopyright()
-        {
+        private void UpdateCopyright() {
             Copyright = Copyright.Replace("${author}               ", Environment.UserName.PadRight(18, ' '));
             Copyright = Copyright.Replace("${author}", Environment.UserName);
             var date = DateTime.Now;

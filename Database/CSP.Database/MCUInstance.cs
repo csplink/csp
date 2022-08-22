@@ -16,28 +16,23 @@ namespace CSP.Database
         private MCUModel _mcu;
         private RepositoryModel _repository;
 
-        private MCUInstance()
-        {
+        private MCUInstance() {
         }
 
         public static MCUInstance Instance => Lazy.Value;
         public string Company { get; private set; }
 
-        public IPModel IP
-        {
+        public IPModel IP {
             get => _ip;
-            private set
-            {
+            private set {
                 _ip = value;
                 UpdatePinFunctionMode();
             }
         }
 
-        public MCUModel MCU
-        {
+        public MCUModel MCU {
             get => _mcu;
-            private set
-            {
+            private set {
                 _mcu = value;
                 UpdatePinFunctionMode();
             }
@@ -47,13 +42,11 @@ namespace CSP.Database
 
         public RepositoryModel Repository => _repository ??= RepositoryModel.Load($"{IniFile.PathMCUDb}/Repository.xml");
 
-        public MapModel GetMap(string name)
-        {
+        public MapModel GetMap(string name) {
             return _maps.ContainsKey(name) ? _maps[name] : null;
         }
 
-        public void LoadMCU(string company, string name)
-        {
+        public void LoadMCU(string company, string name) {
             DebugUtil.Assert(!company.IsNullOrEmpty(), new ArgumentNullException(nameof(company)));
             DebugUtil.Assert(!name.IsNullOrEmpty(), new ArgumentNullException(nameof(name)));
 
@@ -69,38 +62,31 @@ namespace CSP.Database
             LoadMaps();
         }
 
-        private void LoadIP()
-        {
+        private void LoadIP() {
             var path = $"{IniFile.PathMCUDb}/Company/{Company}/IP/{Name}-IP.xml";
             IP = IPModel.Load(path);
 
             DebugUtil.Assert(IP != null, new ArgumentNullException(nameof(IP)), $"MCU \"{Name}\" 读取失败");
         }
 
-        private void LoadMaps()
-        {
+        private void LoadMaps() {
             _maps.Clear();
-            foreach (var name in MapNames)
-            {
+            foreach (var name in MapNames) {
                 _maps.Add(name, MapModel.Load($"{IniFile.PathMCUDb}/Company/{Company}/Map/{MCU.Line}/{name}.xml"));
             }
         }
 
-        private void UpdatePinFunctionMode()
-        {
+        private void UpdatePinFunctionMode() {
             if (MCU == null || IP == null)
                 return;
 
-            foreach (var pin in MCU.Pins)
-            {
+            foreach (var pin in MCU.Pins) {
                 if (pin.Functions == null)
                     continue;
 
                 // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-                foreach (var function in pin.Functions)
-                {
-                    if (!function.Value.ModeName.IsNullOrEmpty() && IP.GPIO.Modes.ContainsKey(function.Value.ModeName))
-                    {
+                foreach (var function in pin.Functions) {
+                    if (!function.Value.ModeName.IsNullOrEmpty() && IP.GPIO.Modes.ContainsKey(function.Value.ModeName)) {
                         function.Value.Mode = IP.GPIO.Modes[function.Value.ModeName];
                     }
                 }

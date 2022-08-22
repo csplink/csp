@@ -9,14 +9,12 @@ namespace CSP.Modules.Pages.MCU.Tests.Services.Generate
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public GPIOIncTests(ITestOutputHelper testOutputHelper)
-        {
+        public GPIOIncTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
         [Fact]
-        public void Test()
-        {
+        public void Test() {
             var gpioInc = new GPIOInc();
             var inc = gpioInc.Generate();
 

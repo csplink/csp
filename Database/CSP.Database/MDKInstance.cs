@@ -5,18 +5,15 @@ namespace CSP.Database
 {
     internal class MDKInstance
     {
+        public UvprojxModel Uvprojx;
         private static readonly Lazy<MDKInstance> Lazy = new(static () => new MDKInstance());
 
-        public UvprojxModel Uvprojx;
-
-        private MDKInstance()
-        {
+        private MDKInstance() {
         }
 
         public static MDKInstance Instance => Lazy.Value;
 
-        public UvprojxModel Load(string path)
-        {
+        public UvprojxModel Load(string path) {
             Uvprojx = UvprojxModel.Load(path);
             return Uvprojx;
         }

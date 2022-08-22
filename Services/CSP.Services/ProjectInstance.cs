@@ -6,8 +6,7 @@ namespace CSP.Services
     {
         private static readonly Lazy<ProjectInstance> Lazy = new(static () => new ProjectInstance());
 
-        private ProjectInstance()
-        {
+        private ProjectInstance() {
         }
 
         public static ProjectInstance Instance => Lazy.Value;

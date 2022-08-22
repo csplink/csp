@@ -7,8 +7,7 @@ namespace CSP.Apps.Dev.Views.Windows
 {
     public partial class PropertyView
     {
-        public PropertyView()
-        {
+        public PropertyView() {
             InitializeComponent();
 
             var containerExtension = ContainerLocator.Current;
@@ -17,13 +16,11 @@ namespace CSP.Apps.Dev.Views.Windows
             eventAggregator.GetEvent<CustomEditorEvent>().Subscribe(OnCustomEditorReceive);
         }
 
-        private void OnCustomEditorReceive(CustomEditor editor)
-        {
+        private void OnCustomEditorReceive(CustomEditor editor) {
             Property.CustomEditorCollection.Add(editor);
         }
 
-        private void OnPropertyReceive(object property)
-        {
+        private void OnPropertyReceive(object property) {
             Property.SelectedObject = property;
         }
     }

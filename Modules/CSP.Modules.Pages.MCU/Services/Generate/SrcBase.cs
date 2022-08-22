@@ -5,14 +5,10 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 {
     public class SrcBase : GenerateBase
     {
-        protected SrcBase(string path = null) : base(path)
-        {
-            if (!IsSys)
-            {
-                if (path != null)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
+        protected SrcBase(string path = null) : base(path) {
+            if (!IsSys) {
+                if (path != null) {
+                    if (System.IO.File.Exists(path)) {
                         var fileData = System.IO.File.ReadAllText(path);
                         ReadUserFunctions(fileData);
                         ReadUserVariables(fileData);
@@ -45,39 +41,35 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
         #region init
 
-        internal const string EndregionUserInit = "\n// endregion user init";
         internal const string EndregionInit = "\n// endregion init";
-        internal const string RegionUserInit = "// region user init\n";
+        internal const string EndregionUserInit = "\n// endregion user init";
         internal const string RegionInit = "// region init\n";
+        internal const string RegionUserInit = "// region user init\n";
 
         #endregion init
 
         #endregion region
 
         internal List<FunctionModel> Functions { get; } = new();
-        internal string UserFunctions { get; set; }
-        internal string UserVariables { get; set; }
-        internal string UserInit { get; set; }
-        internal List<VariableModel> Variables { get; } = new();
         internal List<string> Init { get; } = new();
+        internal string UserFunctions { get; set; }
+        internal string UserInit { get; set; }
+        internal string UserVariables { get; set; }
+        internal List<VariableModel> Variables { get; } = new();
 
-        public void AddFunction(FunctionModel function)
-        {
+        public void AddFunction(FunctionModel function) {
             Functions.Add(function);
         }
 
-        public void AddVariable(VariableModel variable)
-        {
-            Variables.Add(variable);
-        }
-
-        public void AddInit(string init)
-        {
+        public void AddInit(string init) {
             Init.Add(init);
         }
 
-        public string Generate()
-        {
+        public void AddVariable(VariableModel variable) {
+            Variables.Add(variable);
+        }
+
+        public string Generate() {
             var content = "";
 
             content += RegionCopyright;
@@ -186,87 +178,74 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             return content;
         }
 
-        public string GenerateFunctions()
-        {
+        public string GenerateFunctions() {
             if (Functions.Count == 0)
                 return "";
 
             var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var function in Functions)
-            {
+            foreach (var function in Functions) {
                 rtn += function + "\n";
             }
 
             return rtn;
         }
 
-        public string GenerateVariables()
-        {
-            if (Variables.Count == 0)
-                return "";
-
-            var rtn = "\n";
-
-            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var variable in Variables)
-            {
-                rtn += variable + "\n";
-            }
-
-            return rtn;
-        }
-
-        public string GenerateInit()
-        {
+        public string GenerateInit() {
             if (Init.Count == 0)
                 return "";
 
             var rtn = "\n";
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var init in Init)
-            {
+            foreach (var init in Init) {
                 rtn += $"INIT_BOARD_EXPORT({init}());\n";
             }
 
             return rtn;
         }
 
-        public void RemoveFunction(FunctionModel function)
-        {
+        public string GenerateVariables() {
+            if (Variables.Count == 0)
+                return "";
+
+            var rtn = "\n";
+
+            // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var variable in Variables) {
+                rtn += variable + "\n";
+            }
+
+            return rtn;
+        }
+
+        public void RemoveFunction(FunctionModel function) {
             Functions.Remove(function);
         }
 
-        public void RemoveVariable(VariableModel variable)
-        {
-            Variables.Remove(variable);
-        }
-
-        public void RemoveInit(string init)
-        {
+        public void RemoveInit(string init) {
             Init.Remove(init);
         }
 
-        private void ReadUserExterns(string data)
-        {
+        public void RemoveVariable(VariableModel variable) {
+            Variables.Remove(variable);
+        }
+
+        private void ReadUserExterns(string data) {
             UserExterns = ReadUser(data, RegionUserExterns, EndregionUserExterns);
         }
 
-        private void ReadUserFunctions(string data)
-        {
+        private void ReadUserFunctions(string data) {
             UserFunctions = ReadUser(data, RegionUserFunctions, EndregionUserFunctions);
         }
 
-        private void ReadUserVariables(string data)
-        {
-            UserVariables = ReadUser(data, RegionUserVariables, EndregionUserVariables);
+        private void ReadUserInit(string data) {
+            UserInit = ReadUser(data, RegionUserInit, EndregionUserInit);
         }
 
-        private void ReadUserInit(string data)
-        {
-            UserInit = ReadUser(data, RegionUserInit, EndregionUserInit);
+        private void ReadUserVariables(string data) {
+            UserVariables = ReadUser(data, RegionUserVariables, EndregionUserVariables);
         }
     }
 }

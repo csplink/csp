@@ -2,8 +2,7 @@
 {
     public partial class PinBottom
     {
-        public PinBottom()
-        {
+        public PinBottom() {
             InitializeComponent();
             PinName = ButtonPin;
             PinNote = TextBlockNote;

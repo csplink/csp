@@ -2,8 +2,7 @@
 {
     public partial class PinConfigView
     {
-        public PinConfigView()
-        {
+        public PinConfigView() {
             InitializeComponent();
         }
     }

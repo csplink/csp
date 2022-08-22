@@ -11,8 +11,7 @@ namespace CSP.Services
         public static string Path { get; set; }
         public static ProjectModel Project { get; set; }
 
-        public static void Create(string path, ProjectModel model)
-        {
+        public static void Create(string path, ProjectModel model) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
             DebugUtil.Assert(model != null, new ArgumentNullException(nameof(model)));
 
@@ -22,13 +21,11 @@ namespace CSP.Services
             Project = model;
         }
 
-        public static void Create(string path)
-        {
+        public static void Create(string path) {
             Create(path, Project);
         }
 
-        public static ProjectModel Load(string path)
-        {
+        public static ProjectModel Load(string path) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
 
             Path = path;

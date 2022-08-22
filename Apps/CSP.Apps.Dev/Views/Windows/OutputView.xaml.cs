@@ -2,8 +2,7 @@
 {
     public partial class OutputView
     {
-        public OutputView()
-        {
+        public OutputView() {
             InitializeComponent();
         }
     }

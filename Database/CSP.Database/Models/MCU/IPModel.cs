@@ -15,8 +15,7 @@ namespace CSP.Database.Models.MCU
     {
         public IpGpioModel GPIO { get; set; }
 
-        internal static IPModel Load(string path)
-        {
+        internal static IPModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
@@ -26,12 +25,10 @@ namespace CSP.Database.Models.MCU
             var reader = new StreamReader(path);
 
             IPModel rtn;
-            try
-            {
+            try {
                 rtn = (IPModel)deserializer.Deserialize(reader);
             }
-            catch (InvalidOperationException e)
-            {
+            catch (InvalidOperationException e) {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
@@ -41,10 +38,8 @@ namespace CSP.Database.Models.MCU
                 return null;
 
             //给辅助变量赋值,将变量转化为字典形式
-            foreach (var mode in rtn.GPIO.ModesTemp)
-            {
-                foreach (var parameter in mode.ParametersTemp)
-                {
+            foreach (var mode in rtn.GPIO.ModesTemp) {
+                foreach (var parameter in mode.ParametersTemp) {
                     mode.Parameters.Add(parameter.Group, parameter);
                 }
 

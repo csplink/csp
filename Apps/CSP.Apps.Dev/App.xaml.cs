@@ -13,8 +13,7 @@ namespace CSP.Apps.Dev
 {
     public partial class App
     {
-        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
-        {
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog) {
             base.ConfigureModuleCatalog(moduleCatalog);
 
             moduleCatalog.AddModule<CSPModule>();
@@ -24,29 +23,24 @@ namespace CSP.Apps.Dev
             moduleCatalog.AddModule<Modules.Pages.MCU.MCUModule>();
         }
 
-        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)
-        {
+        protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings) {
             base.ConfigureRegionAdapterMappings(regionAdapterMappings);
             regionAdapterMappings.RegisterMapping(typeof(DockingManager), Container.Resolve<RegionAdapter.DockingManager.RegionAdapter>());
         }
 
-        protected override Window CreateShell()
-        {
+        protected override Window CreateShell() {
             return Container.Resolve<MainView>();
         }
 
-        protected override void RegisterTypes(IContainerRegistry containerRegistry)
-        {
+        protected override void RegisterTypes(IContainerRegistry containerRegistry) {
         }
 
-        private void OnAppExit(object sender, ExitEventArgs e)
-        {
+        private void OnAppExit(object sender, ExitEventArgs e) {
             IniFile.Save();
             Log.CloseAndFlush();
         }
 
-        private void OnAppStartup(object sender, StartupEventArgs e)
-        {
+        private void OnAppStartup(object sender, StartupEventArgs e) {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Debug()

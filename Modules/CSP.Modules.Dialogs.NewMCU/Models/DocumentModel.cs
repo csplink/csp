@@ -16,12 +16,10 @@ namespace CSP.Modules.Dialogs.NewMCU.Models
         private string _name;
         private string _url;
 
-        public DocumentModel()
-        {
+        public DocumentModel() {
         }
 
-        public DocumentModel(string name)
-        {
+        public DocumentModel(string name) {
             if (name.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(name));
 
@@ -31,8 +29,7 @@ namespace CSP.Modules.Dialogs.NewMCU.Models
             Name = name;
         }
 
-        public DocumentModel(string name, string url)
-        {
+        public DocumentModel(string name, string url) {
             if (url.IsNullOrEmpty())
                 throw new ArgumentNullException(nameof(url));
 
@@ -43,33 +40,28 @@ namespace CSP.Modules.Dialogs.NewMCU.Models
             Url = url;
         }
 
-        public ObservableCollection<DocumentModel> Children
-        {
+        public ObservableCollection<DocumentModel> Children {
             get => _children;
             set => SetProperty(ref _children, value);
         }
 
-        public BitmapImage Image
-        {
+        public BitmapImage Image {
             get => _image;
             set => SetProperty(ref _image, value);
         }
 
-        public bool IsExpanded
-        {
+        public bool IsExpanded {
             get => _isExpanded;
 
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public string Name
-        {
+        public string Name {
             get => _name;
             set => SetProperty(ref _name, value);
         }
 
-        public string Url
-        {
+        public string Url {
             get => _url;
             set => SetProperty(ref _url, value);
         }

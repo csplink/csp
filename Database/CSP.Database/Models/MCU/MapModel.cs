@@ -18,74 +18,23 @@ namespace CSP.Database.Models.MCU
     public class MapModel
     {
         [XmlIgnore]
+        public Dictionary<string, Dictionary<string, Attribute>> Attributes { get; set; } = new();
+
+        [XmlIgnore]
         public Dictionary<string, GroupModel> Groups { get; } = new();
 
         [XmlArray("Groups")]
         [XmlArrayItem("Group")]
         public GroupModel[] GroupsTemp { get; set; }
 
-        [XmlIgnore]
-        public Dictionary<string, string> Total { get; } = new();
-
         [XmlArray("Properties")]
         [XmlArrayItem("Property")]
         public PropertyModel[] Properties { get; set; }
 
         [XmlIgnore]
-        public Dictionary<string, Dictionary<string, Attribute>> Attributes { get; set; } = new();
+        public Dictionary<string, string> Total { get; } = new();
 
-        internal static MapModel Load(string path)
-        {
-            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
-
-            if (!File.Exists(path)) return null;
-
-            var deserializer = new XmlSerializer(typeof(MapModel));
-            var reader = new StreamReader(path);
-
-            MapModel rtn;
-            try
-            {
-                rtn = (MapModel)deserializer.Deserialize(reader);
-            }
-            catch (InvalidOperationException e)
-            {
-                MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-
-            DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
-            if (rtn == null)
-                return null;
-
-            //给辅助变量赋值,将变量转化为字典形式
-            foreach (var group in rtn.GroupsTemp)
-            {
-                foreach (var value in group.ValuesTemp)
-                {
-                    rtn.Total.Add(value.Name, value.Comments);
-                }
-
-                rtn.Groups.Add(group.Name, group);
-            }
-
-            foreach (var property in rtn.Properties)
-            {
-                var attributes = new Dictionary<string, Attribute>
-                {
-                    {"DisplayName", new DisplayNameAttribute(property.DisplayName) },
-                    {"Description", new DescriptionAttribute(property.Description) },
-                    {"Category",new CategoryAttribute(property.Category) },
-                    {"ReadOnly", new ReadOnlyAttribute(property.ReadOnly) }
-                };
-                rtn.Attributes.Add(property.Group, attributes);
-            }
-
-            return rtn;
-        }
-
-        internal static void Create(string path, MapModel model)
-        {
+        internal static void Create(string path, MapModel model) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)));
             DebugUtil.Assert(model != null, new ArgumentNullException(nameof(model)));
 
@@ -105,8 +54,51 @@ namespace CSP.Database.Models.MCU
             writer.Close();
         }
 
-        internal static MapModel Transform(string path)
-        {
+        internal static MapModel Load(string path) {
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
+
+            if (!File.Exists(path)) return null;
+
+            var deserializer = new XmlSerializer(typeof(MapModel));
+            var reader = new StreamReader(path);
+
+            MapModel rtn;
+            try {
+                rtn = (MapModel)deserializer.Deserialize(reader);
+            }
+            catch (InvalidOperationException e) {
+                MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+
+            DebugUtil.Assert(rtn != null, new ArgumentNullException(nameof(rtn)), "XML反序列化失败");
+            if (rtn == null)
+                return null;
+
+            //给辅助变量赋值,将变量转化为字典形式
+            foreach (var group in rtn.GroupsTemp) {
+                foreach (var value in group.ValuesTemp) {
+                    rtn.Total.Add(value.Name, value.Comments);
+                }
+
+                rtn.Groups.Add(group.Name, group);
+            }
+
+            foreach (var property in rtn.Properties) {
+                var attributes = new Dictionary<string, Attribute>
+                {
+                    {"DisplayName", new DisplayNameAttribute(property.DisplayName) },
+                    {"Description", new DescriptionAttribute(property.Description) },
+                    {"Category",new CategoryAttribute(property.Category) },
+                    {"ReadOnly", new ReadOnlyAttribute(property.ReadOnly) }
+                };
+                rtn.Attributes.Add(property.Group, attributes);
+            }
+
+            return rtn;
+        }
+
+        internal static MapModel Transform(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path)) return null;
@@ -118,35 +110,27 @@ namespace CSP.Database.Models.MCU
 
             // string line;
             // while ((line = reader.ReadLine()) != null)
-            while (reader.ReadLine() is { } line)
-            {
-                if (!line.StartsWith(@"/** @defgroup "))
-                {
+            while (reader.ReadLine() is { } line) {
+                if (!line.StartsWith(@"/** @defgroup ")) {
                     continue;
                 }
 
                 GroupModel group = null;
                 var ps = line.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                if (ps.Length >= 4)
-                {
+                if (ps.Length >= 4) {
                     group = new GroupModel { Name = ps[2], Comments = ps[3] };
                 }
 
                 var values = new List<GroupModel.ValueModel>();
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (line.StartsWith(@"#define CHAL_") && line.Contains(@"  // "))
-                    {
+                while ((line = reader.ReadLine()) != null) {
+                    if (line.StartsWith(@"#define CHAL_") && line.Contains(@"  // ")) {
                         ps = line.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                        if (ps.Length >= 5)
-                        {
+                        if (ps.Length >= 5) {
                             values.Add(new GroupModel.ValueModel { Name = ps[1], Comments = ps[4] });
                         }
                     }
-                    else if (line.StartsWith(@" * @}"))
-                    {
-                        if (group != null)
-                        {
+                    else if (line.StartsWith(@" * @}")) {
+                        if (group != null) {
                             group.ValuesTemp = values.ToArray();
                             groups.Add(group);
                         }
@@ -191,8 +175,7 @@ namespace CSP.Database.Models.MCU
                 public Dictionary<string, string> Source { get; set; } = new();
 
                 [XmlAttribute]
-                public string Value
-                {
+                public string Value {
                     get => _value;
                     set => SetProperty(ref _value, value);
                 }
@@ -201,14 +184,14 @@ namespace CSP.Database.Models.MCU
 
         public class PropertyModel
         {
-            [XmlAttribute]
-            public string Group { get; set; }
-
-            public string DisplayName { get; set; }
+            public string Category { get; set; }
 
             public string Description { get; set; }
 
-            public string Category { get; set; }
+            public string DisplayName { get; set; }
+
+            [XmlAttribute]
+            public string Group { get; set; }
 
             public bool ReadOnly { get; set; }
         }

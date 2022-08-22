@@ -8,18 +8,15 @@ namespace CSP.Apps.Dev.ViewModels.Windows
         private CustomEditorCollection _customEditorCollection = new();
         private object _selectedObject;
 
-        public PropertyViewModel()
-        {
+        public PropertyViewModel() {
         }
 
-        public CustomEditorCollection CustomEditorCollection
-        {
+        public CustomEditorCollection CustomEditorCollection {
             get => _customEditorCollection;
             set => SetProperty(ref _customEditorCollection, value);
         }
 
-        public object SelectedObject
-        {
+        public object SelectedObject {
             get => _selectedObject;
             set => SetProperty(ref _selectedObject, value);
         }
