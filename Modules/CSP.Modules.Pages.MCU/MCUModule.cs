@@ -14,12 +14,13 @@ namespace CSP.Modules.Pages.MCU
         public void OnInitialized(IContainerProvider containerProvider) {
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
-            RegionUtil.RegisterViewWithRegion(regionManager, "Region.Window.Document", typeof(MCUConfigView));
+            RegionUtil.RegisterViewWithRegion(regionManager, "Region.Window.Document", typeof(PropertyTableView));
+            RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry) {
-            RegionUtil.RegisterForNavigation<PinConfigView>(containerRegistry, "Page.MCU.PinConfig");
-            RegionUtil.RegisterForNavigation<GPIOView>(containerRegistry, "Page.MCU.PinConfig.MCUConfig.GPIO");
+            RegionUtil.RegisterForNavigation<ConfigView>(containerRegistry, "Page.MCU.Config");
+            RegionUtil.RegisterForNavigation<GPIOView>(containerRegistry, "Page.MCU.Config.PropertyTableView.GPIO");
             RegionUtil.RegisterForNavigation<LQFP48View>(containerRegistry, "Page.MCU.Package.LQFP48");
             RegionUtil.RegisterForNavigation<LQFP64View>(containerRegistry, "Page.MCU.Package.LQFP64");
             RegionUtil.RegisterForNavigation<LQFP144View>(containerRegistry, "Page.MCU.Package.LQFP144");

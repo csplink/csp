@@ -1,8 +1,8 @@
 ﻿namespace CSP.Modules.Pages.MCU.Views
 {
-    public partial class PinConfigView
+    public partial class ConfigView
     {
-        public PinConfigView() {
+        public ConfigView() {
             InitializeComponent();
         }
     }

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
-    public class PinConfigViewModel : BindableBase, INavigationAware
+    public class ConfigViewModel : BindableBase, INavigationAware
     {
         #region INavigationAware
 
@@ -33,7 +33,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
 
-        public PinConfigViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
+        public ConfigViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
@@ -43,7 +43,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             AddModules();
             try {
                 var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{MCUHelper.MCU.Package}View");
-                RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.PinConfig.MCUView", type);
+                RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
             }
             catch {
                 MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
@@ -74,7 +74,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 foreach (var category in module.Categories) {
                     var infoCategory = new SolutionExplorerEvent.Model(category.Name) { Image = Icon.BlockTwo, IsExpanded = true };
                     infoCategory.CallBack += value => {
-                        RegionUtil.RequestNavigate(_regionManager, "Region.MCU.PinConfig.MCUConfig", $"Page.MCU.PinConfig.MCUConfig.{value}");
+                        RegionUtil.RequestNavigate(_regionManager, "Region.MCU.Config.PropertyTableView", $"Page.MCU.Config.PropertyTableView.{value}");
                     };
                     infoModule.Children.Add(infoCategory);
                 }

@@ -48,7 +48,6 @@ namespace CSP.Apps.Dev.ViewModels
             get {
                 return new DelegateCommand(() => {
                     _eventAggregator.GetEvent<SaveEvent>().Publish("Events.Save");
-                    RegionUtil.RequestNavigate(_regionManager, "Region.Window.Document", "Page.MCU.PinConfig");
                 });
             }
         }
@@ -67,7 +66,7 @@ namespace CSP.Apps.Dev.ViewModels
                     _eventAggregator.GetEvent<RenderedEvent>().Publish("Events.Rendered.Window");
 
                     RegionUtil.RequestNavigate(_regionManager, "Region.Window.Document", "Page.Home");
-                    RegionUtil.RequestNavigate(_regionManager, "Region.Window.Document", "Page.MCU.PinConfig");
+                    RegionUtil.RequestNavigate(_regionManager, "Region.Window.Document", "Page.MCU.Config");
                 });
             }
         }
