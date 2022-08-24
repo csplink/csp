@@ -13,7 +13,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
         #region INavigationAware
 
         public bool IsNavigationTarget(NavigationContext navigationContext) {
-            return false;
+            return true;
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext) {

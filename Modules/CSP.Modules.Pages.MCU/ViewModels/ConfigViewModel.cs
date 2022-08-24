@@ -14,22 +14,8 @@ using System.Collections.Generic;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
-    public class ConfigViewModel : BindableBase, INavigationAware
+    public class ConfigViewModel : BindableBase
     {
-        #region INavigationAware
-
-        public bool IsNavigationTarget(NavigationContext navigationContext) {
-            return false;
-        }
-
-        public void OnNavigatedFrom(NavigationContext navigationContext) {
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext) {
-        }
-
-        #endregion INavigationAware
-
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
 
