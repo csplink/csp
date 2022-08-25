@@ -6,14 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:panAndZoom="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <panAndZoom:ZoomBorder Stretch="None">
-        <Canvas
-            Width="1280"
-            Height="720"
-            Background="Red" />
+        <Canvas Width="1280" Height="720">
+            <svgc:SvgViewbox Source="{Binding ClockTreeImage}" />
+        </Canvas>
     </panAndZoom:ZoomBorder>
 </UserControl>

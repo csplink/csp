@@ -10,6 +10,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
 		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+		<PackageReference Include="SharpVectors" Version="1.8.0" />
 		<PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.SfDiagram.WPF" Version="20.2.0.39" />
