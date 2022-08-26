@@ -15,7 +15,6 @@ namespace CSP.Modules.Pages.MCU
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
             RegionUtil.RegisterViewWithRegion(regionManager, "Region.Window.Document", typeof(PropertyTableView));
-            RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry) {

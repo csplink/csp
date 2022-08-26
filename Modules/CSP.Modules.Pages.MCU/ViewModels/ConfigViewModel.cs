@@ -3,6 +3,7 @@ using CSP.Database.Components;
 using CSP.Database.Models.MCU;
 using CSP.Events;
 using CSP.Modules.Pages.MCU.Services.Generate;
+using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
 using CSP.Utils;
 using Prism.Events;
@@ -35,6 +36,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
             }
 
+            RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));
             _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
         }
 

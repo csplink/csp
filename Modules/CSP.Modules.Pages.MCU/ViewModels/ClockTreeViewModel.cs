@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CSP.Resources;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using System;
+using CSP.Database;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
@@ -14,6 +16,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         public ClockTreeViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
+            var path = $"{IniFile.PathMCUDb}/Company/{MCUHelper.Company}/Clock/{MCUHelper.MCU.ClockTree}.svg";
+            ClockTreeImage = new Uri(path);
         }
 
         public Uri ClockTreeImage {
