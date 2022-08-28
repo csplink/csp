@@ -1,9 +1,9 @@
-﻿using CSP.Database.Models.MCU;
-using CSP.Utils.Extensions;
+﻿using CSP.Utils.Extensions;
 using Syncfusion.Data;
 using Syncfusion.UI.Xaml.Grid;
 using System.Collections.ObjectModel;
 using System.Windows;
+using CSP.Modules.Dialogs.NewMCU.Models;
 
 namespace CSP.Modules.Dialogs.NewMCU.Views.Components
 {

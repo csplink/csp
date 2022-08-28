@@ -21,8 +21,8 @@
 		</PackageReference>
 	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CSP.Modules.Pages.MCU\CSP.Modules.Pages.MCU.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\CSP.Modules.Pages.MCU\CSP.Modules.Pages.MCU.csproj" />
+    </ItemGroup>
 
 </Project>

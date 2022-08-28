@@ -24,20 +24,20 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            MCUHelper.LoadMcu("Geehy", "APM32F103ZET6");
-
-            AddCustomEditor();
-            AddModules();
-            try {
-                var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{MCUHelper.MCU.Package}View");
-                RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
-            }
-            catch {
-                MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
-            }
-
-            RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));
-            _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
+            // MCUHelper.LoadMcu("Geehy", "APM32F103ZET6");
+            //
+            // AddCustomEditor();
+            // AddModules();
+            // try {
+            //     var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{MCUHelper.MCU.Package}View");
+            //     RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
+            // }
+            // catch {
+            //     MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
+            // }
+            //
+            // RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));
+            // _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
         }
 
         private void AddCustomEditor() {
