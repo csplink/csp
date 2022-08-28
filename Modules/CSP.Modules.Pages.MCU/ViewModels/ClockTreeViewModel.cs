@@ -16,8 +16,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         public ClockTreeViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
-            var path = $"{IniFile.PathMCUDb}/Company/{MCUHelper.Company}/Clock/{MCUHelper.MCU.ClockTree}.svg";
-            ClockTreeImage = new Uri(path);
+            ClockTreeImage = new Uri($"{IniFile.PathMCUDb}/Company/{MCUHelper.Company}/Clock/{MCUHelper.MCU.ClockTree}.svg");
         }
 
         public Uri ClockTreeImage {
