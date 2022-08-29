@@ -1,11 +1,11 @@
-﻿using CSP.Utils;
-using CSP.Utils.Extensions;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
+using CSP.Utils;
+using CSP.Utils.Extensions;
 
-namespace CSP.Modules.Dialogs.NewMCU.Models
+namespace CSP.Models
 {
     [XmlRoot("MCU", IsNullable = false)]
     public class MCUModel
