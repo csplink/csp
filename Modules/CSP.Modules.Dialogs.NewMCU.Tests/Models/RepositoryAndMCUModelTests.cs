@@ -1,16 +1,17 @@
 ﻿using CSP.Modules.Dialogs.NewMCU.Models;
 using CSP.Resources;
+using CSP.Models;
 using System.IO;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace CSP.Modules.Dialogs.NewMCU.Tests.Models
 {
-    public class MCUAndRepositoryModelTests
+    public class RepositoryAndMCUModelTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public MCUAndRepositoryModelTests(ITestOutputHelper testOutputHelper) {
+        public RepositoryAndMCUModelTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
 
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];

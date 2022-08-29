@@ -12,6 +12,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using CSP.Models;
 
 namespace CSP.Modules.Dialogs.NewMCU.ViewModels
 {
