@@ -1,11 +1,11 @@
-﻿using CSP.Database.Models.MCU;
+﻿using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Services.Generate.Models;
 
 namespace CSP.Modules.Pages.MCU.Services.Generate
 {
     public class GPIOSrc : SrcBase
     {
-        public GPIOSrc(MCUModel mcu = null, string path = null) : base(path) {
+        public GPIOSrc(PinoutModel mcu = null, string path = null) : base(path) {
             File = "csp_gpio.c";
             Brief = "This file provides code for the configuration of all used GPIO.";
 
@@ -28,9 +28,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
 
             // foreach (var pin in mcu.Pins)
             // {
-            //     if (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked)
+            //     if (((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).IsLocked)
             //     {
-            //         switch (((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function)
+            //         switch (((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Function)
             //         {
             //             case "GPIO-Input":
             //                 {
@@ -39,9 +39,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_init"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
             //                     functionUse.Parameters.Add("-1");
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
             //                     function.FunctionUses.Add(functionUse);
             //                 }
             //                 break;
@@ -53,7 +53,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_write_pin"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.Value);
             //                     function.FunctionUses.Add(functionUse);
             //
             //                     functionUse = new FunctionModel.FunctionUseModel
@@ -61,9 +61,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_init"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.Value);
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
             //                     function.FunctionUses.Add(functionUse);
             //                 }
             //                 break;
@@ -75,9 +75,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_init"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
             //                     functionUse.Parameters.Add("-1");
-            //                     functionUse.Parameters.Add(((MCUModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
             //                     function.FunctionUses.Add(functionUse);
             //                 }
             //                 break;
