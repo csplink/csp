@@ -1,8 +1,7 @@
-﻿using CSP.Database;
-using CSP.Database.Models.MCU;
+﻿using CSP.Modules.Pages.MCU.Models;
+using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using Prism.Mvvm;
-using Prism.Regions;
 
 namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package
 {
@@ -14,8 +13,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package
             }
         }
 
-        public string Company { get => MCUHelper.Company; }
-        public string Name { get => MCUHelper.Name; }
-        public MCUModel.PinModel[] Pins { get => MCUHelper.MCU.Pins; }
+        public string Company { get => DescriptionHelper.Company; }
+        public string Name { get => DescriptionHelper.Name; }
+        public PinoutModel.PinModel[] Pins { get => DescriptionHelper.Pinout.Pins; }
     }
 }

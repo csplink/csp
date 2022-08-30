@@ -12,7 +12,10 @@ namespace CSP.Modules.Pages.MCU.Tools
         }
 
         public static DescriptionInstance Instance => Lazy.Value;
+
+        public string Company { get; set; }
         public MCUModel MCU { get; set; }
+        public string Name { get; set; }
         public PinoutModel Pinout { get; set; }
     }
 }
