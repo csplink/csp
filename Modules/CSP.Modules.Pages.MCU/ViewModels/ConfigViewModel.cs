@@ -1,9 +1,5 @@
-﻿using CSP.Database;
-using CSP.Database.Components;
-using CSP.Database.Models.MCU;
-using CSP.Events;
+﻿using CSP.Events;
 using CSP.Modules.Pages.MCU.Services.Generate;
-using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
 using CSP.Utils;
 using Prism.Events;

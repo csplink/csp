@@ -1,5 +1,4 @@
-﻿using CSP.Database;
-using CSP.Database.Models.MCU;
+﻿using CSP.Modules.Pages.MCU.Models;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -25,13 +24,13 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
         #endregion INavigationAware
 
         private readonly IEventAggregator _eventAggregator;
-        private ObservableCollection<MCUModel.PinModel.DataContextModel> _gpioCollection = new();
-        private MCUModel.PinModel.DataContextModel _selectedItem;
+        private ObservableCollection<PinoutModel.PinModel.DataContextModel> _gpioCollection = new();
+        private PinoutModel.PinModel.DataContextModel _selectedItem;
 
         public GPIOViewModel(IEventAggregator eventAggregator) {
             _eventAggregator = eventAggregator;
 
-            MCUModel mcu = MCUHelper.MCU;
+            PinoutModel mcu = MCUHelper.MCU;
             if (mcu == null)
                 return;
 
@@ -43,12 +42,12 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             }
         }
 
-        public ObservableCollection<MCUModel.PinModel.DataContextModel> GPIOCollection {
+        public ObservableCollection<PinoutModel.PinModel.DataContextModel> GPIOCollection {
             get => _gpioCollection;
             set => SetProperty(ref _gpioCollection, value);
         }
 
-        public MCUModel.PinModel.DataContextModel SelectedItem {
+        public PinoutModel.PinModel.DataContextModel SelectedItem {
             get => _selectedItem;
             set {
                 SetProperty(ref _selectedItem, value);
@@ -66,7 +65,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             if (e.PropertyName != "IsLocked")
                 return;
 
-            if (sender is MCUModel.PinModel.DataContextModel value) {
+            if (sender is PinoutModel.PinModel.DataContextModel value) {
                 if (value.IsLocked) {
                     GPIOCollection.Add(value);
                 }

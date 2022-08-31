@@ -1,6 +1,5 @@
-﻿using CSP.Database;
-using CSP.Database.Models.MCU;
-using CSP.Events;
+﻿using CSP.Events;
+using CSP.Modules.Pages.MCU.Models;
 using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Ioc;
@@ -16,9 +15,9 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
     public class PinBase : UserControl
     {
         public static readonly DependencyProperty PinProperty = DependencyProperty.Register(nameof(Pin),
-            typeof(MCUModel.PinModel),
+            typeof(PinoutModel.PinModel),
             typeof(PinBase),
-            new FrameworkPropertyMetadata(new MCUModel.PinModel(), OnPinChanged) { BindsTwoWayByDefault = true });
+            new FrameworkPropertyMetadata(new PinoutModel.PinModel(), OnPinChanged) { BindsTwoWayByDefault = true });
 
         private readonly IEventAggregator _eventAggregator;
         private readonly MenuItem _menuLock = new() { Header = "锁定" };
@@ -32,8 +31,8 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             _eventAggregator = containerExtension.Resolve<IEventAggregator>();
         }
 
-        public MCUModel.PinModel Pin {
-            get => (MCUModel.PinModel)GetValue(PinProperty);
+        public PinoutModel.PinModel Pin {
+            get => (PinoutModel.PinModel)GetValue(PinProperty);
             set => SetValue(PinProperty, value);
         }
 
@@ -47,7 +46,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             UpdateProperty();
         }
 
-        private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, MCUModel.PinModel pin) {
+        private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel.PinModel pin) {
             if (pin.Functions == null)
                 return null;
 
@@ -140,7 +139,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         }
 
         private void OnPinPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (sender is not MCUModel.PinModel.DataContextModel)
+            if (sender is not PinoutModel.PinModel.DataContextModel)
                 return;
 
             if (e.PropertyName == "Label")
@@ -148,7 +147,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         }
 
         private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
-            if (e.NewValue is not MCUModel.PinModel pin)
+            if (e.NewValue is not PinoutModel.PinModel pin)
                 return;
             if (PinName == null || PinNote == null || RightContextMenu == null)
                 return;
@@ -224,7 +223,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             UpdateProperty();
         }
 
-        private void SetLocked(HeaderedItemsControl menuLock, MCUModel.PinModel pin, bool value) {
+        private void SetLocked(HeaderedItemsControl menuLock, PinoutModel.PinModel pin, bool value) {
             if (menuLock == null || PinName == null)
                 return;
 
@@ -252,7 +251,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             }
         }
 
-        private void UpdatePinNote(MCUModel.PinModel pin) {
+        private void UpdatePinNote(PinoutModel.PinModel pin) {
             if (PinNote == null)
                 return;
 

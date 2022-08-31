@@ -8,24 +8,24 @@ using System.Xml.Serialization;
 
 namespace CSP.Modules.Pages.MCU.Models
 {
-    [XmlRoot("MCU", IsNullable = false)]
-    public class PinoutsModel
+    [XmlRoot("Pinout", IsNullable = false)]
+    public class PinoutModel
     {
         [XmlArray("Pins")]
         [XmlArrayItem("Pin")]
         public PinModel[] Pins { get; set; }
 
-        internal static PinoutsModel Load(string path) {
+        internal static PinoutModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path)) return null;
 
-            var deserializer = new XmlSerializer(typeof(PinoutsModel));
+            var deserializer = new XmlSerializer(typeof(PinoutModel));
             var reader = new StreamReader(path);
 
-            PinoutsModel rtn;
+            PinoutModel rtn;
             try {
-                rtn = (PinoutsModel)deserializer.Deserialize(reader);
+                rtn = (PinoutModel)deserializer.Deserialize(reader);
             }
             catch (InvalidOperationException e) {
                 MessageBox.Show(e.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -37,7 +37,6 @@ namespace CSP.Modules.Pages.MCU.Models
                 return null;
 
             //给辅助变量赋值,将变量转化为字典形式
-            // ReSharper disable once LoopCanBePartlyConvertedToQuery
             foreach (var pin in rtn.Pins) {
                 if (pin.FunctionsTemp != null) {
                     foreach (var functions in pin.FunctionsTemp) {
