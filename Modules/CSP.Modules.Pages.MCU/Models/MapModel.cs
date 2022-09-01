@@ -95,20 +95,6 @@ namespace CSP.Modules.Pages.MCU.Models
                 [XmlAttribute]
                 public string Name { get; set; }
             }
-
-            public class ValuePropertyGridComboEditorModel : BindableBase
-            {
-                private string _value;
-
-                [XmlIgnore]
-                public Dictionary<string, string> Source { get; set; } = new();
-
-                [XmlAttribute]
-                public string Value {
-                    get => _value;
-                    set => SetProperty(ref _value, value);
-                }
-            }
         }
 
         public class PropertyModel
