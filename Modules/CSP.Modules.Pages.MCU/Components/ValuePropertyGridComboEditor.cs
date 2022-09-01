@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using CSP.Utils.Extensions;
+using Prism.Mvvm;
+using Syncfusion.Windows.PropertyGrid;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Xml.Serialization;
-using Prism.Mvvm;
-using Syncfusion.Windows.PropertyGrid;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Components
 {

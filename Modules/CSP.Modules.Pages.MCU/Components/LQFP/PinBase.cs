@@ -139,11 +139,11 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         }
 
         private void OnPinPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (sender is not PinoutModel.PinModel.DataContextModel)
-                return;
-
-            if (e.PropertyName == "Label")
-                UpdatePinNote(Pin);
+            // if (sender is not PinoutModel.PinModel.DataContextModel)
+            //     return;
+            //
+            // if (e.PropertyName == "Label")
+            //     UpdatePinNote(Pin);
         }
 
         private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
@@ -153,7 +153,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                 return;
 
             PinName.Content = pin.Name;
-            PinNote.Text = pin.BaseProperty.Label;
+            // PinNote.Text = pin.BaseProperty.Label;
 
             InitPinNameStatus(pin.Type);
 
@@ -168,17 +168,17 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                 menu.Click += OnMenuFunctionClick;
             }
 
-            pin.BaseProperty.PropertyChanged += OnPinPropertyChanged;
+            // pin.BaseProperty.PropertyChanged += OnPinPropertyChanged;
         }
 
         private void SetFunction(string functionName) {
             if (PinName == null || PinNote == null || RightContextMenu == null)
                 return;
 
-            Pin.BaseProperty.Function = functionName;
-
-            Pin.GPIOProperty.Attributes.Clear();
-            Pin.GPIOProperty.Details.Clear();
+            // Pin.BaseProperty.Function = functionName;
+            //
+            // Pin.GPIOProperty.Attributes.Clear();
+            // Pin.GPIOProperty.Details.Clear();
 
             PinNote.Text = "";
 
@@ -192,33 +192,33 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (Pin.Functions[functionName].Type.IsNullOrEmpty())
                 return;
 
-            var gpio = MCUHelper.GetMap("GPIO");
-            if (gpio == null)
-                return;
-
-            switch (Pin.Functions[functionName].Type) {
-                case "GPIO": {
-                        if (Pin.Functions[functionName].Mode != null) {
-                            foreach (var parameter in Pin.Functions[functionName].Mode.Parameters) {
-                                var map = new Dictionary<string, string>();
-
-                                // ReSharper disable once LoopCanBeConvertedToQuery
-                                foreach (var value in parameter.Value.Values) {
-                                    if (gpio.Total.ContainsKey(value)) {
-                                        map.Add(value, gpio.Total[value]);
-                                    }
-                                }
-
-                                var model = new MapModel.GroupModel.ValuePropertyGridComboEditorModel {
-                                    Source = map
-                                };
-                                Pin.GPIOProperty.Details.Add(parameter.Key, model);
-                                Pin.GPIOProperty.Attributes.Add(parameter.Key, gpio.Attributes[parameter.Key]);
-                            }
-                        }
-                    }
-                    break;
-            }
+            // var gpio = MCUHelper.GetMap("GPIO");
+            // if (gpio == null)
+            //     return;
+            //
+            // switch (Pin.Functions[functionName].Type) {
+            //     case "GPIO": {
+            //             if (Pin.Functions[functionName].Mode != null) {
+            //                 foreach (var parameter in Pin.Functions[functionName].Mode.Parameters) {
+            //                     var map = new Dictionary<string, string>();
+            //
+            //                     // ReSharper disable once LoopCanBeConvertedToQuery
+            //                     foreach (var value in parameter.Value.Values) {
+            //                         if (gpio.Total.ContainsKey(value)) {
+            //                             map.Add(value, gpio.Total[value]);
+            //                         }
+            //                     }
+            //
+            //                     var model = new MapModel.GroupModel.ValuePropertyGridComboEditorModel {
+            //                         Source = map
+            //                     };
+            //                     Pin.GPIOProperty.Details.Add(parameter.Key, model);
+            //                     Pin.GPIOProperty.Attributes.Add(parameter.Key, gpio.Attributes[parameter.Key]);
+            //                 }
+            //             }
+            //         }
+            //         break;
+            // }
 
             UpdateProperty();
         }
@@ -227,7 +227,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (menuLock == null || PinName == null)
                 return;
 
-            Pin.BaseProperty.IsLocked = value;
+            // Pin.BaseProperty.IsLocked = value;
 
             menuLock.Header = value ? "解锁" : "锁定";
             if (pin.Type != null)
@@ -255,13 +255,13 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinNote == null)
                 return;
 
-            PinNote.Text = Pin.BaseProperty.Label.IsNullOrEmpty() ?
-                Pin.BaseProperty.Function :
-                $"{Pin.BaseProperty.Label}: ({Pin.BaseProperty.Function})";
+            // PinNote.Text = Pin.BaseProperty.Label.IsNullOrEmpty() ?
+            //     Pin.BaseProperty.Function :
+            //     $"{Pin.BaseProperty.Label}: ({Pin.BaseProperty.Function})";
         }
 
         private void UpdateProperty() {
-            _eventAggregator.GetEvent<PropertyEvent>().Publish(Pin.GPIOProperty);
+            // _eventAggregator.GetEvent<PropertyEvent>().Publish(Pin.GPIOProperty);
         }
     }
 }

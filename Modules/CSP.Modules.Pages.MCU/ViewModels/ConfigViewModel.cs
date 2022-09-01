@@ -1,5 +1,6 @@
 ﻿using CSP.Events;
 using CSP.Modules.Pages.MCU.Services.Generate;
+using CSP.Modules.Pages.MCU.Tools;
 using CSP.Resources;
 using CSP.Utils;
 using Prism.Events;
@@ -8,6 +9,8 @@ using Prism.Regions;
 using Syncfusion.Windows.PropertyGrid;
 using System;
 using System.Collections.Generic;
+using CSP.Modules.Pages.MCU.Components;
+using CSP.Modules.Pages.MCU.Models;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
@@ -40,7 +43,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             CustomEditor editor = new() {
                 Editor = new ValuePropertyGridComboEditor(),
                 HasPropertyType = true,
-                PropertyType = typeof(MapModel.GroupModel.ValuePropertyGridComboEditorModel)
+                PropertyType = typeof(ValuePropertyGridComboEditorModel)
             };
             _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }
@@ -48,10 +51,10 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         private void AddModules() {
             var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows, IsExpanded = true };
 
-            DebugUtil.Assert(MCUHelper.MCU.Modules != null, new ArgumentNullException(nameof(MCUHelper.MCU.Modules)));
+            DebugUtil.Assert(DescriptionHelper.MCU.Modules != null, new ArgumentNullException(nameof(DescriptionHelper.MCU.Modules)));
 
             // ReSharper disable once PossibleNullReferenceException
-            foreach (var module in MCUHelper.MCU.Modules) {
+            foreach (var module in DescriptionHelper.MCU.Modules) {
                 var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne, IsExpanded = true };
                 infoModule.CallBack += value => {
                 };
@@ -76,7 +79,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             // save();
 
-            var mcu = MCUHelper.MCU;
+            var mcu = DescriptionHelper.MCU;
             if (mcu == null)
                 return;
 
@@ -86,7 +89,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             // if (manager?.target == null)
             //     return;
 
-            GenerateService.Generate(mcu, "./test");
+            // GenerateService.Generate(mcu, "./test");
         }
     }
 }
