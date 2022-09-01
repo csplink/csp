@@ -1,6 +1,5 @@
 ﻿using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Services.Generate.Models;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Services.Generate
 {
