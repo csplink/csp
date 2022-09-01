@@ -16,11 +16,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         public ClockTreeViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
-#if DEBUG
-            ClockTreeImage = new Uri($"{IniFile.PathRepository}/{DescriptionHelper.MCU.HAL.Name.ToLower()}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.svg");
-#else
-            ClockTreeImage = new Uri($"{IniFile.PathRepository}/{DescriptionHelper.MCU.HAL.Name.ToLower()}-{DescriptionHelper.MCU.HAL.Name.Version()}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.svg");
-#endif
+
+            ClockTreeImage = new Uri($"{DescriptionHelper.RepositoryPath}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.svg");
         }
 
         public Uri ClockTreeImage {

@@ -23,7 +23,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            // MCUHelper.LoadMcu("Geehy", "APM32F103ZET6");
+            DescriptionHelper.Load("Geehy", "APM32F103ZET6");
             //
             // AddCustomEditor();
             // AddModules();
