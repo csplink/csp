@@ -30,7 +30,7 @@ namespace CSP.Modules.Pages.MCU.Models
         public Dictionary<string, string> Total { get; } = new();
 
         internal static MapModel Load(string path) {
-            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)), "path不能为空");
 
             if (!File.Exists(path)) return null;
 

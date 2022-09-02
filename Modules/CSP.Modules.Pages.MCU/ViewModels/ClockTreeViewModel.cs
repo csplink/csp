@@ -4,6 +4,8 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.IO;
+using CSP.Utils;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
@@ -17,7 +19,11 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            ClockTreeImage = new Uri($"{DescriptionHelper.RepositoryPath}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.svg");
+            var path =
+                $"{DescriptionHelper.RepositoryPath}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.svg";
+            DebugUtil.Assert(File.Exists(path), new FileNotFoundException(nameof(path)), $"{path}: 不存在");
+            if (File.Exists(path))
+                ClockTreeImage = new Uri(path, UriKind.Relative);
         }
 
         public Uri ClockTreeImage {
