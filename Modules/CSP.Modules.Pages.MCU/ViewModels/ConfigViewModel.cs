@@ -1,6 +1,7 @@
 ﻿using CSP.Events;
-using CSP.Modules.Pages.MCU.Services.Generate;
+using CSP.Modules.Pages.MCU.Components;
 using CSP.Modules.Pages.MCU.Tools;
+using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
 using CSP.Utils;
 using Prism.Events;
@@ -9,8 +10,6 @@ using Prism.Regions;
 using Syncfusion.Windows.PropertyGrid;
 using System;
 using System.Collections.Generic;
-using CSP.Modules.Pages.MCU.Components;
-using CSP.Modules.Pages.MCU.Models;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
@@ -24,19 +23,21 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _eventAggregator = eventAggregator;
 
             DescriptionHelper.Load("Geehy", "APM32F103ZET6");
-            //
-            // AddCustomEditor();
-            // AddModules();
-            // try {
-            //     var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{MCUHelper.MCU.Package}View");
-            //     RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
-            // }
-            // catch {
-            //     MessageBoxUtil.Error($"此封装不存在：{MCUHelper.MCU.Package}");
-            // }
-            //
-            // RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));
-            // _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
+
+            AddCustomEditor();
+            AddModules();
+
+            // 添加MCU视图窗口
+            try {
+                var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{DescriptionHelper.MCU.Package}View");
+                RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
+            }
+            catch {
+                MessageBoxUtil.Error($"此封装不存在：{DescriptionHelper.MCU.Package}");
+            }
+
+            RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));// 添加时钟视图窗口
+            _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
         }
 
         private void AddCustomEditor() {
