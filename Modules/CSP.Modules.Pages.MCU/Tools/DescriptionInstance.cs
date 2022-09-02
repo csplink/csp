@@ -42,6 +42,8 @@ namespace CSP.Modules.Pages.MCU.Tools
             Company = mcu.Company;
             Name = mcu.Name;
 
+            Pinout = PinoutModel.Load($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/pinout.xml");
+
             return true;
         }
     }
