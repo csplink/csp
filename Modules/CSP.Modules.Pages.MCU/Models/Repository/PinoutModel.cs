@@ -1,12 +1,12 @@
-﻿using CSP.Utils;
-using CSP.Utils.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
+using CSP.Utils;
+using CSP.Utils.Extensions;
 
-namespace CSP.Modules.Pages.MCU.Models
+namespace CSP.Modules.Pages.MCU.Models.Repository
 {
     [XmlRoot("Pinout", IsNullable = false)]
     public class PinoutModel

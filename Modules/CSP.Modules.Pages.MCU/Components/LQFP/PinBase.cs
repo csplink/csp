@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using CSP.Modules.Pages.MCU.Models.Repository;
 
 namespace CSP.Modules.Pages.MCU.Components.LQFP
 {

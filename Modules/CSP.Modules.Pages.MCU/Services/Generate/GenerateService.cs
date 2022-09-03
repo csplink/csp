@@ -1,6 +1,7 @@
 ﻿using CSP.Modules.Pages.MCU.Models;
 using System;
 using System.IO;
+using CSP.Modules.Pages.MCU.Models.Repository;
 
 namespace CSP.Modules.Pages.MCU.Services.Generate
 {
