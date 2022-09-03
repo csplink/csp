@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CSP.Events;
+using System.Windows.Input;
 
 namespace CSP.Modules.Pages.MCU.Components.LQFP
 {
@@ -45,8 +46,12 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 
         protected ContextMenu RightContextMenu { get; set; }
 
-        protected void OnPinNameClick(object sender, RoutedEventArgs e) {
+        protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
             UpdateProperty();
+        }
+
+        protected void UpdateProperty() {
+            _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinProperty.Property);
         }
 
         private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel.PinModel pin) {
@@ -126,7 +131,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                 return;
 
             SetFunction(name);
-            UpdatePinNote(Pin);
+            UpdatePinNote();
             SetLocked(_menuLock, Pin, true);
         }
 
@@ -151,11 +156,11 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         }
 
         private void OnPinPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            // if (sender is not PinoutModel.PinModel.DataContextModel)
-            //     return;
-            //
-            // if (e.PropertyName == "Label")
-            //     UpdatePinNote(Pin);
+            if (sender is not PinModel)
+                return;
+
+            if (e.PropertyName == "Label")
+                UpdatePinNote();
         }
 
         private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
@@ -263,15 +268,11 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             }
         }
 
-        private void UpdatePinNote(PinoutModel.PinModel pin) {
+        private void UpdatePinNote() {
             if (PinNote == null)
                 return;
 
             PinNote.Text = _pinProperty.Label.IsNullOrEmpty() ? _pinProperty.Function : $"{_pinProperty.Label}: ({_pinProperty.Function})";
-        }
-
-        private void UpdateProperty() {
-            _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinProperty.Property);
         }
     }
 }

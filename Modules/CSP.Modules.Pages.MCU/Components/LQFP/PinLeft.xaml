@@ -28,10 +28,10 @@
                 Margin="1.5,1.5,-2,1.5"
                 x:FieldModifier="private"
                 Background="#b9c4ca"
-                Click="OnPinNameClick"
                 Content="Pin"
                 Cursor="Hand"
-                FontSize="14">
+                FontSize="14"
+                PreviewMouseLeftButtonDown="OnPinNameClick">
                 <Button.ContextMenu>
                     <ContextMenu Name="ButtonPinContextMenu" />
                 </Button.ContextMenu>
