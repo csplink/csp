@@ -75,6 +75,10 @@ namespace CSP.Modules.Pages.MCU.Tools
             return true;
         }
 
+        public MapModel GetMap(string name) {
+            return _maps.ContainsKey(name) ? _maps[name] : null;
+        }
+
         private bool LoadIP(string path) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)), "path不能为空");
             DebugUtil.Assert(Directory.Exists(path), new DirectoryNotFoundException(nameof(path)), $"{path} 不存在");
@@ -94,6 +98,10 @@ namespace CSP.Modules.Pages.MCU.Tools
                     _ips[name] = model;
             }
             return true;
+        }
+
+        public IPModel GetIP(string name) {
+            return _ips.ContainsKey(name) ? _ips[name] : null;
         }
     }
 }
