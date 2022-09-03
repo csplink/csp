@@ -12,11 +12,11 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
     public class IPModel
     {
         [XmlIgnore]
-        public Dictionary<string, IpGpioModeModel> ModeMap { get; } = new();
+        public Dictionary<string, ModeModel> ModeMap { get; } = new();
 
         [XmlArray("Modes")]
         [XmlArrayItem("Mode")]
-        public IpGpioModeModel[] Modes { get; set; }
+        public ModeModel[] Modes { get; set; }
 
         internal static IPModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)), "path不能为空");
@@ -53,7 +53,7 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
             return rtn;
         }
 
-        public class IpGpioModeModel
+        public class ModeModel
         {
             [XmlAttribute]
             public string Name { get; set; }

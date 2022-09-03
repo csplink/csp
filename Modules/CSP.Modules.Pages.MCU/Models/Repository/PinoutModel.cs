@@ -71,19 +71,13 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
             public class FunctionModel
             {
                 [XmlAttribute("Mode")]
-                public string ModeName { get; set; }
+                public string Mode { get; set; }
 
                 [XmlAttribute]
                 public string Name { get; set; }
 
                 [XmlAttribute]
                 public string Type { get; set; }
-            }
-
-            public class ObjectModel
-            {
-                [XmlAttribute]
-                public string Value { get; set; }
             }
         }
     }

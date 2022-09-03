@@ -30,8 +30,8 @@ namespace CSP.Modules.Pages.MCU.Tools
             return Instance.GetMap(name);
         }
 
-        public static PinModel GetPin(string name) {
-            return Instance.GetPin(name);
+        public static PinModel GetPinProperty(string name) {
+            return Instance.GetPinProperty(name);
         }
 
         public static bool Load(MCUModel mcu) {

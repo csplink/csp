@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using CSP.Events;
+using Prism.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
@@ -49,5 +50,7 @@ namespace CSP.Modules.Pages.MCU.Models
             get => _position;
             set => _ = SetProperty(ref _position, value);
         }
+
+        public PropertyDetails Property { get; } = new();
     }
 }
