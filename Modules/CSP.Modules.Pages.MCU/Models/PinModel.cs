@@ -13,7 +13,7 @@ namespace CSP.Modules.Pages.MCU.Models
 {
     public class PinModel : BindableBase
     {
-        private string _function;
+        private string _function = "";
         private bool _isLocked;
         private string _label = "";
         private string _name;

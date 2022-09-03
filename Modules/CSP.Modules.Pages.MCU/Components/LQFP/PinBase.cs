@@ -47,6 +47,21 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         protected ContextMenu RightContextMenu { get; set; }
 
         protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
+            if (_pinProperty.Function.IsNullOrEmpty()) {
+                _pinProperty.Property.Attributes.Clear();
+                _pinProperty.Property.Details.Clear();
+
+                foreach (var details in _pinProperty.GetDetails()) {
+                    if (!_pinProperty.Property.Details.ContainsKey(details.Key))
+                        _pinProperty.Property.Details.Add(details);
+                }
+
+                foreach (var attributes in _pinProperty.GetAttributes()) {
+                    if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key))
+                        _pinProperty.Property.Attributes.Add(attributes);
+                }
+            }
+
             UpdateProperty();
         }
 
@@ -152,7 +167,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 
         private void OnMenuResetClick(object sender, RoutedEventArgs e) {
             SetLocked(_menuLock, Pin, false);
-            SetFunction(null);
+            SetFunction("");
         }
 
         private void OnPinPropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -199,7 +214,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
 
             PinNote.Text = "";
 
-            if (functionName == null) {
+            if (functionName.IsNullOrEmpty()) {
                 return;
             }
 
