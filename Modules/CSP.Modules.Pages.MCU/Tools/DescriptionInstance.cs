@@ -3,6 +3,8 @@ using CSP.Modules.Pages.MCU.Models;
 using CSP.Resources;
 using CSP.Utils;
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CSP.Modules.Pages.MCU.Tools
 {
@@ -15,6 +17,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         }
 
         public static DescriptionInstance Instance => Lazy.Value;
+        private readonly Dictionary<string, MapModel> _maps = new();
         public string Company { get; set; }
 
         public MCUModel MCU {
@@ -44,6 +47,29 @@ namespace CSP.Modules.Pages.MCU.Tools
 
             Pinout = PinoutModel.Load($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/pinout.xml");
 
+            LoadMap($"{RepositoryPath}/description/map");
+
+            return true;
+        }
+
+        private bool LoadMap(string path) {
+            DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)), "path不能为空");
+            DebugUtil.Assert(Directory.Exists(path), new DirectoryNotFoundException(nameof(path)), $"{path} 不存在");
+
+            if (path == null)
+                return false;
+            if (!Directory.Exists(path))
+                return false;
+
+            FileInfo[] files = new DirectoryInfo(path).GetFiles("*.xml", SearchOption.AllDirectories);
+            foreach (var file in files) {
+                var name = file.Name[..^".xml".Length].ToUpper();
+                var model = MapModel.Load(file.FullName);
+                if (!_maps.ContainsKey(file.Name))
+                    _maps.Add(name, model);
+                else
+                    _maps[name] = model;
+            }
             return true;
         }
     }
