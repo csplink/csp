@@ -16,8 +16,10 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
         public PinModel[] Pins { get; set; }
 
         internal static PinoutModel Load(string path) {
-            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)), "path不能为空");
+            DebugUtil.Assert(File.Exists(path), new FileNotFoundException(nameof(path)), $"{path}: 不存在");
 
+            if (path == null) return null;
             if (!File.Exists(path)) return null;
 
             var deserializer = new XmlSerializer(typeof(PinoutModel));

@@ -16,10 +16,11 @@ namespace CSP.Modules.Dialogs.NewMCU.Models
         public CompanyModel[] Companies { get; set; }
 
         public static RepositoryModel Load(string path) {
-            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)), "path不能为空");
+            DebugUtil.Assert(File.Exists(path), new FileNotFoundException(nameof(path)), $"{path}: 不存在");
 
-            if (!File.Exists(path))
-                return null;
+            if (path == null) return null;
+            if (!File.Exists(path)) return null;
 
             var deserializer = new XmlSerializer(typeof(RepositoryModel));
             var reader = new StreamReader(path);
