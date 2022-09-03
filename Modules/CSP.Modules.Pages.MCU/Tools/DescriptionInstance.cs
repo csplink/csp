@@ -55,10 +55,14 @@ namespace CSP.Modules.Pages.MCU.Tools
             LoadIP($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/ip");
 
             foreach (var pin in Pinout.Pins) {
-                _pins.Add(pin.Name, new PinModel {
-                    Name = pin.Name,
-                    Position = pin.Position
-                });
+                if (!_pins.ContainsKey(pin.Name))
+                    _pins.Add(pin.Name, new PinModel {
+                        Name = pin.Name,
+                        Position = pin.Position
+                    });
+                else {
+                    MessageBoxUtil.Error($"存在相同的Pin：{pin.Name}");
+                }
             }
 
             return true;
