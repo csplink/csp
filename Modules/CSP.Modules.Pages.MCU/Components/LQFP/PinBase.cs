@@ -1,4 +1,5 @@
-﻿using CSP.Modules.Pages.MCU.Models;
+﻿using CSP.Events;
+using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils.Extensions;
@@ -9,9 +10,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using CSP.Events;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CSP.Modules.Pages.MCU.Components.LQFP
 {
@@ -235,6 +235,16 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                         }
                         break;
                     }
+            }
+
+            foreach (var details in _pinProperty.GetDetails()) {
+                if (!_pinProperty.Property.Details.ContainsKey(details.Key))
+                    _pinProperty.Property.Details.Add(details);
+            }
+
+            foreach (var attributes in _pinProperty.GetAttributes()) {
+                if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key))
+                    _pinProperty.Property.Attributes.Add(attributes);
             }
 
             UpdateProperty();
