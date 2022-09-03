@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
-using CSP.Utils;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Models.Repository
 {
@@ -38,9 +38,9 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
 
             //给辅助变量赋值,将变量转化为字典形式
             foreach (var pin in rtn.Pins) {
-                if (pin.FunctionsTemp != null) {
-                    foreach (var functions in pin.FunctionsTemp) {
-                        pin.Functions.Add(functions.Name, functions);
+                if (pin.Functions != null) {
+                    foreach (var functions in pin.Functions) {
+                        pin.FunctionMap.Add(functions.Name, functions);
                     }
                 }
             }
@@ -51,11 +51,11 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
         public class PinModel
         {
             [XmlIgnore]
-            public Dictionary<string, FunctionModel> Functions { get; } = new();
+            public Dictionary<string, FunctionModel> FunctionMap { get; } = new();
 
             [XmlArray("Functions")]
             [XmlArrayItem("Function")]
-            public FunctionModel[] FunctionsTemp { get; set; }
+            public FunctionModel[] Functions { get; set; }
 
             [XmlAttribute]
             public string Name { get; set; }

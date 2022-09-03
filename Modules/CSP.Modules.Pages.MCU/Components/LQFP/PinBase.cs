@@ -1,5 +1,4 @@
-﻿using CSP.Events;
-using CSP.Modules.Pages.MCU.Models;
+﻿using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Ioc;
@@ -9,7 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using CSP.Modules.Pages.MCU.Models.Repository;
 
 namespace CSP.Modules.Pages.MCU.Components.LQFP
 {
@@ -48,13 +46,13 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         }
 
         private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel.PinModel pin) {
-            if (pin.Functions == null)
+            if (pin.FunctionMap == null)
                 return null;
 
             var items = new List<MenuItem>();
 
             contextMenu.Items.Add(new Separator());
-            foreach (var menu in pin.Functions.Select(static item => new MenuItem { Header = item.Key })) {
+            foreach (var menu in pin.FunctionMap.Select(static item => new MenuItem { Header = item.Key })) {
                 items.Add(menu);
                 contextMenu.Items.Add(menu);
             }
@@ -187,10 +185,10 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                 return;
             }
 
-            if (!Pin.Functions.ContainsKey(functionName))
+            if (!Pin.FunctionMap.ContainsKey(functionName))
                 return;
 
-            if (Pin.Functions[functionName].Type.IsNullOrEmpty())
+            if (Pin.FunctionMap[functionName].Type.IsNullOrEmpty())
                 return;
 
             // var gpio = MCUHelper.GetMap("GPIO");

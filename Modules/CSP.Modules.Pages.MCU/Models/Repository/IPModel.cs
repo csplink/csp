@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
-using CSP.Utils;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Models.Repository
 {
@@ -12,11 +12,11 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
     public class IPModel
     {
         [XmlIgnore]
-        public Dictionary<string, IpGpioModeModel> Modes { get; } = new();
+        public Dictionary<string, IpGpioModeModel> ModeMap { get; } = new();
 
         [XmlArray("Modes")]
         [XmlArrayItem("Mode")]
-        public IpGpioModeModel[] ModesTemp { get; set; }
+        public IpGpioModeModel[] Modes { get; set; }
 
         internal static IPModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
@@ -41,12 +41,12 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
                 return null;
 
             //给辅助变量赋值,将变量转化为字典形式
-            foreach (var mode in rtn.ModesTemp) {
+            foreach (var mode in rtn.Modes) {
                 foreach (var parameter in mode.ParametersTemp) {
                     mode.Parameters.Add(parameter.Group, parameter);
                 }
 
-                rtn.Modes.Add(mode.Name, mode);
+                rtn.ModeMap.Add(mode.Name, mode);
             }
 
             return rtn;

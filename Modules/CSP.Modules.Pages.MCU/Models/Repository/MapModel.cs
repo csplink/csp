@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
-using CSP.Utils;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Models.Repository
 {
@@ -16,11 +16,11 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
         public Dictionary<string, Dictionary<string, Attribute>> Attributes { get; set; } = new();
 
         [XmlIgnore]
-        public Dictionary<string, GroupModel> Groups { get; } = new();
+        public Dictionary<string, GroupModel> GroupMap { get; } = new();
 
         [XmlArray("Groups")]
         [XmlArrayItem("Group")]
-        public GroupModel[] GroupsTemp { get; set; }
+        public GroupModel[] Groups { get; set; }
 
         [XmlArray("Properties")]
         [XmlArrayItem("Property")]
@@ -51,14 +51,15 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
                 return null;
 
             //给辅助变量赋值,将变量转化为字典形式
-            foreach (var group in rtn.GroupsTemp) {
-                foreach (var value in group.ValuesTemp) {
+            foreach (var group in rtn.Groups) {
+                foreach (var value in group.Values) {
                     rtn.Total.Add(value.Name, value.Comments);
+                    group.ValueMap.Add(value.Name, value);
                 }
-
-                rtn.Groups.Add(group.Name, group);
+                rtn.GroupMap.Add(group.Name, group);
             }
 
+            //将Properties转化为Attribute，以便能够正常解析
             foreach (var property in rtn.Properties) {
                 var attributes = new Dictionary<string, Attribute>
                 {
@@ -81,11 +82,11 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
             public string Name { get; set; }
 
             [XmlIgnore]
-            public Dictionary<string, string> Values { get; } = new();
+            public Dictionary<string, ValueModel> ValueMap { get; } = new();
 
             [XmlArray("Values")]
             [XmlArrayItem("Value")]
-            public ValueModel[] ValuesTemp { get; set; }
+            public ValueModel[] Values { get; set; }
 
             public class ValueModel
             {
