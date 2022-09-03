@@ -20,6 +20,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         public static DescriptionInstance Instance => Lazy.Value;
         private readonly Dictionary<string, MapModel> _maps = new();
         private readonly Dictionary<string, IPModel> _ips = new();
+        private readonly Dictionary<string, PinModel> _pins = new();
         public string Company { get; set; }
 
         public MCUModel MCU {
@@ -48,9 +49,17 @@ namespace CSP.Modules.Pages.MCU.Tools
             Name = mcu.Name;
 
             Pinout = PinoutModel.Load($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/pinout.xml");
+            if (Pinout == null) return false;
 
             LoadMap($"{RepositoryPath}/description/map");
             LoadIP($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/ip");
+
+            foreach (var pin in Pinout.Pins) {
+                _pins.Add(pin.Name, new PinModel {
+                    Name = pin.Name,
+                    Position = pin.Position
+                });
+            }
 
             return true;
         }
@@ -76,10 +85,6 @@ namespace CSP.Modules.Pages.MCU.Tools
             return true;
         }
 
-        public MapModel GetMap(string name) {
-            return _maps.ContainsKey(name) ? _maps[name] : null;
-        }
-
         private bool LoadIP(string path) {
             DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)), "path不能为空");
             DebugUtil.Assert(Directory.Exists(path), new DirectoryNotFoundException(nameof(path)), $"{path} 不存在");
@@ -101,8 +106,16 @@ namespace CSP.Modules.Pages.MCU.Tools
             return true;
         }
 
+        public MapModel GetMap(string name) {
+            return _maps.ContainsKey(name) ? _maps[name] : null;
+        }
+
         public IPModel GetIP(string name) {
             return _ips.ContainsKey(name) ? _ips[name] : null;
+        }
+
+        public PinModel GetPin(string name) {
+            return _pins.ContainsKey(name) ? _pins[name] : null;
         }
     }
 }

@@ -30,6 +30,10 @@ namespace CSP.Modules.Pages.MCU.Tools
             return Instance.GetMap(name);
         }
 
+        public static PinModel GetPin(string name) {
+            return Instance.GetPin(name);
+        }
+
         public static bool Load(MCUModel mcu) {
             DebugUtil.Assert(mcu != null, new ArgumentNullException(nameof(mcu)), "MCU不能为空");
             if (mcu == null)
