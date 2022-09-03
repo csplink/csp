@@ -18,6 +18,7 @@ namespace CSP.Modules.Pages.MCU.Tools
 
         public static DescriptionInstance Instance => Lazy.Value;
         private readonly Dictionary<string, MapModel> _maps = new();
+        private readonly Dictionary<string, IPModel> _ips = new();
         public string Company { get; set; }
 
         public MCUModel MCU {
@@ -48,6 +49,7 @@ namespace CSP.Modules.Pages.MCU.Tools
             Pinout = PinoutModel.Load($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/pinout.xml");
 
             LoadMap($"{RepositoryPath}/description/map");
+            LoadIP($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/ip");
 
             return true;
         }
@@ -69,6 +71,27 @@ namespace CSP.Modules.Pages.MCU.Tools
                     _maps.Add(name, model);
                 else
                     _maps[name] = model;
+            }
+            return true;
+        }
+
+        private bool LoadIP(string path) {
+            DebugUtil.Assert(path != null, new ArgumentNullException(nameof(path)), "path不能为空");
+            DebugUtil.Assert(Directory.Exists(path), new DirectoryNotFoundException(nameof(path)), $"{path} 不存在");
+
+            if (path == null)
+                return false;
+            if (!Directory.Exists(path))
+                return false;
+
+            FileInfo[] files = new DirectoryInfo(path).GetFiles("*.xml", SearchOption.AllDirectories);
+            foreach (var file in files) {
+                var name = file.Name[..^".xml".Length].ToUpper();
+                var model = IPModel.Load(file.FullName);
+                if (!_ips.ContainsKey(file.Name))
+                    _ips.Add(name, model);
+                else
+                    _ips[name] = model;
             }
             return true;
         }

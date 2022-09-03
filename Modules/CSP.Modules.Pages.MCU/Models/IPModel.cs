@@ -11,7 +11,12 @@ namespace CSP.Modules.Pages.MCU.Models
     [XmlRoot("IP", IsNullable = false)]
     public class IPModel
     {
-        public IpGpioModel GPIO { get; set; }
+        [XmlIgnore]
+        public Dictionary<string, IpGpioModeModel> Modes { get; } = new();
+
+        [XmlArray("Modes")]
+        [XmlArrayItem("Mode")]
+        public IpGpioModeModel[] ModesTemp { get; set; }
 
         internal static IPModel Load(string path) {
             DebugUtil.Assert(!path.IsNullOrEmpty(), new ArgumentNullException(nameof(path)));
@@ -36,50 +41,40 @@ namespace CSP.Modules.Pages.MCU.Models
                 return null;
 
             //给辅助变量赋值,将变量转化为字典形式
-            foreach (var mode in rtn.GPIO.ModesTemp) {
+            foreach (var mode in rtn.ModesTemp) {
                 foreach (var parameter in mode.ParametersTemp) {
                     mode.Parameters.Add(parameter.Group, parameter);
                 }
 
-                rtn.GPIO.Modes.Add(mode.Name, mode);
+                rtn.Modes.Add(mode.Name, mode);
             }
 
             return rtn;
         }
 
-        public class IpGpioModel
+        public class IpGpioModeModel
         {
+            [XmlAttribute]
+            public string Name { get; set; }
+
             [XmlIgnore]
-            public Dictionary<string, IpGpioModeModel> Modes { get; } = new();
+            public Dictionary<string, IpGpioModeParameterModel> Parameters { get; } = new();
 
-            [XmlArray("Modes")]
-            [XmlArrayItem("Mode")]
-            public IpGpioModeModel[] ModesTemp { get; set; }
+            [XmlArray("Parameters")]
+            [XmlArrayItem("Parameter")]
+            public IpGpioModeParameterModel[] ParametersTemp { get; set; }
 
-            public class IpGpioModeModel
+            [XmlAttribute]
+            public string Type { get; set; }
+
+            public class IpGpioModeParameterModel
             {
                 [XmlAttribute]
-                public string Name { get; set; }
+                public string Group { get; set; }
 
-                [XmlIgnore]
-                public Dictionary<string, IpGpioModeParameterModel> Parameters { get; } = new();
-
-                [XmlArray("Parameters")]
-                [XmlArrayItem("Parameter")]
-                public IpGpioModeParameterModel[] ParametersTemp { get; set; }
-
-                [XmlAttribute]
-                public string Type { get; set; }
-
-                public class IpGpioModeParameterModel
-                {
-                    [XmlAttribute]
-                    public string Group { get; set; }
-
-                    [XmlArray("Values")]
-                    [XmlArrayItem("Value")]
-                    public string[] Values { get; set; }
-                }
+                [XmlArray("Values")]
+                [XmlArrayItem("Value")]
+                public string[] Values { get; set; }
             }
         }
     }
