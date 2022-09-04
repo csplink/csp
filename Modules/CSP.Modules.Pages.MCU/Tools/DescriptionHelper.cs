@@ -1,10 +1,12 @@
-﻿using System;
-using CSP.Models;
+﻿using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Resources;
 using CSP.Utils;
 using CSP.Utils.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CSP.Modules.Pages.MCU.Tools
 {
@@ -13,6 +15,8 @@ namespace CSP.Modules.Pages.MCU.Tools
         private static readonly DescriptionInstance Instance = DescriptionInstance.Instance;
 
         public static string Company { get => Instance.Company; }
+
+        public static ObservableCollection<KeyValuePair<string, string>> Defines { get => Instance.Defines; }
 
         public static MCUModel MCU { get => Instance.MCU; }
 

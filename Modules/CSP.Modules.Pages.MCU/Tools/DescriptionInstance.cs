@@ -4,6 +4,7 @@ using CSP.Resources;
 using CSP.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using CSP.Modules.Pages.MCU.Models.Repository;
 
@@ -34,6 +35,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         public string Name { get; set; }
         public PinoutModel Pinout { get; set; }
         public string RepositoryPath { get; set; }
+        public ObservableCollection<KeyValuePair<string, string>> Defines { get; } = new();
 
         private bool Load(MCUModel mcu) {
             DebugUtil.Assert(mcu != null, new ArgumentNullException(nameof(mcu)), "MCU不能为空");
