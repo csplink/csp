@@ -20,7 +20,7 @@
     <Grid>
         <syncfusion:SfTreeView
             x:Name="TreeView"
-            AutoExpandMode="AllNodes"
+            AutoExpandMode="RootNodes"
             BorderThickness="1"
             ChildPropertyName="Children"
             FullRowSelect="True"

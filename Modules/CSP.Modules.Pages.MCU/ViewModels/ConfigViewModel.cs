@@ -50,17 +50,17 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         }
 
         private void AddModules() {
-            var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows, IsExpanded = true };
+            var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows };
 
             DebugUtil.Assert(DescriptionHelper.MCU.Modules != null, new ArgumentNullException(nameof(DescriptionHelper.MCU.Modules)));
 
             // ReSharper disable once PossibleNullReferenceException
             foreach (var module in DescriptionHelper.MCU.Modules) {
-                var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne, IsExpanded = true };
+                var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne };
                 infoModule.CallBack += value => {
                 };
                 foreach (var category in module.Categories) {
-                    var infoCategory = new SolutionExplorerEvent.Model(category.Name) { Image = Icon.BlockTwo, IsExpanded = true };
+                    var infoCategory = new SolutionExplorerEvent.Model(category.Name) { Image = Icon.BlockTwo };
                     infoCategory.CallBack += value => {
                         RegionUtil.RequestNavigate(_regionManager, "Region.MCU.Config.PropertyTableView", $"Page.MCU.Config.PropertyTableView.{value}");
                     };

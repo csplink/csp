@@ -30,7 +30,7 @@ namespace CSP.Apps.Dev.ViewModels.Windows
         public SolutionExplorerViewModel(IEventAggregator eventAggregator) {
             eventAggregator.GetEvent<SolutionExplorerEvent>().Subscribe(OnSolutionExplorerReceive);
 
-            var rootNode1 = new SolutionExplorerEvent.Model("解决方案") { Image = Icon.YellowFolder, IsExpanded = true };
+            var rootNode1 = new SolutionExplorerEvent.Model("解决方案") { Image = Icon.YellowFolder };
 
             InitDirectories("./", rootNode1);
             Directories.Add(rootNode1);
@@ -58,13 +58,13 @@ namespace CSP.Apps.Dev.ViewModels.Windows
             }
 
             foreach (var directory in directories) {
-                var info = new SolutionExplorerEvent.Model(directory.FullName) { IsExpanded = true };
+                var info = new SolutionExplorerEvent.Model(directory.FullName);
                 InitDirectories(directory.FullName, info);//递归调用
                 fileInfo.Children.Add(info);
             }
 
             foreach (var file in files) {
-                var info = new SolutionExplorerEvent.Model(file.FullName) { IsExpanded = true };
+                var info = new SolutionExplorerEvent.Model(file.FullName);
                 fileInfo.Children.Add(info);
             }
         }
