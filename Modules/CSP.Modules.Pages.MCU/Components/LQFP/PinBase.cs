@@ -145,9 +145,9 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (sender is not MenuItem { Header: string name })
                 return;
 
+            SetLocked(_menuLock, Pin, true);
             SetFunction(name);
             UpdatePinNote();
-            SetLocked(_menuLock, Pin, true);
         }
 
         private void OnMenuLockClick(object sender, RoutedEventArgs e) {
@@ -269,7 +269,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (menuLock == null || PinName == null)
                 return;
 
-            // Pin.BaseProperty.IsLocked = value;
+            _pinProperty.IsLocked = value;
 
             menuLock.Header = value ? "解锁" : "锁定";
             if (pin.Type != null)
