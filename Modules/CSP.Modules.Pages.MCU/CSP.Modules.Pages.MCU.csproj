@@ -13,9 +13,7 @@
 		<PackageReference Include="SharpVectors" Version="1.8.0" />
 		<PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
 		<PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.SfDiagram.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.SfGrid.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Wpf.Controls.PanAndZoom" Version="2.3.4" />
+        <PackageReference Include="Wpf.Controls.PanAndZoom" Version="2.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>
