@@ -43,6 +43,7 @@
 		<Resource Include="Icon\Xml.png" />
 		<Resource Include="Icon\YellowFolder.png" />
 		<Resource Include="Icon\Pdf.png" />
+        <Resource Include="Icon\Pin.png" />
 	</ItemGroup>
 
 	<ItemGroup>
