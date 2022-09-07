@@ -5,8 +5,13 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <Grid Width="450" Margin="0,50">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
@@ -49,5 +54,11 @@
                 </syncfusion:SfTreeView.ItemTemplate>
             </syncfusion:SfTreeView>
         </Grid>
+        <GridSplitter
+            Grid.Column="1"
+            Width="5"
+            Margin="5,0,5,0"
+            HorizontalAlignment="Stretch" />
+        <Grid Grid.Column="2" />
     </Grid>
 </UserControl>

@@ -9,6 +9,7 @@ using Syncfusion.UI.Xaml.TreeView;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using CSP.Resources;
 
 namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 {
@@ -44,7 +45,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
                 var property = DescriptionHelper.GetPinProperty(pin.Name);
                 property.PropertyChanged += OnGPIOPropertyChanged;
                 if (property.IsLocked) {
-                    GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = property.Name });
+                    GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = property.Name, Image = Icon.Pin });
                 }
             }
 
@@ -53,7 +54,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 
         internal delegate void FilterChangedDelegate();
 
-        public ListCollectionView CollectionView { get; set; }
+        public ListCollectionView CollectionView { get; }
 
         public string FilterText {
             get => _filterText;
@@ -87,7 +88,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 
             if (sender is PinModel value) {
                 if (value.IsLocked) {
-                    GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = value.Name });
+                    GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = value.Name, Image = Icon.Pin });
                 }
                 else {
                     SolutionExplorerEvent.Model model = null;
@@ -114,7 +115,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             if (this.Target.DataContext is not GPIOViewModel viewModel)
                 return;
 
-            viewModel.CollectionView.Filter = (e) => {
+            viewModel.CollectionView.Filter = e => {
                 if (e is SolutionExplorerEvent.Model model) {
                     if (model.Name.ToLower().Contains(viewModel.FilterText.ToLower()))
                         return true;
