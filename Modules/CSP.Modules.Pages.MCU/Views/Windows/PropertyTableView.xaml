@@ -8,7 +8,7 @@
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:sysComponents="clr-namespace:CSP.Components;assembly=CSP.Components"
     x:Name="MCUConfigDockWindow"
-    d:DesignHeight="250"
+    d:DesignHeight="350"
     d:DesignWidth="1920"
     syncfusion:DockingManager.Header="MCU配置管理器"
     syncfusion:DockingManager.SideInDockedMode="Tabbed"
