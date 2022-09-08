@@ -20,6 +20,7 @@ namespace CSP.Modules.Pages.MCU
         public void RegisterTypes(IContainerRegistry containerRegistry) {
             RegionUtil.RegisterForNavigation<ConfigView>(containerRegistry, "Page.MCU.Config");
             RegionUtil.RegisterForNavigation<GPIOView>(containerRegistry, "Page.MCU.Config.PropertyTableView.GPIO");
+            RegionUtil.RegisterForNavigation<ClockView>(containerRegistry, "Page.MCU.Config.PropertyTableView.Clock");
             RegionUtil.RegisterForNavigation<LQFP48View>(containerRegistry, "Page.MCU.Package.LQFP48");
             RegionUtil.RegisterForNavigation<LQFP64View>(containerRegistry, "Page.MCU.Package.LQFP64");
             RegionUtil.RegisterForNavigation<LQFP144View>(containerRegistry, "Page.MCU.Package.LQFP144");
