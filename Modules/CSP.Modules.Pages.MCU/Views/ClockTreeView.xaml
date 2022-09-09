@@ -12,7 +12,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <panAndZoom:ZoomBorder Stretch="None">
-        <Canvas Width="1600" Height="900">
+        <Canvas Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}">
             <svgc:SvgViewbox Source="{Binding ClockTreeImage}" />
         </Canvas>
     </panAndZoom:ZoomBorder>
