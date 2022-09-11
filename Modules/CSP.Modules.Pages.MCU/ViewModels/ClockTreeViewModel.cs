@@ -1,11 +1,10 @@
 ﻿using CSP.Modules.Pages.MCU.Tools;
-using CSP.Resources;
+using CSP.Utils;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.IO;
-using CSP.Utils;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {

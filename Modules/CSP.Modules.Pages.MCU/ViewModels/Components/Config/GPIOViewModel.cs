@@ -1,6 +1,7 @@
 ﻿using CSP.Events;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Tools;
+using CSP.Resources;
 using Microsoft.Xaml.Behaviors;
 using Prism.Events;
 using Prism.Mvvm;
@@ -9,8 +10,6 @@ using Syncfusion.UI.Xaml.TreeView;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
-using CSP.Resources;
-using Serilog;
 
 namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 {
@@ -23,6 +22,10 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext) {
+            foreach (var pin in DescriptionHelper.Pinout.Pins) {
+                var property = DescriptionHelper.GetPinProperty(pin.Name);
+                property.PropertyChanged -= OnGPIOPropertyChanged;
+            }
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext) {
