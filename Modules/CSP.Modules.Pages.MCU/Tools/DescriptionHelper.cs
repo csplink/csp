@@ -27,11 +27,11 @@ namespace CSP.Modules.Pages.MCU.Tools
         public static string RepositoryPath { get => Instance.RepositoryPath; }
 
         public static IPModel GetIP(string name) {
-            return Instance.GetIP(name);
+            return Instance.GetIP(name.ToUpper());
         }
 
         public static MapModel GetMap(string name) {
-            return Instance.GetMap(name);
+            return Instance.GetMap(name.ToUpper());
         }
 
         public static PinModel GetPinProperty(string name) {
