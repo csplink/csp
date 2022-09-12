@@ -193,12 +193,14 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             foreach (var menu in menuItems) {
                 menu.Click += OnMenuFunctionClick;
             }
-            _pinProperty.PropertyChanged += (sender, propertyChangedEventArgs) => {
-                if (sender is not PinModel)
+            _pinProperty.Label.PropertyChanged += (sender, propertyChangedEventArgs) => {
+                UpdatePinNote();
+            };
+            _pinProperty.IsLocked.PropertyChanged += (sender, propertyChangedEventArgs) => {
+                if (sender is not BooleanEditorModel model)
                     return;
 
-                if (propertyChangedEventArgs.PropertyName == "Label")
-                    UpdatePinNote();
+                SetLocked(_menuLock, Pin, model.Boolean);
             };
         }
 
@@ -274,7 +276,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             UpdateProperty();
         }
 
-        private void SetLocked(HeaderedItemsControl menuLock, PinoutModel.PinModel pin, bool value) {
+        private void SetLocked(MenuItem menuLock, PinoutModel.PinModel pin, bool value) {
             if (menuLock == null || PinName == null)
                 return;
 
@@ -306,7 +308,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinNote == null)
                 return;
 
-            PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? _pinProperty.Function.String : $"{_pinProperty.Label}: ({_pinProperty.Function})";
+            PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? _pinProperty.Function.String : $"{_pinProperty.Label.String}: ({_pinProperty.Function.String})";
         }
     }
 }
