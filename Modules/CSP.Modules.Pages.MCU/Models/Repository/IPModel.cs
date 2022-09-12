@@ -59,16 +59,16 @@ namespace CSP.Modules.Pages.MCU.Models.Repository
             public string Name { get; set; }
 
             [XmlIgnore]
-            public Dictionary<string, IpGpioModeParameterModel> Parameters { get; } = new();
+            public Dictionary<string, ParameterModel> Parameters { get; } = new();
 
             [XmlArray("Parameters")]
             [XmlArrayItem("Parameter")]
-            public IpGpioModeParameterModel[] ParametersTemp { get; set; }
+            public ParameterModel[] ParametersTemp { get; set; }
 
             [XmlAttribute]
             public string Type { get; set; }
 
-            public class IpGpioModeParameterModel
+            public class ParameterModel
             {
                 [XmlAttribute]
                 public string Group { get; set; }
