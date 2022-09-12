@@ -9,7 +9,7 @@ namespace CSP.Apps.Dev.Views.Windows
             InitializeComponent();
         }
 
-        private void OnSelectionChanged(object sender, ItemSelectionChangedEventArgs e) {
+        private void OnItemTapped(object sender, ItemTappedEventArgs e) {
             var item = TreeView.SelectedItem;
 
             if (item is not SolutionExplorerEvent.Model value)
