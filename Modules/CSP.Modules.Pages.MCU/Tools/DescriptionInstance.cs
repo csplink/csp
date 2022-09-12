@@ -1,4 +1,5 @@
 ﻿using CSP.Components.ValuePropertyGrid;
+using CSP.Events;
 using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
@@ -37,6 +38,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         public PinoutModel Pinout { get; private set; }
         public string RepositoryPath { get; private set; }
         public ObservableCollection<KeyValuePair<string, string>> Defines { get; } = new();
+        public ObservableDictionary<string, PropertyDetails> Properties { get; } = new();
 
         private bool Load(MCUModel mcu) {
             DebugUtil.Assert(mcu != null, new ArgumentNullException(nameof(mcu)), "MCU不能为空");

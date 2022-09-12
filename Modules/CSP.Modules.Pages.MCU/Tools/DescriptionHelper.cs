@@ -1,4 +1,5 @@
-﻿using CSP.Models;
+﻿using CSP.Events;
+using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Resources;
@@ -23,6 +24,8 @@ namespace CSP.Modules.Pages.MCU.Tools
         public static string Name { get => Instance.Name; }
 
         public static PinoutModel Pinout { get => Instance.Pinout; }
+
+        public static ObservableDictionary<string, PropertyDetails> Properties { get => Instance.Properties; }
 
         public static string RepositoryPath { get => Instance.RepositoryPath; }
 
