@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace CSP.Resources
 {
-    internal  class IconInstance
+    internal class IconInstance
     {
         internal readonly BitmapImage BlockEight = new(new Uri(@"pack://application:,,,/CSP.Resources;component/Icon/BlockEight.png"));
         internal readonly BitmapImage BlockFive = new(new Uri(@"pack://application:,,,/CSP.Resources;component/Icon/BlockFive.png"));

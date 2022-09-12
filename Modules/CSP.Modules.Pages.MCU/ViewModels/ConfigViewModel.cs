@@ -1,5 +1,4 @@
 ﻿using CSP.Events;
-using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
 using CSP.Modules.Pages.MCU.Tools;
 using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
@@ -7,7 +6,6 @@ using CSP.Utils;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
-using Syncfusion.Windows.PropertyGrid;
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +22,6 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             DescriptionHelper.Load("Geehy", "APM32F103ZET6");
 
-            AddCustomEditor();
             AddModules();
 
             // 添加MCU视图窗口
@@ -38,22 +35,6 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));// 添加时钟视图窗口
             _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
-        }
-
-        private void AddCustomEditor() {
-            CustomEditor editor = new() {
-                Editor = new DictionaryEditor(),
-                HasPropertyType = true,
-                PropertyType = typeof(DictionaryEditorModel)
-            };
-            _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
-
-            editor = new CustomEditor {
-                Editor = new StringEditor(),
-                HasPropertyType = true,
-                PropertyType = typeof(StringEditorModel)
-            };
-            _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }
 
         private void AddModules() {

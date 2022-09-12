@@ -1,20 +1,16 @@
-﻿using System;
+﻿using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
-using CSP.Modules.Pages.MCU.Components;
 using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using System.Xml.Serialization;
-using Serilog;
-using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
 
 namespace CSP.Modules.Pages.MCU.Models
 {
     public class PinModel : BindableBase
     {
-        private bool _isLocked;
         private int _position;
 
         [ReadOnly(true)]
@@ -22,13 +18,10 @@ namespace CSP.Modules.Pages.MCU.Models
         [XmlAttribute]
         public StringEditorModel Function { get; set; } = new();
 
-        [ReadOnly(true)]
+        [ReadOnly(false)]
         [Display(Name = "锁定", Description = "锁定", GroupName = "基础")]
         [XmlAttribute]
-        public bool IsLocked {
-            get => _isLocked;
-            set => SetProperty(ref _isLocked, value);
-        }
+        public BooleanEditorModel IsLocked { get; set; } = new();
 
         [ReadOnly(false)]
         [Display(Name = "标签", Description = "Pin 标签, 用于宏定义", GroupName = "基础")]

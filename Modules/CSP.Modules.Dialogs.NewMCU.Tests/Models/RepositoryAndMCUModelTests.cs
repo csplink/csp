@@ -1,6 +1,6 @@
-﻿using CSP.Modules.Dialogs.NewMCU.Models;
+﻿using CSP.Models;
+using CSP.Modules.Dialogs.NewMCU.Models;
 using CSP.Resources;
-using CSP.Models;
 using System.IO;
 using Xunit;
 using Xunit.Abstractions;

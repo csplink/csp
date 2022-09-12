@@ -5,32 +5,31 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace CSP.Modules.Pages.MCU.Components.ValuePropertyGrid
+namespace CSP.Components.ValuePropertyGrid
 {
-    public class StringEditor : BaseTypeEditor
+    public class BooleanEditor : BaseTypeEditor
     {
-        private TextBox _textBox;
+        private CheckBox _checkBox;
 
         public override void Attach(PropertyViewItem property, PropertyItem info) {
-            if (info.Value is not StringEditorModel)
+            if (info.Value is not BooleanEditorModel)
                 return;
 
-            var binding = new Binding("Value.String") {
+            var binding = new Binding("Value.Boolean") {
                 Mode = BindingMode.TwoWay,
                 Source = info,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-            BindingOperations.SetBinding(_textBox, TextBox.TextProperty, binding);
+            BindingOperations.SetBinding(_checkBox, CheckBox.IsCheckedProperty, binding);
 
-            binding = new Binding("Value.String") {
+            binding = new Binding("Value.Boolean") {
                 Mode = BindingMode.TwoWay,
                 Source = info,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-            BindingOperations.SetBinding(_textBox, TextBox.ToolTipProperty, binding);
+            BindingOperations.SetBinding(_checkBox, CheckBox.ToolTipProperty, binding);
 
-            _textBox.IsReadOnly = info.IsReadOnly;
-            _textBox.IsEnabled = !info.IsReadOnly;
+            _checkBox.IsEnabled = !info.IsReadOnly;
         }
 
         public override object Create(PropertyInfo propertyInfo) {
@@ -42,22 +41,22 @@ namespace CSP.Modules.Pages.MCU.Components.ValuePropertyGrid
         }
 
         public override void Detach(PropertyViewItem property) {
-            _textBox = null;
+            _checkBox = null;
         }
 
-        private TextBox CreateEditor() {
-            _textBox = new TextBox();
-            return _textBox;
+        private CheckBox CreateEditor() {
+            _checkBox = new CheckBox();
+            return _checkBox;
         }
     }
 
-    public class StringEditorModel : BindableBase
+    public class BooleanEditorModel : BindableBase
     {
-        private string _string = string.Empty;
+        private bool _boolean;
 
-        public string String {
-            get => _string;
-            set => SetProperty(ref _string, value);
+        public bool Boolean {
+            get => _boolean;
+            set => SetProperty(ref _boolean, value);
         }
     }
 }

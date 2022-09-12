@@ -1,5 +1,5 @@
-﻿using CSP.Models;
-using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
+﻿using CSP.Components.ValuePropertyGrid;
+using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Resources;

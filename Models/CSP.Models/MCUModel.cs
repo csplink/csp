@@ -1,9 +1,9 @@
-﻿using System;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
+using System;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
-using CSP.Utils;
-using CSP.Utils.Extensions;
 
 namespace CSP.Models
 {

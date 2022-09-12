@@ -1,4 +1,5 @@
-﻿using CSP.Models.Interfaces;
+﻿using CSP.Models;
+using CSP.Models.Interfaces;
 using CSP.Modules.Dialogs.NewMCU.Models;
 using CSP.Resources;
 using CSP.Services;
@@ -12,7 +13,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using CSP.Models;
 
 namespace CSP.Modules.Dialogs.NewMCU.ViewModels
 {

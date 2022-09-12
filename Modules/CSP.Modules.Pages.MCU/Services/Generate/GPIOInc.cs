@@ -1,5 +1,4 @@
-﻿using CSP.Modules.Pages.MCU.Models;
-using CSP.Modules.Pages.MCU.Models.Repository;
+﻿using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Modules.Pages.MCU.Services.Generate.Models;
 
 namespace CSP.Modules.Pages.MCU.Services.Generate

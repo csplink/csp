@@ -1,13 +1,13 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using System.Windows.Controls;
-using System.Windows.Data;
-using CSP.Utils;
+﻿using CSP.Utils;
 using CSP.Utils.Extensions;
 using Prism.Mvvm;
 using Syncfusion.Windows.PropertyGrid;
+using System.ComponentModel;
+using System.Reflection;
+using System.Windows.Controls;
+using System.Windows.Data;
 
-namespace CSP.Modules.Pages.MCU.Components.ValuePropertyGrid
+namespace CSP.Components.ValuePropertyGrid
 {
     public class DictionaryEditor : BaseTypeEditor
     {

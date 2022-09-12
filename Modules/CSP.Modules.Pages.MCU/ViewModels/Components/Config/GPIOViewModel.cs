@@ -48,7 +48,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             foreach (var pin in DescriptionHelper.Pinout.Pins) {
                 var property = DescriptionHelper.GetPinProperty(pin.Name);
                 property.PropertyChanged += OnGPIOPropertyChanged;
-                if (property.IsLocked) {
+                if (property.IsLocked.Boolean) {
                     GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = property.Name.String, Image = Icon.Pin });
                 }
             }
@@ -91,7 +91,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
                 return;
 
             if (sender is PinModel value) {
-                if (value.IsLocked) {
+                if (value.IsLocked.Boolean) {
                     GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = value.Name.String, Image = Icon.Pin });
                 }
                 else {

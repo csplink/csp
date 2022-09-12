@@ -1,5 +1,5 @@
-﻿using CSP.Events;
-using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
+﻿using CSP.Components.ValuePropertyGrid;
+using CSP.Events;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Modules.Pages.MCU.Tools;
@@ -41,11 +41,11 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             set => SetValue(PinProperty, value);
         }
 
-        protected Button PinName { get; set; }
+        protected Button PinName { get; init; }
 
-        protected TextBlock PinNote { get; set; }
+        protected TextBlock PinNote { get; init; }
 
-        protected ContextMenu RightContextMenu { get; set; }
+        protected ContextMenu RightContextMenu { get; init; }
 
         protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
             if (_pinProperty.Function.String.IsNullOrEmpty()) {
@@ -278,7 +278,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (menuLock == null || PinName == null)
                 return;
 
-            _pinProperty.IsLocked = value;
+            _pinProperty.IsLocked.Boolean = value;
 
             menuLock.Header = value ? "解锁" : "锁定";
             if (pin.Type != null)
