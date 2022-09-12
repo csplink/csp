@@ -39,6 +39,13 @@ namespace CSP.Apps.Dev.ViewModels.Windows
                 PropertyType = typeof(BooleanEditorModel)
             };
             _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
+
+            editor = new CustomEditor {
+                Editor = new IntEditor(),
+                HasPropertyType = true,
+                PropertyType = typeof(IntEditorModel)
+            };
+            _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }
     }
 }

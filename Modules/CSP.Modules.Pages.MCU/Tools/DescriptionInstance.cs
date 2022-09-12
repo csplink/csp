@@ -61,7 +61,7 @@ namespace CSP.Modules.Pages.MCU.Tools
                 if (!_pinProperties.ContainsKey(pin.Name))
                     _pinProperties.Add(pin.Name, new PinModel {
                         Name = new StringEditorModel { String = pin.Name },
-                        Position = pin.Position
+                        Position = new StringEditorModel { String = pin.Position.ToString() }
                     });
                 else {
                     MessageBoxUtil.Error($"存在相同的Pin：{pin.Name}");

@@ -1,35 +1,35 @@
 ﻿using Prism.Mvvm;
 using Syncfusion.Windows.PropertyGrid;
+using Syncfusion.Windows.Shared;
 using System.ComponentModel;
 using System.Reflection;
-using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace CSP.Components.ValuePropertyGrid
 {
-    public class StringEditor : BaseTypeEditor
+    public class IntEditor : BaseTypeEditor
     {
-        private TextBox _textBox;
+        private IntegerTextBox _integerTextBox;
 
         public override void Attach(PropertyViewItem property, PropertyItem info) {
-            if (info.Value is not StringEditorModel)
+            if (info.Value is not IntEditorModel)
                 return;
 
-            var binding = new Binding("Value.String") {
+            var binding = new Binding("Value.Boolean") {
                 Mode = BindingMode.TwoWay,
                 Source = info,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-            BindingOperations.SetBinding(_textBox, TextBox.TextProperty, binding);
+            BindingOperations.SetBinding(_integerTextBox, IntegerTextBox.ValueProperty, binding);
 
-            binding = new Binding("Value.String") {
+            binding = new Binding("Value.Boolean") {
                 Mode = BindingMode.TwoWay,
                 Source = info,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
-            BindingOperations.SetBinding(_textBox, TextBox.ToolTipProperty, binding);
+            BindingOperations.SetBinding(_integerTextBox, IntegerTextBox.ToolTipProperty, binding);
 
-            _textBox.IsReadOnly = info.IsReadOnly;
+            _integerTextBox.IsReadOnly = info.IsReadOnly;
         }
 
         public override object Create(PropertyInfo propertyInfo) {
@@ -41,22 +41,22 @@ namespace CSP.Components.ValuePropertyGrid
         }
 
         public override void Detach(PropertyViewItem property) {
-            _textBox = null;
+            _integerTextBox = null;
         }
 
-        private TextBox CreateEditor() {
-            _textBox = new TextBox();
-            return _textBox;
+        private IntegerTextBox CreateEditor() {
+            _integerTextBox = new IntegerTextBox();
+            return _integerTextBox;
         }
     }
 
-    public class StringEditorModel : BindableBase
+    public class IntEditorModel : BindableBase
     {
-        private string _string = string.Empty;
+        private int _int;
 
-        public string String {
-            get => _string;
-            set => SetProperty(ref _string, value);
+        public int Int {
+            get => _int;
+            set => SetProperty(ref _int, value);
         }
     }
 }
