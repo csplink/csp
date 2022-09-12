@@ -67,6 +67,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         }
 
         protected void UpdateProperty() {
+            _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
             _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinProperty.Property);
         }
 
