@@ -71,7 +71,7 @@ namespace CSP.Modules.Pages.MCU.Components.ValuePropertyGrid
     {
         private string _value;
 
-        public ObservableDictionary<string, string> Source { get; set; } = new();
+        public ObservableDictionary<string, string> Source { get; init; } = new();
 
         public string Value {
             get => _value;

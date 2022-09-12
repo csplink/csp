@@ -47,6 +47,13 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 PropertyType = typeof(DictionaryEditorModel)
             };
             _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
+
+            editor = new CustomEditor {
+                Editor = new StringEditor(),
+                HasPropertyType = true,
+                PropertyType = typeof(StringEditorModel)
+            };
+            _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }
 
         private void AddModules() {

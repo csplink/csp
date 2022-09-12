@@ -33,7 +33,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //         if (!pin.BaseProperty.Label.IsNullOrEmpty()) {
             //             var macro = new MacroModel {
             //                 Name = pin.BaseProperty.Label,
-            //                 Value = pin.BaseProperty.Name
+            //                 String = pin.BaseProperty.Name
             //             };
             //             AddMacro(macro);
             //         }

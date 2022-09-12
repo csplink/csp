@@ -1,12 +1,13 @@
 ﻿using CSP.Models;
+using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
 using CSP.Modules.Pages.MCU.Models;
+using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Resources;
 using CSP.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using CSP.Modules.Pages.MCU.Models.Repository;
 
 namespace CSP.Modules.Pages.MCU.Tools
 {
@@ -22,7 +23,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         private readonly Dictionary<string, MapModel> _maps = new();
         private readonly Dictionary<string, IPModel> _ips = new();
         private readonly Dictionary<string, PinModel> _pinProperties = new();
-        public string Company { get; set; }
+        public string Company { get; private set; }
 
         public MCUModel MCU {
             get => _mcu;
@@ -32,9 +33,9 @@ namespace CSP.Modules.Pages.MCU.Tools
             }
         }
 
-        public string Name { get; set; }
-        public PinoutModel Pinout { get; set; }
-        public string RepositoryPath { get; set; }
+        public string Name { get; private set; }
+        public PinoutModel Pinout { get; private set; }
+        public string RepositoryPath { get; private set; }
         public ObservableCollection<KeyValuePair<string, string>> Defines { get; } = new();
 
         private bool Load(MCUModel mcu) {
@@ -59,7 +60,7 @@ namespace CSP.Modules.Pages.MCU.Tools
             foreach (var pin in Pinout.Pins) {
                 if (!_pinProperties.ContainsKey(pin.Name))
                     _pinProperties.Add(pin.Name, new PinModel {
-                        Name = pin.Name,
+                        Name = new StringEditorModel { String = pin.Name },
                         Position = pin.Position
                     });
                 else {

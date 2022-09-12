@@ -27,7 +27,6 @@
     </UserControl.Resources>
 
     <Grid>
-
         <ContentControl
             x:Name="ContentControl"
             Grid.ColumnSpan="2"

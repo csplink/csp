@@ -48,7 +48,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
         protected ContextMenu RightContextMenu { get; set; }
 
         protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
-            if (_pinProperty.Function.IsNullOrEmpty()) {
+            if (_pinProperty.Function.String.IsNullOrEmpty()) {
                 _pinProperty.Property.Attributes.Clear();
                 _pinProperty.Property.Details.Clear();
 
@@ -179,7 +179,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             _pinProperty = DescriptionHelper.GetPinProperty(pin.Name);
 
             PinName.Content = pin.Name;
-            PinNote.Text = _pinProperty.Label;
+            PinNote.Text = _pinProperty.Label.String;
 
             InitPinNameStatus(pin.Type);
 
@@ -206,7 +206,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinName == null || PinNote == null || RightContextMenu == null)
                 return;
 
-            _pinProperty.Function = functionName;
+            _pinProperty.Function.String = functionName;
 
             _pinProperty.Property.Attributes.Clear();
             _pinProperty.Property.Details.Clear();
@@ -248,7 +248,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                                         return;
 
                                     switch (e.PropertyName) {
-                                        case "Value": {
+                                        case "String": {
                                             }
                                             break;
                                     }
@@ -306,7 +306,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             if (PinNote == null)
                 return;
 
-            PinNote.Text = _pinProperty.Label.IsNullOrEmpty() ? _pinProperty.Function : $"{_pinProperty.Label}: ({_pinProperty.Function})";
+            PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? _pinProperty.Function.String : $"{_pinProperty.Label}: ({_pinProperty.Function})";
         }
     }
 }

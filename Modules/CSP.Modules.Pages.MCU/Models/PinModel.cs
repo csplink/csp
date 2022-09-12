@@ -8,24 +8,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Xml.Serialization;
 using Serilog;
+using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
 
 namespace CSP.Modules.Pages.MCU.Models
 {
     public class PinModel : BindableBase
     {
-        private string _function = "";
         private bool _isLocked;
-        private string _label = "";
-        private string _name;
         private int _position;
 
         [ReadOnly(true)]
         [Display(Name = "功能", Description = "Pin 功能", GroupName = "系统")]
         [XmlAttribute]
-        public string Function {
-            get => _function;
-            set => SetProperty(ref _function, value);
-        }
+        public StringEditorModel Function { get; set; } = new();
 
         [ReadOnly(true)]
         [Display(Name = "锁定", Description = "锁定", GroupName = "基础")]
@@ -35,21 +30,15 @@ namespace CSP.Modules.Pages.MCU.Models
             set => SetProperty(ref _isLocked, value);
         }
 
-        [ReadOnly(true)]
+        [ReadOnly(false)]
         [Display(Name = "标签", Description = "Pin 标签, 用于宏定义", GroupName = "基础")]
         [XmlAttribute]
-        public string Label {
-            get => _label;
-            set => SetProperty(ref _label, value);
-        }
+        public StringEditorModel Label { get; set; } = new();
 
         [ReadOnly(true)]
         [Display(Name = "名称", Description = "Pin 名称", GroupName = "基础")]
         [XmlAttribute]
-        public string Name {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
+        public StringEditorModel Name { get; set; } = new();
 
         [ReadOnly(true)]
         [Display(Name = "引脚序号", Description = "Pin 引脚序号", GroupName = "基础")]

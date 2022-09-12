@@ -40,9 +40,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_init"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.String);
             //                     functionUse.Parameters.Add("-1");
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.String);
             //                     function.FunctionUses.Add(functionUse);
             //                 }
             //                 break;
@@ -54,7 +54,7 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_write_pin"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Level.String);
             //                     function.FunctionUses.Add(functionUse);
             //
             //                     functionUse = new FunctionModel.FunctionUseModel
@@ -62,9 +62,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_init"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.Value);
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.String);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Speed.String);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.String);
             //                     function.FunctionUses.Add(functionUse);
             //                 }
             //                 break;
@@ -76,9 +76,9 @@ namespace CSP.Modules.Pages.MCU.Services.Generate
             //                         Name = "chal_gpio_init"
             //                     };
             //                     functionUse.Parameters.Add(pin.Name);
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Mode.String);
             //                     functionUse.Parameters.Add("-1");
-            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.Value);
+            //                     functionUse.Parameters.Add(((PinOutModel.PinModel.DataContextModel)pin.GPIOProperty.Data).Pull.String);
             //                     function.FunctionUses.Add(functionUse);
             //                 }
             //                 break;
