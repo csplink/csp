@@ -1,5 +1,5 @@
 ﻿using CSP.Events;
-using CSP.Modules.Pages.MCU.Components;
+using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
 using CSP.Modules.Pages.MCU.Tools;
 using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
@@ -42,19 +42,20 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
         private void AddCustomEditor() {
             CustomEditor editor = new() {
-                Editor = new ValuePropertyGridComboEditor(),
+                Editor = new DictionaryEditor(),
                 HasPropertyType = true,
-                PropertyType = typeof(ValuePropertyGridComboEditorModel)
+                PropertyType = typeof(DictionaryEditorModel)
             };
             _eventAggregator.GetEvent<CustomEditorEvent>().Publish(editor);
         }
 
         private void AddModules() {
-            var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows };
-
             DebugUtil.Assert(DescriptionHelper.MCU.Modules != null, new ArgumentNullException(nameof(DescriptionHelper.MCU.Modules)));
 
-            // ReSharper disable once PossibleNullReferenceException
+            if (DescriptionHelper.MCU.Modules == null)
+                return;
+
+            var infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows };
             foreach (var module in DescriptionHelper.MCU.Modules) {
                 var infoModule = new SolutionExplorerEvent.Model(module.Name) { Image = Icon.BlockOne };
                 infoModule.CallBack += value => {

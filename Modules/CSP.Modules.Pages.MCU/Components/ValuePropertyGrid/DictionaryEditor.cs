@@ -1,20 +1,20 @@
-﻿using CSP.Utils.Extensions;
-using Prism.Mvvm;
-using Syncfusion.Windows.PropertyGrid;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
+using CSP.Utils;
+using CSP.Utils.Extensions;
+using Prism.Mvvm;
+using Syncfusion.Windows.PropertyGrid;
 
-namespace CSP.Modules.Pages.MCU.Components
+namespace CSP.Modules.Pages.MCU.Components.ValuePropertyGrid
 {
-    public class ValuePropertyGridComboEditor : BaseTypeEditor
+    public class DictionaryEditor : BaseTypeEditor
     {
         private ComboBox _comboBox;
 
         public override void Attach(PropertyViewItem property, PropertyItem info) {
-            if (info.Value is not ValuePropertyGridComboEditorModel value)
+            if (info.Value is not DictionaryEditorModel value)
                 return;
 
             var binding = new Binding("Value.Source") {
@@ -67,11 +67,11 @@ namespace CSP.Modules.Pages.MCU.Components
         }
     }
 
-    public class ValuePropertyGridComboEditorModel : BindableBase
+    public class DictionaryEditorModel : BindableBase
     {
         private string _value;
 
-        public Dictionary<string, string> Source { get; set; } = new();
+        public ObservableDictionary<string, string> Source { get; set; } = new();
 
         public string Value {
             get => _value;

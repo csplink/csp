@@ -1,12 +1,13 @@
 ﻿using CSP.Events;
+using CSP.Modules.Pages.MCU.Components.ValuePropertyGrid;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Repository;
 using CSP.Modules.Pages.MCU.Tools;
+using CSP.Utils;
 using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Ioc;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -170,14 +171,6 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             SetFunction("");
         }
 
-        private void OnPinPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (sender is not PinModel)
-                return;
-
-            if (e.PropertyName == "Label")
-                UpdatePinNote();
-        }
-
         private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
             if (e.NewValue is not PinoutModel.PinModel pin)
                 return;
@@ -200,7 +193,13 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
             foreach (var menu in menuItems) {
                 menu.Click += OnMenuFunctionClick;
             }
-            _pinProperty.PropertyChanged += OnPinPropertyChanged;
+            _pinProperty.PropertyChanged += (sender, propertyChangedEventArgs) => {
+                if (sender is not PinModel)
+                    return;
+
+                if (propertyChangedEventArgs.PropertyName == "Label")
+                    UpdatePinNote();
+            };
         }
 
         private void SetFunction(string functionName) {
@@ -233,7 +232,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                         if (Pin.FunctionMap[functionName].Mode != null) {
                             var modeName = Pin.FunctionMap[functionName].Mode;
                             foreach (var parameter in gpioIP.ModeMap[modeName].Parameters) {
-                                var map = new Dictionary<string, string>();
+                                var map = new ObservableDictionary<string, string>();
 
                                 foreach (var value in parameter.Value.Values) {
                                     if (gpioMap.Total.ContainsKey(value)) {
@@ -241,8 +240,18 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                                     }
                                 }
 
-                                var model = new ValuePropertyGridComboEditorModel {
+                                var model = new DictionaryEditorModel {
                                     Source = map
+                                };
+                                model.PropertyChanged += (sender, e) => {
+                                    if (sender is not DictionaryEditorModel)
+                                        return;
+
+                                    switch (e.PropertyName) {
+                                        case "Value": {
+                                            }
+                                            break;
+                                    }
                                 };
                                 _pinProperty.Property.Details.Add(parameter.Key, model);
                                 _pinProperty.Property.Attributes.Add(parameter.Key, gpioMap.Attributes[parameter.Key]);

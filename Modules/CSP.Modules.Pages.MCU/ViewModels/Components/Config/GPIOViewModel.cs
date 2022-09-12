@@ -119,7 +119,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             if (this.Target.DataContext is not GPIOViewModel viewModel)
                 return;
 
-            viewModel.CollectionView.Filter = (e) => {
+            viewModel.CollectionView.Filter = e => {
                 if (e is SolutionExplorerEvent.Model model) {
                     if (model.Name.ToLower().Contains(viewModel.FilterText.ToLower()))
                         return true;
