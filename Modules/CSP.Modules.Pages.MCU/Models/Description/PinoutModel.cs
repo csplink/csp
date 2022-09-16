@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace CSP.Modules.Pages.MCU.Models.Repository
+namespace CSP.Modules.Pages.MCU.Models.Description
 {
     [XmlRoot("Pinout", IsNullable = false)]
     public class PinoutModel

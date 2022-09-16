@@ -1,4 +1,4 @@
-﻿using CSP.Modules.Pages.MCU.Models.Repository;
+﻿using CSP.Modules.Pages.MCU.Models.Description;
 using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using Prism.Mvvm;

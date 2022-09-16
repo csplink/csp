@@ -1,7 +1,7 @@
 ﻿using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
 using CSP.Modules.Pages.MCU.Models;
-using CSP.Modules.Pages.MCU.Models.Repository;
+using CSP.Modules.Pages.MCU.Models.Description;
 using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using CSP.Utils.Extensions;

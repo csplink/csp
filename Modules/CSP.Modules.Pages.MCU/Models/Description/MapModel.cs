@@ -7,7 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
 
-namespace CSP.Modules.Pages.MCU.Models.Repository
+namespace CSP.Modules.Pages.MCU.Models.Description
 {
     [XmlRoot("Map", IsNullable = false)]
     public class MapModel

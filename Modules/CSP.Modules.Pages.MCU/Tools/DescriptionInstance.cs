@@ -2,7 +2,7 @@
 using CSP.Events;
 using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
-using CSP.Modules.Pages.MCU.Models.Repository;
+using CSP.Modules.Pages.MCU.Models.Description;
 using CSP.Resources;
 using CSP.Utils;
 using System;
