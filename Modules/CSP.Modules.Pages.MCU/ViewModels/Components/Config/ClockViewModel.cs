@@ -37,7 +37,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
                 var clockMap = DescriptionHelper.GetMap("Clock");
                 var clockIP = DescriptionHelper.GetIP("Clock");
                 foreach (var mode in clockIP.ModeMap) {
-                    foreach (var parameter in clockIP.ModeMap[mode.Key].Parameters) {
+                    foreach (var parameter in clockIP.ModeMap[mode.Key].ParameterMap) {
                         var map = new ObservableDictionary<string, string>();
 
                         foreach (var value in parameter.Value.Values) {

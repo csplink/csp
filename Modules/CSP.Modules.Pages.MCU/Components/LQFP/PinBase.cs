@@ -234,7 +234,7 @@ namespace CSP.Modules.Pages.MCU.Components.LQFP
                             break;
                         if (Pin.FunctionMap[functionName].Mode != null) {
                             var modeName = Pin.FunctionMap[functionName].Mode;
-                            foreach (var parameter in gpioIP.ModeMap[modeName].Parameters) {
+                            foreach (var parameter in gpioIP.ModeMap[modeName].ParameterMap) {
                                 var map = new ObservableDictionary<string, string>();
 
                                 foreach (var value in parameter.Value.Values) {
