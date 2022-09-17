@@ -43,8 +43,8 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             //给辅助变量赋值,将变量转化为字典形式
             foreach (var mode in rtn.Modes) {
-                foreach (var parameter in mode.ParametersTemp) {
-                    mode.Parameters.Add(parameter.Group, parameter);
+                foreach (var parameter in mode.Parameters) {
+                    mode.ParameterMap.Add(parameter.Group, parameter);
                 }
 
                 rtn.ModeMap.Add(mode.Name, mode);
@@ -59,11 +59,11 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public string Name { get; set; }
 
             [XmlIgnore]
-            public Dictionary<string, ParameterModel> Parameters { get; } = new();
+            public Dictionary<string, ParameterModel> ParameterMap { get; } = new();
 
             [XmlArray("Parameters")]
             [XmlArrayItem("Parameter")]
-            public ParameterModel[] ParametersTemp { get; set; }
+            public ParameterModel[] Parameters { get; set; }
 
             [XmlAttribute]
             public string Type { get; set; }
