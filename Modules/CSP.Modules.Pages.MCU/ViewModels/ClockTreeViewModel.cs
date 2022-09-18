@@ -47,6 +47,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                     TextBox textBox = new() {
                                         Width = control.Value.Width,
                                         Height = control.Value.Height,
+                                        Text = control.Value.DefaultValue,
                                         TextAlignment = TextAlignment.Center,
                                         BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
                                     };
