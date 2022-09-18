@@ -73,9 +73,6 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
         public class ControlModel
         {
-            [XmlAttribute]
-            public string DefaultValue { get; set; }
-
             [XmlIgnore]
             public float Height { get; set; }
 
