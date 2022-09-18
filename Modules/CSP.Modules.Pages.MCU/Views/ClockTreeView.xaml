@@ -19,7 +19,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <panAndZoom:ZoomBorder Stretch="None">
+    <panAndZoom:ZoomBorder PanButton="Middle" Stretch="None">
         <Canvas
             x:Name="Canvas"
             Width="{Binding CanvasWidth}"
