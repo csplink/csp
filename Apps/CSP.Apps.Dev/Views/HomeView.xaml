@@ -21,7 +21,7 @@
             <RowDefinition Height="6*" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Margin="100,0,0,0">
-            <TextBlock VerticalAlignment="Center" FontSize="48">欢迎使用Misfra Studio</TextBlock>
+            <TextBlock VerticalAlignment="Center" FontSize="48">欢迎使用 CSP</TextBlock>
         </Grid>
     </Grid>
 </UserControl>
