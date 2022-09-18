@@ -18,6 +18,13 @@ namespace CSP.Modules.Pages.MCU.Models.Description
         [XmlArrayItem("Control")]
         public List<ControlModel> Controls { get; set; }
 
+        [XmlIgnore]
+        public Dictionary<int, EllipseModel> EllipseMap { get; set; } = new();
+
+        [XmlArray("Ellipses")]
+        [XmlArrayItem("Ellipse")]
+        public List<EllipseModel> Ellipses { get; set; }
+
         [XmlAttribute]
         public float Height { get; set; }
 
@@ -58,12 +65,21 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             foreach (var rect in rtn.Rects) {
                 rtn.RectMap.Add(rect.ID, rect);
             }
+            foreach (var ellipse in rtn.Ellipses) {
+                rtn.EllipseMap.Add(ellipse.ID, ellipse);
+            }
             foreach (var control in rtn.Controls) {
                 if (rtn.RectMap.ContainsKey(control.ID)) {
                     control.Height = rtn.RectMap[control.ID].Height;
                     control.Width = rtn.RectMap[control.ID].Width;
                     control.X = rtn.RectMap[control.ID].X;
                     control.Y = rtn.RectMap[control.ID].Y;
+                }
+                else if (rtn.EllipseMap.ContainsKey(control.ID)) {
+                    control.Height = rtn.EllipseMap[control.ID].Height;
+                    control.Width = rtn.EllipseMap[control.ID].Width;
+                    control.X = rtn.EllipseMap[control.ID].X;
+                    control.Y = rtn.EllipseMap[control.ID].Y;
                 }
                 rtn.ControlMap.Add(control.Name, control);
             }
@@ -92,6 +108,24 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public float X { get; set; }
 
             [XmlIgnore]
+            public float Y { get; set; }
+        }
+
+        public class EllipseModel
+        {
+            [XmlAttribute]
+            public float Height { get; set; }
+
+            [XmlAttribute]
+            public int ID { get; set; }
+
+            [XmlAttribute]
+            public float Width { get; set; }
+
+            [XmlAttribute]
+            public float X { get; set; }
+
+            [XmlAttribute]
             public float Y { get; set; }
         }
 
