@@ -44,13 +44,35 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                         UIElement obj = null;
                         switch (control.Value.Type) {
                             case "TextBox": {
-                                    TextBox textBox = new() {
+                                    TextBox box = new() {
                                         Width = control.Value.Width,
                                         Height = control.Value.Height,
+                                        Text = control.Value.ID.ToString(),
                                         TextAlignment = TextAlignment.Center,
                                         BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
                                     };
-                                    obj = textBox;
+                                    obj = box;
+                                    break;
+                                }
+                            case "ComboBox": {
+                                    ComboBox box = new() {
+                                        Width = control.Value.Width,
+                                        Height = control.Value.Height,
+                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
+                                    };
+                                    obj = box;
+                                    break;
+                                }
+                            case "Label": {
+                                    TextBox box = new() {
+                                        Width = control.Value.Width,
+                                        Height = control.Value.Height,
+                                        Text = control.Value.ID.ToString(),
+                                        TextAlignment = TextAlignment.Center,
+                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+                                        IsReadOnly = true
+                                    };
+                                    obj = box;
                                     break;
                                 }
                             default: {
