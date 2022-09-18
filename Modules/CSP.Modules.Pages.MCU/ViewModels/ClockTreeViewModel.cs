@@ -75,6 +75,19 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                     obj = box;
                                     break;
                                 }
+                            case "RadioButton": {
+                                    Viewbox box = new() {
+                                        Width = control.Value.Width,
+                                        Height = control.Value.Height
+                                    };
+                                    RadioButton button = new() {
+                                        GroupName = control.Value.GroupName,
+                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+                                    };
+                                    box.Child = button;
+                                    obj = box;
+                                    break;
+                                }
                             default: {
                                     Log.Warning($"不存在的CanvasControl: {control.Value.Type}");
                                     break;
