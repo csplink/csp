@@ -39,6 +39,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         public string RepositoryPath { get; private set; }
         public ObservableCollection<KeyValuePair<string, string>> Defines { get; } = new();
         public ObservableDictionary<string, PropertyDetails> Properties { get; } = new();
+        public ClockModel Clock { get; private set; }
 
         private bool Load(MCUModel mcu) {
             DebugUtil.Assert(mcu != null, new ArgumentNullException(nameof(mcu)), "MCU不能为空");
@@ -54,7 +55,12 @@ namespace CSP.Modules.Pages.MCU.Tools
             Name = mcu.Name;
 
             Pinout = PinoutModel.Load($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/pinout.xml");
-            if (Pinout == null) return false;
+            if (Pinout == null)
+                return false;
+
+            Clock = ClockModel.Load($"{DescriptionHelper.RepositoryPath}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.xml");
+            if (Clock == null)
+                return false;
 
             LoadMap($"{RepositoryPath}/description/map");
             LoadIP($"{RepositoryPath}/description/{DescriptionHelper.MCU.Name.ToLower()}/ip");

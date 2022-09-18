@@ -15,6 +15,8 @@ namespace CSP.Modules.Pages.MCU.Tools
     {
         private static readonly DescriptionInstance Instance = DescriptionInstance.Instance;
 
+        public static ClockModel Clock { get => Instance.Clock; }
+
         public static string Company { get => Instance.Company; }
 
         public static ObservableCollection<KeyValuePair<string, string>> Defines { get => Instance.Defines; }
