@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CSP.Utils;
+using CSP.Utils.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Xml.Serialization;
-using CSP.Utils;
-using CSP.Utils.Extensions;
 
 namespace CSP.Modules.Pages.MCU.Models.Description
 {
@@ -21,7 +21,8 @@ namespace CSP.Modules.Pages.MCU.Models.Description
         [XmlAttribute]
         public float Height { get; set; }
 
-        [XmlIgnore] public Dictionary<int, RectModel> RectMap { get; set; } = new();
+        [XmlIgnore]
+        public Dictionary<int, RectModel> RectMap { get; set; } = new();
 
         [XmlArray("Rects")]
         [XmlArrayItem("Rect")]
@@ -58,6 +59,12 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 rtn.RectMap.Add(rect.ID, rect);
             }
             foreach (var control in rtn.Controls) {
+                if (rtn.RectMap.ContainsKey(control.ID)) {
+                    control.Height = rtn.RectMap[control.ID].Height;
+                    control.Width = rtn.RectMap[control.ID].Width;
+                    control.X = rtn.RectMap[control.ID].X;
+                    control.Y = rtn.RectMap[control.ID].Y;
+                }
                 rtn.ControlMap.Add(control.Name, control);
             }
 
@@ -66,6 +73,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
         public class ControlModel
         {
+            [XmlIgnore]
+            public float Height { get; set; }
+
             [XmlAttribute]
             public int ID { get; set; }
 
@@ -74,6 +84,15 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             [XmlAttribute]
             public string Type { get; set; }
+
+            [XmlIgnore]
+            public float Width { get; set; }
+
+            [XmlIgnore]
+            public float X { get; set; }
+
+            [XmlIgnore]
+            public float Y { get; set; }
         }
 
         public class RectModel
