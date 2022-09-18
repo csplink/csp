@@ -7,7 +7,9 @@ using Prism.Regions;
 using Serilog;
 using System;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
@@ -15,6 +17,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
+        private Canvas _canvasControl;
         private double _canvasHeight = 900;
         private double _canvasWidth = 1600;
         private Uri _clockTreeImage;
@@ -31,6 +34,38 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             CanvasHeight = DescriptionHelper.Clock.Height;
             CanvasWidth = DescriptionHelper.Clock.Width;
+        }
+
+        public Canvas CanvasControl {
+            get => _canvasControl;
+            private set {
+                if (SetProperty(ref _canvasControl, value)) {
+                    foreach (var control in DescriptionHelper.Clock.ControlMap) {
+                        UIElement obj = null;
+                        switch (control.Value.Type) {
+                            case "TextBox": {
+                                    TextBox textBox = new() {
+                                        Width = control.Value.Width,
+                                        Height = control.Value.Height,
+                                        TextAlignment = TextAlignment.Center,
+                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
+                                    };
+                                    obj = textBox;
+                                    break;
+                                }
+                            default: {
+                                    Log.Warning($"不存在的CanvasControl: {control.Value.Type}");
+                                    break;
+                                }
+                        }
+                        if (obj != null) {
+                            Canvas.SetLeft(obj, control.Value.X);
+                            Canvas.SetTop(obj, control.Value.Y);
+                            CanvasControl.Children.Add(obj);
+                        }
+                    }
+                }
+            }
         }
 
         public double CanvasHeight {
@@ -54,7 +89,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                     if (obj is not Canvas canvas)
                         return;
 
-                    Log.Debug(canvas.Name);
+                    CanvasControl = canvas;
                 });
             }
         }
