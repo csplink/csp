@@ -1,10 +1,13 @@
 ﻿using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using Serilog;
 using System;
 using System.IO;
+using System.Windows.Controls;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
 {
@@ -25,6 +28,9 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             DebugUtil.Assert(File.Exists(path), new FileNotFoundException(nameof(path)), $"{path}: 不存在");
             if (File.Exists(path))
                 ClockTreeImage = new Uri(path, UriKind.Relative);
+
+            CanvasHeight = DescriptionHelper.Clock.Height;
+            CanvasWidth = DescriptionHelper.Clock.Width;
         }
 
         public double CanvasHeight {
@@ -40,6 +46,17 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         public Uri ClockTreeImage {
             get => _clockTreeImage;
             set => SetProperty(ref _clockTreeImage, value);
+        }
+
+        public DelegateCommand<object> OnLoaded {
+            get {
+                return new DelegateCommand<object>((obj) => {
+                    if (obj is not Canvas canvas)
+                        return;
+
+                    Log.Debug(canvas.Name);
+                });
+            }
         }
     }
 }

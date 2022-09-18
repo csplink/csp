@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:panAndZoom="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
     xmlns:prism="http://prismlibrary.com/"
@@ -11,8 +12,18 @@
     d:DesignWidth="1600"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding OnLoaded}" CommandParameter="{Binding ElementName=Canvas}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <panAndZoom:ZoomBorder Stretch="None">
-        <Canvas Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}">
+        <Canvas
+            x:Name="Canvas"
+            Width="{Binding CanvasWidth}"
+            Height="{Binding CanvasHeight}">
             <svgc:SvgViewbox Source="{Binding ClockTreeImage}" />
         </Canvas>
     </panAndZoom:ZoomBorder>
