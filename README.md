@@ -5,6 +5,10 @@ CSP - Chip Software Package。芯片软件包。
 
 ![image-20220821190417107](https://raw.githubusercontent.com/xqyjlj/xqyjlj.github.io/img/image-20220821190417107.png)
 
+## 🥰 演示视频
+
+<iframe src="//player.bilibili.com/player.html?aid=560829049&bvid=BV1Ke4y1b7PE&cid=838817398&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
 ## 💻 编译环境搭建
 
 具体参见博客内容 [编译环境搭建](https://xqyjlj.github.io/2022/08/21/CSP%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/)
