@@ -7,7 +7,7 @@ CSP - Chip Software Package。芯片软件包。
 
 ## 🥰 演示视频
 
-<iframe src="//player.bilibili.com/player.html?aid=560829049&bvid=BV1Ke4y1b7PE&cid=838817398&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+https://user-images.githubusercontent.com/51477609/191293998-e0724db6-1fa6-4319-978e-566d2bc0d509.mp4
 
 ## 💻 编译环境搭建
 
