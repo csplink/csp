@@ -51,6 +51,13 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                         TextAlignment = TextAlignment.Center,
                                         BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
                                     };
+
+                                    var binding = new Binding("Value") {
+                                        Mode = BindingMode.TwoWay,
+                                        Source = control.Value,
+                                        UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
+                                    };
+                                    BindingOperations.SetBinding(box, TextBox.TextProperty, binding);
                                     obj = box;
                                     break;
                                 }
