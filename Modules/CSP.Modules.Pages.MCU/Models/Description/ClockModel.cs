@@ -90,6 +90,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
         public class ControlModel
         {
             [XmlAttribute]
+            public float DefaultValue { get; set; }
+
+            [XmlAttribute]
             public string GroupName { get; set; }
 
             [XmlIgnore]
@@ -103,6 +106,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             [XmlAttribute]
             public string Type { get; set; }
+
+            [XmlIgnore]
+            public float Value { get; set; }
 
             [XmlIgnore]
             public float Width { get; set; }
