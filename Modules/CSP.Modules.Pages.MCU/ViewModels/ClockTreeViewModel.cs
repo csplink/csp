@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace CSP.Modules.Pages.MCU.ViewModels
@@ -94,6 +95,14 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                 }
                         }
                         if (obj != null) {
+#if DEBUG
+                            var binding = new Binding("Name") {
+                                Mode = BindingMode.TwoWay,
+                                Source = control.Value,
+                                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                            };
+                            BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
+#endif
                             Canvas.SetLeft(obj, control.Value.X);
                             Canvas.SetTop(obj, control.Value.Y);
                             CanvasControl.Children.Add(obj);
