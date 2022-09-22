@@ -102,6 +102,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public int ID { get; set; }
 
             [XmlAttribute]
+            public float Multiple { get; set; }
+
+            [XmlAttribute]
             public string Name { get; set; }
 
             [XmlAttribute]
