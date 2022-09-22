@@ -90,6 +90,9 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                         GroupName = control.Value.GroupName,
                                         BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
                                     };
+                                    if (control.Value.Value == 1 && control.Value.Multiple == -114514)
+                                        button.IsChecked = true;
+
                                     box.Child = button;
                                     obj = box;
                                     break;
