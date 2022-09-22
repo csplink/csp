@@ -89,8 +89,16 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
         public class ControlModel
         {
+            private float _defaultValue;
+
             [XmlAttribute]
-            public float DefaultValue { get; set; }
+            public float DefaultValue {
+                get => _defaultValue;
+                set {
+                    _defaultValue = value;
+                    Value = value;
+                }
+            }
 
             [XmlAttribute]
             public string GroupName { get; set; }
