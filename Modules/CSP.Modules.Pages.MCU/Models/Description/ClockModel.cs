@@ -139,6 +139,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 [XmlAttribute]
                 public string Operator { get; set; }
 
+                [XmlIgnore]
+                public string Text { get => Operator + Value; }
+
                 [XmlAttribute]
                 public float Value { get; set; }
             }
