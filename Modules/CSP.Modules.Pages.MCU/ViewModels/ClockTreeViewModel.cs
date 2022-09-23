@@ -67,6 +67,17 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                         Height = control.Value.Height,
                                         BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
                                     };
+
+                                    var binding = new Binding("Sources") {
+                                        Mode = BindingMode.TwoWay,
+                                        Source = control.Value,
+                                        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                                    };
+                                    BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
+                                    box.DisplayMemberPath = "Text";
+                                    box.SelectionChanged += (sender, e) => {
+                                    };
+
                                     obj = box;
                                     break;
                                 }
