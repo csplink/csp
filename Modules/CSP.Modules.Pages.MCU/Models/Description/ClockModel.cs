@@ -115,6 +115,10 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlAttribute]
             public string Name { get; set; }
 
+            [XmlArray("Sources")]
+            [XmlArrayItem("Source")]
+            public List<SourceModel> Source { get; set; }
+
             [XmlAttribute]
             public string Type { get; set; }
 
@@ -129,6 +133,15 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             [XmlIgnore]
             public float Y { get; set; }
+
+            public class SourceModel
+            {
+                [XmlAttribute]
+                public string Operator { get; set; }
+
+                [XmlAttribute]
+                public float Value { get; set; }
+            }
         }
 
         public class EllipseModel
