@@ -75,6 +75,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                     };
                                     BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
                                     box.DisplayMemberPath = "Text";
+                                    box.SelectedIndex = Convert.ToInt32(control.Value.DefaultValue);
+
                                     box.SelectionChanged += (sender, e) => {
                                     };
 
