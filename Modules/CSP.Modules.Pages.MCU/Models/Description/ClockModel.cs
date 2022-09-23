@@ -117,7 +117,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             [XmlArray("Sources")]
             [XmlArrayItem("Source")]
-            public List<SourceModel> Source { get; set; }
+            public List<SourceModel> Sources { get; set; }
 
             [XmlAttribute]
             public string Type { get; set; }
