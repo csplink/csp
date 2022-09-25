@@ -1,4 +1,5 @@
-﻿using CSP.Modules.Pages.MCU.Tools;
+﻿using CSP.Modules.Pages.MCU.Models.Description;
+using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using Prism.Commands;
 using Prism.Events;
@@ -45,69 +46,19 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                         UIElement obj = null;
                         switch (control.Value.Type) {
                             case "TextBox": {
-                                    TextBox box = new() {
-                                        Width = control.Value.Width,
-                                        Height = control.Value.Height,
-                                        TextAlignment = TextAlignment.Center,
-                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
-                                    };
-
-                                    var binding = new Binding("Value") {
-                                        Mode = BindingMode.TwoWay,
-                                        Source = control.Value,
-                                        UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
-                                    };
-                                    BindingOperations.SetBinding(box, TextBox.TextProperty, binding);
-                                    obj = box;
+                                    obj = ClockTreeViewModelTools.CreateTextBox(control.Value);
                                     break;
                                 }
                             case "ComboBox": {
-                                    ComboBox box = new() {
-                                        Width = control.Value.Width,
-                                        Height = control.Value.Height,
-                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
-                                    };
-
-                                    var binding = new Binding("Sources") {
-                                        Mode = BindingMode.TwoWay,
-                                        Source = control.Value,
-                                        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                                    };
-                                    BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
-                                    box.DisplayMemberPath = "Text";
-                                    box.SelectedIndex = Convert.ToInt32(control.Value.DefaultValue);
-
-                                    box.SelectionChanged += (sender, e) => {
-                                    };
-
-                                    obj = box;
+                                    obj = ClockTreeViewModelTools.CreateComboBox(control.Value);
                                     break;
                                 }
                             case "Label": {
-                                    TextBox box = new() {
-                                        Width = control.Value.Width,
-                                        Height = control.Value.Height,
-                                        TextAlignment = TextAlignment.Center,
-                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
-                                        IsReadOnly = true
-                                    };
-                                    obj = box;
+                                    obj = ClockTreeViewModelTools.CreateLabel(control.Value);
                                     break;
                                 }
                             case "RadioButton": {
-                                    Viewbox box = new() {
-                                        Width = control.Value.Width,
-                                        Height = control.Value.Height
-                                    };
-                                    RadioButton button = new() {
-                                        GroupName = control.Value.GroupName,
-                                        BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
-                                    };
-                                    if (control.Value.Value == 1 && control.Value.Multiple == -114514)
-                                        button.IsChecked = true;
-
-                                    box.Child = button;
-                                    obj = box;
+                                    obj = ClockTreeViewModelTools.CreateRadioButton(control.Value);
                                     break;
                                 }
                             default: {
@@ -157,6 +108,78 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                     CanvasControl = canvas;
                 });
             }
+        }
+    }
+
+    internal class ClockTreeViewModelTools
+    {
+        public static TextBox CreateTextBox(ClockModel.ControlModel control) {
+            TextBox box = new() {
+                Width = control.Width,
+                Height = control.Height,
+                TextAlignment = TextAlignment.Center,
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
+            };
+
+            var binding = new Binding("Value") {
+                Mode = BindingMode.TwoWay,
+                Source = control,
+                UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
+            };
+            BindingOperations.SetBinding(box, TextBox.TextProperty, binding);
+
+            return box;
+        }
+
+        public static ComboBox CreateComboBox(ClockModel.ControlModel control) {
+            ComboBox box = new() {
+                Width = control.Width,
+                Height = control.Height,
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
+            };
+
+            var binding = new Binding("Sources") {
+                Mode = BindingMode.TwoWay,
+                Source = control,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
+            box.DisplayMemberPath = "Text";
+            box.SelectedIndex = Convert.ToInt32(control.DefaultValue);
+
+            box.SelectionChanged += (sender, e) => {
+            };
+
+            return box;
+        }
+
+        public static TextBox CreateLabel(ClockModel.ControlModel control) {
+            TextBox box = new() {
+                Width = control.Width,
+                Height = control.Height,
+                TextAlignment = TextAlignment.Center,
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+                IsReadOnly = true
+            };
+
+            return box;
+        }
+
+        public static Viewbox CreateRadioButton(ClockModel.ControlModel control) {
+            Viewbox box = new() {
+                Width = control.Width,
+                Height = control.Height
+            };
+            RadioButton button = new() {
+                GroupName = control.GroupName,
+                BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+            };
+            if (control.Value == 1 && control.Multiple == -114514)
+                button.IsChecked = true;
+
+            box.Child = button;
+
+            return box;
         }
     }
 }
