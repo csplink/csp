@@ -24,8 +24,8 @@
             BorderThickness="1"
             ChildPropertyName="Children"
             FullRowSelect="True"
-            ItemTapped="OnItemTapped"
-            ItemsSource="{Binding Directories}">
+            ItemsSource="{Binding Directories}"
+            MouseLeftButtonUp="OnPreviewMouseLeftButtonUp">
 
             <syncfusion:SfTreeView.ItemTemplate>
                 <DataTemplate>
