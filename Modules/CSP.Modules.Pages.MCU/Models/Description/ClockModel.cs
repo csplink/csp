@@ -119,6 +119,10 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlArrayItem("Source")]
             public List<SourceModel> Sources { get; set; }
 
+            [XmlArray("Status")]
+            [XmlArrayItem("Status")]
+            public List<StatusModel> Status { get; set; }
+
             [XmlAttribute]
             public string Type { get; set; }
 
@@ -144,6 +148,31 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
                 [XmlAttribute]
                 public float Value { get; set; }
+            }
+
+            public class StatusModel
+            {
+                [XmlIgnore]
+                public List<string> DependenceList { get; } = new();
+
+                [XmlAttribute]
+                public string Dependencies { get; set; }
+
+                [XmlAttribute]
+                public bool IsEnable { get; set; }
+
+                [XmlArray("Styles")]
+                [XmlArrayItem("Style")]
+                public List<StyleModel> Styles { get; set; }
+
+                public class StyleModel
+                {
+                    [XmlAttribute]
+                    public string Name { get; set; }
+
+                    [XmlAttribute]
+                    public string Value { get; set; }
+                }
             }
         }
 
