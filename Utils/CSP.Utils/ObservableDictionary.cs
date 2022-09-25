@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using static ImTools.ImMap;
 
 namespace CSP.Utils
 {
@@ -42,6 +43,10 @@ namespace CSP.Utils
             OnPropertyChanged("Keys");
             OnPropertyChanged("Values");
             OnPropertyChanged("Count");
+        }
+
+        public void Add(KeyValuePair<TKey, TValue> keyValuePair) {
+            this.Add(keyValuePair.Key, keyValuePair.Value);
         }
 
         public new void Clear() {
