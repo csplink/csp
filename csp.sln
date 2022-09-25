@@ -84,9 +84,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSP.Modules.Dialogs.NewMCU"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dialogs", "Dialogs", "{0CB3B1F5-2E0A-4EDC-BA06-31059A655EBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSP.Modules.Dialogs.NewMCU.Tests", "Modules\CSP.Modules.Dialogs.NewMCU.Tests\CSP.Modules.Dialogs.NewMCU.Tests.csproj", "{3132CDF3-3B39-4546-B565-A2C1FE90753E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSP.Modules.Dialogs.NewMCU.Tests", "Modules\CSP.Modules.Dialogs.NewMCU.Tests\CSP.Modules.Dialogs.NewMCU.Tests.csproj", "{3132CDF3-3B39-4546-B565-A2C1FE90753E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dialogs", "Dialogs", "{E9AC6D59-C050-495D-94DB-660137CC4691}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{19733575-F419-4A8B-8C7B-3EC0A0CC08BE}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
