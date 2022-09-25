@@ -1,4 +1,5 @@
-﻿using CSP.Events;
+﻿using CSP.Components.ValuePropertyGrid;
+using CSP.Events;
 using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Description;
@@ -30,6 +31,42 @@ namespace CSP.Modules.Pages.MCU.Tools
         public static ObservableDictionary<string, PropertyDetails> Properties { get => Instance.Properties; }
 
         public static string RepositoryPath { get => Instance.RepositoryPath; }
+
+        public static PropertyDetails CreateClockPropertyDetails() {
+            var property = new PropertyDetails();
+            var clockMap = GetMap("Clock");
+            var clockIP = GetIP("Clock");
+            foreach (var mode in clockIP.ModeMap) {
+                foreach (var parameter in clockIP.ModeMap[mode.Key].ParameterMap) {
+                    var map = new ObservableDictionary<string, string>();
+
+                    foreach (var value in parameter.Value.Values) {
+                        if (clockMap.Total.ContainsKey(value)) {
+                            map.Add(value, clockMap.Total[value]);
+                        }
+                    }
+
+                    var model = new DictionaryEditorModel {
+                        Source = map
+                    };
+                    model.PropertyChanged += (sender, e) => {
+                        if (sender is not DictionaryEditorModel)
+                            return;
+
+                        switch (e.PropertyName) {
+                            case "Value": {
+                                }
+
+                                break;
+                        }
+                    };
+                    property.Details.Add(parameter.Key, model);
+                    property.Attributes.Add(parameter.Key, clockMap.Attributes[parameter.Key]);
+                }
+            }
+
+            return property;
+        }
 
         public static IPModel GetIP(string name) {
             return Instance.GetIP(name.ToUpper());
