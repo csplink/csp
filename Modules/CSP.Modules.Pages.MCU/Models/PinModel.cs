@@ -1,5 +1,6 @@
 ﻿using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
+using CSP.Utils;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -38,13 +39,13 @@ namespace CSP.Modules.Pages.MCU.Models
 
         public PropertyDetails Property { get; } = new();
 
-        public IDictionary<string, Dictionary<string, Attribute>> GetAttributes() {
-            var rtn = new Dictionary<string, Dictionary<string, Attribute>>();
+        public ObservableDictionary<string, ObservableDictionary<string, Attribute>> GetAttributes() {
+            var rtn = new ObservableDictionary<string, ObservableDictionary<string, Attribute>>();
             var infos = typeof(PinModel).GetProperties();
             foreach (var info in infos) {
                 var attrs = info.GetCustomAttributes(false);
                 if (attrs.Length > 0) {
-                    var attributes = new Dictionary<string, Attribute>();
+                    var attributes = new ObservableDictionary<string, Attribute>();
                     foreach (var attr in attrs) {
                         switch (attr) {
                             case DisplayAttribute displayAttribute: {
@@ -72,8 +73,8 @@ namespace CSP.Modules.Pages.MCU.Models
             return rtn;
         }
 
-        public IDictionary<string, object> GetDetails() {
-            var rtn = new Dictionary<string, object> {
+        public ObservableDictionary<string, object> GetDetails() {
+            var rtn = new ObservableDictionary<string, object> {
                 {"Function", Function},
                 {"IsLocked", IsLocked},
                 {"Label", Label},

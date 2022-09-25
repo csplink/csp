@@ -177,6 +177,11 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             if (control.Value == 1 && control.Multiple == -114514)
                 button.IsChecked = true;
 
+            DescriptionHelper.Defines.CollectionChanged += (sender, e) => {
+            };
+            DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
+            };
+
             box.Child = button;
 
             return box;

@@ -19,8 +19,10 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 
         public void OnNavigatedTo(NavigationContext navigationContext) {
             _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
-            if (DescriptionHelper.Properties.ContainsKey("Clock"))
-                _eventAggregator.GetEvent<PropertyEvent>().Publish(DescriptionHelper.Properties["Clock"]);
+            if (DescriptionHelper.Properties.ContainsKey("Clock")) {
+                var properties = DescriptionHelper.Properties["Clock"];
+                _eventAggregator.GetEvent<PropertyEvent>().Publish(properties);
+            }
         }
 
         #endregion INavigationAware

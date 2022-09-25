@@ -13,7 +13,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
     public class MapModel
     {
         [XmlIgnore]
-        public Dictionary<string, Dictionary<string, Attribute>> Attributes { get; set; } = new();
+        public ObservableDictionary<string, ObservableDictionary<string, Attribute>> Attributes { get; set; } = new();
 
         [XmlIgnore]
         public Dictionary<string, GroupModel> GroupMap { get; } = new();
@@ -63,7 +63,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             //将Properties转化为Attribute，以便能够正常解析
             foreach (var property in rtn.Properties) {
-                var attributes = new Dictionary<string, Attribute>
+                var attributes = new ObservableDictionary<string, Attribute>
                 {
                     {"DisplayName", new DisplayNameAttribute(property.DisplayName) },
                     {"Description", new DescriptionAttribute(property.Description) },
