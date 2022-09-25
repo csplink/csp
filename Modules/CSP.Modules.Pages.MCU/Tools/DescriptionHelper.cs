@@ -20,7 +20,7 @@ namespace CSP.Modules.Pages.MCU.Tools
 
         public static string Company { get => Instance.Company; }
 
-        public static ObservableCollection<KeyValuePair<string, string>> Defines { get => Instance.Defines; }
+        public static ObservableDictionary<string, string> Defines { get => Instance.Defines; }
 
         public static MCUModel MCU { get => Instance.MCU; }
 

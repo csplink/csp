@@ -37,7 +37,7 @@ namespace CSP.Modules.Pages.MCU.Tools
         public string Name { get; private set; }
         public PinoutModel Pinout { get; private set; }
         public string RepositoryPath { get; private set; }
-        public ObservableCollection<KeyValuePair<string, string>> Defines { get; } = new();
+        public ObservableDictionary<string, string> Defines { get; } = new();
         public ObservableDictionary<string, PropertyDetails> Properties { get; } = new();
         public ClockModel Clock { get; private set; }
 
