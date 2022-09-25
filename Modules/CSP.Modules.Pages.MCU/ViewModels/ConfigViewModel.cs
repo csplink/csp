@@ -15,6 +15,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IRegionManager _regionManager;
+        private int _selectedIndex;
 
         public ConfigViewModel(IRegionManager regionManager, IEventAggregator eventAggregator) {
             _regionManager = regionManager;
@@ -35,6 +36,23 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView", typeof(ClockTreeView));// 添加时钟视图窗口
             _eventAggregator.GetEvent<GenerateEvent>().Subscribe(OnEventGenerate);
+        }
+
+        public int SelectedIndex {
+            get => _selectedIndex;
+            set {
+                if (SetProperty(ref _selectedIndex, value)) {
+                    switch (SelectedIndex) {
+                        case 0: {
+                                break;
+                            }
+                        case 1: {
+                                RegionUtil.RequestNavigate(_regionManager, "Region.MCU.Config.PropertyTableView", $"Page.MCU.Config.PropertyTableView.Clock");
+                                break;
+                            }
+                    }
+                }
+            }
         }
 
         private void AddModules() {
