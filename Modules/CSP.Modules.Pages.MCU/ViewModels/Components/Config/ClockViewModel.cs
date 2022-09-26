@@ -56,15 +56,14 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
                     var model = new DictionaryEditorModel {
                         Source = map
                     };
-                    model.PropertyChanged += (sender, e) => {
+                    model.PropertyValueChanged += (sender, e) => {
                         if (sender is not DictionaryEditorModel)
                             return;
 
                         switch (e.PropertyName) {
                             case "Value": {
+                                    break;
                                 }
-
-                                break;
                         }
                     };
                     property.Details.Add(parameter.Key, model);
