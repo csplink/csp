@@ -1,8 +1,8 @@
 ﻿namespace CSP.Modules.Pages.MCU.Views.Windows
 {
-    public partial class MCUConfigView
+    public partial class PropertyTableView
     {
-        public MCUConfigView() {
+        public PropertyTableView() {
             InitializeComponent();
         }
     }

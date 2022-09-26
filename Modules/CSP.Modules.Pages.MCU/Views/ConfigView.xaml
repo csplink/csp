@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="CSP.Modules.Pages.MCU.Views.PinConfigView"
+    x:Class="CSP.Modules.Pages.MCU.Views.ConfigView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,7 +19,8 @@
     <Grid>
         <syncfusion:TabControlExt
             EnableLabelEdit="False"
-            IsLazyLoaded="True"
+            IsLazyLoaded="False"
+            SelectedIndex="{Binding SelectedIndex, UpdateSourceTrigger=PropertyChanged}"
             TabListContextMenuOptions="None">
             <syncfusion:TabItemExt
                 Width="200"
@@ -32,7 +33,7 @@
                     </StackPanel>
                 </syncfusion:TabItemExt.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Disabled">
-                    <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUView" />
+                    <ContentControl prism:RegionManager.RegionName="Region.MCU.Config.MCUView" />
                 </ScrollViewer>
             </syncfusion:TabItemExt>
             <syncfusion:TabItemExt
@@ -45,7 +46,9 @@
                         <TextBlock VerticalAlignment="Center" Text="时钟视图" />
                     </StackPanel>
                 </syncfusion:TabItemExt.Header>
-                <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.ClockView" />
+                <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                    <ContentControl prism:RegionManager.RegionName="Region.MCU.Config.ClockView" />
+                </ScrollViewer>
             </syncfusion:TabItemExt>
             <syncfusion:TabItemExt
                 Width="200"
@@ -57,7 +60,7 @@
                         <TextBlock VerticalAlignment="Center" Text="系统视图" />
                     </StackPanel>
                 </syncfusion:TabItemExt.Header>
-                <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.SystemView" />
+                <ContentControl prism:RegionManager.RegionName="Region.MCU.Config.SystemView" />
             </syncfusion:TabItemExt>
         </syncfusion:TabControlExt>
     </Grid>

@@ -18,7 +18,6 @@ namespace CSP.Events
             private ObservableCollection<Model> _children;
 
             private BitmapImage _image;
-            private bool _isExpanded;
             private string _name;
             private string _path;
 
@@ -61,12 +60,6 @@ namespace CSP.Events
             public BitmapImage Image {
                 get => _image;
                 set => SetProperty(ref _image, value);
-            }
-
-            public bool IsExpanded {
-                get => _isExpanded;
-
-                set => SetProperty(ref _isExpanded, value);
             }
 
             public string Name {

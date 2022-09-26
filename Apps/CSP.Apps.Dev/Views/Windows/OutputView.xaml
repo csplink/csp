@@ -11,7 +11,7 @@
     d:DesignHeight="250"
     d:DesignWidth="1920"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    syncfusion:DockingManager.DesiredHeightInDockedMode="250"
+    syncfusion:DockingManager.DesiredHeightInDockedMode="350"
     syncfusion:DockingManager.Header="输出"
     syncfusion:DockingManager.SideInDockedMode="Bottom"
     syncfusion:DockingManager.State="Dock"

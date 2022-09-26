@@ -6,8 +6,7 @@ namespace CSP.Extras.BeforeBuild.Tool.Resources
     {
         private const string IconDataTemplate =
  @"
-        public static BitmapImage $Data
-        {
+        public static BitmapImage $Data{
             get => Instance.$Data;
         }
 ";

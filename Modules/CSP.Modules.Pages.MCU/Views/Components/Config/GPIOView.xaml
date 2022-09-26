@@ -2,30 +2,68 @@
     x:Class="CSP.Modules.Pages.MCU.Views.Components.Config.GPIOView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <syncfusion:SfDataGrid
-            AllowResizingColumns="True"
-            AllowResizingHiddenColumns="True"
-            AutoGenerateColumns="False"
-            ColumnSizer="Star"
-            ItemsSource="{Binding GPIOCollection}"
-            SelectedItem="{Binding SelectedItem}">
-            <syncfusion:SfDataGrid.Columns>
-                <syncfusion:GridTextColumn
-                    HeaderText="名称"
-                    MappingName="Name"
-                    ShowToolTip="False" />
-                <syncfusion:GridTextColumn HeaderText="引脚序号" MappingName="Position" />
-                <syncfusion:GridTextColumn HeaderText="功能" MappingName="Function" />
-                <syncfusion:GridTextColumn HeaderText="电平" MappingName="Level.Value" />
-                <syncfusion:GridTextColumn HeaderText="模式" MappingName="Mode.Value" />
-                <syncfusion:GridTextColumn HeaderText="上下拉" MappingName="Pull.Value" />
-                <syncfusion:GridTextColumn HeaderText="速度" MappingName="Speed.Value" />
-                <syncfusion:GridTextColumn HeaderText="标签" MappingName="Label" />
-            </syncfusion:SfDataGrid.Columns>
-        </syncfusion:SfDataGrid>
+    d:DesignHeight="350"
+    d:DesignWidth="1920"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBox
+                Grid.Row="0"
+                Margin="0,0,0,3"
+                Padding="2,0,2,0"
+                BorderThickness="0.5"
+                Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" />
+            <syncfusion:SfTreeView
+                x:Name="TreeView"
+                Grid.Row="1"
+                AutoExpandMode="RootNodes"
+                BorderThickness="1"
+                ChildPropertyName="Children"
+                FullRowSelect="True"
+                ItemsSource="{Binding GPIOCollection}"
+                SelectionChanged="OnSelectionChanged">
+                <syncfusion:SfTreeView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                Grid.Column="0"
+                                Width="16"
+                                Height="16"
+                                VerticalAlignment="Center"
+                                Source="{Binding Image}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding Name}" />
+                        </Grid>
+                    </DataTemplate>
+                </syncfusion:SfTreeView.ItemTemplate>
+            </syncfusion:SfTreeView>
+        </Grid>
+        <GridSplitter
+            Grid.Column="1"
+            Width="5"
+            Margin="5,0,5,0"
+            HorizontalAlignment="Stretch" />
+        <Grid Grid.Column="2" />
     </Grid>
 </UserControl>

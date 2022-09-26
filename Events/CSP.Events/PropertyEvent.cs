@@ -1,8 +1,8 @@
-﻿using Prism.Events;
+﻿using CSP.Utils;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -69,17 +69,17 @@ namespace CSP.Events
 
     public class PropertyDetails : BindableBase, ICustomTypeDescriptor
     {
-        private IDictionary<string, Dictionary<string, Attribute>> _attributes = new Dictionary<string, Dictionary<string, Attribute>>();
-        private IDictionary<string, object> _details = new Dictionary<string, object>();
+        private ObservableDictionary<string, ObservableDictionary<string, Attribute>> _attributes = new();
+        private ObservableDictionary<string, object> _details = new();
 
         #region Properties
 
-        public IDictionary<string, Dictionary<string, Attribute>> Attributes {
+        public ObservableDictionary<string, ObservableDictionary<string, Attribute>> Attributes {
             get => _attributes;
             set => SetProperty(ref _attributes, value);
         }
 
-        public IDictionary<string, object> Details {
+        public ObservableDictionary<string, object> Details {
             get { return _details; }
             set => SetProperty(ref _details, value);
         }
@@ -127,7 +127,7 @@ namespace CSP.Events
         public PropertyDescriptorCollection GetProperties() {
             var details = Details.Select(element => {
                 Attributes.TryGetValue(element.Key, out var attributes);
-                attributes ??= new Dictionary<string, Attribute> { { "DisplayName", new DisplayNameAttribute(element.Key) } };
+                attributes ??= new ObservableDictionary<string, Attribute> { { "DisplayName", new DisplayNameAttribute(element.Key) } };
                 return new CustomPropertyDescriptor(this,
                                                     element.Key,
                                                     ((DisplayNameAttribute)attributes["DisplayName"]).DisplayName,

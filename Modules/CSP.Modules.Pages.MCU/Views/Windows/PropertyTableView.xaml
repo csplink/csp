@@ -1,5 +1,5 @@
 ﻿<sysComponents:DockControl
-    x:Class="CSP.Modules.Pages.MCU.Views.Windows.MCUConfigView"
+    x:Class="CSP.Modules.Pages.MCU.Views.Windows.PropertyTableView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,11 +8,11 @@
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:sysComponents="clr-namespace:CSP.Components;assembly=CSP.Components"
     x:Name="MCUConfigDockWindow"
-    d:DesignHeight="250"
+    d:DesignHeight="350"
     d:DesignWidth="1920"
     syncfusion:DockingManager.Header="MCU配置管理器"
     syncfusion:DockingManager.SideInDockedMode="Tabbed"
     syncfusion:DockingManager.TargetNameInDockedMode="OutputDockWindow"
     mc:Ignorable="d">
-    <ContentControl prism:RegionManager.RegionName="Region.MCU.PinConfig.MCUConfig" />
+    <ContentControl prism:RegionManager.RegionName="Region.MCU.Config.PropertyTableView" />
 </sysComponents:DockControl>

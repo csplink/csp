@@ -19,8 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Database\CSP.Database\CSP.Database.csproj" />
-		<ProjectReference Include="..\..\Resources\CSP.Resources\CSP.Resources.csproj" />
+        <ProjectReference Include="..\..\Models\CSP.Models\CSP.Models.csproj" />
+        <ProjectReference Include="..\..\Resources\CSP.Resources\CSP.Resources.csproj" />
 		<ProjectReference Include="..\..\Services\CSP.Services\CSP.Services.csproj" />
 		<ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
 	</ItemGroup>

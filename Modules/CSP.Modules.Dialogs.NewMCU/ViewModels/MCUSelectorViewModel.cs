@@ -1,7 +1,7 @@
-﻿using CSP.Database;
-using CSP.Database.Models.MCU;
+﻿using CSP.Models;
 using CSP.Models.Interfaces;
 using CSP.Modules.Dialogs.NewMCU.Models;
+using CSP.Resources;
 using CSP.Services;
 using CSP.Services.Models;
 using CSP.Utils;
@@ -65,7 +65,7 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
 
         public MCUSelectorViewModel() {
             IsBusy = true;
-            _repository = MCUHelper.Repository;
+            _repository = RepositoryModel.Load($"{IniFile.PathMCUDb}/Repository.xml");
             IsBusy = false;
         }
 
@@ -159,8 +159,7 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
                     return;
                 }
 
-                MCUHelper.LoadMcu(value.Company.ToLower(), value.Name.ToLower());
-                MCU = MCUHelper.MCU;
+                MCU = MCUModel.Load($"{IniFile.PathMCUDb}/{value.Company}/{value.Name}.xml");
 
                 try {
                     var path = new Uri(@"pack://application:,,,/CSP.Modules.Dialogs.NewMCU;component/Resources/Images/" + value.Package + @".png");

@@ -94,6 +94,10 @@ namespace CSP.Resources
             get => Instance.Pdf;
         }
 
+        public static BitmapImage Pin {
+            get => Instance.Pin;
+        }
+
         public static BitmapImage PlayOne {
             get => Instance.PlayOne;
         }

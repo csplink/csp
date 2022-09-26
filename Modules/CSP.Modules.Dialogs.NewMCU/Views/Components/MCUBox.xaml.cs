@@ -1,4 +1,4 @@
-﻿using CSP.Database.Models.MCU;
+﻿using CSP.Modules.Dialogs.NewMCU.Models;
 using CSP.Utils.Extensions;
 using Syncfusion.Data;
 using Syncfusion.UI.Xaml.Grid;

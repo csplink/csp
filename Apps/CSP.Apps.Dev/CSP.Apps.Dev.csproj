@@ -32,8 +32,4 @@
 		<ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Model\" />
-	</ItemGroup>
-
 </Project>

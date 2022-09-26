@@ -1,5 +1,5 @@
 ﻿using CSP.Events;
-using Syncfusion.UI.Xaml.TreeView;
+using System.Windows.Input;
 
 namespace CSP.Apps.Dev.Views.Windows
 {
@@ -9,7 +9,7 @@ namespace CSP.Apps.Dev.Views.Windows
             InitializeComponent();
         }
 
-        private void OnSelectionChanged(object sender, ItemSelectionChangedEventArgs e) {
+        private void OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
             var item = TreeView.SelectedItem;
 
             if (item is not SolutionExplorerEvent.Model value)
