@@ -15,12 +15,12 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          repository: xqyjlj/csp_mcu_db
+          repository: csplink/csp_mcu_db
           path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Database/MCU
 
       - uses: actions/checkout@v3
         with:
-          repository: xqyjlj/csp_hal_apm32f1
+          repository: csplink/csp_hal_apm32f1
           path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Repository/csp_hal_apm32f1-latest
 
       - name: build_and_test

@@ -16,12 +16,6 @@ runs:
         dotnet-version: |
           6.x
 
-    - name: download repository
-      uses: actions/checkout@v3
-      with:
-        repository: xqyjlj/csp_hal_apm32f1
-        path: .repository/csp_hal_apm32f1
-
     - name: restore dependencies
       shell: pwsh
       run: dotnet restore ${{ inputs.solution }}

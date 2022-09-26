@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: Github 讨论组
-    url: https://github.com/xqyjlj/csp/discussions
+    url: https://github.com/csplink/csp/discussions
     about: 一些使用问题请到 Discussion 提问。
 
-  - name: csp 主页导航
-    url: https://xqyjlj.github.io/2022/08/20/CSP%E4%B8%BB%E9%A1%B5%E5%AF%BC%E8%88%AA/
+  - name: csp wiki
+    url: https://csplink.github.io/
     about: 有关 csp 的简介与部分使用教程
 
   - name: QQ 群
