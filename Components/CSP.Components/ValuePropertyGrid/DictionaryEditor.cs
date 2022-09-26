@@ -1,6 +1,5 @@
 ﻿using CSP.Utils;
 using CSP.Utils.Extensions;
-using Prism.Mvvm;
 using Syncfusion.Windows.PropertyGrid;
 using System.ComponentModel;
 using System.Reflection;
@@ -67,7 +66,7 @@ namespace CSP.Components.ValuePropertyGrid
         }
     }
 
-    public class DictionaryEditorModel : BindableBase
+    public class DictionaryEditorModel : BindableBaseUtil
     {
         private string _value;
 
