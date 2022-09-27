@@ -62,6 +62,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 
                         switch (e.PropertyName) {
                             case "Value": {
+                                    DescriptionHelper.ChangeDefine(e.OldValue?.ToString(), e.NewValue?.ToString(), null);
                                     break;
                                 }
                         }
