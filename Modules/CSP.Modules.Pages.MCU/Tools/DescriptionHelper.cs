@@ -1,5 +1,4 @@
-﻿using CSP.Components.ValuePropertyGrid;
-using CSP.Events;
+﻿using CSP.Events;
 using CSP.Models;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Description;
@@ -7,8 +6,6 @@ using CSP.Resources;
 using CSP.Utils;
 using CSP.Utils.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace CSP.Modules.Pages.MCU.Tools
 {
@@ -31,6 +28,22 @@ namespace CSP.Modules.Pages.MCU.Tools
         public static ObservableDictionary<string, PropertyDetails> Properties { get => Instance.Properties; }
 
         public static string RepositoryPath { get => Instance.RepositoryPath; }
+
+        public static void ChangeDefine(string oldKey, string newKey, string newValue) {
+            DebugUtil.Assert(!oldKey.IsNullOrEmpty() || !newKey.IsNullOrEmpty(),
+                new ArgumentNullException(nameof(oldKey) + " or " + nameof(newKey)), "oldKey 或者 newKey 不能均为空");
+
+            if (!oldKey.IsNullOrEmpty())
+                if (Defines.ContainsKey(oldKey))
+                    Defines.Remove(oldKey);
+
+            if (!newKey.IsNullOrEmpty()) {
+                if (Defines.ContainsKey(newKey))
+                    Defines.Remove(newKey);
+
+                Defines.Add(newKey, newValue);
+            }
+        }
 
         public static IPModel GetIP(string name) {
             return Instance.GetIP(name.ToUpper());
