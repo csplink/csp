@@ -152,11 +152,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             public class StatusModel
             {
-                [XmlIgnore]
-                public List<string> DependenceList { get; } = new();
-
-                [XmlAttribute]
-                public string Dependencies { get; set; }
+                [XmlArray("Dependencies")]
+                [XmlArrayItem("Dependence")]
+                public List<DependenceModel> Dependencies { get; set; }
 
                 [XmlAttribute]
                 public bool IsEnable { get; set; }
@@ -164,6 +162,18 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 [XmlArray("Styles")]
                 [XmlArrayItem("Style")]
                 public List<StyleModel> Styles { get; set; }
+
+                public class DependenceModel
+                {
+                    [XmlAttribute]
+                    public string Comparator { get; set; }
+
+                    [XmlAttribute]
+                    public string Key { get; set; }
+
+                    [XmlAttribute]
+                    public string Value { get; set; }
+                }
 
                 public class StyleModel
                 {
