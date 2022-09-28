@@ -163,6 +163,44 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
 
             DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
+                foreach (var status in control.Status) {
+                    var b = true;
+                    foreach (var dependence in status.Dependencies) {
+                        if (DescriptionHelper.Defines.ContainsKey(dependence.Key)) {
+                            switch (dependence.Comparator) {
+                                case "==":
+                                    if (DescriptionHelper.Defines[dependence.Key] != dependence.Value)
+                                        b = false;
+                                    break;
+
+                                case "<":
+                                    break;
+
+                                case ">":
+                                    break;
+
+                                case ">=":
+                                    break;
+
+                                case "<=":
+                                    break;
+                            }
+                        }
+                        else {
+                            b = false;
+                        }
+                    }
+
+                    if (b) {
+                        foreach (var style in status.Styles) {
+                            switch (style.Name) {
+                                case "Text":
+                                    box.Text = style.Value;
+                                    break;
+                            }
+                        }
+                    }
+                }
             };
 
             return box;
