@@ -162,6 +162,9 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 IsReadOnly = true
             };
 
+            DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
+            };
+
             return box;
         }
 
