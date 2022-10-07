@@ -87,9 +87,11 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             return rtn;
         }
 
-        public class ControlModel
+        public class ControlModel : BindableBaseUtil
         {
             private float _defaultValue;
+            private float _displayValue;
+            private float _value;
 
             [XmlAttribute]
             public float DefaultValue {
@@ -101,7 +103,10 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             }
 
             [XmlIgnore]
-            public float DisplayValue { get; set; }
+            public float DisplayValue {
+                get => _displayValue;
+                set => SetProperty(ref _displayValue, value);
+            }
 
             [XmlAttribute]
             public string GroupName { get; set; }
@@ -113,7 +118,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public int ID { get; set; }
 
             [XmlAttribute]
-            public float Multiple { get; set; }
+            public float Multiple { get; set; } = -114514;
 
             [XmlAttribute]
             public string Name { get; set; }
@@ -130,7 +135,15 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public string Type { get; set; }
 
             [XmlIgnore]
-            public float Value { get; set; }
+            public float Value {
+                get => _value;
+                set {
+                    if (!SetProperty(ref _value, value))
+                        return;
+                    if (Multiple != 0 && Multiple != -114514)
+                        DisplayValue = _value / Multiple;
+                }
+            }
 
             [XmlIgnore]
             public float Width { get; set; }
