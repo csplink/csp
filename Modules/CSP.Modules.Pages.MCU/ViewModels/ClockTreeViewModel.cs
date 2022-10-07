@@ -164,52 +164,57 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 IsReadOnly = true
             };
 
+            SetLabelStatus(ref box, control);
             DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
-                foreach (var status in control.Status) {
-                    var b = true;
-                    foreach (var dependence in status.Dependencies) {
-                        if (DescriptionHelper.Defines.ContainsKey(dependence.Key)) {
-                            switch (dependence.Comparator) {
-                                case "==":
-                                    if (DescriptionHelper.Defines[dependence.Key] != dependence.Value)
-                                        b = false;
-                                    break;
-
-                                case "<":
-                                    break;
-
-                                case ">":
-                                    break;
-
-                                case ">=":
-                                    break;
-
-                                case "<=":
-                                    break;
-                            }
-                        }
-                        else {
-                            b = false;
-                        }
-                    }
-
-                    if (b) {
-                        foreach (var style in status.Styles) {
-                            switch (style.Name) {
-                                case "Text":
-                                    box.Text = style.Value;
-                                    break;
-
-                                case "Style":
-                                    SetLabelStyle(ref box, style.Value);
-                                    break;
-                            }
-                        }
-                    }
-                }
+                SetLabelStatus(ref box, control);
             };
 
             return box;
+        }
+
+        private static void SetLabelStatus(ref TextBox label, ClockModel.ControlModel control) {
+            foreach (var status in control.Status) {
+                var b = true;
+                foreach (var dependence in status.Dependencies) {
+                    if (DescriptionHelper.Defines.ContainsKey(dependence.Key)) {
+                        switch (dependence.Comparator) {
+                            case "==":
+                                if (DescriptionHelper.Defines[dependence.Key] != dependence.Value)
+                                    b = false;
+                                break;
+
+                            case "<":
+                                break;
+
+                            case ">":
+                                break;
+
+                            case ">=":
+                                break;
+
+                            case "<=":
+                                break;
+                        }
+                    }
+                    else {
+                        b = false;
+                    }
+                }
+
+                if (b) {
+                    foreach (var style in status.Styles) {
+                        switch (style.Name) {
+                            case "Text":
+                                label.Text = style.Value;
+                                break;
+
+                            case "Style":
+                                SetLabelStyle(ref label, style.Value);
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         private static void SetLabelStyle(ref TextBox label, string style) {
