@@ -105,7 +105,13 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlIgnore]
             public float DisplayValue {
                 get => _displayValue;
-                set => SetProperty(ref _displayValue, value);
+                set {
+                    if (!SetProperty(ref _displayValue, value))
+                        return;
+
+                    if (Multiple != 0 && Multiple != -114514)
+                        Value = _displayValue * Multiple;
+                }
             }
 
             [XmlAttribute]
