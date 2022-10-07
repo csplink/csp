@@ -119,7 +119,13 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public string Name { get; set; }
 
             [XmlIgnore]
-            public float RealValue { get; set; }
+            public float RealValue {
+                get {
+                    if (DisplayValue != 0 && Multiple != -114514)
+                        return DisplayValue * Multiple;
+                    return -114514;
+                }
+            }
 
             [XmlArray("Sources")]
             [XmlArrayItem("Source")]
