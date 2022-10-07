@@ -115,6 +115,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlAttribute]
             public string Name { get; set; }
 
+            [XmlIgnore]
+            public float RealValue { get; set; }
+
             [XmlArray("Sources")]
             [XmlArrayItem("Source")]
             public List<SourceModel> Sources { get; set; }
