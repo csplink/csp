@@ -240,7 +240,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 GroupName = control.GroupName,
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
             };
-            if (control.Value == 1 && control.Multiple == -114514)
+            if (control.DefaultValue == 1 && control.Multiple == -114514)
                 button.IsChecked = true;
 
             DescriptionHelper.Defines.CollectionChanged += (sender, e) => {
