@@ -158,7 +158,9 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 Width = control.Width,
                 Height = control.Height,
                 TextAlignment = TextAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+                Style = null,
                 IsReadOnly = true
             };
 
@@ -197,6 +199,10 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                 case "Text":
                                     box.Text = style.Value;
                                     break;
+
+                                case "Style":
+                                    SetLabelStyle(ref box, style.Value);
+                                    break;
                             }
                         }
                     }
@@ -204,6 +210,18 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
 
             return box;
+        }
+
+        private static void SetLabelStyle(ref TextBox label, string style) {
+            switch (style) {
+                case "Disable":
+                    label.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#e7ddb8")!);
+                    break;
+
+                case "Enable":
+                    label.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b0ce95")!);
+                    break;
+            }
         }
 
         public static Viewbox CreateRadioButton(ClockModel.ControlModel control) {
