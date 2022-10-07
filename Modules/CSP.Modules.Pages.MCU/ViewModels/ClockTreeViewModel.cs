@@ -41,45 +41,48 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         public Canvas CanvasControl {
             get => _canvasControl;
             private set {
-                if (SetProperty(ref _canvasControl, value)) {
-                    foreach (var control in DescriptionHelper.Clock.ControlMap) {
-                        UIElement obj = null;
-                        switch (control.Value.Type) {
-                            case "TextBox": {
-                                    obj = ClockTreeViewModelTools.CreateTextBox(control.Value);
-                                    break;
-                                }
-                            case "ComboBox": {
-                                    obj = ClockTreeViewModelTools.CreateComboBox(control.Value);
-                                    break;
-                                }
-                            case "Label": {
-                                    obj = ClockTreeViewModelTools.CreateLabel(control.Value);
-                                    break;
-                                }
-                            case "RadioButton": {
-                                    obj = ClockTreeViewModelTools.CreateRadioButton(control.Value);
-                                    break;
-                                }
-                            default: {
-                                    Log.Warning($"不存在的CanvasControl: {control.Value.Type}");
-                                    break;
-                                }
+                if (SetProperty(ref _canvasControl, value))
+                    CreateControl();
+            }
+        }
+
+        private void CreateControl() {
+            foreach (var control in DescriptionHelper.Clock.ControlMap) {
+                UIElement obj = null;
+                switch (control.Value.Type) {
+                    case "TextBox": {
+                            obj = ClockTreeViewModelTools.CreateTextBox(control.Value);
+                            break;
                         }
-                        if (obj != null) {
+                    case "ComboBox": {
+                            obj = ClockTreeViewModelTools.CreateComboBox(control.Value);
+                            break;
+                        }
+                    case "Label": {
+                            obj = ClockTreeViewModelTools.CreateLabel(control.Value);
+                            break;
+                        }
+                    case "RadioButton": {
+                            obj = ClockTreeViewModelTools.CreateRadioButton(control.Value);
+                            break;
+                        }
+                    default: {
+                            Log.Warning($"不存在的CanvasControl: {control.Value.Type}");
+                            break;
+                        }
+                }
+                if (obj != null) {
 #if DEBUG
-                            var binding = new Binding("Name") {
-                                Mode = BindingMode.TwoWay,
-                                Source = control.Value,
-                                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                            };
-                            BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
+                    var binding = new Binding("Name") {
+                        Mode = BindingMode.TwoWay,
+                        Source = control.Value,
+                        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                    };
+                    BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
 #endif
-                            Canvas.SetLeft(obj, control.Value.X);
-                            Canvas.SetTop(obj, control.Value.Y);
-                            CanvasControl.Children.Add(obj);
-                        }
-                    }
+                    Canvas.SetLeft(obj, control.Value.X);
+                    Canvas.SetTop(obj, control.Value.Y);
+                    CanvasControl.Children.Add(obj);
                 }
             }
         }
