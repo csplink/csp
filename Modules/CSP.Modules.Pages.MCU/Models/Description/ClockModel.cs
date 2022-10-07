@@ -161,6 +161,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public class SignalModel
             {
                 [XmlAttribute]
+                public string Dependence { get; set; }
+
+                [XmlAttribute]
                 public string Source { get; set; }
             }
 
