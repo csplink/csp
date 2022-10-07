@@ -1,6 +1,7 @@
 ﻿using CSP.Modules.Pages.MCU.Models.Description;
 using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
+using CSP.Utils.Extensions;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -153,6 +154,25 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 box.SelectedIndex = Convert.ToInt32(control.DefaultValue);
 
             box.SelectionChanged += (sender, e) => {
+                if (sender is not ComboBox comboBox)
+                    return;
+
+                var s = "";
+                foreach (var signal in control.Signals) {
+                    if (signal.Dependence == null)
+                        s = signal.Source;
+                }
+
+                if (comboBox.SelectedItem is ClockModel.ControlModel.SourceModel source && !s.IsNullOrEmpty()) {
+                    if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
+                        var ctrl = DescriptionHelper.Clock.ControlMap[s];
+                        control.Value = source.Operator.ToLower() switch {
+                            "/" => ctrl.Value / source.Value,
+                            "x" => ctrl.Value * source.Value,
+                            _ => control.Value
+                        };
+                    }
+                }
             };
 
             return box;
@@ -232,15 +252,11 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         }
 
         private static void SetLabelStyle(ref TextBox label, string style) {
-            switch (style) {
-                case "Disable":
-                    label.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#e7ddb8")!);
-                    break;
-
-                case "Enable":
-                    label.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b0ce95")!);
-                    break;
-            }
+            label.Background = style switch {
+                "Disable" => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#e7ddb8")!),
+                "Enable" => new SolidColorBrush((Color)ColorConverter.ConvertFromString("#b0ce95")!),
+                _ => label.Background
+            };
         }
 
         public static Viewbox CreateRadioButton(ClockModel.ControlModel control) {
