@@ -169,6 +169,15 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 IsReadOnly = true
             };
 
+            if (control.Multiple != -114514) {
+                var binding = new Binding("DisplayValue") {
+                    Mode = BindingMode.TwoWay,
+                    Source = control,
+                    UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
+                };
+                BindingOperations.SetBinding(box, TextBox.TextProperty, binding);
+            }
+
             SetLabelStatus(ref box, control);
             DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
                 SetLabelStatus(ref box, control);
