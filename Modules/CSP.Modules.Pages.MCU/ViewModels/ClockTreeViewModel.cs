@@ -135,6 +135,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             ComboBox box = new() {
                 Width = control.Width,
                 Height = control.Height,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
             };
 
