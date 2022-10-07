@@ -121,7 +121,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
             };
 
-            var binding = new Binding("Value") {
+            var binding = new Binding("DisplayValue") {
                 Mode = BindingMode.TwoWay,
                 Source = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.LostFocus

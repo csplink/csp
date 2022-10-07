@@ -96,9 +96,12 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 get => _defaultValue;
                 set {
                     _defaultValue = value;
-                    Value = value;
+                    DisplayValue = value;
                 }
             }
+
+            [XmlIgnore]
+            public float DisplayValue { get; set; }
 
             [XmlAttribute]
             public string GroupName { get; set; }
@@ -128,9 +131,6 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             [XmlAttribute]
             public string Type { get; set; }
-
-            [XmlIgnore]
-            public float Value { get; set; }
 
             [XmlIgnore]
             public float Width { get; set; }
