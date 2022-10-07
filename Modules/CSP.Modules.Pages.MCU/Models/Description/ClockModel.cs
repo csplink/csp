@@ -118,15 +118,6 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlAttribute]
             public string Name { get; set; }
 
-            [XmlIgnore]
-            public float RealValue {
-                get {
-                    if (DisplayValue != 0 && Multiple != -114514)
-                        return DisplayValue * Multiple;
-                    return -114514;
-                }
-            }
-
             [XmlArray("Sources")]
             [XmlArrayItem("Source")]
             public List<SourceModel> Sources { get; set; }
@@ -137,6 +128,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             [XmlAttribute]
             public string Type { get; set; }
+
+            [XmlIgnore]
+            public float Value { get; set; }
 
             [XmlIgnore]
             public float Width { get; set; }
