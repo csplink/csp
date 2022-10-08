@@ -42,8 +42,13 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         public Canvas CanvasControl {
             get => _canvasControl;
             private set {
-                if (SetProperty(ref _canvasControl, value))
+                if (SetProperty(ref _canvasControl, value)) {
                     CreateControl();
+                    foreach (var control in DescriptionHelper.Clock.ControlMap) {
+                        control.Value.PropertyValueChanged += (sender, e) => {
+                        };
+                    }
+                }
             }
         }
 
