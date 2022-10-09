@@ -203,6 +203,15 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 SetLabelStatus(ref box, control);
             };
 
+            foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
+                foreach (var signal in control.Signals) {
+                    if (ctl.Value.Name == signal.Source && signal.Dependence == null) {
+                        ctl.Value.PropertyValueChanged += (sender, e) => {
+                        };
+                    }
+                }
+            }
+
             return box;
         }
 
