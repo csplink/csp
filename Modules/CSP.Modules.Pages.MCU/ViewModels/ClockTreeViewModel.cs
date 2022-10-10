@@ -150,8 +150,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
             BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
             box.DisplayMemberPath = "Text";
-            if (control.Multiple == -114514)
-                box.SelectedIndex = Convert.ToInt32(control.DefaultValue);
+            box.SelectedIndex = Convert.ToInt32(control.DefaultValue);
 
             box.SelectionChanged += (sender, e) => {
                 if (sender is not ComboBox comboBox)
