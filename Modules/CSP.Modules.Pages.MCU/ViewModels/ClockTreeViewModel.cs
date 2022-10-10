@@ -193,7 +193,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 var binding = new Binding("DisplayValue") {
                     Mode = BindingMode.TwoWay,
                     Source = control,
-                    UpdateSourceTrigger = UpdateSourceTrigger.LostFocus
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 };
                 BindingOperations.SetBinding(box, TextBox.TextProperty, binding);
             }
@@ -206,7 +206,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
                 foreach (var signal in control.Signals) {
                     if (ctl.Value.Name == signal.Source && signal.Dependence == null) {
-                        ctl.Value.PropertyValueChanged += (sender, e) => {
+                        ctl.Value.PropertyChanged += (sender, e) => {
+                            control.Value = ctl.Value.Value;
                         };
                     }
                 }
