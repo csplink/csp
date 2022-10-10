@@ -1,5 +1,6 @@
 ﻿using CSP.Utils;
 using CSP.Utils.Extensions;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,7 +88,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             return rtn;
         }
 
-        public class ControlModel : BindableBaseUtil
+        public class ControlModel : BindableBase
         {
             private float _defaultValue;
             private float _displayValue;
