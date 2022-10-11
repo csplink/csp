@@ -153,16 +153,13 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             box.SelectedIndex = Convert.ToInt32(control.DefaultValue);
 
             box.SelectionChanged += (sender, e) => {
-                if (sender is not ComboBox comboBox)
-                    return;
-
                 var s = "";
                 foreach (var signal in control.Signals) {
                     if (signal.Dependence == null)
                         s = signal.Source;
                 }
 
-                if (comboBox.SelectedItem is ClockModel.ControlModel.SourceModel source && !s.IsNullOrEmpty()) {
+                if (box.SelectedItem is ClockModel.ControlModel.SourceModel source && !s.IsNullOrEmpty()) {
                     if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
                         var ctrl = DescriptionHelper.Clock.ControlMap[s];
                         control.Value = source.Operator.ToLower() switch {
@@ -174,6 +171,30 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 }
             };
 
+            foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
+                foreach (var signal1 in control.Signals) {
+                    if (ctl.Value.Name == signal1.Source && signal1.Dependence == null) {
+                        ctl.Value.PropertyChanged += (sender, e) => {
+                            var s = "";
+                            foreach (var signal2 in control.Signals) {
+                                if (signal2.Dependence == null)
+                                    s = signal2.Source;
+                            }
+
+                            if (box.SelectedItem is ClockModel.ControlModel.SourceModel source && !s.IsNullOrEmpty()) {
+                                if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
+                                    var ctrl = DescriptionHelper.Clock.ControlMap[s];
+                                    control.Value = source.Operator.ToLower() switch {
+                                        "/" => ctrl.Value / source.Value,
+                                        "x" => ctrl.Value * source.Value,
+                                        _ => control.Value
+                                    };
+                                }
+                            }
+                        };
+                    }
+                }
+            }
             return box;
         }
 
