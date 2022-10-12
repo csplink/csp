@@ -33,7 +33,7 @@ runs:
       run: dotnet test ${{ inputs.solution }} --configuration ${{ inputs.buildConfiguration }} --no-build --verbosity normal --blame-crash
 
     - name: upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: csp-${{ github.run_number }}
         path: ${{ github.workspace }}/Apps/CSP.Apps.Dev/bin/${{ inputs.buildConfiguration }}/net6.0-windows
