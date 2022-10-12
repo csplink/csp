@@ -94,6 +94,8 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             private float _displayValue;
             private float _value;
 
+            public int DefaultIndex { get; set; }
+
             [XmlAttribute]
             public float DefaultValue {
                 get => _defaultValue;

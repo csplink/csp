@@ -150,7 +150,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
             BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
             box.DisplayMemberPath = "Text";
-            box.SelectedIndex = Convert.ToInt32(control.DefaultValue);
+            box.SelectedIndex = control.DefaultIndex;
 
             box.SelectionChanged += (sender, e) => {
                 var s = "";
