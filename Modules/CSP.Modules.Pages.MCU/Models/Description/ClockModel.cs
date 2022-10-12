@@ -110,7 +110,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                     if (!SetProperty(ref _displayValue, value))
                         return;
 
-                    if (Multiple != 0 && Multiple != -114514)
+                    if (Multiple != 0)
                         Value = _displayValue * Multiple;
                 }
             }
@@ -125,7 +125,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public int ID { get; set; }
 
             [XmlAttribute]
-            public float Multiple { get; set; } = -114514;
+            public float Multiple { get; set; }
 
             [XmlAttribute]
             public string Name { get; set; }
@@ -151,7 +151,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 set {
                     if (!SetProperty(ref _value, value))
                         return;
-                    if (Multiple != 0 && Multiple != -114514)
+                    if (Multiple != 0)
                         DisplayValue = _value / Multiple;
                 }
             }
