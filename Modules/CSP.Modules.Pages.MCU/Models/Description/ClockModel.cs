@@ -172,8 +172,20 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             public class SignalModel
             {
-                [XmlAttribute]
-                public string Dependence { get; set; }
+                private string _dependencies;
+
+                [XmlIgnore]
+                public string[] DependenceList { get; set; }
+
+                public string Dependencies {
+                    get => _dependencies;
+                    set {
+                        if (EqualityComparer<string>.Default.Equals(_dependencies, value))
+                            return;
+                        _dependencies = value;
+                        DependenceList = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    }
+                }
 
                 [XmlAttribute]
                 public string Operator { get; set; } = "*";
@@ -199,9 +211,20 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
             public class StatusModel
             {
-                [XmlArray("Dependencies")]
-                [XmlArrayItem("Dependence")]
-                public List<DependenceModel> Dependencies { get; set; }
+                private string _dependencies;
+
+                [XmlIgnore]
+                public string[] DependenceList { get; set; }
+
+                public string Dependencies {
+                    get => _dependencies;
+                    set {
+                        if (EqualityComparer<string>.Default.Equals(_dependencies, value))
+                            return;
+                        _dependencies = value;
+                        DependenceList = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    }
+                }
 
                 [XmlAttribute]
                 public bool IsEnable { get; set; }
@@ -209,18 +232,6 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 [XmlArray("Styles")]
                 [XmlArrayItem("Style")]
                 public List<StyleModel> Styles { get; set; }
-
-                public class DependenceModel
-                {
-                    [XmlAttribute]
-                    public string Comparator { get; set; }
-
-                    [XmlAttribute]
-                    public string Key { get; set; }
-
-                    [XmlAttribute]
-                    public string Value { get; set; }
-                }
 
                 public class StyleModel
                 {
