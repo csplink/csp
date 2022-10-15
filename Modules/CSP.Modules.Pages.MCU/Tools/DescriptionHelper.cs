@@ -6,6 +6,7 @@ using CSP.Resources;
 using CSP.Utils;
 using CSP.Utils.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace CSP.Modules.Pages.MCU.Tools
 {
@@ -57,8 +58,17 @@ namespace CSP.Modules.Pages.MCU.Tools
             return Instance.GetPinProperty(name);
         }
 
-        public static bool IsDependence(string[] dependencies) {
-            return true;
+        public static bool IsDependence(IEnumerable<string> dependencies) {
+            if (dependencies == null)
+                return true;
+
+            bool isDependence = true;
+            foreach (var dependence in dependencies) {
+                if (!Defines.ContainsKey(dependence))
+                    isDependence = false;
+            }
+
+            return isDependence;
         }
 
         public static bool Load(MCUModel mcu) {
