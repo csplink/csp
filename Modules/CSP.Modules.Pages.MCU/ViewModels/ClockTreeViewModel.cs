@@ -300,10 +300,22 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
             if (control.DefaultValue == 1 && control.Multiple == 0)
                 button.IsChecked = true;
+            else
+                button.IsChecked = false;
 
-            DescriptionHelper.Defines.CollectionChanged += (sender, e) => {
-            };
             DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
+            };
+
+            button.Checked += (sender, e) => {
+                switch (button.IsChecked) {
+                    case true:
+                        DescriptionHelper.ChangeDefine(null, $"CSP_USING_{control.Macro}", null);
+                        break;
+
+                    case false:
+                        DescriptionHelper.ChangeDefine($"CSP_USING_{control.Macro}", null, null);
+                        break;
+                }
             };
 
             box.Child = button;
