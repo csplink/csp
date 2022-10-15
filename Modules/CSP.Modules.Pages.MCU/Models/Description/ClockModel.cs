@@ -176,7 +176,13 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 public string Dependence { get; set; }
 
                 [XmlAttribute]
+                public string Operator { get; set; }
+
+                [XmlAttribute]
                 public string Source { get; set; }
+
+                [XmlAttribute]
+                public float Value { get; set; }
             }
 
             public class SourceModel
