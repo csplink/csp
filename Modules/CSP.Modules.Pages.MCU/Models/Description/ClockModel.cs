@@ -176,25 +176,25 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 public string Dependence { get; set; }
 
                 [XmlAttribute]
-                public string Operator { get; set; }
+                public string Operator { get; set; } = "*";
 
                 [XmlAttribute]
                 public string Source { get; set; }
 
                 [XmlAttribute]
-                public float Value { get; set; }
+                public float Value { get; set; } = 1;
             }
 
             public class SourceModel
             {
                 [XmlAttribute]
-                public string Operator { get; set; }
+                public string Operator { get; set; } = "*";
 
                 [XmlIgnore]
                 public string Text { get => Operator + Value; }
 
                 [XmlAttribute]
-                public float Value { get; set; }
+                public float Value { get; set; } = 1;
             }
 
             public class StatusModel
