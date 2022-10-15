@@ -175,7 +175,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 private string _dependencies;
 
                 [XmlIgnore]
-                public string[] DependenceList { get; set; }
+                public string[] DependenceArray { get; set; }
 
                 public string Dependencies {
                     get => _dependencies;
@@ -183,7 +183,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                         if (EqualityComparer<string>.Default.Equals(_dependencies, value))
                             return;
                         _dependencies = value;
-                        DependenceList = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        DependenceArray = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                     }
                 }
 
@@ -214,7 +214,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 private string _dependencies;
 
                 [XmlIgnore]
-                public string[] DependenceList { get; set; }
+                public string[] DependenceArray { get; set; }
 
                 public string Dependencies {
                     get => _dependencies;
@@ -222,7 +222,7 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                         if (EqualityComparer<string>.Default.Equals(_dependencies, value))
                             return;
                         _dependencies = value;
-                        DependenceList = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                        DependenceArray = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                     }
                 }
 
