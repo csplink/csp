@@ -57,6 +57,10 @@ namespace CSP.Modules.Pages.MCU.Tools
             return Instance.GetPinProperty(name);
         }
 
+        public static bool IsDependence(string[] dependencies) {
+            return true;
+        }
+
         public static bool Load(MCUModel mcu) {
             DebugUtil.Assert(mcu != null, new ArgumentNullException(nameof(mcu)), "MCU不能为空");
             if (mcu == null)

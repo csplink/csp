@@ -155,7 +155,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             box.SelectionChanged += (sender, e) => {
                 var s = "";
                 foreach (var signal in control.Signals) {
-                    if (signal.Dependence == null)
+                    if (DescriptionHelper.IsDependence(signal.DependenceArray))
                         s = signal.Source;
                 }
 
@@ -173,11 +173,11 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
                 foreach (var signal1 in control.Signals) {
-                    if (ctl.Value.Name == signal1.Source && signal1.Dependence == null) {
+                    if (ctl.Value.Name == signal1.Source && DescriptionHelper.IsDependence(signal1.DependenceArray)) {
                         ctl.Value.PropertyChanged += (sender, e) => {
                             var s = "";
                             foreach (var signal2 in control.Signals) {
-                                if (signal2.Dependence == null)
+                                if (DescriptionHelper.IsDependence(signal2.DependenceArray))
                                     s = signal2.Source;
                             }
 
@@ -225,7 +225,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
                 foreach (var signal in control.Signals) {
-                    if (ctl.Value.Name == signal.Source && signal.Dependence == null) {
+                    if (ctl.Value.Name == signal.Source && DescriptionHelper.IsDependence(signal.DependenceArray)) {
                         ctl.Value.PropertyChanged += (sender, e) => {
                             control.Value = ctl.Value.Value;
                         };
@@ -238,34 +238,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
         private static void SetLabelStatus(ref TextBox label, ClockModel.ControlModel control) {
             foreach (var status in control.Status) {
-                var b = true;
-                foreach (var dependence in status.Dependencies) {
-                    if (DescriptionHelper.Defines.ContainsKey(dependence.Key)) {
-                        switch (dependence.Comparator) {
-                            case "==":
-                                if (DescriptionHelper.Defines[dependence.Key] != dependence.Value)
-                                    b = false;
-                                break;
-
-                            case "<":
-                                break;
-
-                            case ">":
-                                break;
-
-                            case ">=":
-                                break;
-
-                            case "<=":
-                                break;
-                        }
-                    }
-                    else {
-                        b = false;
-                    }
-                }
-
-                if (b) {
+                if (DescriptionHelper.IsDependence(status.DependenceArray)) {
                     foreach (var style in status.Styles) {
                         switch (style.Name) {
                             case "Text":
