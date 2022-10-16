@@ -143,7 +143,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!)
             };
 
-            var binding = new Binding("Sources") {
+            var binding = new Binding("Signals") {
                 Mode = BindingMode.TwoWay,
                 Source = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
@@ -154,17 +154,17 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             box.SelectionChanged += (sender, e) => {
                 var s = "";
-                foreach (var signal in control.Signals) {
-                    if (DescriptionHelper.IsDependence(signal.DependenceArray))
-                        s = signal.Source;
+                foreach (var signal1 in control.Signals) {
+                    if (DescriptionHelper.IsDependence(signal1.DependenceArray))
+                        s = signal1.Source;
                 }
 
-                if (box.SelectedItem is ClockModel.ControlModel.SourceModel source && !s.IsNullOrEmpty()) {
+                if (box.SelectedItem is ClockModel.ControlModel.SignalModel signal2 && !s.IsNullOrEmpty()) {
                     if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
                         var ctrl = DescriptionHelper.Clock.ControlMap[s];
-                        control.Value = source.Operator.ToLower() switch {
-                            "/" => ctrl.Value / source.Value,
-                            "*" => ctrl.Value * source.Value,
+                        control.Value = signal2.Operator.ToLower() switch {
+                            "/" => ctrl.Value / signal2.Value,
+                            "*" => ctrl.Value * signal2.Value,
                             _ => control.Value
                         };
                     }
@@ -181,12 +181,12 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                     s = signal2.Source;
                             }
 
-                            if (box.SelectedItem is ClockModel.ControlModel.SourceModel source && !s.IsNullOrEmpty()) {
+                            if (box.SelectedItem is ClockModel.ControlModel.SignalModel signal3 && !s.IsNullOrEmpty()) {
                                 if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
                                     var ctrl = DescriptionHelper.Clock.ControlMap[s];
-                                    control.Value = source.Operator.ToLower() switch {
-                                        "/" => ctrl.Value / source.Value,
-                                        "*" => ctrl.Value * source.Value,
+                                    control.Value = signal3.Operator.ToLower() switch {
+                                        "/" => ctrl.Value / signal3.Value,
+                                        "*" => ctrl.Value * signal3.Value,
                                         _ => control.Value
                                     };
                                 }

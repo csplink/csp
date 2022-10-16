@@ -139,10 +139,6 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlArrayItem("Signal")]
             public List<SignalModel> Signals { get; set; }
 
-            [XmlArray("Sources")]
-            [XmlArrayItem("Source")]
-            public List<SourceModel> Sources { get; set; }
-
             [XmlArray("Status")]
             [XmlArrayItem("Status")]
             public List<StatusModel> Status { get; set; }
@@ -195,15 +191,6 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
                 [XmlAttribute]
                 public float SourceValue { get; set; }
-
-                [XmlAttribute]
-                public float Value { get; set; } = 1;
-            }
-
-            public class SourceModel
-            {
-                [XmlAttribute]
-                public string Operator { get; set; } = "*";
 
                 [XmlIgnore]
                 public string Text { get => Operator + Value; }
