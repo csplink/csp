@@ -194,6 +194,9 @@ namespace CSP.Modules.Pages.MCU.Models.Description
                 public string Source { get; set; }
 
                 [XmlAttribute]
+                public float SourceValue { get; set; }
+
+                [XmlAttribute]
                 public float Value { get; set; } = 1;
             }
 
