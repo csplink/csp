@@ -164,7 +164,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                         var ctrl = DescriptionHelper.Clock.ControlMap[s];
                         control.Value = source.Operator.ToLower() switch {
                             "/" => ctrl.Value / source.Value,
-                            "x" => ctrl.Value * source.Value,
+                            "*" => ctrl.Value * source.Value,
                             _ => control.Value
                         };
                     }
@@ -186,7 +186,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                                     var ctrl = DescriptionHelper.Clock.ControlMap[s];
                                     control.Value = source.Operator.ToLower() switch {
                                         "/" => ctrl.Value / source.Value,
-                                        "x" => ctrl.Value * source.Value,
+                                        "*" => ctrl.Value * source.Value,
                                         _ => control.Value
                                     };
                                 }
@@ -221,6 +221,32 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             SetLabelStatus(ref box, control);
             DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
                 SetLabelStatus(ref box, control);
+                foreach (var signal in control.Signals) {
+                    if (DescriptionHelper.IsDependence(signal.DependenceArray)) {
+                        float value = 0;
+                        if (!signal.Source.IsNullOrEmpty()) {
+                            if (DescriptionHelper.Clock.ControlMap.ContainsKey(signal.Source)) {
+                                var ctrl = DescriptionHelper.Clock.ControlMap[signal.Source];
+                                value = ctrl.Value;
+                            }
+                            else {
+                                //TODO 出现错误
+                            }
+                        }
+                        else if (signal.SourceValue != 0) {
+                            value = signal.SourceValue;
+                        }
+                        else {
+                            //TODO 出现错误
+                        }
+
+                        control.Value = signal.Operator.ToLower() switch {
+                            "/" => value / signal.Value,
+                            "*" => value * signal.Value,
+                            _ => control.Value
+                        };
+                    }
+                }
             };
 
             foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
@@ -269,6 +295,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
             RadioButton button = new() {
                 GroupName = control.GroupName,
+                Tag = control.Name,
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
             };
             if (control.DefaultValue == 1 && control.Multiple == 0)
@@ -280,14 +307,17 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             };
 
             button.Checked += (sender, e) => {
-                switch (button.IsChecked) {
-                    case true:
-                        DescriptionHelper.ChangeDefine(null, $"CSP_USING_{control.Macro}", null);
-                        break;
-
-                    case false:
-                        DescriptionHelper.ChangeDefine($"CSP_USING_{control.Macro}", null, null);
-                        break;
+                if (sender is RadioButton { IsChecked: true } rb) {
+                    var groupName = rb.GroupName;
+                    var name = rb.Tag.ToString();
+                    foreach (var ctrl in DescriptionHelper.Clock.ControlMap) {
+                        if (ctrl.Value.GroupName == groupName) {
+                            if (ctrl.Value.Name == name)
+                                DescriptionHelper.ChangeDefine(null, $"CSP_USING_{ctrl.Value.Macro}", null);
+                            else
+                                DescriptionHelper.ChangeDefine($"CSP_USING_{ctrl.Value.Macro}", null, null);
+                        }
+                    }
                 }
             };
 
