@@ -254,7 +254,11 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                     if (ctl.Value.Name == signal.Source) {
                         ctl.Value.PropertyChanged += (sender, e) => {
                             if (DescriptionHelper.IsDependence(signal.DependenceArray))
-                                control.Value = ctl.Value.Value;
+                                control.Value = signal.Operator.ToLower() switch {
+                                    "/" => ctl.Value.Value / signal.Value,
+                                    "*" => ctl.Value.Value * signal.Value,
+                                    _ => control.Value
+                                };
                         };
                     }
                 }
