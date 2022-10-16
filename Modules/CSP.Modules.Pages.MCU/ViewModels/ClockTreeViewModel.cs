@@ -48,30 +48,31 @@ namespace CSP.Modules.Pages.MCU.ViewModels
         }
 
         private void CreateControl() {
+            // 第一遍轮询创建控件
             foreach (var control in DescriptionHelper.Clock.ControlMap) {
                 UIElement obj = null;
                 switch (control.Value.Type) {
-                    case "TextBox": {
-                            obj = ClockTreeViewModelTools.CreateTextBox(control.Value);
-                            break;
-                        }
-                    case "ComboBox": {
-                            obj = ClockTreeViewModelTools.CreateComboBox(control.Value);
-                            break;
-                        }
-                    case "Label": {
-                            obj = ClockTreeViewModelTools.CreateLabel(control.Value);
-                            break;
-                        }
-                    case "RadioButton": {
-                            obj = ClockTreeViewModelTools.CreateRadioButton(control.Value);
-                            break;
-                        }
-                    default: {
-                            Log.Warning($"不存在的CanvasControl: {control.Value.Type}");
-                            break;
-                        }
+                    case "TextBox":
+                        obj = ClockTreeViewModelTools.CreateTextBox(control.Value);
+                        break;
+
+                    case "ComboBox":
+                        obj = ClockTreeViewModelTools.CreateComboBox(control.Value);
+                        break;
+
+                    case "Label":
+                        obj = ClockTreeViewModelTools.CreateLabel(control.Value);
+                        break;
+
+                    case "RadioButton":
+                        obj = ClockTreeViewModelTools.CreateRadioButton(control.Value);
+                        break;
+
+                    default:
+                        Log.Warning($"不存在的CanvasControl: {control.Value.Type}");
+                        break;
                 }
+
                 if (obj != null) {
 #if DEBUG
                     var binding = new Binding("Name") {
@@ -91,6 +92,17 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                     Canvas.SetLeft(obj, control.Value.X);
                     Canvas.SetTop(obj, control.Value.Y);
                     CanvasControl.Children.Add(obj);
+                }
+            }
+
+            // 第二次轮询进行变量初始化
+            foreach (var control in DescriptionHelper.Clock.ControlMap) {
+                control.Value.DisplayValue = control.Value.DefaultValue;
+                switch (control.Value.Type) {
+                    case "RadioButton":
+                        if (control.Value.IsChecked)
+                            DescriptionHelper.ChangeDefine(null, $"CSP_USING_{control.Value.Macro}", null);
+                        break;
                 }
             }
         }
@@ -309,11 +321,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 GroupName = control.GroupName,
                 Tag = control.Name,
                 BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+                IsChecked = control.IsChecked
             };
-            if (control.DefaultValue == 1 && control.Multiple == 0)
-                button.IsChecked = true;
-            else
-                button.IsChecked = false;
 
             DescriptionHelper.Defines.PropertyChanged += (sender, e) => {
             };
