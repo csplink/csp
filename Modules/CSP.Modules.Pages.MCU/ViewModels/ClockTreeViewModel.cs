@@ -251,7 +251,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
                 foreach (var signal in control.Signals) {
-                    if (ctl.Value.Name == signal.Source && DescriptionHelper.IsDependence(signal.DependenceArray)) {
+                    if (ctl.Value.Name == signal.Source) {
                         ctl.Value.PropertyChanged += (sender, e) => {
                             control.Value = ctl.Value.Value;
                         };
