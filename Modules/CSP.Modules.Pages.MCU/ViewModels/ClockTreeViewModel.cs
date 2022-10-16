@@ -80,6 +80,13 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                         UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                     };
                     BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
+#else
+                    var binding = new Binding("Value") {
+                        Mode = BindingMode.TwoWay,
+                        Source = control.Value,
+                        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                    };
+                    BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
 #endif
                     Canvas.SetLeft(obj, control.Value.X);
                     Canvas.SetTop(obj, control.Value.Y);
