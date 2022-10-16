@@ -90,20 +90,14 @@ namespace CSP.Modules.Pages.MCU.Models.Description
 
         public class ControlModel : BindableBase
         {
-            private float _defaultValue;
             private float _displayValue;
             private float _value;
 
+            [XmlAttribute]
             public int DefaultIndex { get; set; }
 
             [XmlAttribute]
-            public float DefaultValue {
-                get => _defaultValue;
-                set {
-                    _defaultValue = value;
-                    DisplayValue = value;
-                }
-            }
+            public float DefaultValue { get; set; }
 
             [XmlIgnore]
             public float DisplayValue {
