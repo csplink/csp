@@ -253,7 +253,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels
                 foreach (var signal in control.Signals) {
                     if (ctl.Value.Name == signal.Source) {
                         ctl.Value.PropertyChanged += (sender, e) => {
-                            control.Value = ctl.Value.Value;
+                            if (DescriptionHelper.IsDependence(signal.DependenceArray))
+                                control.Value = ctl.Value.Value;
                         };
                     }
                 }
