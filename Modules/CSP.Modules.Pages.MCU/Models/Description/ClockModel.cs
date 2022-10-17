@@ -1,5 +1,6 @@
 ﻿using CSP.Utils;
 using CSP.Utils.Extensions;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,16 +88,26 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             return rtn;
         }
 
-        public class ControlModel
+        public class ControlModel : BindableBase
         {
-            private float _defaultValue;
+            private float _displayValue;
+            private float _value;
 
             [XmlAttribute]
-            public float DefaultValue {
-                get => _defaultValue;
+            public int DefaultIndex { get; set; }
+
+            [XmlAttribute]
+            public float DefaultValue { get; set; }
+
+            [XmlIgnore]
+            public float DisplayValue {
+                get => _displayValue;
                 set {
-                    _defaultValue = value;
-                    Value = value;
+                    if (!SetProperty(ref _displayValue, value))
+                        return;
+
+                    if (Multiple != 0)
+                        Value = _displayValue * Multiple;
                 }
             }
 
@@ -110,14 +121,20 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public int ID { get; set; }
 
             [XmlAttribute]
+            public bool IsChecked { get; set; }
+
+            [XmlAttribute]
+            public string Macro { get; set; }
+
+            [XmlAttribute]
             public float Multiple { get; set; }
 
             [XmlAttribute]
             public string Name { get; set; }
 
-            [XmlArray("Sources")]
-            [XmlArrayItem("Source")]
-            public List<SourceModel> Sources { get; set; }
+            [XmlArray("Signals")]
+            [XmlArrayItem("Signal")]
+            public List<SignalModel> Signals { get; set; }
 
             [XmlArray("Status")]
             [XmlArrayItem("Status")]
@@ -127,7 +144,15 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             public string Type { get; set; }
 
             [XmlIgnore]
-            public float Value { get; set; }
+            public float Value {
+                get => _value;
+                set {
+                    if (!SetProperty(ref _value, value))
+                        return;
+                    if (Multiple != 0)
+                        DisplayValue = _value / Multiple;
+                }
+            }
 
             [XmlIgnore]
             public float Width { get; set; }
@@ -138,25 +163,55 @@ namespace CSP.Modules.Pages.MCU.Models.Description
             [XmlIgnore]
             public float Y { get; set; }
 
-            public class SourceModel
+            public class SignalModel
             {
+                private string _dependencies;
+
+                [XmlIgnore]
+                public string[] DependenceArray { get; set; }
+
+                public string Dependencies {
+                    get => _dependencies;
+                    set {
+                        if (EqualityComparer<string>.Default.Equals(_dependencies, value))
+                            return;
+                        _dependencies = value;
+                        DependenceArray = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    }
+                }
+
                 [XmlAttribute]
-                public string Operator { get; set; }
+                public string Operator { get; set; } = "*";
+
+                [XmlAttribute]
+                public string Source { get; set; }
+
+                [XmlAttribute]
+                public float SourceValue { get; set; }
 
                 [XmlIgnore]
                 public string Text { get => Operator + Value; }
 
                 [XmlAttribute]
-                public float Value { get; set; }
+                public float Value { get; set; } = 1;
             }
 
             public class StatusModel
             {
-                [XmlIgnore]
-                public List<string> DependenceList { get; } = new();
+                private string _dependencies;
 
-                [XmlAttribute]
-                public string Dependencies { get; set; }
+                [XmlIgnore]
+                public string[] DependenceArray { get; set; }
+
+                public string Dependencies {
+                    get => _dependencies;
+                    set {
+                        if (EqualityComparer<string>.Default.Equals(_dependencies, value))
+                            return;
+                        _dependencies = value;
+                        DependenceArray = _dependencies.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    }
+                }
 
                 [XmlAttribute]
                 public bool IsEnable { get; set; }

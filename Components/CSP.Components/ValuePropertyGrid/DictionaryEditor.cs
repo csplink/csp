@@ -1,6 +1,9 @@
-﻿using CSP.Utils;
+﻿using CSP.Events;
+using CSP.Utils;
 using CSP.Utils.Extensions;
+using Prism.Mvvm;
 using Syncfusion.Windows.PropertyGrid;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Controls;
@@ -66,15 +69,22 @@ namespace CSP.Components.ValuePropertyGrid
         }
     }
 
-    public class DictionaryEditorModel : BindableBaseUtil
+    public class DictionaryEditorModel : BindableBase
     {
         private string _value;
+
+        public event PropertyValueChangedEventHandler PropertyValueChanged;
 
         public ObservableDictionary<string, string> Source { get; init; } = new();
 
         public string Value {
             get => _value;
-            set => SetProperty(ref _value, value);
+            set {
+                if (EqualityComparer<string>.Default.Equals(_value, value))
+                    return;
+                PropertyValueChanged?.Invoke(this, new PropertyValueChangedEventArgs("Value", _value, value));
+                SetProperty(ref _value, value);
+            }
         }
     }
 }

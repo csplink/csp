@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Events\CSP.Events\CSP.Events.csproj" />
 	  <ProjectReference Include="..\..\Models\CSP.Models\CSP.Models.csproj" />
 	</ItemGroup>
 

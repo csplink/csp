@@ -62,6 +62,8 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
 
                         switch (e.PropertyName) {
                             case "Value": {
+                                    DescriptionHelper.ChangeDefine(e.OldValue != null ? $"CSP_USING_{e.OldValue}" : null,
+                                        e.NewValue != null ? $"CSP_USING_{e.NewValue}" : null, null);
                                     break;
                                 }
                         }
