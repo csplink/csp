@@ -52,5 +52,5 @@ jobs:
       - name: upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: csp-${{ github.ref_name }}-${{ github.run_number }}
+          name: csp-${{ github.run_number }}
           path: ${{ github.workspace }}/Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows
