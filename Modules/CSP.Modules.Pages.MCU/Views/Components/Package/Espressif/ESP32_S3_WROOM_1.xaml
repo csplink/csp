@@ -1,0 +1,21 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.Espressif.ESP32_S3_WROOM_1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:panAndZoom="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <panAndZoom:ZoomBorder PanButton="Middle" Stretch="None">
+        <Grid>
+            <Image
+                Width="1526"
+                Height="2160"
+                Source="../../../../Resources/Package/Espressif/esp32-s3-wroom-1.png" />
+            <Label
+                Width="200"
+                Height="75"
+                Margin="0,38,1649,0"
+                Background="YellowGreen" />
+        </Grid>
+    </panAndZoom:ZoomBorder>
+</UserControl>
