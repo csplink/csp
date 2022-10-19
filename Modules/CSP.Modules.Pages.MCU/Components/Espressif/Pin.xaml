@@ -27,5 +27,10 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid />
+    <Grid>
+        <ContentControl
+            x:Name="ContentControl"
+            x:FieldModifier="private"
+            ContentTemplate="{StaticResource PinTop}" />
+    </Grid>
 </UserControl>
