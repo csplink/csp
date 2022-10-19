@@ -1,4 +1,10 @@
-﻿using CSP.Components.ValuePropertyGrid;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
 using CSP.Modules.Pages.MCU.Models;
 using CSP.Modules.Pages.MCU.Models.Description;
@@ -7,14 +13,8 @@ using CSP.Utils;
 using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Ioc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
-namespace CSP.Modules.Pages.MCU.Components.LQFP
+namespace CSP.Modules.Pages.MCU.Components
 {
     public class PinBase : UserControl
     {

@@ -1,8 +1,8 @@
-﻿<lqfp:PinBase
+﻿<components:PinBase
     x:Class="CSP.Modules.Pages.MCU.Components.LQFP.PinLeft"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:lqfp="clr-namespace:CSP.Modules.Pages.MCU.Components.LQFP"
+    xmlns:components="clr-namespace:CSP.Modules.Pages.MCU.Components"
     Width="500"
     Height="30">
     <Grid>
@@ -38,4 +38,4 @@
             </Button>
         </Border>
     </Grid>
-</lqfp:PinBase>
+</components:PinBase>
