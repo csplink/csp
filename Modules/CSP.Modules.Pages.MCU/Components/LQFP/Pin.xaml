@@ -29,7 +29,6 @@
     <Grid>
         <ContentControl
             x:Name="ContentControl"
-            Grid.ColumnSpan="2"
             x:FieldModifier="private"
             ContentTemplate="{StaticResource PinTop}" />
     </Grid>
