@@ -4,6 +4,9 @@
     {
         public PinBottom() {
             InitializeComponent();
+            PinName = ButtonPin;
+            PinNote = TextBlockNote;
+            RightContextMenu = ButtonPinContextMenu;
         }
     }
 }
