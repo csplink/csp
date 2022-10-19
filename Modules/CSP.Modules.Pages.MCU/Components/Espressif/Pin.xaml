@@ -7,22 +7,22 @@
     <UserControl.Resources>
         <DataTemplate x:Key="PinBottom">
             <Grid>
-                <espressif:PinBottom />
+                <espressif:PinBottom Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PinLeft">
             <Grid>
-                <espressif:PinLeft />
+                <espressif:PinLeft Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PinRight">
             <Grid>
-                <espressif:PinRight />
+                <espressif:PinRight Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PinTop">
             <Grid>
-                <espressif:PinTop />
+                <espressif:PinTop Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
