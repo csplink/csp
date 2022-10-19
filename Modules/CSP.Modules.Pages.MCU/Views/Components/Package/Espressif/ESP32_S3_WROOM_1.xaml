@@ -11,18 +11,109 @@
             <DockPanel>
                 <Grid
                     Width="1250"
-                    Height="2160"
-                    Margin="0,0,0,1250"
-                    DockPanel.Dock="Left" />
+                    Margin="0,637,-80,1257"
+                    Panel.ZIndex="1"
+                    DockPanel.Dock="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <espressif:Pin Grid.Row="0" Direction="Left" />
+                    <espressif:Pin Grid.Row="1" Direction="Left" />
+                    <espressif:Pin Grid.Row="2" Direction="Left" />
+                    <espressif:Pin Grid.Row="3" Direction="Left" />
+                    <espressif:Pin Grid.Row="4" Direction="Left" />
+                    <espressif:Pin Grid.Row="5" Direction="Left" />
+                    <espressif:Pin Grid.Row="6" Direction="Left" />
+                    <espressif:Pin Grid.Row="7" Direction="Left" />
+                    <espressif:Pin Grid.Row="8" Direction="Left" />
+                    <espressif:Pin Grid.Row="9" Direction="Left" />
+                    <espressif:Pin Grid.Row="10" Direction="Left" />
+                    <espressif:Pin Grid.Row="11" Direction="Left" />
+                    <espressif:Pin Grid.Row="12" Direction="Left" />
+                    <espressif:Pin Grid.Row="13" Direction="Left" />
+                </Grid>
                 <Grid
                     Width="1526"
                     Height="1250"
-                    Margin="0,0,1250,0"
-                    DockPanel.Dock="Bottom" />
+                    Margin="0,-80,1170,0"
+                    Panel.ZIndex="1"
+                    DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <espressif:Pin Grid.Column="0" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="1" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="2" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="3" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="4" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="5" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="6" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="7" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="8" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="9" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="10" Direction="Bottom" />
+                    <espressif:Pin Grid.Column="11" Direction="Bottom" />
+                </Grid>
                 <Grid
                     Width="1250"
-                    Height="2160"
-                    DockPanel.Dock="Right" />
+                    Margin="-80,637,0,87"
+                    Panel.ZIndex="1"
+                    DockPanel.Dock="Right">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <espressif:Pin Grid.Row="0" Direction="Right" />
+                    <espressif:Pin Grid.Row="1" Direction="Right" />
+                    <espressif:Pin Grid.Row="2" Direction="Right" />
+                    <espressif:Pin Grid.Row="3" Direction="Right" />
+                    <espressif:Pin Grid.Row="4" Direction="Right" />
+                    <espressif:Pin Grid.Row="5" Direction="Right" />
+                    <espressif:Pin Grid.Row="6" Direction="Right" />
+                    <espressif:Pin Grid.Row="7" Direction="Right" />
+                    <espressif:Pin Grid.Row="8" Direction="Right" />
+                    <espressif:Pin Grid.Row="9" Direction="Right" />
+                    <espressif:Pin Grid.Row="10" Direction="Right" />
+                    <espressif:Pin Grid.Row="11" Direction="Right" />
+                    <espressif:Pin Grid.Row="12" Direction="Right" />
+                    <espressif:Pin Grid.Row="13" Direction="Right" />
+                </Grid>
                 <Image
                     Width="1526"
                     Height="2160"
