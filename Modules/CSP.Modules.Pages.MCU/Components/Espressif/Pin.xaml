@@ -1,6 +1,31 @@
 ﻿<UserControl
     x:Class="CSP.Modules.Pages.MCU.Components.Espressif.Pin"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:espressif="clr-namespace:CSP.Modules.Pages.MCU.Components.Espressif">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="PinBottom">
+            <Grid>
+                <espressif:PinBottom />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PinLeft">
+            <Grid>
+                <espressif:PinLeft />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PinRight">
+            <Grid>
+                <espressif:PinRight />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PinTop">
+            <Grid>
+                <espressif:PinTop />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
     <Grid />
 </UserControl>
