@@ -41,11 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Resources\Package\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="Resources\Package\Espressif\esp32-s3-wroom-1.png">
+        <None Update="Resources\Package\Espressif\ESP32-S3-WROOM-1.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

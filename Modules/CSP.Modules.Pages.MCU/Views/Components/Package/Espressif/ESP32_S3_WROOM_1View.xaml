@@ -237,7 +237,7 @@
             <Image
                 Width="1526"
                 Height="2160"
-                Source="pack://SiteOfOrigin:,,,/Resources/Package/Espressif/esp32-s3-wroom-1.png" />
+                Source="pack://SiteOfOrigin:,,,/Resources/Package/Espressif/ESP32-S3-WROOM-1.png" />
         </DockPanel>
     </panAndZoom:ZoomBorder>
 </UserControl>
