@@ -237,7 +237,7 @@
             <Image
                 Width="1526"
                 Height="2160"
-                Source="D:\Users\xqyjlj\Documents\git\github\csplink\csp\Apps\CSP.Apps.Dev\bin\Debug\net6.0-windows\Resources\Package\Espressif\esp32-s3-wroom-1.png" />
+                Source="pack://SiteOfOrigin:,,,/Resources/Package/Espressif/esp32-s3-wroom-1.png" />
         </DockPanel>
     </panAndZoom:ZoomBorder>
 </UserControl>
