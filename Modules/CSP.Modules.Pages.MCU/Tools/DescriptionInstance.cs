@@ -58,7 +58,9 @@ namespace CSP.Modules.Pages.MCU.Tools
             if (Pinout == null)
                 return false;
 
-            Clock = ClockModel.Load($"{DescriptionHelper.RepositoryPath}/description/{DescriptionHelper.Name.ToLower()}/clock/{DescriptionHelper.MCU.Name}.xml");
+            Clock = ClockModel.Load($"{DescriptionHelper.RepositoryPath}/description/" +
+                                    $"{DescriptionHelper.Name.ToLower()}/clock/" +
+                                    $"{DescriptionHelper.MCU.Name.ToLower()}.xml");
             if (Clock == null)
                 return false;
 
