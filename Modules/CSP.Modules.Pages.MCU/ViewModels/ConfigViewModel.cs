@@ -21,14 +21,18 @@ namespace CSP.Modules.Pages.MCU.ViewModels
             _regionManager = regionManager;
             _eventAggregator = eventAggregator;
 
-            DescriptionHelper.Load("Geehy", "APM32F103ZET6");
+            DescriptionHelper.Load("Espressif", "ESP32_S3_WROOM_1_N4");
 
             AddModules();
 
             // 添加MCU视图窗口
             try {
-                var type = Type.GetType($"CSP.Modules.Pages.MCU.Views.Components.Package.{DescriptionHelper.MCU.Package}View");
-                RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
+                var name = $"CSP.Modules.Pages.MCU.Views.Components.Package.{DescriptionHelper.MCU.Package}View";
+                var type = Type.GetType(name);
+                if (type != null)
+                    RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
+                else
+                    MessageBoxUtil.Error($"此封装不存在：{DescriptionHelper.MCU.Package}");
             }
             catch {
                 MessageBoxUtil.Error($"此封装不存在：{DescriptionHelper.MCU.Package}");
