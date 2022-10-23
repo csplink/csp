@@ -43,6 +43,11 @@ namespace CSP.Modules.Pages.MCU.ViewModels.Components.Config
             var property = new PropertyDetails();
             var clockMap = DescriptionHelper.GetMap("Clock");
             var clockIP = DescriptionHelper.GetIP("Clock");
+            if (clockMap == null || clockIP == null) {
+                MessageBoxUtil.Error("无 clock IP 与其 Map");
+                return null;
+            }
+
             foreach (var mode in clockIP.ModeMap) {
                 foreach (var parameter in clockIP.ModeMap[mode.Key].ParameterMap) {
                     var map = new ObservableDictionary<string, string>();

@@ -1,43 +1,49 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
-		<UseWPF>true</UseWPF>
-		<Authors>xqyjlj</Authors>
-		<Copyright>copyright © 2021-2022 xqyjlj&lt;xqyjlj@126.com&gt; </Copyright>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Authors>xqyjlj</Authors>
+        <Copyright>copyright © 2021-2022 xqyjlj&lt;xqyjlj@126.com&gt; </Copyright>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-		<PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-		<PackageReference Include="SharpVectors" Version="1.8.0" />
-		<PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
-		<PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.39" />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+        <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+        <PackageReference Include="SharpVectors" Version="1.8.0" />
+        <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
+        <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.39" />
         <PackageReference Include="Wpf.Controls.PanAndZoom" Version="2.3.4" />
-	</ItemGroup>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Components\CSP.Components\CSP.Components.csproj" />
+    <ItemGroup>
+        <ProjectReference Include="..\..\Components\CSP.Components\CSP.Components.csproj" />
         <ProjectReference Include="..\..\Events\CSP.Events\CSP.Events.csproj" />
-		<ProjectReference Include="..\..\Models\CSP.Models\CSP.Models.csproj" />
-		<ProjectReference Include="..\..\Resources\CSP.Resources\CSP.Resources.csproj" />
-		<ProjectReference Include="..\..\Services\CSP.Services\CSP.Services.csproj" />
-		<ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
-	</ItemGroup>
+        <ProjectReference Include="..\..\Models\CSP.Models\CSP.Models.csproj" />
+        <ProjectReference Include="..\..\Resources\CSP.Resources\CSP.Resources.csproj" />
+        <ProjectReference Include="..\..\Services\CSP.Services\CSP.Services.csproj" />
+        <ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Resources\Files.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Files.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
+    <ItemGroup>
+        <Compile Update="Resources\Files.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Files.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Update="Resources\Files.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Files.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-	</ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Files.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Files.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Resources\Package\Espressif\ESP32-S3-WROOM-1.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>
