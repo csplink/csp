@@ -34,7 +34,7 @@ jobs:
           path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Repository/csp_hal_esp32s3-latest
 
       - name: Setup .net
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             6.x
