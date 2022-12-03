@@ -3,7 +3,7 @@
 [![Join the chat at https://gitter.im/csplink/csp](https://badges.gitter.im/csplink/csp.svg)](https://gitter.im/csplink/csp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <div align="center">
-	<img src="https://img.shields.io/badge/license-GPLv3-blue" alt="开源协议">&emsp;
+	<img src="https://img.shields.io/badge/license-Apache 2.0-blue" alt="开源协议">&emsp;
 	<a href="https://csplink.github.io"><img src="https://img.shields.io/badge/wiki-文档-blue"></a>&emsp;
 	<img src="https://visitor-badge.glitch.me/badge?page_id=csplink_csp" alt="访客统计" />
 </div>
