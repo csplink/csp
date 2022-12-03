@@ -1,0 +1,32 @@
+﻿<components:PinBase
+    x:Class="CSP.Modules.Pages.MCU.Components.LFBGA.PinCommon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:CSP.Modules.Pages.MCU.Components"
+    Width="100"
+    Height="100">
+    <Grid>
+        <Grid.Clip>
+            <EllipseGeometry
+                Center="50 50"
+                RadiusX="50"
+                RadiusY="50" />
+        </Grid.Clip>
+        <Button
+            x:Name="ButtonPin"
+            x:FieldModifier="private"
+            Background="#b9c4ca"
+            BorderThickness="0"
+            Cursor="Hand"
+            PreviewMouseLeftButtonDown="OnPinNameClick">
+            <Button.ContextMenu>
+                <ContextMenu Name="ButtonPinContextMenu" />
+            </Button.ContextMenu>
+            <TextBlock
+                x:Name="TextBlockNote"
+                x:FieldModifier="private"
+                FontSize="30"
+                TextTrimming="CharacterEllipsis" />
+        </Button>
+    </Grid>
+</components:PinBase>
