@@ -9,7 +9,10 @@ template_package = """<UserControl
     Height="{height}"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <panAndZoom:ZoomBorder Stretch="None">
-        <Border Background="BlueViolet" BorderThickness="5">
+        <Border
+            Background="#FFCBCEC1"
+            BorderBrush="Black"
+            BorderThickness="5">
             <Grid>
                 <Grid.RowDefinitions>
 {row_definitions}                </Grid.RowDefinitions>
@@ -18,7 +21,8 @@ template_package = """<UserControl
 {data}            </Grid>
         </Border>
     </panAndZoom:ZoomBorder>
-</UserControl>"""
+</UserControl>
+"""
 
 template_pin = """                <lfbga:Pin
                     Grid.Row="{row}"
