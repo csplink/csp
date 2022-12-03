@@ -1,0 +1,23 @@
+* text=auto
+
+*.cs text
+*.xaml text
+*.xml text
+*.txt text
+*.props text
+*.md text
+*.sln text
+*.csproj text
+.editorconfig text
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.svg binary
+*.pdf binary
