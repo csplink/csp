@@ -39,14 +39,18 @@
             <TextBlock.Resources>
                 <utils:IsStringNullOrEmptyConverter x:Key="isStringNullOrEmptyConverter" />
             </TextBlock.Resources>
-            <TextBlock.Triggers>
-                <DataTrigger Binding="{Binding Text, Converter={StaticResource isStringNullOrEmptyConverter}}" Value="False">
-                    <Setter TargetName="TextBlockNote" Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Text, Converter={StaticResource isStringNullOrEmptyConverter}}" Value="True">
-                    <Setter TargetName="TextBlockNote" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-            </TextBlock.Triggers>
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Text, Converter={StaticResource isStringNullOrEmptyConverter}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Text, Converter={StaticResource isStringNullOrEmptyConverter}}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
         </TextBlock>
     </Grid>
 </components:PinBase>
