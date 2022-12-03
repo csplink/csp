@@ -41,6 +41,8 @@ namespace CSP.Modules.Pages.MCU.Components
             set => SetValue(PinProperty, value);
         }
 
+        protected bool IsDirection { get; init; } = true;
+
         protected Button PinName { get; init; }
 
         protected TextBlock PinNote { get; init; }
@@ -179,8 +181,9 @@ namespace CSP.Modules.Pages.MCU.Components
                 return;
             _pinProperty = DescriptionHelper.GetPinProperty(pin.Name);
 
-            PinName.Content = pin.Name;
-            PinNote.Text = _pinProperty.Label.String;
+            if (IsDirection)
+                PinName.Content = pin.Name;
+            PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? pin.Name : _pinProperty.Label.String;
 
             InitPinNameStatus(pin.Type);
 

@@ -7,22 +7,22 @@
     <UserControl.Resources>
         <DataTemplate x:Key="PinBottom">
             <Grid>
-                <lfbga:PinBottom Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PinLeft">
             <Grid>
-                <lfbga:PinLeft Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PinRight">
             <Grid>
-                <lfbga:PinRight Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="PinTop">
             <Grid>
-                <lfbga:PinTop Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
