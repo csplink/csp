@@ -1,24 +1,24 @@
-* text=auto
+# Per default everything gets normalized and gets LF line endings on checkout.
+* text eol=lf
 
-*.cs text
-*.xaml text
-*.xml text
-*.txt text
-*.props text
-*.md text
-*.sln text
-*.csproj text
-*.yml text
-.editorconfig text
+# These will always have CRLF line endings on checkout.
+*.uvmpw text eol=crlf
+*.uvprojx text eol=crlf
+*.bat text eol=crlf
 
+# These are binary so should never be modified by git.
+*.a binary
 *.png binary
 *.jpg binary
-*.jpeg binary
-*.gif binary
-*.ico binary
-*.ttf binary
-*.woff binary
-*.woff2 binary
-*.eot binary
-*.svg binary
 *.pdf binary
+*.ico binary
+*.xmind binary
+*.bmp binary
+*.tar.bz2 binary
+*.tar.gz binary
+*.tar.xz binary
+*.zip binary
+*.dll binary
+
+# These should also not be modified by git.
+*.svg -text
