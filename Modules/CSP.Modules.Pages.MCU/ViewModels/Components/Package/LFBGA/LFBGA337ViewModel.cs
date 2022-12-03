@@ -3,7 +3,7 @@ using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using Prism.Mvvm;
 
-namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package
+namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package.LFBGA
 {
     public class LFBGA337ViewModel : BindableBase
     {

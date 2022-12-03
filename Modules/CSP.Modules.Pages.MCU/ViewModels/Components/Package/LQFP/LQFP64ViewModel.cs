@@ -3,13 +3,13 @@ using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using Prism.Mvvm;
 
-namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package
+namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package.LQFP
 {
-    public class LQFP144ViewModel : BindableBase
+    public class LQFP64ViewModel : BindableBase
     {
-        public LQFP144ViewModel() {
-            if (Pins.Length != 144) {
-                MessageBoxUtil.Error($"读取引脚数据失败，LQFP144的引脚列表长度不为144，读取结果为{Pins.Length}");
+        public LQFP64ViewModel() {
+            if (Pins.Length != 64) {
+                MessageBoxUtil.Error($"读取引脚数据失败，LQFP64的引脚列表长度不为64，读取结果为{Pins.Length}");
             }
         }
 
