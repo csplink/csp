@@ -1,0 +1,81 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.LFBGA337View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lfbga="clr-namespace:CSP.Modules.Pages.MCU.Components.LFBGA"
+    xmlns:panAndZoom="clr-namespace:Wpf.Controls.PanAndZoom;assembly=Wpf.Controls.PanAndZoom"
+    xmlns:prism="http://prismlibrary.com/"
+    Width="2950"
+    Height="2950"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <panAndZoom:ZoomBorder Stretch="None">
+        <Border Background="BlueViolet" BorderThickness="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <lfbga:Pin
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    DataContext="{Binding Pins[0]}"
+                    Direction="Left" />
+                <lfbga:Pin
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    DataContext="{Binding Pins[1]}"
+                    Direction="Left" />
+                <lfbga:Pin
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    DataContext="{Binding Pins[2]}"
+                    Direction="Left" />
+                <lfbga:Pin
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    DataContext="{Binding Pins[3]}"
+                    Direction="Left" />
+            </Grid>
+        </Border>
+    </panAndZoom:ZoomBorder>
+</UserControl>
