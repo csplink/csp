@@ -1,0 +1,52 @@
+﻿<components:PinBase
+    x:Class="CSP.Modules.Pages.MCU.Components.LFBGA.PinLeft"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="clr-namespace:CSP.Modules.Pages.MCU.Components"
+    xmlns:utils="clr-namespace:CSP.Utils.Converter;assembly=CSP.Utils"
+    Width="100"
+    Height="100">
+    <Grid>
+        <Grid.Clip>
+            <EllipseGeometry
+                Center="50 50"
+                RadiusX="50"
+                RadiusY="50" />
+        </Grid.Clip>
+        <Border Background="Black">
+            <Button
+                x:Name="ButtonPin"
+                x:FieldModifier="private"
+                Background="#b9c4ca"
+                BorderThickness="0"
+                Content="Pin"
+                Cursor="Hand"
+                FontSize="14"
+                PreviewMouseLeftButtonDown="OnPinNameClick">
+                <Button.ContextMenu>
+                    <ContextMenu Name="ButtonPinContextMenu" />
+                </Button.ContextMenu>
+            </Button>
+        </Border>
+        <TextBlock
+            x:Name="TextBlockNote"
+            VerticalAlignment="Center"
+            x:FieldModifier="private"
+            Background="{Binding Path=Background, ElementName=ButtonPin}"
+            FontSize="14"
+            Text="Note"
+            TextAlignment="Center">
+            <TextBlock.Resources>
+                <utils:IsStringNullOrEmptyConverter x:Key="isStringNullOrEmptyConverter" />
+            </TextBlock.Resources>
+            <TextBlock.Triggers>
+                <DataTrigger Binding="{Binding Text, Converter={StaticResource isStringNullOrEmptyConverter}}" Value="False">
+                    <Setter TargetName="TextBlockNote" Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Text, Converter={StaticResource isStringNullOrEmptyConverter}}" Value="True">
+                    <Setter TargetName="TextBlockNote" Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </TextBlock.Triggers>
+        </TextBlock>
+    </Grid>
+</components:PinBase>
