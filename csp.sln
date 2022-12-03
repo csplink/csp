@@ -85,12 +85,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSP.Modules.Dialogs.NewMCU.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dialogs", "Dialogs", "{E9AC6D59-C050-495D-94DB-660137CC4691}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{19733575-F419-4A8B-8C7B-3EC0A0CC08BE}"
-	ProjectSection(SolutionItems) = preProject
-		LICENSE.md = LICENSE.md
-		README.md = README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
