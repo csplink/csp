@@ -5,7 +5,6 @@ using Prism.Modularity;
 using Prism.Regions;
 using Serilog;
 using Syncfusion.Windows.Tools.Controls;
-using System.IO;
 using System.Text;
 using System.Windows;
 
@@ -52,12 +51,6 @@ namespace CSP.Apps.Dev
                     retainedFileCountLimit: 10, // 最大保存文件数
                     fileSizeLimitBytes: 10 * 1024) // 最大单个文件长度
                 .CreateLogger();
-
-#if DEBUG
-            var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
-            IniFile.PathMCUDb = $"{solutionDir}../csp_mcu_db";
-            IniFile.PathRepository = $"{solutionDir}..";
-#endif
         }
     }
 }
