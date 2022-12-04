@@ -63,8 +63,6 @@ namespace CSP.Database.Tests.Models.MCU
                             Assert.False(mcu.Current.Lowest <= 0);
                             Assert.False(mcu.Current.Run <= 0);
                             Assert.False(mcu.Temperature.Max <= 0);
-                            Assert.False(mcu.Temperature.Max <= 0);
-                            Assert.False(mcu.Voltage.Max <= 0);
                             Assert.False(mcu.Voltage.Max <= 0);
 
                             foreach (var peripheral in mcu.Peripherals) {
