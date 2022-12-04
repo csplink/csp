@@ -14,16 +14,6 @@ namespace CSP.Resources
             set => Ini.AddKey("Path", "LogFile", value);
         }
 
-        public static string PathMCUDb {
-            get => Ini.ReadKey("Path", "MCUDb", Path.MCUDb);
-            set => Ini.AddKey("Path", "MCUDb", value);
-        }
-
-        public static string PathMCUDbUrl {
-            get => Ini.ReadKey("Path", "MCUDbUrl", Path.MCUDbUrl);
-            set => Ini.AddKey("Path", "MCUDbUrl", value);
-        }
-
         public static string PathRepo {
             get => Ini.ReadKey("Path", "Repo", Path.Repo);
             set => Ini.AddKey("Path", "Repo", value);

@@ -125,14 +125,6 @@
     <value>logs/csp.log</value>
     <comment>日志文件路径</comment>
   </data>
-  <data name="MCUDb" xml:space="preserve">
-    <value>./Database/MCU</value>
-    <comment>MCU数据库路径</comment>
-  </data>
-  <data name="MCUDbUrl" xml:space="preserve">
-    <value>https://gitee.com/misfra/misfra_mcu_db</value>
-    <comment>MCU数据库网址</comment>
-  </data>
   <data name="Repo" xml:space="preserve">
     <value>./csp_repo</value>
     <comment>path of csp_repo</comment>

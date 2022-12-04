@@ -53,8 +53,6 @@ namespace CSP.Resources
         private void InitData() {
             AddKey("Path", "Git", Path.Git);
             AddKey("Path", "LogFile", Path.LogFile);
-            AddKey("Path", "MCUDb", Path.MCUDb);
-            AddKey("Path", "MCUDbUrl", Path.MCUDbUrl);
             AddKey("Path", "Repo", Path.Repo);
             Save();
         }
