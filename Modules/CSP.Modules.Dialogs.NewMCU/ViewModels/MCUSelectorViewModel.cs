@@ -166,7 +166,7 @@ namespace CSP.Modules.Dialogs.NewMCU.ViewModels
                     PackageBitmapImage = new BitmapImage(path);
                 }
                 catch {
-                    var path = new Uri(@"pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/csp-logo.ico");
+                    var path = new Uri(@"pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/logo.png");
                     PackageBitmapImage = new BitmapImage(path);
                 }
 

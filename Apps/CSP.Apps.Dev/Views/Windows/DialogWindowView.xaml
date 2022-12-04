@@ -8,7 +8,7 @@
     Height="{Binding Height}"
     MinWidth="{Binding MinWidth}"
     MinHeight="{Binding MinHeight}"
-    Icon="pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/csp-logo.ico"
+    Icon="pack://application:,,,/CSP.Apps.Dev;component/Resources/Images/logo.ico"
     IconAlignment="Left"
     ShowInTaskbar="{Binding ShowInTaskbar}"
     SizeToContent="{Binding SizeToContent}"
