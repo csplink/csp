@@ -1,7 +1,7 @@
 # CSP
 
 <div align="center">
-	<img src="https://img.shields.io/badge/license-Apache 2.0-blue">&emsp;
+	<a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache 2.0-blue"></a>&emsp;
 	<a href="https://csplink.github.io"><img src="https://img.shields.io/badge/wiki-document-blue"></a>&emsp;
     <a href="https://gitter.im/csplink/csp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"><img src="https://badges.gitter.im/csplink/csp.svg"></a>&emsp;
 </div>
