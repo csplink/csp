@@ -1,4 +1,4 @@
-﻿namespace CSP.Resources
+namespace CSP.Resources
 {
     public static class IniFile
     {
@@ -24,9 +24,9 @@
             set => Ini.AddKey("Path", "MCUDbUrl", value);
         }
 
-        public static string PathRepository {
-            get => Ini.ReadKey("Path", "Repository", Path.Repository);
-            set => Ini.AddKey("Path", "Repository", value);
+        public static string PathRepo {
+            get => Ini.ReadKey("Path", "Repo", Path.Repo);
+            set => Ini.AddKey("Path", "Repo", value);
         }
 
         public static void Save() {

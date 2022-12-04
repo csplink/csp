@@ -97,11 +97,11 @@ namespace CSP.Resources {
         }
         
         /// <summary>
-        ///   查找类似 ./Repository 的本地化字符串。
+        ///   查找类似 ./csp_repo 的本地化字符串。
         /// </summary>
-        internal static string Repository {
+        internal static string Repo {
             get {
-                return ResourceManager.GetString("Repository", resourceCulture);
+                return ResourceManager.GetString("Repo", resourceCulture);
             }
         }
     }

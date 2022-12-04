@@ -1,4 +1,4 @@
-﻿using IniParser;
+using IniParser;
 using IniParser.Model;
 using System.IO;
 
@@ -25,7 +25,7 @@ namespace CSP.Resources
 
         internal void AddKey(string section, string key, string value) {
             if (!_ini.Sections.ContainsSection(section)) {
-                _ini.Sections.AddSection("Path");
+                _ini.Sections.AddSection(section);
             }
 
             if (_ini[section].ContainsKey(key)) {
@@ -52,11 +52,10 @@ namespace CSP.Resources
 
         private void InitData() {
             AddKey("Path", "Git", Path.Git);
+            AddKey("Path", "LogFile", Path.LogFile);
             AddKey("Path", "MCUDb", Path.MCUDb);
             AddKey("Path", "MCUDbUrl", Path.MCUDbUrl);
-            AddKey("Path", "LogFile", Path.LogFile);
-            AddKey("Path", "Repository", Path.Repository);
-
+            AddKey("Path", "Repo", Path.Repo);
             Save();
         }
     }
