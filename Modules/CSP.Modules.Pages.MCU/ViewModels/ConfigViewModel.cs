@@ -27,7 +27,7 @@ namespace CSP.Modules.Pages.MCU.ViewModels
 
             // 添加MCU视图窗口
             try {
-                var name = $"CSP.Modules.Pages.MCU.Views.Components.Package.LFBGA.LFBGA337View";
+                var name = $"CSP.Modules.Pages.MCU.Views.Components.Package.LQFP.{DescriptionHelper.MCU.Package}View";
                 var type = Type.GetType(name);
                 if (type != null)
                     RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
