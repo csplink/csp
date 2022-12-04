@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.LQFP64View"
+    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.LQFP.LQFP64View"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:lqfp="clr-namespace:CSP.Modules.Pages.MCU.Components.LQFP"
@@ -8,7 +8,9 @@
     Width="1480"
     Height="1480"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <panAndZoom:ZoomBorder PanButton="Middle" Stretch="None">
+    <panAndZoom:ZoomBorder
+        PanButton="Middle"
+        Stretch="None">
         <DockPanel>
             <Grid
                 Width="500"

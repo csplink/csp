@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="CSP.Modules.Pages.MCU.Components.LFBGA.Pin"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lfbga="clr-namespace:CSP.Modules.Pages.MCU.Components.LFBGA">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="PinBottom">
+            <Grid>
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PinLeft">
+            <Grid>
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PinRight">
+            <Grid>
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="PinTop">
+            <Grid>
+                <lfbga:PinCommon Pin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <ContentControl
+            x:Name="ContentControl"
+            x:FieldModifier="private"
+            ContentTemplate="{StaticResource PinTop}" />
+    </Grid>
+</UserControl>

@@ -27,12 +27,6 @@ jobs:
           repository: csplink/csp_hal_apm32f1
           path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Repository/csp_hal_apm32f1-latest
 
-      - name: checkout csplink/csp_hal_esp32s3
-        uses: actions/checkout@v3
-        with:
-          repository: csplink/csp_hal_esp32s3
-          path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Repository/csp_hal_esp32s3-latest
-
       - name: Setup .net
         uses: actions/setup-dotnet@v3
         with:
