@@ -47,10 +47,10 @@ def main():
     icon_instance = template_icon_instance.format(data=data_icon_instance)
     icon = template_icon.format(data=data_icon)
 
-    with open(path_resources_icon_instance, "w") as fp:
+    with open(path_resources_icon_instance, "w", encoding="utf-8") as fp:
         fp.write(icon_instance)
 
-    with open(path_resources_icon, "w") as fp:
+    with open(path_resources_icon, "w", encoding="utf-8") as fp:
         fp.write(icon)
 
 
