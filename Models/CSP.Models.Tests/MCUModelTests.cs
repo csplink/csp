@@ -26,10 +26,10 @@ namespace CSP.Models.Tests
         [Fact]
         public void Load() {
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
-            var path = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/repository.yml";
+            var path = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/repository.yml";
             var repository = RepositoryModel.Load(path);
             foreach (var companyName in repository.Keys) {
-                var dir = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/{companyName.ToLower()}";
+                var dir = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/{companyName.ToLower()}";
                 var files = Directory.GetFiles(dir, "*.yml");
                 foreach (var file in files) {
                     var mcu = MCUModel.Load(file);
