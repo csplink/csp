@@ -1,10 +1,10 @@
-﻿using CSP.Resources;
+﻿using CSP.Models.DB.Chip;
+using CSP.Resources;
 using System.IO;
-using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CSP.Models.Tests
+namespace CSP.Models.Tests.DB.Chip
 {
     public class MCUModelTests
     {

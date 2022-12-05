@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 
-namespace CSP.Models
+namespace CSP.Models.DB.Chip
 {
     using repository_t = Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, RepositoryModel.MCUModel>>>>;
 
