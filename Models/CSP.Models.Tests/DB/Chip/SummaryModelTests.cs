@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace CSP.Models.Tests.DB.Chip
 {
-    public class MCUModelTests
+    public class SummaryModelTests
     {
 #if DEBUG
         private readonly string _mode = "Debug";
@@ -15,7 +15,7 @@ namespace CSP.Models.Tests.DB.Chip
 #endif
         private readonly ITestOutputHelper _testOutputHelper;
 
-        public MCUModelTests(ITestOutputHelper testOutputHelper) {
+        public SummaryModelTests(ITestOutputHelper testOutputHelper) {
             _testOutputHelper = testOutputHelper;
         }
 
@@ -32,7 +32,7 @@ namespace CSP.Models.Tests.DB.Chip
                 var dir = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/{companyName.ToLower()}";
                 var files = Directory.GetFiles(dir, "*.yml");
                 foreach (var file in files) {
-                    var mcu = MCUModel.Load(file);
+                    var mcu = SummaryModel.Load(file);
                     Assert.False(mcu == null);
                     Assert.False(string.IsNullOrEmpty(mcu.ClockTree));
                     Assert.False(string.IsNullOrEmpty(mcu.Company));
@@ -64,12 +64,12 @@ namespace CSP.Models.Tests.DB.Chip
                     Assert.False(string.IsNullOrEmpty(mcu.Introduction["Chinese"]));
                     Assert.False(string.IsNullOrEmpty(mcu.Url["Chinese"]));
 
-                    foreach (var (key, value) in mcu.Documents) {
-                        Assert.False(string.IsNullOrEmpty(key));
-                        Assert.False(value == null);
-                        Assert.False(value.Length == 0);
-                        foreach (var document in value) {
-                            Assert.False(string.IsNullOrEmpty(document.Name));
+                    foreach (var (documentType, documents) in mcu.Documents) {
+                        Assert.False(string.IsNullOrEmpty(documentType));
+                        Assert.False(documents == null);
+                        Assert.False(documents.Count == 0);
+                        foreach (var (documentName, document) in documents) {
+                            Assert.False(string.IsNullOrEmpty(documentName));
                             Assert.False(document.Url == null);
                             Assert.False(document.Url.Count == 0);
                             Assert.False(!document.Url.ContainsKey("Chinese"));
@@ -77,12 +77,12 @@ namespace CSP.Models.Tests.DB.Chip
                         }
                     }
 
-                    foreach (var (key, value) in mcu.Modules) {
-                        Assert.False(string.IsNullOrEmpty(key));
-                        Assert.False(value == null);
-                        Assert.False(value.Length == 0);
-                        foreach (var module in value) {
-                            Assert.False(string.IsNullOrEmpty(module.Name));
+                    foreach (var (moduleType, modules) in mcu.Modules) {
+                        Assert.False(string.IsNullOrEmpty(moduleType));
+                        Assert.False(modules == null);
+                        Assert.False(modules.Count == 0);
+                        foreach (var (moduleName, module) in modules) {
+                            Assert.False(string.IsNullOrEmpty(moduleName));
                             Assert.False(module.Description == null);
                             Assert.False(module.Description.Count == 0);
                             Assert.False(!module.Description.ContainsKey("Chinese"));
