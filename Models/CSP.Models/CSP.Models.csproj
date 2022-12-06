@@ -7,6 +7,9 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference
+            Include="Json.Net"
+            Version="1.0.33" />
+        <PackageReference
             Include="Prism.DryIoc"
             Version="8.1.97" />
         <PackageReference
