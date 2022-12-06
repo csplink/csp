@@ -53,7 +53,7 @@ namespace CSP.Models.Tests.DB.Chip
                             Assert.False(mcu.Temperature == null);
                             Assert.False(mcu.Voltage == null);
 
-                            Assert.False(mcu.Peripherals.Length == 0);
+                            Assert.False(mcu.Peripherals.Count == 0);
 
                             Assert.False(mcu.Flash <= 0);
                             Assert.False(mcu.Frequency <= 0);
@@ -65,9 +65,9 @@ namespace CSP.Models.Tests.DB.Chip
                             Assert.False(mcu.Temperature.Max <= 0);
                             Assert.False(mcu.Voltage.Max <= 0);
 
-                            foreach (var peripheral in mcu.Peripherals) {
-                                Assert.False(string.IsNullOrEmpty(peripheral.Type));
-                                Assert.False(peripheral.Count <= 0);
+                            foreach (var (peripheralName, peripheralCount) in mcu.Peripherals) {
+                                Assert.False(string.IsNullOrEmpty(peripheralName));
+                                Assert.False(peripheralCount <= 0);
                             }
                         }
                     }

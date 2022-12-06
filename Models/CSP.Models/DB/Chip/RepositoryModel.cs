@@ -62,7 +62,7 @@ namespace CSP.Models.DB.Chip
             public string Line { get; set; }
             public string Name { get; set; }
             public string Package { get; set; }
-            public PeripheralModel[] Peripherals { get; set; }
+            public Dictionary<string, int> Peripherals { get; set; }
             public float Price { get; set; }
             public float Ram { get; set; }
             public string Series { get; set; }
@@ -73,12 +73,6 @@ namespace CSP.Models.DB.Chip
             {
                 public float Lowest { get; set; }
                 public float Run { get; set; }
-            }
-
-            public class PeripheralModel
-            {
-                public int Count { get; set; }
-                public string Type { get; set; }
             }
 
             public class TemperatureModel : BindableBase
