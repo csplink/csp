@@ -43,7 +43,7 @@ namespace CSP.Models.DB.Chip
                 return null;
             }
 
-            DebugUtil.Assert(rtn != null, new ArgumentNullException("MCU.YAML"), "YAML deserialization failed");
+            DebugUtil.Assert(rtn != null, new ArgumentNullException("Summary.YAML"), "YAML deserialization failed");
             return rtn;
         }
 
