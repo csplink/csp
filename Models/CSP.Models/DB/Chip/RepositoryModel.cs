@@ -31,11 +31,7 @@ namespace CSP.Models.DB.Chip
             }
 
             DebugUtil.Assert(rtn != null, new ArgumentNullException("Repository.YAML"), "YAML deserialization failed");
-
-            if (rtn == null)
-                return null;
-
-            foreach (var (companyName, companies) in rtn) {
+            foreach (var (companyName, companies) in rtn!) {
                 foreach (var (seriesName, series) in companies) {
                     foreach (var (lineName, lines) in series) {
                         foreach (var (mcuName, mcu) in lines) {
