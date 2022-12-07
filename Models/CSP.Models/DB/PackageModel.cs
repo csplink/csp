@@ -2,6 +2,7 @@ using CSP.Utils;
 using Json.Net;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 
@@ -41,6 +42,11 @@ namespace CSP.Models.DB
             }
 
             DebugUtil.Assert(rtn != null, new ArgumentNullException("Package.JSON"), "JSON deserialization failed");
+            var descriptionNames = new List<string>(rtn!.Description.Keys);
+            foreach (var descriptionName in descriptionNames) {
+                rtn.Description.Add(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(descriptionName), rtn!.Description[descriptionName]);
+                rtn.Description.Remove(descriptionName);
+            }
             return rtn;
         }
 
