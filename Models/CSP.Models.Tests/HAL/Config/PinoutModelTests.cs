@@ -1,7 +1,9 @@
 using CSP.Models.DB;
 using CSP.Models.HAL.Config;
 using CSP.Resources;
+using System;
 using System.IO;
+using System.Windows.Shapes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -32,6 +34,7 @@ namespace CSP.Models.Tests.HAL.Config
             foreach (var d in dirs) {
                 var files = Directory.GetFiles(d, "*.json");
                 foreach (var file in files) {
+                    _testOutputHelper.WriteLine($"load file: {file}");
                     var package = PackageModel.Load(file);
                     foreach (var version in package.Versions) {
                         dir = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/repositories/{package.Category}/{package.Name}/{version}/config";
@@ -39,9 +42,11 @@ namespace CSP.Models.Tests.HAL.Config
                             continue;
                         var configDirs = Directory.GetDirectories(dir);
                         foreach (var configDir in configDirs) {
-                            if (!File.Exists($"{configDir}/pinout.yml"))
+                            var pinoutPath = $"{configDir}/pinout.yml";
+                            if (!File.Exists(pinoutPath))
                                 continue;
-                            var pinouts = PinoutModel.Load($"{configDir}/pinout.yml");
+                            _testOutputHelper.WriteLine($"load file: {pinoutPath}");
+                            var pinouts = PinoutModel.Load(pinoutPath);
                             Assert.False(pinouts == null);
                             var position = 0; // must be sorted by position
                             foreach (var (pinName, pinout) in pinouts) {

@@ -27,11 +27,13 @@ namespace CSP.Models.Tests.DB.Chip
         public void Load() {
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
             var path = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/repository.yml";
+            _testOutputHelper.WriteLine($"load file: {path}");
             var repository = RepositoryModel.Load(path);
             foreach (var companyName in repository.Keys) {
                 var dir = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/{companyName.ToLower()}";
                 var files = Directory.GetFiles(dir, "*.yml");
                 foreach (var file in files) {
+                    _testOutputHelper.WriteLine($"load file: {file}");
                     var mcu = SummaryModel.Load(file);
                     Assert.False(mcu == null);
                     Assert.False(string.IsNullOrEmpty(mcu.ClockTree));

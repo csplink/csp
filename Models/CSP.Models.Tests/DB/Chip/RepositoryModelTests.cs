@@ -3,6 +3,7 @@ using CSP.Resources;
 using System.IO;
 using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace CSP.Models.Tests.DB.Chip
 {
@@ -27,6 +28,7 @@ namespace CSP.Models.Tests.DB.Chip
         public void Load() {
             var solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
             var path = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/repository.yml";
+            _testOutputHelper.WriteLine($"load file: {path}");
             var repository = RepositoryModel.Load(path);
             foreach (var (companyName, companies) in repository) {
                 Assert.False(string.IsNullOrEmpty(companyName));

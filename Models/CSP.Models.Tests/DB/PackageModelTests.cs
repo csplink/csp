@@ -1,6 +1,7 @@
 using CSP.Models.DB;
 using CSP.Resources;
 using System.IO;
+using System.Windows.Shapes;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -31,6 +32,7 @@ namespace CSP.Models.Tests.DB
             foreach (var d in dirs) {
                 var files = Directory.GetFiles(d, "*.json");
                 foreach (var file in files) {
+                    _testOutputHelper.WriteLine($"load file: {file}");
                     var package = PackageModel.Load(file);
                     Assert.False(package == null);
                     Assert.False(string.IsNullOrEmpty(package.Category));
