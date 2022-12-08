@@ -51,8 +51,8 @@ namespace CSP.Models.Tests.HAL.Config
                             var position = 0; // must be sorted by position
                             foreach (var (pinName, pinout) in pinouts) {
                                 Assert.False(pinout == null);
-                                Assert.False(string.IsNullOrEmpty(pinName));
-                                Assert.False(string.IsNullOrEmpty(pinout.Type));
+                                Assert.False(string.IsNullOrWhiteSpace(pinName));
+                                Assert.False(string.IsNullOrWhiteSpace(pinout.Type));
                                 Assert.False(position >= pinout.Position);
 
                                 position = pinout.Position;

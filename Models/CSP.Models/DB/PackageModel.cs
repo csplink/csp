@@ -26,7 +26,7 @@ namespace CSP.Models.DB
         public string[] Versions { get; set; }
 
         public static PackageModel Load(string path) {
-            DebugUtil.Assert(!string.IsNullOrEmpty(path), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;

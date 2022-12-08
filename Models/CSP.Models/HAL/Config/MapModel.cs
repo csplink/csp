@@ -12,7 +12,7 @@ namespace CSP.Models.HAL.Config
         public Dictionary<string, GroupModel> Groups { get; set; }
         public Dictionary<string, PropertyModel> Properties { get; set; }
         public static MapModel Load(string path) {
-            DebugUtil.Assert(!string.IsNullOrEmpty(path), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;

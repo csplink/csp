@@ -31,24 +31,24 @@ namespace CSP.Models.Tests.DB.Chip
             _testOutputHelper.WriteLine($"load file: {path}");
             var repository = RepositoryModel.Load(path);
             foreach (var (companyName, companies) in repository) {
-                Assert.False(string.IsNullOrEmpty(companyName));
+                Assert.False(string.IsNullOrWhiteSpace(companyName));
                 Assert.False(companies == null);
                 foreach (var (seriesName, series) in companies) {
-                    Assert.False(string.IsNullOrEmpty(seriesName));
+                    Assert.False(string.IsNullOrWhiteSpace(seriesName));
                     Assert.False(series == null);
                     foreach (var (lineName, lines) in series) {
-                        Assert.False(string.IsNullOrEmpty(lineName));
+                        Assert.False(string.IsNullOrWhiteSpace(lineName));
                         Assert.False(lines == null);
                         foreach (var (mcuName, mcu) in lines) {
-                            Assert.False(string.IsNullOrEmpty(mcuName));
+                            Assert.False(string.IsNullOrWhiteSpace(mcuName));
                             Assert.False(mcu == null);
 
-                            Assert.False(string.IsNullOrEmpty(mcu.Company));
-                            Assert.False(string.IsNullOrEmpty(mcu.Series));
-                            Assert.False(string.IsNullOrEmpty(mcu.Line));
-                            Assert.False(string.IsNullOrEmpty(mcu.Name));
-                            Assert.False(string.IsNullOrEmpty(mcu.Core));
-                            Assert.False(string.IsNullOrEmpty(mcu.Package));
+                            Assert.False(string.IsNullOrWhiteSpace(mcu.Company));
+                            Assert.False(string.IsNullOrWhiteSpace(mcu.Series));
+                            Assert.False(string.IsNullOrWhiteSpace(mcu.Line));
+                            Assert.False(string.IsNullOrWhiteSpace(mcu.Name));
+                            Assert.False(string.IsNullOrWhiteSpace(mcu.Core));
+                            Assert.False(string.IsNullOrWhiteSpace(mcu.Package));
 
                             Assert.False(mcu.Current == null);
                             Assert.False(mcu.Peripherals == null);
@@ -68,7 +68,7 @@ namespace CSP.Models.Tests.DB.Chip
                             Assert.False(mcu.Voltage.Max <= 0);
 
                             foreach (var (peripheralName, peripheralCount) in mcu.Peripherals) {
-                                Assert.False(string.IsNullOrEmpty(peripheralName));
+                                Assert.False(string.IsNullOrWhiteSpace(peripheralName));
                                 Assert.False(peripheralCount <= 0);
                             }
                         }

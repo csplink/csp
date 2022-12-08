@@ -25,7 +25,7 @@ namespace CSP.Models.DB.Chip
         public Dictionary<string, string> Url { get; set; }
 
         public static SummaryModel Load(string path) {
-            DebugUtil.Assert(!string.IsNullOrEmpty(path), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;

@@ -36,13 +36,13 @@ namespace CSP.Models.Tests.DB.Chip
                     _testOutputHelper.WriteLine($"load file: {file}");
                     var mcu = SummaryModel.Load(file);
                     Assert.False(mcu == null);
-                    Assert.False(string.IsNullOrEmpty(mcu.ClockTree));
-                    Assert.False(string.IsNullOrEmpty(mcu.Company));
-                    Assert.False(string.IsNullOrEmpty(mcu.HAL));
-                    Assert.False(string.IsNullOrEmpty(mcu.Line));
-                    Assert.False(string.IsNullOrEmpty(mcu.Name));
-                    Assert.False(string.IsNullOrEmpty(mcu.Package));
-                    Assert.False(string.IsNullOrEmpty(mcu.Series));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.ClockTree));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Company));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.HAL));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Line));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Name));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Package));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Series));
 
                     Assert.False(mcu.CompanyUrl == null);
                     Assert.False(mcu.Documents == null);
@@ -61,30 +61,30 @@ namespace CSP.Models.Tests.DB.Chip
                     Assert.False(!mcu.Introduction.ContainsKey("Chinese"));
                     Assert.False(!mcu.Url.ContainsKey("Chinese"));
 
-                    Assert.False(string.IsNullOrEmpty(mcu.CompanyUrl["Chinese"]));
-                    Assert.False(string.IsNullOrEmpty(mcu.Illustrate["Chinese"]));
-                    Assert.False(string.IsNullOrEmpty(mcu.Introduction["Chinese"]));
-                    Assert.False(string.IsNullOrEmpty(mcu.Url["Chinese"]));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.CompanyUrl["Chinese"]));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Illustrate["Chinese"]));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Introduction["Chinese"]));
+                    Assert.False(string.IsNullOrWhiteSpace(mcu.Url["Chinese"]));
 
                     foreach (var (documentType, documents) in mcu.Documents) {
-                        Assert.False(string.IsNullOrEmpty(documentType));
+                        Assert.False(string.IsNullOrWhiteSpace(documentType));
                         Assert.False(documents == null);
                         Assert.False(documents.Count == 0);
                         foreach (var (documentName, document) in documents) {
-                            Assert.False(string.IsNullOrEmpty(documentName));
+                            Assert.False(string.IsNullOrWhiteSpace(documentName));
                             Assert.False(document.Url == null);
                             Assert.False(document.Url.Count == 0);
                             Assert.False(!document.Url.ContainsKey("Chinese"));
-                            Assert.False(string.IsNullOrEmpty(document.Url["Chinese"]));
+                            Assert.False(string.IsNullOrWhiteSpace(document.Url["Chinese"]));
                         }
                     }
 
                     foreach (var (moduleType, modules) in mcu.Modules) {
-                        Assert.False(string.IsNullOrEmpty(moduleType));
+                        Assert.False(string.IsNullOrWhiteSpace(moduleType));
                         Assert.False(modules == null);
                         Assert.False(modules.Count == 0);
                         foreach (var (moduleName, module) in modules) {
-                            Assert.False(string.IsNullOrEmpty(moduleName));
+                            Assert.False(string.IsNullOrWhiteSpace(moduleName));
                             Assert.False(module.Description == null);
                             Assert.False(module.Description.Count == 0);
                             Assert.False(!module.Description.ContainsKey("Chinese"));

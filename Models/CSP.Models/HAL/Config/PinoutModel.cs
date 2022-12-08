@@ -14,7 +14,7 @@ namespace CSP.Models.HAL.Config
         public string Type { get; set; }
 
         public static Dictionary<string, PinoutModel> Load(string path) {
-            DebugUtil.Assert(!string.IsNullOrEmpty(path), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;

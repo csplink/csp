@@ -12,7 +12,7 @@ namespace CSP.Models.DB.Chip
     public class RepositoryModel
     {
         public static repository_t Load(string path) {
-            DebugUtil.Assert(!string.IsNullOrEmpty(path), new ArgumentNullException(nameof(path)));
+            DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
             if (!File.Exists(path))
                 return null;

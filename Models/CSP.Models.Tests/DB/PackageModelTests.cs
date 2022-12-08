@@ -35,24 +35,24 @@ namespace CSP.Models.Tests.DB
                     _testOutputHelper.WriteLine($"load file: {file}");
                     var package = PackageModel.Load(file);
                     Assert.False(package == null);
-                    Assert.False(string.IsNullOrEmpty(package.Category));
-                    Assert.False(string.IsNullOrEmpty(package.Homepage));
-                    Assert.False(string.IsNullOrEmpty(package.License));
-                    Assert.False(string.IsNullOrEmpty(package.Name));
-                    Assert.False(string.IsNullOrEmpty(package.Option));
-                    Assert.False(string.IsNullOrEmpty(package.Readme));
-                    Assert.False(string.IsNullOrEmpty(package.Repository));
-                    Assert.False(string.IsNullOrEmpty(package.Rule));
-                    Assert.False(string.IsNullOrEmpty(package.Target));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Category));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Homepage));
+                    Assert.False(string.IsNullOrWhiteSpace(package.License));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Name));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Option));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Readme));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Repository));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Rule));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Target));
 
                     Assert.False(package.Author == null);
                     Assert.False(package.Description == null);
                     Assert.False(package.Keywords == null);
                     Assert.False(package.Versions == null);
 
-                    Assert.False(string.IsNullOrEmpty(package.Author.Name));
-                    Assert.False(string.IsNullOrEmpty(package.Author.Email));
-                    Assert.False(string.IsNullOrEmpty(package.Author.Github));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Author.Name));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Author.Email));
+                    Assert.False(string.IsNullOrWhiteSpace(package.Author.Github));
 
                     Assert.False(!package.Description.ContainsKey("Chinese"));
                     Assert.False(package.Keywords.Length <= 0);

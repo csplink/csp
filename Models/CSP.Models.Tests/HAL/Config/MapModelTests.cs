@@ -53,24 +53,24 @@ namespace CSP.Models.Tests.HAL.Config
 
                             foreach (var (groupName, group) in map.Groups) {
                                 Assert.False(group == null);
-                                Assert.False(string.IsNullOrEmpty(groupName));
+                                Assert.False(string.IsNullOrWhiteSpace(groupName));
                                 Assert.False(!group.Comment.ContainsKey("Chinese"));
                                 Assert.False(group.Values == null);
                                 Assert.False(group.Values.Count == 0);
 
                                 foreach (var (valueName, value) in group.Values) {
                                     Assert.False(value == null);
-                                    Assert.False(string.IsNullOrEmpty(valueName));
+                                    Assert.False(string.IsNullOrWhiteSpace(valueName));
                                     Assert.False(!value.Comment.ContainsKey("Chinese"));
                                 }
                             }
 
                             foreach (var (propertyName, property) in map.Properties) {
                                 Assert.False(property == null);
-                                Assert.False(string.IsNullOrEmpty(propertyName));
+                                Assert.False(string.IsNullOrWhiteSpace(propertyName));
                                 Assert.False(!property.DisplayName.ContainsKey("Chinese"));
                                 Assert.False(!property.Description.ContainsKey("Chinese"));
-                                Assert.False(string.IsNullOrEmpty(property.Category));
+                                Assert.False(string.IsNullOrWhiteSpace(property.Category));
                             }
                         }
                     }
