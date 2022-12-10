@@ -53,7 +53,7 @@ public class PackageModelTests
                 Assert.False(string.IsNullOrWhiteSpace(package.Author.Email));
                 Assert.False(string.IsNullOrWhiteSpace(package.Author.Github));
 
-                Assert.False(!package.Description.ContainsKey("Chinese"));
+                Assert.False(!package.Description.ContainsKey("zh-cn"));
                 Assert.False(package.Keywords.Length <= 0);
                 Assert.False(package.Versions.Length <= 0);
             }

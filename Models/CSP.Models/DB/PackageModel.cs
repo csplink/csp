@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -57,14 +56,8 @@ public class PackageModel
         }
 
         DebugUtil.Assert(rtn != null, new ArgumentNullException("Package.JSON"), "JSON deserialization failed");
-        List<string> descriptionNames = new(rtn!.Description.Keys);
-        foreach (string descriptionName in descriptionNames) {
-            rtn.Description.Add(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(descriptionName),
-                rtn!.Description[descriptionName]);
-            rtn.Description.Remove(descriptionName);
-        }
 
-        if (!rtn.Versions.Contains("latest")) {
+        if (!rtn!.Versions.Contains("latest")) {
             List<string> list = rtn!.Versions.ToList();
             list.Add("latest");
             rtn.Versions = list.ToArray();

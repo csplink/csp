@@ -59,15 +59,15 @@ public class SummaryModelTests
                 Assert.False(mcu.Introduction.Count == 0);
                 Assert.False(mcu.Url.Count == 0);
 
-                Assert.False(!mcu.CompanyUrl.ContainsKey("Chinese"));
-                Assert.False(!mcu.Illustrate.ContainsKey("Chinese"));
-                Assert.False(!mcu.Introduction.ContainsKey("Chinese"));
-                Assert.False(!mcu.Url.ContainsKey("Chinese"));
+                Assert.False(!mcu.CompanyUrl.ContainsKey("zh-cn"));
+                Assert.False(!mcu.Illustrate.ContainsKey("zh-cn"));
+                Assert.False(!mcu.Introduction.ContainsKey("zh-cn"));
+                Assert.False(!mcu.Url.ContainsKey("zh-cn"));
 
-                Assert.False(string.IsNullOrWhiteSpace(mcu.CompanyUrl["Chinese"]));
-                Assert.False(string.IsNullOrWhiteSpace(mcu.Illustrate["Chinese"]));
-                Assert.False(string.IsNullOrWhiteSpace(mcu.Introduction["Chinese"]));
-                Assert.False(string.IsNullOrWhiteSpace(mcu.Url["Chinese"]));
+                Assert.False(string.IsNullOrWhiteSpace(mcu.CompanyUrl["zh-cn"]));
+                Assert.False(string.IsNullOrWhiteSpace(mcu.Illustrate["zh-cn"]));
+                Assert.False(string.IsNullOrWhiteSpace(mcu.Introduction["zh-cn"]));
+                Assert.False(string.IsNullOrWhiteSpace(mcu.Url["zh-cn"]));
 
                 foreach (var (documentType, documents) in mcu.Documents) {
                     Assert.False(string.IsNullOrWhiteSpace(documentType));
@@ -77,8 +77,8 @@ public class SummaryModelTests
                         Assert.False(string.IsNullOrWhiteSpace(documentName));
                         Assert.False(document.Url == null);
                         Assert.False(document.Url.Count == 0);
-                        Assert.False(!document.Url.ContainsKey("Chinese"));
-                        Assert.False(string.IsNullOrWhiteSpace(document.Url["Chinese"]));
+                        Assert.False(!document.Url.ContainsKey("zh-cn"));
+                        Assert.False(string.IsNullOrWhiteSpace(document.Url["zh-cn"]));
                     }
                 }
 
@@ -90,7 +90,7 @@ public class SummaryModelTests
                         Assert.False(string.IsNullOrWhiteSpace(moduleName));
                         Assert.False(module.Description == null);
                         Assert.False(module.Description.Count == 0);
-                        Assert.False(!module.Description.ContainsKey("Chinese"));
+                        Assert.False(!module.Description.ContainsKey("zh-cn"));
                     }
                 }
             }
