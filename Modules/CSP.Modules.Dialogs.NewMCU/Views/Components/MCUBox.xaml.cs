@@ -1,12 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows;
-using CSP.Modules.Dialogs.NewMCU.Models;
-using CSP.Utils.Extensions;
+using CSP.Models.DB.Chip;
 using Syncfusion.Data;
 using Syncfusion.UI.Xaml.Grid;
 
 namespace CSP.Modules.Dialogs.NewMCU.Views.Components;
+
+using repository_t =
+    Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, RepositoryModel.MCUModel>>>>;
 
 public partial class MCUBox
 {
@@ -35,7 +38,7 @@ public partial class MCUBox
             { BindsTwoWayByDefault = true });
 
     public static readonly DependencyProperty RepositoryProperty = DependencyProperty.Register("Repository",
-        typeof(RepositoryModel),
+        typeof(repository_t),
         typeof(MCUBox),
         new FrameworkPropertyMetadata(null, OnRepositoryChanged) { BindsTwoWayByDefault = true });
 
@@ -45,7 +48,7 @@ public partial class MCUBox
         new FrameworkPropertyMetadata("", OnSearchTextChanged) { BindsTwoWayByDefault = true });
 
     public static readonly DependencyProperty SelectedMCUProperty = DependencyProperty.Register("SelectedMCU",
-        typeof(RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel),
+        typeof(RepositoryModel.MCUModel),
         typeof(MCUBox),
         new FrameworkPropertyMetadata(null, OnSelectedMCUChanged) { BindsTwoWayByDefault = true });
 
@@ -55,8 +58,7 @@ public partial class MCUBox
         new FrameworkPropertyMetadata(new ObservableCollection<string>(), OnSeriesFilterChanged)
             { BindsTwoWayByDefault = true });
 
-    private readonly ObservableCollection<RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel> _mcuCollection =
-        new();
+    private readonly ObservableCollection<RepositoryModel.MCUModel> _mcuCollection = new();
 
     private ICollectionViewAdv _dataGridMCUView;
 
@@ -84,8 +86,8 @@ public partial class MCUBox
         set => SetValue(PackageFilterProperty, value);
     }
 
-    public RepositoryModel Repository {
-        get => (RepositoryModel)GetValue(RepositoryProperty);
+    public repository_t Repository {
+        get => (repository_t)GetValue(RepositoryProperty);
         set => SetValue(RepositoryProperty, value);
     }
 
@@ -94,10 +96,11 @@ public partial class MCUBox
         set => SetValue(SearchTextProperty, value);
     }
 
-    public RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel SelectedMCU {
-        get => (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel)GetValue(SelectedMCUProperty);
+    public RepositoryModel.MCUModel SelectedMCU {
+        get => (RepositoryModel.MCUModel)GetValue(SelectedMCUProperty);
         set => SetValue(SelectedMCUProperty, value);
     }
+
 
     public ObservableCollection<string> SeriesFilter {
         get => (ObservableCollection<string>)GetValue(SeriesFilterProperty);
@@ -169,16 +172,17 @@ public partial class MCUBox
             SelectedMCU = null;
         }
         else {
-            SelectedMCU = (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel)grid.SelectedItem;
+            SelectedMCU = (RepositoryModel.MCUModel)grid.SelectedItem;
         }
     }
 
+
     private bool OnDataGridMCUViewFilterRecords(object o) {
-        if (o is not RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel item) {
+        if (o is not RepositoryModel.MCUModel item) {
             return false;
         }
 
-        if (SearchText.IsNullOrEmpty()
+        if (string.IsNullOrWhiteSpace(SearchText)
             && CompanyFilter.Count == 0
             && CoreFilter.Count == 0
             && SeriesFilter.Count == 0
@@ -246,16 +250,16 @@ public partial class MCUBox
     }
 
     private void OnRepositoryValueChanged(DependencyPropertyChangedEventArgs e) {
-        if (e.NewValue is not RepositoryModel value) {
+        if (e.NewValue is not repository_t repository) {
             return;
         }
 
         _mcuCollection.Clear();
 
-        foreach (RepositoryModel.CompanyModel company in value.Companies) {
-            foreach (RepositoryModel.CompanyModel.SeriesModel series in company.Series) {
-                foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel line in series.Lines) {
-                    foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel mcu in line.MCU) {
+        foreach (var (_, companies) in repository) {
+            foreach (var (_, series) in companies) {
+                foreach (var (_, lines) in series) {
+                    foreach (var (_, mcu) in lines) {
                         _mcuCollection.Add(mcu);
                     }
                 }

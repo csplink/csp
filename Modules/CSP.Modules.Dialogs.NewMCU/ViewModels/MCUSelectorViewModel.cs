@@ -1,39 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using CSP.Models.DB.Chip;
 using CSP.Models.Interfaces;
 using CSP.Modules.Dialogs.NewMCU.Models;
 using CSP.Resources;
 using CSP.Services;
 using CSP.Services.Models;
 using CSP.Utils;
-using CSP.Utils.Extensions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 
 namespace CSP.Modules.Dialogs.NewMCU.ViewModels;
 
+using repository_t =
+    Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, RepositoryModel.MCUModel>>>>;
+
 public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
 {
-    private readonly DocumentModel _applicationsDocumentNode = new("应用手册");
-    private readonly DocumentModel _datasheetsDocumentNode = new("数据手册");
-    private readonly DocumentModel _errataDocumentNode = new("勘误手册");
-    private readonly DocumentModel _programsDocumentNode = new("编程手册");
-    private readonly DocumentModel _referencesDocumentNode = new("参考手册");
-    private          ObservableCollection<DocumentModel> _documents = new();
-    private          bool _isBusy;
-    private          Style _markdownStyle = MdXaml.MarkdownStyle.Sasabune;
-    private          MCUModel _mcu;
-    private          BitmapImage _packageBitmapImage;
-    private          RepositoryModel _repository;
-    private          RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel _selectedMCU;
-    private          Visibility _tabControlVisibility = Visibility.Collapsed;
+    private readonly DocumentModel                       _applicationsDocumentNode = new("应用手册");
+    private readonly DocumentModel                       _dataSheetsDocumentNode   = new("数据手册");
+    private readonly DocumentModel                       _errataDocumentNode       = new("勘误手册");
+    private readonly DocumentModel                       _programsDocumentNode     = new("编程手册");
+    private readonly DocumentModel                       _referencesDocumentNode   = new("参考手册");
+    private          ObservableCollection<DocumentModel> _documents                = new();
+    private          bool                                _isBusy;
+    private          Style                               _markdownStyle = MdXaml.MarkdownStyle.Sasabune;
+    private          SummaryModel                        _mcu;
+    private          BitmapImage                         _packageBitmapImage;
+    private          repository_t                        _repository;
+    private          RepositoryModel.MCUModel            _selectedMCU;
+    private          Visibility                          _tabControlVisibility = Visibility.Collapsed;
 
     public MCUSelectorViewModel() {
         IsBusy      = true;
-        _repository = RepositoryModel.Load($"{IniFile.PathMCUDb}/Repository.xml");
+        _repository = RepositoryModel.Load($"{IniFile.PathRepo}/db/chips/repository.yml");
         IsBusy      = false;
     }
 
@@ -52,7 +56,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
         set => SetProperty(ref _markdownStyle, value);
     }
 
-    public MCUModel MCU {
+    public SummaryModel MCU {
         get => _mcu;
         set {
             SetProperty(ref _mcu, value);
@@ -66,8 +70,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
                 MessageBoxUtil.Error("未选择MCU或无MCU支持包");
             }
             else {
-                if (SelectedMCU.Name.IsNullOrEmpty() ||
-                    SelectedMCU.Company.IsNullOrEmpty()) {
+                if (string.IsNullOrWhiteSpace(SelectedMCU.Name) || string.IsNullOrWhiteSpace(SelectedMCU.Company)) {
                     MessageBoxUtil.Error("数据库发生错误");
                 }
                 else {
@@ -105,12 +108,12 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
         set => SetProperty(ref _packageBitmapImage, value);
     }
 
-    public RepositoryModel Repository {
+    public repository_t Repository {
         get => _repository;
         set => SetProperty(ref _repository, value);
     }
 
-    public RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel SelectedMCU {
+    public RepositoryModel.MCUModel SelectedMCU {
         get => _selectedMCU;
 
         set {
@@ -124,7 +127,8 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
                 return;
             }
 
-            MCU = MCUModel.Load($"{IniFile.PathMCUDb}/{value.Company}/{value.Name}.xml");
+            MCU = SummaryModel.Load(
+                $"{IniFile.PathRepo}/db/chips/{value.Company.ToLower()}/{value.Name.ToLower()}.yml");
 
             try {
                 Uri path = new(@"pack://application:,,,/CSP.Modules.Dialogs.NewMCU;component/Resources/Images/" +
@@ -147,43 +151,43 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
 
     private void LoadDocuments() {
         Documents.Clear();
-        _datasheetsDocumentNode.Children.Clear();
+        _dataSheetsDocumentNode.Children.Clear();
         _referencesDocumentNode.Children.Clear();
         _programsDocumentNode.Children.Clear();
         _errataDocumentNode.Children.Clear();
         _applicationsDocumentNode.Children.Clear();
 
-        if (MCU.DataSheets != null) {
-            foreach (var item in MCU.DataSheets) {
-                _datasheetsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
-            }
-        }
+        // if (MCU.dataSheets != null) {
+        //     foreach (var item in MCU.dataSheets) {
+        //         _dataSheetsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+        //     }
+        // }
+        //
+        // if (MCU.References != null) {
+        //     foreach (var item in MCU.References) {
+        //         _referencesDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+        //     }
+        // }
+        //
+        // if (MCU.Programs != null) {
+        //     foreach (var item in MCU.Programs) {
+        //         _programsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+        //     }
+        // }
+        //
+        // if (MCU.Errata != null) {
+        //     foreach (var item in MCU.Errata) {
+        //         _errataDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+        //     }
+        // }
+        //
+        // if (MCU.Applications != null) {
+        //     foreach (var item in MCU.Applications) {
+        //         _applicationsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
+        //     }
+        // }
 
-        if (MCU.References != null) {
-            foreach (var item in MCU.References) {
-                _referencesDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
-            }
-        }
-
-        if (MCU.Programs != null) {
-            foreach (var item in MCU.Programs) {
-                _programsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
-            }
-        }
-
-        if (MCU.Errata != null) {
-            foreach (var item in MCU.Errata) {
-                _errataDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
-            }
-        }
-
-        if (MCU.Applications != null) {
-            foreach (var item in MCU.Applications) {
-                _applicationsDocumentNode.Children.Add(new DocumentModel(item.Name, item.Url));
-            }
-        }
-
-        Documents.Add(_datasheetsDocumentNode);
+        Documents.Add(_dataSheetsDocumentNode);
         Documents.Add(_referencesDocumentNode);
         Documents.Add(_programsDocumentNode);
         Documents.Add(_errataDocumentNode);

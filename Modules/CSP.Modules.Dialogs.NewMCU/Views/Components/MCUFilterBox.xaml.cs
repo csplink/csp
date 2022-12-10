@@ -3,11 +3,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using CSP.Modules.Dialogs.NewMCU.Models;
-using CSP.Utils.Extensions;
+using CSP.Models.DB.Chip;
 using Syncfusion.Windows.Tools.Controls;
 
 namespace CSP.Modules.Dialogs.NewMCU.Views.Components;
+
+using repository_t =
+    Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, RepositoryModel.MCUModel>>>>;
 
 public partial class MCUFilterBox
 {
@@ -36,7 +38,7 @@ public partial class MCUFilterBox
             { BindsTwoWayByDefault = true });
 
     public static readonly DependencyProperty RepositoryProperty = DependencyProperty.Register("Repository",
-        typeof(RepositoryModel),
+        typeof(repository_t),
         typeof(MCUFilterBox),
         new FrameworkPropertyMetadata(null, OnRepositoryChanged) { BindsTwoWayByDefault = true });
 
@@ -79,8 +81,8 @@ public partial class MCUFilterBox
         set => SetValue(PackageFilterProperty, value);
     }
 
-    public RepositoryModel Repository {
-        get => (RepositoryModel)GetValue(RepositoryProperty);
+    public repository_t Repository {
+        get => (repository_t)GetValue(RepositoryProperty);
         set => SetValue(RepositoryProperty, value);
     }
 
@@ -156,9 +158,9 @@ public partial class MCUFilterBox
             else {
                 CompanyFilter.Remove(item.Content.ToString());
             }
-        }
 
             break;
+        }
 
         case "内核": {
             if (e.Checked) {
@@ -167,9 +169,9 @@ public partial class MCUFilterBox
             else {
                 CoreFilter.Remove(item.Content.ToString());
             }
-        }
 
             break;
+        }
 
         case "系列": {
             if (e.Checked) {
@@ -178,9 +180,9 @@ public partial class MCUFilterBox
             else {
                 SeriesFilter.Remove(item.Content.ToString());
             }
-        }
 
             break;
+        }
 
         case "产品线": {
             if (e.Checked) {
@@ -189,9 +191,9 @@ public partial class MCUFilterBox
             else {
                 LineFilter.Remove(item.Content.ToString());
             }
-        }
 
             break;
+        }
 
         case "封装": {
             if (e.Checked) {
@@ -200,9 +202,9 @@ public partial class MCUFilterBox
             else {
                 PackageFilter.Remove(item.Content.ToString());
             }
-        }
 
             break;
+        }
         }
 
         switch (listBox.Tag) {
@@ -211,45 +213,45 @@ public partial class MCUFilterBox
             UpdateCheckListBoxItemStatus(CheckListBoxSeries);
             UpdateCheckListBoxItemStatus(CheckListBoxLine);
             UpdateCheckListBoxItemStatus(CheckListBoxPackage);
-        }
 
             break;
+        }
 
         case "内核": {
             UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
             UpdateCheckListBoxItemStatus(CheckListBoxSeries);
             UpdateCheckListBoxItemStatus(CheckListBoxLine);
             UpdateCheckListBoxItemStatus(CheckListBoxPackage);
-        }
 
             break;
+        }
 
         case "系列": {
             UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
             UpdateCheckListBoxItemStatus(CheckListBoxCore);
             UpdateCheckListBoxItemStatus(CheckListBoxLine);
             UpdateCheckListBoxItemStatus(CheckListBoxPackage);
-        }
 
             break;
+        }
 
         case "产品线": {
             UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
             UpdateCheckListBoxItemStatus(CheckListBoxSeries);
             UpdateCheckListBoxItemStatus(CheckListBoxCore);
             UpdateCheckListBoxItemStatus(CheckListBoxPackage);
-        }
 
             break;
+        }
 
         case "封装": {
             UpdateCheckListBoxItemStatus(CheckListBoxCompanies);
             UpdateCheckListBoxItemStatus(CheckListBoxCore);
             UpdateCheckListBoxItemStatus(CheckListBoxSeries);
             UpdateCheckListBoxItemStatus(CheckListBoxLine);
-        }
 
             break;
+        }
         }
     }
 
@@ -280,50 +282,47 @@ public partial class MCUFilterBox
     }
 
     private void OnRepositoryValueChanged(DependencyPropertyChangedEventArgs e) {
-        if (e.NewValue is not RepositoryModel value) {
+        if (e.NewValue is not repository_t repository) {
             return;
         }
 
         _featureCollection.Clear();
 
-        ObservableCollection<string> coreList    = new ObservableCollection<string>();
-        ObservableCollection<string> packageList = new ObservableCollection<string>();
+        ObservableCollection<string> coreList    = new();
+        ObservableCollection<string> packageList = new();
 
-        foreach (RepositoryModel.CompanyModel company in value.Companies) {
-            if (!_featureCollection.ContainsKey(company.Name)) {
-                _featureCollection.Add(company.Name, new List<string>());
+        foreach (var (companyName, companies) in repository) {
+            if (!_featureCollection.ContainsKey(companyName)) {
+                _featureCollection.Add(companyName, new List<string>());
             }
 
             CheckListBoxCompanies.Items.Add(new CheckListBoxItem {
-                Content = company.Name
+                Content = companyName
             });
 
-            foreach (RepositoryModel.CompanyModel.SeriesModel series in company.Series) {
-                if (!_featureCollection.ContainsKey(series.Name)) {
-                    _featureCollection.Add(series.Name, new List<string>());
+            foreach (var (seriesName, series) in companies) {
+                if (!_featureCollection.ContainsKey(seriesName)) {
+                    _featureCollection.Add(seriesName, new List<string>());
                 }
 
                 CheckListBoxSeries.Items.Add(new CheckListBoxItem {
-                    Content = series.Name
+                    Content = seriesName
                 });
-                AddFeatureCollection(company.Name, series.Name);
-                AddFeatureCollection(series.Name, company.Name);
-
-                foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel line in series.Lines) {
-                    if (!_featureCollection.ContainsKey(line.Name)) {
-                        _featureCollection.Add(line.Name, new List<string>());
+                AddFeatureCollection(companyName, seriesName);
+                AddFeatureCollection(seriesName, companyName);
+                foreach (var (lineName, lines) in series) {
+                    if (!_featureCollection.ContainsKey(lineName)) {
+                        _featureCollection.Add(lineName, new List<string>());
                     }
 
                     CheckListBoxLine.Items.Add(new CheckListBoxItem {
-                        Content = line.Name
+                        Content = lineName
                     });
-
-                    AddFeatureCollection(company.Name, line.Name);
-                    AddFeatureCollection(series.Name, line.Name);
-                    AddFeatureCollection(line.Name, company.Name);
-                    AddFeatureCollection(line.Name, series.Name);
-
-                    foreach (RepositoryModel.CompanyModel.SeriesModel.LineModel.MCUModel mcu in line.MCU) {
+                    AddFeatureCollection(companyName, lineName);
+                    AddFeatureCollection(seriesName, lineName);
+                    AddFeatureCollection(lineName, companyName);
+                    AddFeatureCollection(lineName, seriesName);
+                    foreach (var (_, mcu) in lines) {
                         if (!_featureCollection.ContainsKey(mcu.Core)) {
                             _featureCollection.Add(mcu.Core, new List<string>());
                         }
@@ -332,27 +331,27 @@ public partial class MCUFilterBox
                             _featureCollection.Add(mcu.Package, new List<string>());
                         }
 
-                        AddFeatureCollection(company.Name, mcu.Core);
-                        AddFeatureCollection(company.Name, mcu.Package);
-                        AddFeatureCollection(company.Name, mcu.Name);
+                        AddFeatureCollection(companyName, mcu.Core);
+                        AddFeatureCollection(companyName, mcu.Package);
+                        AddFeatureCollection(companyName, mcu.Name);
 
-                        AddFeatureCollection(series.Name, mcu.Core);
-                        AddFeatureCollection(series.Name, mcu.Package);
-                        AddFeatureCollection(series.Name, mcu.Name);
+                        AddFeatureCollection(seriesName, mcu.Core);
+                        AddFeatureCollection(seriesName, mcu.Package);
+                        AddFeatureCollection(seriesName, mcu.Name);
 
-                        AddFeatureCollection(line.Name, mcu.Core);
-                        AddFeatureCollection(line.Name, mcu.Package);
-                        AddFeatureCollection(line.Name, mcu.Name);
+                        AddFeatureCollection(lineName, mcu.Core);
+                        AddFeatureCollection(lineName, mcu.Package);
+                        AddFeatureCollection(lineName, mcu.Name);
 
-                        AddFeatureCollection(mcu.Core, company.Name);
-                        AddFeatureCollection(mcu.Core, series.Name);
-                        AddFeatureCollection(mcu.Core, line.Name);
+                        AddFeatureCollection(mcu.Core, companyName);
+                        AddFeatureCollection(mcu.Core, seriesName);
+                        AddFeatureCollection(mcu.Core, lineName);
                         AddFeatureCollection(mcu.Core, mcu.Package);
                         AddFeatureCollection(mcu.Core, mcu.Name);
 
-                        AddFeatureCollection(mcu.Package, company.Name);
-                        AddFeatureCollection(mcu.Package, series.Name);
-                        AddFeatureCollection(mcu.Package, line.Name);
+                        AddFeatureCollection(mcu.Package, companyName);
+                        AddFeatureCollection(mcu.Package, seriesName);
+                        AddFeatureCollection(mcu.Package, lineName);
                         AddFeatureCollection(mcu.Package, mcu.Core);
                         AddFeatureCollection(mcu.Package, mcu.Name);
 
@@ -394,7 +393,7 @@ public partial class MCUFilterBox
     private void UpdateCheckListBoxItemStatus(CheckListBox listBox) {
         foreach (CheckListBoxItem listBoxItem in listBox.Items) {
             if (listBoxItem.Content is string data) {
-                if (SearchText.IsNullOrEmpty()) {
+                if (string.IsNullOrWhiteSpace(SearchText)) {
                     if (_featureFilter.Contains(data) ||
                         _featureCollection[data].Intersect(_featureFilter).Any() ||
                         _featureFilter.Count == 0) {
