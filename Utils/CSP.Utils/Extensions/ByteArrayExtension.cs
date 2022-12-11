@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Text;
 
-namespace CSP.Utils.Extensions
+namespace CSP.Utils.Extensions;
+
+public static class ByteArrayExtension
 {
-    public static class ByteArrayExtension
-    {
-        public static string FromHexToString(this byte[] bytes) {
-            var builder = new StringBuilder();
+    public static string FromHexToString(this byte[] bytes) {
+        StringBuilder builder = new StringBuilder();
 
-            foreach (var t in bytes)
-                builder.Append($"{t:X2} ");
-
-            return builder.ToString().Trim();
+        foreach (byte t in bytes) {
+            builder.Append($"{t:X2} ");
         }
 
-        public static string FromTextToString(this byte[] bytes, Encoding encoding) {
-            if (bytes == null)
-                throw new ArgumentNullException(nameof(bytes));
-            if (encoding == null)
-                throw new ArgumentNullException(nameof(encoding));
+        return builder.ToString().Trim();
+    }
 
-            return encoding.GetString(bytes);
+    public static string FromTextToString(this byte[] bytes, Encoding encoding) {
+        if (bytes == null) {
+            throw new ArgumentNullException(nameof(bytes));
         }
+
+        if (encoding == null) {
+            throw new ArgumentNullException(nameof(encoding));
+        }
+
+        return encoding.GetString(bytes);
     }
 }
