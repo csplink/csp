@@ -1,8 +1,7 @@
 ﻿using Prism.Events;
 
-namespace CSP.Events
+namespace CSP.Events;
+
+public class ClosingEvent : PubSubEvent<string>
 {
-    public class ClosingEvent : PubSubEvent<string>
-    {
-    }
 }

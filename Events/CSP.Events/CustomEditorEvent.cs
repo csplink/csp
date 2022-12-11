@@ -1,9 +1,8 @@
 ﻿using Prism.Events;
 using Syncfusion.Windows.PropertyGrid;
 
-namespace CSP.Events
+namespace CSP.Events;
+
+public class CustomEditorEvent : PubSubEvent<CustomEditor>
 {
-    public class CustomEditorEvent : PubSubEvent<CustomEditor>
-    {
-    }
 }

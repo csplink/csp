@@ -1,8 +1,7 @@
 ﻿using Prism.Events;
 
-namespace CSP.Events
+namespace CSP.Events;
+
+public class GenerateEvent : PubSubEvent<string>
 {
-    public class GenerateEvent : PubSubEvent<string>
-    {
-    }
 }
