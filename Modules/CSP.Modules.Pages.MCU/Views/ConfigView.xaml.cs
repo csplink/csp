@@ -1,9 +1,8 @@
-﻿namespace CSP.Modules.Pages.MCU.Views
+﻿namespace CSP.Modules.Pages.MCU.Views;
+
+public partial class ConfigView
 {
-    public partial class ConfigView
-    {
-        public ConfigView() {
-            InitializeComponent();
-        }
+    public ConfigView() {
+        InitializeComponent();
     }
 }

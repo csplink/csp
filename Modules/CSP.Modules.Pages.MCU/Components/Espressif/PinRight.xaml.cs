@@ -1,12 +1,11 @@
-﻿namespace CSP.Modules.Pages.MCU.Components.Espressif
+﻿namespace CSP.Modules.Pages.MCU.Components.Espressif;
+
+public partial class PinRight
 {
-    public partial class PinRight
-    {
-        public PinRight() {
-            InitializeComponent();
-            PinName = ButtonPin;
-            PinNote = TextBlockNote;
-            RightContextMenu = ButtonPinContextMenu;
-        }
+    public PinRight() {
+        InitializeComponent();
+        PinName          = ButtonPin;
+        PinNote          = TextBlockNote;
+        RightContextMenu = ButtonPinContextMenu;
     }
 }

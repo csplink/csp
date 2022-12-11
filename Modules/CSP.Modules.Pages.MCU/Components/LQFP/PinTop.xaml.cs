@@ -1,12 +1,11 @@
-﻿namespace CSP.Modules.Pages.MCU.Components.LQFP
+﻿namespace CSP.Modules.Pages.MCU.Components.LQFP;
+
+public partial class PinTop
 {
-    public partial class PinTop
-    {
-        public PinTop() {
-            InitializeComponent();
-            PinName = ButtonPin;
-            PinNote = TextBlockNote;
-            RightContextMenu = ButtonPinContextMenu;
-        }
+    public PinTop() {
+        InitializeComponent();
+        PinName          = ButtonPin;
+        PinNote          = TextBlockNote;
+        RightContextMenu = ButtonPinContextMenu;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace CSP.Modules.Pages.MCU.Views.Components.Config
+﻿namespace CSP.Modules.Pages.MCU.Views.Components.Config;
+
+public partial class ClockView
 {
-    public partial class ClockView
-    {
-        public ClockView() {
-            InitializeComponent();
-        }
+    public ClockView() {
+        InitializeComponent();
     }
 }

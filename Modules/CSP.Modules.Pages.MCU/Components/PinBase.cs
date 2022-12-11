@@ -1,318 +1,350 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
-using CSP.Modules.Pages.MCU.Models;
-using CSP.Modules.Pages.MCU.Models.Description;
-using CSP.Modules.Pages.MCU.Tools;
 using CSP.Utils;
 using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Ioc;
 
-namespace CSP.Modules.Pages.MCU.Components
+namespace CSP.Modules.Pages.MCU.Components;
+
+public class PinBase : UserControl
 {
-    public class PinBase : UserControl
-    {
-        public static readonly DependencyProperty PinProperty = DependencyProperty.Register(nameof(Pin),
-            typeof(PinoutModel.PinModel),
-            typeof(PinBase),
-            new FrameworkPropertyMetadata(new PinoutModel.PinModel(), OnPinChanged) { BindsTwoWayByDefault = true });
+    public static readonly DependencyProperty PinProperty = DependencyProperty.Register(nameof(Pin),
+        typeof(PinoutModel.PinModel),
+        typeof(PinBase),
+        new FrameworkPropertyMetadata(new PinoutModel.PinModel(), OnPinChanged) { BindsTwoWayByDefault = true });
 
-        private readonly IEventAggregator _eventAggregator;
-        private readonly MenuItem _menuLock = new() { Header = "锁定" };
-        private readonly MenuItem _menuReset = new() { Header = "重置" };
-        private PinModel _pinProperty;
+    private readonly IEventAggregator _eventAggregator;
+    private readonly MenuItem         _menuLock  = new() { Header = "锁定" };
+    private readonly MenuItem         _menuReset = new() { Header = "重置" };
+    private          PinModel         _pinProperty;
 
-        protected PinBase() {
-            _menuLock.Click += OnMenuLockClick;
-            _menuReset.Click += OnMenuResetClick;
+    protected PinBase() {
+        _menuLock.Click  += OnMenuLockClick;
+        _menuReset.Click += OnMenuResetClick;
 
-            var containerExtension = ContainerLocator.Current;
-            _eventAggregator = containerExtension.Resolve<IEventAggregator>();
-        }
+        IContainerExtension containerExtension = ContainerLocator.Current;
+        _eventAggregator = containerExtension.Resolve<IEventAggregator>();
+    }
 
-        public PinoutModel.PinModel Pin {
-            get => (PinoutModel.PinModel)GetValue(PinProperty);
-            set => SetValue(PinProperty, value);
-        }
+    public PinoutModel.PinModel Pin {
+        get => (PinoutModel.PinModel)GetValue(PinProperty);
+        set => SetValue(PinProperty, value);
+    }
 
-        protected bool IsDirection { get; init; } = true;
+    protected bool IsDirection { get; init; } = true;
 
-        protected Button PinName { get; init; }
+    protected Button PinName { get; init; }
 
-        protected TextBlock PinNote { get; init; }
+    protected TextBlock PinNote { get; init; }
 
-        protected ContextMenu RightContextMenu { get; init; }
+    protected ContextMenu RightContextMenu { get; init; }
 
-        protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
-            if (_pinProperty.Function.String.IsNullOrEmpty()) {
-                _pinProperty.Property.Attributes.Clear();
-                _pinProperty.Property.Details.Clear();
-
-                foreach (var details in _pinProperty.GetDetails()) {
-                    if (!_pinProperty.Property.Details.ContainsKey(details.Key))
-                        _pinProperty.Property.Details.Add(details);
-                }
-
-                foreach (var attributes in _pinProperty.GetAttributes()) {
-                    if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key))
-                        _pinProperty.Property.Attributes.Add(attributes);
-                }
-            }
-
-            UpdateProperty();
-        }
-
-        protected void UpdateProperty() {
-            _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
-            _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinProperty.Property);
-        }
-
-        private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel.PinModel pin) {
-            if (pin.FunctionMap == null)
-                return null;
-
-            var items = new List<MenuItem>();
-
-            contextMenu.Items.Add(new Separator());
-            foreach (var menu in pin.FunctionMap.Select(static item => new MenuItem { Header = item.Key })) {
-                items.Add(menu);
-                contextMenu.Items.Add(menu);
-            }
-
-            return items;
-        }
-
-        private static void OnPinChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            ((PinBase)d).OnPinValueChanged(e);
-        }
-
-        private void InitPinNameStatus(string type) {
-            if (PinName == null)
-                return;
-            switch (type) {
-                case "I/O": {
-                        if (ColorConverter.ConvertFromString("#B9C4CA") is Color color) {
-                            PinName.Background = new SolidColorBrush(color);
-                            PinName.BorderBrush = new SolidColorBrush(color);
-                        }
-
-                        PinName.Foreground = new SolidColorBrush(Colors.Black);
-                        break;
-                    }
-                case "Reset":
-                case "Boot": {
-                        if (ColorConverter.ConvertFromString("#BBCC00") is Color color) {
-                            PinName.Background = new SolidColorBrush(color);
-                            PinName.BorderBrush = new SolidColorBrush(color);
-                        }
-
-                        PinName.Foreground = new SolidColorBrush(Colors.Black);
-                        break;
-                    }
-                case "Power": {
-                        if (ColorConverter.ConvertFromString("#FFF6CC") is Color color) {
-                            PinName.Background = new SolidColorBrush(color);
-                            PinName.BorderBrush = new SolidColorBrush(color);
-                        }
-
-                        PinName.Foreground = new SolidColorBrush(Colors.Black);
-                        break;
-                    }
-                case "NC": {
-                        if (ColorConverter.ConvertFromString("#DCCFC0") is Color color) {
-                            PinName.Background = new SolidColorBrush(color);
-                            PinName.BorderBrush = new SolidColorBrush(color);
-                        }
-
-                        PinName.Foreground = new SolidColorBrush(Colors.Black);
-                        break;
-                    }
-                default: {
-                        if (ColorConverter.ConvertFromString("#B9C4CA") is Color color) {
-                            PinName.Background = new SolidColorBrush(color);
-                            PinName.BorderBrush = new SolidColorBrush(color);
-                        }
-
-                        PinName.Foreground = new SolidColorBrush(Colors.Black);
-                        break;
-                    }
-            }
-        }
-
-        private void OnMenuFunctionClick(object sender, RoutedEventArgs e) {
-            if (sender is not MenuItem { Header: string name })
-                return;
-
-            SetLocked(_menuLock, Pin, true);
-            SetFunction(name);
-            UpdatePinNote();
-        }
-
-        private void OnMenuLockClick(object sender, RoutedEventArgs e) {
-            if (sender is not MenuItem { Header: string str })
-                return;
-
-            switch (str) {
-                case "锁定":
-                    SetLocked(_menuLock, Pin, true);
-                    break;
-
-                case "解锁":
-                    SetLocked(_menuLock, Pin, false);
-                    break;
-            }
-        }
-
-        private void OnMenuResetClick(object sender, RoutedEventArgs e) {
-            SetLocked(_menuLock, Pin, false);
-            SetFunction("");
-        }
-
-        private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
-            if (e.NewValue is not PinoutModel.PinModel pin)
-                return;
-            if (PinName == null || PinNote == null || RightContextMenu == null)
-                return;
-            _pinProperty = DescriptionHelper.GetPinProperty(pin.Name);
-
-            if (IsDirection)
-                PinName.Content = pin.Name;
-            PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? pin.Name : _pinProperty.Label.String;
-
-            InitPinNameStatus(pin.Type);
-
-            RightContextMenu.Items.Clear();
-
-            RightContextMenu.Items.Add(_menuLock);
-            RightContextMenu.Items.Add(new Separator());
-            RightContextMenu.Items.Add(_menuReset);
-
-            var menuItems = AddRightContextMenu(RightContextMenu, pin);
-            foreach (var menu in menuItems) {
-                menu.Click += OnMenuFunctionClick;
-            }
-            _pinProperty.Label.PropertyChanged += (sender, propertyChangedEventArgs) => {
-                UpdatePinNote();
-            };
-            _pinProperty.IsLocked.PropertyChanged += (sender, propertyChangedEventArgs) => {
-                if (sender is not BooleanEditorModel model)
-                    return;
-
-                SetLocked(_menuLock, Pin, model.Boolean);
-            };
-        }
-
-        private void SetFunction(string functionName) {
-            if (PinName == null || PinNote == null || RightContextMenu == null)
-                return;
-
-            _pinProperty.Function.String = functionName;
-
+    protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
+        if (_pinProperty.Function.String.IsNullOrEmpty()) {
             _pinProperty.Property.Attributes.Clear();
             _pinProperty.Property.Details.Clear();
 
-            PinNote.Text = "";
-
-            if (functionName.IsNullOrEmpty()) {
-                return;
-            }
-
-            if (!Pin.FunctionMap.ContainsKey(functionName))
-                return;
-
-            if (Pin.FunctionMap[functionName].Type.IsNullOrEmpty())
-                return;
-
-            switch (Pin.FunctionMap[functionName].Type) {
-                case "GPIO": {
-                        var gpioMap = DescriptionHelper.GetMap("GPIO");
-                        var gpioIP = DescriptionHelper.GetIP("GPIO");
-                        if (gpioMap == null || gpioIP == null)
-                            break;
-                        if (Pin.FunctionMap[functionName].Mode != null) {
-                            var modeName = Pin.FunctionMap[functionName].Mode;
-                            foreach (var parameter in gpioIP.ModeMap[modeName].ParameterMap) {
-                                var map = new ObservableDictionary<string, string>();
-
-                                foreach (var value in parameter.Value.Values) {
-                                    if (gpioMap.Total.ContainsKey(value)) {
-                                        map.Add(value, gpioMap.Total[value]);
-                                    }
-                                }
-
-                                var model = new DictionaryEditorModel {
-                                    Source = map
-                                };
-                                model.PropertyChanged += (sender, e) => {
-                                    if (sender is not DictionaryEditorModel)
-                                        return;
-
-                                    switch (e.PropertyName) {
-                                        case "String": {
-                                            }
-                                            break;
-                                    }
-                                };
-                                _pinProperty.Property.Details.Add(parameter.Key, model);
-                                _pinProperty.Property.Attributes.Add(parameter.Key, gpioMap.Attributes[parameter.Key]);
-                            }
-                        }
-                        break;
-                    }
-            }
-
             foreach (var details in _pinProperty.GetDetails()) {
-                if (!_pinProperty.Property.Details.ContainsKey(details.Key))
+                if (!_pinProperty.Property.Details.ContainsKey(details.Key)) {
                     _pinProperty.Property.Details.Add(details);
+                }
             }
 
             foreach (var attributes in _pinProperty.GetAttributes()) {
-                if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key))
+                if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key)) {
                     _pinProperty.Property.Attributes.Add(attributes);
-            }
-
-            UpdateProperty();
-        }
-
-        private void SetLocked(MenuItem menuLock, PinoutModel.PinModel pin, bool value) {
-            if (menuLock == null || PinName == null)
-                return;
-
-            _pinProperty.IsLocked.Boolean = value;
-
-            menuLock.Header = value ? "解锁" : "锁定";
-            if (pin.Type != null)
-                SetPinNameStatus(pin.Type, value);
-        }
-
-        private void SetPinNameStatus(string type, bool isLock) {
-            if (PinName == null)
-                return;
-
-            if (isLock) {
-                if (ColorConverter.ConvertFromString("#00CC44") is Color color) {
-                    PinName.Background = new SolidColorBrush(color);
-                    PinName.BorderBrush = new SolidColorBrush(color);
                 }
-
-                PinName.Foreground = new SolidColorBrush(Colors.Black);
-            }
-            else {
-                InitPinNameStatus(type);
             }
         }
 
-        private void UpdatePinNote() {
-            if (PinNote == null)
+        UpdateProperty();
+    }
+
+    protected void UpdateProperty() {
+        _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
+        _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinProperty.Property);
+    }
+
+    private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel.PinModel pin) {
+        if (pin.FunctionMap == null) {
+            return null;
+        }
+
+        List<MenuItem> items = new List<MenuItem>();
+
+        contextMenu.Items.Add(new Separator());
+        foreach (var menu in pin.FunctionMap.Select(static item => new MenuItem { Header = item.Key })) {
+            items.Add(menu);
+            contextMenu.Items.Add(menu);
+        }
+
+        return items;
+    }
+
+    private static void OnPinChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        ((PinBase)d).OnPinValueChanged(e);
+    }
+
+    private void InitPinNameStatus(string type) {
+        if (PinName == null) {
+            return;
+        }
+
+        switch (type) {
+        case "I/O": {
+            if (ColorConverter.ConvertFromString("#B9C4CA") is Color color) {
+                PinName.Background  = new SolidColorBrush(color);
+                PinName.BorderBrush = new SolidColorBrush(color);
+            }
+
+            PinName.Foreground = new SolidColorBrush(Colors.Black);
+
+            break;
+        }
+        case "Reset":
+        case "Boot": {
+            if (ColorConverter.ConvertFromString("#BBCC00") is Color color) {
+                PinName.Background  = new SolidColorBrush(color);
+                PinName.BorderBrush = new SolidColorBrush(color);
+            }
+
+            PinName.Foreground = new SolidColorBrush(Colors.Black);
+
+            break;
+        }
+        case "Power": {
+            if (ColorConverter.ConvertFromString("#FFF6CC") is Color color) {
+                PinName.Background  = new SolidColorBrush(color);
+                PinName.BorderBrush = new SolidColorBrush(color);
+            }
+
+            PinName.Foreground = new SolidColorBrush(Colors.Black);
+
+            break;
+        }
+        case "NC": {
+            if (ColorConverter.ConvertFromString("#DCCFC0") is Color color) {
+                PinName.Background  = new SolidColorBrush(color);
+                PinName.BorderBrush = new SolidColorBrush(color);
+            }
+
+            PinName.Foreground = new SolidColorBrush(Colors.Black);
+
+            break;
+        }
+        default: {
+            if (ColorConverter.ConvertFromString("#B9C4CA") is Color color) {
+                PinName.Background  = new SolidColorBrush(color);
+                PinName.BorderBrush = new SolidColorBrush(color);
+            }
+
+            PinName.Foreground = new SolidColorBrush(Colors.Black);
+
+            break;
+        }
+        }
+    }
+
+    private void OnMenuFunctionClick(object sender, RoutedEventArgs e) {
+        if (sender is not MenuItem { Header: string name }) {
+            return;
+        }
+
+        SetLocked(_menuLock, Pin, true);
+        SetFunction(name);
+        UpdatePinNote();
+    }
+
+    private void OnMenuLockClick(object sender, RoutedEventArgs e) {
+        if (sender is not MenuItem { Header: string str }) {
+            return;
+        }
+
+        switch (str) {
+        case "锁定":
+            SetLocked(_menuLock, Pin, true);
+
+            break;
+
+        case "解锁":
+            SetLocked(_menuLock, Pin, false);
+
+            break;
+        }
+    }
+
+    private void OnMenuResetClick(object sender, RoutedEventArgs e) {
+        SetLocked(_menuLock, Pin, false);
+        SetFunction("");
+    }
+
+    private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
+        if (e.NewValue is not PinoutModel.PinModel pin) {
+            return;
+        }
+
+        if (PinName == null || PinNote == null || RightContextMenu == null) {
+            return;
+        }
+
+        _pinProperty = DescriptionHelper.GetPinProperty(pin.Name);
+
+        if (IsDirection) {
+            PinName.Content = pin.Name;
+        }
+
+        PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? pin.Name : _pinProperty.Label.String;
+
+        InitPinNameStatus(pin.Type);
+
+        RightContextMenu.Items.Clear();
+
+        RightContextMenu.Items.Add(_menuLock);
+        RightContextMenu.Items.Add(new Separator());
+        RightContextMenu.Items.Add(_menuReset);
+
+        List<MenuItem> menuItems = AddRightContextMenu(RightContextMenu, pin);
+        foreach (MenuItem menu in menuItems) {
+            menu.Click += OnMenuFunctionClick;
+        }
+
+        _pinProperty.Label.PropertyChanged += (sender, propertyChangedEventArgs) => { UpdatePinNote(); };
+        _pinProperty.IsLocked.PropertyChanged += (sender, propertyChangedEventArgs) => {
+            if (sender is not BooleanEditorModel model) {
                 return;
+            }
 
-            PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? _pinProperty.Function.String : $"{_pinProperty.Label.String}: ({_pinProperty.Function.String})";
+            SetLocked(_menuLock, Pin, model.Boolean);
+        };
+    }
+
+    private void SetFunction(string functionName) {
+        if (PinName == null || PinNote == null || RightContextMenu == null) {
+            return;
         }
+
+        _pinProperty.Function.String = functionName;
+
+        _pinProperty.Property.Attributes.Clear();
+        _pinProperty.Property.Details.Clear();
+
+        PinNote.Text = "";
+
+        if (functionName.IsNullOrEmpty()) {
+            return;
+        }
+
+        if (!Pin.FunctionMap.ContainsKey(functionName)) {
+            return;
+        }
+
+        if (Pin.FunctionMap[functionName].Type.IsNullOrEmpty()) {
+            return;
+        }
+
+        switch (Pin.FunctionMap[functionName].Type) {
+        case "GPIO": {
+            var gpioMap = DescriptionHelper.GetMap("GPIO");
+            var gpioIP  = DescriptionHelper.GetIP("GPIO");
+
+            if (gpioMap == null || gpioIP == null) {
+                break;
+            }
+
+            if (Pin.FunctionMap[functionName].Mode != null) {
+                var modeName = Pin.FunctionMap[functionName].Mode;
+                foreach (var parameter in gpioIP.ModeMap[modeName].ParameterMap) {
+                    ObservableDictionary<string, string> map = new ObservableDictionary<string, string>();
+
+                    foreach (var value in parameter.Value.Values) {
+                        if (gpioMap.Total.ContainsKey(value)) {
+                            map.Add(value, gpioMap.Total[value]);
+                        }
+                    }
+
+                    DictionaryEditorModel model = new DictionaryEditorModel {
+                        Source = map
+                    };
+                    model.PropertyChanged += (sender, e) => {
+                        if (sender is not DictionaryEditorModel) {
+                            return;
+                        }
+
+                        switch (e.PropertyName) {
+                        case "String": {
+                        }
+
+                            break;
+                        }
+                    };
+                    _pinProperty.Property.Details.Add(parameter.Key, model);
+                    _pinProperty.Property.Attributes.Add(parameter.Key, gpioMap.Attributes[parameter.Key]);
+                }
+            }
+
+            break;
+        }
+        }
+
+        foreach (var details in _pinProperty.GetDetails()) {
+            if (!_pinProperty.Property.Details.ContainsKey(details.Key)) {
+                _pinProperty.Property.Details.Add(details);
+            }
+        }
+
+        foreach (var attributes in _pinProperty.GetAttributes()) {
+            if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key)) {
+                _pinProperty.Property.Attributes.Add(attributes);
+            }
+        }
+
+        UpdateProperty();
+    }
+
+    private void SetLocked(MenuItem menuLock, PinoutModel.PinModel pin, bool value) {
+        if (menuLock == null || PinName == null) {
+            return;
+        }
+
+        _pinProperty.IsLocked.Boolean = value;
+
+        menuLock.Header = value ? "解锁" : "锁定";
+        if (pin.Type != null) {
+            SetPinNameStatus(pin.Type, value);
+        }
+    }
+
+    private void SetPinNameStatus(string type, bool isLock) {
+        if (PinName == null) {
+            return;
+        }
+
+        if (isLock) {
+            if (ColorConverter.ConvertFromString("#00CC44") is Color color) {
+                PinName.Background  = new SolidColorBrush(color);
+                PinName.BorderBrush = new SolidColorBrush(color);
+            }
+
+            PinName.Foreground = new SolidColorBrush(Colors.Black);
+        }
+        else {
+            InitPinNameStatus(type);
+        }
+    }
+
+    private void UpdatePinNote() {
+        if (PinNote == null) {
+            return;
+        }
+
+        PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty()
+            ? _pinProperty.Function.String
+            : $"{_pinProperty.Label.String}: ({_pinProperty.Function.String})";
     }
 }

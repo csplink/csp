@@ -8,9 +8,7 @@
     Width="1360"
     Height="1360"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <panAndZoom:ZoomBorder
-        PanButton="Middle"
-        Stretch="None">
+    <panAndZoom:ZoomBorder PanButton="Middle" Stretch="None">
         <DockPanel>
             <Grid
                 Width="500"
