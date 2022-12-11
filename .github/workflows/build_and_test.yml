@@ -15,17 +15,17 @@ jobs:
       - name: checkout csp
         uses: actions/checkout@v3
 
-      - name: checkout csplink/csp_mcu_db
+      - name: checkout csplink/csp_repo
         uses: actions/checkout@v3
         with:
-          repository: csplink/csp_mcu_db
-          path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Database/MCU
+          repository: csplink/csp_repo
+          path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
 
       - name: checkout csplink/csp_hal_apm32f1
         uses: actions/checkout@v3
         with:
           repository: csplink/csp_hal_apm32f1
-          path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/Repository/csp_hal_apm32f1-latest
+          path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo/repositories/hal/csp_hal_apm32f1/latest
 
       - name: Setup .net
         uses: actions/setup-dotnet@v3
