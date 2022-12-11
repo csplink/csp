@@ -2,24 +2,23 @@
 using Xunit;
 using Xunit.Abstractions;
 
-namespace CSP.Resources.Tests
+namespace CSP.Resources.Tests;
+
+public class IniFileTests : IDisposable
 {
-    public class IniFileTests : IDisposable
-    {
-        private readonly ITestOutputHelper _testOutputHelper;
+    private readonly ITestOutputHelper _testOutputHelper;
 
-        public IniFileTests(ITestOutputHelper testOutputHelper) {
-            _testOutputHelper = testOutputHelper;
-        }
+    public IniFileTests(ITestOutputHelper testOutputHelper) {
+        _testOutputHelper = testOutputHelper;
+    }
 
-        public void Dispose() {
-            IniFile.Save();
-        }
+    public void Dispose() {
+        IniFile.Save();
+    }
 
-        [Fact]
-        public void Test() {
-            IniFile.PathMCUDb = "./";
-            Assert.False(IniFile.PathMCUDb != "./");
-        }
+    [Fact]
+    public void Test() {
+        IniFile.PathRepo = "./";
+        Assert.False(IniFile.PathRepo != "./");
     }
 }
