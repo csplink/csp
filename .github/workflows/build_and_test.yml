@@ -47,7 +47,7 @@ jobs:
 
       - name: test
         shell: pwsh
-        run: dotnet test ${{ env.solution }} --configuration ${{ env.buildConfiguration }} --no-build --verbosity normal --blame-crash
+        run: dotnet test ${{ env.solution }} --configuration ${{ env.buildConfiguration }} --no-build --verbosity normal --blame-crash --logger "console;verbosity=detailed"
 
       - name: upload artifact
         uses: actions/upload-artifact@v3
