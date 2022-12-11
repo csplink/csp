@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using CSP.Models.DB;
 using CSP.Models.DB.Chip;
 using CSP.Models.Interfaces;
 using CSP.Modules.Dialogs.NewMCU.Models;
@@ -30,6 +31,12 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
     private          bool                                _isBusy;
     private          Style                               _markdownStyle = MdXaml.MarkdownStyle.Sasabune;
     private          SummaryModel                        _mcu;
+    private          string                              _mcuCompanyUrl;
+    private          string                              _mcuIllustrate;
+    private          string                              _mcuIntroduction;
+    private          string                              _mcuRepositoryUrl;
+    private          string                              _mcuUrl;
+    private          PackageModel                        _package;
     private          BitmapImage                         _packageBitmapImage;
     private          repository_t                        _repository;
     private          RepositoryModel.MCUModel            _selectedMCU;
@@ -59,9 +66,61 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
     public SummaryModel MCU {
         get => _mcu;
         set {
-            SetProperty(ref _mcu, value);
+            if (!SetProperty(ref _mcu, value)) {
+                return;
+            }
+
             TabControlVisibility = value == null ? Visibility.Collapsed : Visibility.Visible;
+            if (value != null) {
+                Package         = PackageModel.Load(GetPackagePath(value));
+                MCUIntroduction = value.Introduction.ContainsKey("zh-cn") ? MCU.Introduction["zh-cn"] : "";
+                MCUIllustrate   = value.Illustrate.ContainsKey("zh-cn") ? MCU.Illustrate["zh-cn"] : "";
+                MCUCompanyUrl = value.CompanyUrl.ContainsKey("zh-cn")
+                    ? MCU.CompanyUrl["zh-cn"]
+                    : "https://csplink.github.io";
+                MCUUrl = value.Url.ContainsKey("zh-cn") ? MCU.Url["zh-cn"] : "https://csplink.github.io";
+            }
+            else {
+                MCUIntroduction = "Not Find";
+                MCUIllustrate   = "芯片支持包未找到" + ": " + GetSummaryPath(SelectedMCU);
+            }
         }
+    }
+
+    public PackageModel Package {
+        get => _package;
+        set {
+            if (!SetProperty(ref _package, value)) {
+                return;
+            }
+
+            MCURepositoryUrl = value != null ? value.Repository : "https://csplink.github.io";
+        }
+    }
+
+    public string MCUIntroduction {
+        get => _mcuIntroduction;
+        set => SetProperty(ref _mcuIntroduction, value);
+    }
+
+    public string MCUIllustrate {
+        get => _mcuIllustrate;
+        set => SetProperty(ref _mcuIllustrate, value);
+    }
+
+    public string MCUCompanyUrl {
+        get => _mcuCompanyUrl;
+        set => SetProperty(ref _mcuCompanyUrl, value);
+    }
+
+    public string MCUUrl {
+        get => _mcuUrl;
+        set => SetProperty(ref _mcuUrl, value);
+    }
+
+    public string MCURepositoryUrl {
+        get => _mcuRepositoryUrl;
+        set => SetProperty(ref _mcuRepositoryUrl, value);
     }
 
     public DelegateCommand OnNew =>
@@ -127,9 +186,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
                 return;
             }
 
-            MCU = SummaryModel.Load(
-                $"{IniFile.PathRepo}/db/chips/{value.Company.ToLower()}/{value.Name.ToLower()}.yml");
-
+            MCU = SummaryModel.Load(GetSummaryPath(value));
             try {
                 Uri path = new(@"pack://application:,,,/CSP.Modules.Dialogs.NewMCU;component/Resources/Images/" +
                                value.Package + @".png");
@@ -147,6 +204,14 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
     public Visibility TabControlVisibility {
         get => _tabControlVisibility;
         set => SetProperty(ref _tabControlVisibility, value);
+    }
+
+    private static string GetSummaryPath(RepositoryModel.MCUModel mcu) {
+        return $"{IniFile.PathRepo}/db/chips/{mcu.Company.ToLower()}/{mcu.Name.ToLower()}.yml";
+    }
+
+    private static string GetPackagePath(SummaryModel summary) {
+        return $"{IniFile.PathRepo}/packages/hal/{summary.HAL.ToLower()}.json";
     }
 
     private void LoadDocuments() {

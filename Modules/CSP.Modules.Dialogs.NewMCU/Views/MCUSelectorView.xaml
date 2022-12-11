@@ -72,21 +72,21 @@
                                                 Margin="10,5"
                                                 Padding="5"
                                                 Command="{Binding OnOpenUrl}"
-                                                CommandParameter="{Binding MCU.CompanyUrl}"
+                                                CommandParameter="{Binding MCUCompanyUrl}"
                                                 Content="{Binding MCU.Company}"
                                                 FontSize="14" />
                                             <Button
                                                 Margin="10,5"
                                                 Padding="5"
                                                 Command="{Binding OnOpenUrl}"
-                                                CommandParameter="{Binding MCU.Url}"
+                                                CommandParameter="{Binding MCUUrl}"
                                                 Content="{Binding MCU.Name}"
                                                 FontSize="14" />
                                             <Button
                                                 Margin="10,5"
                                                 Padding="5"
                                                 Command="{Binding OnOpenUrl}"
-                                                CommandParameter="{Binding MCU.RepositoryUrl}"
+                                                CommandParameter="{Binding MCURepositoryUrl}"
                                                 Content="仓库地址"
                                                 FontSize="14" />
                                             <Button
@@ -106,14 +106,14 @@
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0}: {1}">
                                                     <Binding Path="MCU.Name" />
-                                                    <Binding Path="MCU.Introduction" />
+                                                    <Binding Path="MCUIntroduction" />
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <mdXaml:MarkdownScrollViewer
                                             Margin="10,5"
                                             Background="{x:Null}"
-                                            Markdown="{Binding MCU.Illustrate}" />
+                                            Markdown="{Binding MCUIllustrate}" />
                                     </StackPanel>
                                 </Grid>
                             </syncfusion:TabItemExt>
