@@ -44,7 +44,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
 
     public MCUSelectorViewModel() {
         IsBusy      = true;
-        _repository = RepositoryModel.Load($"{IniFile.PathRepo}/db/chips/repository.yml");
+        _repository = RepositoryModel.Load($"{ConfigFile.PathRepo}/db/chips/repository.yml");
         IsBusy      = false;
     }
 
@@ -207,11 +207,11 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
     }
 
     private static string GetSummaryPath(RepositoryModel.MCUModel mcu) {
-        return $"{IniFile.PathRepo}/db/chips/{mcu.Company.ToLower()}/{mcu.Name.ToLower()}.yml";
+        return $"{ConfigFile.PathRepo}/db/chips/{mcu.Company.ToLower()}/{mcu.Name.ToLower()}.yml";
     }
 
     private static string GetPackagePath(SummaryModel summary) {
-        return $"{IniFile.PathRepo}/packages/hal/{summary.HAL.ToLower()}.json";
+        return $"{ConfigFile.PathRepo}/packages/hal/{summary.HAL.ToLower()}.json";
     }
 
     private void LoadDocuments() {

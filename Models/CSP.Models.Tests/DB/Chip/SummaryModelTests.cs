@@ -21,7 +21,7 @@ public class SummaryModelTests
     }
 
     public void Dispose() {
-        IniFile.Save();
+        ConfigFile.Save();
     }
 
     [Fact]

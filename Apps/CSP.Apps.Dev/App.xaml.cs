@@ -37,7 +37,7 @@ public partial class App
     }
 
     private void OnAppExit(object sender, ExitEventArgs e) {
-        IniFile.Save();
+        ConfigFile.Save();
         Log.CloseAndFlush();
     }
 
@@ -45,7 +45,7 @@ public partial class App
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .WriteTo.Debug()
-            .WriteTo.File(IniFile.PathLogFile, //文件保存路径
+            .WriteTo.File(ConfigFile.PathLogFile, //文件保存路径
                 outputTemplate:
                 "[{Timestamp:yyyy-MM-dd HH:mm:ss}] [{Level:u3}] {Message:lj}{NewLine}{Exception}", //输出日期格式
                 rollingInterval: RollingInterval.Day,                                              //日志按日保存

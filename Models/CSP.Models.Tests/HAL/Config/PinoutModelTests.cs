@@ -22,7 +22,7 @@ public class PinoutModelTests
     }
 
     public void Dispose() {
-        IniFile.Save();
+        ConfigFile.Save();
     }
 
     [Fact]

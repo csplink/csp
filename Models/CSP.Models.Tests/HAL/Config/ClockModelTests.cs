@@ -21,7 +21,7 @@ public class ClockModelTests
     }
 
     public void Dispose() {
-        IniFile.Save();
+        ConfigFile.Save();
     }
 
     [Fact]

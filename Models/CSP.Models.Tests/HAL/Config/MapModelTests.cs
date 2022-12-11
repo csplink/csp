@@ -21,7 +21,7 @@ public class MapModelTests
     }
 
     public void Dispose() {
-        IniFile.Save();
+        ConfigFile.Save();
     }
 
     [Fact]

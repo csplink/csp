@@ -20,7 +20,7 @@ public class PackageModelTests
     }
 
     public void Dispose() {
-        IniFile.Save();
+        ConfigFile.Save();
     }
 
     [Fact]

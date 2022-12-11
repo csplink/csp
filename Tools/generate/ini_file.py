@@ -1,110 +1,127 @@
 import os
 
-template_ini_file_data = """
-        public static string {section}{name} {{
-            get => Ini.ReadKey("{section}", "{name}", {section}.{name});
-            set => Ini.AddKey("{section}", "{name}", value);
-        }}
+template_config_file_data = """
+    public static string {section}{name} {{
+        get => Config.ReadKey("{section}", "{name}", {section}.{name});
+        set => Config.AddKey("{section}", "{name}", value);
+    }}
 """
 
-template_ini_file = """namespace CSP.Resources
+template_config_file = """namespace CSP.Resources;
+
+public static class ConfigFile
 {{
-    public static class IniFile
-    {{
-        private static readonly IniFileInstance Ini = new();
+    private static readonly ConfigFileInstance Config = new();
 {data}
-        public static void Save() {{
-            Ini.Save();
-        }}
+    public static void Save() {{
+        Config.Save();
     }}
-}}
-"""
+}}"""
 
-template_ini_file_instance_data = """            AddKey("{section}", "{name}", {section}.{name});\n"""
+template_config_file_instance_data = """        AddKey("{section}", "{name}", {section}.{name});\n"""
 
-template_ini_file_instance = """using IniParser;
-using IniParser.Model;
+template_config_file_instance = """using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Windows;
+using CSP.Utils;
+using YamlDotNet.Core;
+using YamlDotNet.Serialization;
 
-namespace CSP.Resources
+namespace CSP.Resources;
+
+using config_t = Dictionary<string, Dictionary<string, string>>;
+
+public class ConfigFileInstance
 {{
-    public class IniFileInstance
-    {{
-        private const string IniPath = "./CSP.ini";
-        private readonly IniData _ini = new();
-        private readonly FileIniDataParser _parser = new();
+    private readonly config_t     _config       = new();
+    private readonly string       _configPath   = "./CSP.yaml";
+    private readonly Deserializer _deserializer = new();
+    private readonly Serializer   _serializer   = new();
 
-        public IniFileInstance() {{
-            if (!File.Exists(IniPath)) {{
-                InitData();
-            }}
-            else {{
-                _ini = _parser.ReadFile(IniPath);
-            }}
+    public ConfigFileInstance() {{
+        if (!File.Exists(_configPath)) {{
+            InitData();
         }}
-
-        public void Save() {{
-            _parser.WriteFile(IniPath, _ini);
-        }}
-
-        internal void AddKey(string section, string key, string value) {{
-            if (!_ini.Sections.ContainsSection(section)) {{
-                _ini.Sections.AddSection(section);
+        else {{
+            try {{
+                using (StreamReader reader = new(_configPath)) {{
+                    _config = _deserializer.Deserialize<config_t>(reader);
+                }}
+            }}
+            catch (YamlException e) {{
+                MessageBox.Show(e.Message, "error", MessageBoxButton.OK, MessageBoxImage.Error);
             }}
 
-            if (_ini[section].ContainsKey(key)) {{
-                _ini[section][key] = value;
-            }}
-            else {{
-                _ini[section].AddKey(key, value);
-            }}
-        }}
-
-        internal string ReadKey(string section, string key, string defaultValue) {{
-            if (!_ini.Sections.ContainsSection(section)) {{
-                AddKey(section, key, defaultValue);
-                return defaultValue;
-            }}
-
-            if (!_ini[section].ContainsKey(key)) {{
-                AddKey(section, key, defaultValue);
-                return defaultValue;
-            }}
-
-            return _ini[section][key];
-        }}
-
-        private void InitData() {{
-{data}            Save();
+            DebugUtil.Assert(_config != null, new ArgumentNullException("ConfigFile.YAML"),
+                "YAML deserialization failed");
         }}
     }}
-}}
-"""
+
+    public void Save() {{
+        using (StreamWriter writer = new(_configPath)) {{
+            _serializer.Serialize(writer, _config);
+        }}
+    }}
+
+    internal void AddKey(string section, string key, string value) {{
+        if (!_config.ContainsKey(section)) {{
+            _config[section] = new Dictionary<string, string>();
+        }}
+
+        if (_config[section].ContainsKey(key)) {{
+            _config[section][key] = value;
+        }}
+        else {{
+            _config[section].Add(key, value);
+        }}
+    }}
+
+    internal string ReadKey(string section, string key, string defaultValue) {{
+        if (!_config.ContainsKey(section)) {{
+            AddKey(section, key, defaultValue);
+
+            return defaultValue;
+        }}
+
+        if (!_config[section].ContainsKey(key)) {{
+            AddKey(section, key, defaultValue);
+
+            return defaultValue;
+        }}
+
+        return _config[section][key];
+    }}
+
+    private void InitData() {{
+{data}        Save();
+    }}
+}}"""
 
 dir_resources = os.path.dirname(os.path.dirname(os.path.dirname(__file__))) + "/Resources/CSP.Resources"
-path_resources_ini_file = dir_resources + "/IniFile.cs"
-path_resources_ini_file_instance = dir_resources + "/IniFileInstance.cs"
+path_resources_config_file = dir_resources + "/ConfigFile.cs"
+path_resources_config_file_instance = dir_resources + "/ConfigFileInstance.cs"
 path_resources_path_designer = dir_resources + "/Path.Designer.cs"
 
 
 def main():
-    ini_file_data = ""
-    ini_file_instance_data = ""
+    config_file_data = ""
+    config_file_instance_data = ""
     with open(path_resources_path_designer, "r", encoding="utf-8") as fp:
         lines = fp.readlines()
         for line in lines:
             if line.startswith("        internal static string") and line.endswith(" {\n") and "::" not in line:
                 name = line.replace("internal static string", "").replace(" {", "").strip()
-                ini_file_data += template_ini_file_data.format(section="Path", name=name)
-                ini_file_instance_data += template_ini_file_instance_data.format(section="Path", name=name)
-    ini_file = template_ini_file.format(data=ini_file_data)
-    ini_file_instance = template_ini_file_instance.format(data=ini_file_instance_data)
+                config_file_data += template_config_file_data.format(section="Path", name=name)
+                config_file_instance_data += template_config_file_instance_data.format(section="Path", name=name)
+    config_file = template_config_file.format(data=config_file_data)
+    config_file_instance = template_config_file_instance.format(data=config_file_instance_data)
 
-    with open(path_resources_ini_file, "w", encoding="utf-8") as fp:
-        fp.write(ini_file)
+    with open(path_resources_config_file, "w", encoding="utf-8") as fp:
+        fp.write(config_file)
 
-    with open(path_resources_ini_file_instance, "w", encoding="utf-8") as fp:
-        fp.write(ini_file_instance)
+    with open(path_resources_config_file_instance, "w", encoding="utf-8") as fp:
+        fp.write(config_file_instance)
 
 
 if __name__ == "__main__":

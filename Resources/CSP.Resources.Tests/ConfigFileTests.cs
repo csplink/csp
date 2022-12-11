@@ -4,21 +4,21 @@ using Xunit.Abstractions;
 
 namespace CSP.Resources.Tests;
 
-public class IniFileTests : IDisposable
+public class ConfigFileTests : IDisposable
 {
     private readonly ITestOutputHelper _testOutputHelper;
 
-    public IniFileTests(ITestOutputHelper testOutputHelper) {
+    public ConfigFileTests(ITestOutputHelper testOutputHelper) {
         _testOutputHelper = testOutputHelper;
     }
 
     public void Dispose() {
-        IniFile.Save();
+        ConfigFile.Save();
     }
 
     [Fact]
     public void Test() {
-        IniFile.PathRepo = "./";
-        Assert.False(IniFile.PathRepo != "./");
+        ConfigFile.PathRepo = "./";
+        Assert.False(ConfigFile.PathRepo != "./");
     }
 }
