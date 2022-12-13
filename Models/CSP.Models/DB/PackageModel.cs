@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using CSP.Utils;
 using Json.Net;
@@ -28,13 +27,13 @@ public class PackageModel
 
     public string Readme { get; set; }
 
-    public string Repository { get; set; }
+    public string[] Repositories { get; set; }
 
     public string Rule { get; set; }
 
     public string Target { get; set; }
 
-    public string[] Versions { get; set; }
+    public Dictionary<string, string[]> Versions { get; set; }
 
     public static PackageModel Load(string path) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
@@ -57,10 +56,8 @@ public class PackageModel
 
         DebugUtil.Assert(rtn != null, new ArgumentNullException("Package.JSON"), "JSON deserialization failed");
 
-        if (!rtn!.Versions.Contains("latest")) {
-            List<string> list = rtn!.Versions.ToList();
-            list.Add("latest");
-            rtn.Versions = list.ToArray();
+        if (!rtn!.Versions.ContainsKey("latest")) {
+            rtn.Versions.Add("latest", null);
         }
 
         return rtn;

@@ -35,7 +35,7 @@ public class PinoutModelTests
             foreach (string file in files) {
                 _testOutputHelper.WriteLine($"load file: {file}");
                 PackageModel package = PackageModel.Load(file);
-                foreach (string version in package.Versions) {
+                foreach (string version in package.Versions.Keys) {
                     dir =
                         $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/repositories/{package.Category}/{package.Name}/{version}/config";
                     if (!Directory.Exists(dir)) {

@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using CSP.Events;
 using CSP.Utils;
-using CSP.Utils.Extensions;
 using Prism.Mvvm;
 using Syncfusion.Windows.PropertyGrid;
 
@@ -20,7 +19,7 @@ public class DictionaryEditor : BaseTypeEditor
             return;
         }
 
-        Binding binding = new Binding("Value.Source") {
+        Binding binding = new("Value.Source") {
             Mode                = BindingMode.TwoWay,
             Source              = info,
             UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
@@ -44,7 +43,7 @@ public class DictionaryEditor : BaseTypeEditor
         _comboBox.DisplayMemberPath = "Value";
         _comboBox.SelectedValuePath = "Key";
 
-        if (value.Value.IsNullOrEmpty()) {
+        if (string.IsNullOrWhiteSpace(value.Value)) {
             _comboBox.SelectedIndex = 0;
         }
         else {

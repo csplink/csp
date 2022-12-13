@@ -73,10 +73,6 @@ public static class StringExtension
         return str.All(item => hexSet.Contains<char>(item));
     }
 
-    public static bool IsNullOrEmpty(this string s) {
-        return string.IsNullOrEmpty(s);
-    }
-
     /// <summary>
     ///     按指定长度分割字符串
     /// </summary>

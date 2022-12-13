@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CSP.Models.Interfaces;
-using CSP.Utils.Extensions;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
 using Serilog;
@@ -31,7 +30,7 @@ public static class DialogUtil
         Action<IDialogResult>                         callback = null, string windowName = null) {
         Log.Information($"打开模态对话框 \"{name}\" + \"{windowName}\"");
 
-        if (!windowName.IsNullOrEmpty()) {
+        if (!string.IsNullOrWhiteSpace(windowName)) {
             if (!DialogWindowNames.Contains(windowName)) {
                 string message = $"无Dialog Window \"{windowName}\"";
                 MessageBoxUtil.Error(message);
@@ -51,7 +50,7 @@ public static class DialogUtil
         IDialogParameters parameters = null, Action<IDialogResult> callback = null, string windowName = null) {
         Log.Information($"打开非模态对话框 \"{name}\" + \"{windowName}\"");
 
-        if (!windowName.IsNullOrEmpty()) {
+        if (!string.IsNullOrWhiteSpace(windowName)) {
             if (!DialogWindowNames.Contains(windowName)) {
                 string message = $"无Dialog Window \"{windowName}\"";
                 MessageBoxUtil.Error(message);

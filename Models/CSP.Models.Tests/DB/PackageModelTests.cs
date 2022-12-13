@@ -40,22 +40,25 @@ public class PackageModelTests
                 Assert.False(string.IsNullOrWhiteSpace(package.Name));
                 Assert.False(string.IsNullOrWhiteSpace(package.Option));
                 Assert.False(string.IsNullOrWhiteSpace(package.Readme));
-                Assert.False(string.IsNullOrWhiteSpace(package.Repository));
+
                 Assert.False(string.IsNullOrWhiteSpace(package.Rule));
                 Assert.False(string.IsNullOrWhiteSpace(package.Target));
 
                 Assert.False(package.Author == null);
                 Assert.False(package.Description == null);
+                Assert.False(package.Repositories == null);
                 Assert.False(package.Keywords == null);
                 Assert.False(package.Versions == null);
+
 
                 Assert.False(string.IsNullOrWhiteSpace(package.Author.Name));
                 Assert.False(string.IsNullOrWhiteSpace(package.Author.Email));
                 Assert.False(string.IsNullOrWhiteSpace(package.Author.Github));
 
                 Assert.False(!package.Description.ContainsKey("zh-cn"));
+                Assert.False(package.Repositories.Length <= 0);
                 Assert.False(package.Keywords.Length <= 0);
-                Assert.False(package.Versions.Length <= 0);
+                Assert.False(package.Versions.Count <= 0);
             }
         }
     }

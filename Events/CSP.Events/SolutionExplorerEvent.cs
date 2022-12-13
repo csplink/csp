@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Media.Imaging;
 using CSP.Resources;
-using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -25,13 +24,13 @@ public class SolutionExplorerEvent : PubSubEvent<IEnumerable<SolutionExplorerEve
         }
 
         public Model(string path) {
-            if (path.IsNullOrEmpty()) {
+            if (string.IsNullOrWhiteSpace(path)) {
                 throw new ArgumentNullException(nameof(path));
             }
 
             Children = new ObservableCollection<Model>();
 
-            FileInfo info = new FileInfo(path);
+            FileInfo info = new(path);
 
             if ((info.Attributes & FileAttributes.Directory) != 0) {
                 Image = Icon.YellowFolder;
