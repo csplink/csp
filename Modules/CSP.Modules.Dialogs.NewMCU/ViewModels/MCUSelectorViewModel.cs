@@ -94,7 +94,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
                 return;
             }
 
-            MCURepositoryUrl = value != null ? value.Repository : "https://csplink.github.io";
+            MCURepositoryUrl = value != null ? value.Repositories[0] : "https://csplink.github.io";
         }
     }
 

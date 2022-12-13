@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
 using CSP.Resources;
-using CSP.Utils.Extensions;
 using Prism.Mvvm;
 
 namespace CSP.Modules.Dialogs.NewMCU.Models;
@@ -20,7 +19,7 @@ public class DocumentModel : BindableBase
     }
 
     public DocumentModel(string name) {
-        if (name.IsNullOrEmpty()) {
+        if (string.IsNullOrWhiteSpace(name)) {
             throw new ArgumentNullException(nameof(name));
         }
 
@@ -31,7 +30,7 @@ public class DocumentModel : BindableBase
     }
 
     public DocumentModel(string name, string url) {
-        if (url.IsNullOrEmpty()) {
+        if (string.IsNullOrWhiteSpace(url)) {
             throw new ArgumentNullException(nameof(url));
         }
 
