@@ -21,11 +21,17 @@ jobs:
           repository: csplink/csp_repo
           path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
 
-      - name: checkout csplink/csp_hal_apm32f1
-        uses: actions/checkout@v3
-        with:
-          repository: csplink/csp_hal_apm32f1
-          path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo/repositories/hal/csp_hal_apm32f1/latest
+      - name: install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+
+      - name: check xmake version
+        shell: pwsh
+        run: xmake --version
+
+      - name: get csp_hal_apm32f1 of csp_repo
+        shell: pwsh
+        working-directory: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
+        run: xmake csp --file=csplink.lua --get-hal=csp_hal_apm32f1@latest -v
 
       - name: Setup .net
         uses: actions/setup-dotnet@v3
