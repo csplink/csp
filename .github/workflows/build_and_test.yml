@@ -31,7 +31,7 @@ jobs:
       - name: get csp_hal_apm32f1 of csp_repo
         shell: pwsh
         working-directory: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
-        run: xmake csp --file=csplink.lua --get-hal=csp_hal_apm32f1@latest -v
+        run: xmake csp --file=csplink.lua --get-hal=all -v
 
       - name: Setup .net
         uses: actions/setup-dotnet@v3
@@ -54,6 +54,11 @@ jobs:
       - name: test
         shell: pwsh
         run: dotnet test ${{ env.solution }} --configuration ${{ env.buildConfiguration }} --no-build --verbosity normal --blame-crash --logger "console;verbosity=detailed"
+
+      - name: rm repositories
+        shell: pwsh
+        working-directory: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
+        run: Remove-Item -Path ./repositories -Recurse
 
       - name: upload artifact
         uses: actions/upload-artifact@v3
