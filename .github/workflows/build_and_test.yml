@@ -58,7 +58,7 @@ jobs:
       - name: rm repositories
         shell: pwsh
         working-directory: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
-        run: Remove-Item -Path ./repositories -Recurse
+        run: Remove-Item -Path ./repositories -Recurse -Force -ErrorAction Ignore
 
       - name: upload artifact
         uses: actions/upload-artifact@v3
