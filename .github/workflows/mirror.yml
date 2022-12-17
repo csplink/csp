@@ -1,0 +1,16 @@
+name: mirror
+
+on:
+  push:
+
+jobs:
+  mirror:
+    name: mirror to another location
+    runs-on: ubuntu-latest
+    steps:
+      - name: mirror to gitee
+        uses: csplink/action_git_mirror/@master
+        with:
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          dest_token: ${{ secrets.GITEE_TOKEN }}
+          dest: gitee
