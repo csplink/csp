@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using CSP.Models.DB;
 using CSP.Models.HAL.Config;
@@ -52,6 +53,8 @@ public class MapModelTests
                         Assert.False(map.Groups.Count == 0);
                         Assert.False(map.Properties.Count == 0);
 
+                        Dictionary<string, string> total = new();
+
                         foreach (var (groupName, group) in map.Groups) {
                             Assert.False(group == null);
                             Assert.False(string.IsNullOrWhiteSpace(groupName));
@@ -63,6 +66,7 @@ public class MapModelTests
                                 Assert.False(value == null);
                                 Assert.False(string.IsNullOrWhiteSpace(valueName));
                                 Assert.False(!value.Comment.ContainsKey("zh-cn"));
+                                total.Add(valueName, value.Comment["zh-cn"]);
                             }
                         }
 
@@ -73,6 +77,14 @@ public class MapModelTests
                             Assert.False(!property.Description.ContainsKey("zh-cn"));
                             Assert.False(string.IsNullOrWhiteSpace(property.Category));
                         }
+
+                        Assert.False(total.Count != map.Total.Count);
+                        foreach (var (name, value) in total) {
+                            Assert.False(!map.Total.ContainsKey(name));
+                            Assert.False(map.Total[name] != value);
+                        }
+
+                        Assert.False(map.Properties.Count != map.Attributes.Count);
                     }
                 }
             }

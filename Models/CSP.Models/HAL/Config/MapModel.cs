@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using CSP.Utils;
@@ -10,6 +11,10 @@ namespace CSP.Models.HAL.Config;
 public class MapModel
 {
     public Dictionary<string, GroupModel> Groups { get; set; }
+
+    public ObservableDictionary<string, ObservableDictionary<string, Attribute>> Attributes { get; } = new();
+
+    public Dictionary<string, string> Total { get; } = new();
 
     public Dictionary<string, PropertyModel> Properties { get; set; }
 
@@ -35,6 +40,22 @@ public class MapModel
         }
 
         DebugUtil.Assert(rtn != null, new ArgumentNullException("Map.YAML"), "YAML deserialization failed");
+
+        foreach (var (_, group) in rtn!.Groups) {
+            foreach (var (name, value) in group.Values) {
+                rtn.Total.Add(name, value.Comment["zh-cn"]);
+            }
+        }
+
+        foreach (var (propertyName, property) in rtn!.Properties) {
+            ObservableDictionary<string, Attribute> attributes = new() {
+                { "DisplayName", new DisplayNameAttribute(property.DisplayName["zh-cn"]) },
+                { "Description", new DescriptionAttribute(property.Description["zh-cn"]) },
+                { "Category", new CategoryAttribute(property.Category) },
+                { "ReadOnly", new ReadOnlyAttribute(property.ReadOnly) }
+            };
+            rtn.Attributes.Add(propertyName, attributes);
+        }
 
         return rtn;
     }
