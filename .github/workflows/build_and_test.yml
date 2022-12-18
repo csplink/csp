@@ -1,4 +1,4 @@
-name: build_and_test
+name: 👷 build_and_test
 
 on: 
   push:
@@ -12,55 +12,55 @@ jobs:
   build_and_test:
     runs-on: windows-latest
     steps:
-      - name: checkout csp
+      - name: ⬇️ checkout csp
         uses: actions/checkout@v3
 
-      - name: checkout csplink/csp_repo
+      - name: ⬇️ checkout csplink/csp_repo
         uses: actions/checkout@v3
         with:
           repository: csplink/csp_repo
           path: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
 
-      - name: install xmake
+      - name: ⬇️ install xmake
         uses: xmake-io/github-action-setup-xmake@v1
 
-      - name: check xmake version
+      - name: 🩺 check xmake version
         shell: pwsh
         run: xmake --version
 
-      - name: get csp_hal_apm32f1 of csp_repo
+      - name: ⬇️ get csp_hal_apm32f1 of csp_repo
         shell: pwsh
         working-directory: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
         run: xmake csp --file=csplink.lua --get-hal=all -v
 
-      - name: Setup .net
+      - name: ⬇️ Setup .net
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             6.x
 
-      - name: restore dependencies
+      - name: 👷 restore dependencies
         shell: pwsh
         run: dotnet restore ${{ env.solution }}
 
-      - name: build
+      - name: 👷 build
         shell: pwsh
         run: dotnet build ${{ env.solution }} --configuration ${{ env.buildConfiguration }} --no-restore -p:Platform="Any CPU" -p:TreatWarningsAsErrors=True
 
-      - name: msbuild
+      - name: 👷 msbuild
         shell: pwsh
         run: dotnet msbuild -property:Configuration=${{ env.buildConfiguration }}
 
-      - name: test
+      - name: 🩺 test
         shell: pwsh
         run: dotnet test ${{ env.solution }} --configuration ${{ env.buildConfiguration }} --no-build --verbosity normal --blame-crash --logger "console;verbosity=detailed"
 
-      - name: rm repositories
+      - name: ⚰️ rm repositories
         shell: pwsh
         working-directory: Apps/CSP.Apps.Dev/bin/${{ env.buildConfiguration }}/net6.0-windows/csp_repo
         run: Remove-Item -Path ./repositories -Recurse -Force -ErrorAction Ignore
 
-      - name: upload artifact
+      - name: ⬆️ upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: csp-${{ github.run_number }}
