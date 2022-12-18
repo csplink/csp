@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,16 +56,15 @@ public class PinBase : UserControl
             _pinConfig.Property.Attributes.Clear();
             _pinConfig.Property.Details.Clear();
 
-            foreach (KeyValuePair<string, object> details in _pinConfig.GetDetails()) {
-                if (!_pinConfig.Property.Details.ContainsKey(details.Key)) {
-                    _pinConfig.Property.Details.Add(details);
+            foreach (var (detailName, detail) in _pinConfig.GetDetails()) {
+                if (!_pinConfig.Property.Details.ContainsKey(detailName)) {
+                    _pinConfig.Property.Details.Add(detailName, detail);
                 }
             }
 
-            foreach (KeyValuePair<string, ObservableDictionary<string, Attribute>> attributes in _pinConfig
-                         .GetAttributes()) {
-                if (!_pinConfig.Property.Attributes.ContainsKey(attributes.Key)) {
-                    _pinConfig.Property.Attributes.Add(attributes);
+            foreach (var (attributeName, attribute) in _pinConfig.GetAttributes()) {
+                if (!_pinConfig.Property.Attributes.ContainsKey(attributeName)) {
+                    _pinConfig.Property.Attributes.Add(attributeName, attribute);
                 }
             }
         }
@@ -268,10 +266,10 @@ public class PinBase : UserControl
 
             if (_pinout.Functions[functionName].Mode != null) {
                 string modeName = _pinout.Functions[functionName].Mode;
-                foreach (KeyValuePair<string, string[]> parameter in gpioIP[modeName]) {
+                foreach (var (parameterName, parameter) in gpioIP[modeName]) {
                     ObservableDictionary<string, string> map = new();
 
-                    foreach (string value in parameter.Value) {
+                    foreach (string value in parameter) {
                         if (gpioMap.Total.ContainsKey(value)) {
                             map.Add(value, gpioMap.Total[value]);
                         }
@@ -287,13 +285,12 @@ public class PinBase : UserControl
 
                         switch (e.PropertyName) {
                         case "String": {
-                        }
-
                             break;
                         }
+                        }
                     };
-                    _pinConfig.Property.Details.Add(parameter.Key, model);
-                    _pinConfig.Property.Attributes.Add(parameter.Key, gpioMap.Attributes[parameter.Key]);
+                    _pinConfig.Property.Details.Add(parameterName, model);
+                    _pinConfig.Property.Attributes.Add(parameterName, gpioMap.Attributes[parameterName]);
                 }
             }
 
@@ -301,16 +298,15 @@ public class PinBase : UserControl
         }
         }
 
-        foreach (KeyValuePair<string, object> details in _pinConfig.GetDetails()) {
-            if (!_pinConfig.Property.Details.ContainsKey(details.Key)) {
-                _pinConfig.Property.Details.Add(details);
+        foreach (var (detailName, detail) in _pinConfig.GetDetails()) {
+            if (!_pinConfig.Property.Details.ContainsKey(detailName)) {
+                _pinConfig.Property.Details.Add(detailName, detail);
             }
         }
 
-        foreach (KeyValuePair<string, ObservableDictionary<string, Attribute>> attributes in
-                 _pinConfig.GetAttributes()) {
-            if (!_pinConfig.Property.Attributes.ContainsKey(attributes.Key)) {
-                _pinConfig.Property.Attributes.Add(attributes);
+        foreach (var (attributeName, attribute) in _pinConfig.GetAttributes()) {
+            if (!_pinConfig.Property.Attributes.ContainsKey(attributeName)) {
+                _pinConfig.Property.Attributes.Add(attributeName, attribute);
             }
         }
 
