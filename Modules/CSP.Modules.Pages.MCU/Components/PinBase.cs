@@ -1,28 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
+using CSP.Models.HAL.Config;
+using CSP.Models.Internal;
+using CSP.Singleton.HAL.Config;
 using CSP.Utils;
-using CSP.Utils.Extensions;
 using Prism.Events;
 using Prism.Ioc;
 
 namespace CSP.Modules.Pages.MCU.Components;
 
+using ip_t = Dictionary<string, Dictionary<string, string[]>>;
+
 public class PinBase : UserControl
 {
     public static readonly DependencyProperty PinProperty = DependencyProperty.Register(nameof(Pin),
-        typeof(PinoutModel.PinModel),
+        typeof(string),
         typeof(PinBase),
-        new FrameworkPropertyMetadata(new PinoutModel.PinModel(), OnPinChanged) { BindsTwoWayByDefault = true });
+        new FrameworkPropertyMetadata(string.Empty, OnPinChanged) { BindsTwoWayByDefault = true });
 
     private readonly IEventAggregator _eventAggregator;
     private readonly MenuItem         _menuLock  = new() { Header = "锁定" };
     private readonly MenuItem         _menuReset = new() { Header = "重置" };
-    private          PinModel         _pinProperty;
+    private          PinConfigModel   _pinConfig;
+    private          PinoutModel      _pinout;
 
     protected PinBase() {
         _menuLock.Click  += OnMenuLockClick;
@@ -32,8 +39,8 @@ public class PinBase : UserControl
         _eventAggregator = containerExtension.Resolve<IEventAggregator>();
     }
 
-    public PinoutModel.PinModel Pin {
-        get => (PinoutModel.PinModel)GetValue(PinProperty);
+    public string Pin {
+        get => (string)GetValue(PinProperty);
         set => SetValue(PinProperty, value);
     }
 
@@ -46,19 +53,20 @@ public class PinBase : UserControl
     protected ContextMenu RightContextMenu { get; init; }
 
     protected void OnPinNameClick(object sender, MouseButtonEventArgs e) {
-        if (_pinProperty.Function.String.IsNullOrEmpty()) {
-            _pinProperty.Property.Attributes.Clear();
-            _pinProperty.Property.Details.Clear();
+        if (string.IsNullOrWhiteSpace(_pinConfig.Function.String)) {
+            _pinConfig.Property.Attributes.Clear();
+            _pinConfig.Property.Details.Clear();
 
-            foreach (var details in _pinProperty.GetDetails()) {
-                if (!_pinProperty.Property.Details.ContainsKey(details.Key)) {
-                    _pinProperty.Property.Details.Add(details);
+            foreach (KeyValuePair<string, object> details in _pinConfig.GetDetails()) {
+                if (!_pinConfig.Property.Details.ContainsKey(details.Key)) {
+                    _pinConfig.Property.Details.Add(details);
                 }
             }
 
-            foreach (var attributes in _pinProperty.GetAttributes()) {
-                if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key)) {
-                    _pinProperty.Property.Attributes.Add(attributes);
+            foreach (KeyValuePair<string, ObservableDictionary<string, Attribute>> attributes in _pinConfig
+                         .GetAttributes()) {
+                if (!_pinConfig.Property.Attributes.ContainsKey(attributes.Key)) {
+                    _pinConfig.Property.Attributes.Add(attributes);
                 }
             }
         }
@@ -68,18 +76,18 @@ public class PinBase : UserControl
 
     protected void UpdateProperty() {
         _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
-        _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinProperty.Property);
+        _eventAggregator.GetEvent<PropertyEvent>().Publish(_pinConfig.Property);
     }
 
-    private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel.PinModel pin) {
-        if (pin.FunctionMap == null) {
+    private static List<MenuItem> AddRightContextMenu(ItemsControl contextMenu, PinoutModel pin) {
+        if (pin.Functions == null) {
             return null;
         }
 
-        List<MenuItem> items = new List<MenuItem>();
+        List<MenuItem> items = new();
 
         contextMenu.Items.Add(new Separator());
-        foreach (var menu in pin.FunctionMap.Select(static item => new MenuItem { Header = item.Key })) {
+        foreach (MenuItem menu in pin.Functions.Select(static item => new MenuItem { Header = item.Key })) {
             items.Add(menu);
             contextMenu.Items.Add(menu);
         }
@@ -156,7 +164,7 @@ public class PinBase : UserControl
             return;
         }
 
-        SetLocked(_menuLock, Pin, true);
+        SetLocked(_menuLock, _pinout, true);
         SetFunction(name);
         UpdatePinNote();
     }
@@ -168,24 +176,24 @@ public class PinBase : UserControl
 
         switch (str) {
         case "锁定":
-            SetLocked(_menuLock, Pin, true);
+            SetLocked(_menuLock, _pinout, true);
 
             break;
 
         case "解锁":
-            SetLocked(_menuLock, Pin, false);
+            SetLocked(_menuLock, _pinout, false);
 
             break;
         }
     }
 
     private void OnMenuResetClick(object sender, RoutedEventArgs e) {
-        SetLocked(_menuLock, Pin, false);
+        SetLocked(_menuLock, _pinout, false);
         SetFunction("");
     }
 
     private void OnPinValueChanged(DependencyPropertyChangedEventArgs e) {
-        if (e.NewValue is not PinoutModel.PinModel pin) {
+        if (e.NewValue is not string name) {
             return;
         }
 
@@ -193,15 +201,16 @@ public class PinBase : UserControl
             return;
         }
 
-        _pinProperty = DescriptionHelper.GetPinProperty(pin.Name);
+        _pinout    = PinoutSingleton.Pinouts[name];
+        _pinConfig = PinConfigSingleton.PinConfigs[name];
 
         if (IsDirection) {
-            PinName.Content = pin.Name;
+            PinName.Content = name;
         }
 
-        PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty() ? pin.Name : _pinProperty.Label.String;
+        PinNote.Text = string.IsNullOrWhiteSpace(_pinConfig.Label.String) ? name : _pinConfig.Label.String;
 
-        InitPinNameStatus(pin.Type);
+        InitPinNameStatus(_pinout.Type);
 
         RightContextMenu.Items.Clear();
 
@@ -209,18 +218,18 @@ public class PinBase : UserControl
         RightContextMenu.Items.Add(new Separator());
         RightContextMenu.Items.Add(_menuReset);
 
-        List<MenuItem> menuItems = AddRightContextMenu(RightContextMenu, pin);
+        List<MenuItem> menuItems = AddRightContextMenu(RightContextMenu, _pinout);
         foreach (MenuItem menu in menuItems) {
             menu.Click += OnMenuFunctionClick;
         }
 
-        _pinProperty.Label.PropertyChanged += (sender, propertyChangedEventArgs) => { UpdatePinNote(); };
-        _pinProperty.IsLocked.PropertyChanged += (sender, propertyChangedEventArgs) => {
+        _pinConfig.Label.PropertyChanged += (sender, propertyChangedEventArgs) => { UpdatePinNote(); };
+        _pinConfig.IsLocked.PropertyChanged += (sender, propertyChangedEventArgs) => {
             if (sender is not BooleanEditorModel model) {
                 return;
             }
 
-            SetLocked(_menuLock, Pin, model.Boolean);
+            SetLocked(_menuLock, _pinout, model.Boolean);
         };
     }
 
@@ -229,46 +238,46 @@ public class PinBase : UserControl
             return;
         }
 
-        _pinProperty.Function.String = functionName;
+        _pinConfig.Function.String = functionName;
 
-        _pinProperty.Property.Attributes.Clear();
-        _pinProperty.Property.Details.Clear();
+        _pinConfig.Property.Attributes.Clear();
+        _pinConfig.Property.Details.Clear();
 
         PinNote.Text = "";
 
-        if (functionName.IsNullOrEmpty()) {
+        if (string.IsNullOrWhiteSpace(functionName)) {
             return;
         }
 
-        if (!Pin.FunctionMap.ContainsKey(functionName)) {
+        if (!_pinout.Functions.ContainsKey(functionName)) {
             return;
         }
 
-        if (Pin.FunctionMap[functionName].Type.IsNullOrEmpty()) {
+        if (string.IsNullOrWhiteSpace(_pinout.Functions[functionName].Type)) {
             return;
         }
 
-        switch (Pin.FunctionMap[functionName].Type) {
+        switch (_pinout.Functions[functionName].Type) {
         case "GPIO": {
-            var gpioMap = DescriptionHelper.GetMap("GPIO");
-            var gpioIP  = DescriptionHelper.GetIP("GPIO");
+            MapModel gpioMap = MapSingleton.Maps["GPIO"];
+            ip_t     gpioIP  = IPSingleton.IP["GPIO"];
 
             if (gpioMap == null || gpioIP == null) {
                 break;
             }
 
-            if (Pin.FunctionMap[functionName].Mode != null) {
-                var modeName = Pin.FunctionMap[functionName].Mode;
-                foreach (var parameter in gpioIP.ModeMap[modeName].ParameterMap) {
-                    ObservableDictionary<string, string> map = new ObservableDictionary<string, string>();
+            if (_pinout.Functions[functionName].Mode != null) {
+                string modeName = _pinout.Functions[functionName].Mode;
+                foreach (KeyValuePair<string, string[]> parameter in gpioIP[modeName]) {
+                    ObservableDictionary<string, string> map = new();
 
-                    foreach (var value in parameter.Value.Values) {
+                    foreach (string value in parameter.Value) {
                         if (gpioMap.Total.ContainsKey(value)) {
                             map.Add(value, gpioMap.Total[value]);
                         }
                     }
 
-                    DictionaryEditorModel model = new DictionaryEditorModel {
+                    DictionaryEditorModel model = new() {
                         Source = map
                     };
                     model.PropertyChanged += (sender, e) => {
@@ -283,8 +292,8 @@ public class PinBase : UserControl
                             break;
                         }
                     };
-                    _pinProperty.Property.Details.Add(parameter.Key, model);
-                    _pinProperty.Property.Attributes.Add(parameter.Key, gpioMap.Attributes[parameter.Key]);
+                    _pinConfig.Property.Details.Add(parameter.Key, model);
+                    _pinConfig.Property.Attributes.Add(parameter.Key, gpioMap.Attributes[parameter.Key]);
                 }
             }
 
@@ -292,27 +301,28 @@ public class PinBase : UserControl
         }
         }
 
-        foreach (var details in _pinProperty.GetDetails()) {
-            if (!_pinProperty.Property.Details.ContainsKey(details.Key)) {
-                _pinProperty.Property.Details.Add(details);
+        foreach (KeyValuePair<string, object> details in _pinConfig.GetDetails()) {
+            if (!_pinConfig.Property.Details.ContainsKey(details.Key)) {
+                _pinConfig.Property.Details.Add(details);
             }
         }
 
-        foreach (var attributes in _pinProperty.GetAttributes()) {
-            if (!_pinProperty.Property.Attributes.ContainsKey(attributes.Key)) {
-                _pinProperty.Property.Attributes.Add(attributes);
+        foreach (KeyValuePair<string, ObservableDictionary<string, Attribute>> attributes in
+                 _pinConfig.GetAttributes()) {
+            if (!_pinConfig.Property.Attributes.ContainsKey(attributes.Key)) {
+                _pinConfig.Property.Attributes.Add(attributes);
             }
         }
 
         UpdateProperty();
     }
 
-    private void SetLocked(MenuItem menuLock, PinoutModel.PinModel pin, bool value) {
+    private void SetLocked(MenuItem menuLock, PinoutModel pin, bool value) {
         if (menuLock == null || PinName == null) {
             return;
         }
 
-        _pinProperty.IsLocked.Boolean = value;
+        _pinConfig.IsLocked.Boolean = value;
 
         menuLock.Header = value ? "解锁" : "锁定";
         if (pin.Type != null) {
@@ -343,8 +353,8 @@ public class PinBase : UserControl
             return;
         }
 
-        PinNote.Text = _pinProperty.Label.String.IsNullOrEmpty()
-            ? _pinProperty.Function.String
-            : $"{_pinProperty.Label.String}: ({_pinProperty.Function.String})";
+        PinNote.Text = string.IsNullOrWhiteSpace(_pinConfig.Label.String)
+            ? _pinConfig.Function.String
+            : $"{_pinConfig.Label.String}: ({_pinConfig.Function.String})";
     }
 }
