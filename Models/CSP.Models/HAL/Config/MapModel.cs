@@ -12,8 +12,10 @@ public class MapModel
 {
     public Dictionary<string, GroupModel> Groups { get; set; }
 
+    [YamlIgnore]
     public ObservableDictionary<string, ObservableDictionary<string, Attribute>> Attributes { get; } = new();
 
+    [YamlIgnore]
     public Dictionary<string, string> Total { get; } = new();
 
     public Dictionary<string, PropertyModel> Properties { get; set; }

@@ -247,6 +247,7 @@ resharper_int_align_switch_expressions = true
 resharper_int_align_switch_sections = true
 resharper_int_align_variables = true
 resharper_outdent_statement_labels = true
+resharper_place_accessorholder_attribute_on_same_line = false
 resharper_place_method_attribute_on_same_line = if_owner_is_single_line
 resharper_use_heuristics_for_body_style = false
 resharper_use_indent_from_vs = false
