@@ -13,19 +13,21 @@ using repository_t =
 
 public class RepositoryModel
 {
-    public static repository_t Load(string path) {
+    [YamlIgnore]
+    public repository_t Content { get; set; }
+
+    public static RepositoryModel Load(string path) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
         if (!File.Exists(path)) {
             return null;
         }
 
-        Deserializer deserializer = new();
-
-        repository_t rtn;
+        Deserializer    deserializer = new();
+        RepositoryModel rtn          = new();
         try {
             using (StreamReader reader = new(path)) {
-                rtn = deserializer.Deserialize<repository_t>(reader);
+                rtn.Content = deserializer.Deserialize<repository_t>(reader);
             }
         }
         catch (InvalidOperationException e) {
@@ -34,8 +36,9 @@ public class RepositoryModel
             return null;
         }
 
-        DebugUtil.Assert(rtn != null, new ArgumentNullException("Repository.YAML"), "YAML deserialization failed");
-        foreach (var (companyName, companies) in rtn!) {
+        DebugUtil.Assert(rtn.Content != null, new ArgumentNullException("Repository.YAML"),
+            "YAML deserialization failed");
+        foreach (var (companyName, companies) in rtn.Content!) {
             foreach (var (seriesName, series) in companies) {
                 foreach (var (lineName, lines) in series) {
                     foreach (var (mcuName, mcu) in lines) {

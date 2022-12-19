@@ -7,6 +7,9 @@ using Xunit.Abstractions;
 
 namespace CSP.Models.Tests.DB.Chip;
 
+using repository_t =
+    Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, RepositoryModel.MCUModel>>>>;
+
 public class RepositoryModelTests
 {
 #if DEBUG
@@ -29,8 +32,7 @@ public class RepositoryModelTests
         string solutionDir = File.ReadAllLines("./SolutionDir.txt")[0];
         string path = $"{solutionDir}/Apps/CSP.Apps.Dev/bin/{_mode}/net6.0-windows/csp_repo/db/chips/repository.yml";
         _testOutputHelper.WriteLine($"load file: {path}");
-        Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, RepositoryModel.MCUModel>>>>
-            repository = RepositoryModel.Load(path);
+        repository_t repository = RepositoryModel.Load(path).Content;
         foreach (var (companyName, companies) in repository) {
             Assert.False(string.IsNullOrWhiteSpace(companyName));
             Assert.False(companies == null);

@@ -44,7 +44,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
 
     public MCUSelectorViewModel() {
         IsBusy      = true;
-        _repository = RepositoryModel.Load($"{ConfigFile.PathRepo}/db/chips/repository.yml");
+        _repository = RepositoryModel.Load($"{ConfigFile.PathRepo}/db/chips/repository.yml").Content;
         IsBusy      = false;
     }
 
