@@ -1,9 +1,9 @@
-﻿using System;
+﻿global using ip_t =
+    System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string[]>>;
+using System;
 using System.Collections.Generic;
 
 namespace CSP.Singleton.HAL.Config;
-
-using ip_t = Dictionary<string, Dictionary<string, string[]>>;
 
 internal class IPSingletonInstance
 {

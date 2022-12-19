@@ -11,7 +11,10 @@ using ip_t = Dictionary<string, Dictionary<string, string[]>>;
 
 public class IPModel
 {
-    public static ip_t Load(string path) {
+    [YamlIgnore]
+    public ip_t Content { get; set; }
+
+    public static IPModel Load(string path) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
 
         if (!File.Exists(path)) {
@@ -19,11 +22,10 @@ public class IPModel
         }
 
         Deserializer deserializer = new();
-
-        ip_t rtn;
+        IPModel      rtn          = new();
         try {
             using (StreamReader reader = new(path)) {
-                rtn = deserializer.Deserialize<ip_t>(reader);
+                rtn.Content = deserializer.Deserialize<ip_t>(reader);
             }
         }
         catch (InvalidOperationException e) {
@@ -32,7 +34,7 @@ public class IPModel
             return null;
         }
 
-        DebugUtil.Assert(rtn != null, new ArgumentNullException("IP.YAML"), "YAML deserialization failed");
+        DebugUtil.Assert(rtn.Content != null, new ArgumentNullException("IP.YAML"), "YAML deserialization failed");
 
         return rtn;
     }

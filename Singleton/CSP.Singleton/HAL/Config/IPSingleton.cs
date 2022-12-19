@@ -6,8 +6,6 @@ using CSP.Utils;
 
 namespace CSP.Singleton.HAL.Config;
 
-using ip_t = Dictionary<string, Dictionary<string, string[]>>;
-
 public static class IPSingleton
 {
     private static readonly IPSingletonInstance Instance = IPSingletonInstance.Instance;
@@ -22,7 +20,7 @@ public static class IPSingleton
             $"{nameof(name)} is null or white space!");
 
         name = name!.ToUpper();
-        ip_t ip = IPModel.Load(path);
+        ip_t ip = IPModel.Load(path).Content;
         Instance.IP.Add(name, ip);
 
         return Instance.IP.Count == 0 && Instance.IP.ContainsKey(name);

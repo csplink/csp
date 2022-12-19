@@ -8,6 +8,8 @@ using Xunit.Abstractions;
 
 namespace CSP.Models.Tests.HAL.Config;
 
+using ip_t = Dictionary<string, Dictionary<string, string[]>>;
+
 public class IPModelTests
 {
 #if DEBUG
@@ -61,7 +63,7 @@ public class IPModelTests
                             string ipFile = $"{configDir}/ip/{fileName}.yml";
 
                             _testOutputHelper.WriteLine($"load file: {Path.GetFullPath(ipFile)}");
-                            Dictionary<string, Dictionary<string, string[]>> ip = IPModel.Load(ipFile);
+                            ip_t ip = IPModel.Load(ipFile).Content;
                             Assert.False(ip == null);
                             foreach (var (ipName, ipValue) in ip) {
                                 Assert.False(string.IsNullOrWhiteSpace(ipName));
