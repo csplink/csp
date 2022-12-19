@@ -2,7 +2,7 @@
 using CSP.Models.HAL.Config;
 using CSP.Models.Internal;
 
-namespace CSP.Singleton.HAL.Config;
+namespace CSP.Singleton.Internal;
 
 public static class PinConfigSingleton
 {

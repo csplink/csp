@@ -9,6 +9,7 @@ using CSP.Events;
 using CSP.Models.HAL.Config;
 using CSP.Models.Internal;
 using CSP.Singleton.HAL.Config;
+using CSP.Singleton.Internal;
 using CSP.Utils;
 using Prism.Events;
 using Prism.Ioc;

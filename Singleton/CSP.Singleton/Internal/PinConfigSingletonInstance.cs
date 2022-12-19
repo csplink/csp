@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CSP.Models.Internal;
 
-namespace CSP.Singleton.HAL.Config;
+namespace CSP.Singleton.Internal;
 
 internal class PinConfigSingletonInstance
 {
