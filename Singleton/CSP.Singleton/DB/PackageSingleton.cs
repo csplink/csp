@@ -6,7 +6,7 @@ public static class PackageSingleton
 {
     private static readonly PackageSingletonInstance Instance = PackageSingletonInstance.Instance;
 
-    public static PackageModel Summary => Instance.Package;
+    public static PackageModel Package => Instance.Package;
 
 
     public static bool Add(string path) {
