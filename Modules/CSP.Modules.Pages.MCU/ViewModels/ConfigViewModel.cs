@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CSP.Events;
+using CSP.Models.DB.Chip;
 using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
+using CSP.Singleton.DB.Chip;
 using CSP.Utils;
 using Prism.Events;
 using Prism.Mvvm;
@@ -20,23 +22,23 @@ public class ConfigViewModel : BindableBase
         _regionManager   = regionManager;
         _eventAggregator = eventAggregator;
 
-        DescriptionHelper.Load("Geehy", "APM32F103ZET6");
+        // DescriptionHelper.Load("Geehy", "APM32F103ZET6");
 
         AddModules();
 
         // 添加MCU视图窗口
         try {
-            string name = $"CSP.Modules.Pages.MCU.Views.Components.Package.LQFP.{DescriptionHelper.MCU.Package}View";
+            string name = $"CSP.Modules.Pages.MCU.Views.Components.Package.LQFP.{SummarySingleton.Summary.Package}View";
             Type   type = Type.GetType(name);
             if (type != null) {
                 RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.MCUView", type);
             }
             else {
-                MessageBoxUtil.Error($"此封装不存在：{DescriptionHelper.MCU.Package}");
+                MessageBoxUtil.Error($"此封装不存在：{SummarySingleton.Summary.Package}");
             }
         }
         catch {
-            MessageBoxUtil.Error($"此封装不存在：{DescriptionHelper.MCU.Package}");
+            MessageBoxUtil.Error($"此封装不存在：{SummarySingleton.Summary.Package}");
         }
 
         RegionUtil.RegisterViewWithRegion(regionManager, "Region.MCU.Config.ClockView",
@@ -64,20 +66,22 @@ public class ConfigViewModel : BindableBase
     }
 
     private void AddModules() {
-        DebugUtil.Assert(DescriptionHelper.MCU.Modules != null,
-            new ArgumentNullException(nameof(DescriptionHelper.MCU.Modules)));
+        DebugUtil.Assert(SummarySingleton.Summary.Modules != null,
+            new ArgumentNullException(nameof(SummarySingleton.Summary.Modules)));
 
-        if (DescriptionHelper.MCU.Modules == null) {
+        if (SummarySingleton.Summary.Modules == null) {
             return;
         }
 
-        SolutionExplorerEvent.Model infoRoot = new SolutionExplorerEvent.Model("模组") { Image = Icon.BlocksAndArrows };
-        foreach (var module in DescriptionHelper.MCU.Modules) {
-            SolutionExplorerEvent.Model infoModule = new SolutionExplorerEvent.Model(module.Name)
-                { Image = Icon.BlockOne };
+        SolutionExplorerEvent.Model infoRoot = new("模组") { Image = Icon.BlocksAndArrows };
+        foreach (var (moduleName, module) in SummarySingleton.Summary
+                     .Modules) {
+            SolutionExplorerEvent.Model infoModule = new(moduleName) {
+                Image = Icon.BlockOne
+            };
             infoModule.CallBack += value => { };
-            foreach (var category in module.Categories) {
-                SolutionExplorerEvent.Model infoCategory = new SolutionExplorerEvent.Model(category.Name)
+            foreach (var (categoryName, category) in module) {
+                SolutionExplorerEvent.Model infoCategory = new(categoryName)
                     { Image = Icon.BlockTwo };
                 infoCategory.CallBack += value => {
                     RegionUtil.RequestNavigate(_regionManager, "Region.MCU.Config.PropertyTableView",
@@ -89,7 +93,7 @@ public class ConfigViewModel : BindableBase
             infoRoot.Children.Add(infoModule);
         }
 
-        List<SolutionExplorerEvent.Model> list = new List<SolutionExplorerEvent.Model> { infoRoot };
+        List<SolutionExplorerEvent.Model> list = new() { infoRoot };
 
         _eventAggregator.GetEvent<SolutionExplorerEvent>().Publish(list);
     }
@@ -101,7 +105,7 @@ public class ConfigViewModel : BindableBase
 
         // save();
 
-        var mcu = DescriptionHelper.MCU;
+        SummaryModel mcu = SummarySingleton.Summary;
 
         if (mcu == null) {
             return;
