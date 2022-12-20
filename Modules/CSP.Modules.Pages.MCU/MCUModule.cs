@@ -1,4 +1,6 @@
-﻿using CSP.Modules.Pages.MCU.Views;
+﻿global using ip_t =
+    System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string[]>>;
+using CSP.Modules.Pages.MCU.Views;
 using CSP.Modules.Pages.MCU.Views.Components.Config;
 using CSP.Modules.Pages.MCU.Views.Windows;
 using CSP.Utils;
