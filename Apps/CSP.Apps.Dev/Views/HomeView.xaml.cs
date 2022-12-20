@@ -1,9 +1,8 @@
-﻿namespace CSP.Apps.Dev.Views
+﻿namespace CSP.Apps.Dev.Views;
+
+public partial class HomeView
 {
-    public partial class HomeView
-    {
-        public HomeView() {
-            InitializeComponent();
-        }
+    public HomeView() {
+        InitializeComponent();
     }
 }

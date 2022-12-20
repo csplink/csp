@@ -1,8 +1,7 @@
 ﻿using Prism.Mvvm;
 
-namespace CSP.Apps.Dev.ViewModels.Windows
+namespace CSP.Apps.Dev.ViewModels.Windows;
+
+public class OutputViewModel : BindableBase
 {
-    public class OutputViewModel : BindableBase
-    {
-    }
 }

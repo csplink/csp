@@ -1,9 +1,8 @@
-﻿namespace CSP.Apps.Dev.Views.Windows
+﻿namespace CSP.Apps.Dev.Views.Windows;
+
+public partial class OutputView
 {
-    public partial class OutputView
-    {
-        public OutputView() {
-            InitializeComponent();
-        }
+    public OutputView() {
+        InitializeComponent();
     }
 }
