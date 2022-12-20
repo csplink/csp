@@ -1,5 +1,8 @@
 ﻿using CSP.Components.ValuePropertyGrid;
 using CSP.Events;
+using CSP.Models.HAL.Config;
+using CSP.Singleton.HAL.Config;
+using CSP.Singleton.Internal;
 using CSP.Utils;
 using Prism.Events;
 using Prism.Mvvm;
@@ -14,32 +17,32 @@ public class ClockViewModel : BindableBase, INavigationAware
     public ClockViewModel(IEventAggregator eventAggregator) {
         _eventAggregator = eventAggregator;
 
-        if (!DescriptionHelper.Properties.ContainsKey("Clock")) {
-            DescriptionHelper.Properties.Add("Clock", CreateClockPropertyDetails());
+        if (!ProjectSingleton.Project.Properties.ContainsKey("Clock")) {
+            ProjectSingleton.Project.Properties.Add("Clock", CreateClockPropertyDetails());
         }
     }
 
     public static PropertyDetails CreateClockPropertyDetails() {
-        PropertyDetails property = new PropertyDetails();
-        var             clockMap = DescriptionHelper.GetMap("Clock");
-        var             clockIP  = DescriptionHelper.GetIP("Clock");
+        PropertyDetails property = new();
+        MapModel        clockMap = MapSingleton.Maps["Clock"];
+        ip_t            clockIP  = IPSingleton.IP["Clock"];
         if (clockMap == null || clockIP == null) {
             MessageBoxUtil.Error("无 clock IP 与其 Map");
 
             return null;
         }
 
-        foreach (var mode in clockIP.ModeMap) {
-            foreach (var parameter in clockIP.ModeMap[mode.Key].ParameterMap) {
-                ObservableDictionary<string, string> map = new ObservableDictionary<string, string>();
+        foreach (var (_, mode) in clockIP) {
+            foreach (var (parameterName, parameters) in mode) {
+                ObservableDictionary<string, string> map = new();
 
-                foreach (var value in parameter.Value.Values) {
+                foreach (string value in parameters) {
                     if (clockMap.Total.ContainsKey(value)) {
                         map.Add(value, clockMap.Total[value]);
                     }
                 }
 
-                DictionaryEditorModel model = new DictionaryEditorModel {
+                DictionaryEditorModel model = new() {
                     Source = map
                 };
                 model.PropertyValueChanged += (sender, e) => {
@@ -49,15 +52,15 @@ public class ClockViewModel : BindableBase, INavigationAware
 
                     switch (e.PropertyName) {
                     case "Value": {
-                        DescriptionHelper.ChangeDefine(e.OldValue != null ? $"CSP_USING_{e.OldValue}" : null,
+                        ProjectSingleton.ChangeDefine(e.OldValue != null ? $"CSP_USING_{e.OldValue}" : null,
                             e.NewValue != null ? $"CSP_USING_{e.NewValue}" : null, null);
 
                         break;
                     }
                     }
                 };
-                property.Details.Add(parameter.Key, model);
-                property.Attributes.Add(parameter.Key, clockMap.Attributes[parameter.Key]);
+                property.Details.Add(parameterName, model);
+                property.Attributes.Add(parameterName, clockMap.Attributes[parameterName]);
             }
         }
 
@@ -75,8 +78,8 @@ public class ClockViewModel : BindableBase, INavigationAware
 
     public void OnNavigatedTo(NavigationContext navigationContext) {
         _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
-        if (DescriptionHelper.Properties.ContainsKey("Clock")) {
-            var properties = DescriptionHelper.Properties["Clock"];
+        if (ProjectSingleton.Project.Properties.ContainsKey("Clock")) {
+            PropertyDetails properties = ProjectSingleton.Project.Properties["Clock"];
             _eventAggregator.GetEvent<PropertyEvent>().Publish(properties);
         }
     }
