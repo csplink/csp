@@ -14,15 +14,15 @@ public static class ProjectSingleton
     public static void ChangeDefine(string oldKey, string newKey, string newValue) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(oldKey) || !string.IsNullOrWhiteSpace(newKey),
             new ArgumentNullException(nameof(oldKey) + " or " + nameof(newKey)), "oldKey 或者 newKey 不能均为空");
-        if (Project.DefinesI.ContainsKey(oldKey!)) {
-            Project.DefinesI.Remove(oldKey);
+        if (Project.Defines.ContainsKey(oldKey!)) {
+            Project.Defines.Remove(oldKey);
         }
 
-        if (Project.DefinesI.ContainsKey(newKey!)) {
-            Project.DefinesI.Remove(newKey);
+        if (Project.Defines.ContainsKey(newKey!)) {
+            Project.Defines.Remove(newKey);
         }
 
-        Project.DefinesI.Add(newKey, newValue);
+        Project.Defines.Add(newKey, newValue);
     }
 
     public static bool IsDependence(IEnumerable<string> dependencies) {
@@ -32,7 +32,7 @@ public static class ProjectSingleton
 
         bool isDependence = true;
         foreach (string dependence in dependencies) {
-            if (!Project.DefinesI.ContainsKey(dependence)) {
+            if (!Project.Defines.ContainsKey(dependence)) {
                 isDependence = false;
             }
         }
