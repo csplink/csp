@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.Windows.Data;
 using CSP.Events;
+using CSP.Models.Internal;
 using CSP.Resources;
+using CSP.Singleton.Internal;
 using Microsoft.Xaml.Behaviors;
 using Prism.Events;
 using Prism.Mvvm;
@@ -16,22 +18,21 @@ public class GPIOViewModel : BindableBase, INavigationAware
     private readonly IEventAggregator                                  _eventAggregator;
     private          string                                            _filterText     = string.Empty;
     private          ObservableCollection<SolutionExplorerEvent.Model> _gpioCollection = new();
-    private          PinModel                                          _selectedItem;
+    private          PinConfigModel                                    _selectedItem;
 
     internal FilterChangedDelegate FilterChanged;
 
     public GPIOViewModel(IEventAggregator eventAggregator) {
         _eventAggregator = eventAggregator;
 
-        if (DescriptionHelper.Pinout == null) {
+        if (PinConfigSingleton.PinConfigs == null) {
             return;
         }
 
-        foreach (var pin in DescriptionHelper.Pinout.Pins) {
-            var property = DescriptionHelper.GetPinProperty(pin.Name);
-            property.PropertyChanged += OnGPIOPropertyChanged;
-            if (property.IsLocked.Boolean) {
-                GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = property.Name.String, Image = Icon.Pin });
+        foreach (var (_, pin) in PinConfigSingleton.PinConfigs) {
+            pin.PropertyChanged += OnGPIOPropertyChanged;
+            if (pin.IsLocked.Boolean) {
+                GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = pin.Name.String, Image = Icon.Pin });
             }
         }
 
@@ -54,7 +55,7 @@ public class GPIOViewModel : BindableBase, INavigationAware
         set => SetProperty(ref _gpioCollection, value);
     }
 
-    public PinModel SelectedItem {
+    public PinConfigModel SelectedItem {
         get => _selectedItem;
         set {
             SetProperty(ref _selectedItem, value);
@@ -72,7 +73,7 @@ public class GPIOViewModel : BindableBase, INavigationAware
             return;
         }
 
-        if (sender is PinModel value) {
+        if (sender is PinConfigModel value) {
             if (value.IsLocked.Boolean) {
                 GPIOCollection.Add(new SolutionExplorerEvent.Model { Name = value.Name.String, Image = Icon.Pin });
             }
@@ -100,9 +101,8 @@ public class GPIOViewModel : BindableBase, INavigationAware
     }
 
     public void OnNavigatedFrom(NavigationContext navigationContext) {
-        foreach (var pin in DescriptionHelper.Pinout.Pins) {
-            var property = DescriptionHelper.GetPinProperty(pin.Name);
-            property.PropertyChanged -= OnGPIOPropertyChanged;
+        foreach (var (_, pin) in PinConfigSingleton.PinConfigs) {
+            pin.PropertyChanged -= OnGPIOPropertyChanged;
         }
     }
 
