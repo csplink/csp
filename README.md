@@ -13,6 +13,12 @@
         <a href="https://github.com/csplink/csp/releases">
             <img src="https://img.shields.io/github/release/csplink/csp.svg?style=flat" alt="releases" />
         </a>
+        <a href="https://github.com/csplink/csp/pulls">
+            <img src="https://img.shields.io/github/issues-pr/csplink/csp.svg" alt="pulls" />
+        </a>
+        <a href="https://github.com/csplink/csp/issues">
+            <img src="https://img.shields.io/github/issues/csplink/csp.svg" alt="pulls" />
+        </a>
     </div>
     <div>
         <a href="https://github.com/csplink/csp/blob/master/LICENSE">
