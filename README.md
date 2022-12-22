@@ -38,7 +38,7 @@
         </a>
     </div>
     <b>Tools for flexible configuration of chips and boards.</b><br/>
-    <i>integrated software with graphical configuration function, package manager, and debug tool</i><br/>
+    <i>Integrated software with graphical configuration function, package manager, and debug tool</i><br/>
 </div>
 
 **English** | [中文](README-zh_CN.md)
