@@ -38,13 +38,14 @@
         </a>
     </div>
     <b>Tools for flexible configuration of chips and boards.</b><br/>
-    <i>integrated software with graphical configuration functions, package manager, and debugging tools</i><br/>
+    <i>integrated software with graphical configuration function, package manager, and debug tool/i><br/>
+    <br/>
 </div>
 
-## video
+**English** | [中文](README-zh_CN.md)
 
-https://user-images.githubusercontent.com/51477609/191293998-e0724db6-1fa6-4319-978e-566d2bc0d509.mp4
+## ✨ Features
 
-## preview
-
-Since the software is not yet mature, Releases will not be released in a short time. If you want to preview in advance, you can directly download the CI product and run it
+- 💻 graphical configuration function
+- 👐 support chip and board two modes
+- 📦️ software package components, easy to expand functions
