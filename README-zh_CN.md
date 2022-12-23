@@ -10,6 +10,8 @@
         <a href="https://github.com/csplink/csp/actions?query=workflow%3A%F0%9F%92%95mirror">
             <img src="https://img.shields.io/github/actions/workflow/status/csplink/csp/mirror.yml?branch=master&style=flat&label=mirror" alt="github-ci" />
         </a>
+    </div>
+    <div>
         <a href="https://github.com/csplink/csp/releases">
             <img src="https://img.shields.io/github/release/csplink/csp.svg?style=flat" alt="releases" />
         </a>
