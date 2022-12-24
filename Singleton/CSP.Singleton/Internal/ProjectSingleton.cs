@@ -47,7 +47,7 @@ public static class ProjectSingleton
 
         bool isDependence = true;
         foreach (string dependence in dependencies) {
-            if (!Project.Defines.ContainsKey(dependence)) {
+            if (!Project.Defines.ContainsKey("CSP_USING_" + dependence.ToUpper())) {
                 isDependence = false;
             }
         }
