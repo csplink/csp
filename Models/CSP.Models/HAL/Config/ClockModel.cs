@@ -65,6 +65,8 @@ public class ClockModel
 
         public BaseModel Base { get; set; }
 
+        public Dictionary<string, StyleModel> Styles { get; set; }
+
         public class BaseModel
         {
             public string Name { get; set; }
@@ -82,6 +84,17 @@ public class ClockModel
             public string Macro { get; set; }
 
             public bool IsChecked { get; set; }
+        }
+
+        public class StyleModel
+        {
+            public bool IsEnabled { get; set; }
+
+            public string[] Dependencies { get; set; }
+
+            public Dictionary<string, string> Text { get; set; }
+
+            public string Status { get; set; }
         }
     }
 

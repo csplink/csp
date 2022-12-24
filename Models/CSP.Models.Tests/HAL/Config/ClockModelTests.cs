@@ -69,6 +69,17 @@ public class ClockModelTests
                             Assert.False(control.Base.DefaultIndex < 0);
                             Assert.False(string.IsNullOrWhiteSpace(control.Base.Name));
                             Assert.False(string.IsNullOrWhiteSpace(control.Base.Type));
+
+                            if (control.Styles != null) {
+                                foreach (var (styleName, style) in control.Styles) {
+                                    Assert.False(string.IsNullOrWhiteSpace(styleName));
+                                    Assert.False(style == null);
+                                    Assert.False(style.Dependencies == null);
+                                    Assert.False(style.Text == null);
+                                    Assert.False(!style.Text.ContainsKey("zh-cn"));
+                                    Assert.False(string.IsNullOrWhiteSpace(style.Status));
+                                }
+                            }
                         }
 
                         foreach (var (id, rect) in clock.Rects) {
