@@ -14,6 +14,21 @@ public static class ProjectSingleton
     public static void ChangeDefine(string oldKey, string newKey, string newValue) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(oldKey) || !string.IsNullOrWhiteSpace(newKey),
             new ArgumentNullException(nameof(oldKey) + " or " + nameof(newKey)), "oldKey 或者 newKey 不能均为空");
+
+        if (oldKey != null) {
+            oldKey = "CSP_USING_" + oldKey.ToUpper();
+        }
+        else {
+            oldKey = "";
+        }
+
+        if (newKey != null) {
+            newKey = "CSP_USING_" + newKey.ToUpper();
+        }
+        else {
+            newKey = "";
+        }
+
         if (Project.Defines.ContainsKey(oldKey!)) {
             Project.Defines.Remove(oldKey);
         }

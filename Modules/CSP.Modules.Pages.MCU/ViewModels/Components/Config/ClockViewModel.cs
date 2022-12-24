@@ -24,8 +24,8 @@ public class ClockViewModel : BindableBase, INavigationAware
 
     public static PropertyDetails CreateClockPropertyDetails() {
         PropertyDetails property = new();
-        MapModel clockMap = MapSingleton.Maps["clock"];
-        ip_t clockIP = IPSingleton.IP["clock"];
+        MapModel        clockMap = MapSingleton.Maps["clock"];
+        ip_t            clockIP  = IPSingleton.IP["clock"];
         if (clockMap == null || clockIP == null) {
             MessageBoxUtil.Error("无 clock IP 与其 Map");
 
@@ -52,8 +52,7 @@ public class ClockViewModel : BindableBase, INavigationAware
 
                     switch (e.PropertyName) {
                     case "Value": {
-                        ProjectSingleton.ChangeDefine(e.OldValue != null ? $"CSP_USING_{e.OldValue}" : null,
-                            e.NewValue != null ? $"CSP_USING_{e.NewValue}" : null, null);
+                        ProjectSingleton.ChangeDefine(e.OldValue?.ToString(), e.NewValue?.ToString(), null);
 
                         break;
                     }
