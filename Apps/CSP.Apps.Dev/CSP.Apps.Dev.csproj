@@ -20,13 +20,12 @@
         <PackageReference Include="Syncfusion.SfTreeView.WPF" Version="20.2.0.39" />
         <PackageReference Include="Syncfusion.PropertyGrid.WPF" Version="20.2.0.39" />
         <PackageReference Include="Syncfusion.Tools.WPF" Version="20.2.0.39" />
-        <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Components\CSP.Components\CSP.Components.csproj" />
         <ProjectReference Include="..\..\Events\CSP.Events\CSP.Events.csproj" />
         <ProjectReference Include="..\..\Modules\CSP.Modules.Dialogs.NewMCU\CSP.Modules.Dialogs.NewMCU.csproj" />
-        <!-- <ProjectReference Include="..\..\Modules\CSP.Modules.Pages.MCU\CSP.Modules.Pages.MCU.csproj" /> -->
+        <ProjectReference Include="..\..\Modules\CSP.Modules.Pages.MCU\CSP.Modules.Pages.MCU.csproj" />
         <ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
     </ItemGroup>
 </Project>

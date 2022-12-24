@@ -2,6 +2,7 @@
 using System.Windows;
 using CSP.Apps.Dev.Views;
 using CSP.Modules.Dialogs.NewMCU;
+using CSP.Modules.Pages.MCU;
 using CSP.Resources;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -20,7 +21,7 @@ public partial class App
 
         moduleCatalog.AddModule<NewMCUModule>();
 
-        // moduleCatalog.AddModule<Modules.Pages.MCU.MCUModule>();
+        moduleCatalog.AddModule<MCUModule>();
     }
 
     protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings) {
