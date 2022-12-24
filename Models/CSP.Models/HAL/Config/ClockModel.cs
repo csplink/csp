@@ -15,9 +15,12 @@ public class ClockModel
 
     public Dictionary<int, ControlModel> Controls { get; set; }
 
-    public Dictionary<int, RectModel> Rects { get; set; }
+    public Dictionary<int, ShapeModel> Rects { get; set; }
 
-    public Dictionary<int, EllipseModel> Ellipses { get; set; }
+    public Dictionary<int, ShapeModel> Ellipses { get; set; }
+
+    [YamlIgnore]
+    public Dictionary<int, ShapeModel> Shapes { get; } = new();
 
     public static ClockModel Load(string path) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(path), new ArgumentNullException(nameof(path)));
@@ -42,11 +45,24 @@ public class ClockModel
 
         DebugUtil.Assert(rtn != null, new ArgumentNullException("Clock.YAML"), "YAML deserialization failed");
 
+        foreach (var (id, shape) in rtn!.Rects) {
+            rtn.Shapes.Add(id, shape);
+        }
+
+        foreach (var (id, shape) in rtn!.Ellipses) {
+            rtn.Shapes.Add(id, shape);
+        }
+
         return rtn;
     }
 
     public class ControlModel
     {
+        [YamlIgnore]
+        public float DisplayValue { get; set; }
+
+        public float DefaultValue { get; set; }
+
         public BaseModel Base { get; set; }
 
         public class BaseModel
@@ -69,18 +85,7 @@ public class ClockModel
         }
     }
 
-    public class RectModel
-    {
-        public float X { get; set; }
-
-        public float Y { get; set; }
-
-        public float Width { get; set; }
-
-        public float Height { get; set; }
-    }
-
-    public class EllipseModel
+    public class ShapeModel
     {
         public float X { get; set; }
 

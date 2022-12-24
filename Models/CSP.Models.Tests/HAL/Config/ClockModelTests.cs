@@ -78,6 +78,7 @@ public class ClockModelTests
                             Assert.False(rect.Y <= 0);
                             Assert.False(rect.Width <= 0);
                             Assert.False(rect.Height <= 0);
+                            Assert.False(!clock.Shapes.ContainsKey(id));
                         }
 
                         foreach (var (id, ellipse) in clock.Ellipses) {
@@ -87,6 +88,7 @@ public class ClockModelTests
                             Assert.False(ellipse.Y <= 0);
                             Assert.False(ellipse.Width <= 0);
                             Assert.False(ellipse.Height <= 0);
+                            Assert.False(!clock.Shapes.ContainsKey(id));
                         }
                     }
                 }
