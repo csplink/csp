@@ -14,5 +14,5 @@ internal class IPSingletonInstance
 
     public static IPSingletonInstance Instance => Lazy.Value;
 
-    public Dictionary<string, ip_t> IP { get; set; }
+    public Dictionary<string, ip_t> IP { get; } = new();
 }
