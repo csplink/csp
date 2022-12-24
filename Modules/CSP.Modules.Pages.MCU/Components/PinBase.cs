@@ -258,10 +258,10 @@ public class PinBase : UserControl
             return;
         }
 
-        switch (_pinout.Functions[functionName].Type) {
-        case "GPIO": {
-            MapModel gpioMap = MapSingleton.Maps["GPIO"];
-            ip_t     gpioIP  = IPSingleton.IP["GPIO"];
+        switch (_pinout.Functions[functionName].Type.ToLower()) {
+        case "gpio": {
+            MapModel gpioMap = MapSingleton.Maps["gpio"];
+            ip_t     gpioIP  = IPSingleton.IP["gpio"];
 
             if (gpioMap == null || gpioIP == null) {
                 break;

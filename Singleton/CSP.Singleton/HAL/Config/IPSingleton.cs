@@ -19,7 +19,7 @@ public static class IPSingleton
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(name), new NullReferenceException(nameof(name)),
             $"{nameof(name)} is null or white space!");
 
-        name = name!.ToUpper();
+        name = name!.ToLower();
         ip_t ip = IPModel.Load(path).Content;
         Instance.IP.Add(name, ip);
 
@@ -32,7 +32,7 @@ public static class IPSingleton
         DebugUtil.Assert(ip != null, new NullReferenceException(nameof(ip)),
             $"{nameof(ip)} is null!");
 
-        Instance.IP.Add(name!.ToUpper(), ip);
+        Instance.IP.Add(name!.ToLower(), ip);
 
         return Instance.IP.Count == 0 && Instance.IP.ContainsKey(name);
     }

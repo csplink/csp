@@ -19,7 +19,7 @@ public static class MapSingleton
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(name), new NullReferenceException(nameof(name)),
             $"{nameof(name)} is null or white space!");
 
-        name = name!.ToUpper();
+        name = name!.ToLower();
         MapModel map = MapModel.Load(path);
         Instance.Maps.Add(name, map);
 
@@ -32,7 +32,7 @@ public static class MapSingleton
         DebugUtil.Assert(map != null, new NullReferenceException(nameof(map)),
             $"{nameof(map)} is null!");
 
-        Instance.Maps.Add(name!, map);
+        Instance.Maps.Add(name!.ToLower(), map);
 
         return Instance.Maps.Count == 0 && Instance.Maps.ContainsKey(name);
     }

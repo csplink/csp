@@ -17,15 +17,15 @@ public class ClockViewModel : BindableBase, INavigationAware
     public ClockViewModel(IEventAggregator eventAggregator) {
         _eventAggregator = eventAggregator;
 
-        if (!ProjectSingleton.Project.Properties.ContainsKey("Clock")) {
-            ProjectSingleton.Project.Properties.Add("Clock", CreateClockPropertyDetails());
+        if (!ProjectSingleton.Project.Properties.ContainsKey("clock")) {
+            ProjectSingleton.Project.Properties.Add("clock", CreateClockPropertyDetails());
         }
     }
 
     public static PropertyDetails CreateClockPropertyDetails() {
         PropertyDetails property = new();
-        MapModel        clockMap = MapSingleton.Maps["Clock"];
-        ip_t            clockIP  = IPSingleton.IP["Clock"];
+        MapModel clockMap = MapSingleton.Maps["clock"];
+        ip_t clockIP = IPSingleton.IP["clock"];
         if (clockMap == null || clockIP == null) {
             MessageBoxUtil.Error("无 clock IP 与其 Map");
 
@@ -78,8 +78,8 @@ public class ClockViewModel : BindableBase, INavigationAware
 
     public void OnNavigatedTo(NavigationContext navigationContext) {
         _eventAggregator.GetEvent<PropertyEvent>().Publish(null);
-        if (ProjectSingleton.Project.Properties.ContainsKey("Clock")) {
-            PropertyDetails properties = ProjectSingleton.Project.Properties["Clock"];
+        if (ProjectSingleton.Project.Properties.ContainsKey("clock")) {
+            PropertyDetails properties = ProjectSingleton.Project.Properties["clock"];
             _eventAggregator.GetEvent<PropertyEvent>().Publish(properties);
         }
     }
