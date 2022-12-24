@@ -218,8 +218,10 @@ public class PinBase : UserControl
         RightContextMenu.Items.Add(_menuReset);
 
         List<MenuItem> menuItems = AddRightContextMenu(RightContextMenu, _pinout);
-        foreach (MenuItem menu in menuItems) {
-            menu.Click += OnMenuFunctionClick;
+        if (menuItems != null) {
+            foreach (MenuItem menu in menuItems) {
+                menu.Click += OnMenuFunctionClick;
+            }
         }
 
         _pinConfig.Label.PropertyChanged += (sender, propertyChangedEventArgs) => { UpdatePinNote(); };
