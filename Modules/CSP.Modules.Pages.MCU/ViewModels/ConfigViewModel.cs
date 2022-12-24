@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using CSP.Events;
 using CSP.Models.DB.Chip;
 using CSP.Modules.Pages.MCU.Views;
 using CSP.Resources;
+using CSP.Singleton.DB;
 using CSP.Singleton.DB.Chip;
+using CSP.Singleton.HAL.Config;
+using CSP.Singleton.Internal;
 using CSP.Utils;
 using Prism.Events;
 using Prism.Mvvm;
@@ -22,7 +26,7 @@ public class ConfigViewModel : BindableBase
         _regionManager   = regionManager;
         _eventAggregator = eventAggregator;
 
-        // DescriptionHelper.Load("Geehy", "APM32F103ZET6");
+        LoadMCU("geehy", "apm32f103zet6");
 
         AddModules();
 
@@ -96,6 +100,46 @@ public class ConfigViewModel : BindableBase
         List<SolutionExplorerEvent.Model> list = new() { infoRoot };
 
         _eventAggregator.GetEvent<SolutionExplorerEvent>().Publish(list);
+    }
+
+    private void LoadMCU(string company, string name) {
+        DebugUtil.Assert(!string.IsNullOrWhiteSpace(company), new ArgumentNullException(nameof(company)));
+        DebugUtil.Assert(!string.IsNullOrWhiteSpace(name), new ArgumentNullException(nameof(name)));
+
+        string summaryPath = $"{ConfigFile.PathRepo}/db/chips/{company!.ToLower()}/{name!.ToLower()}.yml";
+        SummarySingleton.Set(summaryPath);
+        DebugUtil.Assert(SummarySingleton.Summary != null, new ArgumentNullException(nameof(SummarySingleton.Summary)));
+
+        string hal            = SummarySingleton.Summary!.HAL;
+        string halPackagePath = $"{ConfigFile.PathRepo}/packages/hal/{hal}.json";
+        PackageSingleton.Set(halPackagePath);
+        DebugUtil.Assert(PackageSingleton.Package != null, new ArgumentNullException(nameof(PackageSingleton.Package)));
+
+        IEnumerable<string> versions = PackageSingleton.Package!.Versions.Keys;
+        string              version  = "latest"; // default use latest version
+
+        string pinoutPath = $"{ConfigFile.PathRepo}/repositories/hal/{hal}/{version}/config/{name}/pinout.yml";
+        PinoutSingleton.Set(pinoutPath);
+        DebugUtil.Assert(PinoutSingleton.Pinouts != null, new ArgumentNullException(nameof(PinoutSingleton.Pinouts)));
+
+        foreach (var (pinoutName, pinout) in PinoutSingleton.Pinouts!) {
+            PinConfigSingleton.Add(pinoutName, pinout);
+        }
+
+        string   ipDir   = $"{ConfigFile.PathRepo}/repositories/hal/{hal}/{version}/config/{name}/ip";
+        string[] ipFiles = Directory.GetFiles(ipDir, "*.yml");
+        foreach (string ipFile in ipFiles) {
+            IPSingleton.Add(ipFile);
+        }
+
+        string   mapDir   = $"{ConfigFile.PathRepo}/repositories/hal/{hal}/{version}/config/map";
+        string[] mapFiles = Directory.GetFiles(mapDir, "*.yml");
+        foreach (string mapFile in mapFiles) {
+            MapSingleton.Add(mapFile);
+        }
+
+        string clockPath = $"{ConfigFile.PathRepo}/repositories/hal/{hal}/{version}/config/{name}/clock/{name}.yml";
+        ClockSingleton.Set(clockPath);
     }
 
     private void OnEventGenerate(string message) {
