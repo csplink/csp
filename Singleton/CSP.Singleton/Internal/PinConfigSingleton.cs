@@ -18,11 +18,11 @@ public static class PinConfigSingleton
         }
     }
 
-    public static void Add(string name, PinoutModel pinOut) {
+    public static void Add(string name, PinoutModel pinout) {
         DebugUtil.Assert(!string.IsNullOrWhiteSpace(name), new ArgumentNullException(nameof(name)), "name is null");
-        DebugUtil.Assert(pinOut == null, new ArgumentNullException(nameof(pinOut)), "pinOut is null");
+        DebugUtil.Assert(pinout != null, new ArgumentNullException(nameof(pinout)), "pinout is null");
         Add(name);
         PinConfigs[name!].Name.String    = name;
-        PinConfigs[name].Position.String = pinOut!.Position.ToString();
+        PinConfigs[name].Position.String = pinout!.Position.ToString();
     }
 }
