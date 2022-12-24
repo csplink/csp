@@ -9,7 +9,7 @@ public static class SummarySingleton
     public static SummaryModel Summary => Instance.Summary;
 
 
-    public static bool Add(string path) {
+    public static bool Set(string path) {
         Instance.Summary = SummaryModel.Load(path);
 
         return Instance.Summary != null;

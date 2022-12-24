@@ -8,7 +8,7 @@ public static class ClockSingleton
 
     public static ClockModel Clock => Instance.Clock;
 
-    public static bool Load(string path) {
+    public static bool Set(string path) {
         Instance.Clock = ClockModel.Load(path);
 
         return Instance.Clock != null;

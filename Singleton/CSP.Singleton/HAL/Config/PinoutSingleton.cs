@@ -9,7 +9,7 @@ public static class PinoutSingleton
 
     public static Dictionary<string, PinoutModel> Pinouts => Instance.Pinouts;
 
-    public static bool Load(string path) {
+    public static bool Set(string path) {
         Instance.Pinouts = PinoutModel.Load(path);
 
         return Instance.Pinouts != null;

@@ -9,7 +9,7 @@ public static class PackageSingleton
     public static PackageModel Package => Instance.Package;
 
 
-    public static bool Add(string path) {
+    public static bool Set(string path) {
         Instance.Package = PackageModel.Load(path);
 
         return Instance.Package != null;
