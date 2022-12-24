@@ -5,10 +5,10 @@
     <h1>CSP</h1>
     <div>
         <a href="https://github.com/csplink/csp/actions?query=workflow%3A%F0%9F%A9%BAtest">
-            <img src="https://img.shields.io/github/actions/workflow/status/csplink/csp/test.yml?branch=master&style=flat&label=test" alt="github-ci" />
+            <img src="https://img.shields.io/github/actions/workflow/status/csplink/csp/test.yml?style=flat&label=test" alt="github-ci" />
         </a>
         <a href="https://github.com/csplink/csp/actions?query=workflow%3A%F0%9F%92%95mirror">
-            <img src="https://img.shields.io/github/actions/workflow/status/csplink/csp/mirror.yml?branch=master&style=flat&label=mirror" alt="github-ci" />
+            <img src="https://img.shields.io/github/actions/workflow/status/csplink/csp/mirror.yml?style=flat&label=mirror" alt="github-ci" />
         </a>
     </div>
     <div>
