@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using CSP.Utils;
+using Prism.Mvvm;
 using YamlDotNet.Serialization;
 
 namespace CSP.Models.HAL.Config;
@@ -56,10 +57,34 @@ public class ClockModel
         return rtn;
     }
 
-    public class ControlModel
+    public int FindIDByName(string name) {
+        foreach (var (controlID, control) in Controls) {
+            if (name == control.Base.Name) {
+                return controlID;
+            }
+        }
+
+        return -1;
+    }
+
+    public class ControlModel : BindableBase
     {
+        private float _displayValue;
+        private float _value;
+
         [YamlIgnore]
-        public float DisplayValue { get; set; }
+        public float DisplayValue {
+            get => _displayValue;
+            set {
+                if (!SetProperty(ref _displayValue, value)) {
+                    return;
+                }
+
+                if (Base.Multiple != 0) {
+                    Value = _displayValue * Base.Multiple;
+                }
+            }
+        }
 
         public float DefaultValue { get; set; }
 
@@ -68,6 +93,20 @@ public class ClockModel
         public Dictionary<string, StyleModel> Styles { get; set; }
 
         public SignalModel[] Signals { get; set; }
+
+        [YamlIgnore]
+        public float Value {
+            get => _value;
+            set {
+                if (!SetProperty(ref _value, value)) {
+                    return;
+                }
+
+                if (Base.Multiple != 0) {
+                    DisplayValue = _value / Base.Multiple;
+                }
+            }
+        }
 
         public class BaseModel
         {
@@ -101,9 +140,9 @@ public class ClockModel
 
         public class SignalModel
         {
-            public string Operator { get; set; }
+            public string Operator { get; set; } = "*";
 
-            public float Value { get; set; }
+            public float Value { get; set; } = 1;
 
             public string[] Dependencies { get; set; }
 

@@ -116,7 +116,7 @@ public class ClockTreeViewModel : BindableBase
 
             if (obj != null) {
 #if DEBUG
-                Binding binding = new("Name") {
+                Binding binding = new("Base.Name") {
                     Mode                = BindingMode.TwoWay,
                     Source              = control,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
@@ -141,7 +141,7 @@ public class ClockTreeViewModel : BindableBase
             switch (control.Base.Type) {
             case "RadioButton":
                 if (control.Base.IsChecked) {
-                    ProjectSingleton.ChangeDefine(null, $"CSP_USING_{control.Base.Macro}", null);
+                    ProjectSingleton.ChangeDefine(null, control.Base.Macro, null);
                 }
 
                 break;
@@ -186,52 +186,57 @@ internal class ClockTreeViewModelTools
         BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
         box.DisplayMemberPath = "Text";
         box.SelectedIndex     = control.Base.DefaultIndex;
-        //
-        // box.SelectionChanged += (sender, e) => {
-        //     string s = "";
-        //     foreach (var signal1 in control.Signals) {
-        //         if (DescriptionHelper.IsDependence(signal1.DependenceArray)) {
-        //             s = signal1.Source;
-        //         }
-        //     }
-        //
-        //     if (box.SelectedItem is ClockModel.ControlModel.SignalModel signal2 && !s.IsNullOrEmpty()) {
-        //         if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
-        //             var ctrl = DescriptionHelper.Clock.ControlMap[s];
-        //             control.Value = signal2.Operator.ToLower() switch {
-        //                 "/" => ctrl.Value / signal2.Value,
-        //                 "*" => ctrl.Value * signal2.Value,
-        //                 _   => control.Value
-        //             };
-        //         }
-        //     }
-        // };
-        //
-        // foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
-        //     foreach (var signal1 in control.Signals) {
-        //         if (ctl.Value.Name == signal1.Source && DescriptionHelper.IsDependence(signal1.DependenceArray)) {
-        //             ctl.Value.PropertyChanged += (sender, e) => {
-        //                 string s = "";
-        //                 foreach (var signal2 in control.Signals) {
-        //                     if (DescriptionHelper.IsDependence(signal2.DependenceArray)) {
-        //                         s = signal2.Source;
-        //                     }
-        //                 }
-        //
-        //                 if (box.SelectedItem is ClockModel.ControlModel.SignalModel signal3 && !s.IsNullOrEmpty()) {
-        //                     if (DescriptionHelper.Clock.ControlMap.ContainsKey(s)) {
-        //                         var ctrl = DescriptionHelper.Clock.ControlMap[s];
-        //                         control.Value = signal3.Operator.ToLower() switch {
-        //                             "/" => ctrl.Value / signal3.Value,
-        //                             "*" => ctrl.Value * signal3.Value,
-        //                             _   => control.Value
-        //                         };
-        //                     }
-        //                 }
-        //             };
-        //         }
-        //     }
-        // }
+
+        box.SelectionChanged += (sender, e) => {
+            string s = "";
+            if (control.Signals != null) {
+                foreach (ClockModel.ControlModel.SignalModel signal1 in control.Signals) {
+                    if (ProjectSingleton.IsDependence(signal1.Dependencies)) {
+                        s = signal1.Source;
+                    }
+                }
+            }
+
+            if (box.SelectedItem is ClockModel.ControlModel.SignalModel signal2 && !string.IsNullOrWhiteSpace(s)) {
+                int id = ClockSingleton.Clock.FindIDByName(s);
+                if (ClockSingleton.Clock.Controls.ContainsKey(id)) {
+                    ClockModel.ControlModel ctrl = ClockSingleton.Clock.Controls[id];
+                    control.Value = signal2.Operator.ToLower() switch {
+                        "/" => ctrl.Value / signal2.Value,
+                        "*" => ctrl.Value * signal2.Value,
+                        _   => control.Value
+                    };
+                }
+            }
+        };
+
+        foreach (var (_, ctl) in ClockSingleton.Clock.Controls) {
+            foreach (ClockModel.ControlModel.SignalModel signal1 in control.Signals) {
+                if (ctl.Base.Name == signal1.Source && ProjectSingleton.IsDependence(signal1.Dependencies)) {
+                    ctl.PropertyChanged += (sender, e) => {
+                        string s = "";
+                        foreach (ClockModel.ControlModel.SignalModel signal2 in control.Signals) {
+                            if (ProjectSingleton.IsDependence(signal2.Dependencies)) {
+                                s = signal2.Source;
+                            }
+                        }
+
+                        if (box.SelectedItem is ClockModel.ControlModel.SignalModel signal3 &&
+                            !string.IsNullOrWhiteSpace(s)) {
+                            int id = ClockSingleton.Clock.FindIDByName(s);
+                            if (ClockSingleton.Clock.Controls.ContainsKey(id)) {
+                                ClockModel.ControlModel ctrl = ClockSingleton.Clock.Controls[id];
+                                control.Value = signal3.Operator.ToLower() switch {
+                                    "/" => ctrl.Value / signal3.Value,
+                                    "*" => ctrl.Value * signal3.Value,
+                                    _   => control.Value
+                                };
+                            }
+                        }
+                    };
+                }
+            }
+        }
 
         return box;
     }
@@ -259,45 +264,50 @@ internal class ClockTreeViewModelTools
         SetLabelStyle(ref box, control);
         ProjectSingleton.Project.Defines.PropertyChanged += (sender, e) => {
             SetLabelStyle(ref box, control);
-            //     foreach (var signal in control.Signals) {
-            //         if (DescriptionHelper.IsDependence(signal.DependenceArray)) {
-            //             float value = 0;
-            //             if (!signal.Source.IsNullOrEmpty()) {
-            //                 if (DescriptionHelper.Clock.ControlMap.ContainsKey(signal.Source)) {
-            //                     var ctrl = DescriptionHelper.Clock.ControlMap[signal.Source];
-            //                     value = ctrl.Value;
-            //                 }
-            //                 //TODO 出现错误
-            //             }
-            //             else if (signal.SourceValue != 0) {
-            //                 value = signal.SourceValue;
-            //             }
-            //
-            //             //TODO 出现错误
-            //             control.Value = signal.Operator.ToLower() switch {
-            //                 "/" => value / signal.Value,
-            //                 "*" => value * signal.Value,
-            //                 _   => control.Value
-            //             };
-            //         }
-            //     }
+            if (control.Signals != null) {
+                foreach (ClockModel.ControlModel.SignalModel signal in control.Signals) {
+                    if (ProjectSingleton.IsDependence(signal.Dependencies)) {
+                        float value = 0;
+                        if (!string.IsNullOrWhiteSpace(signal.Source)) {
+                            int id = ClockSingleton.Clock.FindIDByName(signal.Source);
+                            if (ClockSingleton.Clock.Controls.ContainsKey(id)) {
+                                ClockModel.ControlModel ctrl = ClockSingleton.Clock.Controls[id];
+                                value = ctrl.Value;
+                            }
+                            //TODO 出现错误
+                        }
+                        else if (signal.SourceValue != 0) {
+                            value = signal.SourceValue;
+                        }
+
+                        //TODO 出现错误
+                        control.Value = signal.Operator.ToLower() switch {
+                            "/" => value / signal.Value,
+                            "*" => value * signal.Value,
+                            _   => control.Value
+                        };
+                    }
+                }
+            }
         };
 
-        // foreach (var ctl in DescriptionHelper.Clock.ControlMap) {
-        //     foreach (var signal in control.Signals) {
-        //         if (ctl.Value.Name == signal.Source) {
-        //             ctl.Value.PropertyChanged += (sender, e) => {
-        //                 if (DescriptionHelper.IsDependence(signal.DependenceArray)) {
-        //                     control.Value = signal.Operator.ToLower() switch {
-        //                         "/" => ctl.Value.Value / signal.Value,
-        //                         "*" => ctl.Value.Value * signal.Value,
-        //                         _   => control.Value
-        //                     };
-        //                 }
-        //             };
-        //         }
-        //     }
-        // }
+        foreach (var (_, ctl) in ClockSingleton.Clock.Controls) {
+            if (control.Signals != null) {
+                foreach (ClockModel.ControlModel.SignalModel signal in control.Signals) {
+                    if (ctl.Base.Name == signal.Source) {
+                        ctl.PropertyChanged += (sender, e) => {
+                            if (ProjectSingleton.IsDependence(signal.Dependencies)) {
+                                control.Value = signal.Operator.ToLower() switch {
+                                    "/" => ctl.Value / signal.Value,
+                                    "*" => ctl.Value * signal.Value,
+                                    _   => control.Value
+                                };
+                            }
+                        };
+                    }
+                }
+            }
+        }
 
         return box;
     }
@@ -341,7 +351,7 @@ internal class ClockTreeViewModelTools
             if (sender is RadioButton { IsChecked: true } rb) {
                 string groupName = rb.GroupName;
                 string name      = rb.Tag.ToString();
-                foreach (var (ctrlName, ctrl) in ClockSingleton.Clock.Controls) {
+                foreach (var (_, ctrl) in ClockSingleton.Clock.Controls) {
                     if (ctrl.Base.GroupName == groupName) {
                         if (ctrl.Base.Name == name) {
                             ProjectSingleton.ChangeDefine(null, ctrl.Base.Macro, null);
