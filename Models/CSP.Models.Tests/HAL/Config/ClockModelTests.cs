@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using CSP.Models.DB;
 using CSP.Models.HAL.Config;
@@ -60,6 +61,14 @@ public class ClockModelTests
                         Assert.False(clock.Rects == null);
                         Assert.False(clock.Ellipses == null);
 
+                        List<string> controlNames = new();
+                        foreach (var (_, control) in clock.Controls) {
+                            Assert.False(string.IsNullOrWhiteSpace(control.Base.Name));
+                            Assert.False(controlNames.Contains(control.Base.Name));
+                            controlNames.Add(control.Base.Name);
+                        }
+
+
                         foreach (var (id, control) in clock.Controls) {
                             Assert.False(id <= 0);
                             Assert.False(control == null);
@@ -78,6 +87,16 @@ public class ClockModelTests
                                     Assert.False(style.Text == null);
                                     Assert.False(!style.Text.ContainsKey("zh-cn"));
                                     Assert.False(string.IsNullOrWhiteSpace(style.Status));
+                                }
+                            }
+
+                            if (control.Signals != null) {
+                                foreach (ClockModel.ControlModel.SignalModel signal in control.Signals) {
+                                    Assert.False(
+                                        !(string.IsNullOrWhiteSpace(signal.Source) ^ (signal.SourceValue == 0)));
+                                    if (!string.IsNullOrWhiteSpace(signal.Source)) {
+                                        Assert.False(!controlNames.Contains(signal.Source));
+                                    }
                                 }
                             }
                         }

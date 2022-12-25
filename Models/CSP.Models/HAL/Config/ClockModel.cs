@@ -67,6 +67,8 @@ public class ClockModel
 
         public Dictionary<string, StyleModel> Styles { get; set; }
 
+        public SignalModel[] Signals { get; set; }
+
         public class BaseModel
         {
             public string Name { get; set; }
@@ -95,6 +97,21 @@ public class ClockModel
             public Dictionary<string, string> Text { get; set; }
 
             public string Status { get; set; }
+        }
+
+        public class SignalModel
+        {
+            public string Operator { get; set; }
+
+            public float Value { get; set; }
+
+            public string[] Dependencies { get; set; }
+
+            public string Source { get; set; }
+
+            public float SourceValue { get; set; }
+
+            public string Text => Operator + Value;
         }
     }
 
