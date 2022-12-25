@@ -185,7 +185,7 @@ internal class ClockTreeViewModelTools
         };
         BindingOperations.SetBinding(box, ComboBox.ItemsSourceProperty, binding);
         box.DisplayMemberPath = "Text";
-        // box.SelectedIndex     = control.DefaultIndex;
+        box.SelectedIndex     = control.Base.DefaultIndex;
         //
         // box.SelectionChanged += (sender, e) => {
         //     string s = "";
@@ -329,30 +329,30 @@ internal class ClockTreeViewModelTools
             Height = height
         };
         RadioButton button = new() {
-            // GroupName   = control.GroupName,
-            // Tag         = control.Name,
-            // BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
-            // IsChecked   = control.IsChecked
+            GroupName   = control.Base.GroupName,
+            Tag         = control.Base.Name,
+            BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")!),
+            IsChecked   = control.Base.IsChecked
         };
 
-        // DescriptionHelper.Defines.PropertyChanged += (sender, e) => { };
-        //
-        // button.Checked += (sender, e) => {
-        //     if (sender is RadioButton { IsChecked: true } rb) {
-        //         string groupName = rb.GroupName;
-        //         string name      = rb.Tag.ToString();
-        //         foreach (var ctrl in DescriptionHelper.Clock.ControlMap) {
-        //             if (ctrl.Value.GroupName == groupName) {
-        //                 if (ctrl.Value.Name == name) {
-        //                     DescriptionHelper.ChangeDefine(null, $"CSP_USING_{ctrl.Value.Macro}", null);
-        //                 }
-        //                 else {
-        //                     DescriptionHelper.ChangeDefine($"CSP_USING_{ctrl.Value.Macro}", null, null);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // };
+        ProjectSingleton.Project.Defines.PropertyChanged += (sender, e) => { };
+
+        button.Checked += (sender, e) => {
+            if (sender is RadioButton { IsChecked: true } rb) {
+                string groupName = rb.GroupName;
+                string name      = rb.Tag.ToString();
+                foreach (var (ctrlName, ctrl) in ClockSingleton.Clock.Controls) {
+                    if (ctrl.Base.GroupName == groupName) {
+                        if (ctrl.Base.Name == name) {
+                            ProjectSingleton.ChangeDefine(null, ctrl.Base.Macro, null);
+                        }
+                        else {
+                            ProjectSingleton.ChangeDefine(ctrl.Base.Macro, null, null);
+                        }
+                    }
+                }
+            }
+        };
 
         box.Child = button;
 
