@@ -77,8 +77,8 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
                 MCUIllustrate   = value.Illustrate.ContainsKey("zh-cn") ? MCU.Illustrate["zh-cn"] : "";
                 MCUCompanyUrl = value.CompanyUrl.ContainsKey("zh-cn")
                     ? MCU.CompanyUrl["zh-cn"]
-                    : "https://csplink.github.io";
-                MCUUrl = value.Url.ContainsKey("zh-cn") ? MCU.Url["zh-cn"] : "https://csplink.github.io";
+                    : "https://csplink.top";
+                MCUUrl = value.Url.ContainsKey("zh-cn") ? MCU.Url["zh-cn"] : "https://csplink.top";
             }
             else {
                 MCUIntroduction = "Not Find";
@@ -94,7 +94,7 @@ public class MCUSelectorViewModel : BindableBase, IDialogWindowParameters
                 return;
             }
 
-            MCURepositoryUrl = value != null ? value.Repositories[0] : "https://csplink.github.io";
+            MCURepositoryUrl = value != null ? value.Repositories[0] : "https://csplink.top";
         }
     }
 
