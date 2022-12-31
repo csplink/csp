@@ -1,5 +1,5 @@
 <div align="center">
-    <a href="https://csplink.github.io">
+    <a href="https://csplink.top">
         <img width="160" heigth="160" src="Apps/CSP.Apps.Dev/Resources/Images/logo.svg" alt="logo" />
     </a>
     <h1>CSP</h1>
@@ -26,7 +26,7 @@
         <a href="https://github.com/csplink/csp/blob/master/LICENSE">
             <img src="https://img.shields.io/github/license/csplink/csp.svg?colorB=f48041&style=flat" alt="license" />
         </a>
-        <a href="https://csplink.github.io">
+        <a href="https://csplink.top">
             <img src="https://img.shields.io/badge/wiki-document-blue?style=flat" alt="document" />
         </a>
         <a href="https://gitter.im/csplink/csp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
