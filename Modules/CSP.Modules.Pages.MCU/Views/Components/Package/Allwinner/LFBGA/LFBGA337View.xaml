@@ -19,11 +19,12 @@
 - Change Logs:
 - Date           Author       Notes
 - ************   **********   ***********************************************
+- 2023-01-08     xqyjlj       mv to Allwinner.LFBGA
 - 2023-01-08     xqyjlj       initial version
 -!-->
 
 <UserControl
-    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.LFBGA.LFBGA337View"
+    x:Class="CSP.Modules.Pages.MCU.Views.Components.Package.Allwinner.LFBGA.LFBGA337View"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:lfbga="clr-namespace:CSP.Modules.Pages.MCU.Components.LFBGA"

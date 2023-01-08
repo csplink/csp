@@ -18,10 +18,11 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-08     xqyjlj       mv to Allwinner.LFBGA
 // 2023-01-08     xqyjlj       initial version
 //
 
-namespace CSP.Modules.Pages.MCU.Views.Components.Package.LFBGA;
+namespace CSP.Modules.Pages.MCU.Views.Components.Package.Allwinner.LFBGA;
 
 public partial class LFBGA337View
 {

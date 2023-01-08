@@ -18,6 +18,7 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-08     xqyjlj       mv to Allwinner.LFBGA
 // 2023-01-08     xqyjlj       initial version
 //
 
@@ -26,7 +27,7 @@ using CSP.Singleton.DB.Chip;
 using CSP.Singleton.HAL.Config;
 using Prism.Mvvm;
 
-namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package.LFBGA;
+namespace CSP.Modules.Pages.MCU.ViewModels.Components.Package.Allwinner.LFBGA;
 
 public class LFBGA337ViewModel : BindableBase
 {
