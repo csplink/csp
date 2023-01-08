@@ -22,6 +22,7 @@
         <ProjectReference Include="..\..\Models\CSP.Models\CSP.Models.csproj" />
         <ProjectReference Include="..\..\Resources\CSP.Resources\CSP.Resources.csproj" />
         <ProjectReference Include="..\..\Services\CSP.Services\CSP.Services.csproj" />
+        <ProjectReference Include="..\..\Singleton\CSP.Singleton\CSP.Singleton.csproj" />
         <ProjectReference Include="..\..\Utils\CSP.Utils\CSP.Utils.csproj" />
     </ItemGroup>
 

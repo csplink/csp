@@ -79,29 +79,11 @@ namespace CSP.Resources {
         }
         
         /// <summary>
-        ///   查找类似 ./Database/MCU 的本地化字符串。
+        ///   查找类似 ./csp_repo 的本地化字符串。
         /// </summary>
-        internal static string MCUDb {
+        internal static string Repo {
             get {
-                return ResourceManager.GetString("MCUDb", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 https://gitee.com/misfra/misfra_mcu_db 的本地化字符串。
-        /// </summary>
-        internal static string MCUDbUrl {
-            get {
-                return ResourceManager.GetString("MCUDbUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 ./Repository 的本地化字符串。
-        /// </summary>
-        internal static string Repository {
-            get {
-                return ResourceManager.GetString("Repository", resourceCulture);
+                return ResourceManager.GetString("Repo", resourceCulture);
             }
         }
     }

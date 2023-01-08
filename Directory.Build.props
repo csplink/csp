@@ -1,20 +1,10 @@
 ﻿<Project>
-
-	<PropertyGroup>
-		<Platforms>AnyCPU;x86;x64</Platforms>
-		<LangVersion>10.0</LangVersion>
-		<NoWarn>1701;1702;0067</NoWarn>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<DebugType>none</DebugType>
-	</PropertyGroup>
-
-	<Target Name="EchoSolutionDir" BeforeTargets="PrepareForBuild" Condition="'$(Configuration)'=='Debug'">
-		<Exec Command="echo $(SolutionDir)&gt; $(OutputPath)\SolutionDir.txt" />
-	</Target>
+    <PropertyGroup>
+        <Platforms>AnyCPU;x86;x64</Platforms>
+        <LangVersion>10.0</LangVersion>
+        <NoWarn>1701;1702;0067</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <DebugType>none</DebugType>
+    </PropertyGroup>
 </Project>
