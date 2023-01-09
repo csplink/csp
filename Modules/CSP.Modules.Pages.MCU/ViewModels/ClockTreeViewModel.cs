@@ -140,18 +140,15 @@ public class ClockTreeViewModel : BindableBase
 
             if (obj != null) {
 #if DEBUG
-                Binding binding = new("Base.Name") {
+                string bindingPath = "Base.Name";
+#else
+                string bindingPath = "Value";
+#endif
+                Binding binding = new(bindingPath) {
                     Mode                = BindingMode.TwoWay,
                     Source              = control,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 };
-#else
-                Binding binding = new("Value") {
-                    Mode = BindingMode.TwoWay,
-                    Source = control,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                };
-#endif
                 BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
                 Canvas.SetLeft(obj, ClockSingleton.Clock.Shapes[controlID].X);
                 Canvas.SetTop(obj, ClockSingleton.Clock.Shapes[controlID].Y);
