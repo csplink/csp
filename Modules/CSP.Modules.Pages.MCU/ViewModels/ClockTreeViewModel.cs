@@ -18,6 +18,7 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-10     xqyjlj       fix can not use DefaultValue
 // 2023-01-08     xqyjlj       initial version
 //
 
@@ -139,18 +140,15 @@ public class ClockTreeViewModel : BindableBase
 
             if (obj != null) {
 #if DEBUG
-                Binding binding = new("Base.Name") {
+                string bindingPath = "Base.Name";
+#else
+                string bindingPath = "Value";
+#endif
+                Binding binding = new(bindingPath) {
                     Mode                = BindingMode.TwoWay,
                     Source              = control,
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 };
-#else
-                Binding binding = new("Value") {
-                    Mode = BindingMode.TwoWay,
-                    Source = control,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                };
-#endif
                 BindingOperations.SetBinding(obj, FrameworkElement.ToolTipProperty, binding);
                 Canvas.SetLeft(obj, ClockSingleton.Clock.Shapes[controlID].X);
                 Canvas.SetTop(obj, ClockSingleton.Clock.Shapes[controlID].Y);
@@ -160,7 +158,7 @@ public class ClockTreeViewModel : BindableBase
 
         // 第二次轮询进行变量初始化
         foreach (var (_, control) in ClockSingleton.Clock.Controls) {
-            control.DisplayValue = control.DefaultValue;
+            control.DisplayValue = control.Base.DefaultValue;
             switch (control.Base.Type) {
             case "RadioButton":
                 if (control.Base.IsChecked) {
