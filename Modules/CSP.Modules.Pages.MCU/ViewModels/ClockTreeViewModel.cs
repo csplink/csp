@@ -18,6 +18,7 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-10     xqyjlj       fix can not use DefaultValue
 // 2023-01-08     xqyjlj       initial version
 //
 
@@ -160,7 +161,7 @@ public class ClockTreeViewModel : BindableBase
 
         // 第二次轮询进行变量初始化
         foreach (var (_, control) in ClockSingleton.Clock.Controls) {
-            control.DisplayValue = control.DefaultValue;
+            control.DisplayValue = control.Base.DefaultValue;
             switch (control.Base.Type) {
             case "RadioButton":
                 if (control.Base.IsChecked) {

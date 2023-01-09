@@ -18,6 +18,7 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-10     xqyjlj       fix can not use DefaultValue
 // 2023-01-08     xqyjlj       initial version
 //
 
@@ -108,8 +109,6 @@ public class ClockModel
                 }
             }
         }
-
-        public float DefaultValue { get; set; }
 
         public BaseModel Base { get; set; }
 
