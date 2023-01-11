@@ -12,13 +12,13 @@
 //
 // Copyright (C) 2022-2023 xqyjlj<xqyjlj@126.com>
 //
-// @author      xqyjlj
+// @author      csplink bot
 // @file        ConfigFile.cs
 //
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
-// 2023-01-08     xqyjlj       initial version
+// 2023-01-11     csplink bot  initial version
 //
 
 namespace CSP.Resources;

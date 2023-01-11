@@ -21,10 +21,12 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
+# 2023-01-11     xqyjlj       add header
 # 2023-01-08     xqyjlj       initial version
 #
 
 import os
+import datetime
 
 template_config_file_data = """
     public static string {section}{name} {{
@@ -33,7 +35,30 @@ template_config_file_data = """
     }}
 """
 
-template_config_file = """namespace CSP.Resources;
+template_config_file = """// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Copyright (C) 2022-{year} xqyjlj<xqyjlj@126.com>
+//
+// @author      csplink bot
+// @file        ConfigFile.cs
+//
+// Change Logs:
+// Date           Author       Notes
+// ------------   ----------   -----------------------------------------------
+// {year}-{month}-{day}     csplink bot  initial version
+//
+
+namespace CSP.Resources;
 
 public static class ConfigFile
 {{
@@ -46,7 +71,30 @@ public static class ConfigFile
 
 template_config_file_instance_data = """        AddKey("{section}", "{name}", {section}.{name});\n"""
 
-template_config_file_instance = """using System;
+template_config_file_instance = """// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// Copyright (C) 2022-{year} xqyjlj<xqyjlj@126.com>
+//
+// @author      csplink bot
+// @file        ConfigFileInstance.cs
+//
+// Change Logs:
+// Date           Author       Notes
+// ------------   ----------   -----------------------------------------------
+// {year}-{month}-{day}     csplink bot  initial version
+//
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -140,8 +188,18 @@ def main():
                 name = line.replace("internal static string", "").replace(" {", "").strip()
                 config_file_data += template_config_file_data.format(section="Path", name=name)
                 config_file_instance_data += template_config_file_instance_data.format(section="Path", name=name)
-    config_file = template_config_file.format(data=config_file_data)
-    config_file_instance = template_config_file_instance.format(data=config_file_instance_data)
+    today = datetime.datetime.today()
+    year = today.year
+    month = today.month
+    day = today.day
+    config_file = template_config_file.format(data=config_file_data,
+                                              year="{0:0>4}".format(year),
+                                              month="{0:0>2}".format(month),
+                                              day="{0:0>2}".format(day))
+    config_file_instance = template_config_file_instance.format(data=config_file_instance_data,
+                                                                year="{0:0>4}".format(year),
+                                                                month="{0:0>2}".format(month),
+                                                                day="{0:0>2}".format(day))
 
     with open(path_resources_config_file, "w", encoding="utf-8") as fp:
         fp.write(config_file)
