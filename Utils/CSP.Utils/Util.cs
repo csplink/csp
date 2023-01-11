@@ -18,32 +18,81 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-11     xqyjlj       add Cmd and Run
 // 2023-01-08     xqyjlj       initial version
 //
 
+using System;
 using System.Diagnostics;
+using System.IO;
+using Serilog;
 
 namespace CSP.Utils;
 
-public class Util
+public static class Util
 {
+    public static string Cmd(string arguments, string workingDirectory = "") {
+        string error = "";
+        using (Process process = new()) {
+            process.StartInfo.FileName = "cmd";
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardOutput = false;
+            process.StartInfo.RedirectStandardError = false;
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.WorkingDirectory = workingDirectory;
+            try {
+                process.Start();
+                process.StandardInput.WriteLine(arguments);
+                process.StandardInput.AutoFlush = true;
+                process.WaitForExit();
+            }
+            catch (Exception e) {
+                error = e.Message;
+                Log.Error(error);
+            }
+        }
+
+        return error;
+    }
+
+    public static (string, string, string) Run(string exec, string arguments, string workingDirectory = "") {
+        string stdOutput = "";
+        string stdError = "";
+        string error = "";
+        using (Process process = new()) {
+            process.StartInfo.FileName = exec;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardInput = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.Arguments = arguments;
+            process.StartInfo.WorkingDirectory = workingDirectory;
+            try {
+                process.Start();
+                process.StandardInput.WriteLine(arguments);
+                process.StandardInput.AutoFlush = true;
+                StreamReader standardOutput = process.StandardOutput;
+                StreamReader standardError = process.StandardError;
+                stdOutput = standardOutput.ReadToEnd();
+                stdError = standardError.ReadToEnd();
+                process.WaitForExit();
+            }
+            catch (Exception e) {
+                error = e.Message;
+                Log.Error(error);
+            }
+        }
+
+        return (stdOutput, stdError, error);
+    }
+
     public static void OpenUrl(string url) {
         if (string.IsNullOrWhiteSpace(url)) {
             return;
         }
 
-        Process p = new();
-        p.StartInfo.FileName               = "cmd.exe";
-        p.StartInfo.UseShellExecute        = false;
-        p.StartInfo.RedirectStandardInput  = true;
-        p.StartInfo.RedirectStandardOutput = false;
-        p.StartInfo.RedirectStandardError  = true;
-        p.StartInfo.CreateNoWindow         = true;
-        p.Start();
-
-        p.StandardInput.WriteLine("start " + url + "&exit");
-        p.StandardInput.AutoFlush = true;
-        p.WaitForExit();
-        p.Close();
+        Cmd($"start {url}&exit");
     }
 }
