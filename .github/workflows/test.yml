@@ -41,9 +41,7 @@ jobs:
 
       - name: 👷 restore dependencies
         shell: pwsh
-        run: | 
-          dotnet restore ${{ env.solution }}
-          ping www.baidu.com
+        run: dotnet restore ${{ env.solution }}
 
       - name: 👷 build
         shell: pwsh
