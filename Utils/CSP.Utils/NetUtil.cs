@@ -18,12 +18,14 @@
 // Change Logs:
 // Date           Author       Notes
 // ------------   ----------   -----------------------------------------------
+// 2023-01-13     xqyjlj       add ping
 // 2023-01-11     xqyjlj       initial version
 //
 
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CSP.Utils;
@@ -42,5 +44,44 @@ public static class NetUtil
         });
 
         return response.StatusCode == HttpStatusCode.OK;
+    }
+
+    public static float Ping(string url) {
+        string          host      = "";
+        Regex           httpRegex = new(@"(?<=http[s]{0,1}://).*?(?=/)"); //http[s]://xxx.com/..
+        Regex           gitRegex  = new(@"(?<=git@).*?(?=:)");            //git@git.xxx.com:xxx/xxx.git
+        MatchCollection mc        = httpRegex.Matches(url);
+
+        if (mc.Count != 1) {
+            mc = gitRegex.Matches(url);
+            if (mc.Count == 1) {
+                host = mc[0].Value;
+            }
+        }
+        else {
+            host = mc[0].Value;
+        }
+
+        var (stdOutput, _, _) = Util.Run("ping", $"-n 1 -w 1000 {host}");
+        Regex pingRegex1 = new(@"(?<=[=<])\d+(\.\d+)?(?=ms TTL=)");
+        Regex pingRegex2 = new(@"(?<=time[=<])\d+(\.\d+)?(?= ms)");
+
+        mc = pingRegex1.Matches(stdOutput);
+        string timeVal = "65535";
+        if (mc.Count != 1) {
+            mc = pingRegex2.Matches(stdOutput);
+            if (mc.Count == 1) {
+                timeVal = mc[0].Value;
+            }
+        }
+        else {
+            timeVal = mc[0].Value;
+        }
+
+        if (float.TryParse(timeVal, out float time)) {
+            return time;
+        }
+
+        return 65535;
     }
 }
