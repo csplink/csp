@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainwindow_view</class>
+ <widget class="QMainWindow" name="mainwindow_view">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QStackedWidget" name="stackedwidget">
+      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="page_2"/>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="action_new"/>
+    <addaction name="action_load"/>
+    <addaction name="action_import"/>
+    <addaction name="action_save"/>
+    <addaction name="action_saveas"/>
+    <addaction name="action_close"/>
+    <addaction name="action_report"/>
+    <addaction name="separator"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="dockwidget_left">
+   <property name="minimumSize">
+    <size>
+     <width>250</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_left_contents"/>
+  </widget>
+  <widget class="QDockWidget" name="dockwidget_right">
+   <property name="minimumSize">
+    <size>
+     <width>250</width>
+     <height>35</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_right_contents"/>
+  </widget>
+  <action name="action_new">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="action_load">
+   <property name="text">
+    <string>Load Project</string>
+   </property>
+  </action>
+  <action name="action_import">
+   <property name="text">
+    <string>Import Project</string>
+   </property>
+  </action>
+  <action name="action_save">
+   <property name="text">
+    <string>Save Project</string>
+   </property>
+  </action>
+  <action name="action_saveas">
+   <property name="text">
+    <string>Save Project As ...</string>
+   </property>
+  </action>
+  <action name="action_close">
+   <property name="text">
+    <string>Close Project</string>
+   </property>
+  </action>
+  <action name="action_report">
+   <property name="text">
+    <string>Generate Report</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,14 @@
+# Per default everything gets normalized and gets LF line endings on checkout.
+* text eol=lf
+
+# These will always have CRLF line endings on checkout.
+*.bat text eol=crlf
+
+# These are binary so should never be modified by git.
+*.a binary
+*.png binary
+*.jpg binary
+*.pdf binary
+
+# These should also not be modified by git.
+*.svg -text
