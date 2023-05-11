@@ -19,25 +19,12 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-04-17     xqyjlj       initial version
+# 2023-04-21     xqyjlj       initial version
 #
 
-cmake_minimum_required(VERSION 3.5)
+file(GLOB_RECURSE SOURCES
+        *.cpp)
 
-project(csp VERSION 0.1 LANGUAGES CXX)
-
-set(CMAKE_AUTOUIC ON) # Qt about
-set(CMAKE_AUTOMOC ON) # Qt Meta-Object Compiler
-set(CMAKE_AUTORCC ON) # Qt resource system
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_definitions(-DQT_NO_FOREACH)
-
-find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-
-add_subdirectory(apps)
-add_subdirectory(common)
-add_subdirectory(thirdparty)
+add_library(common_utils STATIC ${SOURCES})
+target_link_libraries(common_utils PUBLIC Qt5::Widgets)
+target_include_directories(common_utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
