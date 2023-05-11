@@ -203,7 +203,15 @@ inline bool Node::is(const Node& rhs) const {
 template <typename T>
 inline Node& Node::operator=(const T& rhs) {
   Assign(rhs);
+// work around GCC PR c++/98841
+#if defined __GNUC__ && __GNUC__ < 11
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Weffc++"
+#endif
   return *this;
+#if defined __GNUC__ && __GNUC__ < 11
+  #pragma GCC diagnostic pop
+#endif
 }
 
 inline Node& Node::operator=(const Node& rhs) {
