@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        repository_table.cpp
+ *  @file        common_repo.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,43 +24,28 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-20     xqyjlj       initial version
+ *  2023-05-11     xqyjlj       initial version
  */
 
-#include <QFile>
-#include <QDebug>
+#ifndef CSP_COMMON_REPO_H
+#define CSP_COMMON_REPO_H
 
-#include "db/chip/repository_table.h"
-#include "utils.h"
+#include <QObject>
 
-repository_table::repository_table(const QString &path) {
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(QFile::exists(path));
+class common_repo : public QObject {
+    Q_OBJECT
+public:
+    static common_repo *get_instance();
 
-    try {
-        std::string buffer;
-        QFile file(path);
+private:
+    common_repo();
+    ~common_repo() override;
 
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
-        file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
-        this->m_repository = yaml_data.as<repository_table::repository_t>();
-    }
-    catch (YAML::BadFile &e) {
-        utils::show_error_and_exit(e.what());
-    }
-    catch (YAML::BadConversion &e) {
-        utils::show_error_and_exit(e.what());
-    }
-    catch (std::exception &e) {
-        qDebug() << e.what();
-        throw;
-    }
-}
+    common_repo(const common_repo &signal);
+    const common_repo &operator=(const common_repo &signal);
 
-repository_table::repository_t repository_table::get_repository() const {
-    return this->m_repository;
-}
+private:
+    static common_repo *_common_repo;
+};
 
-repository_table::~repository_table() = default;
+#endif  // CSP_COMMON_REPO_H

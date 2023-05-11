@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        package_table.cpp
+ *  @file        common_repo.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,7 +24,18 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-19     xqyjlj       initial version
+ *  2023-05-11     xqyjlj       initial version
  */
 
-#include "package_table.h"
+#include "common_repo.h"
+
+common_repo *common_repo::_common_repo =new (std::nothrow) common_repo(); // NOLINT(cppcoreguidelines-interfaces-global-init)
+
+common_repo::common_repo() = default;
+
+common_repo::~common_repo() = default;
+
+common_repo *common_repo::get_instance()
+{
+    return _common_repo;
+}

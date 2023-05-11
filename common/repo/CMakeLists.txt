@@ -23,7 +23,9 @@
 #
 
 file(GLOB_RECURSE SOURCES
-        db/*.cpp)
+        db/*.cpp
+        inc/*.h
+        src/*.cpp)
 
 add_library(common_repo STATIC ${SOURCES})
 target_link_libraries(common_repo PUBLIC common_compat_layer common_utils)
@@ -32,9 +34,7 @@ target_include_directories(common_repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 ##########################################################################
 
 file(GLOB_RECURSE TESTCASES
-        test/db/*.cpp
-        test/db/chip/*.cpp
-        )
+        test/db/*.cpp)
 
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)

@@ -29,7 +29,7 @@
 
 #include <QtTest/QtTest>
 
-#include <db/chip/repository_table.h>
+#include <repository_table.h>
 
 class testcase_repository_table : public QObject {
     Q_OBJECT
