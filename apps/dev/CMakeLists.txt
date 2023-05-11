@@ -24,6 +24,9 @@
 
 set(name csp-dev)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+
 file(GLOB_RECURSE SOURCES
         src/*.cpp)
 
@@ -39,12 +42,13 @@ file(GLOB_RECURSE RESOURCES
         resources/*.rc)
 
 set(PROJECT_SOURCES ${SOURCES} ${HEADERS} ${VIEWS} ${RESOURCES})
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+set(TS_FILES
+        ./resources/translations/zh_CN.ts)
 
 include_directories("inc")
 
-add_executable(${name} ${PROJECT_SOURCES})
+qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
 
-target_link_libraries(${name} PRIVATE Qt5::Widgets)
+add_executable(${name} ${PROJECT_SOURCES} ${TS_FILES})
+
+target_link_libraries(${name} PRIVATE Qt5::Widgets common_repo)

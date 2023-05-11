@@ -4,5 +4,6 @@
         <file>images/logo.original.svg</file>
         <file>images/logo.png</file>
         <file>images/logo.svg</file>
+        <file>translations/zh_CN.qm</file>
     </qresource>
 </RCC>

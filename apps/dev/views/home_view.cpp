@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        main.cpp
+ *  @file        home_view.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,24 +24,18 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-18     xqyjlj       initial version
+ *  2023-05-11     xqyjlj       initial version
  */
 
-#include <QApplication>
-#include <QTranslator>
+#include "home_view.h"
+#include "ui_home_view.h"
 
-#include "mainwindow_view.h"
-
-int main(int argc, char *argv[])
+home_view::home_view(QWidget *parent) : QWidget(parent), ui(new Ui::home_view)
 {
-    QApplication a(argc, argv);
+    ui->setupUi(this);
+}
 
-    QTranslator translator;
-    translator.load(":/translations/zh_CN.qm");
-    qApp->installTranslator(&translator);
-
-    a.setWindowIcon(QIcon(":/images/logo.ico"));
-    mainwindow_view w;
-    w.show();
-    return a.exec();
+home_view::~home_view()
+{
+    delete ui;
 }
