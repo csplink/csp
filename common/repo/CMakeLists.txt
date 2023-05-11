@@ -22,6 +22,22 @@
 # 2023-04-19     xqyjlj       initial version
 #
 
-add_subdirectory(compat_layer)
-add_subdirectory(repo)
-add_subdirectory(utils)
+file(GLOB_RECURSE SOURCES
+        db/*.cpp)
+
+add_library(common_repo STATIC ${SOURCES})
+target_link_libraries(common_repo PUBLIC common_compat_layer common_utils)
+target_include_directories(common_repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+
+##########################################################################
+
+file(GLOB_RECURSE TESTCASES
+        test/db/*.cpp
+        test/db/chip/*.cpp
+        )
+
+foreach (TESTCASE ${TESTCASES})
+    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test common_repo)
+endforeach ()
