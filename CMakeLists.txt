@@ -35,8 +35,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DQT_NO_FOREACH)
 
-find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets Test)
+find_package(Qt5 REQUIRED COMPONENTS Widgets Test)
 
 add_subdirectory(apps)
 add_subdirectory(common)
