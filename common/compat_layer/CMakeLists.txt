@@ -22,5 +22,10 @@
 # 2023-04-19     xqyjlj       initial version
 #
 
-add_subdirectory(compat_layer)
-add_subdirectory(utils)
+file(GLOB_RECURSE SOURCES
+        yaml-cpp/*.cpp
+        )
+
+add_library(common_compat_layer STATIC ${SOURCES})
+target_link_libraries(common_compat_layer PUBLIC yaml-cpp Qt5::Core)
+target_include_directories(common_compat_layer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/yaml-cpp)
