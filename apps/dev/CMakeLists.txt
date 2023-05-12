@@ -45,7 +45,9 @@ set(PROJECT_SOURCES ${SOURCES} ${HEADERS} ${VIEWS} ${RESOURCES})
 set(TS_FILES
         ./resources/translations/zh_CN.ts)
 
-include_directories("inc")
+include_directories(
+        inc
+        views)
 
 qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
 
