@@ -27,6 +27,8 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
+#include <QDebug>
+
 #include "mainwindow_view.h"
 #include "ui_mainwindow_view.h"
 
@@ -41,4 +43,34 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
 mainwindow_view::~mainwindow_view()
 {
     delete ui;
+}
+
+void mainwindow_view::on_action_new_triggered(bool checked)
+{
+    Q_UNUSED(checked)
+}
+
+void mainwindow_view::on_action_load_triggered(bool checked)
+{
+    Q_UNUSED(checked)
+}
+
+void mainwindow_view::on_action_save_triggered(bool checked)
+{
+    Q_UNUSED(checked)
+}
+
+void mainwindow_view::on_action_saveas_triggered(bool checked)
+{
+    Q_UNUSED(checked)
+}
+
+void mainwindow_view::on_action_close_triggered(bool checked)
+{
+    Q_UNUSED(checked)
+}
+
+void mainwindow_view::on_action_report_triggered(bool checked)
+{
+    Q_UNUSED(checked)
 }

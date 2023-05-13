@@ -51,6 +51,14 @@ public:
     explicit mainwindow_view(QWidget *parent = nullptr);
     ~mainwindow_view() override;
 
+private slots:
+    void on_action_new_triggered(bool checked);
+    void on_action_load_triggered(bool checked);
+    void on_action_save_triggered(bool checked);
+    void on_action_saveas_triggered(bool checked);
+    void on_action_close_triggered(bool checked);
+    void on_action_report_triggered(bool checked);
+
 private:
     Ui::mainwindow_view *ui;
 };

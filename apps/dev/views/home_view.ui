@@ -95,7 +95,7 @@
           </spacer>
          </item>
          <item row="1" column="1">
-          <widget class="QCommandLinkButton" name="ubutton_create_mcu_project">
+          <widget class="QCommandLinkButton" name="button_create_mcu_project">
            <property name="text">
             <string>New project from MCU</string>
            </property>
@@ -121,7 +121,7 @@
           </spacer>
          </item>
          <item row="2" column="1">
-          <widget class="QCommandLinkButton" name="ubutton_create_board_Project">
+          <widget class="QCommandLinkButton" name="button_create_board_project">
            <property name="text">
             <string>New project from Board</string>
            </property>
@@ -217,7 +217,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_about_csp">
          <attribute name="title">

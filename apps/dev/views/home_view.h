@@ -43,6 +43,10 @@ public:
     explicit home_view(QWidget *parent = nullptr);
     ~home_view() override;
 
+private slots:
+    void on_button_create_mcu_project_clicked(bool checked);
+    void on_button_create_board_project_clicked(bool checked);
+
 private:
     Ui::home_view *ui;
 };
