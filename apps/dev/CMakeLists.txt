@@ -27,25 +27,32 @@ set(name csp-dev)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
-file(GLOB_RECURSE SOURCES
-        src/*.cpp)
+file(GLOB_RECURSE DIALOGS
+        dialogs/*.ui
+        dialogs/*.h
+        dialogs/*.cpp)
 
 file(GLOB_RECURSE HEADERS
         inc/*.h)
 
-file(GLOB_RECURSE VIEWS
-        views/*.ui
-        views/*.cpp)
+file(GLOB_RECURSE SOURCES
+        src/*.cpp)
 
 file(GLOB_RECURSE RESOURCES
         resources/*.qrc
         resources/*.rc)
 
-set(PROJECT_SOURCES ${SOURCES} ${HEADERS} ${VIEWS} ${RESOURCES})
+file(GLOB_RECURSE VIEWS
+        views/*.ui
+        views/*.h
+        views/*.cpp)
+
+set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS})
 set(TS_FILES
         ./resources/translations/zh_CN.ts)
 
 include_directories(
+        dialogs
         inc
         views)
 
