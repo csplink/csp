@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New project from MCU</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTreeWidget" name="utreeWidgetChooseMcu">
+     <widget class="QTreeWidget" name="treewidget_mcu_list">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
         <horstretch>1</horstretch>
@@ -34,7 +34,7 @@
       </property>
       <column>
        <property name="text">
-        <string>芯片</string>
+        <string>MCU</string>
        </property>
       </column>
      </widget>
@@ -55,9 +55,9 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tab">
+       <widget class="QWidget" name="tab_feature">
         <attribute name="title">
-         <string>特性</string>
+         <string>Feature</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_7">
          <item row="0" column="0">
@@ -87,12 +87,12 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="label_6">
                  <property name="text">
-                  <string>版本：</string>
+                  <string>Version:</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="label_7">
+                <widget class="QLabel" name="label_versions">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -100,7 +100,7 @@
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>0.0.1</string>
+                  <string notr="true">0.0.1</string>
                  </property>
                 </widget>
                </item>
@@ -125,14 +125,14 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="label_8">
                  <property name="text">
-                  <string>封装：</string>
+                  <string>Package:</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="label_9">
+                <widget class="QLabel" name="label_package">
                  <property name="text">
-                  <string>xxxxx</string>
+                  <string>Unknown</string>
                  </property>
                 </widget>
                </item>
@@ -157,12 +157,12 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
-                  <string>价格（元/10K）：</string>
+                  <string>Unit price for 10kU:</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="label_5">
+                <widget class="QLabel" name="label_price">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -170,7 +170,7 @@
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>9999</string>
+                  <string notr="true">9999</string>
                  </property>
                 </widget>
                </item>
@@ -178,7 +178,7 @@
              </widget>
             </item>
             <item row="0" column="1" rowspan="3">
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="label_market_status">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -186,7 +186,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>停售</string>
+               <string>Unknown</string>
               </property>
              </widget>
             </item>
@@ -199,12 +199,12 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>市场：</string>
+               <string>Market:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="4" rowspan="3">
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="label_package_image">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -224,7 +224,7 @@
                </size>
               </property>
               <property name="text">
-               <string>此栏放芯片图</string>
+               <string>Package Image</string>
               </property>
               <property name="scaledContents">
                <bool>true</bool>
@@ -235,7 +235,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QTextBrowser" name="utextBrowserReadMe">
+          <widget class="QTextBrowser" name="textbrowser_readme">
            <property name="font">
             <font>
              <family>JetBrains Mono</family>
@@ -251,23 +251,23 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_2">
+       <widget class="QWidget" name="tab_diagram">
         <attribute name="title">
-         <string>资源图</string>
+         <string>Diagram</string>
         </attribute>
        </widget>
-       <widget class="QWidget" name="tab_3">
+       <widget class="QWidget" name="tab_document">
         <attribute name="title">
-         <string>文档</string>
+         <string>Document</string>
         </attribute>
        </widget>
-       <widget class="QWidget" name="tab_4">
+       <widget class="QWidget" name="tab_buy">
         <attribute name="title">
-         <string>购买</string>
+         <string>Buy</string>
         </attribute>
        </widget>
       </widget>
-      <widget class="QTableWidget" name="utableWidegtMcu">
+      <widget class="QTableWidget" name="tablewidegt_mcu_infos">
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectRows</enum>
        </property>
@@ -282,22 +282,22 @@
        </attribute>
        <column>
         <property name="text">
-         <string>芯片名</string>
+         <string>Name</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>市场动态</string>
+         <string>Status</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>价格（元/10K）</string>
+         <string>Unit price for 10kU</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>封装</string>
+         <string>Package</string>
         </property>
        </column>
        <column>
@@ -317,27 +317,17 @@
        </column>
        <column>
         <property name="text">
-         <string>频率</string>
+         <string>Frequency</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>公司</string>
+         <string>Company</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>内核</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>主科</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>亚科</string>
+         <string>Core</string>
         </property>
        </column>
       </widget>
@@ -345,7 +335,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="ubuttonBox">
+    <widget class="QDialogButtonBox" name="buttonbox_dialog">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

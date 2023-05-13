@@ -5,138 +5,114 @@
     <name>choose_mcu_dialog</name>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <source>New project from MCU</source>
+        <translation>新建MCU工程</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="37"/>
-        <source>芯片</source>
-        <translation type="unfinished"></translation>
+        <source>MCU</source>
+        <translation>芯片</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="60"/>
-        <source>特性</source>
-        <translation type="unfinished"></translation>
+        <source>Feature</source>
+        <translation>特征</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="90"/>
-        <source>版本：</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dialogs/choose_mcu_dialog.ui" line="103"/>
-        <source>0.0.1</source>
-        <translation type="unfinished"></translation>
+        <source>Version:</source>
+        <translation>版本：</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="128"/>
-        <source>封装：</source>
-        <translation type="unfinished"></translation>
+        <source>Package:</source>
+        <translation>封装：</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="135"/>
-        <source>xxxxx</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../dialogs/choose_mcu_dialog.ui" line="189"/>
+        <source>Unknown</source>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="160"/>
-        <source>价格（元/10K）：</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dialogs/choose_mcu_dialog.ui" line="173"/>
-        <source>9999</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dialogs/choose_mcu_dialog.ui" line="189"/>
-        <source>停售</source>
-        <translation type="unfinished"></translation>
+        <source>Unit price for 10kU:</source>
+        <translation>价格（元/10K）：</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="202"/>
-        <source>市场：</source>
-        <translation type="unfinished"></translation>
+        <source>Market:</source>
+        <translation>市场：</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="227"/>
-        <source>此栏放芯片图</source>
-        <translation type="unfinished"></translation>
+        <source>Package Image</source>
+        <translation>封装图</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="256"/>
-        <source>资源图</source>
-        <translation type="unfinished"></translation>
+        <source>Diagram</source>
+        <translation>框图</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="261"/>
-        <source>文档</source>
-        <translation type="unfinished"></translation>
+        <source>Document</source>
+        <translation>文档</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="266"/>
-        <source>购买</source>
-        <translation type="unfinished"></translation>
+        <source>Buy</source>
+        <translation>购买</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="285"/>
-        <source>芯片名</source>
-        <translation type="unfinished"></translation>
+        <source>Name</source>
+        <translation>芯片名称</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="290"/>
-        <source>市场动态</source>
-        <translation type="unfinished"></translation>
+        <source>Status</source>
+        <translation>市场状态</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="295"/>
-        <source>价格（元/10K）</source>
-        <translation type="unfinished"></translation>
+        <source>Unit price for 10kU</source>
+        <translation>价格（元/10K）</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="300"/>
-        <source>封装</source>
-        <translation type="unfinished"></translation>
+        <source>Package</source>
+        <translation>封装</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="305"/>
         <source>Flash</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="310"/>
         <source>RAM</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="315"/>
         <source>IO</source>
-        <translation type="unfinished"></translation>
+        <translation>IO数量</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="320"/>
-        <source>频率</source>
-        <translation type="unfinished"></translation>
+        <source>Frequency</source>
+        <translation>频率</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="325"/>
-        <source>公司</source>
-        <translation type="unfinished"></translation>
+        <source>Company</source>
+        <translation>公司</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_mcu_dialog.ui" line="330"/>
-        <source>内核</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dialogs/choose_mcu_dialog.ui" line="335"/>
-        <source>主科</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dialogs/choose_mcu_dialog.ui" line="340"/>
-        <source>亚科</source>
-        <translation type="unfinished"></translation>
+        <source>Core</source>
+        <translation>内核</translation>
     </message>
 </context>
 <context>
