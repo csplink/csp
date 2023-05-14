@@ -20,8 +20,8 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="home_view" name="page"/>
-      <widget class="QWidget" name="page_2"/>
+      <widget class="home_view" name="page_home_view"/>
+      <widget class="mcu_configure_view" name="page_mcu_configure_view"/>
      </widget>
     </item>
    </layout>
@@ -122,6 +122,12 @@
    <class>home_view</class>
    <extends>QWidget</extends>
    <header location="global">home_view.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>mcu_configure_view</class>
+   <extends>QWidget</extends>
+   <header location="global">mcu_configure_view.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

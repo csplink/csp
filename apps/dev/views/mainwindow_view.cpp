@@ -37,7 +37,7 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     ui->setupUi(this);
     ui->dockwidget_left->hide();
     ui->dockwidget_right->hide();
-    ui->stackedwidget->setCurrentIndex(ENUM_HOME_STACK_INDEX);
+    ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
 }
 
 mainwindow_view::~mainwindow_view()

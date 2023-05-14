@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        mainwindow_view.h
+ *  @file        mcu_configure_view.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,43 +24,27 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-11     xqyjlj       initial version
+ *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef MAINWINDOW_VIEW_H
-#define MAINWINDOW_VIEW_H
+#ifndef MCU_CONFIGURE_VIEW_H
+#define MCU_CONFIGURE_VIEW_H
 
-#include <QMainWindow>
+#include <QWidget>
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
-class mainwindow_view;
+class mcu_configure_view;
 }
-QT_END_NAMESPACE
 
-class mainwindow_view : public QMainWindow {
+class mcu_configure_view : public QWidget {
     Q_OBJECT
 
-private:
-    typedef enum
-    {
-        ENUM_STACK_INDEX_HOME = 0,
-        ENUM_STACK_INDEX_MCU_CONFIGURE
-    } stack_index_t;
-
 public:
-    explicit mainwindow_view(QWidget *parent = nullptr);
-    ~mainwindow_view() override;
-
-private slots:
-    void on_action_new_triggered(bool checked);
-    void on_action_load_triggered(bool checked);
-    void on_action_save_triggered(bool checked);
-    void on_action_saveas_triggered(bool checked);
-    void on_action_close_triggered(bool checked);
-    void on_action_report_triggered(bool checked);
+    explicit mcu_configure_view(QWidget *parent = nullptr);
+    ~mcu_configure_view() override;
 
 private:
-    Ui::mainwindow_view *ui;
+    Ui::mcu_configure_view *ui;
 };
-#endif  // MAINWINDOW_VIEW_H
+
+#endif  // MCU_CONFIGURE_VIEW_H

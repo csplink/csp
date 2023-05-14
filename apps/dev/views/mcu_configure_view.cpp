@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        mainwindow_view.h
+ *  @file        mcu_configure_view.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,43 +24,18 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-11     xqyjlj       initial version
+ *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef MAINWINDOW_VIEW_H
-#define MAINWINDOW_VIEW_H
+#include "mcu_configure_view.h"
+#include "ui_mcu_configure_view.h"
 
-#include <QMainWindow>
-
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class mainwindow_view;
+mcu_configure_view::mcu_configure_view(QWidget *parent) : QWidget(parent), ui(new Ui::mcu_configure_view)
+{
+    ui->setupUi(this);
 }
-QT_END_NAMESPACE
 
-class mainwindow_view : public QMainWindow {
-    Q_OBJECT
-
-private:
-    typedef enum
-    {
-        ENUM_STACK_INDEX_HOME = 0,
-        ENUM_STACK_INDEX_MCU_CONFIGURE
-    } stack_index_t;
-
-public:
-    explicit mainwindow_view(QWidget *parent = nullptr);
-    ~mainwindow_view() override;
-
-private slots:
-    void on_action_new_triggered(bool checked);
-    void on_action_load_triggered(bool checked);
-    void on_action_save_triggered(bool checked);
-    void on_action_saveas_triggered(bool checked);
-    void on_action_close_triggered(bool checked);
-    void on_action_report_triggered(bool checked);
-
-private:
-    Ui::mainwindow_view *ui;
-};
-#endif  // MAINWINDOW_VIEW_H
+mcu_configure_view::~mcu_configure_view()
+{
+    delete ui;
+}
