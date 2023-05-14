@@ -27,8 +27,8 @@
  *  2023-04-20     xqyjlj       initial version
  */
 
-#ifndef CSP_REPOSITORY_TABLE_H
-#define CSP_REPOSITORY_TABLE_H
+#ifndef COMMON_REPO_REPOSITORY_TABLE_H
+#define COMMON_REPO_REPOSITORY_TABLE_H
 
 #include <QResource>
 
@@ -190,4 +190,4 @@ template <> struct convert<repository_table::mcu_t>
 };
 }  // namespace YAML
 
-#endif  // CSP_REPOSITORY_TABLE_H
+#endif  // COMMON_REPO_REPOSITORY_TABLE_H

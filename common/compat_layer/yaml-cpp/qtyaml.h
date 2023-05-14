@@ -27,8 +27,8 @@
  *  2023-04-19     xqyjlj       initial version
  */
 
-#ifndef CSP_QTYAML_H
-#define CSP_QTYAML_H
+#ifndef COMMON_COMPAT_LAYER_QTYAML_H
+#define COMMON_COMPAT_LAYER_QTYAML_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -203,4 +203,4 @@ template <> struct convert<QStringList>
 
 }  // end namespace YAML
 
-#endif  // CSP_QTYAML_H
+#endif  // COMMON_COMPAT_LAYER_QTYAML_H

@@ -27,8 +27,8 @@
  *  2023-04-21     xqyjlj       initial version
  */
 
-#ifndef CSP_UTILS_H
-#define CSP_UTILS_H
+#ifndef COMMON_UTILS_H
+#define COMMON_UTILS_H
 
 #include <QApplication>
 #include <QMessageBox>
@@ -97,4 +97,4 @@ public:
     }
 };
 
-#endif  // CSP_UTILS_H
+#endif  // COMMON_UTILS_H

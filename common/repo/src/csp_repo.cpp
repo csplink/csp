@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        common_repo.cpp
+ *  @file        csp_repo.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -27,15 +27,15 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#include "common_repo.h"
+#include "csp_repo.h"
 
-common_repo *common_repo::_common_repo =new (std::nothrow) common_repo(); // NOLINT(cppcoreguidelines-interfaces-global-init)
+csp_repo *csp_repo::_instance = new csp_repo();
 
-common_repo::common_repo() = default;
+csp_repo::csp_repo() = default;
 
-common_repo::~common_repo() = default;
+csp_repo::~csp_repo() = default;
 
-common_repo *common_repo::get_instance()
+csp_repo *csp_repo::get_instance()
 {
-    return _common_repo;
+    return _instance;
 }

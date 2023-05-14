@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        common_repo.h
+ *  @file        csp_repo.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,25 +27,25 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef CSP_COMMON_REPO_H
-#define CSP_COMMON_REPO_H
+#ifndef COMMON_REPO_CSP_REPO_H
+#define COMMON_REPO_CSP_REPO_H
 
 #include <QObject>
 
-class common_repo : public QObject {
+class csp_repo : public QObject {
     Q_OBJECT
 public:
-    static common_repo *get_instance();
+    static csp_repo *get_instance();
 
 private:
-    common_repo();
-    ~common_repo() override;
+    csp_repo();
+    ~csp_repo() override;
 
-    common_repo(const common_repo &signal);
-    const common_repo &operator=(const common_repo &signal);
+    csp_repo(const csp_repo &signal);
+    const csp_repo &operator=(const csp_repo &signal);
 
 private:
-    static common_repo *_common_repo;
+    static csp_repo *_instance;
 };
 
-#endif  // CSP_COMMON_REPO_H
+#endif  // COMMON_REPO_CSP_REPO_H

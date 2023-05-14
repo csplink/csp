@@ -27,7 +27,7 @@
  *  2023-05-03     xqyjlj       initial version
  */
 
-#include <QtTest/QtTest>
+#include <QtTest>
 
 #include <repository_table.h>
 

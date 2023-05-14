@@ -27,8 +27,8 @@
  *  2023-04-19     xqyjlj       initial version
  */
 
-#ifndef CSP_PACKAGE_TABLE_H
-#define CSP_PACKAGE_TABLE_H
+#ifndef COMMON_REPO_PACKAGE_TABLE_H
+#define COMMON_REPO_PACKAGE_TABLE_H
 
 #include "qtyaml.h"
 
@@ -49,4 +49,4 @@ public:
 public:
 };
 
-#endif  // CSP_PACKAGE_TABLE_H
+#endif  // COMMON_REPO_PACKAGE_TABLE_H
