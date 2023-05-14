@@ -41,7 +41,7 @@ class choose_mcu_dialog : public QDialog {
 
 public:
     explicit choose_mcu_dialog(QWidget *parent = nullptr);
-    ~choose_mcu_dialog();
+    ~choose_mcu_dialog() override;
 
 private:
     Ui::choose_mcu_dialog *ui;
