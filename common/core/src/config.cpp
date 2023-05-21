@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        csp_config.h
+ *  @file        csp_config.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -26,30 +26,40 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-05-14     xqyjlj       initial version
  */
+#include <QFile>
 
-#ifndef COMMON_CORE_CSP_CONFIG_H
-#define COMMON_CORE_CSP_CONFIG_H
+#include "config.h"
 
-#include <QObject>
-#include <QSettings>
+#define CSP_CONFIG_FILE_PATH              "config.ini"
+#define CSP_CONFIG_DEFAULT_VALUE          "null"
 
-class csp_config : public QObject {
-    Q_OBJECT
+#define CSP_CONFIG_KEY_REPO_DIR           "core/repodir"
+#define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
 
-public:
-    static bool    is_config(const QString &key);
-    static QString get(const QString &key);
-    static QString repodir();
+static QSettings settings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
 
-private:
-    csp_config();
-    ~csp_config() override;
+config *config::_instance = new config();
 
-    csp_config(const csp_config &signal);
-    const csp_config &operator=(const csp_config &signal);
+config::config()
+{
+    if (!is_config(CSP_CONFIG_KEY_REPO_DIR))
+        settings.setValue(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR);
+}
 
-private:
-    static csp_config *_instance;
-};
+config::~config() = default;
 
-#endif  //  COMMON_CORE_CSP_CONFIG_H
+bool config::is_config(const QString &key)
+{
+    return settings.value(key, CSP_CONFIG_DEFAULT_VALUE).toString() != CSP_CONFIG_DEFAULT_VALUE;
+}
+
+QString config::get(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+    return settings.value(key, CSP_CONFIG_DEFAULT_VALUE).toString();
+}
+
+QString config::repodir()
+{
+    return settings.value(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR).toString();
+}

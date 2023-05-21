@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        mcu_configure_view.h
+ *  @file        repo.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,27 +24,27 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-14     xqyjlj       initial version
+ *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef MCU_CONFIGURE_VIEW_H
-#define MCU_CONFIGURE_VIEW_H
+#include "repo.h"
+#include "config.h"
 
-#include <QWidget>
+repo *repo::_instance = new repo();
 
-namespace Ui {
-class mcu_configure_view;
+repo::repo()
+{
+    _repository = repository_table::get_repository(config::repodir() + "/db/repository.yml");
 }
 
-class mcu_configure_view : public QWidget {
-    Q_OBJECT
+repo::~repo() = default;
 
-public:
-    explicit mcu_configure_view(QWidget *parent = nullptr);
-    ~mcu_configure_view() override;
+repo *repo::get_instance()
+{
+    return _instance;
+}
 
-private:
-    Ui::mcu_configure_view *ui;
-};
-
-#endif  // MCU_CONFIGURE_VIEW_H
+const repository_table::repository_t *repo::get_repository() const
+{
+    return &_repository;
+}

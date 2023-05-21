@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        mcu_configure_view.cpp
+ *  @file        csp_repo.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,18 +24,37 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-14     xqyjlj       initial version
+ *  2023-05-11     xqyjlj       initial version
  */
 
-#include "mcu_configure_view.h"
-#include "ui_mcu_configure_view.h"
+#ifndef COMMON_REPO_CSP_REPO_H
+#define COMMON_REPO_CSP_REPO_H
 
-mcu_configure_view::mcu_configure_view(QWidget *parent) : QWidget(parent), ui(new Ui::mcu_configure_view)
-{
-    ui->setupUi(this);
-}
+#include <QObject>
 
-mcu_configure_view::~mcu_configure_view()
-{
-    delete ui;
-}
+#include "repository_table.h"
+
+class repo : public QObject {
+    Q_OBJECT
+
+public:
+    const repository_table::repository_t *get_repository() const;
+
+private:
+    repository_table::repository_t _repository;
+
+public:
+    static repo *get_instance();
+
+private:
+    repo();
+    ~repo() override;
+
+    repo(const repo &signal);
+    const repo &operator=(const repo &signal);
+
+private:
+    static repo *_instance;
+};
+
+#endif  // COMMON_REPO_CSP_REPO_H

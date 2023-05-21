@@ -27,9 +27,9 @@ file(GLOB_RECURSE SOURCES
         inc/*.h
         src/*.cpp)
 
-add_library(common_repo STATIC ${SOURCES})
-target_link_libraries(common_repo PUBLIC common_compat_layer common_utils)
-target_include_directories(common_repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+add_library(repo STATIC ${SOURCES})
+target_link_libraries(repo PUBLIC compat_layer utils core)
+target_include_directories(repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
@@ -39,5 +39,5 @@ file(GLOB_RECURSE TESTCASES
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
     add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
-    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test common_repo)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test repo)
 endforeach ()

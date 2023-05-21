@@ -27,40 +27,45 @@
  *  2023-04-20     xqyjlj       initial version
  */
 
-#include <QFile>
 #include <QDebug>
+#include <QFile>
 
 #include "repository_table.h"
 #include "utils.h"
 
-repository_table::repository_table(const QString &path) {
+repository_table::repository_table() = default;
+
+repository_table::repository_t repository_table::get_repository(const QString &path)
+{
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(QFile::exists(path));
 
-    try {
+    try
+    {
         std::string buffer;
-        QFile file(path);
+        QFile       file(path);
 
         file.open(QFileDevice::ReadOnly | QIODevice::Text);
         buffer = file.readAll().toStdString();
         file.close();
         YAML::Node yaml_data = YAML::Load(buffer);
-        this->m_repository = yaml_data.as<repository_table::repository_t>();
+        return yaml_data.as<repository_table::repository_t>();
     }
-    catch (YAML::BadFile &e) {
+    catch (YAML::BadFile &e)
+    {
         utils::show_error_and_exit(e.what());
     }
-    catch (YAML::BadConversion &e) {
+    catch (YAML::BadConversion &e)
+    {
         utils::show_error_and_exit(e.what());
     }
-    catch (std::exception &e) {
+    catch (std::exception &e)
+    {
         qDebug() << e.what();
         throw;
     }
-}
 
-repository_table::repository_t repository_table::get_repository() const {
-    return this->m_repository;
+    return {};
 }
 
 repository_table::~repository_table() = default;

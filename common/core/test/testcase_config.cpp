@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_csp_config.cpp
+ *  @file        testcase_config.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -30,7 +30,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "csp_config.h"
+#include "config.h"
 
 class testcase_csp_config : public QObject {
     Q_OBJECT

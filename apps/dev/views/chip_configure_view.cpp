@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        csp_repo.cpp
+ *  @file        chip_configure_view.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,18 +24,18 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-11     xqyjlj       initial version
+ *  2023-05-14     xqyjlj       initial version
  */
 
-#include "csp_repo.h"
+#include "chip_configure_view.h"
+#include "ui_chip_configure_view.h"
 
-csp_repo *csp_repo::_instance = new csp_repo();
-
-csp_repo::csp_repo() = default;
-
-csp_repo::~csp_repo() = default;
-
-csp_repo *csp_repo::get_instance()
+chip_configure_view::chip_configure_view(QWidget *parent) : QWidget(parent), ui(new Ui::chip_configure_view)
 {
-    return _instance;
+    ui->setupUi(this);
+}
+
+chip_configure_view::~chip_configure_view()
+{
+    delete ui;
 }

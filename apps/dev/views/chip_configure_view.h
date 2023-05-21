@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        csp_config.cpp
+ *  @file        chip_configure_view.h
  *  @brief
  *
  * ****************************************************************************
@@ -26,40 +26,25 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-05-14     xqyjlj       initial version
  */
-#include <QFile>
 
-#include "csp_config.h"
+#ifndef CHIP_CONFIGURE_VIEW_H
+#define CHIP_CONFIGURE_VIEW_H
 
-#define CSP_CONFIG_FILE_PATH              "config.ini"
-#define CSP_CONFIG_DEFAULT_VALUE          "null"
+#include <QWidget>
 
-#define CSP_CONFIG_KEY_REPO_DIR           "core/repodir"
-#define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
-
-static QSettings _settings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
-
-csp_config *csp_config::_instance = new csp_config();
-
-csp_config::csp_config()
-{
-    if (!is_config(CSP_CONFIG_KEY_REPO_DIR))
-        _settings.setValue(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR);
+namespace Ui {
+class chip_configure_view;
 }
 
-csp_config::~csp_config() = default;
+class chip_configure_view : public QWidget {
+    Q_OBJECT
 
-bool csp_config::is_config(const QString &key)
-{
-    return _settings.value(key, CSP_CONFIG_DEFAULT_VALUE).toString() != CSP_CONFIG_DEFAULT_VALUE;
-}
+public:
+    explicit chip_configure_view(QWidget *parent = nullptr);
+    ~chip_configure_view() override;
 
-QString csp_config::get(const QString &key)
-{
-    Q_ASSERT(!key.isEmpty());
-    return _settings.value(key, CSP_CONFIG_DEFAULT_VALUE).toString();
-}
+private:
+    Ui::chip_configure_view *ui;
+};
 
-QString csp_config::repodir()
-{
-    return _settings.value(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR).toString();
-}
+#endif  // CHIP_CONFIGURE_VIEW_H

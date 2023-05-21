@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        csp_repo.h
+ *  @file        config.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,28 +24,32 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-11     xqyjlj       initial version
+ *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef COMMON_REPO_CSP_REPO_H
-#define COMMON_REPO_CSP_REPO_H
+#ifndef COMMON_CORE_CSP_CONFIG_H
+#define COMMON_CORE_CSP_CONFIG_H
 
 #include <QObject>
+#include <QSettings>
 
-class csp_repo : public QObject {
+class config : public QObject {
     Q_OBJECT
+
 public:
-    static csp_repo *get_instance();
+    static bool    is_config(const QString &key);
+    static QString get(const QString &key);
+    static QString repodir();
 
 private:
-    csp_repo();
-    ~csp_repo() override;
+    config();
+    ~config() override;
 
-    csp_repo(const csp_repo &signal);
-    const csp_repo &operator=(const csp_repo &signal);
+    config(const config &signal);
+    const config &operator=(const config &signal);
 
 private:
-    static csp_repo *_instance;
+    static config *_instance;
 };
 
-#endif  // COMMON_REPO_CSP_REPO_H
+#endif  //  COMMON_CORE_CSP_CONFIG_H

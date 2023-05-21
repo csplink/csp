@@ -25,6 +25,6 @@
 file(GLOB_RECURSE SOURCES
         *.cpp)
 
-add_library(common_utils STATIC ${SOURCES})
-target_link_libraries(common_utils PUBLIC Qt5::Widgets)
-target_include_directories(common_utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+add_library(utils STATIC ${SOURCES})
+target_link_libraries(utils PUBLIC Qt5::Widgets)
+target_include_directories(utils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)

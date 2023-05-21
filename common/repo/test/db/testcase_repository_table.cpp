@@ -38,16 +38,15 @@ private slots:
 
     static void constructor()
     {
-        repository_table repo(":/repository.yml");
-
-        auto repository   = repo.get_repository();
-        auto repository_i = repository.constBegin();
-        while (repository_i != repository.constEnd())
+        auto repository   = repository_table::get_repository(":/repository.yml");
+        auto chips = repository.chips;
+        auto chips_i = chips.constBegin();
+        while (chips_i != chips.constEnd())
         {
-            QVERIFY(!repository_i.key().isEmpty());
-            QVERIFY(!repository_i.value().isEmpty());
+            QVERIFY(!chips_i.key().isEmpty());
+            QVERIFY(!chips_i.value().isEmpty());
 
-            auto company   = repository_i.value();
+            auto company   = chips_i.value();
             auto company_i = company.constBegin();
             while (company_i != company.constEnd())
             {
@@ -89,7 +88,7 @@ private slots:
                 }
                 company_i++;
             }
-            repository_i++;
+            chips_i++;
         }
     }
 };

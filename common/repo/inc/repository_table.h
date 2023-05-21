@@ -67,24 +67,27 @@ public:
         float              ram;
         temperature_t      temperature;
         voltage_t          voltage;
-    } mcu_t;
+    } chip_info_t;
 
-    typedef QMap<QString, mcu_t> line_t;
+    typedef QMap<QString, chip_info_t> chip_line_t;
 
-    typedef QMap<QString, line_t> series_t;
+    typedef QMap<QString, chip_line_t> chip_series_t;
 
-    typedef QMap<QString, series_t> company_t;
+    typedef QMap<QString, chip_series_t> chip_company_t;
 
-    typedef QMap<QString, company_t> repository_t;
+    typedef QMap<QString, chip_company_t> chip_t;
 
-private:
-    repository_t m_repository;
+    typedef struct
+    {
+        chip_t chips;
+    } repository_t;
 
 public:
-    explicit repository_table(const QString &path);
-    ~repository_table();
+    static repository_t get_repository(const QString &path);
 
-    [[nodiscard]] repository_t get_repository() const;
+private:
+    explicit repository_table();
+    ~repository_table();
 };
 
 namespace YAML {
@@ -94,8 +97,8 @@ template <> struct convert<repository_table::current_t>
     static Node encode(const repository_table::current_t &rhs)
     {
         Node node;
-        node.force_insert("lowest", rhs.lowest);
-        node.force_insert("run", rhs.run);
+        node.force_insert("Lowest", rhs.lowest);
+        node.force_insert("Run", rhs.run);
         return node;
     }
 
@@ -104,8 +107,8 @@ template <> struct convert<repository_table::current_t>
         if (!node.IsMap() || node.size() != 2)
             return false;
 
-        rhs.lowest = node["lowest"].as<float>();
-        rhs.run    = node["run"].as<float>();
+        rhs.lowest = node["Lowest"].as<float>();
+        rhs.run    = node["Run"].as<float>();
         return true;
     }
 };
@@ -115,8 +118,8 @@ template <> struct convert<repository_table::temperature_t>
     static Node encode(const repository_table::temperature_t &rhs)
     {
         Node node;
-        node.force_insert("max", rhs.max);
-        node.force_insert("min", rhs.min);
+        node.force_insert("Max", rhs.max);
+        node.force_insert("Min", rhs.min);
         return node;
     }
 
@@ -125,8 +128,8 @@ template <> struct convert<repository_table::temperature_t>
         if (!node.IsMap() || node.size() != 2)
             return false;
 
-        rhs.max = node["max"].as<float>();
-        rhs.min = node["min"].as<float>();
+        rhs.max = node["Max"].as<float>();
+        rhs.min = node["Min"].as<float>();
         return true;
     }
 };
@@ -136,8 +139,8 @@ template <> struct convert<repository_table::voltage_t>
     static Node encode(const repository_table::voltage_t &rhs)
     {
         Node node;
-        node.force_insert("max", rhs.max);
-        node.force_insert("min", rhs.min);
+        node.force_insert("Max", rhs.max);
+        node.force_insert("Min", rhs.min);
         return node;
     }
 
@@ -146,45 +149,64 @@ template <> struct convert<repository_table::voltage_t>
         if (!node.IsMap() || node.size() != 2)
             return false;
 
-        rhs.max = node["max"].as<float>();
-        rhs.min = node["min"].as<float>();
+        rhs.max = node["Max"].as<float>();
+        rhs.min = node["Min"].as<float>();
         return true;
     }
 };
 
-template <> struct convert<repository_table::mcu_t>
+template <> struct convert<repository_table::chip_info_t>
 {
-    static Node encode(const repository_table::mcu_t &rhs)
+    static Node encode(const repository_table::chip_info_t &rhs)
     {
         Node node;
-        node.force_insert("core", rhs.core);
-        node.force_insert("current", rhs.current);
-        node.force_insert("flash", rhs.flash);
-        node.force_insert("frequency", rhs.frequency);
-        node.force_insert("io", rhs.io);
-        node.force_insert("package", rhs.package);
-        node.force_insert("peripherals", rhs.peripherals);
-        node.force_insert("ram", rhs.ram);
-        node.force_insert("temperature", rhs.temperature);
-        node.force_insert("voltage", rhs.voltage);
+        node.force_insert("Core", rhs.core);
+        node.force_insert("Current", rhs.current);
+        node.force_insert("Flash", rhs.flash);
+        node.force_insert("Frequency", rhs.frequency);
+        node.force_insert("IO", rhs.io);
+        node.force_insert("Package", rhs.package);
+        node.force_insert("Peripherals", rhs.peripherals);
+        node.force_insert("Ram", rhs.ram);
+        node.force_insert("Temperature", rhs.temperature);
+        node.force_insert("Voltage", rhs.voltage);
         return node;
     }
 
-    static bool decode(const Node &node, repository_table::mcu_t &rhs)
+    static bool decode(const Node &node, repository_table::chip_info_t &rhs)
     {
         if (!node.IsMap() || node.size() != 10)
             return false;
 
-        rhs.core        = node["core"].as<QString>();
-        rhs.current     = node["current"].as<repository_table::current_t>();
-        rhs.flash       = node["flash"].as<float>();
-        rhs.frequency   = node["frequency"].as<float>();
-        rhs.io          = node["io"].as<int>();
-        rhs.package     = node["package"].as<QString>();
-        rhs.peripherals = node["peripherals"].as<QMap<QString, int>>();
-        rhs.ram         = node["ram"].as<float>();
-        rhs.temperature = node["temperature"].as<repository_table::temperature_t>();
-        rhs.voltage     = node["voltage"].as<repository_table::voltage_t>();
+        rhs.core        = node["Core"].as<QString>();
+        rhs.current     = node["Current"].as<repository_table::current_t>();
+        rhs.flash       = node["Flash"].as<float>();
+        rhs.frequency   = node["Frequency"].as<float>();
+        rhs.io          = node["IO"].as<int>();
+        rhs.package     = node["Package"].as<QString>();
+        rhs.peripherals = node["Peripherals"].as<QMap<QString, int>>();
+        rhs.ram         = node["Ram"].as<float>();
+        rhs.temperature = node["Temperature"].as<repository_table::temperature_t>();
+        rhs.voltage     = node["Voltage"].as<repository_table::voltage_t>();
+        return true;
+    }
+};
+
+template <> struct convert<repository_table::repository_t>
+{
+    static Node encode(const repository_table::repository_t &rhs)
+    {
+        Node node;
+        node.force_insert("Chips", rhs.chips);
+        return node;
+    }
+
+    static bool decode(const Node &node, repository_table::repository_t &rhs)
+    {
+        if (!node.IsMap() || node.size() != 1)
+            return false;
+
+        rhs.chips = node["Chips"].as<repository_table::chip_t>();
         return true;
     }
 };

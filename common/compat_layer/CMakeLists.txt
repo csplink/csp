@@ -26,6 +26,6 @@ file(GLOB_RECURSE SOURCES
         yaml-cpp/*.cpp
         )
 
-add_library(common_compat_layer STATIC ${SOURCES})
-target_link_libraries(common_compat_layer PUBLIC yaml-cpp Qt5::Core)
-target_include_directories(common_compat_layer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/yaml-cpp)
+add_library(compat_layer STATIC ${SOURCES})
+target_link_libraries(compat_layer PUBLIC yaml-cpp Qt5::Core)
+target_include_directories(compat_layer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/yaml-cpp)
