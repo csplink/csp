@@ -29,7 +29,7 @@
 
 #include <QDebug>
 
-#include "choose_mcu_dialog.h"
+#include "choose_chip_dialog.h"
 
 #include "home_view.h"
 #include "ui_home_view.h"
@@ -47,7 +47,7 @@ home_view::~home_view()
 void home_view::on_button_create_mcu_project_clicked(bool checked)
 {
     Q_UNUSED(checked)
-    choose_mcu_dialog dialog(this);
+    choose_chip_dialog dialog(this);
     dialog.exec();
 }
 

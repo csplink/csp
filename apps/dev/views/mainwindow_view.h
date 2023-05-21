@@ -45,7 +45,7 @@ private:
     typedef enum
     {
         ENUM_STACK_INDEX_HOME = 0,
-        ENUM_STACK_INDEX_MCU_CONFIGURE
+        ENUM_STACK_INDEX_CHIP_CONFIGURE
     } stack_index_t;
 
 public:

@@ -97,7 +97,7 @@
          <item row="1" column="1">
           <widget class="QCommandLinkButton" name="button_create_mcu_project">
            <property name="text">
-            <string>New project from MCU</string>
+            <string>New project from Chip</string>
            </property>
            <property name="iconSize">
             <size>
