@@ -34,7 +34,7 @@
 
 using namespace csp;
 
-class testcase_csp_config : public QObject {
+class testcase_config : public QObject {
     Q_OBJECT
 
 private slots:
@@ -46,6 +46,6 @@ private slots:
     }
 };
 
-QTEST_MAIN(testcase_csp_config)
+QTEST_MAIN(testcase_config)
 
-#include "testcase_csp_config.moc"
+#include "testcase_config.moc"
