@@ -36,6 +36,8 @@
 #define CSP_CONFIG_KEY_REPO_DIR           "core/repodir"
 #define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
 
+using namespace csp;
+
 static QSettings settings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
 
 config *config::_instance = new config();

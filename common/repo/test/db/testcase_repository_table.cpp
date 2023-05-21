@@ -31,6 +31,8 @@
 
 #include <repository_table.h>
 
+using namespace csp;
+
 class testcase_repository_table : public QObject {
     Q_OBJECT
 
@@ -38,9 +40,9 @@ private slots:
 
     static void constructor()
     {
-        auto repository   = repository_table::get_repository(":/repository.yml");
-        auto chips = repository.chips;
-        auto chips_i = chips.constBegin();
+        auto repository = repository_table::get_repository(":/repository.yml");
+        auto chips      = repository.chips;
+        auto chips_i    = chips.constBegin();
         while (chips_i != chips.constEnd())
         {
             QVERIFY(!chips_i.key().isEmpty());

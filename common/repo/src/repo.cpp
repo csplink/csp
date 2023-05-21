@@ -30,6 +30,8 @@
 #include "repo.h"
 #include "config.h"
 
+using namespace csp;
+
 repo *repo::_instance = new repo();
 
 repo::repo()

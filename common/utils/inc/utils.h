@@ -34,6 +34,7 @@
 #include <QMessageBox>
 #include <QString>
 
+namespace csp {
 class utils {
 public:
     /**
@@ -96,5 +97,5 @@ public:
         QMessageBox::question(parent, QObject::tr("Question"), message);
     }
 };
-
+}  // namespace csp
 #endif  // COMMON_UTILS_H

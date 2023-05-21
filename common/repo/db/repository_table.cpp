@@ -33,6 +33,8 @@
 #include "repository_table.h"
 #include "utils.h"
 
+using namespace csp;
+
 repository_table::repository_table() = default;
 
 repository_table::repository_t repository_table::get_repository(const QString &path)

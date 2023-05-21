@@ -32,6 +32,8 @@
 
 #include "config.h"
 
+using namespace csp;
+
 class testcase_csp_config : public QObject {
     Q_OBJECT
 
@@ -39,8 +41,8 @@ private slots:
 
     void repodir()
     {
-        qDebug() << csp_config::repodir();
-        QVERIFY(!csp_config::repodir().isEmpty());
+        qDebug() << config::repodir();
+        QVERIFY(!config::repodir().isEmpty());
     }
 };
 

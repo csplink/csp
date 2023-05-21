@@ -34,6 +34,7 @@
 
 #include "qtyaml.h"
 
+namespace csp {
 class repository_table {
 public:
     typedef struct
@@ -89,12 +90,13 @@ private:
     explicit repository_table();
     ~repository_table();
 };
+}  // namespace csp
 
 namespace YAML {
 
-template <> struct convert<repository_table::current_t>
+template <> struct convert<csp::repository_table::current_t>
 {
-    static Node encode(const repository_table::current_t &rhs)
+    static Node encode(const csp::repository_table::current_t &rhs)
     {
         Node node;
         node.force_insert("Lowest", rhs.lowest);
@@ -102,7 +104,7 @@ template <> struct convert<repository_table::current_t>
         return node;
     }
 
-    static bool decode(const Node &node, repository_table::current_t &rhs)
+    static bool decode(const Node &node, csp::repository_table::current_t &rhs)
     {
         if (!node.IsMap() || node.size() != 2)
             return false;
@@ -113,9 +115,9 @@ template <> struct convert<repository_table::current_t>
     }
 };
 
-template <> struct convert<repository_table::temperature_t>
+template <> struct convert<csp::repository_table::temperature_t>
 {
-    static Node encode(const repository_table::temperature_t &rhs)
+    static Node encode(const csp::repository_table::temperature_t &rhs)
     {
         Node node;
         node.force_insert("Max", rhs.max);
@@ -123,7 +125,7 @@ template <> struct convert<repository_table::temperature_t>
         return node;
     }
 
-    static bool decode(const Node &node, repository_table::temperature_t &rhs)
+    static bool decode(const Node &node, csp::repository_table::temperature_t &rhs)
     {
         if (!node.IsMap() || node.size() != 2)
             return false;
@@ -134,9 +136,9 @@ template <> struct convert<repository_table::temperature_t>
     }
 };
 
-template <> struct convert<repository_table::voltage_t>
+template <> struct convert<csp::repository_table::voltage_t>
 {
-    static Node encode(const repository_table::voltage_t &rhs)
+    static Node encode(const csp::repository_table::voltage_t &rhs)
     {
         Node node;
         node.force_insert("Max", rhs.max);
@@ -144,7 +146,7 @@ template <> struct convert<repository_table::voltage_t>
         return node;
     }
 
-    static bool decode(const Node &node, repository_table::voltage_t &rhs)
+    static bool decode(const Node &node, csp::repository_table::voltage_t &rhs)
     {
         if (!node.IsMap() || node.size() != 2)
             return false;
@@ -155,9 +157,9 @@ template <> struct convert<repository_table::voltage_t>
     }
 };
 
-template <> struct convert<repository_table::chip_info_t>
+template <> struct convert<csp::repository_table::chip_info_t>
 {
-    static Node encode(const repository_table::chip_info_t &rhs)
+    static Node encode(const csp::repository_table::chip_info_t &rhs)
     {
         Node node;
         node.force_insert("Core", rhs.core);
@@ -173,40 +175,40 @@ template <> struct convert<repository_table::chip_info_t>
         return node;
     }
 
-    static bool decode(const Node &node, repository_table::chip_info_t &rhs)
+    static bool decode(const Node &node, csp::repository_table::chip_info_t &rhs)
     {
         if (!node.IsMap() || node.size() != 10)
             return false;
 
         rhs.core        = node["Core"].as<QString>();
-        rhs.current     = node["Current"].as<repository_table::current_t>();
+        rhs.current     = node["Current"].as<csp::repository_table::current_t>();
         rhs.flash       = node["Flash"].as<float>();
         rhs.frequency   = node["Frequency"].as<float>();
         rhs.io          = node["IO"].as<int>();
         rhs.package     = node["Package"].as<QString>();
         rhs.peripherals = node["Peripherals"].as<QMap<QString, int>>();
         rhs.ram         = node["Ram"].as<float>();
-        rhs.temperature = node["Temperature"].as<repository_table::temperature_t>();
-        rhs.voltage     = node["Voltage"].as<repository_table::voltage_t>();
+        rhs.temperature = node["Temperature"].as<csp::repository_table::temperature_t>();
+        rhs.voltage     = node["Voltage"].as<csp::repository_table::voltage_t>();
         return true;
     }
 };
 
-template <> struct convert<repository_table::repository_t>
+template <> struct convert<csp::repository_table::repository_t>
 {
-    static Node encode(const repository_table::repository_t &rhs)
+    static Node encode(const csp::repository_table::repository_t &rhs)
     {
         Node node;
         node.force_insert("Chips", rhs.chips);
         return node;
     }
 
-    static bool decode(const Node &node, repository_table::repository_t &rhs)
+    static bool decode(const Node &node, csp::repository_table::repository_t &rhs)
     {
         if (!node.IsMap() || node.size() != 1)
             return false;
 
-        rhs.chips = node["Chips"].as<repository_table::chip_t>();
+        rhs.chips = node["Chips"].as<csp::repository_table::chip_t>();
         return true;
     }
 };

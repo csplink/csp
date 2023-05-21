@@ -33,6 +33,7 @@
 #include <QObject>
 #include <QSettings>
 
+namespace csp {
 class config : public QObject {
     Q_OBJECT
 
@@ -51,5 +52,5 @@ private:
 private:
     static config *_instance;
 };
-
+}  // namespace csp
 #endif  //  COMMON_CORE_CSP_CONFIG_H
