@@ -56,10 +56,12 @@ repository_table::repository_t repository_table::get_repository(const QString &p
     catch (YAML::BadFile &e)
     {
         utils::show_error_and_exit(e.what());
+        throw;
     }
     catch (YAML::BadConversion &e)
     {
         utils::show_error_and_exit(e.what());
+        throw;
     }
     catch (std::exception &e)
     {

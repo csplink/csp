@@ -38,7 +38,7 @@ class testcase_repository_table : public QObject {
 
 private slots:
 
-    static void constructor()
+    static void get_repository()
     {
         auto repository = repository_table::get_repository(":/repository.yml");
         auto chips      = repository.chips;

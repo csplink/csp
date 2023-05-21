@@ -30,8 +30,6 @@
 #ifndef COMMON_REPO_REPOSITORY_TABLE_H
 #define COMMON_REPO_REPOSITORY_TABLE_H
 
-#include <QResource>
-
 #include "qtyaml.h"
 
 namespace csp {
