@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>repository.yml</file>
+        <file>geehy/apm32f103zet6.yml</file>
     </qresource>
 </RCC>
