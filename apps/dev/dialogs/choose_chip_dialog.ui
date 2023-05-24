@@ -1,57 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>choose_mcu_dialog</class>
- <widget class="QDialog" name="choose_mcu_dialog">
+ <class>choose_chip_dialog</class>
+ <widget class="QDialog" name="choose_chip_dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1228</width>
-    <height>728</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>New project from MCU</string>
+   <string>New project from Chip</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="QSplitter" name="splitter">
+    <widget class="QSplitter" name="splitter_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTreeWidget" name="treewidget_mcu_list">
+     <widget class="QTreeView" name="treeview_chip_filter">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-        <horstretch>1</horstretch>
+       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <column>
-       <property name="text">
-        <string>MCU</string>
-       </property>
-      </column>
      </widget>
-     <widget class="QSplitter" name="splitter_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>4</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+     <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <property name="childrenCollapsible">
-       <bool>false</bool>
-      </property>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="QTabWidget" name="tabwidget">
        <property name="currentIndex">
         <number>0</number>
        </property>
@@ -69,6 +49,44 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="2" rowspan="2">
+             <widget class="QFrame" name="frame_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_2">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Unit price for 10kU:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="label_price">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string notr="true">9999</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item row="2" column="2">
              <widget class="QFrame" name="frame_4">
               <property name="sizePolicy">
@@ -110,7 +128,7 @@
             <item row="0" column="3" rowspan="3">
              <widget class="QFrame" name="frame_5">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -133,44 +151,6 @@
                 <widget class="QLabel" name="label_package">
                  <property name="text">
                   <string>Unknown</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="0" column="2" rowspan="2">
-             <widget class="QFrame" name="frame_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_4">
-                 <property name="text">
-                  <string>Unit price for 10kU:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="label_price">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string notr="true">9999</string>
                  </property>
                 </widget>
                </item>
@@ -205,11 +185,20 @@
             </item>
             <item row="0" column="4" rowspan="3">
              <widget class="QLabel" name="label_package_image">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>100</height>
+               </size>
               </property>
               <property name="sizeIncrement">
                <size>
@@ -228,6 +217,9 @@
               </property>
               <property name="scaledContents">
                <bool>true</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -267,69 +259,22 @@
         </attribute>
        </widget>
       </widget>
-      <widget class="QTableWidget" name="tablewidegt_mcu_infos">
-       <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectRows</enum>
+      <widget class="QWidget" name="widget" native="true">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideNone</enum>
-       </property>
-       <property name="sortingEnabled">
-        <bool>true</bool>
-       </property>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>150</number>
-       </attribute>
-       <column>
-        <property name="text">
-         <string>Name</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Status</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Unit price for 10kU</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Package</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Flash</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>RAM</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>IO</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Frequency</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Company</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Core</string>
-        </property>
-       </column>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QTableView" name="tableview_chip_infos">
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </widget>
