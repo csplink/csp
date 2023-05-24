@@ -30,8 +30,11 @@
 #ifndef COMMON_REPO_CSP_REPO_H
 #define COMMON_REPO_CSP_REPO_H
 
+#include <QFile>
 #include <QObject>
 
+#include "chip_summary_table.h"
+#include "config.h"
 #include "repository_table.h"
 
 namespace csp {
@@ -40,6 +43,17 @@ class repo : public QObject {
 
 public:
     const repository_table::repository_t *get_repository() const;
+
+    inline chip_summary_table::chip_summary_t get_chip_summary(const QString &company, const QString &name)
+    {
+        return chip_summary_table::get_chip_summary(company, name);
+    }
+
+    inline bool chip_summary_exists(const QString &company, const QString &name)
+    {
+        return QFile::exists(
+            QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower()));
+    }
 
 private:
     repository_table::repository_t _repository;
