@@ -56,6 +56,10 @@ public:
     typedef struct
     {
         QString            core;
+        QString            company;
+        QString            line;
+        QString            series;
+        QString            name;
         current_t          current;
         float              flash;
         float              frequency;
