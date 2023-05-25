@@ -60,4 +60,4 @@ qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
 
 add_executable(${name} ${PROJECT_SOURCES} ${TS_FILES})
 
-target_link_libraries(${name} PRIVATE Qt5::Widgets repo core)
+target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project)

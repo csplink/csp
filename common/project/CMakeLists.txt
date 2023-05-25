@@ -19,10 +19,25 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-04-19     xqyjlj       initial version
+# 2023-05-26     xqyjlj       initial version
 #
 
-add_subdirectory(compat_layer)
-add_subdirectory(core)
-add_subdirectory(project)
-add_subdirectory(repo)
+file(GLOB_RECURSE SOURCES
+        inc/*.h
+        src/*.cpp)
+
+add_library(project STATIC ${SOURCES})
+target_link_libraries(project PUBLIC Qt5::Core)
+target_include_directories(project PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+
+##########################################################################
+
+file(GLOB_RECURSE TESTCASES
+        test/*.cpp)
+
+foreach (TESTCASE ${TESTCASES})
+    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TESTCASE})
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test project)
+endforeach ()
+
