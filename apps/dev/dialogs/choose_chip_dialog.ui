@@ -49,7 +49,72 @@
             <enum>QFrame::Raised</enum>
            </property>
            <layout class="QGridLayout" name="gridLayout_6">
-            <item row="0" column="2" rowspan="2">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="pushbutton_name">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Chip Name</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2" rowspan="3">
+             <widget class="QLabel" name="label_package_image">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>78</width>
+                <height>78</height>
+               </size>
+              </property>
+              <property name="sizeIncrement">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Package Image</string>
+              </property>
+              <property name="scaledContents">
+               <bool>true</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
              <widget class="QFrame" name="frame_3">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -87,7 +152,7 @@
               </layout>
              </widget>
             </item>
-            <item row="2" column="2">
+            <item row="1" column="3" rowspan="2">
              <widget class="QFrame" name="frame_4">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -125,7 +190,7 @@
               </layout>
              </widget>
             </item>
-            <item row="0" column="3" rowspan="3">
+            <item row="0" column="1" rowspan="3">
              <widget class="QFrame" name="frame_5">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -140,10 +205,16 @@
                <enum>QFrame::Raised</enum>
               </property>
               <layout class="QGridLayout" name="gridLayout_5">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_8">
+               <item row="2" column="1">
+                <widget class="QLabel" name="label_market_status">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="text">
-                  <string>Package:</string>
+                  <string>Unknown</string>
                  </property>
                 </widget>
                </item>
@@ -154,72 +225,39 @@
                  </property>
                 </widget>
                </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Market:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Package:</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
-            <item row="0" column="1" rowspan="3">
-             <widget class="QLabel" name="label_market_status">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Unknown</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" rowspan="3">
-             <widget class="QLabel" name="label_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Market:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="4" rowspan="3">
-             <widget class="QLabel" name="label_package_image">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
+            <item row="1" column="0" rowspan="2">
+             <widget class="QPushButton" name="pushbutton_company">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="sizeIncrement">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>0</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
-               <string>Package Image</string>
-              </property>
-              <property name="scaledContents">
-               <bool>true</bool>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <string>Company Name</string>
               </property>
              </widget>
             </item>
@@ -280,7 +318,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonbox_dialog">
+    <widget class="QDialogButtonBox" name="dialogbuttonbox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

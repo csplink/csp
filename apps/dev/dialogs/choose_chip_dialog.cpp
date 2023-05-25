@@ -28,8 +28,10 @@
  */
 
 #include <QDebug>
+#include <QPushButton>
 
 #include "choose_chip_dialog.h"
+#include "os.h"
 #include "ui_choose_chip_dialog.h"
 
 using namespace csp;
@@ -38,7 +40,12 @@ choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), ui(ne
 {
     ui->setupUi(this);
     ui->splitter_2->setSizes(QList<int>() << 156 << 1102);
+    ui->dialogbuttonbox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
+    ui->dialogbuttonbox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     setWindowState(Qt::WindowMaximized);
+
+    connect(ui->dialogbuttonbox, &QDialogButtonBox::accepted, this, &choose_chip_dialog::accept, Qt::UniqueConnection);
+    connect(ui->dialogbuttonbox, &QDialogButtonBox::rejected, this, &choose_chip_dialog::reject, Qt::UniqueConnection);
 
     _repo_instance = repo::get_instance();
     find_all_keys();
@@ -294,6 +301,8 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     ui->label_market_status->setText(market_status);
     ui->label_price->setText(price);
     ui->label_package->setText(package);
+    ui->pushbutton_name->setText(chip_name);
+    ui->pushbutton_company->setText(company);
 
     QPixmap image;
     if (QFile::exists(package_path))
@@ -307,10 +316,43 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     {
         auto chip_summary = _repo_instance->get_chip_summary(company, chip_name);
         ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(chip_name) + chip_summary.illustrate["zh-CN"]);
+        ui->pushbutton_name->setProperty("user_url", chip_summary.url["zh-CN"]);
+        ui->pushbutton_company->setProperty("user_url", chip_summary.company_url["zh-CN"]);
     }
     else
     {
         ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(chip_name) +
                                             tr("The chip description file <%1.yml> does not exist").arg(chip_name));
+        ui->pushbutton_name->setProperty("user_url", "nil");
+        ui->pushbutton_company->setProperty("user_url", "nil");
     }
 }
+
+void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
+{
+    if (button == nullptr)
+        return;
+
+    if (button->text() == tr("Create"))
+    {
+    }
+}
+
+void choose_chip_dialog::on_pushbutton_name_pressed()
+{
+    auto url = ui->pushbutton_name->property("user_url").toString();
+    if (url == "nil")
+        return;
+
+    os::open_url(url);
+}
+
+void choose_chip_dialog::on_pushbutton_company_pressed()
+{
+    auto url = ui->pushbutton_company->property("user_url").toString();
+    if (url == "nil")
+        return;
+
+    os::open_url(url);
+}
+

@@ -46,6 +46,7 @@ public:
 private slots:
     void on_button_create_mcu_project_clicked(bool checked);
     void on_button_create_board_project_clicked(bool checked);
+    void choose_chip_dialog_finished_callback(int result);
 
 private:
     Ui::home_view *ui;

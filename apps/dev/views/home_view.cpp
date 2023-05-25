@@ -48,10 +48,17 @@ void home_view::on_button_create_mcu_project_clicked(bool checked)
 {
     Q_UNUSED(checked)
     choose_chip_dialog dialog(this);
+    connect(&dialog, &choose_chip_dialog::finished, this, &home_view::choose_chip_dialog_finished_callback,
+            Qt::UniqueConnection);
     dialog.exec();
 }
 
 void home_view::on_button_create_board_project_clicked(bool checked)
 {
     Q_UNUSED(checked)
+}
+
+void home_view::choose_chip_dialog_finished_callback(int result)
+{
+    Q_UNUSED(result)
 }

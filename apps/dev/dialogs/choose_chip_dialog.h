@@ -30,6 +30,7 @@
 #ifndef CHOOSE_MCU_DIALOG_H
 #define CHOOSE_MCU_DIALOG_H
 
+#include <QAbstractButton>
 #include <QDialog>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
@@ -51,6 +52,9 @@ private slots:
     void treeview_chip_filter_model_item_changed_callback(QStandardItem *item);
     void tableview_chip_infos_selection_model_selection_changed_callback(const QItemSelection &selected,
                                                                          const QItemSelection &deselected);
+    void on_dialogbuttonbox_clicked(QAbstractButton *button);
+    void on_pushbutton_name_pressed();
+    void on_pushbutton_company_pressed();
 
 private:
     Ui::choose_chip_dialog *ui;
