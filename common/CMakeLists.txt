@@ -25,4 +25,3 @@
 add_subdirectory(compat_layer)
 add_subdirectory(core)
 add_subdirectory(repo)
-add_subdirectory(utils)

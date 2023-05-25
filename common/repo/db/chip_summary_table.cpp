@@ -32,7 +32,7 @@
 
 #include "chip_summary_table.h"
 #include "config.h"
-#include "utils.h"
+#include "os.h"
 
 using namespace csp;
 
@@ -58,12 +58,12 @@ chip_summary_table::chip_summary_t chip_summary_table::get_chip_summary(const QS
     }
     catch (YAML::BadFile &e)
     {
-        utils::show_error_and_exit(e.what());
+        os::show_error_and_exit(e.what());
         throw;
     }
     catch (YAML::BadConversion &e)
     {
-        utils::show_error_and_exit(e.what());
+        os::show_error_and_exit(e.what());
         throw;
     }
     catch (std::exception &e)

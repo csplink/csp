@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        utils.h
+ *  @file        os.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,18 +24,20 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-21     xqyjlj       initial version
+ *  2023-05-25     xqyjlj       initial version
  */
 
-#ifndef COMMON_UTILS_H
-#define COMMON_UTILS_H
+#ifndef COMMON_CORE_CSP_OS_H
+#define COMMON_CORE_CSP_OS_H
 
 #include <QApplication>
+#include <QDesktopServices>
 #include <QMessageBox>
 #include <QString>
+#include <QUrl>
 
 namespace csp {
-class utils {
+class os {
 public:
     /**
      * @brief Show an information message box.
@@ -96,6 +98,12 @@ public:
     {
         QMessageBox::question(parent, QObject::tr("Question"), message);
     }
+
+    static void open_url(const QString &url)
+    {
+        QDesktopServices::openUrl(QUrl(url));
+    }
 };
 }  // namespace csp
-#endif  // COMMON_UTILS_H
+
+#endif  // COMMON_CORE_CSP_OS_H

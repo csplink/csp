@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        repository_table.cpp
+ *  @file        os.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,52 +24,7 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-20     xqyjlj       initial version
+ *  2023-05-25     xqyjlj       initial version
  */
 
-#include <QDebug>
-#include <QFile>
-
-#include "repository_table.h"
 #include "os.h"
-
-using namespace csp;
-
-repository_table::repository_table() = default;
-
-repository_table::repository_t repository_table::get_repository(const QString &path)
-{
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(QFile::exists(path));
-
-    try
-    {
-        std::string buffer;
-        QFile       file(path);
-
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
-        file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<repository_table::repository_t>();
-    }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (std::exception &e)
-    {
-        qDebug() << e.what();
-        throw;
-    }
-
-    return {};
-}
-
-repository_table::~repository_table() = default;

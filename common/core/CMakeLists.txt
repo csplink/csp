@@ -27,7 +27,7 @@ file(GLOB_RECURSE SOURCES
         src/*.cpp)
 
 add_library(core STATIC ${SOURCES})
-target_link_libraries(core PUBLIC Qt5::Core)
+target_link_libraries(core PUBLIC Qt5::Widgets)
 target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
