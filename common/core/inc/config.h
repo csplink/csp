@@ -41,6 +41,8 @@ public:
     static bool    is_config(const QString &key);
     static QString get(const QString &key);
     static QString repodir();
+    static void    set(const QString &key, const QString &value);
+    static QString language();
 
 private:
     config();

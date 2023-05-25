@@ -36,6 +36,9 @@
 #define CSP_CONFIG_KEY_REPO_DIR           "core/repodir"
 #define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
 
+#define CSP_CONFIG_KEY_LANGUAGE           "core/language"
+#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE "zh-CN"
+
 using namespace csp;
 
 static QSettings settings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
@@ -46,6 +49,8 @@ config::config()
 {
     if (!is_config(CSP_CONFIG_KEY_REPO_DIR))
         settings.setValue(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR);
+    if (!is_config(CSP_CONFIG_KEY_LANGUAGE))
+        settings.setValue(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE);
 }
 
 config::~config() = default;
@@ -64,4 +69,14 @@ QString config::get(const QString &key)
 QString config::repodir()
 {
     return settings.value(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR).toString();
+}
+
+void config::set(const QString &key, const QString &value)
+{
+    settings.setValue(key, value);
+}
+
+QString config::language()
+{
+    return settings.value(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE).toString();
 }

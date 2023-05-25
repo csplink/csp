@@ -30,14 +30,17 @@
 #include <QApplication>
 #include <QTranslator>
 
+#include "config.h"
 #include "mainwindow_view.h"
+
+using namespace csp;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
     QTranslator translator;
-    translator.load(":/translations/zh_CN.qm");
+    translator.load(QString(":/translations/%1.qm").arg(config::language().replace("-", "_")));
     qApp->installTranslator(&translator);
 
     a.setWindowIcon(QIcon(":/images/logo.ico"));
