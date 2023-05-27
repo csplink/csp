@@ -36,58 +36,58 @@
         <translation>特征</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="173"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="179"/>
         <source>Version:</source>
         <translation>版本：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="244"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="250"/>
         <source>Package:</source>
         <translation>封装：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="217"/>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="224"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="223"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="230"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="135"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="141"/>
         <source>Unit price for 10kU:</source>
         <translation>价格（元/10K）：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="67"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="73"/>
         <source>Chip Name</source>
         <translation>芯片名</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="260"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="266"/>
         <source>Company Name</source>
         <translation>公司名</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="237"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="243"/>
         <source>Market:</source>
         <translation>市场：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="107"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="113"/>
         <source>Package Image</source>
         <translation>封装图</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="286"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="292"/>
         <source>Diagram</source>
         <translation>框图</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="291"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="297"/>
         <source>Document</source>
         <translation>文档</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="296"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="302"/>
         <source>Buy</source>
         <translation>购买</translation>
     </message>
@@ -114,7 +114,7 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="43"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="336"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="337"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
@@ -150,7 +150,7 @@
         <translation>不可用</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="325"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="326"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation>芯片描述文件 &lt;%1.yml&gt; 不存在</translation>
     </message>
