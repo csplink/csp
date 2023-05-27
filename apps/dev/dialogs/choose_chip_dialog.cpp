@@ -341,7 +341,7 @@ void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
 void choose_chip_dialog::on_pushbutton_name_pressed()
 {
     auto url = ui->pushbutton_name->property("user_url").toString();
-    if (url == "nil")
+    if (url == "nil" || url.isEmpty())
         return;
 
     os::open_url(url);
@@ -350,9 +350,8 @@ void choose_chip_dialog::on_pushbutton_name_pressed()
 void choose_chip_dialog::on_pushbutton_company_pressed()
 {
     auto url = ui->pushbutton_company->property("user_url").toString();
-    if (url == "nil")
+    if (url == "nil" || url.isEmpty())
         return;
 
     os::open_url(url);
 }
-

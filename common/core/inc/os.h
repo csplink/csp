@@ -101,6 +101,8 @@ public:
 
     static void open_url(const QString &url)
     {
+        Q_ASSERT(!url.isEmpty());
+
         QDesktopServices::openUrl(QUrl(url));
     }
 };

@@ -30,11 +30,13 @@
 #ifndef COMMON_COMPAT_LAYER_QTYAML_H
 #define COMMON_COMPAT_LAYER_QTYAML_H
 
+#include <iostream>
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QPair>
 #include <QtCore/QString>
 #include <QtCore/QVector>
+#include <type_traits>
 
 #include <yaml-cpp/yaml.h>
 
@@ -81,7 +83,10 @@ template <typename Key, typename Value> struct convert<QMap<Key, Value>>
         const_iterator it = node.begin();
         while (it != node.end())
         {
-            rhs[it->first.as<Key>()] = it->second.as<Value>();
+            if (it->second.IsNull())
+                rhs[it->first.as<Key>()] = Value();
+            else
+                rhs[it->first.as<Key>()] = it->second.as<Value>();
             ++it;
         }
         return true;
