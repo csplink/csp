@@ -1,0 +1,1429 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2023 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        pinout.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2023-01-07     xqyjlj       initial version
+#
+
+PE2:
+  Position: 1
+  Type: I/O
+  Functions:
+    FSMC-A23:
+    SYS-TRACECLK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE3:
+  Position: 2
+  Type: I/O
+  Functions:
+    FSMC-A19:
+    SYS-TRACED0:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE4:
+  Position: 3
+  Type: I/O
+  Functions:
+    FSMC-A20:
+    SYS-TRACED1:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE5:
+  Position: 4
+  Type: I/O
+  Functions:
+    FSMC-A21:
+    SYS-TRACED2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE6:
+  Position: 5
+  Type: I/O
+  Functions:
+    FSMC-A22:
+    SYS-TRACED3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VBAT:
+  Position: 6
+  Type: Power
+PC13:
+  Position: 7
+  Type: I/O
+  Functions:
+    RTC-OUT:
+    RTC-TAMPER:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC14:
+  Position: 8
+  Type: I/O
+  Functions:
+    RCM-OSC32-IN: {}
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC15:
+  Position: 9
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    RCM-OSC32-OUT: {}
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF0:
+  Position: 10
+  Type: I/O
+  Functions:
+    FSMC-A0:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF1:
+  Position: 11
+  Type: I/O
+  Functions:
+    FSMC-A1:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF2:
+  Position: 12
+  Type: I/O
+  Functions:
+    FSMC-A2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF3:
+  Position: 13
+  Type: I/O
+  Functions:
+    FSMC-A3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF4:
+  Position: 14
+  Type: I/O
+  Functions:
+    FSMC-A4:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF5:
+  Position: 15
+  Type: I/O
+  Functions:
+    FSMC-A5:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-5:
+  Position: 16
+  Type: Power
+VDD-5:
+  Position: 17
+  Type: Power
+PF6:
+  Position: 18
+  Type: I/O
+  Functions:
+    ADC3-IN4:
+    FSMC-NIORD:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF7:
+  Position: 19
+  Type: I/O
+  Functions:
+    ADC3-IN5:
+    FSMC-NREG:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF8:
+  Position: 20
+  Type: I/O
+  Functions:
+    ADC3-IN6:
+    FSMC-NIOWR:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF9:
+  Position: 21
+  Type: I/O
+  Functions:
+    ADC3-IN7:
+    DAC-EXTI9:
+    FSMC-CD:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF10:
+  Position: 22
+  Type: I/O
+  Functions:
+    ADC3-IN8:
+    FSMC-INTR:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+RCM-OSC-IN:
+  Position: 23
+  Type: I/O
+  Functions:
+    RCM-OSC-IN: {}
+RCM-OSC-OUT:
+  Position: 24
+  Type: I/O
+  Functions:
+    RCM-OSC-OUT: {}
+NRST:
+  Position: 25
+  Type: Reset
+PC0:
+  Position: 26
+  Type: I/O
+  Functions:
+    ADC1-IN10:
+    ADC2-IN10:
+    ADC3-IN10:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC1:
+  Position: 27
+  Type: I/O
+  Functions:
+    ADC1-IN11:
+    ADC2-IN11:
+    ADC3-IN11:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC2:
+  Position: 28
+  Type: I/O
+  Functions:
+    ADC1-IN12:
+    ADC2-IN12:
+    ADC3-IN12:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC3:
+  Position: 29
+  Type: I/O
+  Functions:
+    ADC1-IN13:
+    ADC2-IN13:
+    ADC3-IN13:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSSA:
+  Position: 30
+  Type: Power
+VREF-:
+  Position: 31
+  Type: Power
+VREF+:
+  Position: 32
+  Type: Power
+VDDA:
+  Position: 33
+  Type: Power
+PA0:
+  Position: 34
+  Type: I/O
+  Functions:
+    ADC1-IN0:
+    ADC2-IN0:
+    ADC3-IN0:
+    SYS-WKUP:
+    TIM2-CH1:
+    TIM2-ETR:
+    TIM5-CH1:
+    TIM8-ETR:
+    USART2-CTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA1:
+  Position: 35
+  Type: I/O
+  Functions:
+    ADC1-IN1:
+    ADC2-IN1:
+    ADC3-IN1:
+    TIM2-CH2:
+    TIM5-CH2:
+    USART2-RTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA2:
+  Position: 36
+  Type: I/O
+  Functions:
+    ADC1-IN2:
+    ADC2-IN2:
+    ADC3-IN2:
+    TIM2-CH3:
+    TIM5-CH3:
+    USART2-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA3:
+  Position: 37
+  Type: I/O
+  Functions:
+    ADC1-IN3:
+    ADC2-IN3:
+    ADC3-IN3:
+    TIM2-CH4:
+    TIM5-CH4:
+    USART2-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-4:
+  Position: 38
+  Type: Power
+VDD-4:
+  Position: 39
+  Type: Power
+PA4:
+  Position: 40
+  Type: I/O
+  Functions:
+    ADC1-IN4:
+    ADC2-IN4:
+    DAC-OUT1:
+    SPI1-NSS:
+    USART2-CK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA5:
+  Position: 41
+  Type: I/O
+  Functions:
+    ADC1-IN5:
+    ADC2-IN5:
+    DAC-OUT2:
+    SPI1-SCK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA6:
+  Position: 42
+  Type: I/O
+  Functions:
+    ADC1-IN6:
+    ADC2-IN6:
+    SPI1-MISO:
+    TIM1-BKIN:
+    TIM3-CH1:
+    TIM8-BKIN:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA7:
+  Position: 43
+  Type: I/O
+  Functions:
+    ADC1-IN7:
+    ADC2-IN7:
+    SPI1-MOSI:
+    TIM1-CH1N:
+    TIM3-CH2:
+    TIM8-CH1N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC4:
+  Position: 44
+  Type: I/O
+  Functions:
+    ADC1-IN14:
+    ADC2-IN14:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC5:
+  Position: 45
+  Type: I/O
+  Functions:
+    ADC1-IN15:
+    ADC2-IN15:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB0:
+  Position: 46
+  Type: I/O
+  Functions:
+    ADC1-IN8:
+    ADC2-IN8:
+    TIM1-CH2N:
+    TIM3-CH3:
+    TIM8-CH2N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB1:
+  Position: 47
+  Type: I/O
+  Functions:
+    ADC1-IN9:
+    ADC2-IN9:
+    TIM1-CH3N:
+    TIM3-CH4:
+    TIM8-CH3N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB2:
+  Position: 48
+  Type: I/O
+  Functions:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF11:
+  Position: 49
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    FSMC-NIOS16:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF12:
+  Position: 50
+  Type: I/O
+  Functions:
+    FSMC-A6:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-6:
+  Position: 51
+  Type: Power
+VDD-6:
+  Position: 52
+  Type: Power
+PF13:
+  Position: 53
+  Type: I/O
+  Functions:
+    FSMC-A7:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF14:
+  Position: 54
+  Type: I/O
+  Functions:
+    FSMC-A8:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PF15:
+  Position: 55
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    FSMC-A9:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG0:
+  Position: 56
+  Type: I/O
+  Functions:
+    FSMC-A10:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG1:
+  Position: 57
+  Type: I/O
+  Functions:
+    FSMC-A11:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE7:
+  Position: 58
+  Type: I/O
+  Functions:
+    FSMC-D4:
+    FSMC-DA4:
+    TIM1-ETR:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE8:
+  Position: 59
+  Type: I/O
+  Functions:
+    FSMC-D5:
+    FSMC-DA5:
+    TIM1-CH1N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE9:
+  Position: 60
+  Type: I/O
+  Functions:
+    DAC-EXTI9:
+    FSMC-D6:
+    FSMC-DA6:
+    TIM1-CH1:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-7:
+  Position: 61
+  Type: Power
+VDD-7:
+  Position: 62
+  Type: Power
+PE10:
+  Position: 63
+  Type: I/O
+  Functions:
+    FSMC-D7:
+    FSMC-DA7:
+    TIM1-CH2N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE11:
+  Position: 64
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    FSMC-D8:
+    FSMC-DA8:
+    TIM1-CH2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE12:
+  Position: 65
+  Type: I/O
+  Functions:
+    FSMC-D9:
+    FSMC-DA9:
+    TIM1-CH3N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE13:
+  Position: 66
+  Type: I/O
+  Functions:
+    FSMC-D10:
+    FSMC-DA10:
+    TIM1-CH3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE14:
+  Position: 67
+  Type: I/O
+  Functions:
+    FSMC-D11:
+    FSMC-DA11:
+    TIM1-CH4:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE15:
+  Position: 68
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    FSMC-D12:
+    FSMC-DA12:
+    TIM1-BKIN:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB10:
+  Position: 69
+  Type: I/O
+  Functions:
+    I2C2-SCL:
+    TIM2-CH3:
+    USART3-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB11:
+  Position: 70
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    I2C2-SDA:
+    TIM2-CH4:
+    USART3-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-1:
+  Position: 71
+  Type: Power
+VDD-1:
+  Position: 72
+  Type: Power
+PB12:
+  Position: 73
+  Type: I/O
+  Functions:
+    I2C2-SMBA:
+    I2S2-WS:
+    SPI2-NSS:
+    TIM1-BKIN:
+    USART3-CK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB13:
+  Position: 74
+  Type: I/O
+  Functions:
+    I2S2-CK:
+    SPI2-SCK:
+    TIM1-CH1N:
+    USART3-CTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB14:
+  Position: 75
+  Type: I/O
+  Functions:
+    SPI2-MISO:
+    TIM1-CH2N:
+    USART3-RTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB15:
+  Position: 76
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    I2S2-SD:
+    SPI2-MOSI:
+    TIM1-CH3N:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD8:
+  Position: 77
+  Type: I/O
+  Functions:
+    FSMC-D13:
+    FSMC-DA13:
+    USART3-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD9:
+  Position: 78
+  Type: I/O
+  Functions:
+    DAC-EXTI9:
+    FSMC-D14:
+    FSMC-DA14:
+    USART3-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD10:
+  Position: 79
+  Type: I/O
+  Functions:
+    FSMC-D15:
+    FSMC-DA15:
+    USART3-CK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD11:
+  Position: 80
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    FSMC-A16:
+    FSMC-CLE:
+    USART3-CTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD12:
+  Position: 81
+  Type: I/O
+  Functions:
+    FSMC-A17:
+    FSMC-ALE:
+    TIM4-CH1:
+    USART3-RTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD13:
+  Position: 82
+  Type: I/O
+  Functions:
+    FSMC-A18:
+    TIM4-CH2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-8:
+  Position: 83
+  Type: Power
+VDD-8:
+  Position: 84
+  Type: Power
+PD14:
+  Position: 85
+  Type: I/O
+  Functions:
+    FSMC-D0:
+    FSMC-DA0:
+    TIM4-CH3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD15:
+  Position: 86
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    FSMC-D1:
+    FSMC-DA1:
+    TIM4-CH4:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG2:
+  Position: 87
+  Type: I/O
+  Functions:
+    FSMC-A12:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG3:
+  Position: 88
+  Type: I/O
+  Functions:
+    FSMC-A13:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG4:
+  Position: 89
+  Type: I/O
+  Functions:
+    FSMC-A14:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG5:
+  Position: 90
+  Type: I/O
+  Functions:
+    FSMC-A15:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG6:
+  Position: 91
+  Type: I/O
+  Functions:
+    FSMC-INT2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG7:
+  Position: 92
+  Type: I/O
+  Functions:
+    FSMC-INT3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG8:
+  Position: 93
+  Type: I/O
+  Functions:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-9:
+  Position: 94
+  Type: Power
+VDD-9:
+  Position: 95
+  Type: Power
+PC6:
+  Position: 96
+  Type: I/O
+  Functions:
+    I2S2-MCK:
+    SDIO-D6:
+    TIM3-CH1:
+    TIM8-CH1:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC7:
+  Position: 97
+  Type: I/O
+  Functions:
+    I2S3-MCK:
+    SDIO-D7:
+    TIM3-CH2:
+    TIM8-CH2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC8:
+  Position: 98
+  Type: I/O
+  Functions:
+    SDIO-D0:
+    TIM3-CH3:
+    TIM8-CH3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC9:
+  Position: 99
+  Type: I/O
+  Functions:
+    DAC-EXTI9:
+    SDIO-D1:
+    TIM3-CH4:
+    TIM8-CH4:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA8:
+  Position: 100
+  Type: I/O
+  Functions:
+    RCM-MCO: {}
+    TIM1-CH1:
+    USART1-CK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA9:
+  Position: 101
+  Type: I/O
+  Functions:
+    DAC-EXTI9:
+    TIM1-CH2:
+    USART1-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA10:
+  Position: 102
+  Type: I/O
+  Functions:
+    TIM1-CH3:
+    USART1-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA11:
+  Position: 103
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    CAN-RX:
+    TIM1-CH4:
+    USART1-CTS:
+    USB-DM:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA12:
+  Position: 104
+  Type: I/O
+  Functions:
+    CAN-TX:
+    TIM1-ETR:
+    USART1-RTS:
+    USB-DP:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA13:
+  Position: 105
+  Type: I/O
+  Functions:
+    SYS-JTMS-SWDIO:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+NC:
+  Position: 106
+  Type: NC
+VSS-2:
+  Position: 107
+  Type: Power
+VDD-2:
+  Position: 108
+  Type: Power
+PA14:
+  Position: 109
+  Type: I/O
+  Functions:
+    SYS-JTCK-SWCLK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PA15:
+  Position: 110
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    I2S3-WS:
+    SPI1-NSS:
+    SPI3-NSS:
+    SYS-JTDI:
+    TIM2-CH1:
+    TIM2-ETR:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC10:
+  Position: 111
+  Type: I/O
+  Functions:
+    SDIO-D2:
+    UART4-TX:
+    USART3-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC11:
+  Position: 112
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    SDIO-D3:
+    UART4-RX:
+    USART3-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PC12:
+  Position: 113
+  Type: I/O
+  Functions:
+    SDIO-CK:
+    UART5-TX:
+    USART3-CK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD0:
+  Position: 114
+  Type: I/O
+  Functions:
+    CAN-RX:
+    FSMC-D2:
+    FSMC-DA2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD1:
+  Position: 115
+  Type: I/O
+  Functions:
+    CAN-TX:
+    FSMC-D3:
+    FSMC-DA3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD2:
+  Position: 116
+  Type: I/O
+  Functions:
+    SDIO-CMD:
+    TIM3-ETR:
+    UART5-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD3:
+  Position: 117
+  Type: I/O
+  Functions:
+    FSMC-CLK:
+    USART2-CTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD4:
+  Position: 118
+  Type: I/O
+  Functions:
+    FSMC-NOE:
+    USART2-RTS:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD5:
+  Position: 119
+  Type: I/O
+  Functions:
+    FSMC-NWE:
+    USART2-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-10:
+  Position: 120
+  Type: Power
+VDD-10:
+  Position: 121
+  Type: Power
+PD6:
+  Position: 122
+  Type: I/O
+  Functions:
+    FSMC-NWAIT:
+    USART2-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PD7:
+  Position: 123
+  Type: I/O
+  Functions:
+    FSMC-NCE2:
+    FSMC-NE1:
+    USART2-CK:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG9:
+  Position: 124
+  Type: I/O
+  Functions:
+    DAC-EXTI9:
+    FSMC-NCE3:
+    FSMC-NE2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG10:
+  Position: 125
+  Type: I/O
+  Functions:
+    FSMC-NCE4-1:
+    FSMC-NE3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG11:
+  Position: 126
+  Type: I/O
+  Functions:
+    ADC1-EXTI11:
+    ADC2-EXTI11:
+    FSMC-NCE4-2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG12:
+  Position: 127
+  Type: I/O
+  Functions:
+    FSMC-NE4:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG13:
+  Position: 128
+  Type: I/O
+  Functions:
+    FSMC-A24:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PG14:
+  Position: 129
+  Type: I/O
+  Functions:
+    FSMC-A25:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-11:
+  Position: 130
+  Type: Power
+VDD-11:
+  Position: 131
+  Type: Power
+PG15:
+  Position: 132
+  Type: I/O
+  Functions:
+    ADC1-EXTI15:
+    ADC2-EXTI15:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB3:
+  Position: 133
+  Type: I/O
+  Functions:
+    I2S3-CK:
+    SPI1-SCK:
+    SPI3-SCK:
+    SYS-JTDO-TRACESWO:
+    TIM2-CH2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB4:
+  Position: 134
+  Type: I/O
+  Functions:
+    SPI1-MISO:
+    SPI3-MISO:
+    SYS-NJTRST:
+    TIM3-CH1:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB5:
+  Position: 135
+  Type: I/O
+  Functions:
+    I2C1-SMBA:
+    I2S3-SD:
+    SPI1-MOSI:
+    SPI3-MOSI:
+    TIM3-CH2:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB6:
+  Position: 136
+  Type: I/O
+  Functions:
+    I2C1-SCL:
+    TIM4-CH1:
+    USART1-TX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB7:
+  Position: 137
+  Type: I/O
+  Functions:
+    FSMC-NL:
+    I2C1-SDA:
+    TIM4-CH2:
+    USART1-RX:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+BOOT0:
+  Position: 138
+  Type: Boot
+PB8:
+  Position: 139
+  Type: I/O
+  Functions:
+    CAN-RX:
+    I2C1-SCL:
+    SDIO-D4:
+    TIM4-CH3:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PB9:
+  Position: 140
+  Type: I/O
+  Functions:
+    CAN-TX:
+    DAC-EXTI9:
+    I2C1-SDA:
+    SDIO-D5:
+    TIM4-CH4:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE0:
+  Position: 141
+  Type: I/O
+  Functions:
+    FSMC-NBL0:
+    TIM4-ETR:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+PE1:
+  Position: 142
+  Type: I/O
+  Functions:
+    FSMC-NBL1:
+    GPIO-Input: { Type: GPIO, Mode: Input-Std }
+    GPIO-Output: { Type: GPIO, Mode: Output-Std }
+    GPIO-Analog: { Type: GPIO, Mode: Analog-Std }
+    EVENTOUT: { Type: GPIO, Mode: Eventout-Std }
+    GPIO-EXTI: { Type: GPIO, Mode: Exti-Std }
+VSS-3:
+  Position: 143
+  Type: Power
+VDD-3:
+  Position: 144
+  Type: Power
