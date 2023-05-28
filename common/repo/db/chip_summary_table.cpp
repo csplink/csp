@@ -40,7 +40,7 @@ chip_summary_table::chip_summary_table() = default;
 
 chip_summary_table::~chip_summary_table() = default;
 
-chip_summary_table::chip_summary_t chip_summary_table::get_chip_summary(const QString &path)
+chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(QFile::exists(path));
@@ -75,11 +75,11 @@ chip_summary_table::chip_summary_t chip_summary_table::get_chip_summary(const QS
     return {};
 }
 
-chip_summary_table::chip_summary_t chip_summary_table::get_chip_summary(const QString &company, const QString &name)
+chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const QString &company, const QString &name)
 {
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
     QString path = QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower());
-    return get_chip_summary(path);
+    return load_chip_summary(path);
 }

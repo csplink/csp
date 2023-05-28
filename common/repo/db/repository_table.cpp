@@ -37,7 +37,7 @@ using namespace csp;
 
 repository_table::repository_table() = default;
 
-repository_table::repository_t repository_table::get_repository(const QString &path)
+repository_table::repository_t repository_table::load_repository(const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(QFile::exists(path));

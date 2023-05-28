@@ -67,8 +67,8 @@ public:
     } chip_summary_t;
 
 public:
-    static chip_summary_t get_chip_summary(const QString &path);
-    static chip_summary_t get_chip_summary(const QString &company, const QString &name);
+    static chip_summary_t load_chip_summary(const QString &path);
+    static chip_summary_t load_chip_summary(const QString &company, const QString &name);
 
 private:
     explicit chip_summary_table();

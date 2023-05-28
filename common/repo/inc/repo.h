@@ -44,9 +44,9 @@ class repo : public QObject {
 public:
     const repository_table::repository_t *get_repository() const;
 
-    inline chip_summary_table::chip_summary_t get_chip_summary(const QString &company, const QString &name)
+    inline chip_summary_table::chip_summary_t load_chip_summary(const QString &company, const QString &name)
     {
-        return chip_summary_table::get_chip_summary(company, name);
+        return chip_summary_table::load_chip_summary(company, name);
     }
 
     inline bool chip_summary_exists(const QString &company, const QString &name)

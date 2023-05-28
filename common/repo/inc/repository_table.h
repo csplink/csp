@@ -86,7 +86,7 @@ public:
     } repository_t;
 
 public:
-    static repository_t get_repository(const QString &path);
+    static repository_t load_repository(const QString &path);
 
 private:
     explicit repository_table();

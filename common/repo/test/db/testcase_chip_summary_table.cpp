@@ -38,9 +38,9 @@ class testcase_chip_summary_table : public QObject {
 
 private slots:
 
-    static void get_chip_summary()
+    static void load_chip_summary()
     {
-        auto chip_summary = chip_summary_table::get_chip_summary(":/geehy/apm32f103zet6.yml");
+        auto chip_summary = chip_summary_table::load_chip_summary(":/geehy/apm32f103zet6.yml");
 
         QVERIFY(!chip_summary.clocktree.isEmpty());
         QVERIFY(!chip_summary.company.isEmpty());

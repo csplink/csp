@@ -36,7 +36,7 @@ repo *repo::_instance = new repo();
 
 repo::repo()
 {
-    _repository = repository_table::get_repository(config::repodir() + "/db/repository.yml");
+    _repository = repository_table::load_repository(config::repodir() + "/db/repository.yml");
 }
 
 repo::~repo() = default;
