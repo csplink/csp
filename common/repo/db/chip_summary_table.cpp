@@ -43,7 +43,7 @@ chip_summary_table::~chip_summary_table() = default;
 chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(QFile::exists(path));
+    Q_ASSERT(os::isfile(path));
 
     try
     {

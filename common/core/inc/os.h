@@ -32,6 +32,7 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QString>
 #include <QUrl>
@@ -104,6 +105,33 @@ public:
         Q_ASSERT(!url.isEmpty());
 
         QDesktopServices::openUrl(QUrl(url));
+    }
+
+    static bool isdir(const QString &path)
+    {
+        if (path.isEmpty())
+            return false;
+
+        QFileInfo fi(path);
+        return fi.isDir();
+    }
+
+    static bool isfile(const QString &path)
+    {
+        if (path.isEmpty())
+            return false;
+
+        QFileInfo fi(path);
+        return fi.isFile();
+    }
+
+    static bool exists(const QString &path)
+    {
+        if (path.isEmpty())
+            return false;
+
+        QFileInfo fi(path);
+        return fi.exists();
     }
 };
 }  // namespace csp

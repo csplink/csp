@@ -305,7 +305,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     ui->pushbutton_company->setText(company);
 
     QPixmap image;
-    if (QFile::exists(package_path))
+    if (os::isfile(package_path))
         image = QPixmap(package_path);
     else
         image = QPixmap(":/packages/unknown.png");

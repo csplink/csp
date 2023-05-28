@@ -40,7 +40,7 @@ repository_table::repository_table() = default;
 repository_table::repository_t repository_table::load_repository(const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(QFile::exists(path));
+    Q_ASSERT(os::isfile(path));
 
     try
     {
