@@ -41,3 +41,36 @@ project *project::get_instance()
 {
     return _instance;
 }
+
+QString project::get_core(const QString &key) const
+{
+    Q_ASSERT(!key.isEmpty());
+
+    if (_project.core.contains(key))
+        return _project.core[key];
+    else
+        return "";
+}
+
+void project::set_core(const QString &key, const QString &value)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!value.isEmpty());
+
+    if (_project.core.contains(key))
+        _project.core[key] = value;
+    else
+        _project.core.insert(key, value);
+}
+
+QString project::get_path() const
+{
+    return _path;
+}
+
+void project::set_path(const QString &path)
+{
+    Q_ASSERT(!path.isEmpty());
+
+    _path = path;
+}

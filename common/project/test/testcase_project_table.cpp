@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        project.h
+ *  @file        testcase_project_table.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,42 +24,45 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-26     xqyjlj       initial version
+ *  2023-05-28     xqyjlj       initial version
  */
 
-#ifndef COMMON_PROJECT_CSP_PROJECT_H
-#define COMMON_PROJECT_CSP_PROJECT_H
+#include <QDebug>
+#include <QtTest>
 
-#include <QObject>
+#include <os.h>
+#include <project_table.h>
 
-#include "project_table.h"
+using namespace csp;
 
-namespace csp {
-class project : public QObject {
+class testcase_project_table : public QObject {
     Q_OBJECT
 
-public:
-    QString get_core(const QString &key) const;
-    void    set_core(const QString &key, const QString &value);
-    QString get_path() const;
-    void    set_path(const QString &path);
+private slots:
 
-private:
-    project_table::project_t _project;
-    QString                  _path;
+    static void load_project()
+    {
+        auto p = project_table::load_project(":/project.yml");
+        QVERIFY(!p.core.isEmpty());
+    }
 
-public:
-    static project *get_instance();
+    static void save_project()
+    {
+        auto p = project_table::project_t();
+        p.core.insert("name", "test");
+        project_table::save_project(p, "test.yml");
+        QVERIFY(os::isfile("test.yml"));
+    }
 
-private:
-    project();
-    ~project() override;
-
-    project(const project &signal);
-    const project &operator=(const project &signal);
-
-private:
-    static project *_instance;
+    static void dump_project()
+    {
+        auto p = project_table::project_t();
+        p.core.insert("name", "test");
+        auto str = project_table::dump_project(p);
+        QVERIFY(!str.isEmpty());
+    }
 };
-}  // namespace csp
-#endif  // COMMON_PROJECT_CSP_PROJECT_H
+
+QTEST_MAIN(testcase_project_table)
+
+#include "testcase_project_table.moc"
