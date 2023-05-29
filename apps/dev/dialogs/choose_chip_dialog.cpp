@@ -42,6 +42,9 @@ choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), ui(ne
     ui->splitter_2->setSizes(QList<int>() << 156 << 1102);
     ui->dialogbuttonbox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     ui->dialogbuttonbox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+
+    setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint |
+                   Qt::WindowMaximizeButtonHint);
     setWindowState(Qt::WindowMaximized);
 
     connect(ui->dialogbuttonbox, &QDialogButtonBox::accepted, this, &choose_chip_dialog::accept, Qt::UniqueConnection);
@@ -315,7 +318,8 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     if (_repo_instance->chip_summary_exists(company, chip_name))
     {
         auto chip_summary = _repo_instance->load_chip_summary(company, chip_name);
-        ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(chip_name) + chip_summary.illustrate[config::language()]);
+        ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(chip_name) +
+                                            chip_summary.illustrate[config::language()]);
         ui->pushbutton_name->setProperty("user_url", chip_summary.url[config::language()]);
         ui->pushbutton_company->setProperty("user_url", chip_summary.company_url[config::language()]);
     }
