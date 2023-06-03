@@ -32,10 +32,12 @@
 
 #include <QAbstractButton>
 #include <QDialog>
+#include <QModelIndexList>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
 #include "repo.h"
+#include "project.h"
 
 namespace Ui {
 class choose_chip_dialog;
@@ -59,6 +61,10 @@ private slots:
 private:
     Ui::choose_chip_dialog *ui;
     csp::repo              *_repo_instance;
+    csp::project           *_project_instance = nullptr;
+
+    QString _chip_name;
+    QString _hal_name;
 
     QStringList _company_keys;
     QStringList _series_keys;

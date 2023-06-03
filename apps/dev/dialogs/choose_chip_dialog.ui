@@ -58,7 +58,7 @@
             <item row="0" column="0">
              <widget class="QPushButton" name="pushbutton_name">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -66,7 +66,7 @@
               <property name="minimumSize">
                <size>
                 <width>200</width>
-                <height>0</height>
+                <height>36</height>
                </size>
               </property>
               <property name="text">
@@ -80,7 +80,7 @@
                <bool>true</bool>
               </property>
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -261,6 +261,12 @@
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>36</height>
+               </size>
               </property>
               <property name="text">
                <string>Company Name</string>

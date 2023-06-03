@@ -33,12 +33,17 @@
 #include "choose_chip_dialog.h"
 #include "os.h"
 #include "ui_choose_chip_dialog.h"
+#include "wizard_new_project.h"
 
 using namespace csp;
 
 choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), ui(new Ui::choose_chip_dialog)
 {
     ui->setupUi(this);
+
+    _repo_instance    = repo::get_instance();
+    _project_instance = project::get_instance();
+
     ui->splitter_2->setSizes(QList<int>() << 156 << 1102);
     ui->dialogbuttonbox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     ui->dialogbuttonbox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -50,7 +55,6 @@ choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), ui(ne
     connect(ui->dialogbuttonbox, &QDialogButtonBox::accepted, this, &choose_chip_dialog::accept, Qt::UniqueConnection);
     connect(ui->dialogbuttonbox, &QDialogButtonBox::rejected, this, &choose_chip_dialog::reject, Qt::UniqueConnection);
 
-    _repo_instance = repo::get_instance();
     find_all_keys();
     init_treeview_chip_filter();
     init_tableview_chip_infos();
@@ -277,8 +281,10 @@ void choose_chip_dialog::init_tableview_chip_infos()
     ui->tableview_chip_infos->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableview_chip_infos->setSortingEnabled(true);
     ui->tableview_chip_infos->sortByColumn(0, Qt::AscendingOrder);
+    ui->tableview_chip_infos->horizontalHeader()->setMinimumSectionSize(10);
+    ui->tableview_chip_infos->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     connect(ui->tableview_chip_infos->selectionModel(), &QItemSelectionModel::selectionChanged, this,
-            &choose_chip_dialog::tableview_chip_infos_selection_model_selection_changed_callback, Qt::QueuedConnection);
+            &choose_chip_dialog::tableview_chip_infos_selection_model_selection_changed_callback, Qt::UniqueConnection);
 }
 
 void choose_chip_dialog::tableview_chip_infos_selection_model_selection_changed_callback(
@@ -294,7 +300,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     if (selected_indexes.isEmpty())
         return;
 
-    auto chip_name     = selected_indexes[0].data().toString();
+    _chip_name         = selected_indexes[0].data().toString();
     auto market_status = selected_indexes[1].data().toString();
     auto price         = selected_indexes[2].data().toString();
     auto package       = selected_indexes[3].data().toString();
@@ -304,7 +310,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     ui->label_market_status->setText(market_status);
     ui->label_price->setText(price);
     ui->label_package->setText(package);
-    ui->pushbutton_name->setText(chip_name);
+    ui->pushbutton_name->setText(_chip_name);
     ui->pushbutton_company->setText(company);
 
     QPixmap image;
@@ -315,18 +321,22 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     image.scaled(ui->label_package_image->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     ui->label_package_image->setPixmap(image);
 
-    if (_repo_instance->chip_summary_exists(company, chip_name))
+    if (_repo_instance->chip_summary_exists(company, _chip_name))
     {
-        auto chip_summary = _repo_instance->load_chip_summary(company, chip_name);
-        ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(chip_name) +
+        auto chip_summary = _repo_instance->load_chip_summary(company, _chip_name);
+        _hal_name         = chip_summary.hal;
+
+        ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(_chip_name) +
                                             chip_summary.illustrate[config::language()]);
         ui->pushbutton_name->setProperty("user_url", chip_summary.url[config::language()]);
         ui->pushbutton_company->setProperty("user_url", chip_summary.company_url[config::language()]);
     }
     else
     {
-        ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(chip_name) +
-                                            tr("The chip description file <%1.yml> does not exist").arg(chip_name));
+        _hal_name = QString();
+
+        ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(_chip_name) +
+                                            tr("The chip description file <%1.yml> does not exist").arg(_chip_name));
         ui->pushbutton_name->setProperty("user_url", "nil");
         ui->pushbutton_company->setProperty("user_url", "nil");
     }
@@ -339,6 +349,26 @@ void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
 
     if (button->text() == tr("Create"))
     {
+        if (_chip_name.isEmpty())
+        {
+            os::show_warning(tr("Please choose a chip."));
+            return;
+        }
+        else if (_hal_name.isEmpty())
+        {
+            os::show_warning(tr("The chip description file <%1.yml> does not exist").arg(_chip_name));
+            return;
+        }
+
+        wizard_new_project wizard(this);
+        connect(&wizard, &wizard_new_project::finished, this, [=](int result) {
+            if (result == QDialog::Accepted)
+            {
+                _project_instance->set_core(CSP_PROJECT_CORE_HAL, _hal_name);
+                _project_instance->set_core(CSP_PROJECT_CORE_HAL_NAME, _chip_name);
+            }
+        });
+        wizard.exec();
     }
 }
 
