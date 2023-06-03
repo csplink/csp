@@ -67,6 +67,7 @@ void wizard_new_project::accept()
     }
 
     _project_instance->set_path(path);
+    _project_instance->set_core(CSP_PROJECT_CORE_NAME, name);
 
     QDialog::accept();
 }

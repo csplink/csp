@@ -65,6 +65,7 @@ private:
 
     QString _chip_name;
     QString _hal_name;
+    QString _package_name;
 
     QStringList _company_keys;
     QStringList _series_keys;

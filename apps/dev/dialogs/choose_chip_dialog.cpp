@@ -325,6 +325,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     {
         auto chip_summary = _repo_instance->load_chip_summary(company, _chip_name);
         _hal_name         = chip_summary.hal;
+        _package_name     = chip_summary.package;
 
         ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(_chip_name) +
                                             chip_summary.illustrate[config::language()]);
@@ -333,7 +334,8 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     }
     else
     {
-        _hal_name = QString();
+        _hal_name     = QString();
+        _package_name = QString();
 
         ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(_chip_name) +
                                             tr("The chip description file <%1.yml> does not exist").arg(_chip_name));
@@ -354,7 +356,7 @@ void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
             os::show_warning(tr("Please choose a chip."));
             return;
         }
-        else if (_hal_name.isEmpty())
+        else if (_hal_name.isEmpty() || _package_name.isEmpty())
         {
             os::show_warning(tr("The chip description file <%1.yml> does not exist").arg(_chip_name));
             return;
@@ -366,6 +368,7 @@ void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
             {
                 _project_instance->set_core(CSP_PROJECT_CORE_HAL, _hal_name);
                 _project_instance->set_core(CSP_PROJECT_CORE_HAL_NAME, _chip_name);
+                _project_instance->set_core(CSP_PROJECT_CORE_PACKAGE, _package_name);
             }
         });
         wizard.exec();

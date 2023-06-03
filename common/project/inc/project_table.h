@@ -35,6 +35,7 @@
 #define CSP_PROJECT_CORE_NAME     "name"
 #define CSP_PROJECT_CORE_HAL      "hal"
 #define CSP_PROJECT_CORE_HAL_NAME "hal.name"
+#define CSP_PROJECT_CORE_PACKAGE  "package"
 
 namespace csp {
 class project_table {
