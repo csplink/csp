@@ -41,7 +41,6 @@ private slots:
 
     void repodir()
     {
-        qDebug() << config::repodir();
         QVERIFY(!config::repodir().isEmpty());
     }
 };

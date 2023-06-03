@@ -32,6 +32,7 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QString>
@@ -45,9 +46,10 @@ public:
      * @param message: the text to be displayed in the message box.
      * @param parent: the parent widget that owns the message box.
      */
-    static void show_info(const QString &message, QWidget *parent = nullptr)
+    static void
+    show_info(const QString &message, const QString &title = QObject::tr("Information"), QWidget *parent = nullptr)
     {
-        QMessageBox::information(parent, QObject::tr("Information"), message);
+        QMessageBox::information(parent, title, message);
     }
 
     /**
@@ -55,9 +57,10 @@ public:
      * @param message: the text to be displayed in the message box.
      * @param parent: the parent widget that owns the message box.
      */
-    static void show_warning(const QString &message, QWidget *parent = nullptr)
+    static void
+    show_warning(const QString &message, const QString &title = QObject::tr("Warning"), QWidget *parent = nullptr)
     {
-        QMessageBox::warning(parent, QObject::tr("Warning"), message);
+        QMessageBox::warning(parent, title, message);
     }
 
     /**
@@ -65,9 +68,10 @@ public:
      * @param message: the text to be displayed in the message box.
      * @param parent: the parent widget that owns the message box.
      */
-    static void show_critical(const QString &message, QWidget *parent = nullptr)
+    static void
+    show_critical(const QString &message, const QString &title = QObject::tr("Critical"), QWidget *parent = nullptr)
     {
-        QMessageBox::critical(parent, QObject::tr("Critical"), message);
+        QMessageBox::critical(parent, title, message);
     }
 
     /**
@@ -75,18 +79,20 @@ public:
      * @param message: the text to be displayed in the message box.
      * @param parent: the parent widget that owns the message box.
      */
-    static void show_error(const QString &message, QWidget *parent = nullptr)
+    static void
+    show_error(const QString &message, const QString &title = QObject::tr("Error"), QWidget *parent = nullptr)
     {
-        QMessageBox::critical(parent, QObject::tr("Error"), message);
+        QMessageBox::critical(parent, title, message);
     }
 
     /**
      * @brief Display an error message and exit the application.
      * @param message: the text to be displayed in the message box.
      */
-    static void show_error_and_exit(const QString &message)
+    static void
+    show_error_and_exit(const QString &message, const QString &title = QObject::tr("Critical"), QWidget *parent = nullptr)
     {
-        QMessageBox::critical(nullptr, QObject::tr("Error"), message, QMessageBox::Ok);
+        QMessageBox::critical(parent, title, message, QMessageBox::Ok);
         QApplication::quit();
     }
 
@@ -95,9 +101,10 @@ public:
      * @param message: the text to be displayed in the message box.
      * @param parent: the parent widget that owns the message box.
      */
-    static void show_question(const QString &message, QWidget *parent = nullptr)
+    static void
+    show_question(const QString &message, const QString &title = QObject::tr("Question"), QWidget *parent = nullptr)
     {
-        QMessageBox::question(parent, QObject::tr("Question"), message);
+        QMessageBox::question(parent, title, message);
     }
 
     static void open_url(const QString &url)
@@ -132,6 +139,43 @@ public:
 
         QFileInfo fi(path);
         return fi.exists();
+    }
+
+    static QString getexistdir()
+    {
+        return QFileDialog::getExistingDirectory();
+    }
+
+    static QStringList files(const QString &path, const QStringList &filters)
+    {
+        QDir        dir(path);
+        auto        files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        QStringList paths;
+        for (const QFileInfo &file : files)
+            paths.append(file.absoluteFilePath());
+
+        return paths;
+    }
+
+    static QStringList files(const QString &path, const QString &filter)
+    {
+        return files(path, QStringList() << filter);
+    }
+
+    static QStringList dirs(const QString &path, const QStringList &filters)
+    {
+        QDir        dir(path);
+        auto        dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+        QStringList paths;
+        for (const QFileInfo &_dir : dirs)
+            paths.append(_dir.absoluteFilePath());
+
+        return paths;
+    }
+
+    static QStringList dirs(const QString &path, const QString &filter)
+    {
+        return dirs(path, QStringList() << filter);
     }
 };
 }  // namespace csp

@@ -30,8 +30,8 @@
 #include <QDebug>
 #include <QFile>
 
-#include "repository_table.h"
 #include "os.h"
+#include "repository_table.h"
 
 using namespace csp;
 

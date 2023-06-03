@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="/lib/core">
+    </qresource>
+</RCC>

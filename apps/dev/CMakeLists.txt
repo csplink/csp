@@ -27,6 +27,8 @@ set(name csp-dev)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
+set(CSP_EXE_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "csp exe file dir")
+
 file(GLOB_RECURSE DIALOGS
         dialogs/*.ui
         dialogs/*.h
@@ -47,17 +49,24 @@ file(GLOB_RECURSE VIEWS
         views/*.h
         views/*.cpp)
 
-set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS})
 set(TS_FILES
-        ./resources/translations/zh_CN.ts)
+        ./resources/translations/${name}.zh_CN.ts
+        ./resources/translations/${name}.zh_TW.ts)
+
+set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS})
 
 include_directories(
         dialogs
         inc
-        views)
+        views
+${CMAKE_DIR})
 
-qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
+foreach (TS_FILE ${TS_FILES})
+    set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION
+            ${CMAKE_CURRENT_BINARY_DIR}/translations)
+endforeach ()
 
-add_executable(${name} ${PROJECT_SOURCES} ${TS_FILES})
+qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
 
+add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
 target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project)

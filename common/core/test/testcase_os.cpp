@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        main.cpp
+ *  @file        testcase_os.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,32 +24,34 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-18     xqyjlj       initial version
+ *  2023-06-03     xqyjlj       initial version
  */
 
-#include <QApplication>
 #include <QDebug>
-#include <QTranslator>
+#include <QtTest>
 
-#include "config.h"
-#include "mainwindow_view.h"
 #include "os.h"
 
 using namespace csp;
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
+class testcase_os : public QObject {
+    Q_OBJECT
 
-    for (const QString &file : os::files("./translations", QString("*%1.qm").arg(config::language())))
+private slots:
+
+    void files()
     {
-        auto translator = new QTranslator(&a);
-        translator->load(file);
-        qApp->installTranslator(translator);
+        auto list = os::files(".", "*.cmake");
+        QVERIFY(!list.isEmpty());
     }
 
-    a.setWindowIcon(QIcon(":/images/logo.ico"));
-    mainwindow_view w;
-    w.show();
-    return a.exec();
-}
+    void dirs()
+    {
+        auto list = os::dirs(".", "*_autogen");
+        QVERIFY(!list.isEmpty());
+    }
+};
+
+QTEST_MAIN(testcase_os)
+
+#include "testcase_os.moc"

@@ -37,7 +37,7 @@
 #define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
 
 #define CSP_CONFIG_KEY_LANGUAGE           "core/language"
-#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE "zh-CN"
+#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE "zh_CN"
 
 using namespace csp;
 

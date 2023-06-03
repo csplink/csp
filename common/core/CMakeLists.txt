@@ -22,13 +22,28 @@
 # 2023-04-21     xqyjlj       initial version
 #
 
+set(name core)
+
 file(GLOB_RECURSE SOURCES
         inc/*.h
-        src/*.cpp)
+        src/*.cpp
+        resources/*.qrc)
 
-add_library(core STATIC ${SOURCES})
-target_link_libraries(core PUBLIC Qt5::Widgets)
-target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+set(TS_FILES
+        ./resources/translations/${name}.zh_CN.ts
+        ./resources/translations/${name}.zh_TW.ts)
+
+if (DEFINED CSP_EXE_DIR)
+    foreach (TS_FILE ${TS_FILES})
+        set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION ${CSP_EXE_DIR}/translations)
+    endforeach ()
+endif ()
+
+qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
+
+add_library(${name} STATIC ${SOURCES} ${QM_FILES})
+target_link_libraries(${name} PUBLIC Qt5::Widgets)
+target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
@@ -38,6 +53,6 @@ file(GLOB_RECURSE TESTCASES
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
     add_executable(${TARGET_NAME} ${TESTCASE})
-    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test core)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
 endforeach ()
 
