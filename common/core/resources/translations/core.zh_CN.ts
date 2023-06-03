@@ -15,12 +15,12 @@
     </message>
     <message>
         <location filename="../../inc/os.h" line="72"/>
+        <location filename="../../inc/os.h" line="93"/>
         <source>Critical</source>
         <translation>致命错误</translation>
     </message>
     <message>
         <location filename="../../inc/os.h" line="83"/>
-        <location filename="../../inc/os.h" line="93"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>

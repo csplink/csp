@@ -174,6 +174,7 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="334"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="354"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -312,11 +313,6 @@
     <message>
         <location filename="../../dialogs/wizard_new_project.cpp" line="67"/>
         <source>Please input project path and name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="67"/>
-        <source>warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

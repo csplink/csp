@@ -53,7 +53,7 @@ set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
         ./resources/translations/${name}.zh_TW.ts)
 
-set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS})
+set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_FILES})
 
 include_directories(
         dialogs

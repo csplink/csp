@@ -151,13 +151,14 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="334"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="354"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation>芯片描述文件 &lt;%1.yml&gt; 不存在</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="349"/>
         <source>Please choose a chip.</source>
-        <translation>请选择一个芯片</translation>
+        <translation>请选择一个芯片。</translation>
     </message>
     <message>
         <source>#### The chip description file &lt;%1.yml&gt; does not exist</source>
@@ -335,9 +336,8 @@
         <translation>请输入工程路径与工程名</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="67"/>
         <source>warning</source>
-        <translation>警告</translation>
+        <translation type="vanished">警告</translation>
     </message>
     <message>
         <location filename="../../dialogs/wizard_new_project.cpp" line="85"/>
@@ -347,12 +347,12 @@
     <message>
         <location filename="../../dialogs/wizard_new_project.cpp" line="87"/>
         <source>this will create a new project in the path you choose.</source>
-        <translation>这将在您选择的路径中创建一个新项目</translation>
+        <translation>这将在您选择的路径中创建一个新项目。</translation>
     </message>
     <message>
         <location filename="../../dialogs/wizard_new_project.cpp" line="90"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
-        <translation>单击“下一步”继续，或单击“取消”退出安装</translation>
+        <translation>单击“下一步”继续，或单击“取消”退出安装。</translation>
     </message>
     <message>
         <location filename="../../dialogs/wizard_new_project.cpp" line="105"/>
