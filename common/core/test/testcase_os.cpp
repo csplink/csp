@@ -43,11 +43,15 @@ private slots:
     {
         auto list = os::files(".", "*.cmake");
         QVERIFY(!list.isEmpty());
+        list = os::files(".", "*");
+        QVERIFY(!list.isEmpty());
     }
 
     void dirs()
     {
         auto list = os::dirs(".", "*_autogen");
+        QVERIFY(!list.isEmpty());
+        list = os::dirs(".", "*");
         QVERIFY(!list.isEmpty());
     }
 };
