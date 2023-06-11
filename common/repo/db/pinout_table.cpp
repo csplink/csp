@@ -74,3 +74,12 @@ pinout_table::pinout_t pinout_table::load_pinout(const QString &path)
 
     return {};
 }
+
+pinout_table::pinout_t pinout_table::load_pinout(const QString &hal, const QString &name)
+{
+    Q_ASSERT(!hal.isEmpty());
+    Q_ASSERT(!name.isEmpty());
+
+    QString path = QString("%1/db/hal/%2/%3/pinout.yml").arg(config::repodir(), hal.toLower(), name.toLower());
+    return load_pinout(path);
+}

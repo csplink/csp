@@ -52,6 +52,7 @@ public:
 
 public:
     static pinout_t load_pinout(const QString &path);
+    static pinout_t load_pinout(const QString &hal, const QString &name);
 
 private:
     explicit pinout_table();
