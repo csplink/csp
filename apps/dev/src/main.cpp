@@ -29,6 +29,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFontDatabase>
 #include <QTranslator>
 
 #include "config.h"
@@ -40,6 +41,16 @@ using namespace csp;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    for (const QString &dir : os::dirs("./fonts", QString("*")))
+    {
+        for (const QString &file : os::files(dir, QString("*.ttf")))
+        {
+            auto id = QFontDatabase::addApplicationFont(file);
+            if (id == -1)
+                qDebug() << "add font" << file << "failed";
+        }
+    }
 
     for (const QString &file : os::files("./translations", QString("*%1.qm").arg(config::language())))
     {
