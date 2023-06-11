@@ -62,7 +62,7 @@
         <translation>芯片名</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="266"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="272"/>
         <source>Company Name</source>
         <translation>公司名</translation>
     </message>
@@ -77,86 +77,86 @@
         <translation>封装图</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="292"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="298"/>
         <source>Diagram</source>
         <translation>框图</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="297"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="303"/>
         <source>Document</source>
         <translation>文档</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="302"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="308"/>
         <source>Buy</source>
         <translation>购买</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="242"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="245"/>
         <source>Name</source>
         <translation>芯片名称</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="243"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="246"/>
         <source>Status</source>
         <translation>市场状态</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="244"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="247"/>
         <source>Unit price for 10kU</source>
         <translation>价格（元/10K）</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="124"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="245"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="127"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="248"/>
         <source>Package</source>
         <translation>封装</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="44"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="345"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="48"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="352"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="45"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="49"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="246"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="249"/>
         <source>Flash</source>
         <translation>Flash</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="247"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
         <source>RAM</source>
         <translation>RAM</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="248"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="251"/>
         <source>IO</source>
         <translation>IO数量</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="249"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="252"/>
         <source>Frequency</source>
         <translation>频率</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="258"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="259"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="261"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="262"/>
         <source>Unavailable</source>
         <translation>不可用</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="334"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="354"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="341"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="361"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation>芯片描述文件 &lt;%1.yml&gt; 不存在</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="349"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="356"/>
         <source>Please choose a chip.</source>
         <translation>请选择一个芯片。</translation>
     </message>
@@ -169,14 +169,14 @@
         <translation type="vanished">### 芯片描述文件 &lt;%1.yml&gt; 不存在</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="120"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="123"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="253"/>
         <source>Company</source>
         <translation>公司</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="123"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="251"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="126"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="254"/>
         <source>Core</source>
         <translation>内核</translation>
     </message>
@@ -185,19 +185,27 @@
         <translation type="vanished">芯片</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="121"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="124"/>
         <source>Series</source>
         <translation>系列</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="122"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="125"/>
         <source>Line</source>
         <translation>产品线</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="133"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="136"/>
         <source>Chip Filter</source>
         <translation>芯片过滤器</translation>
+    </message>
+</context>
+<context>
+    <name>csp::graphicsitem_pin</name>
+    <message>
+        <location filename="../../src/components/graphicsitem_pin.cpp" line="127"/>
+        <source>Reset State</source>
+        <translation>系统视图</translation>
     </message>
 </context>
 <context>
@@ -240,14 +248,6 @@
         <location filename="../../views/home_view.ui" line="229"/>
         <source>Other Tools</source>
         <translation>其他工具</translation>
-    </message>
-</context>
-<context>
-    <name>lqfp48</name>
-    <message>
-        <location filename="../../views/components/packages/lqfp/lqfp48.ui" line="16"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -306,32 +306,32 @@
 <context>
     <name>wizard_new_project</name>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="47"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="45"/>
         <source>New Project</source>
         <translation>新建工程</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="51"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="49"/>
         <source>Next</source>
         <translation>下一步</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="52"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="50"/>
         <source>Back</source>
         <translation>上一步</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="53"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="51"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="54"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="52"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="67"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="65"/>
         <source>Please input project path and name</source>
         <translation>请输入工程路径与工程名</translation>
     </message>
@@ -340,27 +340,27 @@
         <translation type="vanished">警告</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="85"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="82"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation>欢迎使用此向导创建新项目</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="87"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="84"/>
         <source>this will create a new project in the path you choose.</source>
         <translation>这将在您选择的路径中创建一个新项目。</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="90"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="87"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation>单击“下一步”继续，或单击“取消”退出安装。</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="105"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="102"/>
         <source>Project Path</source>
         <translation>工程路径</translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="108"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="105"/>
         <source>Project Name</source>
         <translation>工程名</translation>
     </message>
