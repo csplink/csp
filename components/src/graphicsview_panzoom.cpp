@@ -96,3 +96,12 @@ void graphicsview_panzoom::zoom_out(int value)
         _scale = MIN_SCALE;
     setup_matrix();
 }
+
+void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
+{
+    QGraphicsView::contextMenuEvent(event);
+    auto *item = dynamic_cast<interface_graphicsitem_pin *>(this->itemAt(event->pos()));
+    if (item == nullptr)
+        return;
+    item->get_menu()->exec(event->globalPos());
+}

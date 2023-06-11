@@ -24,8 +24,9 @@
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
+        interface/*.h
         src/*.cpp)
 
 add_library(components STATIC ${SOURCES})
 target_link_libraries(components PUBLIC Qt5::Widgets Qt5::OpenGL)
-target_include_directories(components PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+target_include_directories(components PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc ${CMAKE_CURRENT_SOURCE_DIR}/interface)

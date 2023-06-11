@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        graphicsview_panzoom.h
+ *  @file        interface_graphicsitem_pin.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,38 +24,22 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-09     xqyjlj       initial version
+ *  2023-06-11     xqyjlj       initial version
  */
 
-#ifndef CSP_GRAPHICSVIEW_PANZOOM_H
-#define CSP_GRAPHICSVIEW_PANZOOM_H
+#ifndef CSP_INTERFACE_GRAPHICSITEM_PIN_H
+#define CSP_INTERFACE_GRAPHICSITEM_PIN_H
 
-#include <QGraphicsView>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QWheelEvent>
-
-#include "interface_graphicsitem_pin.h"
+#include <QGraphicsItem>
+#include <QMenu>
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
 
 namespace csp {
-
-class graphicsview_panzoom : public QGraphicsView {
-    Q_OBJECT
-
+class interface_graphicsitem_pin : public QGraphicsItem {
 public:
-    explicit graphicsview_panzoom(QWidget *parent = nullptr);
-    ~graphicsview_panzoom() override;
-    void setup_matrix();
-    void zoom_in(int value);
-    void zoom_out(int value);
-
-protected:
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void wheelEvent(QWheelEvent *event) override;
-    void contextMenuEvent(QContextMenuEvent *event) override;
-
-private:
-    int _scale;
+    virtual QMenu *get_menu() = 0;
 };
 }  // namespace csp
-#endif  // CSP_GRAPHICSVIEW_PANZOOM_H
+
+#endif  // CSP_INTERFACE_GRAPHICSITEM_PIN_H
