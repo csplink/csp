@@ -38,7 +38,9 @@ file(GLOB_RECURSE HEADERS
         inc/*.h)
 
 file(GLOB_RECURSE SOURCES
-        src/*.cpp)
+        src/*.cpp
+        src/components/*.cpp
+        src/components/packages/*.cpp)
 
 file(GLOB_RECURSE RESOURCES
         resources/*.qrc
@@ -58,8 +60,7 @@ set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_
 include_directories(
         dialogs
         inc
-        views
-${CMAKE_DIR})
+        views)
 
 foreach (TS_FILE ${TS_FILES})
     set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION
@@ -69,4 +70,4 @@ endforeach ()
 qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
 
 add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
-target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project)
+target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components)
