@@ -67,7 +67,7 @@ foreach (TS_FILE ${TS_FILES})
             ${CMAKE_CURRENT_BINARY_DIR}/translations)
 endforeach ()
 
-qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${TS_FILES})
+qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
 
 add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
 target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components)

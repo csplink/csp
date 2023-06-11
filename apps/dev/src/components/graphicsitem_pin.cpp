@@ -124,7 +124,7 @@ void graphicsitem_pin::set_pinout_unit(const pinout_table::pinout_unit_t &unit)
 {
     _pinout_unit = unit;
     _menu->clear();
-    _menu->addAction(QObject::tr("Reset State"));
+    _menu->addAction(tr("Reset State"));
     _menu->addSeparator();
 
     auto function_i = _pinout_unit.functions.constBegin();
