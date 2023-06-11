@@ -38,7 +38,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_timer_configure">
       <attribute name="title">
@@ -61,7 +61,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QGraphicsView" name="graphicsview">
+        <widget class="csp::graphicsview_panzoom" name="graphicsview">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>2</horstretch>
@@ -86,6 +86,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>csp::graphicsview_panzoom</class>
+   <extends>QGraphicsView</extends>
+   <header>graphicsview_panzoom.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
