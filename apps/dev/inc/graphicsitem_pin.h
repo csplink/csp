@@ -57,7 +57,7 @@ public:
     ~graphicsitem_pin() override;
 
     void   set_direction(enum direction direct);
-    void   set_pinout_unit(const pinout_table::pinout_unit_t &unit);
+    void   set_pinout_unit(pinout_table::pinout_unit_t *unit);
     void   set_selected(bool selected);
     void   set_name(const QString &name);
     QMenu *get_menu() override;
@@ -71,14 +71,14 @@ private:
     const QColor other_color    = QColor(187, 204, 0);
     const QColor selected_color = QColor(0, 204, 68);
 
-    qreal                       _width;
-    qreal                       _height;
-    enum direction              _direction = LEFT;
-    pinout_table::pinout_unit_t _pinout_unit;
-    bool                        _selected = false;
-    QString                     _name;
-    QFont                      *_font;
-    QFontMetrics               *_font_metrics;
+    qreal                        _width;
+    qreal                        _height;
+    enum direction               _direction   = LEFT;
+    pinout_table::pinout_unit_t *_pinout_unit = nullptr;
+    bool                         _selected    = false;
+    QString                      _name;
+    QFont                       *_font;
+    QFontMetrics                *_font_metrics;
 
     QMenu   *_menu                   = nullptr;
     QAction *_current_checked_action = nullptr;

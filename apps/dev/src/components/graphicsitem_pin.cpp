@@ -61,6 +61,7 @@ graphicsitem_pin::~graphicsitem_pin()
     delete _font_metrics;
     delete _font;
     delete _menu;
+    delete _pinout_unit;
 }
 
 QRectF graphicsitem_pin::boundingRect() const
@@ -81,18 +82,21 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(option);
     // const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform()); // get lod
 
+    if (_pinout_unit == nullptr)
+        return;
+
     int  x, y;
     int  width, height;
     auto b = painter->brush();
     /******************** draw background **************************/
-    if (_pinout_unit.type.toUpper() == "I/O")
+    if (_pinout_unit->type.toUpper() == "I/O")
     {
         if (_selected)
             painter->setBrush(selected_color);
         else
             painter->setBrush(default_color);
     }
-    else if (_pinout_unit.type.toUpper() == "POWER")
+    else if (_pinout_unit->type.toUpper() == "POWER")
     {
         painter->setBrush(power_color);
     }
@@ -155,15 +159,15 @@ void graphicsitem_pin::set_direction(graphicsitem_pin::direction direct)
     _direction = direct;
 }
 
-void graphicsitem_pin::set_pinout_unit(const pinout_table::pinout_unit_t &unit)
+void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
 {
     _pinout_unit = unit;
     _menu->clear();
     _menu->addAction(tr("Reset State"));
     _menu->addSeparator();
 
-    auto function_i = _pinout_unit.functions.constBegin();
-    while (function_i != _pinout_unit.functions.constEnd())
+    auto function_i = _pinout_unit->functions.constBegin();
+    while (function_i != _pinout_unit->functions.constEnd())
     {
         auto *action = new QAction(_menu);
         action->setText(function_i.key());
@@ -171,6 +175,7 @@ void graphicsitem_pin::set_pinout_unit(const pinout_table::pinout_unit_t &unit)
         _menu->addAction(action);
         function_i++;
     }
+    _pinout_unit->position = 0;
 }
 
 void graphicsitem_pin::set_selected(bool selected)

@@ -42,6 +42,30 @@ pinout_table::~pinout_table() = default;
 
 pinout_table::pinout_t pinout_table::load_pinout(const QString &path)
 {
+    pinout_table::pinout_t pinout;
+
+    auto p   = _load_pinout(path);
+    auto p_i = p.constBegin();
+    while (p_i != p.constEnd())
+    {
+        pinout[p_i.key()] = new pinout_table::pinout_unit_t(p_i.value());
+        p_i++;
+    }
+
+    return pinout;
+}
+
+pinout_table::pinout_t pinout_table::load_pinout(const QString &hal, const QString &name)
+{
+    Q_ASSERT(!hal.isEmpty());
+    Q_ASSERT(!name.isEmpty());
+
+    QString path = QString("%1/db/hal/%2/%3/pinout.yml").arg(config::repodir(), hal.toLower(), name.toLower());
+    return load_pinout(path);
+}
+
+pinout_table::_pinout_t pinout_table::_load_pinout(const QString &path)
+{
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
@@ -54,7 +78,7 @@ pinout_table::pinout_t pinout_table::load_pinout(const QString &path)
         buffer = file.readAll().toStdString();
         file.close();
         YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<pinout_table::pinout_t>();
+        return yaml_data.as<pinout_table::_pinout_t>();
     }
     catch (YAML::BadFile &e)
     {
@@ -73,13 +97,4 @@ pinout_table::pinout_t pinout_table::load_pinout(const QString &path)
     }
 
     return {};
-}
-
-pinout_table::pinout_t pinout_table::load_pinout(const QString &hal, const QString &name)
-{
-    Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!name.isEmpty());
-
-    QString path = QString("%1/db/hal/%2/%3/pinout.yml").arg(config::repodir(), hal.toLower(), name.toLower());
-    return load_pinout(path);
 }

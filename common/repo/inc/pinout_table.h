@@ -48,15 +48,20 @@ public:
         QMap<QString, function_t> functions;
     } pinout_unit_t;
 
-    typedef QMap<QString, pinout_unit_t> pinout_t;
+    typedef QMap<QString, pinout_unit_t *> pinout_t;
 
 public:
     static pinout_t load_pinout(const QString &path);
     static pinout_t load_pinout(const QString &hal, const QString &name);
 
 private:
+    typedef QMap<QString, pinout_unit_t> _pinout_t;
+
+private:
     explicit pinout_table();
     ~pinout_table();
+
+    static _pinout_t _load_pinout(const QString &path);
 };
 }  // namespace csp
 

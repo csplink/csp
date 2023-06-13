@@ -54,7 +54,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     auto pinout_i = _pinout.constBegin();
     while (pinout_i != _pinout.constEnd())
     {
-        auto index    = pinout_i.value().position - 1;
+        auto index    = pinout_i.value()->position - 1;
         vector[index] = pinout_i.key();
         pinout_i++;
     }
