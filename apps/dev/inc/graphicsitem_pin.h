@@ -40,9 +40,6 @@
 #include "interface_graphicsitem_pin.h"
 #include "pinout_table.h"
 
-#define PIN_WIDTH  100
-#define PIN_HEIGHT 50
-
 namespace csp {
 class graphicsitem_pin : public QObject, public interface_graphicsitem_pin {
     Q_OBJECT

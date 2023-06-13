@@ -41,9 +41,7 @@
 #include "graphicsitem_pinbody.h"
 #include "pinout_table.h"
 
-#define LQFP_PIN_COMMENT_WIDTH 400
-#define LQFP_PIN_LABEL_WIDTH   100
-#define LQFP_PIN_WIDTH         (LQFP_PIN_LABEL_WIDTH + LQFP_PIN_COMMENT_WIDTH)
+#define LQFP_PIN_WIDTH         500
 #define LQFP_PIN_HEIGHT        50
 #define LQFP_PIN_SPACING       6
 

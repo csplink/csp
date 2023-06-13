@@ -79,46 +79,42 @@ void graphicsitem_pinbody::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
     auto b = painter->brush();
 
-    {  // draw background
-        painter->setRenderHint(QPainter::Antialiasing);
-        painter->setBrush(QColor(50, 50, 50));
-        painter->drawRect(0, 0, (int)_width, (int)_height);
-    }
+    /******************** draw background **************************/
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setBrush(QColor(50, 50, 50));
+    painter->drawRect(0, 0, (int)_width, (int)_height);
 
-    {  // draw pin1 circle
-        painter->setBrush(QColor(220, 230, 240));
-        painter->drawEllipse(QRectF(MARGIN * 2, MARGIN * 2, 20.0, 20.0));
-    }
+    /******************** draw pin1 circle **************************/
+    painter->setBrush(QColor(220, 230, 240));
+    painter->drawEllipse(QRectF(MARGIN * 2, MARGIN * 2, 20.0, 20.0));
 
-    {  // draw text
-        _font->setStyle(QFont::StyleNormal);
-        _font->setPointSize((int)(_width / 20));
-        painter->setPen(QPen(QColor(255, 255, 255), 1));
-        painter->setFont(*_font);
-        QFontMetrics fm(*_font);
-        int          pixels = fm.horizontalAdvance(_name);
-        painter->drawText(QPointF((_width - pixels) / 2, _height / 2), _name);
+    /******************** draw text **************************/
+    _font->setStyle(QFont::StyleNormal);
+    _font->setPointSize((int)(_width / 20));
+    painter->setPen(QPen(QColor(255, 255, 255), 1));
+    painter->setFont(*_font);
+    QFontMetrics fm(*_font);
+    int          pixels = fm.horizontalAdvance(_name);
+    painter->drawText(QPointF((_width - pixels) / 2, _height / 2), _name);
 
-        _font->setPointSize((int)(_width / 30));
-        _font->setStyle(QFont::StyleItalic);
-        painter->setFont(*_font);
+    _font->setPointSize((int)(_width / 30));
+    _font->setStyle(QFont::StyleItalic);
+    painter->setFont(*_font);
 
-        pixels = (int)(fm.horizontalAdvance(_package) * 0.8);
-        painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9)), _package);
+    pixels = (int)(fm.horizontalAdvance(_package) * 0.8);
+    painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9)), _package);
 
-        int height = fm.height();
-        pixels     = (int)(fm.horizontalAdvance(_company) * 0.8);
-        painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9) - height - 10), _company);
-    }
+    int height = fm.height();
+    pixels     = (int)(fm.horizontalAdvance(_company) * 0.8);
+    painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9) - height - 10), _company);
 
-    {  // draw border (with margin)
-        QVarLengthArray<QLineF, 4> lines;
-        lines.append(QLineF(MARGIN, MARGIN, MARGIN, _height - MARGIN));
-        lines.append(QLineF(MARGIN, MARGIN, _width - MARGIN, MARGIN));
-        lines.append(QLineF(_width - MARGIN, _height - MARGIN, MARGIN, _height - MARGIN));
-        lines.append(QLineF(_width - MARGIN, _height - MARGIN, _width - MARGIN, MARGIN));
-        painter->drawLines(lines.data(), lines.size());
-    }
+    /******************** draw border (with margin) **************************/
+    QVarLengthArray<QLineF, 4> lines;
+    lines.append(QLineF(MARGIN, MARGIN, MARGIN, _height - MARGIN));
+    lines.append(QLineF(MARGIN, MARGIN, _width - MARGIN, MARGIN));
+    lines.append(QLineF(_width - MARGIN, _height - MARGIN, MARGIN, _height - MARGIN));
+    lines.append(QLineF(_width - MARGIN, _height - MARGIN, _width - MARGIN, MARGIN));
+    painter->drawLines(lines.data(), lines.size());
 
     painter->setBrush(b);
 }

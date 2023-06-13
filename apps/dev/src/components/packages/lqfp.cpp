@@ -70,9 +70,9 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
         {
             auto index = i;
             direction  = graphicsitem_pin::direction::LEFT;
-            w          = LQFP_PIN_LABEL_WIDTH;
+            w          = LQFP_PIN_WIDTH;
             h          = LQFP_PIN_HEIGHT;
-            x          = LQFP_PIN_COMMENT_WIDTH;
+            x          = 0;
             y          = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
         }
         else if (i >= num && i < 2 * num)
@@ -80,7 +80,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
             auto index = i - num;
             direction  = graphicsitem_pin::direction::BOTTOM;
             w          = LQFP_PIN_HEIGHT;
-            h          = LQFP_PIN_LABEL_WIDTH;
+            h          = LQFP_PIN_WIDTH;
             x          = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
             y          = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
         }
@@ -88,7 +88,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
         {
             auto index = 3 * num - i;
             direction  = graphicsitem_pin::direction::RIGHT;
-            w          = LQFP_PIN_LABEL_WIDTH;
+            w          = LQFP_PIN_WIDTH;
             h          = LQFP_PIN_HEIGHT;
             x          = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
             y          = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
@@ -98,9 +98,9 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
             auto index = 4 * num - i;
             direction  = graphicsitem_pin::direction::TOP;
             w          = LQFP_PIN_HEIGHT;
-            h          = LQFP_PIN_LABEL_WIDTH;
+            h          = LQFP_PIN_WIDTH;
             x          = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
-            y          = LQFP_PIN_COMMENT_WIDTH;
+            y          = 0;
         }
         auto *item = new graphicsitem_pin(w, h);
         item->set_direction(direction);

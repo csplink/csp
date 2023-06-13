@@ -31,11 +31,14 @@
 
 #include "graphicsitem_pin.h"
 
+#define PIN_LENGTH 100
+
 using namespace csp;
 
 graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
 {
     Q_ASSERT(width > 0 && height > 0);
+    Q_ASSERT(width > 100 || height > 100);
 
     _width  = width;
     _height = height;
@@ -77,7 +80,11 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(widget);
     Q_UNUSED(option);
     // const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform()); // get lod
+
+    int  x, y;
+    int  width, height;
     auto b = painter->brush();
+    /******************** draw background **************************/
     if (_pinout_unit.type.toUpper() == "I/O")
     {
         if (_selected)
@@ -93,24 +100,52 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     {
         painter->setBrush(other_color);
     }
-    painter->drawRect(0, 0, (int)_width, (int)_height);
-    painter->setBrush(b);
 
-    QString text;
-    if (_direction == LEFT || _direction == RIGHT)
+    if (_direction == LEFT)
     {
-        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(_width - 20));
-        painter->translate(10, (_height / 2) + 8);
+        x      = (int)_width - 100;
+        y      = 0;
+        width  = PIN_LENGTH;
+        height = (int)_height;
+    }
+    else if (_direction == BOTTOM)
+    {
+        x      = 0;
+        y      = 0;
+        width  = (int)_width;
+        height = PIN_LENGTH;
+    }
+    else if (_direction == RIGHT)
+    {
+        x      = 0;
+        y      = 0;
+        width  = PIN_LENGTH;
+        height = (int)_height;
     }
     else
     {
-        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(_height - 20));
-        painter->translate((_width / 2) + 8, _height - 10);
+        x      = 0;
+        y      = (int)_height - PIN_LENGTH;
+        width  = (int)_width;
+        height = PIN_LENGTH;
+    }
+    painter->drawRect(x, y, width, height);
+    painter->setBrush(b);
+
+    /******************** draw text **************************/
+    QString text;
+    if (_direction == LEFT || _direction == RIGHT)
+    {
+        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(PIN_LENGTH - 20));
+        painter->translate(10 + x, (_height / 2) + 8);
+    }
+    else
+    {
+        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(PIN_LENGTH - 20));
+        painter->translate((_width / 2) + 8, PIN_LENGTH - 10 + y);
         painter->rotate(-90);
     }
-
     painter->setFont(*_font);
-
     painter->drawText(0, 0, text);
     painter->resetTransform();
 }
