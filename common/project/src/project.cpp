@@ -74,3 +74,8 @@ void project::set_path(const QString &path)
 
     _path = path;
 }
+
+project_table::pin_config_t &project::get_pin_config(const QString &key)
+{
+    return _project.pin_configs[key];
+}

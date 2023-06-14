@@ -1,2 +1,5 @@
 Core:
   name: test
+PinConfigs:
+  PA1:
+    Comment: PA1-OUT

@@ -50,6 +50,9 @@ private slots:
     {
         auto p = project_table::project_t();
         p.core.insert("name", "test");
+        project_table::pin_config_t pin_config;
+        pin_config.comment = "PA1-OUT";
+        p.pin_configs.insert("PA1", pin_config);
         project_table::save_project(p, "test.yml");
         QVERIFY(os::isfile("test.yml"));
     }
@@ -58,6 +61,7 @@ private slots:
     {
         auto p = project_table::project_t();
         p.core.insert("name", "test");
+        p.pin_configs.insert("test", project_table::pin_config_t());
         auto str = project_table::dump_project(p);
         QVERIFY(!str.isEmpty());
     }

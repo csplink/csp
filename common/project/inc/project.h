@@ -39,10 +39,11 @@ class project : public QObject {
     Q_OBJECT
 
 public:
-    QString get_core(const QString &key) const;
-    void    set_core(const QString &key, const QString &value);
-    QString get_path() const;
-    void    set_path(const QString &path);
+    QString                      get_core(const QString &key) const;
+    void                         set_core(const QString &key, const QString &value);
+    QString                      get_path() const;
+    void                         set_path(const QString &path);
+    project_table::pin_config_t &get_pin_config(const QString &key);
 
 private:
     project_table::project_t _project;
