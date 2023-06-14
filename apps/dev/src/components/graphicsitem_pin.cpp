@@ -49,6 +49,10 @@ graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
     _menu = new QMenu();
     _menu->setFont(QFont("JetBrains Mono", 12));
 
+    _project_instance = project::get_instance();
+    auto &cfg         = _project_instance->get_pin_config(_name);
+    _comment          = cfg.comment;
+
     this->setFlags(ItemIsPanel | ItemIsFocusable);
     this->setAcceptHoverEvents(true);
     this->setAcceptedMouseButtons(Qt::RightButton);
@@ -151,6 +155,31 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     }
     painter->setFont(*_font);
     painter->drawText(0, 0, text);
+
+    /******************** draw comment **************************/
+    if (_direction == LEFT)
+    {
+        text       = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
+        int pixels = _font_metrics->horizontalAdvance(text);
+        painter->translate(-pixels - 20, 0);
+    }
+    else if (_direction == BOTTOM)
+    {
+        text       = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
+        int pixels = _font_metrics->horizontalAdvance(text);
+        painter->translate(-pixels - 20, 0);
+    }
+    else if (_direction == RIGHT)
+    {
+        text = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
+        painter->translate(PIN_LENGTH, 0);
+    }
+    else
+    {
+        text = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
+        painter->translate(PIN_LENGTH, 0);
+    }
+    painter->drawText(0, 0, text);
     painter->resetTransform();
 }
 
@@ -207,13 +236,29 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
             previous_checked_action->setChecked(false);
         }
         if (action->isChecked())
+        {
             set_selected(true);
+            set_comment(action->text());
+        }
     }
     else  // Reset State
     {
         previous_checked_action->setChecked(false);
         previous_checked_action = nullptr;
         set_selected(false);
+        set_comment("");
     }
     previous_checked_action = action;
+}
+
+void graphicsitem_pin::set_comment(const QString &comment)
+{
+    auto &cfg   = _project_instance->get_pin_config(_name);
+    cfg.comment = comment;
+    _comment    = comment;
+}
+
+QString graphicsitem_pin::get_comment()
+{
+    return _comment;
 }

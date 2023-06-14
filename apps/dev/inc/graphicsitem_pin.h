@@ -39,6 +39,7 @@
 
 #include "interface_graphicsitem_pin.h"
 #include "pinout_table.h"
+#include "project.h"
 
 namespace csp {
 class graphicsitem_pin : public QObject, public interface_graphicsitem_pin {
@@ -56,11 +57,13 @@ public:
     explicit graphicsitem_pin(qreal width, qreal height);
     ~graphicsitem_pin() override;
 
-    void   set_direction(enum direction direct);
-    void   set_pinout_unit(pinout_table::pinout_unit_t *unit);
-    void   set_selected(bool selected);
-    void   set_name(const QString &name);
-    QMenu *get_menu() override;
+    void    set_direction(enum direction direct);
+    void    set_pinout_unit(pinout_table::pinout_unit_t *unit);
+    void    set_selected(bool selected);
+    void    set_name(const QString &name);
+    QMenu  *get_menu() override;
+    void    set_comment(const QString &comment);
+    QString get_comment();
 
 private slots:
     void menu_triggered_callback(QAction *action);
@@ -79,6 +82,8 @@ private:
     QString                      _name;
     QFont                       *_font;
     QFontMetrics                *_font_metrics;
+    QString                      _comment;
+    project                     *_project_instance;
 
     QMenu   *_menu                   = nullptr;
     QAction *_current_checked_action = nullptr;
