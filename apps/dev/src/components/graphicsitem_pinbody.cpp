@@ -53,6 +53,7 @@ graphicsitem_pinbody::graphicsitem_pinbody(qreal          width,
     _package = package.toUpper();
 
     _font = new QFont("JetBrains Mono", QFont::ExtraBold);
+    _font->setStyleStrategy(QFont::PreferAntialias);
 }
 
 graphicsitem_pinbody::~graphicsitem_pinbody()

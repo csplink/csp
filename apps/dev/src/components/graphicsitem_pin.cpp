@@ -43,7 +43,8 @@ graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
     _width  = width;
     _height = height;
 
-    _font         = new QFont("JetBrains Mono", 14, QFont::Bold);
+    _font = new QFont("JetBrains Mono", 14, QFont::Bold);
+    _font->setStyleStrategy(QFont::PreferAntialias);
     _font_metrics = new QFontMetrics(*_font);
 
     _menu = new QMenu();
