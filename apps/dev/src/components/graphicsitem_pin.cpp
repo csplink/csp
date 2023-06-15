@@ -227,13 +227,12 @@ QMenu *graphicsitem_pin::get_menu()
 
 void graphicsitem_pin::menu_triggered_callback(QAction *action)
 {
-    static QAction *previous_checked_action = nullptr;
-    _current_checked_action                 = action;
+    _current_checked_action = action;
     if (action->isCheckable())
     {
-        if (previous_checked_action != nullptr && previous_checked_action != action)
+        if (_previous_checked_action != nullptr && _previous_checked_action != action)
         {
-            previous_checked_action->setChecked(false);
+            _previous_checked_action->setChecked(false);
         }
         if (action->isChecked())
         {
@@ -243,12 +242,13 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
     }
     else  // Reset State
     {
-        previous_checked_action->setChecked(false);
-        previous_checked_action = nullptr;
+        if (_previous_checked_action != nullptr)
+            _previous_checked_action->setChecked(false);
+        _previous_checked_action = nullptr;
         set_selected(false);
         set_comment("");
     }
-    previous_checked_action = action;
+    _previous_checked_action = action;
 }
 
 void graphicsitem_pin::set_comment(const QString &comment)

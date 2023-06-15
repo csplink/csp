@@ -85,8 +85,9 @@ private:
     QString                      _comment;
     project                     *_project_instance;
 
-    QMenu   *_menu                   = nullptr;
-    QAction *_current_checked_action = nullptr;
+    QMenu   *_menu                    = nullptr;
+    QAction *_previous_checked_action = nullptr;
+    QAction *_current_checked_action  = nullptr;
 
 protected:
     QRectF       boundingRect() const override;
