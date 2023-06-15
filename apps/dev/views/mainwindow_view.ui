@@ -85,7 +85,7 @@
    <widget class="QWidget" name="dockwidget_left_contents">
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QTreeView" name="treeView"/>
+      <widget class="QTreeView" name="treeview"/>
      </item>
     </layout>
    </widget>
@@ -109,7 +109,7 @@
    <widget class="QWidget" name="dockwidget_right_contents">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QWidget" name="widget" native="true"/>
+      <widget class="QtTreePropertyBrowser" name="widget" native="true"/>
      </item>
     </layout>
    </widget>
@@ -161,6 +161,12 @@
    <class>chip_configure_view</class>
    <extends>QWidget</extends>
    <header location="global">chip_configure_view.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QtTreePropertyBrowser</class>
+   <extends>QWidget</extends>
+   <header>qttreepropertybrowser.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
