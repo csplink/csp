@@ -52,6 +52,9 @@ public:
     explicit mainwindow_view(QWidget *parent = nullptr);
     ~mainwindow_view() override;
 
+public slots:
+    void update_modules_treeview(const QString &company, const QString &name);
+
 private slots:
     void on_action_new_triggered(bool checked);
     void on_action_load_triggered(bool checked);

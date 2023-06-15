@@ -43,6 +43,12 @@ public:
     explicit chip_configure_view(QWidget *parent = nullptr);
     ~chip_configure_view() override;
 
+signals:
+    void signal_update_modules_treeview(const QString &company, const QString &name);
+
+protected:
+    void showEvent(QShowEvent *event) override;
+
 private:
     Ui::chip_configure_view *ui;
 };

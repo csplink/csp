@@ -109,7 +109,7 @@
    <widget class="QWidget" name="dockwidget_right_contents">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QtTreePropertyBrowser" name="widget" native="true"/>
+      <widget class="QtTreePropertyBrowser" name="treepropertybrowser" native="true"/>
      </item>
     </layout>
    </widget>
