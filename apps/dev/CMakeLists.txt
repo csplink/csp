@@ -70,4 +70,4 @@ endforeach ()
 qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
 
 add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
-target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components)
+target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components qtpropertybrowser)

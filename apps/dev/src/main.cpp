@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    Q_INIT_RESOURCE(qtpropertybrowser);
+
     for (const QString &dir : os::dirs("./fonts", QString("*")))
     {
         for (const QString &file : os::files(dir, QString("*.ttf")))
