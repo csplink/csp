@@ -54,7 +54,13 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="action_new"/>
+    <widget class="QMenu" name="menu_new">
+     <property name="title">
+      <string>New Project</string>
+     </property>
+     <addaction name="action_new_chip"/>
+    </widget>
+    <addaction name="menu_new"/>
     <addaction name="action_load"/>
     <addaction name="action_import"/>
     <addaction name="action_save"/>
@@ -84,6 +90,21 @@
    </attribute>
    <widget class="QWidget" name="dockwidget_left_contents">
     <layout class="QGridLayout" name="gridLayout">
+     <property name="leftMargin">
+      <number>9</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item row="0" column="0">
       <widget class="QTreeView" name="treeview"/>
      </item>
@@ -108,17 +129,27 @@
    </attribute>
    <widget class="QWidget" name="dockwidget_right_contents">
     <layout class="QGridLayout" name="gridLayout_2">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>9</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item row="0" column="0">
       <widget class="QtTreePropertyBrowser" name="treepropertybrowser" native="true"/>
      </item>
     </layout>
    </widget>
   </widget>
-  <action name="action_new">
-   <property name="text">
-    <string>New Project</string>
-   </property>
-  </action>
   <action name="action_load">
    <property name="text">
     <string>Load Project</string>
@@ -147,6 +178,11 @@
   <action name="action_report">
    <property name="text">
     <string>Generate Report</string>
+   </property>
+  </action>
+  <action name="action_new_chip">
+   <property name="text">
+    <string>New Chip Project</string>
    </property>
   </action>
  </widget>
