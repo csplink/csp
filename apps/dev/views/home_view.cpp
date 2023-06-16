@@ -37,6 +37,10 @@
 home_view::home_view(QWidget *parent) : QWidget(parent), ui(new Ui::home_view)
 {
     ui->setupUi(this);
+    connect(ui->button_create_mcu_project, &QPushButton::clicked, this,
+            &home_view::button_create_mcu_project_clicked_callback, Qt::UniqueConnection);
+    connect(ui->button_create_board_project, &QPushButton::clicked, this,
+            &home_view::button_create_board_project_clicked_callback, Qt::UniqueConnection);
 }
 
 home_view::~home_view()
@@ -44,7 +48,7 @@ home_view::~home_view()
     delete ui;
 }
 
-void home_view::on_button_create_mcu_project_clicked(bool checked)
+void home_view::button_create_mcu_project_clicked_callback(bool checked)
 {
     Q_UNUSED(checked)
     choose_chip_dialog dialog(this);
@@ -53,7 +57,7 @@ void home_view::on_button_create_mcu_project_clicked(bool checked)
     dialog.exec();
 }
 
-void home_view::on_button_create_board_project_clicked(bool checked)
+void home_view::button_create_board_project_clicked_callback(bool checked)
 {
     Q_UNUSED(checked)
 }

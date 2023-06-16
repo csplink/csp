@@ -44,8 +44,8 @@ public:
     ~home_view() override;
 
 private slots:
-    void on_button_create_mcu_project_clicked(bool checked);
-    void on_button_create_board_project_clicked(bool checked);
+    void button_create_mcu_project_clicked_callback(bool checked);
+    void button_create_board_project_clicked_callback(bool checked);
     void choose_chip_dialog_finished_callback(int result);
 
 private:

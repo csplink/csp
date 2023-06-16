@@ -39,6 +39,20 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     ui->setupUi(this);
     ui->dockwidget_left->hide();
     ui->dockwidget_right->hide();
+
+    connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
+            Qt::UniqueConnection);
+    connect(ui->action_load, &QAction::triggered, this, &mainwindow_view::action_load_triggered_callback,
+            Qt::UniqueConnection);
+    connect(ui->action_save, &QAction::triggered, this, &mainwindow_view::action_save_triggered_callback,
+            Qt::UniqueConnection);
+    connect(ui->action_saveas, &QAction::triggered, this, &mainwindow_view::action_saveas_triggered_callback,
+            Qt::UniqueConnection);
+    connect(ui->action_close, &QAction::triggered, this, &mainwindow_view::action_close_triggered_callback,
+            Qt::UniqueConnection);
+    connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
+            Qt::UniqueConnection);
+
     connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
             &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
     ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
@@ -79,32 +93,32 @@ void mainwindow_view::update_modules_treeview(const QString &company, const QStr
     ui->treeview->expandAll();
 }
 
-void mainwindow_view::on_action_new_triggered(bool checked)
+void mainwindow_view::action_new_chip_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::on_action_load_triggered(bool checked)
+void mainwindow_view::action_load_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::on_action_save_triggered(bool checked)
+void mainwindow_view::action_save_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::on_action_saveas_triggered(bool checked)
+void mainwindow_view::action_saveas_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::on_action_close_triggered(bool checked)
+void mainwindow_view::action_close_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::on_action_report_triggered(bool checked)
+void mainwindow_view::action_report_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 }

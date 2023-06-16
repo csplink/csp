@@ -52,6 +52,12 @@ choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), ui(ne
                    Qt::WindowMaximizeButtonHint);
     setWindowState(Qt::WindowMaximized);
 
+    connect(ui->dialogbuttonbox, &QDialogButtonBox::clicked, this,
+            &choose_chip_dialog::dialogbuttonbox_clicked_callback, Qt::UniqueConnection);
+    connect(ui->pushbutton_name, &QPushButton::pressed, this, &choose_chip_dialog::pushbutton_name_pressed_callback,
+            Qt::UniqueConnection);
+    connect(ui->pushbutton_company, &QPushButton::pressed, this,
+            &choose_chip_dialog::pushbutton_company_pressed_callback, Qt::UniqueConnection);
     connect(ui->dialogbuttonbox, &QDialogButtonBox::accepted, this, &choose_chip_dialog::accept, Qt::UniqueConnection);
     connect(ui->dialogbuttonbox, &QDialogButtonBox::rejected, this, &choose_chip_dialog::reject, Qt::UniqueConnection);
 
@@ -344,7 +350,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     }
 }
 
-void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
+void choose_chip_dialog::dialogbuttonbox_clicked_callback(QAbstractButton *button)
 {
     if (button == nullptr)
         return;
@@ -375,7 +381,7 @@ void choose_chip_dialog::on_dialogbuttonbox_clicked(QAbstractButton *button)
     }
 }
 
-void choose_chip_dialog::on_pushbutton_name_pressed()
+void choose_chip_dialog::pushbutton_name_pressed_callback()
 {
     auto url = ui->pushbutton_name->property("user_url").toString();
     if (url == "nil" || url.isEmpty())
@@ -384,7 +390,7 @@ void choose_chip_dialog::on_pushbutton_name_pressed()
     os::open_url(url);
 }
 
-void choose_chip_dialog::on_pushbutton_company_pressed()
+void choose_chip_dialog::pushbutton_company_pressed_callback()
 {
     auto url = ui->pushbutton_company->property("user_url").toString();
     if (url == "nil" || url.isEmpty())
