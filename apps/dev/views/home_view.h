@@ -43,8 +43,10 @@ public:
     explicit home_view(QWidget *parent = nullptr);
     ~home_view() override;
 
-private slots:
+public slots:
     void button_create_mcu_project_clicked_callback(bool checked);
+
+private slots:
     void button_create_board_project_clicked_callback(bool checked);
     void choose_chip_dialog_finished_callback(int result);
 

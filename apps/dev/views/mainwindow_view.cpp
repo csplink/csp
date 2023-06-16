@@ -94,7 +94,7 @@ void mainwindow_view::update_modules_treeview(const QString &company, const QStr
 
 void mainwindow_view::action_new_chip_triggered_callback(bool checked)
 {
-    Q_UNUSED(checked)
+    ui->page_home_view->button_create_mcu_project_clicked_callback(checked);
 }
 
 void mainwindow_view::action_load_triggered_callback(bool checked)
