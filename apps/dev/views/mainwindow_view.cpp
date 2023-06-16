@@ -65,8 +65,6 @@ mainwindow_view::~mainwindow_view()
 
 void mainwindow_view::update_modules_treeview(const QString &company, const QString &name)
 {
-    delete ui->treeview->model();
-
     ui->treeview->header()->hide();
     auto *model        = new QStandardItemModel(ui->treeview);
     auto  chip_summary = csp::chip_summary_table::load_chip_summary(company, name);
@@ -89,6 +87,7 @@ void mainwindow_view::update_modules_treeview(const QString &company, const QStr
         }
         modules_i++;
     }
+    delete ui->treeview->model();
     ui->treeview->setModel(model);
     ui->treeview->expandAll();
 }

@@ -193,6 +193,7 @@ void choose_chip_dialog::init_treeview_chip_filter()
     }
     _package_root->appendRows(_package_items);
 
+    delete ui->treeview_chip_filter->model();
     ui->treeview_chip_filter->setModel(model);
     ui->treeview_chip_filter->expandAll();
 
@@ -282,6 +283,8 @@ void choose_chip_dialog::init_tableview_chip_infos()
         _chips_items.append(chips_item);
     }
     _tableview_chip_infos_proxy_model->setSourceModel(model);
+
+    delete ui->tableview_chip_infos->model();
     ui->tableview_chip_infos->setModel(_tableview_chip_infos_proxy_model);
     ui->tableview_chip_infos->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableview_chip_infos->setSelectionMode(QAbstractItemView::SingleSelection);
