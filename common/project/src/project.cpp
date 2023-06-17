@@ -85,3 +85,8 @@ ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
     _ips = ip_table::load_ips(hal, name);
     return _ips;
 }
+
+ip_table::ips_t &project::get_ips()
+{
+    return _ips;
+}

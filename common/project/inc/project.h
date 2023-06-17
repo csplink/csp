@@ -46,6 +46,7 @@ public:
     void                         set_path(const QString &path);
     project_table::pin_config_t &get_pin_config(const QString &key);
     ip_table::ips_t             &load_ips(const QString &hal, const QString &name);
+    ip_table::ips_t             &get_ips();
 
 private:
     project_table::project_t _project;
