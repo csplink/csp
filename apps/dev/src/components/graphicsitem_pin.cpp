@@ -33,7 +33,7 @@
 
 #define PIN_LENGTH 100
 
-using namespace csp;
+namespace csp {
 
 graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
 {
@@ -51,14 +51,14 @@ graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
     _menu->setFont(QFont("JetBrains Mono", 12));
 
     _project_instance = project::get_instance();
-    auto &cfg         = _project_instance->get_pin_config(_name);
-    _comment          = cfg.comment;
 
     this->setFlags(ItemIsPanel | ItemIsFocusable);
     this->setAcceptHoverEvents(true);
     this->setAcceptedMouseButtons(Qt::RightButton);
 
     QObject::connect(_menu, &QMenu::triggered, this, &graphicsitem_pin::menu_triggered_callback, Qt::UniqueConnection);
+    QObject::connect(_project_instance, &project::pin_property_changed, this,
+                     &graphicsitem_pin::pin_property_changed_callback, Qt::UniqueConnection);
 }
 
 graphicsitem_pin::~graphicsitem_pin()
@@ -217,8 +217,9 @@ void graphicsitem_pin::set_selected(bool selected)
 void graphicsitem_pin::set_name(const QString &name)
 {
     _name = name;
-
     this->setToolTip(_name);
+
+    _comment = _project_instance->get_pin_comment(_name);
 }
 
 QMenu *graphicsitem_pin::get_menu()
@@ -254,12 +255,24 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
 
 void graphicsitem_pin::set_comment(const QString &comment)
 {
-    auto &cfg   = _project_instance->get_pin_config(_name);
-    cfg.comment = comment;
-    _comment    = comment;
+    _project_instance->set_pin_comment(_name, comment);
 }
 
-QString graphicsitem_pin::get_comment()
+void graphicsitem_pin::pin_property_changed_callback(const QString  &property,
+                                                     const QString  &name,
+                                                     const QVariant &old_value,
+                                                     const QVariant &new_value)
 {
-    return _comment;
+    Q_UNUSED(old_value);
+
+    if (name != _name)
+        return;
+
+    if (property == "comment")
+    {
+        _comment = new_value.toString();
+        this->update();
+    }
 }
+
+}  // namespace csp

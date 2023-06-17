@@ -57,16 +57,61 @@ public:
     explicit graphicsitem_pin(qreal width, qreal height);
     ~graphicsitem_pin() override;
 
-    void    set_direction(enum direction direct);
-    void    set_pinout_unit(pinout_table::pinout_unit_t *unit);
-    void    set_selected(bool selected);
-    void    set_name(const QString &name);
-    QMenu  *get_menu() override;
-    void    set_comment(const QString &comment);
-    QString get_comment();
+    /**
+     * @brief set pin direction
+     * @param direct: pin direction
+     */
+    void set_direction(enum direction direct);
+
+    /**
+     * @brief set pinout unit
+     * @param unit: pinout unit
+     */
+    void set_pinout_unit(pinout_table::pinout_unit_t *unit);
+
+    /**
+     * @brief set pin selected status
+     * @param selected: selected status
+     */
+    void set_selected(bool selected);
+
+    /**
+     * @brief set pin name
+     * @param name: pin name
+     */
+    void set_name(const QString &name);
+
+    /**
+     * @brief get pin menus
+     * @return pin menus
+     */
+    QMenu *get_menu() override;
+
+    /**
+     * @brief set pin comment
+     * @return pin comment
+     */
+    void set_comment(const QString &comment);
 
 private slots:
+
+    /**
+     * @brief menu triggered callback
+     * @param action: triggered action
+     */
     void menu_triggered_callback(QAction *action);
+
+    /**
+     * @brief pin property changed callback
+     * @param property: property name
+     * @param name: pin name
+     * @param old_value: old value
+     * @param new_value: new value
+     */
+    void pin_property_changed_callback(const QString  &property,
+                                       const QString  &name,
+                                       const QVariant &old_value,
+                                       const QVariant &new_value);
 
 private:
     const QColor default_color  = QColor(185, 196, 202);
@@ -83,6 +128,7 @@ private:
     QFont                       *_font;
     QFontMetrics                *_font_metrics;
     QString                      _comment;
+    QString                      _function;
     project                     *_project_instance;
 
     QMenu   *_menu                    = nullptr;
@@ -90,9 +136,25 @@ private:
     QAction *_current_checked_action  = nullptr;
 
 protected:
-    QRectF       boundingRect() const override;
+    /**
+     * @brief defines the outer bounds of the item as a rectangle;
+     * @return bounding rectangle
+     */
+    QRectF boundingRect() const override;
+
+    /**
+     * @brief the shape of this item as a QPainterPath in local coordinates
+     * @return shape
+     */
     QPainterPath shape() const override;
-    void         paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    /**
+     * @brief paint the contents of an item in local coordinates
+     * @param painter: painter
+     * @param option: style option
+     * @param widget: widget
+     */
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 }  // namespace csp
 #endif  // CSP_GRAPHICSITEM_PIN_H
