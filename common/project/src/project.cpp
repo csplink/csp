@@ -57,10 +57,7 @@ void project::set_core(const QString &key, const QString &value)
     Q_ASSERT(!key.isEmpty());
     Q_ASSERT(!value.isEmpty());
 
-    if (_project.core.contains(key))
-        _project.core[key] = value;
-    else
-        _project.core.insert(key, value);
+    _project.core[key] = value;
 }
 
 QString project::get_path() const
@@ -78,4 +75,13 @@ void project::set_path(const QString &path)
 project_table::pin_config_t &project::get_pin_config(const QString &key)
 {
     return _project.pin_configs[key];
+}
+
+ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
+{
+    Q_ASSERT(!hal.isEmpty());
+    Q_ASSERT(!name.isEmpty());
+
+    _ips = ip_table::load_ips(hal, name);
+    return _ips;
 }

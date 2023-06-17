@@ -32,6 +32,7 @@
 
 #include <QObject>
 
+#include "ip_table.h"
 #include "project_table.h"
 
 namespace csp {
@@ -44,10 +45,12 @@ public:
     QString                      get_path() const;
     void                         set_path(const QString &path);
     project_table::pin_config_t &get_pin_config(const QString &key);
+    ip_table::ips_t             &load_ips(const QString &hal, const QString &name);
 
 private:
     project_table::project_t _project;
     QString                  _path;
+    ip_table::ips_t          _ips;
 
 public:
     static project *get_instance();

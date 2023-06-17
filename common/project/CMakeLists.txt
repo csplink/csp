@@ -27,7 +27,7 @@ file(GLOB_RECURSE SOURCES
         src/*.cpp)
 
 add_library(project STATIC ${SOURCES})
-target_link_libraries(project PUBLIC compat_layer core)
+target_link_libraries(project PUBLIC compat_layer core repo)
 target_include_directories(project PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
