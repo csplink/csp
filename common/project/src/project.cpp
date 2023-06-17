@@ -29,7 +29,7 @@
 
 #include "project.h"
 
-using namespace csp;
+namespace csp {
 
 project *project::_instance = new project();
 
@@ -72,11 +72,6 @@ void project::set_path(const QString &path)
     _path = path;
 }
 
-project_table::pin_config_t &project::get_pin_config(const QString &key)
-{
-    return _project.pin_configs[key];
-}
-
 ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
 {
     Q_ASSERT(!hal.isEmpty());
@@ -90,3 +85,39 @@ ip_table::ips_t &project::get_ips()
 {
     return _ips;
 }
+
+/******************* pin ************************/
+project_table::pin_config_t &project::get_pin_config(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+    return _project.pin_configs[key];
+}
+
+void project::set_pin_comment(const QString &key, const QString &comment)
+{
+    Q_ASSERT(!key.isEmpty());
+    emit pin_property_changed("comment", key, _project.pin_configs[key].comment, comment);
+    _project.pin_configs[key].comment = comment;
+}
+
+QString &project::get_pin_comment(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+    return _project.pin_configs[key].comment;
+}
+
+void project::set_pin_function(const QString &key, const QString &function)
+{
+    Q_ASSERT(!key.isEmpty());
+    emit pin_property_changed("function", key, _project.pin_configs[key].function, function);
+    _project.pin_configs[key].function = function;
+}
+
+QString &project::get_pin_function(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+    return _project.pin_configs[key].function;
+}
+
+/***********************************************/
+}  // namespace csp

@@ -42,19 +42,37 @@ class project_table {
 public:
     typedef struct
     {
-        QString comment;
+        QString function;  // pin selected function
+        QString comment;   // pin comment
     } pin_config_t;
 
     typedef struct
     {
-        QMap<QString, pin_config_t> pin_configs;
-        QMap<QString, QString>      core;
+        QMap<QString, pin_config_t> pin_configs;  // pin configs
+        QMap<QString, QString>      core;         // core configs
     } project_t;
 
 public:
+    /**
+     * @brief load project from yaml file
+     * @param path: project file path
+     * @return project
+     */
     static project_t load_project(const QString &path);
-    static void      save_project(const project_t &p, const QString &path);
-    static QString   dump_project(const project_t &p);
+
+    /**
+     * @brief save project to yaml file
+     * @param p: project
+     * @param path: project file path
+     */
+    static void save_project(const project_t &p, const QString &path);
+
+    /**
+     * @brief dump project to yaml string
+     * @param p: project
+     * @return yaml string
+     */
+    static QString dump_project(const project_t &p);
 
 private:
     explicit project_table();

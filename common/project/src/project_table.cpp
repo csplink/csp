@@ -33,7 +33,7 @@
 #include "os.h"
 #include "project_table.h"
 
-using namespace csp;
+namespace csp {
 
 project_table::project_table() = default;
 
@@ -91,3 +91,5 @@ QString project_table::dump_project(const project_table::project_t &p)
     node = p;
     return QString::fromStdString(YAML::Dump(node));
 }
+
+}  // namespace csp
