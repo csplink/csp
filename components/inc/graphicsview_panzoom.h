@@ -45,17 +45,35 @@ class graphicsview_panzoom : public QGraphicsView {
 public:
     explicit graphicsview_panzoom(QWidget *parent = nullptr);
     ~graphicsview_panzoom() override;
-    void setup_matrix();
+
+    /**
+     * @brief zoom in
+     * @param value: zoom value
+     */
     void zoom_in(int value);
+
+    /**
+     * @brief zoom out
+     * @param value: zoom value
+     */
     void zoom_out(int value);
 
+private:
+    /**
+     * @brief resizing via setup matrix
+     */
+    void setup_matrix();
+
 protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
-    int _scale;
+    int  _scale;
+    bool _is_pressed = false;
 };
 }  // namespace csp
 #endif  // CSP_GRAPHICSVIEW_PANZOOM_H

@@ -34,7 +34,7 @@
 #define MIN_SCALE 0
 #define MAX_SCALE 1000
 
-using namespace csp;
+namespace csp {
 
 graphicsview_panzoom::graphicsview_panzoom(QWidget *parent) : QGraphicsView(parent)
 {
@@ -66,9 +66,29 @@ void graphicsview_panzoom::setup_matrix()
     this->setTransform(matrix);
 }
 
+void graphicsview_panzoom::mousePressEvent(QMouseEvent *event)
+{
+    QGraphicsView::mousePressEvent(event);
+    _is_pressed = true;
+    viewport()->setCursor(Qt::ArrowCursor);
+
+    auto *item = dynamic_cast<interface_graphicsitem_pin *>(this->itemAt(event->pos()));
+    if (item == nullptr)
+        return;
+}
+
+void graphicsview_panzoom::mouseMoveEvent(QMouseEvent *event)
+{
+    QGraphicsView::mouseMoveEvent(event);
+
+    if (_is_pressed)
+        viewport()->setCursor(Qt::ClosedHandCursor);
+}
+
 void graphicsview_panzoom::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
+    _is_pressed = false;
     viewport()->setCursor(Qt::ArrowCursor);
 }
 
@@ -105,3 +125,5 @@ void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
         return;
     item->get_menu()->exec(event->globalPos());
 }
+
+}  // namespace csp
