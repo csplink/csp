@@ -378,6 +378,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(QAbstractButton *butto
                 _project_instance->set_core(CSP_PROJECT_CORE_HAL, _hal_name);
                 _project_instance->set_core(CSP_PROJECT_CORE_HAL_NAME, _chip_name);
                 _project_instance->set_core(CSP_PROJECT_CORE_PACKAGE, _package_name);
+                _project_instance->load_ips(_hal_name, _chip_name);
             }
         });
         wizard.exec();
