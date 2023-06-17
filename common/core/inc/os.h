@@ -47,10 +47,7 @@ public:
      * @param parent: the parent widget that owns the message box.
      */
     static void
-    show_info(const QString &message, const QString &title = QObject::tr("Information"), QWidget *parent = nullptr)
-    {
-        QMessageBox::information(parent, title, message);
-    }
+    show_info(const QString &message, const QString &title = QObject::tr("Information"), QWidget *parent = nullptr);
 
     /**
      * @brief Show a warning message box.
@@ -58,10 +55,7 @@ public:
      * @param parent: the parent widget that owns the message box.
      */
     static void
-    show_warning(const QString &message, const QString &title = QObject::tr("Warning"), QWidget *parent = nullptr)
-    {
-        QMessageBox::warning(parent, title, message);
-    }
+    show_warning(const QString &message, const QString &title = QObject::tr("Warning"), QWidget *parent = nullptr);
 
     /**
      * @brief Show a critical message box.
@@ -69,10 +63,7 @@ public:
      * @param parent: the parent widget that owns the message box.
      */
     static void
-    show_critical(const QString &message, const QString &title = QObject::tr("Critical"), QWidget *parent = nullptr)
-    {
-        QMessageBox::critical(parent, title, message);
-    }
+    show_critical(const QString &message, const QString &title = QObject::tr("Critical"), QWidget *parent = nullptr);
 
     /**
      * @brief Show a error message box.
@@ -80,21 +71,15 @@ public:
      * @param parent: the parent widget that owns the message box.
      */
     static void
-    show_error(const QString &message, const QString &title = QObject::tr("Error"), QWidget *parent = nullptr)
-    {
-        QMessageBox::critical(parent, title, message);
-    }
+    show_error(const QString &message, const QString &title = QObject::tr("Error"), QWidget *parent = nullptr);
 
     /**
      * @brief Display an error message and exit the application.
      * @param message: the text to be displayed in the message box.
      */
-    static void
-    show_error_and_exit(const QString &message, const QString &title = QObject::tr("Critical"), QWidget *parent = nullptr)
-    {
-        QMessageBox::critical(parent, title, message, QMessageBox::Ok);
-        QApplication::quit();
-    }
+    static void show_error_and_exit(const QString &message,
+                                    const QString &title  = QObject::tr("Critical"),
+                                    QWidget       *parent = nullptr);
 
     /**
      * @brief Show a question message box.
@@ -102,81 +87,32 @@ public:
      * @param parent: the parent widget that owns the message box.
      */
     static void
-    show_question(const QString &message, const QString &title = QObject::tr("Question"), QWidget *parent = nullptr)
-    {
-        QMessageBox::question(parent, title, message);
-    }
+    show_question(const QString &message, const QString &title = QObject::tr("Question"), QWidget *parent = nullptr);
 
-    static void open_url(const QString &url)
-    {
-        Q_ASSERT(!url.isEmpty());
+    static void open_url(const QString &url);
 
-        QDesktopServices::openUrl(QUrl(url));
-    }
+    static bool isdir(const QString &p);
 
-    static bool isdir(const QString &path)
-    {
-        if (path.isEmpty())
-            return false;
+    static bool isfile(const QString &p);
 
-        QFileInfo fi(path);
-        return fi.isDir();
-    }
+    static bool exists(const QString &p);
 
-    static bool isfile(const QString &path)
-    {
-        if (path.isEmpty())
-            return false;
+    static QString getexistdir();
 
-        QFileInfo fi(path);
-        return fi.isFile();
-    }
+    static QStringList files(const QString &p, const QStringList &filters);
 
-    static bool exists(const QString &path)
-    {
-        if (path.isEmpty())
-            return false;
+    static QStringList files(const QString &p, const QString &filter);
 
-        QFileInfo fi(path);
-        return fi.exists();
-    }
+    static QStringList dirs(const QString &p, const QStringList &filters);
 
-    static QString getexistdir()
-    {
-        return QFileDialog::getExistingDirectory();
-    }
+    static QStringList dirs(const QString &p, const QString &filter);
 
-    static QStringList files(const QString &path, const QStringList &filters)
-    {
-        QDir        dir(path);
-        auto        files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-        QStringList paths;
-        for (const QFileInfo &file : files)
-            paths.append(file.absoluteFilePath());
+private:
+    os();
+    ~os();
 
-        return paths;
-    }
-
-    static QStringList files(const QString &path, const QString &filter)
-    {
-        return files(path, QStringList() << filter);
-    }
-
-    static QStringList dirs(const QString &path, const QStringList &filters)
-    {
-        QDir        dir(path);
-        auto        dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-        QStringList paths;
-        for (const QFileInfo &_dir : dirs)
-            paths.append(_dir.absoluteFilePath());
-
-        return paths;
-    }
-
-    static QStringList dirs(const QString &path, const QString &filter)
-    {
-        return dirs(path, QStringList() << filter);
-    }
+    os(const os &signal);
+    const os &operator=(const os &signal);
 };
 }  // namespace csp
 

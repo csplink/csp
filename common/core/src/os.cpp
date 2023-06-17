@@ -28,3 +28,119 @@
  */
 
 #include "os.h"
+
+namespace csp {
+
+os::os() = default;
+
+os::~os() = default;
+
+void os::show_info(const QString &message, const QString &title, QWidget *parent)
+{
+    QMessageBox::information(parent, title, message);
+}
+
+void os::show_warning(const QString &message, const QString &title, QWidget *parent)
+{
+    QMessageBox::warning(parent, title, message);
+}
+
+void os::show_critical(const QString &message, const QString &title, QWidget *parent)
+{
+    QMessageBox::critical(parent, title, message);
+}
+
+void os::show_error(const QString &message, const QString &title, QWidget *parent)
+{
+    QMessageBox::critical(parent, title, message);
+}
+
+void os::show_error_and_exit(const QString &message, const QString &title, QWidget *parent)
+{
+    QMessageBox::critical(parent, title, message, QMessageBox::Ok);
+    QApplication::quit();
+}
+
+void os::show_question(const QString &message, const QString &title, QWidget *parent)
+{
+    QMessageBox::question(parent, title, message);
+}
+
+void os::open_url(const QString &url)
+{
+    Q_ASSERT(!url.isEmpty());
+
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+bool os::isdir(const QString &p)
+{
+    if (p.isEmpty())
+        return false;
+
+    QFileInfo fi(p);
+    return fi.isDir();
+}
+
+bool os::isfile(const QString &p)
+{
+    if (p.isEmpty())
+        return false;
+
+    QFileInfo fi(p);
+    return fi.isFile();
+}
+
+bool os::exists(const QString &p)
+{
+    if (p.isEmpty())
+        return false;
+
+    QFileInfo fi(p);
+    return fi.exists();
+}
+
+QString os::getexistdir()
+{
+    return QFileDialog::getExistingDirectory();
+}
+
+QStringList os::files(const QString &p, const QStringList &filters)
+{
+    if (!isdir(p))
+        return {};
+
+    QDir        dir(p);
+    auto        files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    QStringList paths;
+    for (const QFileInfo &file : files)
+        paths.append(file.absoluteFilePath());
+
+    return paths;
+}
+
+QStringList os::files(const QString &p, const QString &filter)
+{
+    return files(p, QStringList() << filter);
+}
+
+QStringList os::dirs(const QString &p, const QStringList &filters)
+{
+    if (!isdir(p))
+        return {};
+
+    QDir        dir(p);
+    auto        dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    QStringList paths;
+    for (const QFileInfo &_dir : dirs)
+        paths.append(_dir.absoluteFilePath());
+
+    return paths;
+}
+
+QStringList os::dirs(const QString &p, const QString &filter)
+{
+    return dirs(p, QStringList() << filter);
+}
+
+}  // namespace csp

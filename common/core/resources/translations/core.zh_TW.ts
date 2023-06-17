@@ -9,23 +9,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../inc/os.h" line="61"/>
+        <location filename="../../inc/os.h" line="58"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../inc/os.h" line="72"/>
-        <location filename="../../inc/os.h" line="93"/>
+        <location filename="../../inc/os.h" line="66"/>
+        <location filename="../../inc/os.h" line="81"/>
         <source>Critical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../inc/os.h" line="83"/>
+        <location filename="../../inc/os.h" line="74"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../inc/os.h" line="105"/>
+        <location filename="../../inc/os.h" line="90"/>
         <source>Question</source>
         <translation type="unfinished"></translation>
     </message>
