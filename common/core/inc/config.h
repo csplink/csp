@@ -38,10 +38,37 @@ class config : public QObject {
     Q_OBJECT
 
 public:
-    static bool    is_config(const QString &key);
+    /**
+     * @brief check if the key is config
+     * @param key: config key
+     * @return true if the key is config, otherwise false
+     */
+    static bool is_config(const QString &key);
+
+    /**
+     * @brief get value by key
+     * @param key: config key
+     * @return config value
+     */
     static QString get(const QString &key);
+
+    /**
+     * @brief get csp_repo directory; <get("core/repodir")>
+     * @return csp_repo directory; <default: "csp_repo">
+     */
     static QString repodir();
-    static void    set(const QString &key, const QString &value);
+
+    /**
+     * @brief set value by key
+     * @param key: config key
+     * @param value: config value
+     */
+    static void set(const QString &key, const QString &value);
+
+    /**
+     * @brief get csp_repo directory; <get("core/language")>
+     * @return language; <default: "zh_CN">
+     */
     static QString language();
 
 private:

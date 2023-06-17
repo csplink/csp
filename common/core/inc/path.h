@@ -36,14 +36,67 @@ namespace csp {
 
 class path {
 public:
+    /**
+     * @brief get the file name with no suffix at the end of the path
+     * @param p: path
+     * @return the file name with no suffix at the end of the path
+     */
     static QString basename(const QString &p);
+
+    /**
+     * @brief get the file name with the last suffix of the path
+     * @param p: path
+     * @return the file name with the last suffix of the path
+     */
     static QString filename(const QString &p);
+
+    /**
+     * @brief get the suffix of the path
+     * @param p: path
+     * @return the suffix of the path
+     */
     static QString extension(const QString &p);
+
+    /**
+     * @brief get the directory of the path
+     * @param p: path
+     * @return the directory of the path
+     */
     static QString directory(const QString &p);
+
+    /**
+     * @brief convert to relative path
+     * @param p: path
+     * @param rootdir: root directory
+     * @return the relative path of the path
+     */
     static QString relative(const QString &p, const QString &rootdir = ".");
+
+    /**
+     * @brief convert to absolute path
+     * @param p: path
+     * @param rootdir: root directory
+     * @return the absolute path of the path
+     */
     static QString absolute(const QString &p, const QString &rootdir = ".");
+
+    /**
+     * @brief check if the path is relative
+     * @param p: path
+     * @return true if the path is relative, otherwise false
+     */
     static bool    is_absolute(const QString &p);
+
+    /**
+     * @brief get the file path of the application executable
+     * @return the file path of the application executable
+     */
     static QString appfile();
+
+    /**
+     * @brief get the directory of the application executable
+     * @return the directory of the application executable
+     */
     static QString appdir();
 
 private:

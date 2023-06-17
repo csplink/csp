@@ -89,22 +89,69 @@ public:
     static void
     show_question(const QString &message, const QString &title = QObject::tr("Question"), QWidget *parent = nullptr);
 
+    /**
+     * @brief open a url in the default browser.
+     * @param url: the url to be opened.
+     */
     static void open_url(const QString &url);
 
+    /**
+     * @brief check if the directory exists.
+     * @param p: path
+     * @return true if the directory exists, otherwise false.
+     */
     static bool isdir(const QString &p);
 
+    /**
+     * @brief check if the file exists.
+     * @param p: path
+     * @return true if the file exists, otherwise false.
+     */
     static bool isfile(const QString &p);
 
+    /**
+     * @brief check if the path exists.
+     * @param p: path
+     * @return true if the path exists, otherwise false.
+     */
     static bool exists(const QString &p);
 
+    /**
+     * @brief open dialog and get an existing directory selected by the user.
+     * @return directory.
+     */
     static QString getexistdir();
 
+    /**
+     * @brief traverse to get all the files in the specified directory
+     * @param p: directory path
+     * @param filters: file filter
+     * @return file list
+     */
     static QStringList files(const QString &p, const QStringList &filters);
 
+    /**
+     * @brief traverse to get all the files in the specified directory
+     * @param p: directory path
+     * @param filters: file filter
+     * @return file list
+     */
     static QStringList files(const QString &p, const QString &filter);
 
+    /**
+     * @brief traverse to get all the directories in the specified directory
+     * @param p: directory path
+     * @param filters: file filter
+     * @return directory list
+     */
     static QStringList dirs(const QString &p, const QStringList &filters);
 
+    /**
+     * @brief traverse to get all the directories in the specified directory
+     * @param p: directory path
+     * @param filters: file filter
+     * @return directory list
+     */
     static QStringList dirs(const QString &p, const QString &filter);
 
 private:
