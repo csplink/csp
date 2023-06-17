@@ -140,10 +140,10 @@ signals:
      * @param old_value: old value
      * @param new_value: new value
      */
-    void pin_property_changed(const QString  &property,
-                              const QString  &name,
-                              const QVariant &old_value,
-                              const QVariant &new_value);
+    void signals_pin_property_changed(const QString  &property,
+                                      const QString  &name,
+                                      const QVariant &old_value,
+                                      const QVariant &new_value);
 
 private:
     project();

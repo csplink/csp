@@ -96,7 +96,7 @@ project_table::pin_config_t &project::get_pin_config(const QString &key)
 void project::set_pin_comment(const QString &key, const QString &comment)
 {
     Q_ASSERT(!key.isEmpty());
-    emit pin_property_changed("comment", key, _project.pin_configs[key].comment, comment);
+    emit signals_pin_property_changed("comment", key, _project.pin_configs[key].comment, comment);
     _project.pin_configs[key].comment = comment;
 }
 
@@ -109,7 +109,7 @@ QString &project::get_pin_comment(const QString &key)
 void project::set_pin_function(const QString &key, const QString &function)
 {
     Q_ASSERT(!key.isEmpty());
-    emit pin_property_changed("function", key, _project.pin_configs[key].function, function);
+    emit signals_pin_property_changed("function", key, _project.pin_configs[key].function, function);
     _project.pin_configs[key].function = function;
 }
 
