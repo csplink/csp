@@ -56,9 +56,9 @@ graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
     this->setAcceptHoverEvents(true);
     this->setAcceptedMouseButtons(Qt::RightButton);
 
-    QObject::connect(_menu, &QMenu::triggered, this, &graphicsitem_pin::menu_triggered_callback, Qt::UniqueConnection);
-    QObject::connect(_project_instance, &project::pin_property_changed, this,
-                     &graphicsitem_pin::pin_property_changed_callback, Qt::UniqueConnection);
+    connect(_menu, &QMenu::triggered, this, &graphicsitem_pin::menu_triggered_callback, Qt::UniqueConnection);
+    connect(_project_instance, &project::pin_property_changed, this, &graphicsitem_pin::pin_property_changed_callback,
+            Qt::UniqueConnection);
 }
 
 graphicsitem_pin::~graphicsitem_pin()
