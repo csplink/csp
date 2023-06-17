@@ -72,9 +72,14 @@ void graphicsview_panzoom::mousePressEvent(QMouseEvent *event)
     _is_pressed = true;
     viewport()->setCursor(Qt::ArrowCursor);
 
-    auto *item = dynamic_cast<interface_graphicsitem_pin *>(this->itemAt(event->pos()));
+    auto *item = this->itemAt(event->pos());
     if (item == nullptr)
         return;
+
+    if (!(item->flags() & QGraphicsItem::ItemIsFocusable))
+        return;
+
+    emit signals_selected_item_clicked(item);
 }
 
 void graphicsview_panzoom::mouseMoveEvent(QMouseEvent *event)
@@ -123,6 +128,9 @@ void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
     auto *item = dynamic_cast<interface_graphicsitem_pin *>(this->itemAt(event->pos()));
     if (item == nullptr)
         return;
+    if (!(item->flags() & QGraphicsItem::ItemIsFocusable))
+        return;
+
     item->get_menu()->exec(event->globalPos());
 }
 

@@ -64,6 +64,13 @@ private:
      */
     void setup_matrix();
 
+signals:
+    /**
+     * @brief selected item changed
+     * @param item: selected item
+     */
+    void signals_selected_item_clicked(QGraphicsItem *item);
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
