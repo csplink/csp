@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>geehy/apm32f103zet6.yml</file>
         <file>ip.yml</file>
+        <file>map.yml</file>
         <file>pinout.yml</file>
         <file>repository.yml</file>
     </qresource>
