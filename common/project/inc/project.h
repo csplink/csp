@@ -34,6 +34,7 @@
 #include <QVariant>
 
 #include "ip_table.h"
+#include "map_table.h"
 #include "project_table.h"
 
 namespace csp {
@@ -83,6 +84,19 @@ public:
      */
     ip_table::ips_t &get_ips();
 
+    /**
+     * @brief load hal map from db
+     * @param hal: hal name
+     * @param name: chip name
+     * @return hal map as a modifiable reference
+     */
+    map_table::maps_t &load_maps(const QString &hal);
+
+    /**
+     * @brief get hal map
+     * @return hal map as a modifiable reference
+     */
+    map_table::maps_t &get_maps();
     /******************* pin ************************/
     /**
      * @brief get pin config by pin name
@@ -124,6 +138,7 @@ private:
     project_table::project_t _project;  // project table
     QString                  _path;     // project file path
     ip_table::ips_t          _ips;      // ip map
+    map_table::maps_t        _maps;     // hal map
 
 public:
     /**

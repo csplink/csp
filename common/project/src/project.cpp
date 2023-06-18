@@ -86,6 +86,19 @@ ip_table::ips_t &project::get_ips()
     return _ips;
 }
 
+map_table::maps_t &project::load_maps(const QString &hal)
+{
+    Q_ASSERT(!hal.isEmpty());
+
+    _maps = map_table::load_maps(hal);
+    return _maps;
+}
+
+map_table::maps_t &project::get_maps()
+{
+    return _maps;
+}
+
 /******************* pin ************************/
 project_table::pin_config_t &project::get_pin_config(const QString &key)
 {
