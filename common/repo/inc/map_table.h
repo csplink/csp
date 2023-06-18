@@ -63,8 +63,12 @@ public:
         QMap<QString, QString>    total;
     } map_t;
 
+    typedef QMap<QString, map_t> maps_t;
+
 public:
-    static map_t load_map(const QString &path);
+    static map_t  load_map(const QString &path);
+    static map_t  load_map(const QString &hal, const QString &map);
+    static maps_t load_maps(const QString &hal);
 
 private:
     explicit map_table();

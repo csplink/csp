@@ -32,6 +32,7 @@
 #include "config.h"
 #include "map_table.h"
 #include "os.h"
+#include "path.h"
 
 namespace csp {
 
@@ -72,6 +73,30 @@ map_table::map_t map_table::load_map(const QString &path)
     }
 
     return {};
+}
+
+map_table::map_t map_table::load_map(const QString &hal, const QString &map)
+{
+    Q_ASSERT(!hal.isEmpty());
+    Q_ASSERT(!map.isEmpty());
+
+    QString path = QString("%1/db/hal/%2/map/%3.yml").arg(config::repodir(), hal.toLower(), map.toLower());
+    return load_map(path);
+}
+
+map_table::maps_t map_table::load_maps(const QString &hal)
+{
+    Q_ASSERT(!hal.isEmpty());
+
+    maps_t  maps;
+    QString p = QString("%1/db/hal/%2/map").arg(config::repodir(), hal.toLower());
+    for (const QString &file : os::files(p, QString("*.yml")))
+    {
+        auto map      = load_map(file);
+        auto basename = path::basename(file).toLower();
+        maps.insert(basename, map);
+    }
+    return maps;
 }
 
 }  // namespace csp
