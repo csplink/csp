@@ -30,6 +30,8 @@
 #include "chip_configure_view.h"
 #include "ui_chip_configure_view.h"
 
+using namespace csp;
+
 chip_configure_view::chip_configure_view(QWidget *parent) : QWidget(parent), ui(new Ui::chip_configure_view)
 {
     ui->setupUi(this);
@@ -38,4 +40,18 @@ chip_configure_view::chip_configure_view(QWidget *parent) : QWidget(parent), ui(
 chip_configure_view::~chip_configure_view()
 {
     delete ui;
+}
+
+void chip_configure_view::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+
+}
+
+void chip_configure_view::set_propertybrowser(propertybrowser *instance)
+{
+    _propertybrowser_instance = instance;
+
+    connect(ui->graphicsview, &graphicsview_panzoom::signals_selected_item_clicked, _propertybrowser_instance,
+            &propertybrowser::update_property_by_pin);
 }

@@ -40,6 +40,8 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     ui->dockwidget_left->hide();
     ui->dockwidget_right->hide();
 
+    ui->page_chip_configure_view->set_propertybrowser(ui->propertybrowser);
+
     connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
             Qt::UniqueConnection);
     connect(ui->action_load, &QAction::triggered, this, &mainwindow_view::action_load_triggered_callback,
