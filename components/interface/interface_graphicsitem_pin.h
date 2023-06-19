@@ -36,7 +36,9 @@
 #include <QStyleOptionGraphicsItem>
 
 namespace csp {
-class interface_graphicsitem_pin : public QGraphicsItem {
+class interface_graphicsitem_pin : public QObject, public QGraphicsItem {
+    Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
     virtual QMenu *get_menu() = 0;
 };

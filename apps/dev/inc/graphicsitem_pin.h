@@ -42,7 +42,7 @@
 #include "project.h"
 
 namespace csp {
-class graphicsitem_pin : public QObject, public interface_graphicsitem_pin {
+class graphicsitem_pin : public interface_graphicsitem_pin {
     Q_OBJECT
 public:
     enum direction
