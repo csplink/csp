@@ -131,7 +131,10 @@ void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
     if (!(item->flags() & QGraphicsItem::ItemIsFocusable))
         return;
 
-    item->get_menu()->exec(event->globalPos());
+    auto menu = item->property(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR).value<QMenu *>();
+    Q_ASSERT(menu != nullptr);
+      
+    menu->exec(event->globalPos());
 }
 
 }  // namespace csp

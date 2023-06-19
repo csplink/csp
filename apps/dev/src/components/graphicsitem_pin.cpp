@@ -205,7 +205,7 @@ void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
         _menu->addAction(action);
         function_i++;
     }
-    _pinout_unit->position = 0;
+    this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR, QVariant::fromValue(_menu));
 }
 
 void graphicsitem_pin::set_selected(bool selected)
@@ -221,11 +221,6 @@ void graphicsitem_pin::set_name(const QString &name)
     this->setObjectName(_name);
 
     _comment = _project_instance->get_pin_comment(_name);
-}
-
-QMenu *graphicsitem_pin::get_menu()
-{
-    return _menu;
 }
 
 void graphicsitem_pin::menu_triggered_callback(QAction *action)

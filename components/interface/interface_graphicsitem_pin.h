@@ -35,12 +35,12 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
+#define GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR "user.menu.ptr"
+
 namespace csp {
 class interface_graphicsitem_pin : public QObject, public QGraphicsItem {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
-public:
-    virtual QMenu *get_menu() = 0;
 };
 }  // namespace csp
 

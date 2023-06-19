@@ -82,12 +82,6 @@ public:
     void set_name(const QString &name);
 
     /**
-     * @brief get pin menus
-     * @return pin menus
-     */
-    QMenu *get_menu() override;
-
-    /**
      * @brief set pin comment
      * @return pin comment
      */
