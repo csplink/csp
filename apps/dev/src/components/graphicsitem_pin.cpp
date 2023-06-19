@@ -218,6 +218,7 @@ void graphicsitem_pin::set_name(const QString &name)
 {
     _name = name;
     this->setToolTip(_name);
+    this->setObjectName(_name);
 
     _comment = _project_instance->get_pin_comment(_name);
 }
