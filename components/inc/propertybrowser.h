@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        interface_graphicsitem_pin.h
+ *  @file        propertybrowser.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,25 +24,40 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-11     xqyjlj       initial version
+ *  2023-06-17     xqyjlj       initial version
  */
 
-#ifndef CSP_INTERFACE_GRAPHICSITEM_PIN_H
-#define CSP_INTERFACE_GRAPHICSITEM_PIN_H
+#ifndef CSP_PROPERTYBROWSER_H
+#define CSP_PROPERTYBROWSER_H
 
-#include <QGraphicsItem>
-#include <QMenu>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
+#include "qtvariantproperty.h"
+#include <qtpropertymanager.h>
+#include <qttreepropertybrowser.h>
 
-#define GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR        "user.menu.ptr"
-#define GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR "user.pinout_unit.ptr"
+#include "interface_graphicsitem_pin.h"
+#include "project.h"
 
-namespace csp {
-class interface_graphicsitem_pin : public QObject, public QGraphicsItem {
+class propertybrowser : public QtTreePropertyBrowser {
     Q_OBJECT
-    Q_INTERFACES(QGraphicsItem)
-};
-}  // namespace csp
+public:
+    explicit propertybrowser(QWidget *parent = nullptr);
+    ~propertybrowser() override;
 
-#endif  // CSP_INTERFACE_GRAPHICSITEM_PIN_H
+public slots:
+    /**
+     * @brief update property by pin
+     * @param item: pin item
+     */
+    void update_property_by_pin(QGraphicsItem *item);
+    void pin_value_changed_callback(QtProperty *property, const QVariant &value);
+
+private:
+    QtProperty *set_pin_base(const QString &name, const QString &comment, int position);
+
+private:
+    csp::project             *_project_instance;
+    QtVariantPropertyManager *_variant_manager = new QtVariantPropertyManager(this);
+    QtVariantEditorFactory   *_variant_factory = new QtVariantEditorFactory(this);
+};
+
+#endif  // CSP_PROPERTYBROWSER_H

@@ -21,12 +21,26 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-04-21     xqyjlj       initial version
 #
+set(name components)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
         interface/*.h
-        src/*.cpp)
+        src/*.cpp
+        resources/*.qrc)
 
-add_library(components STATIC ${SOURCES})
-target_link_libraries(components PUBLIC Qt5::Widgets Qt5::OpenGL)
-target_include_directories(components PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc ${CMAKE_CURRENT_SOURCE_DIR}/interface)
+set(TS_FILES
+        ./resources/translations/${name}.zh_CN.ts
+        ./resources/translations/${name}.zh_TW.ts)
+
+if (DEFINED CSP_EXE_DIR)
+    foreach (TS_FILE ${TS_FILES})
+        set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION ${CSP_EXE_DIR}/translations)
+    endforeach ()
+endif ()
+
+qt5_create_translation(QM_FILES ${SOURCES} ${TS_FILES})
+
+add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
+target_link_libraries(${name} PUBLIC Qt5::Widgets Qt5::OpenGL qtpropertybrowser project)
+target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc ${CMAKE_CURRENT_SOURCE_DIR}/interface)
