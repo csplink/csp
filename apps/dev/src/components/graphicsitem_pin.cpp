@@ -67,6 +67,7 @@ graphicsitem_pin::~graphicsitem_pin()
     delete _font;
     delete _menu;
     delete _pinout_unit;
+    this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(nullptr));
 }
 
 QRectF graphicsitem_pin::boundingRect() const
@@ -206,6 +207,7 @@ void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
         function_i++;
     }
     this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR, QVariant::fromValue(_menu));
+    this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(unit));
 }
 
 void graphicsitem_pin::set_selected(bool selected)
@@ -236,6 +238,7 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
         {
             set_selected(true);
             set_comment(action->text());
+            _project_instance->set_pin_function(_name, action->text());
         }
     }
     else  // Reset State
@@ -245,6 +248,7 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
         _previous_checked_action = nullptr;
         set_selected(false);
         set_comment("");
+        _project_instance->set_pin_function(_name, "");
     }
     _previous_checked_action = action;
 }
