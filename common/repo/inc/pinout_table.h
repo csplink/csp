@@ -65,6 +65,9 @@ private:
 };
 }  // namespace csp
 
+Q_DECLARE_METATYPE(csp::pinout_table::pinout_unit_t)
+Q_DECLARE_METATYPE(csp::pinout_table::pinout_unit_t *)
+
 namespace YAML {
 
 template <> struct convert<csp::pinout_table::function_t>
