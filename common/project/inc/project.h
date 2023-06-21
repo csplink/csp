@@ -132,6 +132,20 @@ public:
      */
     QString &get_pin_function(const QString &key);
 
+    /**
+     * @brief set pin locked by pin name
+     * @param key: pin name
+     * @param locked: pin locked
+     */
+    void set_pin_locked(const QString &key, bool locked);
+
+    /**
+     * @brief get pin locked by pin name
+     * @param key: pin name
+     * @return pin locked
+     */
+    bool get_pin_locked(const QString &key);
+
     /***********************************************/
 private:
     project_table::project_t _project;  // project table

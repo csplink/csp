@@ -43,6 +43,7 @@ public:
     {
         QString function;  // pin selected function
         QString comment;   // pin comment
+        bool    locked;    // pin locked
     } pin_config_t;
 
     typedef struct
@@ -106,7 +107,9 @@ template <> struct convert<project_table::pin_config_t>
     static Node encode(const project_table::pin_config_t &rhs)
     {
         Node node;
+        node.force_insert("Function", rhs.function);
         node.force_insert("Comment", rhs.comment);
+        node.force_insert("Locked", rhs.locked);
         return node;
     }
 
@@ -115,7 +118,9 @@ template <> struct convert<project_table::pin_config_t>
         if (!node.IsMap() || node.size() != 1)
             return false;
 
-        rhs.comment = node["Comment"].as<QString>();
+        rhs.function = node["Function"].as<QString>();
+        rhs.comment  = node["Comment"].as<QString>();
+        rhs.locked   = node["Locked"].as<bool>();
         return true;
     }
 };

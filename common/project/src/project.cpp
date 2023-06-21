@@ -130,4 +130,17 @@ QString &project::get_pin_function(const QString &key)
     return _project.pin_configs[key].function;
 }
 
+void project::set_pin_locked(const QString &key, bool locked)
+{
+    Q_ASSERT(!key.isEmpty());
+    emit signals_pin_property_changed("locked", key, _project.pin_configs[key].locked, locked);
+    _project.pin_configs[key].locked = locked;
+}
+
+bool project::get_pin_locked(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+    return _project.pin_configs[key].locked;
+}
+
 /***********************************************/
