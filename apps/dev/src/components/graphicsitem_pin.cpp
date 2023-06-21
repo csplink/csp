@@ -157,26 +157,30 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->drawText(0, 0, text);
 
     /******************** draw comment **************************/
+    if (_comment.isEmpty())
+        text = _function;
+    else
+        text = QString("%1(%2)").arg(_comment, _function);
     if (_direction == LEFT)
     {
-        text       = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
+        text       = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
         int pixels = _font_metrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
     else if (_direction == BOTTOM)
     {
-        text       = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
+        text       = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
         int pixels = _font_metrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
     else if (_direction == RIGHT)
     {
-        text = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
         painter->translate(PIN_LENGTH, 0);
     }
     else
     {
-        text = _font_metrics->elidedText(_comment, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
         painter->translate(PIN_LENGTH, 0);
     }
     painter->drawText(0, 0, text);
@@ -235,7 +239,6 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
         if (action->isChecked())
         {
             set_selected(true);
-            set_comment(action->text());
             _project_instance->set_pin_function(_name, action->text());
         }
     }
@@ -245,15 +248,9 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
             _previous_checked_action->setChecked(false);
         _previous_checked_action = nullptr;
         set_selected(false);
-        set_comment("");
         _project_instance->set_pin_function(_name, "");
     }
     _previous_checked_action = action;
-}
-
-void graphicsitem_pin::set_comment(const QString &comment)
-{
-    _project_instance->set_pin_comment(_name, comment);
 }
 
 void graphicsitem_pin::pin_property_changed_callback(const QString  &property,
@@ -267,8 +264,9 @@ void graphicsitem_pin::pin_property_changed_callback(const QString  &property,
         return;
 
     if (property == "comment")
-    {
         _comment = new_value.toString();
-        this->update();
-    }
+    else if (property == "function")
+        _function = new_value.toString();
+
+    this->update();
 }

@@ -80,12 +80,6 @@ public:
      */
     void set_name(const QString &name);
 
-    /**
-     * @brief set pin comment
-     * @return pin comment
-     */
-    void set_comment(const QString &comment);
-
 private slots:
 
     /**
