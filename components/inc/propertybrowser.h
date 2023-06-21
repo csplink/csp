@@ -58,6 +58,7 @@ private:
     project                  *_project_instance;
     QtVariantPropertyManager *_variant_manager = new QtVariantPropertyManager(this);
     QtVariantEditorFactory   *_variant_factory = new QtVariantEditorFactory(this);
+    QString                   _pin_name        = QString();
 };
 
 #endif  // CSP_PROPERTYBROWSER_H

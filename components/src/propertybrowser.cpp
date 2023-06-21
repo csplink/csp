@@ -66,8 +66,7 @@ QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &co
 
 void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 {
-    connect(_variant_manager, &QtVariantPropertyManager::valueChanged, this,
-            &propertybrowser::pin_value_changed_callback, Qt::UniqueConnection);
+    disconnect(_variant_manager, &QtVariantPropertyManager::valueChanged, this, nullptr);
 
     this->clear();
     auto pin  = dynamic_cast<interface_graphicsitem_pin *>(item);
@@ -87,9 +86,20 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 
     this->addProperty(base_group_item);
     this->setFactoryForManager(_variant_manager, _variant_factory);
+
+    connect(_variant_manager, &QtVariantPropertyManager::valueChanged, this,
+            &propertybrowser::pin_value_changed_callback, Qt::UniqueConnection);
+
+    _pin_name = name;
 }
 
 void propertybrowser::pin_value_changed_callback(QtProperty *property, const QVariant &value)
 {
+    if (_pin_name.isEmpty())
+        return;
+
+    if (property->propertyName() == tr("Comment"))
+        _project_instance->set_pin_comment(_pin_name, value.toString());
+
     qDebug() << property->propertyName() << value;
 }
