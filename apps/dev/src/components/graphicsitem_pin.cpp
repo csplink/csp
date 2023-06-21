@@ -250,7 +250,11 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
         set_selected(false);
         _project_instance->set_pin_function(_name, "");
     }
-    _previous_checked_action = action;
+    if (_previous_checked_action != action)
+    {
+        emit signal_property_changed(this);
+        _previous_checked_action = action;
+    }
 }
 
 void graphicsitem_pin::pin_property_changed_callback(const QString  &property,

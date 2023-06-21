@@ -80,6 +80,9 @@ public:
      */
     void set_name(const QString &name);
 
+signals:
+    void signal_property_changed(QGraphicsItem *item);
+
 private slots:
 
     /**
