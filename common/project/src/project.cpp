@@ -29,8 +29,6 @@
 
 #include "project.h"
 
-namespace csp {
-
 project *project::_instance = new project();
 
 project::project() = default;
@@ -133,4 +131,3 @@ QString &project::get_pin_function(const QString &key)
 }
 
 /***********************************************/
-}  // namespace csp

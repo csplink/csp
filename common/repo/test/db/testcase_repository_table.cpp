@@ -31,8 +31,6 @@
 
 #include <repository_table.h>
 
-using namespace csp;
-
 class testcase_repository_table : public QObject {
     Q_OBJECT
 

@@ -32,8 +32,6 @@
 
 #include "config.h"
 
-using namespace csp;
-
 class testcase_config : public QObject {
     Q_OBJECT
 

@@ -55,7 +55,7 @@ private:
     QtProperty *set_pin_base(const QString &name, const QString &comment, int position);
 
 private:
-    csp::project             *_project_instance;
+    project                  *_project_instance;
     QtVariantPropertyManager *_variant_manager = new QtVariantPropertyManager(this);
     QtVariantEditorFactory   *_variant_factory = new QtVariantEditorFactory(this);
 };

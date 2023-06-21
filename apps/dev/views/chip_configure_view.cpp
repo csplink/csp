@@ -30,8 +30,6 @@
 #include "chip_configure_view.h"
 #include "ui_chip_configure_view.h"
 
-using namespace csp;
-
 chip_configure_view::chip_configure_view(QWidget *parent) : QWidget(parent), ui(new Ui::chip_configure_view)
 {
     ui->setupUi(this);

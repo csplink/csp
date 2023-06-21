@@ -32,8 +32,6 @@
 
 #include "path.h"
 
-using namespace csp;
-
 class testcase_path : public QObject {
     Q_OBJECT
 

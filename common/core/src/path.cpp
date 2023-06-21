@@ -33,8 +33,6 @@
 #include "os.h"
 #include "path.h"
 
-namespace csp {
-
 path::path() = default;
 
 path::~path() = default;
@@ -111,5 +109,3 @@ QString path::appdir()
 {
     return QCoreApplication::applicationDirPath();
 }
-
-}  // namespace csp

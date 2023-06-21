@@ -31,8 +31,6 @@
 
 #include <map_table.h>
 
-using namespace csp;
-
 class testcase_map_table : public QObject {
     Q_OBJECT
 

@@ -32,7 +32,6 @@
 
 #include "qtyaml.h"
 
-namespace csp {
 class pinout_table {
 public:
     typedef struct
@@ -63,16 +62,15 @@ private:
 
     static _pinout_t _load_pinout(const QString &path);
 };
-}  // namespace csp
 
-Q_DECLARE_METATYPE(csp::pinout_table::pinout_unit_t)
-Q_DECLARE_METATYPE(csp::pinout_table::pinout_unit_t *)
+Q_DECLARE_METATYPE(pinout_table::pinout_unit_t)
+Q_DECLARE_METATYPE(pinout_table::pinout_unit_t *)
 
 namespace YAML {
 
-template <> struct convert<csp::pinout_table::function_t>
+template <> struct convert<pinout_table::function_t>
 {
-    static Node encode(const csp::pinout_table::function_t &rhs)
+    static Node encode(const pinout_table::function_t &rhs)
     {
         Node node;
         node.force_insert("Mode", rhs.mode);
@@ -80,7 +78,7 @@ template <> struct convert<csp::pinout_table::function_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::pinout_table::function_t &rhs)
+    static bool decode(const Node &node, pinout_table::function_t &rhs)
     {
         if (!node.IsMap())
             return false;
@@ -104,9 +102,9 @@ template <> struct convert<csp::pinout_table::function_t>
     }
 };
 
-template <> struct convert<csp::pinout_table::pinout_unit_t>
+template <> struct convert<pinout_table::pinout_unit_t>
 {
-    static Node encode(const csp::pinout_table::pinout_unit_t &rhs)
+    static Node encode(const pinout_table::pinout_unit_t &rhs)
     {
         Node node;
         node.force_insert("Position", rhs.position);
@@ -115,7 +113,7 @@ template <> struct convert<csp::pinout_table::pinout_unit_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::pinout_table::pinout_unit_t &rhs)
+    static bool decode(const Node &node, pinout_table::pinout_unit_t &rhs)
     {
         if (!node.IsMap())
             return false;
@@ -124,13 +122,13 @@ template <> struct convert<csp::pinout_table::pinout_unit_t>
         {
             rhs.position  = node["Position"].as<int>();
             rhs.type      = node["Type"].as<QString>();
-            rhs.functions = QMap<QString, csp::pinout_table::function_t>();
+            rhs.functions = QMap<QString, pinout_table::function_t>();
         }
         else if (node.size() == 3)
         {
             rhs.position  = node["Position"].as<int>();
             rhs.type      = node["Type"].as<QString>();
-            rhs.functions = node["Functions"].as<QMap<QString, csp::pinout_table::function_t>>();
+            rhs.functions = node["Functions"].as<QMap<QString, pinout_table::function_t>>();
         }
         else
         {

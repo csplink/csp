@@ -37,7 +37,6 @@
 #define CSP_PROJECT_CORE_HAL_NAME "hal.name"
 #define CSP_PROJECT_CORE_PACKAGE  "package"
 
-namespace csp {
 class project_table {
 public:
     typedef struct
@@ -78,12 +77,11 @@ private:
     explicit project_table();
     ~project_table();
 };
-}  // namespace csp
 
 namespace YAML {
-template <> struct convert<csp::project_table::project_t>
+template <> struct convert<project_table::project_t>
 {
-    static Node encode(const csp::project_table::project_t &rhs)
+    static Node encode(const project_table::project_t &rhs)
     {
         Node node;
         node.force_insert("Core", rhs.core);
@@ -91,28 +89,28 @@ template <> struct convert<csp::project_table::project_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::project_table::project_t &rhs)
+    static bool decode(const Node &node, project_table::project_t &rhs)
     {
         if (!node.IsMap() || node.size() < 1)
             return false;
 
         rhs.core = node["Core"].as<QMap<QString, QString>>();
         if (node["PinConfigs"].IsDefined())
-            rhs.pin_configs = node["PinConfigs"].as<QMap<QString, csp::project_table::pin_config_t>>();
+            rhs.pin_configs = node["PinConfigs"].as<QMap<QString, project_table::pin_config_t>>();
         return true;
     }
 };
 
-template <> struct convert<csp::project_table::pin_config_t>
+template <> struct convert<project_table::pin_config_t>
 {
-    static Node encode(const csp::project_table::pin_config_t &rhs)
+    static Node encode(const project_table::pin_config_t &rhs)
     {
         Node node;
         node.force_insert("Comment", rhs.comment);
         return node;
     }
 
-    static bool decode(const Node &node, csp::project_table::pin_config_t &rhs)
+    static bool decode(const Node &node, project_table::pin_config_t &rhs)
     {
         if (!node.IsMap() || node.size() != 1)
             return false;

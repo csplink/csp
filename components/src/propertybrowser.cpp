@@ -32,8 +32,6 @@
 #include "pinout_table.h"
 #include "propertybrowser.h"
 
-using namespace csp;
-
 propertybrowser::propertybrowser(QWidget *parent) : QtTreePropertyBrowser(parent)
 {
     _project_instance = project::get_instance();

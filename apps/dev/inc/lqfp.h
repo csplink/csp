@@ -41,11 +41,10 @@
 #include "graphicsitem_pinbody.h"
 #include "pinout_table.h"
 
-#define LQFP_PIN_WIDTH         500
-#define LQFP_PIN_HEIGHT        50
-#define LQFP_PIN_SPACING       6
+#define LQFP_PIN_WIDTH   500
+#define LQFP_PIN_HEIGHT  50
+#define LQFP_PIN_SPACING 6
 
-namespace csp {
 class lqfp : public QObject {
     Q_OBJECT
 public:
@@ -58,6 +57,5 @@ private:
     int                    _pin_count = 0;
     pinout_table::pinout_t _pinout;
 };
-}  // namespace csp
 
 #endif  // CSP_LQFP_H

@@ -31,8 +31,6 @@
 
 #include <pinout_table.h>
 
-using namespace csp;
-
 class testcase_pinout_table : public QObject {
     Q_OBJECT
 

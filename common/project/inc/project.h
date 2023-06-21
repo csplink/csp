@@ -37,7 +37,6 @@
 #include "map_table.h"
 #include "project_table.h"
 
-namespace csp {
 class project : public QObject {
     Q_OBJECT
 
@@ -170,5 +169,5 @@ private:
 private:
     static project *_instance;
 };
-}  // namespace csp
+
 #endif  // COMMON_PROJECT_CSP_PROJECT_H

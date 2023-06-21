@@ -34,8 +34,6 @@
 #include "config.h"
 #include "os.h"
 
-using namespace csp;
-
 chip_summary_table::chip_summary_table() = default;
 
 chip_summary_table::~chip_summary_table() = default;

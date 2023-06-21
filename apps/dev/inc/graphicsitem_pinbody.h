@@ -36,7 +36,6 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
-namespace csp {
 class graphicsitem_pinbody : public QGraphicsItem {
 public:
     explicit graphicsitem_pinbody(qreal          width,
@@ -59,5 +58,5 @@ protected:
     QPainterPath shape() const override;
     void         paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
-}  // namespace csp
+
 #endif  // CSP_GRAPHICSITEM_PINBODY_H

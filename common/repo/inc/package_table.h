@@ -32,7 +32,6 @@
 
 #include "qtyaml.h"
 
-namespace csp {
 class package_model {
 public:
     struct
@@ -49,5 +48,5 @@ public:
 
 public:
 };
-}  // namespace csp
+
 #endif  // COMMON_REPO_PACKAGE_TABLE_H

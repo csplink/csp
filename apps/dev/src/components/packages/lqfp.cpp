@@ -34,8 +34,6 @@
 
 #define LENGTH_OF_BODY (LQFP_PIN_SPACING + (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) * num)
 
-using namespace csp;
-
 lqfp::lqfp(QObject *parent) : QObject(parent) {}
 lqfp::~lqfp() = default;
 

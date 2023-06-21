@@ -35,8 +35,6 @@
 #include "ui_choose_chip_dialog.h"
 #include "wizard_new_project.h"
 
-using namespace csp;
-
 choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), ui(new Ui::choose_chip_dialog)
 {
     ui->setupUi(this);

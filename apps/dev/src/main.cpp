@@ -36,7 +36,6 @@
 #include "mainwindow_view.h"
 #include "os.h"
 
-using namespace csp;
 
 int main(int argc, char *argv[])
 {

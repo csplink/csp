@@ -145,7 +145,7 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="csp::propertybrowser" name="propertybrowser" native="true"/>
+      <widget class="propertybrowser" name="treepropertybrowser" native="true"/>
      </item>
     </layout>
    </widget>
@@ -200,7 +200,7 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>csp::propertybrowser</class>
+   <class>propertybrowser</class>
    <extends>QWidget</extends>
    <header>propertybrowser.h</header>
    <container>1</container>

@@ -37,7 +37,6 @@
 #include "config.h"
 #include "repository_table.h"
 
-namespace csp {
 class repo : public QObject {
     Q_OBJECT
 
@@ -71,5 +70,5 @@ private:
 private:
     static repo *_instance;
 };
-}  // namespace csp
+
 #endif  // COMMON_REPO_CSP_REPO_H

@@ -34,8 +34,6 @@
 #include "os.h"
 #include "pinout_table.h"
 
-using namespace csp;
-
 pinout_table::pinout_table() = default;
 
 pinout_table::~pinout_table() = default;

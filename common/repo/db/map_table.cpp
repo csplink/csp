@@ -34,8 +34,6 @@
 #include "os.h"
 #include "path.h"
 
-namespace csp {
-
 map_table::map_table() = default;
 
 map_table::~map_table() = default;
@@ -98,5 +96,3 @@ map_table::maps_t map_table::load_maps(const QString &hal)
     }
     return maps;
 }
-
-}  // namespace csp

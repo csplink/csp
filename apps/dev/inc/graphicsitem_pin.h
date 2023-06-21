@@ -41,7 +41,6 @@
 #include "pinout_table.h"
 #include "project.h"
 
-namespace csp {
 class graphicsitem_pin : public interface_graphicsitem_pin {
     Q_OBJECT
 public:
@@ -150,5 +149,5 @@ protected:
      */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
-}  // namespace csp
+
 #endif  // CSP_GRAPHICSITEM_PIN_H

@@ -34,8 +34,6 @@
 #define MIN_SCALE 0
 #define MAX_SCALE 1000
 
-namespace csp {
-
 graphicsview_panzoom::graphicsview_panzoom(QWidget *parent) : QGraphicsView(parent)
 {
     _scale = (MIN_SCALE + MAX_SCALE) / 2;
@@ -133,8 +131,6 @@ void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
 
     auto menu = item->property(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR).value<QMenu *>();
     Q_ASSERT(menu != nullptr);
-      
+
     menu->exec(event->globalPos());
 }
-
-}  // namespace csp

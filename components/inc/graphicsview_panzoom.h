@@ -37,8 +37,6 @@
 
 #include "interface_graphicsitem_pin.h"
 
-namespace csp {
-
 class graphicsview_panzoom : public QGraphicsView {
     Q_OBJECT
 
@@ -82,5 +80,5 @@ private:
     int  _scale;
     bool _is_pressed = false;
 };
-}  // namespace csp
+
 #endif  // CSP_GRAPHICSVIEW_PANZOOM_H

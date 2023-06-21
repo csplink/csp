@@ -30,8 +30,6 @@
 
 #include <ip_table.h>
 
-using namespace csp;
-
 class testcase_ip_table : public QObject {
     Q_OBJECT
 

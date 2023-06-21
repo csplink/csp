@@ -38,11 +38,9 @@
 #define GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR        "user.menu.ptr"
 #define GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR "user.pinout_unit.ptr"
 
-namespace csp {
 class interface_graphicsitem_pin : public QObject, public QGraphicsItem {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 };
-}  // namespace csp
 
 #endif  // CSP_INTERFACE_GRAPHICSITEM_PIN_H

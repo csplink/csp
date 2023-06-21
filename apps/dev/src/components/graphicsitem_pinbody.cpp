@@ -33,8 +33,6 @@
 
 #define MARGIN 6
 
-using namespace csp;
-
 graphicsitem_pinbody::graphicsitem_pinbody(qreal          width,
                                            qreal          height,
                                            const QString &name,

@@ -61,7 +61,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="csp::graphicsview_panzoom" name="graphicsview">
+        <widget class="graphicsview_panzoom" name="graphicsview">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>2</horstretch>
@@ -88,7 +88,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>csp::graphicsview_panzoom</class>
+   <class>graphicsview_panzoom</class>
    <extends>QGraphicsView</extends>
    <header>graphicsview_panzoom.h</header>
   </customwidget>

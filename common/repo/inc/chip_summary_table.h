@@ -32,7 +32,6 @@
 
 #include "qtyaml.h"
 
-namespace csp {
 class chip_summary_table {
 public:
     typedef struct
@@ -74,20 +73,19 @@ private:
     explicit chip_summary_table();
     ~chip_summary_table();
 };
-}  // namespace csp
 
 namespace YAML {
 
-template <> struct convert<csp::chip_summary_table::document_t>
+template <> struct convert<chip_summary_table::document_t>
 {
-    static Node encode(const csp::chip_summary_table::document_t &rhs)
+    static Node encode(const chip_summary_table::document_t &rhs)
     {
         Node node;
         node.force_insert("Url", rhs.url);
         return node;
     }
 
-    static bool decode(const Node &node, csp::chip_summary_table::document_t &rhs)
+    static bool decode(const Node &node, chip_summary_table::document_t &rhs)
     {
         if (!node.IsMap() || node.size() != 1)
             return false;
@@ -97,16 +95,16 @@ template <> struct convert<csp::chip_summary_table::document_t>
     }
 };
 
-template <> struct convert<csp::chip_summary_table::module_t>
+template <> struct convert<chip_summary_table::module_t>
 {
-    static Node encode(const csp::chip_summary_table::module_t &rhs)
+    static Node encode(const chip_summary_table::module_t &rhs)
     {
         Node node;
         node.force_insert("Description", rhs.description);
         return node;
     }
 
-    static bool decode(const Node &node, csp::chip_summary_table::module_t &rhs)
+    static bool decode(const Node &node, chip_summary_table::module_t &rhs)
     {
         if (!node.IsMap() || node.size() != 1)
             return false;
@@ -116,9 +114,9 @@ template <> struct convert<csp::chip_summary_table::module_t>
     }
 };
 
-template <> struct convert<csp::chip_summary_table::chip_summary_t>
+template <> struct convert<chip_summary_table::chip_summary_t>
 {
-    static Node encode(const csp::chip_summary_table::chip_summary_t &rhs)
+    static Node encode(const chip_summary_table::chip_summary_t &rhs)
     {
         Node node;
         node.force_insert("ClockTree", rhs.clocktree);
@@ -138,7 +136,7 @@ template <> struct convert<csp::chip_summary_table::chip_summary_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::chip_summary_table::chip_summary_t &rhs)
+    static bool decode(const Node &node, chip_summary_table::chip_summary_t &rhs)
     {
         if (!node.IsMap() || node.size() != 14)
             return false;
@@ -146,13 +144,13 @@ template <> struct convert<csp::chip_summary_table::chip_summary_t>
         rhs.clocktree    = node["ClockTree"].as<QString>();
         rhs.company      = node["Company"].as<QString>();
         rhs.company_url  = node["CompanyUrl"].as<QMap<QString, QString>>();
-        rhs.documents    = node["Documents"].as<csp::chip_summary_table::documents_t>();
+        rhs.documents    = node["Documents"].as<chip_summary_table::documents_t>();
         rhs.hal          = node["HAL"].as<QString>();
         rhs.has_powerpad = node["HasPowerPad"].as<bool>();
         rhs.illustrate   = node["Illustrate"].as<QMap<QString, QString>>();
         rhs.introduction = node["Introduction"].as<QMap<QString, QString>>();
         rhs.line         = node["Line"].as<QString>();
-        rhs.modules      = node["Modules"].as<csp::chip_summary_table::modules_t>();
+        rhs.modules      = node["Modules"].as<chip_summary_table::modules_t>();
         rhs.name         = node["Name"].as<QString>();
         rhs.package      = node["Package"].as<QString>();
         rhs.series       = node["Series"].as<QString>();

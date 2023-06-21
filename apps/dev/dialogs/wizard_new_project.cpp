@@ -34,8 +34,6 @@
 #include "os.h"
 #include "wizard_new_project.h"
 
-using namespace csp;
-
 wizard_new_project::wizard_new_project(QWidget *parent)
 {
     Q_UNUSED(parent);

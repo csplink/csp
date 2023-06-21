@@ -32,7 +32,6 @@
 
 #include "qtyaml.h"
 
-namespace csp {
 class ip_table {
 public:
     typedef QMap<QString, QStringList> ip_map_t;
@@ -48,6 +47,5 @@ private:
     explicit ip_table();
     ~ip_table();
 };
-}  // namespace csp
 
 #endif  // CSP_IP_TABLE_H

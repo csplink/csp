@@ -33,8 +33,6 @@
 #include <os.h>
 #include <project.h>
 
-using namespace csp;
-
 project *project_instance = nullptr;
 
 class testcase_project : public QObject {

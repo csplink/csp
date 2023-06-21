@@ -40,7 +40,7 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     ui->dockwidget_left->hide();
     ui->dockwidget_right->hide();
 
-    ui->page_chip_configure_view->set_propertybrowser(ui->propertybrowser);
+    ui->page_chip_configure_view->set_propertybrowser(ui->treepropertybrowser);
 
     connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
             Qt::UniqueConnection);
@@ -69,7 +69,7 @@ void mainwindow_view::update_modules_treeview(const QString &company, const QStr
 {
     ui->treeview->header()->hide();
     auto *model        = new QStandardItemModel(ui->treeview);
-    auto  chip_summary = csp::chip_summary_table::load_chip_summary(company, name);
+    auto  chip_summary = chip_summary_table::load_chip_summary(company, name);
     auto  modules      = &chip_summary.modules;
     auto  modules_i    = modules->constBegin();
     while (modules_i != modules->constEnd())

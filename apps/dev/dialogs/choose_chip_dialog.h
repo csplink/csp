@@ -36,8 +36,8 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
-#include "repo.h"
 #include "project.h"
+#include "repo.h"
 
 namespace Ui {
 class choose_chip_dialog;
@@ -60,8 +60,8 @@ private slots:
 
 private:
     Ui::choose_chip_dialog *ui;
-    csp::repo              *_repo_instance;
-    csp::project           *_project_instance = nullptr;
+    repo                   *_repo_instance;
+    project                *_project_instance = nullptr;
 
     QString _chip_name;
     QString _hal_name;
@@ -85,9 +85,9 @@ private:
     QList<QStandardItem *> _core_items;
     QList<QStandardItem *> _package_items;
 
-    QList<QList<QStandardItem *> *>             _chips_items;
-    QSortFilterProxyModel                      *_tableview_chip_infos_proxy_model = nullptr;
-    QList<csp::repository_table::chip_info_t *> _chips;
+    QList<QList<QStandardItem *> *>        _chips_items;
+    QSortFilterProxyModel                 *_tableview_chip_infos_proxy_model = nullptr;
+    QList<repository_table::chip_info_t *> _chips;
 
 private:
     void find_all_keys();

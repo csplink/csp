@@ -32,8 +32,6 @@
 
 #include <QString>
 
-namespace csp {
-
 class path {
 public:
     /**
@@ -85,7 +83,7 @@ public:
      * @param p: path
      * @return true if the path is relative, otherwise false
      */
-    static bool    is_absolute(const QString &p);
+    static bool is_absolute(const QString &p);
 
     /**
      * @brief get the file path of the application executable
@@ -106,7 +104,5 @@ private:
     path(const path &signal);
     const path &operator=(const path &signal);
 };
-
-}  // namespace csp
 
 #endif  // CSP_PATH_H

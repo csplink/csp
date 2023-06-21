@@ -29,8 +29,6 @@
 
 #include "os.h"
 
-namespace csp {
-
 os::os() = default;
 
 os::~os() = default;
@@ -142,5 +140,3 @@ QStringList os::dirs(const QString &p, const QString &filter)
 {
     return dirs(p, QStringList() << filter);
 }
-
-}  // namespace csp

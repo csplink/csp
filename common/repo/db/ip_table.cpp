@@ -35,8 +35,6 @@
 #include "os.h"
 #include "path.h"
 
-namespace csp {
-
 ip_table::ip_table() = default;
 
 ip_table::~ip_table() = default;
@@ -102,5 +100,3 @@ ip_table::ips_t ip_table::load_ips(const QString &hal, const QString &name)
     }
     return ips;
 }
-
-}  // namespace csp

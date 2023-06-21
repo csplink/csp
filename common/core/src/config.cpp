@@ -41,8 +41,6 @@
 
 static QSettings settings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
 
-namespace csp {
-
 config *config::_instance = new config();
 
 config::config()
@@ -80,5 +78,3 @@ QString config::language()
 {
     return settings.value(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE).toString();
 }
-
-}  // namespace csp

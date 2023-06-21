@@ -45,7 +45,7 @@ public:
     explicit chip_configure_view(QWidget *parent = nullptr);
     ~chip_configure_view() override;
 
-    void set_propertybrowser(csp::propertybrowser *instance);
+    void set_propertybrowser(propertybrowser *instance);
 
 signals:
     void signal_update_modules_treeview(const QString &company, const QString &name);
@@ -55,7 +55,7 @@ protected:
 
 private:
     Ui::chip_configure_view *ui;
-    csp::propertybrowser    *_propertybrowser_instance;
+    propertybrowser         *_propertybrowser_instance;
 };
 
 #endif  // CHIP_CONFIGURE_VIEW_H

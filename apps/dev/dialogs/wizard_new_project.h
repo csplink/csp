@@ -49,9 +49,9 @@ private:
     QLineEdit *lineedit_project_name = nullptr;
 
 private:
-    csp::project *_project_instance = nullptr;
-    QWizardPage  *create_page_introduce();
-    QWizardPage  *create_page_choose_path();
+    project     *_project_instance = nullptr;
+    QWizardPage *create_page_introduce();
+    QWizardPage *create_page_choose_path();
 };
 
 #endif  // WIZARD_NEW_PROJECT_H

@@ -33,8 +33,6 @@
 #include <os.h>
 #include <project_table.h>
 
-using namespace csp;
-
 class testcase_project_table : public QObject {
     Q_OBJECT
 

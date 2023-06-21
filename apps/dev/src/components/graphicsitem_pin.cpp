@@ -33,8 +33,6 @@
 
 #define PIN_LENGTH 100
 
-namespace csp {
-
 graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
 {
     Q_ASSERT(width > 0 && height > 0);
@@ -274,5 +272,3 @@ void graphicsitem_pin::pin_property_changed_callback(const QString  &property,
         this->update();
     }
 }
-
-}  // namespace csp

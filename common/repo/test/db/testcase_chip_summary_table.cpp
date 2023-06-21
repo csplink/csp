@@ -31,8 +31,6 @@
 
 #include <chip_summary_table.h>
 
-using namespace csp;
-
 class testcase_chip_summary_table : public QObject {
     Q_OBJECT
 

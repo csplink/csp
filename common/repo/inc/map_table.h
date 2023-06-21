@@ -33,8 +33,6 @@
 #include "config.h"
 #include "qtyaml.h"
 
-namespace csp {
-
 class map_table {
 public:
     typedef struct
@@ -75,20 +73,18 @@ private:
     ~map_table();
 };
 
-}  // namespace csp
-
 namespace YAML {
 
-template <> struct convert<csp::map_table::value_t>
+template <> struct convert<map_table::value_t>
 {
-    static Node encode(const csp::map_table::value_t &rhs)
+    static Node encode(const map_table::value_t &rhs)
     {
         Node node;
         node.force_insert("Comment", rhs.comment);
         return node;
     }
 
-    static bool decode(const Node &node, csp::map_table::value_t &rhs)
+    static bool decode(const Node &node, map_table::value_t &rhs)
     {
         if (!node.IsMap() || node.size() != 1)
             return false;
@@ -98,9 +94,9 @@ template <> struct convert<csp::map_table::value_t>
     }
 };
 
-template <> struct convert<csp::map_table::group_t>
+template <> struct convert<map_table::group_t>
 {
-    static Node encode(const csp::map_table::group_t &rhs)
+    static Node encode(const map_table::group_t &rhs)
     {
         Node node;
         node.force_insert("Comment", rhs.comment);
@@ -108,20 +104,20 @@ template <> struct convert<csp::map_table::group_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::map_table::group_t &rhs)
+    static bool decode(const Node &node, map_table::group_t &rhs)
     {
         if (!node.IsMap() || node.size() != 2)
             return false;
 
         rhs.comment = node["Comment"].as<QMap<QString, QString>>();
-        rhs.values  = node["Values"].as<QMap<QString, csp::map_table::value_t>>();
+        rhs.values  = node["Values"].as<QMap<QString, map_table::value_t>>();
         return true;
     }
 };
 
-template <> struct convert<csp::map_table::property_t>
+template <> struct convert<map_table::property_t>
 {
-    static Node encode(const csp::map_table::property_t &rhs)
+    static Node encode(const map_table::property_t &rhs)
     {
         Node node;
         node.force_insert("DisplayName", rhs.display_name);
@@ -131,7 +127,7 @@ template <> struct convert<csp::map_table::property_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::map_table::property_t &rhs)
+    static bool decode(const Node &node, map_table::property_t &rhs)
     {
         if (!node.IsMap() || node.size() != 4)
             return false;
@@ -144,9 +140,9 @@ template <> struct convert<csp::map_table::property_t>
     }
 };
 
-template <> struct convert<csp::map_table::map_t>
+template <> struct convert<map_table::map_t>
 {
-    static Node encode(const csp::map_table::map_t &rhs)
+    static Node encode(const map_table::map_t &rhs)
     {
         Node node;
         node.force_insert("Groups", rhs.groups);
@@ -154,13 +150,13 @@ template <> struct convert<csp::map_table::map_t>
         return node;
     }
 
-    static bool decode(const Node &node, csp::map_table::map_t &rhs)
+    static bool decode(const Node &node, map_table::map_t &rhs)
     {
         if (!node.IsMap() || node.size() != 2)
             return false;
 
-        rhs.groups     = node["Groups"].as<QMap<QString, csp::map_table::group_t>>();
-        rhs.properties = node["Properties"].as<QMap<QString, csp::map_table::property_t>>();
+        rhs.groups     = node["Groups"].as<QMap<QString, map_table::group_t>>();
+        rhs.properties = node["Properties"].as<QMap<QString, map_table::property_t>>();
 
         auto group_i = rhs.groups.constBegin();
         while (group_i != rhs.groups.constEnd())
@@ -171,7 +167,7 @@ template <> struct convert<csp::map_table::map_t>
             {
                 auto name  = values_i.key();
                 auto value = values_i.value();
-                rhs.total.insert(name, value.comment[csp::config::language()]);
+                rhs.total.insert(name, value.comment[config::language()]);
                 values_i++;
             }
             group_i++;

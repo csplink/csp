@@ -38,7 +38,6 @@
 #include <QString>
 #include <QUrl>
 
-namespace csp {
 class os {
 public:
     /**
@@ -161,6 +160,5 @@ private:
     os(const os &signal);
     const os &operator=(const os &signal);
 };
-}  // namespace csp
 
 #endif  // COMMON_CORE_CSP_OS_H
