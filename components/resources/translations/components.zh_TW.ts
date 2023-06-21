@@ -10,12 +10,13 @@
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="46"/>
-        <source>Lock</source>
+        <location filename="../../src/propertybrowser.cpp" line="119"/>
+        <source>Locked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="50"/>
-        <location filename="../../src/propertybrowser.cpp" line="116"/>
+        <location filename="../../src/propertybrowser.cpp" line="117"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>

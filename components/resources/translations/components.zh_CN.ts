@@ -9,13 +9,18 @@
         <translation>基础</translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="46"/>
         <source>Lock</source>
+        <translation type="vanished">锁定</translation>
+    </message>
+    <message>
+        <location filename="../../src/propertybrowser.cpp" line="46"/>
+        <location filename="../../src/propertybrowser.cpp" line="119"/>
+        <source>Locked</source>
         <translation>锁定</translation>
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="50"/>
-        <location filename="../../src/propertybrowser.cpp" line="116"/>
+        <location filename="../../src/propertybrowser.cpp" line="117"/>
         <source>Comment</source>
         <translation>注释</translation>
     </message>
