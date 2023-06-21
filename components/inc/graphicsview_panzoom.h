@@ -69,6 +69,9 @@ signals:
      */
     void signals_selected_item_clicked(QGraphicsItem *item);
 
+public:
+    void property_changed_callback(QGraphicsItem *item);
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

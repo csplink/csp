@@ -134,3 +134,8 @@ void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
 
     menu->exec(event->globalPos());
 }
+
+void graphicsview_panzoom::property_changed_callback(QGraphicsItem *item)
+{
+    emit signals_selected_item_clicked(item);
+}
