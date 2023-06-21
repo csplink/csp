@@ -15,6 +15,7 @@
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="50"/>
+        <location filename="../../src/propertybrowser.cpp" line="116"/>
         <source>Comment</source>
         <translation>注释</translation>
     </message>
@@ -27,6 +28,16 @@
         <location filename="../../src/propertybrowser.cpp" line="59"/>
         <source>Position</source>
         <translation>引脚位置</translation>
+    </message>
+    <message>
+        <location filename="../../src/propertybrowser.cpp" line="69"/>
+        <source>System</source>
+        <translation>系统</translation>
+    </message>
+    <message>
+        <location filename="../../src/propertybrowser.cpp" line="71"/>
+        <source>Function</source>
+        <translation>功能</translation>
     </message>
 </context>
 </TS>

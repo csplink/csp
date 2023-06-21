@@ -210,7 +210,7 @@
 <context>
     <name>graphicsitem_pin</name>
     <message>
-        <location filename="../../src/components/graphicsitem_pin.cpp" line="195"/>
+        <location filename="../../src/components/graphicsitem_pin.cpp" line="199"/>
         <source>Reset State</source>
         <translation>复位状态</translation>
     </message>

@@ -15,6 +15,7 @@
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="50"/>
+        <location filename="../../src/propertybrowser.cpp" line="116"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -26,6 +27,16 @@
     <message>
         <location filename="../../src/propertybrowser.cpp" line="59"/>
         <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/propertybrowser.cpp" line="69"/>
+        <source>System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/propertybrowser.cpp" line="71"/>
+        <source>Function</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
