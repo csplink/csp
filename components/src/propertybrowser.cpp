@@ -39,12 +39,12 @@ propertybrowser::propertybrowser(QWidget *parent) : QtTreePropertyBrowser(parent
 
 propertybrowser::~propertybrowser() = default;
 
-QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, int position)
+QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, int position, bool locked)
 {
     QtProperty *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("Base"));
 
-    QtVariantProperty *variant_item = _variant_manager->addProperty(QVariant::Bool, tr("Lock"));
-    variant_item->setValue(true);
+    QtVariantProperty *variant_item = _variant_manager->addProperty(QVariant::Bool, tr("Locked"));
+    variant_item->setValue(locked);
     group_item->addSubProperty(variant_item);
 
     variant_item = _variant_manager->addProperty(QVariant::String, tr("Comment"));
@@ -87,6 +87,7 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
         pin->property(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR).value<pinout_table::pinout_unit_t *>();
     auto function      = _project_instance->get_pin_function(name);
     auto comment       = _project_instance->get_pin_comment(name);
+    auto locked        = _project_instance->get_pin_locked(name);
     auto function_type = pinout_unit->functions[function].type.toLower();
     auto maps          = _project_instance->get_maps();
     if (maps.contains(function_type))
@@ -95,7 +96,7 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
         qDebug() << name << function << function_type << _project_instance->get_maps().keys() << map.properties.size();
     }
 
-    auto base_group_item = set_pin_base(name, comment, pinout_unit->position);
+    auto base_group_item = set_pin_base(name, comment, pinout_unit->position, locked);
     this->addProperty(base_group_item);
     auto function_group_item = set_pin_system(function);
     this->addProperty(function_group_item);
@@ -115,6 +116,9 @@ void propertybrowser::pin_value_changed_callback(QtProperty *property, const QVa
 
     if (property->propertyName() == tr("Comment"))
         _project_instance->set_pin_comment(_pin_name, value.toString());
+    else if (property->propertyName() == tr("Locked"))
+        _project_instance->set_pin_locked(_pin_name, value.toBool());
+    else
 
-    qDebug() << property->propertyName() << value;
+        qDebug() << property->propertyName() << value;
 }

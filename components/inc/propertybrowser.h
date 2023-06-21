@@ -52,7 +52,7 @@ public slots:
     void pin_value_changed_callback(QtProperty *property, const QVariant &value);
 
 private:
-    QtProperty *set_pin_base(const QString &name, const QString &comment, int position);
+    QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked);
     QtProperty *set_pin_system(const QString &function);
 
 private:
