@@ -95,7 +95,7 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     /******************** draw background **************************/
     if (_pinout_unit->type.toUpper() == "I/O")
     {
-        if (_selected)
+        if (_locked)
             painter->setBrush(selected_color);
         else
             painter->setBrush(default_color);
@@ -212,12 +212,6 @@ void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
     this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(unit));
 }
 
-void graphicsitem_pin::set_selected(bool selected)
-{
-    _selected = selected;
-    this->update();
-}
-
 void graphicsitem_pin::set_name(const QString &name)
 {
     _name = name;
@@ -238,7 +232,7 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
         }
         if (action->isChecked())
         {
-            set_selected(true);
+            _project_instance->set_pin_locked(_name, true);
             _project_instance->set_pin_function(_name, action->text());
         }
     }
@@ -247,7 +241,7 @@ void graphicsitem_pin::menu_triggered_callback(QAction *action)
         if (_previous_checked_action != nullptr)
             _previous_checked_action->setChecked(false);
         _previous_checked_action = nullptr;
-        set_selected(false);
+        _project_instance->set_pin_locked(_name, false);
         _project_instance->set_pin_function(_name, "");
     }
     if (_previous_checked_action != action)
@@ -271,6 +265,8 @@ void graphicsitem_pin::pin_property_changed_callback(const QString  &property,
         _comment = new_value.toString();
     else if (property == "function")
         _function = new_value.toString();
+    else if (property == "locked")
+        _locked = new_value.toBool();
 
     this->update();
 }

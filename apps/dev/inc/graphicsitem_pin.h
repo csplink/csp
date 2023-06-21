@@ -69,12 +69,6 @@ public:
     void set_pinout_unit(pinout_table::pinout_unit_t *unit);
 
     /**
-     * @brief set pin selected status
-     * @param selected: selected status
-     */
-    void set_selected(bool selected);
-
-    /**
      * @brief set pin name
      * @param name: pin name
      */
@@ -113,7 +107,7 @@ private:
     qreal                        _height;
     enum direction               _direction   = LEFT;
     pinout_table::pinout_unit_t *_pinout_unit = nullptr;
-    bool                         _selected    = false;
+    bool                         _locked      = false;
     QString                      _name;
     QFont                       *_font;
     QFontMetrics                *_font_metrics;
