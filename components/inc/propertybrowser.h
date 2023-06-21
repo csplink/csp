@@ -53,6 +53,7 @@ public slots:
 
 private:
     QtProperty *set_pin_base(const QString &name, const QString &comment, int position);
+    QtProperty *set_pin_system(const QString &function);
 
 private:
     project                  *_project_instance;

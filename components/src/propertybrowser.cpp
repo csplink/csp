@@ -64,6 +64,18 @@ QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &co
     return group_item;
 }
 
+QtProperty *propertybrowser::set_pin_system(const QString &function)
+{
+    QtProperty *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("System"));
+
+    QtVariantProperty *variant_item = _variant_manager->addProperty(QVariant::String, tr("Function"));
+    variant_item->setValue(function);
+    variant_item->setEnabled(false);
+    group_item->addSubProperty(variant_item);
+
+    return group_item;
+}
+
 void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 {
     disconnect(_variant_manager, &QtVariantPropertyManager::valueChanged, this, nullptr);
@@ -82,9 +94,12 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
         auto map = _project_instance->get_maps()[function_type];
         qDebug() << name << function << function_type << _project_instance->get_maps().keys() << map.properties.size();
     }
-    auto base_group_item = set_pin_base(name, comment, pinout_unit->position);
 
+    auto base_group_item = set_pin_base(name, comment, pinout_unit->position);
     this->addProperty(base_group_item);
+    auto function_group_item = set_pin_system(function);
+    this->addProperty(function_group_item);
+
     this->setFactoryForManager(_variant_manager, _variant_factory);
 
     connect(_variant_manager, &QtVariantPropertyManager::valueChanged, this,
