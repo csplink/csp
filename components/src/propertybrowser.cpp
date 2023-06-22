@@ -29,7 +29,7 @@
 
 #include <QDebug>
 
-#include "pinout_table.h"
+#include "config.h"
 #include "propertybrowser.h"
 
 propertybrowser::propertybrowser(QWidget *parent) : QtTreePropertyBrowser(parent)
@@ -41,9 +41,9 @@ propertybrowser::~propertybrowser() = default;
 
 QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, int position, bool locked)
 {
-    QtProperty *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("Base"));
+    auto *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("Base"));
 
-    QtVariantProperty *variant_item = _variant_manager->addProperty(QVariant::Bool, tr("Locked"));
+    auto *variant_item = _variant_manager->addProperty(QVariant::Bool, tr("Locked"));
     variant_item->setValue(locked);
     group_item->addSubProperty(variant_item);
 
@@ -66,9 +66,9 @@ QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &co
 
 QtProperty *propertybrowser::set_pin_system(const QString &function)
 {
-    QtProperty *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("System"));
+    auto *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("System"));
 
-    QtVariantProperty *variant_item = _variant_manager->addProperty(QVariant::String, tr("Function"));
+    auto *variant_item = _variant_manager->addProperty(QVariant::String, tr("Function"));
     variant_item->setValue(function);
     variant_item->setEnabled(false);
     group_item->addSubProperty(variant_item);
@@ -90,16 +90,43 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
     auto locked        = _project_instance->get_pin_locked(name);
     auto function_type = pinout_unit->functions[function].type.toLower();
     auto maps          = _project_instance->get_maps();
-    if (maps.contains(function_type))
-    {
-        auto map = _project_instance->get_maps()[function_type];
-        qDebug() << name << function << function_type << _project_instance->get_maps().keys() << map.properties.size();
-    }
 
     auto base_group_item = set_pin_base(name, comment, pinout_unit->position, locked);
     this->addProperty(base_group_item);
     auto function_group_item = set_pin_system(function);
     this->addProperty(function_group_item);
+
+    if (maps.contains(function_type))
+    {
+        auto        map           = _project_instance->get_maps()[function_type];
+        auto        function_mode = pinout_unit->functions[function].mode;
+        auto        ip            = _project_instance->get_ips()[function_type];
+        auto        ip_map        = ip[function_mode];
+        auto        ip_map_i      = ip_map.constBegin();
+        auto        type          = pinout_unit->functions[function].type;
+        QtProperty *group_item    = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), type);
+        while (ip_map_i != ip_map.constEnd())
+        {
+            auto parameter_name = ip_map_i.key();
+            auto parameters     = ip_map_i.value();
+            auto property       = map.properties[parameter_name];
+            auto language       = config::language();
+
+            auto *variant_item =
+                _variant_manager->addProperty(QtVariantPropertyManager::enumTypeId(), property.display_name[language]);
+            QStringList values;
+            for (const auto &parameter : parameters)
+            {
+                values.append(map.total[parameter]);
+            }
+            variant_item->setAttribute("enumNames", values);
+            variant_item->setDescriptionToolTip(property.description[language]);
+            group_item->addSubProperty(variant_item);
+
+            ip_map_i++;
+        }
+        this->addProperty(group_item);
+    }
 
     this->setFactoryForManager(_variant_manager, _variant_factory);
 
@@ -119,6 +146,5 @@ void propertybrowser::pin_value_changed_callback(QtProperty *property, const QVa
     else if (property->propertyName() == tr("Locked"))
         _project_instance->set_pin_locked(_pin_name, value.toBool());
     else
-
-        qDebug() << property->propertyName() << value;
+        qDebug() << property << property->propertyName() << value;
 }

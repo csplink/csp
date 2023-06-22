@@ -35,6 +35,7 @@
 #include <qttreepropertybrowser.h>
 
 #include "interface_graphicsitem_pin.h"
+#include "pinout_table.h"
 #include "project.h"
 
 class propertybrowser : public QtTreePropertyBrowser {
