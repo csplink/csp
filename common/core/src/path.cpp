@@ -66,7 +66,7 @@ QString path::extension(const QString &p)
 
 QString path::directory(const QString &p)
 {
-    if (p.isEmpty() || !os::exists(p))
+    if (p.isEmpty())
         return "";
 
     QFileInfo info(p);
