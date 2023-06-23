@@ -39,7 +39,7 @@ if (DEFINED CSP_EXE_DIR)
     endforeach ()
 endif ()
 
-qt5_create_translation(QM_FILES ${SOURCES} ${TS_FILES})
+qt5_create_translation(QM_FILES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/inc ${TS_FILES})
 
 add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
 target_link_libraries(${name} PUBLIC Qt5::Widgets)
