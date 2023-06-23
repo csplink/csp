@@ -21,14 +21,27 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-05-26     xqyjlj       initial version
 #
+set(name project)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
         src/*.cpp)
 
-add_library(project STATIC ${SOURCES})
-target_link_libraries(project PUBLIC compat_layer core repo)
-target_include_directories(project PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+set(TS_FILES
+        ./resources/translations/${name}.zh_CN.ts
+        ./resources/translations/${name}.zh_TW.ts)
+
+if (DEFINED CSP_EXE_DIR)
+    foreach (TS_FILE ${TS_FILES})
+        set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION ${CSP_EXE_DIR}/translations)
+    endforeach ()
+endif ()
+
+qt5_create_translation(QM_FILES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/inc ${TS_FILES})
+
+add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
+target_link_libraries(${name} PUBLIC compat_layer core repo)
+target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
