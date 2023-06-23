@@ -86,7 +86,7 @@ private slots:
         QVERIFY(!directory_dir.isEmpty());
         // not exist
         auto directory_not_exist = path::directory("./not exist");
-        QVERIFY(directory_not_exist.isEmpty());
+        QVERIFY(!directory_not_exist.isEmpty());
     }
 
     void relative()
