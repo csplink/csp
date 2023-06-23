@@ -45,6 +45,11 @@ public:
     static bool is_config(const QString &key);
 
     /**
+     * @brief init config
+     */
+    static void init();
+
+    /**
      * @brief get value by key
      * @param key: config key
      * @return config value
@@ -70,14 +75,17 @@ public:
      */
     static QString language();
 
+    /**
+     * @brief get workspace directory; <get("core/workspace")>
+     * @return workspace; <default: "workspace">
+     */
+    static QString workspace();
+
 private:
     config();
     ~config() override;
 
     config(const config &signal);
     const config &operator=(const config &signal);
-
-private:
-    static config *_instance;
 };
 #endif  //  COMMON_CORE_CSP_CONFIG_H
