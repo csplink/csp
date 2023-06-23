@@ -295,22 +295,27 @@
         <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="170"/>
+        <location filename="../../views/mainwindow_view.ui" line="168"/>
+        <source>Ctrl+S</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="173"/>
         <source>Save Project As ...</source>
         <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="175"/>
+        <location filename="../../views/mainwindow_view.ui" line="178"/>
         <source>Close Project</source>
         <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="180"/>
+        <location filename="../../views/mainwindow_view.ui" line="183"/>
         <source>Generate Report</source>
         <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="185"/>
+        <location filename="../../views/mainwindow_view.ui" line="188"/>
         <source>New Chip Project</source>
         <translation>新建芯片工程</translation>
     </message>

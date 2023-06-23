@@ -14,13 +14,13 @@
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="46"/>
-        <location filename="../../src/propertybrowser.cpp" line="119"/>
+        <location filename="../../src/propertybrowser.cpp" line="146"/>
         <source>Locked</source>
         <translation>锁定</translation>
     </message>
     <message>
         <location filename="../../src/propertybrowser.cpp" line="50"/>
-        <location filename="../../src/propertybrowser.cpp" line="117"/>
+        <location filename="../../src/propertybrowser.cpp" line="144"/>
         <source>Comment</source>
         <translation>注释</translation>
     </message>
