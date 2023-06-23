@@ -147,6 +147,30 @@ public:
     bool get_pin_locked(const QString &key);
 
     /***********************************************/
+
+    /**
+     * @brief load project from file
+     * @param path: project file path
+     */
+    void load_project(const QString &path);
+
+    /**
+     * @brief save project to file
+     * @param path: project file path
+     */
+    void save_project(const QString &path);
+
+    /**
+     * @brief save project to file
+     */
+    void save_project();
+
+    /**
+     * @brief dump project
+     * @return project string
+     */
+    QString dump_project();
+
 private:
     project_table::project_t _project;  // project table
     QString                  _path;     // project file path

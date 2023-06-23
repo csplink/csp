@@ -27,6 +27,10 @@
  *  2023-05-26     xqyjlj       initial version
  */
 
+#include <QDebug>
+
+#include "os.h"
+#include "path.h"
 #include "project.h"
 
 project *project::_instance = new project();
@@ -144,3 +148,38 @@ bool project::get_pin_locked(const QString &key)
 }
 
 /***********************************************/
+
+void project::load_project(const QString &path)
+{
+    _project = project_table::load_project(path);
+    _path    = path;
+}
+
+void project::save_project(const QString &path)
+{
+    project_table::save_project(_project, path);
+}
+
+void project::save_project()
+{
+    Q_ASSERT(!_path.isEmpty());
+
+    auto p = path::directory(_path);
+    if (!os::exists(p))
+    {
+        os::mkdir(p);
+    }
+    else
+    {
+        if (!os::isdir(p))  // check if it not is a directory
+        {
+            os::show_error_and_exit(tr("The project <%1> path is not a directory!").arg(p));
+        }
+    }
+    project_table::save_project(_project, _path);
+}
+
+QString project::dump_project()
+{
+    return project_table::dump_project(_project);
+}
