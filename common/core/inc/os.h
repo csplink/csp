@@ -32,6 +32,7 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -95,6 +96,18 @@ public:
     static void open_url(const QString &url);
 
     /**
+     * @brief remove a directory.
+     * @param dir: directory
+     */
+    static void rmdir(const QString &dir);
+
+    /**
+     * @brief make a directory.
+     * @param dir: directory
+     */
+    static void mkdir(const QString &dir);
+
+    /**
      * @brief check if the directory exists.
      * @param p: path
      * @return true if the directory exists, otherwise false.
@@ -120,6 +133,17 @@ public:
      * @return directory.
      */
     static QString getexistdir();
+
+    /**
+     * @brief open dialog and get a file name selected by the user.
+     * @param title: dialog title
+     * @param default_file: default file
+     * @param filter: file filter
+     * @return a file path selected by the user
+     */
+    static QString getsavefile(const QString &title        = QObject::tr(""),
+                               const QString &default_file = QString(),
+                               const QString &filter       = QString());
 
     /**
      * @brief traverse to get all the files in the specified directory

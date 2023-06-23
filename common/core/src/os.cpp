@@ -71,6 +71,28 @@ void os::open_url(const QString &url)
     QDesktopServices::openUrl(QUrl(url));
 }
 
+void os::rmdir(const QString &dir)
+{
+    Q_ASSERT(!dir.isEmpty());
+
+    if (!isdir(dir))
+        return;
+
+    QDir d(dir);
+    d.removeRecursively();
+}
+
+void os::mkdir(const QString &dir)
+{
+    Q_ASSERT(!dir.isEmpty());
+
+    if (isdir(dir))
+        return;
+
+    QDir d(dir);
+    d.mkpath(dir);
+}
+
 bool os::isdir(const QString &p)
 {
     if (p.isEmpty())
@@ -101,6 +123,11 @@ bool os::exists(const QString &p)
 QString os::getexistdir()
 {
     return QFileDialog::getExistingDirectory();
+}
+
+QString os::getsavefile(const QString &title, const QString &default_file, const QString &filter)
+{
+    return QFileDialog::getSaveFileName(nullptr, title, default_file, filter);
 }
 
 QStringList os::files(const QString &p, const QStringList &filters)
