@@ -64,7 +64,7 @@ void wizard_new_project::accept()
         return;
     }
 
-    _project_instance->set_path(path);
+    _project_instance->set_path(QString("%1/%2/%2.csp").arg(path, name));
     _project_instance->set_core(CSP_PROJECT_CORE_NAME, name);
 
     QDialog::accept();
@@ -103,8 +103,15 @@ QWizardPage *wizard_new_project::create_page_choose_path()
     auto label2 = new QLabel(tr("Project Name"), page);
     label2->setWordWrap(true);
 
-    lineedit_project_path = new QLineEdit(page);
-    lineedit_project_name = new QLineEdit(page);
+    auto workspace        = config::workspace();
+    lineedit_project_path = new QLineEdit(workspace, page);
+
+    int index = 0;
+    while (os::isdir(QString("%1/untitled%2").arg(workspace, index == 0 ? "" : QString::number(index))))
+    {
+        index++;
+    }
+    lineedit_project_name = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
 
     auto toolbutton1 = new QToolButton(page);
     toolbutton1->setMaximumSize(30, 30);
