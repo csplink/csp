@@ -74,5 +74,10 @@ endforeach ()
 
 qt5_create_translation(QM_FILES ${PROJECT_SOURCES} ${TS_FILES})
 
-add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
+if (${CMAKE_BUILD_TYPE} MATCHES "Release")
+    add_executable(${name} WIN32 ${PROJECT_SOURCES} ${QM_FILES})
+else ()
+    add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
+endif ()
+
 target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components qtpropertybrowser)
