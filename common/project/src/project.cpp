@@ -153,6 +153,9 @@ void project::load_project(const QString &path)
 {
     _project = project_table::load_project(path);
     _path    = path;
+
+    load_maps(_project.core[CSP_PROJECT_CORE_HAL]);
+    load_ips(_project.core[CSP_PROJECT_CORE_HAL], _project.core[CSP_PROJECT_CORE_HAL_NAME]);
 }
 
 void project::save_project(const QString &path)
