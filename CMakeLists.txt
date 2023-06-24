@@ -24,7 +24,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(csp VERSION 0.1 LANGUAGES CXX)
+project(csp VERSION 0.0.0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON) # Qt about
 set(CMAKE_AUTOMOC ON) # Qt Meta-Object Compiler
@@ -40,6 +40,16 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
 
 find_package(QT NAMES Qt5 REQUIRED COMPONENTS LinguistTools)
 find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
+
+include(cmake/git.cmake)
+
+string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d %H:%M:%S")
+get_git_tag(GIT_TAG)
+get_git_tag_long(GIT_TAG_LONG)
+get_git_branch(GIT_BRANCH)
+get_git_commit(GIT_COMMIT)
+get_git_commit_long(GIT_COMMIT_LONG)
+get_git_commit_date(GIT_COMMIT_DATE)
 
 add_subdirectory(apps)
 add_subdirectory(common)
