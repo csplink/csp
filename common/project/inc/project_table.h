@@ -115,7 +115,7 @@ template <> struct convert<project_table::pin_config_t>
 
     static bool decode(const Node &node, project_table::pin_config_t &rhs)
     {
-        if (!node.IsMap() || node.size() != 1)
+        if (!node.IsMap() || node.size() != 3)
             return false;
 
         rhs.function = node["Function"].as<QString>();
