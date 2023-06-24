@@ -28,18 +28,24 @@
  */
 
 #include <QApplication>
+#include <QCommandLineParser>
 #include <QDebug>
 #include <QFontDatabase>
 #include <QTranslator>
 
 #include "config.h"
+#include "configure.h"
 #include "mainwindow_view.h"
 #include "os.h"
-
+#include "project.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+    QApplication::setApplicationName("csp-dev");
+    QApplication::setApplicationVersion(CONFIGURE_PROJECT_VERSION);
+    QApplication::setOrganizationName("csplink");
+    QApplication::setOrganizationName("csplink.top");
 
     Q_INIT_RESOURCE(qtpropertybrowser);
 
@@ -51,19 +57,49 @@ int main(int argc, char *argv[])
         {
             auto id = QFontDatabase::addApplicationFont(file);
             if (id == -1)
-                qDebug() << "add font" << file << "failed";
+                qDebug() << QObject::tr("load font: <%1> failed.").arg(file);
         }
     }
 
     for (const QString &file : os::files("./translations", QString("*%1.qm").arg(config::language())))
     {
-        auto translator = new QTranslator(&a);
+        auto translator = new QTranslator(&app);
         translator->load(file);
         qApp->installTranslator(translator);
     }
 
-    a.setWindowIcon(QIcon(":/images/logo.ico"));
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QObject::tr("Tools for flexible configuration of chips and boards."));
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("file", QObject::tr("Project file path."));
+
+    parser.process(app);
+
+    if (!parser.positionalArguments().isEmpty())
+    {
+        auto file = parser.positionalArguments().at(0);
+        if (!os::isfile(file))
+        {
+            qCritical() << QObject::tr("file: <%1> is not exist.").arg(file);
+            return ENOENT;
+        }
+        else
+        {
+            try
+            {
+                project::get_instance()->load_project(file);
+            }
+            catch (const std::exception &e)
+            {
+                qCritical() << e.what();
+                return EINVAL;
+            }
+        }
+    }
+
+    app.setWindowIcon(QIcon(":/images/logo.ico"));
     mainwindow_view w;
     w.show();
-    return a.exec();
+    return app.exec();
 }
