@@ -61,6 +61,7 @@ compile_commands.json
 
 #cmake
 build/
+apps/dev/inc/configure.h
 
 #xmake
 .xmake/
