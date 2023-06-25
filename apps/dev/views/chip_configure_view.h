@@ -32,6 +32,7 @@
 
 #include <QWidget>
 
+#include "project.h"
 #include "propertybrowser.h"
 
 namespace Ui {
@@ -46,6 +47,7 @@ public:
     ~chip_configure_view() override;
 
     void set_propertybrowser(propertybrowser *instance);
+    void init_view();
 
 signals:
     void signal_update_modules_treeview(const QString &company, const QString &name);
@@ -56,6 +58,7 @@ protected:
 private:
     Ui::chip_configure_view *ui;
     propertybrowser         *_propertybrowser_instance;
+    project                 *_project_instance;
 };
 
 #endif  // CHIP_CONFIGURE_VIEW_H
