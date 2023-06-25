@@ -2,6 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_TW">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../src/main.cpp" line="60"/>
+        <source>load font: &lt;%1&gt; failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/main.cpp" line="72"/>
+        <source>Tools for flexible configuration of chips and boards.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/main.cpp" line="75"/>
+        <source>Project file path.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/main.cpp" line="84"/>
+        <source>file: &lt;%1&gt; is not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>chip_configure_view</name>
     <message>
         <location filename="../../views/chip_configure_view.ui" line="45"/>
