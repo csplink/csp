@@ -59,6 +59,12 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
     {
         ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+
+        connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
+                &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
+
+        update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
+                                _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
     }
     else
     {
@@ -66,9 +72,6 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
         ui->dockwidget_right->hide();
         ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
     }
-
-    connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
-            &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
 }
 
 mainwindow_view::~mainwindow_view()
