@@ -65,6 +65,8 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
 
         update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
                                 _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
+
+        ui->page_chip_configure_view->init_view();
     }
     else
     {
