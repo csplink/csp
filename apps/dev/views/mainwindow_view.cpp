@@ -32,7 +32,9 @@
 
 #include "chip_summary_table.h"
 #include "mainwindow_view.h"
+#include "project.h"
 #include "ui_mainwindow_view.h"
+#include "wizard_new_project.h"
 
 mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow_view)
 {
@@ -107,6 +109,22 @@ void mainwindow_view::action_load_triggered_callback(bool checked)
 void mainwindow_view::action_save_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
+    auto instance = project::get_instance();
+    if (instance->get_path().isEmpty())
+    {
+        wizard_new_project wizard(this);
+        connect(&wizard, &wizard_new_project::finished, this, [=](int result) {
+            if (result == QDialog::Accepted)
+            {
+                project::get_instance()->save_project();
+            }
+        });
+        wizard.exec();
+    }
+    else
+    {
+        project::get_instance()->save_project();
+    }
 }
 
 void mainwindow_view::action_saveas_triggered_callback(bool checked)
