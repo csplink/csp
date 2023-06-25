@@ -32,6 +32,8 @@
 
 #include <QMainWindow>
 
+#include "project.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class mainwindow_view;
@@ -65,5 +67,6 @@ private slots:
 
 private:
     Ui::mainwindow_view *ui;
+    project             *_project_instance;
 };
 #endif  // MAINWINDOW_VIEW_H

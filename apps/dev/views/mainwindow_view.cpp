@@ -31,17 +31,16 @@
 #include <QStandardItem>
 
 #include "chip_summary_table.h"
+#include "config.h"
 #include "mainwindow_view.h"
-#include "project.h"
+#include "os.h"
 #include "ui_mainwindow_view.h"
 #include "wizard_new_project.h"
 
 mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow_view)
 {
     ui->setupUi(this);
-    ui->dockwidget_left->hide();
-    ui->dockwidget_right->hide();
-
+    _project_instance = project::get_instance();
     ui->page_chip_configure_view->set_propertybrowser(ui->treepropertybrowser);
 
     connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
@@ -57,9 +56,19 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
             Qt::UniqueConnection);
 
+    if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
+    {
+        ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+    }
+    else
+    {
+        ui->dockwidget_left->hide();
+        ui->dockwidget_right->hide();
+        ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
+    }
+
     connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
             &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
-    ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
 }
 
 mainwindow_view::~mainwindow_view()
@@ -109,21 +118,21 @@ void mainwindow_view::action_load_triggered_callback(bool checked)
 void mainwindow_view::action_save_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
-    auto instance = project::get_instance();
-    if (instance->get_path().isEmpty())
+
+    if (_project_instance->get_path().isEmpty())
     {
         wizard_new_project wizard(this);
         connect(&wizard, &wizard_new_project::finished, this, [=](int result) {
             if (result == QDialog::Accepted)
             {
-                project::get_instance()->save_project();
+                _project_instance->save_project();
             }
         });
         wizard.exec();
     }
     else
     {
-        project::get_instance()->save_project();
+        _project_instance->save_project();
     }
 }
 
