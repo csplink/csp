@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        graphicsitem_pinbody.h
+ *  @file        graphicsitem_chipbody.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,8 +27,8 @@
  *  2023-06-05     xqyjlj       initial version
  */
 
-#ifndef CSP_GRAPHICSITEM_PINBODY_H
-#define CSP_GRAPHICSITEM_PINBODY_H
+#ifndef CSP_GRAPHICSITEM_CHIPBODY_H
+#define CSP_GRAPHICSITEM_CHIPBODY_H
 
 #include <QFont>
 #include <QFontMetrics>
@@ -36,14 +36,14 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
-class graphicsitem_pinbody : public QGraphicsItem {
+class graphicsitem_chipbody : public QGraphicsItem {
 public:
-    explicit graphicsitem_pinbody(qreal          width,
-                                  qreal          height,
-                                  const QString &name,
-                                  const QString &company,
-                                  const QString &package);
-    ~graphicsitem_pinbody() override;
+    explicit graphicsitem_chipbody(qreal          width,
+                                   qreal          height,
+                                   const QString &name,
+                                   const QString &company,
+                                   const QString &package);
+    ~graphicsitem_chipbody() override;
 
 private:
     qreal   _width;
@@ -59,4 +59,4 @@ protected:
     void         paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 
-#endif  // CSP_GRAPHICSITEM_PINBODY_H
+#endif  // CSP_GRAPHICSITEM_CHIPBODY_H

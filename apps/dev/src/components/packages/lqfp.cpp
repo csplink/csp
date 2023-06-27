@@ -109,7 +109,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     }
 
     auto *item =
-        new graphicsitem_pinbody(LENGTH_OF_BODY, LENGTH_OF_BODY, name, company, "LQFP" + QString::number(_pin_count));
+        new graphicsitem_chipbody(LENGTH_OF_BODY, LENGTH_OF_BODY, name, company, "LQFP" + QString::number(_pin_count));
     item->setPos(QPointF(LQFP_PIN_WIDTH, LQFP_PIN_WIDTH));
     items << item;
 
