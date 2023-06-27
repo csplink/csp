@@ -37,8 +37,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include "graphicsitem_chipbody.h"
 #include "graphicsitem_pin.h"
-#include "graphicsitem_pinbody.h"
 #include "pinout_table.h"
 
 #define LQFP_PIN_WIDTH   500

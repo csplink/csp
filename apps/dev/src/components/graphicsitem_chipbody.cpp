@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        graphicsitem_pinbody.cpp
+ *  @file        graphicsitem_chipbody.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -29,15 +29,15 @@
 
 #include <QDebug>
 
-#include "graphicsitem_pinbody.h"
+#include "graphicsitem_chipbody.h"
 
 #define MARGIN 6
 
-graphicsitem_pinbody::graphicsitem_pinbody(qreal          width,
-                                           qreal          height,
-                                           const QString &name,
-                                           const QString &company,
-                                           const QString &package)
+graphicsitem_chipbody::graphicsitem_chipbody(qreal          width,
+                                             qreal          height,
+                                             const QString &name,
+                                             const QString &company,
+                                             const QString &package)
 {
     Q_ASSERT(width > 0 && height > 0);
     Q_ASSERT(!name.isEmpty());
@@ -54,24 +54,24 @@ graphicsitem_pinbody::graphicsitem_pinbody(qreal          width,
     _font->setStyleStrategy(QFont::PreferAntialias);
 }
 
-graphicsitem_pinbody::~graphicsitem_pinbody()
+graphicsitem_chipbody::~graphicsitem_chipbody()
 {
     delete _font;
 };
 
-QRectF graphicsitem_pinbody::boundingRect() const
+QRectF graphicsitem_chipbody::boundingRect() const
 {
     return {0, 0, _width, _height};
 }
 
-QPainterPath graphicsitem_pinbody::shape() const
+QPainterPath graphicsitem_chipbody::shape() const
 {
     QPainterPath path;
     path.addRect(boundingRect());
     return path;
 }
 
-void graphicsitem_pinbody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
     Q_UNUSED(option);
