@@ -69,7 +69,7 @@ public:
     void set_pinout_unit(pinout_table::pinout_unit_t *unit);
 
     /**
-     * @brief set pin name
+     * @brief set pin name < it must be called first >
      * @param name: pin name
      */
     void set_name(const QString &name);
