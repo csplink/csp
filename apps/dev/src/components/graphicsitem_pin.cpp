@@ -210,6 +210,10 @@ void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
     }
     this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR, QVariant::fromValue(_menu));
     this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(unit));
+
+    _comment  = _project_instance->get_pin_comment(_name);
+    _function = _project_instance->get_pin_function(_name);
+    _locked   = _project_instance->get_pin_locked(_name);
 }
 
 void graphicsitem_pin::set_name(const QString &name)
