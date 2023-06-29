@@ -39,7 +39,7 @@ path::~path() = default;
 
 QString path::basename(const QString &p)
 {
-    if (p.isEmpty() || !os::isfile(p))
+    if (p.isEmpty())
         return "";
 
     QFileInfo info(p);
@@ -48,7 +48,10 @@ QString path::basename(const QString &p)
 
 QString path::filename(const QString &p)
 {
-    if (p.isEmpty() || !os::isfile(p))
+    if (p.isEmpty())
+        return "";
+
+    if (os::isdir(p))
         return "";
 
     QFileInfo info(p);
@@ -57,7 +60,7 @@ QString path::filename(const QString &p)
 
 QString path::extension(const QString &p)
 {
-    if (p.isEmpty() || !os::isfile(p))
+    if (p.isEmpty())
         return "";
 
     QFileInfo info(p);

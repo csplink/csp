@@ -10,6 +10,7 @@
 *.jpg binary
 *.pdf binary
 *.ttf binary
+*.ico binary
 
 # These should also not be modified by git.
 *.svg -text

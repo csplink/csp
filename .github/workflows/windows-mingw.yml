@@ -1,0 +1,102 @@
+#
+# Licensed under the GNU General Public License v. 3 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2023-2023 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        windows-mingw.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2023-06-29     xqyjlj       initial version
+#
+
+name: windows mingw
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: 🔧 build
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - qt_arch: win32_mingw81
+            qt_ver: 5.15.2
+            qt_tools: "tools_ninja tools_mingw,qt.tools.win32_mingw810"
+            qt_tools_mingw_install: mingw810_32
+          - qt_arch: win64_mingw81
+            qt_ver: 5.15.2
+            qt_tools: "tools_ninja tools_mingw,qt.tools.win64_mingw810"
+            qt_tools_mingw_install: mingw810_64
+    env:
+      QT_ASSUME_STDERR_HAS_CONSOLE: 1
+    steps:
+      - name: ⬇️ install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: ${{ matrix.qt_ver }}
+          arch: ${{ matrix.qt_arch }}
+          tools: ${{ matrix.qt_tools }}
+          cache: "true"
+      - name: ⬇️ checkout csp
+        uses: actions/checkout@v3
+      - name: 👷 build
+        shell: pwsh
+        run: |
+          $env:Path = "${{ env.IQTA_TOOLS }}/${{ matrix.qt_tools_mingw_install }}/bin/;" + $env:Path
+          $env:Path = "${{ env.IQTA_TOOLS }}/Ninja/;" + $env:Path
+          $env:Path = "${{ env.Qt5_Dir }}/bin/;" + $env:Path
+          mkdir build
+          pushd build
+            cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=ninja `
+                -DCMAKE_CXX_COMPILER=g++ `
+                -DCMAKE_C_COMPILER=gcc
+          popd 
+          cmake --build build
+      - name: 🩺 test
+        shell: pwsh
+        run: |
+          $executable_files = Get-ChildItem -Recurse -Filter "testcase_*.exe"
+          foreach ($file in $executable_files) {
+            $parent_directory = Split-Path -Path $file -Parent
+            pushd $parent_directory
+              Write-Host "🧪 run: <$($file.FullName)>"
+
+              $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+              $startInfo.FileName = $file
+              $startInfo.RedirectStandardOutput = $true
+              $startInfo.UseShellExecute = $false
+              $startInfo.WorkingDirectory = $parent_directory
+
+              $process = New-Object System.Diagnostics.Process
+              $process.StartInfo = $startInfo
+              $process.Start() | Out-Null
+              $process.WaitForExit()
+
+              $output = $process.StandardOutput.ReadToEnd()
+              Write-Host "$output"
+
+              if ($output -match "FAIL!") {
+                throw "🚧 testcase: <$($file.FullName)> failed!"
+              }
+            popd
+          }
