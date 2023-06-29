@@ -101,9 +101,9 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
             y          = 0;
         }
         auto *item = new graphicsitem_pin(w, h);
+        item->set_name(vector.at(i));  // it must be called first
         item->set_direction(direction);
         item->set_pinout_unit(_pinout.value(vector.at(i)));
-        item->set_name(vector.at(i));
         item->setPos(QPointF(x, y));
         items << item;
     }
