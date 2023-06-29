@@ -13,7 +13,7 @@ include(CMakePackageConfigHelpers)
 include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
-include(CTest)
+# include(CTest)
 
 find_program(YAML_CPP_CLANG_FORMAT_EXE NAMES clang-format)
 
