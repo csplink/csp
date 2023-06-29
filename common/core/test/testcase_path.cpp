@@ -28,6 +28,7 @@
  */
 
 #include <QDebug>
+#include <QtGlobal>
 #include <QtTest>
 
 #include "path.h"
@@ -47,7 +48,7 @@ private slots:
         QVERIFY(basename_dir.isEmpty());
         // not exist
         auto basename_not_exist = path::basename("./not exist");
-        QVERIFY(basename_not_exist.isEmpty());
+        QVERIFY(!basename_not_exist.isEmpty());
     }
 
     void filename()
@@ -60,7 +61,7 @@ private slots:
         QVERIFY(filename_dir.isEmpty());
         // not exist
         auto filename_not_exist = path::filename("./not exist");
-        QVERIFY(filename_not_exist.isEmpty());
+        QVERIFY(!filename_not_exist.isEmpty());
     }
 
     void extension()
@@ -93,9 +94,17 @@ private slots:
     {
         // file
         auto relative_file = path::relative(path::appfile());
+#ifdef Q_OS_WINDOWS
         QVERIFY(relative_file == "testcase_path.exe");
+#elif defined(Q_OS_LINUX)
+        QVERIFY(relative_file == "testcase_path");
+#endif
         relative_file = path::relative(path::appfile(), path::appdir() + "/..");
+#ifdef Q_OS_WINDOWS
         QVERIFY(relative_file == "core/testcase_path.exe");
+#elif defined(Q_OS_LINUX)
+        QVERIFY(relative_file == "core/testcase_path");
+#endif
         // dir
         auto relative_dir = path::relative(path::appdir());
         QVERIFY(relative_dir == ".");
@@ -109,7 +118,12 @@ private slots:
     void absolute()
     {
         // file
+
+#ifdef Q_OS_WINDOWS
         auto absolute_file = path::absolute("testcase_path.exe");
+#elif defined(Q_OS_LINUX)
+        auto absolute_file = path::absolute("testcase_path");
+#endif
         QVERIFY(absolute_file == path::appfile());
         // dir
         auto absolute_dir = path::absolute(".");
