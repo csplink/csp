@@ -79,6 +79,7 @@ QtProperty *propertybrowser::set_pin_system(const QString &function)
 void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 {
     disconnect(_variant_manager, &QtVariantPropertyManager::valueChanged, this, nullptr);
+    disconnect(_variant_manager, &QtVariantPropertyManager::attributeChanged, this, nullptr);
 
     this->clear();
     auto pin  = dynamic_cast<interface_graphicsitem_pin *>(item);
@@ -132,6 +133,8 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 
     connect(_variant_manager, &QtVariantPropertyManager::valueChanged, this,
             &propertybrowser::pin_value_changed_callback, Qt::UniqueConnection);
+    connect(_variant_manager, &QtVariantPropertyManager::attributeChanged, this,
+            &propertybrowser::pin_attribute_changed_callback, Qt::UniqueConnection);
 
     _pin_name = name;
 }
@@ -141,10 +144,44 @@ void propertybrowser::pin_value_changed_callback(QtProperty *property, const QVa
     if (_pin_name.isEmpty())
         return;
 
-    if (property->propertyName() == tr("Comment"))
-        _project_instance->set_pin_comment(_pin_name, value.toString());
-    else if (property->propertyName() == tr("Locked"))
-        _project_instance->set_pin_locked(_pin_name, value.toBool());
-    else
-        qDebug() << property << property->propertyName() << value;
+    auto type = _variant_manager->propertyType(property);
+    switch (type)
+    {
+        case QVariant::String: {
+            if (property->propertyName() == tr("Comment"))
+                _project_instance->set_pin_comment(_pin_name, value.toString());
+
+            break;
+        }
+        case QVariant::Bool: {
+            if (property->propertyName() == tr("Locked"))
+                _project_instance->set_pin_locked(_pin_name, value.toBool());
+
+            break;
+        }
+        case QVariant::Int: {
+            break;
+        }
+        default: {
+            if (type == QtVariantPropertyManager::enumTypeId())
+            {
+                qDebug() << _variant_manager->attributeValue(property, "enumNames") << property->propertyName()
+                         << value;
+            }
+            else
+            {
+                qDebug() << _variant_manager->propertyType(property) << property << property->propertyName() << value;
+            }
+            break;
+        }
+    }
+}
+
+void propertybrowser::pin_attribute_changed_callback(QtProperty     *property,
+                                                     const QString  &attribute,
+                                                     const QVariant &value)
+{
+    Q_UNUSED(property)
+    Q_UNUSED(attribute)
+    Q_UNUSED(value)
 }

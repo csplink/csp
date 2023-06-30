@@ -51,6 +51,7 @@ public slots:
      */
     void update_property_by_pin(QGraphicsItem *item);
     void pin_value_changed_callback(QtProperty *property, const QVariant &value);
+    void pin_attribute_changed_callback(QtProperty *property, const QString &attribute, const QVariant &value);
 
 private:
     QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked);
