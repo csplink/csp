@@ -72,7 +72,7 @@ jobs:
             fullpath=$(realpath ${var})
             directory=$(dirname ${var})
             pushd ${directory}
-              echo "🧪 run: <${fullpath}>"
+              echo -e "\n🧪 run: <${fullpath}>"
               ${fullpath}
             popd
           done
