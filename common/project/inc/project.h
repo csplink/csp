@@ -146,6 +146,29 @@ public:
      */
     bool get_pin_locked(const QString &key);
 
+    /**
+     * @brief set pin config function property by pin name
+     * @param key: pin name
+     * @param property: property name
+     * @param value: property value
+     */
+    void set_pin_config_fp(const QString &key, const QString &property, const QString &value);
+
+    /**
+     * @brief get pin config function properties by pin name
+     * @param key: pin name
+     * @return pin config function properties as a modifiable reference
+     */
+    QMap<QString, QString> &get_pin_config_fp_map(const QString &key);
+
+    /**
+     * @brief get pin config function property by pin name
+     * @param key: pin name
+     * @param property: property name
+     * @return pin config function property as a modifiable reference
+     */
+    QString &get_pin_config_fp(const QString &key, const QString &property);
+
     /***********************************************/
 
     /**
@@ -196,6 +219,10 @@ signals:
                                       const QString  &name,
                                       const QVariant &old_value,
                                       const QVariant &new_value);
+    void signals_pin_function_property_changed(const QString  &property,
+                                               const QString  &name,
+                                               const QVariant &old_value,
+                                               const QVariant &new_value);
 
 private:
     project();

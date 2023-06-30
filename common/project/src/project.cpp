@@ -147,6 +147,31 @@ bool project::get_pin_locked(const QString &key)
     return _project.pin_configs[key].locked;
 }
 
+void project::set_pin_config_fp(const QString &key, const QString &property, const QString &value)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!property.isEmpty());
+    Q_ASSERT(!value.isEmpty());
+
+    emit signals_pin_function_property_changed(property, key, _project.pin_configs[key].fp[property], value);
+    _project.pin_configs[key].fp[property] = value;
+}
+
+QMap<QString, QString> &project::get_pin_config_fp_map(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+
+    return _project.pin_configs[key].fp;
+}
+
+QString &project::get_pin_config_fp(const QString &key, const QString &property)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!property.isEmpty());
+
+    return _project.pin_configs[key].fp[property];
+}
+
 /***********************************************/
 
 void project::load_project(const QString &path)
