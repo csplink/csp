@@ -40,8 +40,10 @@
 #ifndef QTPROPERTYBROWSER_H
 #define QTPROPERTYBROWSER_H
 
-#include <QtWidgets/QWidget>
+#include <QMap>
 #include <QtCore/QSet>
+#include <QtWidgets/QWidget>
+#include <QVariant>
 
 QT_BEGIN_NAMESPACE
 
@@ -82,12 +84,30 @@ public:
     void addSubProperty(QtProperty *property);
     void insertSubProperty(QtProperty *property, QtProperty *afterProperty);
     void removeSubProperty(QtProperty *property);
+
+    /**
+     * @brief get user property
+     * @param key: user property key
+     * @return user property value
+     */
+    QVariant get_user_property(int key) const;
+
+    /**
+     * @brief set user property
+     * @param key: user property key
+     * @param value: user property value
+     */
+    void set_user_property(int key, const QVariant &value);
+
 protected:
     explicit QtProperty(QtAbstractPropertyManager *manager);
     void propertyChanged();
+
 private:
     friend class QtAbstractPropertyManager;
     QScopedPointer<QtPropertyPrivate> d_ptr;
+
+    QMap<int, QVariant> _user_property;
 };
 
 class QtAbstractPropertyManagerPrivate;

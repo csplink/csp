@@ -520,6 +520,19 @@ void QtProperty::propertyChanged()
     d_ptr->m_manager->d_ptr->propertyChanged(this);
 }
 
+QVariant QtProperty::get_user_property(int key) const
+{
+    if (_user_property.contains(key))
+        return _user_property.value(key);
+
+    return {};
+}
+
+void QtProperty::set_user_property(int key, const QVariant &value)
+{
+    _user_property[key] = value;
+}
+
 ////////////////////////////////
 
 void QtAbstractPropertyManagerPrivate::propertyDestroyed(QtProperty *property)
