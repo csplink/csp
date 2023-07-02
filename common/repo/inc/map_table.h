@@ -59,6 +59,7 @@ public:
         QMap<QString, group_t>    groups;
         QMap<QString, property_t> properties;
         QMap<QString, QString>    total;
+        QMap<QString, QString>    reverse_total;
     } map_t;
 
     typedef QMap<QString, map_t> maps_t;
@@ -168,6 +169,7 @@ template <> struct convert<map_table::map_t>
                 auto name  = values_i.key();
                 auto value = values_i.value();
                 rhs.total.insert(name, value.comment[config::language()]);
+                rhs.reverse_total.insert(value.comment[config::language()], name);
                 values_i++;
             }
             group_i++;
