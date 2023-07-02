@@ -308,39 +308,49 @@
         <translation>加载工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="160"/>
+        <location filename="../../views/mainwindow_view.ui" line="158"/>
+        <source>Ctrl+L</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="163"/>
         <source>Import Project</source>
         <translation>导入工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="165"/>
+        <location filename="../../views/mainwindow_view.ui" line="168"/>
         <source>Save Project</source>
         <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="168"/>
+        <location filename="../../views/mainwindow_view.ui" line="171"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="173"/>
+        <location filename="../../views/mainwindow_view.ui" line="176"/>
         <source>Save Project As ...</source>
         <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="178"/>
+        <location filename="../../views/mainwindow_view.ui" line="181"/>
         <source>Close Project</source>
         <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="183"/>
+        <location filename="../../views/mainwindow_view.ui" line="186"/>
         <source>Generate Report</source>
         <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="188"/>
+        <location filename="../../views/mainwindow_view.ui" line="191"/>
         <source>New Chip Project</source>
         <translation>新建芯片工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="133"/>
+        <source>Project load failed, reason: &lt;%1&gt;.</source>
+        <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
 </context>
 <context>

@@ -281,38 +281,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="160"/>
+        <location filename="../../views/mainwindow_view.ui" line="158"/>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="163"/>
         <source>Import Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="165"/>
+        <location filename="../../views/mainwindow_view.ui" line="168"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="168"/>
+        <location filename="../../views/mainwindow_view.ui" line="171"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="173"/>
+        <location filename="../../views/mainwindow_view.ui" line="176"/>
         <source>Save Project As ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="178"/>
+        <location filename="../../views/mainwindow_view.ui" line="181"/>
         <source>Close Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="183"/>
+        <location filename="../../views/mainwindow_view.ui" line="186"/>
         <source>Generate Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="188"/>
+        <location filename="../../views/mainwindow_view.ui" line="191"/>
         <source>New Chip Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="133"/>
+        <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
