@@ -32,6 +32,8 @@
 
 #include <QWidget>
 
+#include "project.h"
+
 namespace Ui {
 class home_view;
 }
@@ -43,8 +45,12 @@ public:
     explicit home_view(QWidget *parent = nullptr);
     ~home_view() override;
 
+signals:
+    void signal_create_project();
+
 public slots:
-    void button_create_mcu_project_clicked_callback(bool checked);
+    void button_create_chip_project_clicked_callback(bool checked);
+    void create_chip_project();
 
 private slots:
     void button_create_board_project_clicked_callback(bool checked);
@@ -52,6 +58,8 @@ private slots:
 
 private:
     Ui::home_view *ui;
+
+    project *_project_instance;
 };
 
 #endif  // HOME_VIEW_H
