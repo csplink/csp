@@ -41,12 +41,15 @@
 
 class project_table {
 public:
+    typedef QMap<QString, QString>                 pin_function_property_t;
+    typedef QMap<QString, pin_function_property_t> pin_function_properties_t;
+
     typedef struct
     {
-        QString                function;  // pin selected function
-        QString                comment;   // pin comment
-        bool                   locked;    // pin locked
-        QMap<QString, QString> fp;        // pin function properties
+        QString                   function;  // pin selected function
+        QString                   comment;   // pin comment
+        bool                      locked;    // pin locked
+        pin_function_properties_t fp;        // pin function properties
     } pin_config_t;
 
     typedef struct
@@ -126,7 +129,7 @@ template <> struct convert<project_table::pin_config_t>
         rhs.comment  = node["Comment"].as<QString>();
         rhs.locked   = node["Locked"].as<bool>();
         if (node["FunctionProperty"].IsDefined())
-            rhs.fp = node["FunctionProperty"].as<QMap<QString, QString>>();
+            rhs.fp = node["FunctionProperty"].as<project_table::pin_function_properties_t>();
         return true;
     }
 };
