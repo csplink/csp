@@ -130,7 +130,7 @@ void mainwindow_view::action_load_triggered_callback(bool checked)
     }
     catch (const std::exception &e)
     {
-        qCritical() << e.what();
+        os::show_error(tr("Project load failed, reason: <%1>.").arg(e.what()));
     }
 }
 
