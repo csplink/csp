@@ -118,6 +118,18 @@ void mainwindow_view::action_new_chip_triggered_callback(bool checked)
 void mainwindow_view::action_load_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
+
+    auto file = os::getexistfile();
+    if (file.isEmpty())
+        return;
+    try
+    {
+        _project_instance->load_project(file);
+    }
+    catch (const std::exception &e)
+    {
+        qCritical() << e.what();
+    }
 }
 
 void mainwindow_view::action_save_triggered_callback(bool checked)
