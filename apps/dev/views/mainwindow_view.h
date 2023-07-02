@@ -54,8 +54,13 @@ public:
     explicit mainwindow_view(QWidget *parent = nullptr);
     ~mainwindow_view() override;
 
+private:
+    void init_mode();
+    void set_mode(stack_index_t index);
+
 public slots:
     void update_modules_treeview(const QString &company, const QString &name);
+    void create_project();
 
 private slots:
     void action_new_chip_triggered_callback(bool checked);

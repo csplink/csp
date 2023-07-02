@@ -56,31 +56,53 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
             Qt::UniqueConnection);
 
-    if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
-    {
-        ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+    connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
+            Qt::UniqueConnection);
 
-        connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
-                &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
-
-        update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
-                                _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
-
-        ui->page_chip_configure_view->init_view();
-
-        this->setWindowState(Qt::WindowMaximized);
-    }
-    else
-    {
-        ui->dockwidget_left->hide();
-        ui->dockwidget_right->hide();
-        ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
-    }
+    init_mode();
 }
 
 mainwindow_view::~mainwindow_view()
 {
     delete ui;
+}
+
+void mainwindow_view::init_mode()
+{
+    if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
+        set_mode(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+    else
+        set_mode(ENUM_STACK_INDEX_HOME);
+}
+
+void mainwindow_view::set_mode(stack_index_t index)
+{
+    switch (index)
+    {
+        case ENUM_STACK_INDEX_HOME: {
+            ui->dockwidget_left->hide();
+            ui->dockwidget_right->hide();
+            ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
+            break;
+        }
+        case ENUM_STACK_INDEX_CHIP_CONFIGURE: {
+            ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+
+            connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
+                    &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
+
+            update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
+                                    _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
+
+            ui->page_chip_configure_view->init_view();
+
+            this->setWindowState(Qt::WindowMaximized);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
 }
 
 void mainwindow_view::update_modules_treeview(const QString &company, const QString &name)
@@ -112,9 +134,14 @@ void mainwindow_view::update_modules_treeview(const QString &company, const QStr
     ui->treeview->expandAll();
 }
 
+void mainwindow_view::create_project()
+{
+    init_mode();
+}
+
 void mainwindow_view::action_new_chip_triggered_callback(bool checked)
 {
-    ui->page_home_view->button_create_mcu_project_clicked_callback(checked);
+    ui->page_home_view->button_create_chip_project_clicked_callback(checked);
 }
 
 void mainwindow_view::action_load_triggered_callback(bool checked)
@@ -127,6 +154,7 @@ void mainwindow_view::action_load_triggered_callback(bool checked)
     try
     {
         _project_instance->load_project(file);
+        init_mode();
     }
     catch (const std::exception &e)
     {
