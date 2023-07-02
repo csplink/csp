@@ -135,6 +135,12 @@ public:
     static QString getexistdir();
 
     /**
+     * @brief open dialog and get an existing file selected by the user.
+     * @return file path.
+     */
+    static QString getexistfile();
+
+    /**
      * @brief open dialog and get a file name selected by the user.
      * @param title: dialog title
      * @param default_file: default file
