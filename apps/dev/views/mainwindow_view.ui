@@ -69,7 +69,14 @@
     <addaction name="action_report"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuProject">
+    <property name="title">
+     <string>Project</string>
+    </property>
+    <addaction name="action_generate"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menuProject"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockwidget_left">
@@ -189,6 +196,11 @@
   <action name="action_new_chip">
    <property name="text">
     <string>New Chip Project</string>
+   </property>
+  </action>
+  <action name="action_generate">
+   <property name="text">
+    <string>Generate code</string>
    </property>
   </action>
  </widget>
