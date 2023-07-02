@@ -50,6 +50,9 @@ public:
     explicit choose_chip_dialog(QWidget *parent = nullptr);
     ~choose_chip_dialog() override;
 
+signals:
+    void signal_create_project();
+
 private slots:
     void treeview_chip_filter_model_item_changed_callback(QStandardItem *item);
     void tableview_chip_infos_selection_model_selection_changed_callback(const QItemSelection &selected,
@@ -66,6 +69,7 @@ private:
     QString _chip_name;
     QString _hal_name;
     QString _package_name;
+    QString _company_name;
 
     QStringList _company_keys;
     QStringList _series_keys;
