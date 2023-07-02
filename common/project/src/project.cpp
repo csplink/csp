@@ -147,29 +147,64 @@ bool project::get_pin_locked(const QString &key)
     return _project.pin_configs[key].locked;
 }
 
-void project::set_pin_config_fp(const QString &key, const QString &property, const QString &value)
+void project::set_pin_config_fp(const QString &key,
+                                const QString &module,
+                                const QString &property,
+                                const QString &value)
 {
     Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
     Q_ASSERT(!property.isEmpty());
     Q_ASSERT(!value.isEmpty());
 
-    emit signals_pin_function_property_changed(property, key, _project.pin_configs[key].fp[property], value);
-    _project.pin_configs[key].fp[property] = value;
+    emit signals_pin_function_property_changed(module, property, key, _project.pin_configs[key].fp[module][property],
+                                               value);
+    _project.pin_configs[key].fp[module][property] = value;
 }
 
-QMap<QString, QString> &project::get_pin_config_fp_map(const QString &key)
+void project::clear_pin_config_fp(const QString &key, const QString &module, const QString &property)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
+    Q_ASSERT(!property.isEmpty());
+
+    if (_project.pin_configs[key].fp.contains(module))
+    {
+        if (_project.pin_configs[key].fp[module].contains(property))
+        {
+            emit signals_pin_function_property_changed(module, property, key,
+                                                       _project.pin_configs[key].fp[module][property], "");
+            _project.pin_configs[key].fp[module].remove(property);
+        }
+    }
+}
+
+void project::clear_pin_config_fp_module(const QString &key, const QString &module)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
+
+    if (_project.pin_configs[key].fp.contains(module))
+    {
+        emit signals_pin_function_property_changed(module, "", key, "", "");
+        _project.pin_configs[key].fp.remove(module);
+    }
+}
+
+project_table::pin_function_properties_t &project::get_pin_config_fps(const QString &key)
 {
     Q_ASSERT(!key.isEmpty());
 
     return _project.pin_configs[key].fp;
 }
 
-QString &project::get_pin_config_fp(const QString &key, const QString &property)
+QString &project::get_pin_config_fp(const QString &key, const QString &module, const QString &property)
 {
     Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
     Q_ASSERT(!property.isEmpty());
 
-    return _project.pin_configs[key].fp[property];
+    return _project.pin_configs[key].fp[module][property];
 }
 
 /***********************************************/
