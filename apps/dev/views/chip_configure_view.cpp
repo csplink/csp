@@ -66,6 +66,7 @@ void chip_configure_view::init_view()
     auto company = _project_instance->get_core(CSP_PROJECT_CORE_COMPANY);
     auto name    = _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME);
 
+    delete ui->graphicsview->scene();
     auto graphicsscene = new QGraphicsScene(ui->graphicsview);
     if (package.startsWith("lqfp"))
     {
