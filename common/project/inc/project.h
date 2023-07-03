@@ -211,6 +211,11 @@ public:
      */
     QString dump_project();
 
+    /**
+     * @brief clear project
+     */
+    void clear_project();
+
 private:
     project_table::project_t _project;  // project table
     QString                  _path;     // project file path
@@ -241,6 +246,7 @@ signals:
                                                const QString  &name,
                                                const QVariant &old_value,
                                                const QVariant &new_value);
+    void signals_project_clear();
 
 private:
     project();

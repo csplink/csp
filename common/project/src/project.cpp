@@ -246,3 +246,9 @@ QString project::dump_project()
 {
     return project_table::dump_project(_project);
 }
+
+void project::clear_project()
+{
+    _project.pin_configs.clear();
+    emit signals_project_clear();
+}
