@@ -56,7 +56,7 @@ void home_view::button_create_chip_project_clicked_callback(bool checked)
     choose_chip_dialog dialog(this);
     connect(&dialog, &choose_chip_dialog::finished, this, &home_view::choose_chip_dialog_finished_callback,
             Qt::UniqueConnection);
-    connect(&dialog, &choose_chip_dialog::signal_create_project, this, &home_view::create_chip_project,
+    connect(&dialog, &choose_chip_dialog::signals_create_project, this, &home_view::create_chip_project,
             Qt::UniqueConnection);
     dialog.exec();
 }
