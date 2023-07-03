@@ -383,7 +383,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(QAbstractButton *butto
                 _project_instance->load_ips(_hal_name, _chip_name);
                 _project_instance->load_maps(_hal_name);
 
-                emit signal_create_project();
+                emit signals_create_project();
             }
         });
         wizard.exec();

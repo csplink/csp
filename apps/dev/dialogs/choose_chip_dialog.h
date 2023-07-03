@@ -51,7 +51,7 @@ public:
     ~choose_chip_dialog() override;
 
 signals:
-    void signal_create_project();
+    void signals_create_project();
 
 private slots:
     void treeview_chip_filter_model_item_changed_callback(QStandardItem *item);
