@@ -73,6 +73,7 @@ void home_view::choose_chip_dialog_finished_callback(int result)
 
 void home_view::create_chip_project()
 {
+    _project_instance->clear_project();
     _project_instance->save_project();
     emit signal_create_project();
 }
