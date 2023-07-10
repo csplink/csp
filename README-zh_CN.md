@@ -68,5 +68,10 @@
             <img width='70px' src="https://cdn.worldvectorlogo.com/logos/qt.svg" alt="qt">
           </a>
         </td>
+        <td>
+          <a href='https://code.visualstudio.com/?from=csplink'>
+            <img width='70px' src="https://cdn.worldvectorlogo.com/logos/visual-studio-code-1.svg" alt="vsc">
+          </a>
+        </td>
     </tr>
 </table>
