@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        configure.h.in
+ *  @file        generate_xmake.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,35 +24,29 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-23     xqyjlj       initial version
+ *  2023-07-04     xqyjlj       initial version
  */
 
-#ifndef CSP_CONFIGURE_H_
-#define CSP_CONFIGURE_H_
+#ifndef CSP_GENERATE_XMAKE_H
+#define CSP_GENERATE_XMAKE_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "project_table.h"
 
-#define CONFIGURE_PROJECT_VERSION       "@CMAKE_PROJECT_VERSION@"
-#define CONFIGURE_PROJECT_VERSION_MAJOR "@CMAKE_PROJECT_VERSION_MAJOR@"
-#define CONFIGURE_PROJECT_VERSION_MINOR "@CMAKE_PROJECT_VERSION_MINOR@"
-#define CONFIGURE_PROJECT_VERSION_PATCH "@CMAKE_PROJECT_VERSION_PATCH@"
-#define CONFIGURE_PROJECT_VERSION_TWEAK "@CMAKE_PROJECT_VERSION_TWEAK@"
+class generate_xmake {
+public:
+    /**
+     * @brief generate xmake code file content from project table
+     * @param project_table: project table
+     * @return code file
+     */
+    static QString generate(const project_table::project_t &project_table);
 
-#define CONFIGURE_BUILD_TIMESTAMP       "@BUILD_TIMESTAMP@"
+private:
+    generate_xmake();
+    ~generate_xmake();
 
-#define CONFIGURE_GIT_TAG               "@GIT_TAG@"
-#define CONFIGURE_GIT_TAG_LONG          "@GIT_TAG_LONG@"
-#define CONFIGURE_GIT_BRANCH            "@GIT_BRANCH@"
-#define CONFIGURE_GIT_COMMIT            "@GIT_COMMIT@"
-#define CONFIGURE_GIT_COMMIT_LONG       "@GIT_COMMIT_LONG@"
-#define CONFIGURE_GIT_COMMIT_DATE       "@GIT_COMMIT_DATE@"
+    generate_xmake(const generate_xmake &signal);
+    const generate_xmake &operator=(const generate_xmake &signal);
+};
 
-#define CONFIGURE_CSP_EXE_DIR           "@CSP_EXE_DIR@"
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+#endif  // CSP_GENERATE_XMAKE_H

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/lib/project">
+        <file>template/code.c</file>
+        <file>template/code.h</file>
+        <file>template/xmake.lua</file>
+    </qresource>
+</RCC>

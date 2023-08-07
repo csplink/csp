@@ -55,6 +55,8 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
             Qt::UniqueConnection);
     connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
             Qt::UniqueConnection);
+    connect(ui->action_generate, &QAction::triggered, this, &mainwindow_view::action_generate_triggered_callback,
+            Qt::UniqueConnection);
 
     connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
             Qt::UniqueConnection);
@@ -196,4 +198,11 @@ void mainwindow_view::action_close_triggered_callback(bool checked)
 void mainwindow_view::action_report_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
+}
+
+void mainwindow_view::action_generate_triggered_callback(bool checked)
+{
+    Q_UNUSED(checked)
+
+    _project_instance->generate_code(project::code_project_type_e::CODE_PROJECT_TYPE_XMAKE);
 }

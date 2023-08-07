@@ -41,6 +41,13 @@ class project : public QObject {
     Q_OBJECT
 
 public:
+    typedef enum
+    {
+        CODE_PROJECT_TYPE_XMAKE = 0,
+        CODE_PROJECT_TYPE_MDK_ARM
+    } code_project_type_e;
+
+public:
     /******************* core ***********************/
     /**
      * @brief get core config value by core name
@@ -215,6 +222,12 @@ public:
      * @brief clear project
      */
     void clear_project();
+
+    /**
+     * @brief generate_code code
+     * @param type: code type
+     */
+    void generate_code(code_project_type_e type);
 
 private:
     project_table::project_t _project;  // project table

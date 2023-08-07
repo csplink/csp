@@ -69,6 +69,7 @@ private slots:
     void action_saveas_triggered_callback(bool checked);
     void action_close_triggered_callback(bool checked);
     void action_report_triggered_callback(bool checked);
+    void action_generate_triggered_callback(bool checked);
 
 private:
     Ui::mainwindow_view *ui;

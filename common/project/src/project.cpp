@@ -29,6 +29,7 @@
 
 #include <QDebug>
 
+#include "generate_xmake.h"
 #include "os.h"
 #include "path.h"
 #include "project.h"
@@ -251,4 +252,18 @@ void project::clear_project()
 {
     _project.pin_configs.clear();
     emit signals_project_clear();
+}
+
+void project::generate_code(code_project_type_e type)
+{
+    switch (type)
+    {
+        case CODE_PROJECT_TYPE_XMAKE: {
+            generate_xmake::generate(_project);
+            break;
+        }
+        case CODE_PROJECT_TYPE_MDK_ARM: {
+            break;
+        }
+    }
 }

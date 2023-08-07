@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("csplink");
     QApplication::setOrganizationName("csplink.top");
 
+    Q_INIT_RESOURCE(core);
+    Q_INIT_RESOURCE(project);
     Q_INIT_RESOURCE(qtpropertybrowser);
 
     config::init();

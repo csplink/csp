@@ -25,7 +25,8 @@ set(name project)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
-        src/*.cpp)
+        src/*.cpp
+        resources/*.qrc)
 
 set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
@@ -37,7 +38,9 @@ if (DEFINED CSP_EXE_DIR)
     endforeach ()
 endif ()
 
-qt5_create_translation(QM_FILES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/inc ${TS_FILES})
+qt5_create_translation(QM_FILES ${SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
+        ${TS_FILES})
 
 add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
 target_link_libraries(${name} PUBLIC compat_layer core repo)

@@ -29,11 +29,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 
 set(CSP_EXE_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "csp exe file dir")
 
-configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h
-)
-
 file(GLOB_RECURSE DIALOGS
         dialogs/*.ui
         dialogs/*.h
