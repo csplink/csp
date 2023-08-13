@@ -27,6 +27,7 @@
  *  2023-06-17     xqyjlj       initial version
  */
 
+#include <QApplication>
 #include <QDir>
 #include <QFileInfo>
 

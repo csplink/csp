@@ -52,6 +52,39 @@ private slots:
         list = os::dirs(".", "*");
         QVERIFY(!list.isEmpty());
     }
+
+    void execv()
+    {
+        auto result = os::execv("git", QStringList() << "--version");
+        QVERIFY(result);
+        result = os::execv("not exits");
+        QVERIFY(!result);
+        result = os::execv("Makefile");
+        QVERIFY(!result);
+
+        QByteArray output, error;
+        result = os::execv("git", QStringList() << "--version", {}, 30000, "", &output, &error);
+        QVERIFY(result);
+        QVERIFY(output.isEmpty() && !error.isEmpty());
+        QVERIFY(error.startsWith("git version"));
+    }
+
+    void readfile()
+    {
+        auto result = os::readfile("./Makefile");
+        QVERIFY(!result.isEmpty());
+    }
+
+    void writefile()
+    {
+        os::writefile("./.write_test", "test1");
+        auto result = os::readfile("./.write_test");
+        QVERIFY(!result.isEmpty());
+
+        os::writefile("./.write_test", "test2", false);
+        result = os::readfile("./.write_test");
+        QVERIFY(result == "test1test2");
+    }
 };
 
 QTEST_MAIN(testcase_os)

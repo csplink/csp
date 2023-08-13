@@ -30,14 +30,9 @@
 #ifndef COMMON_CORE_CSP_OS_H
 #define COMMON_CORE_CSP_OS_H
 
-#include <QApplication>
-#include <QDesktopServices>
-#include <QDir>
-#include <QFileDialog>
-#include <QFileInfo>
-#include <QMessageBox>
+#include <QMap>
+#include <QObject>
 #include <QString>
-#include <QUrl>
 
 class os {
 public:
@@ -182,6 +177,60 @@ public:
      * @return directory list
      */
     static QStringList dirs(const QString &p, const QString &filter);
+
+    /**
+     * @brief running native shell commands with file log
+     * @param program: program path or name
+     * @param argv: argument vector
+     * @param env: environment variable settings
+     * @param msecs: timeout milliseconds
+     * @param workdir: working directory
+     * @param output_file: the process' standard output to the file fileName
+     * @param error_file: the process' standard error to the file fileName
+     * @return true if run successfully, otherwise false.
+     */
+    static bool execvf(const QString                &program,
+                       const QStringList            &argv        = {},
+                       const QMap<QString, QString> &env         = {},
+                       int                           msecs       = 30000,
+                       const QString                &workdir     = "",
+                       const QString                &output_file = "",
+                       const QString                &error_file  = "");
+
+    /**
+     * @brief running native shell commands with qbytearray log
+     * @param program: program path or name
+     * @param argv: argument vector
+     * @param env: environment variable settings
+     * @param msecs: timeout milliseconds
+     * @param workdir: working directory
+     * @param output: the process' standard output to the qbytearray
+     * @param error: the process' standard error to the qbytearray
+     * @return true if run successfully, otherwise false.
+     */
+    static bool execv(const QString                &program,
+                      const QStringList            &argv    = {},
+                      const QMap<QString, QString> &env     = {},
+                      int                           msecs   = 30000,
+                      const QString                &workdir = "",
+                      QByteArray                   *output  = nullptr,
+                      QByteArray                   *error   = nullptr);
+
+    /**
+     * @brief read a file
+     * @param p: path
+     * @return file content
+     */
+    static QByteArray readfile(const QString &p);
+
+    /**
+     * @brief write data to file
+     * @param p: path
+     * @param data: data
+     * @param overwrite: is overwrite
+     * @return true if write successfully, otherwise false.
+     */
+    static bool writefile(const QString &p, const QByteArray &data, bool overwrite = true);
 
 private:
     os();

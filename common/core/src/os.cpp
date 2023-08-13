@@ -28,6 +28,17 @@
  */
 
 #include "os.h"
+#include <QApplication>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QDir>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QMessageBox>
+#include <QProcess>
+#include <QString>
+#include <QTemporaryFile>
+#include <QUrl>
 
 os::os() = default;
 
@@ -171,4 +182,123 @@ QStringList os::dirs(const QString &p, const QStringList &filters)
 QStringList os::dirs(const QString &p, const QString &filter)
 {
     return dirs(p, QStringList() << filter);
+}
+
+bool os::execvf(const QString                &program,
+                const QStringList            &argv,
+                const QMap<QString, QString> &env,
+                int                           msecs,
+                const QString                &workdir,
+                const QString                &output_file,
+                const QString                &error_file)
+{
+    QProcess            process;
+    bool                use_output  = !output_file.isEmpty();
+    bool                use_error   = !error_file.isEmpty();
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+
+    auto env_i = env.constBegin();
+    while (env_i != env.constEnd())
+    {
+        environment.insert(env_i.key(), env_i.value());
+        env_i++;
+    }
+
+    process.setProgram(program);
+    process.setArguments(argv);
+    process.setProcessEnvironment(environment);
+
+    if (use_output)
+        process.setStandardOutputFile(output_file);
+    if (use_error)
+        process.setStandardOutputFile(error_file);
+    if (isdir(workdir))
+        process.setWorkingDirectory(workdir);
+
+    process.start();
+
+    if (!process.waitForFinished())
+        return false;
+
+    return true;
+}
+
+bool os::execv(const QString                &program,
+               const QStringList            &argv,
+               const QMap<QString, QString> &env,
+               int                           msecs,
+               const QString                &workdir,
+               QByteArray                   *output,
+               QByteArray                   *error)
+{
+    QTemporaryFile output_file;
+    QTemporaryFile error_file;
+    bool           rtn = false;
+
+    if (!output_file.open())
+        return false;
+
+    if (!error_file.open())
+    {
+        if (output_file.isOpen())
+            output_file.close();
+        return false;
+    }
+
+    if (os::execvf(program, argv, env, msecs, workdir, output_file.fileName(), error_file.fileName()))
+    {
+        rtn = true;
+
+        if (output != nullptr)
+            *output = output_file.readAll();
+
+        if (error != nullptr)
+            *error = error_file.readAll();
+    }
+
+    output_file.close();
+    error_file.close();
+    return rtn;
+}
+
+QByteArray os::readfile(const QString &p)
+{
+    QByteArray data;
+
+    if (!isfile(p))
+        return {};
+
+    QFile file(p);
+
+    if (!file.open(QIODevice::ReadOnly))
+        return {};
+    data = file.readAll();
+    file.close();
+
+    return data;
+}
+
+bool os::writefile(const QString &p, const QByteArray &data, bool overwrite)
+{
+    Q_ASSERT(!p.isEmpty());
+
+    QIODevice::OpenMode mode;
+
+    if (data.isEmpty())
+        return false;
+
+    QFile file(p);
+
+    if (overwrite)
+        mode = QIODevice::WriteOnly;
+    else
+        mode = QIODevice::Append;
+
+    if (!file.open(mode))
+        return false;
+
+    file.write(data);
+    file.close();
+
+    return true;
 }
