@@ -211,13 +211,13 @@ bool os::execvf(const QString                &program,
     if (use_output)
         process.setStandardOutputFile(output_file);
     if (use_error)
-        process.setStandardOutputFile(error_file);
+        process.setStandardErrorFile(error_file);
     if (isdir(workdir))
         process.setWorkingDirectory(workdir);
 
     process.start();
 
-    if (!process.waitForFinished())
+    if (!process.waitForFinished(msecs))
         return false;
 
     return true;
@@ -231,34 +231,34 @@ bool os::execv(const QString                &program,
                QByteArray                   *output,
                QByteArray                   *error)
 {
-    QTemporaryFile output_file;
-    QTemporaryFile error_file;
-    bool           rtn = false;
+    QProcess            process;
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
 
-    if (!output_file.open())
-        return false;
-
-    if (!error_file.open())
+    auto env_i = env.constBegin();
+    while (env_i != env.constEnd())
     {
-        if (output_file.isOpen())
-            output_file.close();
-        return false;
+        environment.insert(env_i.key(), env_i.value());
+        env_i++;
     }
 
-    if (os::execvf(program, argv, env, msecs, workdir, output_file.fileName(), error_file.fileName()))
-    {
-        rtn = true;
+    process.setProgram(program);
+    process.setArguments(argv);
+    process.setProcessEnvironment(environment);
 
-        if (output != nullptr)
-            *output = output_file.readAll();
+    if (isdir(workdir))
+        process.setWorkingDirectory(workdir);
 
-        if (error != nullptr)
-            *error = error_file.readAll();
-    }
+    process.start();
 
-    output_file.close();
-    error_file.close();
-    return rtn;
+    if (!process.waitForFinished(msecs))
+        return false;
+
+    if (output != nullptr)
+        *output = process.readAllStandardOutput();
+    if (error != nullptr)
+        *error = process.readAllStandardError();
+
+    return true;
 }
 
 QByteArray os::readfile(const QString &p)

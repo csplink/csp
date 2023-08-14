@@ -65,8 +65,8 @@ private slots:
         QByteArray output, error;
         result = os::execv("git", QStringList() << "--version", {}, 30000, "", &output, &error);
         QVERIFY(result);
-        QVERIFY(output.isEmpty() && !error.isEmpty());
-        QVERIFY(error.startsWith("git version"));
+        QVERIFY(!output.isEmpty() && error.isEmpty());
+        QVERIFY(output.startsWith("git version"));
     }
 
     void readfile()
