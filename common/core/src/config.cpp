@@ -73,7 +73,7 @@ void config::init()
         {
             if (!os::isdir(appdir))  // check if it not is a directory
             {
-                os::show_error_and_exit(tr("The workspace <%1> path is not a directory!").arg(appdir));
+                os::show_error_and_exit(QObject::tr("The workspace <%1> path is not a directory!").arg(appdir));
             }
         }
         settings.setValue(CSP_CONFIG_KEY_WORKSPACE, appdir);

@@ -30,12 +30,9 @@
 #ifndef COMMON_CORE_CSP_CONFIG_H
 #define COMMON_CORE_CSP_CONFIG_H
 
-#include <QObject>
 #include <QSettings>
 
-class config : public QObject {
-    Q_OBJECT
-
+class config {
 public:
     /**
      * @brief check if the key is config
@@ -83,7 +80,7 @@ public:
 
 private:
     config();
-    ~config() override;
+    ~config();
 
     config(const config &signal);
     const config &operator=(const config &signal);
