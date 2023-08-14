@@ -254,7 +254,7 @@ void project::clear_project()
     emit signals_project_clear();
 }
 
-void project::generate_code(code_project_type_e type)
+void project::generate_code(code_project_type type)
 {
     switch (type)
     {

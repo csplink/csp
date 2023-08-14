@@ -45,7 +45,7 @@ public:
     {
         CODE_PROJECT_TYPE_XMAKE = 0,
         CODE_PROJECT_TYPE_MDK_ARM
-    } code_project_type_e;
+    } code_project_type;
 
 public:
     /******************* core ***********************/
@@ -227,7 +227,7 @@ public:
      * @brief generate_code code
      * @param type: code type
      */
-    void generate_code(code_project_type_e type);
+    void generate_code(code_project_type type);
 
 private:
     project_table::project_t _project;  // project table

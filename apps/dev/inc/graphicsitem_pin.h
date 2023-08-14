@@ -50,7 +50,7 @@ public:
         BOTTOM,
         LEFT,
         RIGHT
-    };
+    } direction_type;
 
 public:
     explicit graphicsitem_pin(qreal width, qreal height);

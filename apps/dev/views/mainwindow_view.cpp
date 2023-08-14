@@ -72,23 +72,23 @@ mainwindow_view::~mainwindow_view()
 void mainwindow_view::init_mode()
 {
     if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
-        set_mode(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+        set_mode(STACK_INDEX_CHIP_CONFIGURE);
     else
-        set_mode(ENUM_STACK_INDEX_HOME);
+        set_mode(STACK_INDEX_HOME);
 }
 
-void mainwindow_view::set_mode(stack_index_t index)
+void mainwindow_view::set_mode(stack_index_type index)
 {
     switch (index)
     {
-        case ENUM_STACK_INDEX_HOME: {
+        case STACK_INDEX_HOME: {
             ui->dockwidget_left->hide();
             ui->dockwidget_right->hide();
-            ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
+            ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
             break;
         }
-        case ENUM_STACK_INDEX_CHIP_CONFIGURE: {
-            ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+        case STACK_INDEX_CHIP_CONFIGURE: {
+            ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
 
             connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
                     &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
@@ -204,5 +204,5 @@ void mainwindow_view::action_generate_triggered_callback(bool checked)
 {
     Q_UNUSED(checked)
 
-    _project_instance->generate_code(project::code_project_type_e::CODE_PROJECT_TYPE_XMAKE);
+    _project_instance->generate_code(project::code_project_type::CODE_PROJECT_TYPE_XMAKE);
 }

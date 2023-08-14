@@ -47,8 +47,8 @@ public:
 private:
     enum
     {
-        ENUM_PROPERTY_ID_FUNCTION_TYPE = 0,
-        ENUM_PROPERTY_ID_PARAMETER_NAME
+        PROPERTY_ID_FUNCTION_TYPE = 0,
+        PROPERTY_ID_PARAMETER_NAME
     };
 
 public slots:

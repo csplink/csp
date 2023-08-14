@@ -153,8 +153,8 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
             }
 
             variant_item->setDescriptionToolTip(description);
-            variant_item->set_user_property(ENUM_PROPERTY_ID_FUNCTION_TYPE, function_type);
-            variant_item->set_user_property(ENUM_PROPERTY_ID_PARAMETER_NAME, parameter_name);
+            variant_item->set_user_property(PROPERTY_ID_FUNCTION_TYPE, function_type);
+            variant_item->set_user_property(PROPERTY_ID_PARAMETER_NAME, parameter_name);
             group_item->addSubProperty(variant_item);
 
             ip_map_i++;
@@ -199,8 +199,8 @@ void propertybrowser::pin_value_changed_callback(QtProperty *property, const QVa
             if (type == QtVariantPropertyManager::enumTypeId())
             {
                 auto property_name  = property->propertyName();
-                auto function_type  = property->get_user_property(ENUM_PROPERTY_ID_FUNCTION_TYPE).toString();
-                auto parameter_name = property->get_user_property(ENUM_PROPERTY_ID_PARAMETER_NAME).toString();
+                auto function_type  = property->get_user_property(PROPERTY_ID_FUNCTION_TYPE).toString();
+                auto parameter_name = property->get_user_property(PROPERTY_ID_PARAMETER_NAME).toString();
                 auto parameter_value_translations = property->valueText();
                 auto total                        = _project_instance->get_maps()[function_type].reverse_total;
                 auto parameter_value              = total[property->valueText()];

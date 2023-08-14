@@ -46,9 +46,9 @@ class mainwindow_view : public QMainWindow {
 private:
     typedef enum
     {
-        ENUM_STACK_INDEX_HOME = 0,
-        ENUM_STACK_INDEX_CHIP_CONFIGURE
-    } stack_index_t;
+        STACK_INDEX_HOME = 0,
+        STACK_INDEX_CHIP_CONFIGURE
+    } stack_index_type;
 
 public:
     explicit mainwindow_view(QWidget *parent = nullptr);
@@ -56,7 +56,7 @@ public:
 
 private:
     void init_mode();
-    void set_mode(stack_index_t index);
+    void set_mode(stack_index_type index);
 
 public slots:
     void update_modules_treeview(const QString &company, const QString &name);
