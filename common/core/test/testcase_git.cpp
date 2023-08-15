@@ -42,6 +42,18 @@ private slots:
         auto result = git::version();
         QVERIFY(!result.isEmpty());
     }
+
+    void variables()
+    {
+        auto result = git::variables(git::BRANCH);
+        QVERIFY(!result.isEmpty());
+        result = git::variables(git::COMMIT);
+        QVERIFY(!result.isEmpty());
+        result = git::variables(git::COMMIT_LONG);
+        QVERIFY(!result.isEmpty());
+        result = git::variables(git::COMMIT_DATE);
+        QVERIFY(!result.isEmpty());
+    }
 };
 
 QTEST_MAIN(testcase_git)

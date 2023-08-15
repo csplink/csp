@@ -34,7 +34,31 @@
 
 class git {
 public:
+    typedef enum
+    {
+        TAG = 0,      // "v0.0.0"
+        TAG_LONG,     // "v0.0.0-0-2fc1f208"
+        BRANCH,       // "generated-code-dev "
+        COMMIT,       // "2fc1f208"
+        COMMIT_LONG,  // "2fc1f208201480569aef0b19db1ec74b5d19ed1a"
+        COMMIT_DATE   // "20230814164314"
+    } variables_type;
+
+public:
+    /**
+     * @brief get git version
+     * @param program: program path or name
+     * @return version; <example: "v2.34.1">
+     */
     static QString version(const QString &program = "git");
+
+    /**
+     * @brief get git variables
+     * @param variables_type: type
+     * @param program: program path or name
+     * @return the variables corresponding to type
+     */
+    static QString variables(variables_type type, const QString &program = "git", const QString &workdir = "");
 
 private:
     git();

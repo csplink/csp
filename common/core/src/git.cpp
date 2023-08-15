@@ -36,6 +36,9 @@ QString git::version(const QString &program)
 {
     QByteArray output;
     QString    version = "";
+
+    Q_ASSERT(!program.isEmpty());
+
     if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
     {
         QRegularExpression      regex("git version (\\d+\\.\\d+\\.\\d+)");
@@ -47,6 +50,54 @@ QString git::version(const QString &program)
         }
     }
     return version;
+}
+
+QString git::variables(git::variables_type type, const QString &program, const QString &workdir)
+{
+    QStringList argv;
+    QByteArray  output;
+    QString     var = "";
+
+    Q_ASSERT(!program.isEmpty());
+
+    switch (type)
+    {
+        case git::TAG:
+            argv << "describe"
+                 << "--tags";
+            break;
+        case git::TAG_LONG:
+            argv << "describe"
+                 << "--tags"
+                 << "--long";
+            break;
+        case git::BRANCH:
+            argv << "rev-parse"
+                 << "--abbrev-ref"
+                 << "HEAD";
+            break;
+        case git::COMMIT:
+            argv << "rev-parse"
+                 << "--short"
+                 << "HEAD";
+            break;
+        case git::COMMIT_LONG:
+            argv << "rev-parse"
+                 << "HEAD";
+            break;
+        case git::COMMIT_DATE:
+            argv << "log"
+                 << "-1"
+                 << "--date=format:%Y%m%d%H%M%S"
+                 << "--format=%ad";
+            break;
+    }
+
+    if (os::execv(program, argv, {}, 1000, workdir, &output, nullptr))
+    {
+        var = output.trimmed();
+    }
+    return var;
 }
 
 git::git() = default;
