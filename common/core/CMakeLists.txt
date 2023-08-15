@@ -57,7 +57,7 @@ file(GLOB_RECURSE TESTCASES
 
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE})
+    add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
 endforeach ()
 

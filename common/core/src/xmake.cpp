@@ -30,12 +30,16 @@
 #include <QDebug>
 #include <QRegularExpression>
 
+#include "path.h"
 #include "xmake.h"
 
 QString xmake::version(const QString &program)
 {
     QByteArray output;
     QString    version = "";
+
+    Q_ASSERT(!program.isEmpty());
+
     if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
     {
         QRegularExpression      regex("v(\\d+\\.\\d+\\.\\d+\\+\\w+\\.\\w+)");
@@ -47,6 +51,20 @@ QString xmake::version(const QString &program)
         }
     }
     return version;
+}
+
+QString xmake::lua(const QString &p, const QString &program, const QString &workdir)
+{
+    QByteArray output;
+
+    Q_ASSERT(!p.isEmpty());
+    Q_ASSERT(!program.isEmpty());
+
+    if (os::execv(program, QStringList() << "lua" << path::absolute(p), {}, 1000, workdir, &output, nullptr))
+    {
+    }
+
+    return output;
 }
 
 xmake::xmake() = default;

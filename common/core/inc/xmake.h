@@ -34,7 +34,21 @@
 
 class xmake {
 public:
+    /**
+     * @brief get xmake version
+     * @param program: program path or name
+     * @return version; <example: "v2.7.9+HEAD.c879226">
+     */
     static QString version(const QString &program = "xmake");
+
+    /**
+     * @brief run the lua script.
+     * @param p: lua path
+     * @param program: program path or name
+     * @param workdir: working directory
+     * @return lua output
+     */
+    static QString lua(const QString &p, const QString &program = "xmake", const QString &workdir = "");
 
 private:
     xmake();

@@ -42,6 +42,19 @@ private slots:
         auto result = xmake::version();
         QVERIFY(!result.isEmpty());
     }
+
+    void lua()
+    {
+        QByteArray data = os::readfile(":/test.lua");
+        QVERIFY(!data.isEmpty());
+
+        os::writefile("./test.lua", data);
+
+        auto result = xmake::lua("./test.lua");
+        QVERIFY(result == "hello world\n");
+
+        os::rm("./test.lua");
+    }
 };
 
 QTEST_MAIN(testcase_xmake)
