@@ -27,7 +27,6 @@
  *  2023-05-25     xqyjlj       initial version
  */
 
-#include "os.h"
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopServices>
@@ -39,6 +38,8 @@
 #include <QString>
 #include <QTemporaryFile>
 #include <QUrl>
+
+#include "os.h"
 
 os::os() = default;
 
@@ -82,15 +83,15 @@ void os::open_url(const QString &url)
     QDesktopServices::openUrl(QUrl(url));
 }
 
-void os::rmdir(const QString &dir)
+bool os::rmdir(const QString &dir)
 {
     Q_ASSERT(!dir.isEmpty());
 
     if (!isdir(dir))
-        return;
+        return false;
 
     QDir d(dir);
-    d.removeRecursively();
+    return d.removeRecursively();
 }
 
 void os::mkdir(const QString &dir)
@@ -197,6 +198,8 @@ bool os::execvf(const QString                &program,
     bool                use_error   = !error_file.isEmpty();
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
 
+    Q_ASSERT(!program.isEmpty());
+
     auto env_i = env.constBegin();
     while (env_i != env.constEnd())
     {
@@ -233,6 +236,8 @@ bool os::execv(const QString                &program,
 {
     QProcess            process;
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+
+    Q_ASSERT(!program.isEmpty());
 
     auto env_i = env.constBegin();
     while (env_i != env.constEnd())
@@ -301,4 +306,18 @@ bool os::writefile(const QString &p, const QByteArray &data, bool overwrite)
     file.close();
 
     return true;
+}
+
+bool os::rm(const QString &p)
+{
+    if (isfile(p))
+    {
+        return QFile::remove(p);
+    }
+    else if (isdir(p))
+    {
+        QDir dir(p);
+        return dir.removeRecursively();
+    }
+    return false;
 }

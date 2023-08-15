@@ -91,10 +91,10 @@ public:
     static void open_url(const QString &url);
 
     /**
-     * @brief remove a directory.
+     * @brief delete only the directory.
      * @param dir: directory
      */
-    static void rmdir(const QString &dir);
+    static bool rmdir(const QString &dir);
 
     /**
      * @brief make a directory.
@@ -231,6 +231,13 @@ public:
      * @return true if write successfully, otherwise false.
      */
     static bool writefile(const QString &p, const QByteArray &data, bool overwrite = true);
+
+    /**
+     * @brief delete files or directory trees
+     * @param p: path
+     * @return true if delete successfully, otherwise false.
+     */
+    static bool rm(const QString &p);
 
 private:
     os();
