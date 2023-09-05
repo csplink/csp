@@ -52,7 +52,7 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           cache: "true"
       - name: ⬇️ checkout csp
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: 👷 build
