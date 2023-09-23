@@ -68,3 +68,9 @@ common/core/inc/configure.h
 
 #clangd
 .cache/
+
+#vs
+.vs
+*.DotSettings
+out
+CMakeSettings.json
