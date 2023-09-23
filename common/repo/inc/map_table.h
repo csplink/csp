@@ -33,7 +33,7 @@
 #include "config.h"
 #include "qtyaml.h"
 
-class map_table {
+class map_table final {
 public:
     typedef struct
     {
@@ -170,9 +170,9 @@ template <> struct convert<map_table::map_t>
                 auto value = values_i.value();
                 rhs.total.insert(name, value.comment[config::language()]);
                 rhs.reverse_total.insert(value.comment[config::language()], name);
-                values_i++;
+                ++values_i;
             }
-            group_i++;
+            ++group_i;
         }
 
         return true;

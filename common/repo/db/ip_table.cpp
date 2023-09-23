@@ -46,13 +46,12 @@ ip_table::ip_t ip_table::load_ip(const QString &path)
 
     try
     {
-        std::string buffer;
-        QFile       file(path);
+        QFile file(path);
 
         file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
+        const std::string buffer = file.readAll().toStdString();
         file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
+        const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<ip_table::ip_t>();
     }
     catch (YAML::BadFile &e)
@@ -70,17 +69,15 @@ ip_table::ip_t ip_table::load_ip(const QString &path)
         qDebug() << e.what();
         throw;
     }
-
-    return {};
 }
 
-ip_table::ip_t ip_table::load_ip(const QString &hal, const QString &name, const QString &ip)
+QMap<QString, ip_table::ip_map_t> ip_table::load_ip(const QString &hal, const QString &name, const QString &ip)
 {
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
     Q_ASSERT(!ip.isEmpty());
 
-    QString path =
+    const QString path =
         QString("%1/db/hal/%2/%3/ip/%4.yml").arg(config::repodir(), hal.toLower(), name.toLower(), ip.toLower());
     return load_ip(path);
 }
@@ -91,7 +88,7 @@ ip_table::ips_t ip_table::load_ips(const QString &hal, const QString &name)
     Q_ASSERT(!name.isEmpty());
 
     QMap<QString, ip_table::ip_t> ips;
-    QString path = QString("%1/db/hal/%2/%3/ip").arg(config::repodir(), hal.toLower(), name.toLower());
+    const QString path = QString("%1/db/hal/%2/%3/ip").arg(config::repodir(), hal.toLower(), name.toLower());
     for (const QString &file : os::files(path, QString("*.yml")))
     {
         auto ip       = load_ip(file);

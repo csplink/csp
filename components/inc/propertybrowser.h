@@ -35,10 +35,9 @@
 #include <qttreepropertybrowser.h>
 
 #include "interface_graphicsitem_pin.h"
-#include "pinout_table.h"
 #include "project.h"
 
-class propertybrowser : public QtTreePropertyBrowser {
+class propertybrowser final : public QtTreePropertyBrowser {
     Q_OBJECT
 public:
     explicit propertybrowser(QWidget *parent = nullptr);
@@ -57,8 +56,8 @@ public slots:
      * @param item: pin item
      */
     void update_property_by_pin(QGraphicsItem *item);
-    void pin_value_changed_callback(QtProperty *property, const QVariant &value);
-    void pin_attribute_changed_callback(QtProperty *property, const QString &attribute, const QVariant &value);
+    void pin_value_changed_callback(const QtProperty *property, const QVariant &value);
+    void pin_attribute_changed_callback(const QtProperty *property, const QString &attribute, const QVariant &value);
 
 private:
     QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked);

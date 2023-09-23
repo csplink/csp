@@ -31,16 +31,16 @@
 
 #include <repository_table.h>
 
-class testcase_repository_table : public QObject {
+class testcase_repository_table final : public QObject {
     Q_OBJECT
 
 private slots:
 
     static void load_repository()
     {
-        auto repository = repository_table::load_repository(":/repository.yml");
-        auto chips      = repository.chips;
-        auto chips_i    = chips.constBegin();
+        const auto repository = repository_table::load_repository(":/repository.yml");
+        const auto chips      = repository.chips;
+        auto       chips_i    = chips.constBegin();
         while (chips_i != chips.constEnd())
         {
             QVERIFY(!chips_i.key().isEmpty());
@@ -82,13 +82,13 @@ private slots:
                         QVERIFY(mcu.temperature.max > 0);
                         QVERIFY(mcu.voltage.max > 0);
 
-                        line_i++;
+                        ++line_i;
                     }
-                    series_i++;
+                    ++series_i;
                 }
-                company_i++;
+                ++company_i;
             }
-            chips_i++;
+            ++chips_i;
         }
     }
 };

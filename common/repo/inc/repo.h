@@ -37,38 +37,44 @@
 #include "config.h"
 #include "repository_table.h"
 
-class repo : public QObject {
+class repo final : public QObject {
     Q_OBJECT
 
 public:
+    /**
+     * @brief init config
+     */
+    static void init();
+
+    /**
+     * @brief deinit config
+     */
+    static void deinit();
+
     const repository_table::repository_t *get_repository() const;
 
-    inline chip_summary_table::chip_summary_t load_chip_summary(const QString &company, const QString &name)
+    static chip_summary_table::chip_summary_t load_chip_summary(const QString &company, const QString &name)
     {
         return chip_summary_table::load_chip_summary(company, name);
     }
 
-    inline bool chip_summary_exists(const QString &company, const QString &name)
+    static bool chip_summary_exists(const QString &company, const QString &name)
     {
         return QFile::exists(
             QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower()));
     }
 
-private:
-    repository_table::repository_t _repository;
-
-public:
     static repo *get_instance();
+
+private:
+    inline static repo            *_instance = nullptr;
+    repository_table::repository_t _repository;
 
 private:
     repo();
     ~repo() override;
 
-    repo(const repo &signal);
-    const repo &operator=(const repo &signal);
-
-private:
-    static repo *_instance;
+    Q_DISABLE_COPY_MOVE(repo)
 };
 
 #endif  // COMMON_REPO_CSP_REPO_H

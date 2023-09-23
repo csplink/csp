@@ -32,12 +32,8 @@
 
 #include <QGraphicsView>
 #include <QKeyEvent>
-#include <QMouseEvent>
-#include <QWheelEvent>
 
-#include "interface_graphicsitem_pin.h"
-
-class graphicsview_panzoom : public QGraphicsView {
+class graphicsview_panzoom final : public QGraphicsView {
     Q_OBJECT
 
 public:

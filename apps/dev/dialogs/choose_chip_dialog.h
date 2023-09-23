@@ -32,7 +32,6 @@
 
 #include <QAbstractButton>
 #include <QDialog>
-#include <QModelIndexList>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
@@ -43,7 +42,7 @@ namespace Ui {
 class choose_chip_dialog;
 }
 
-class choose_chip_dialog : public QDialog {
+class choose_chip_dialog final : public QDialog {
     Q_OBJECT
 
 public:
@@ -54,15 +53,15 @@ signals:
     void signals_create_project();
 
 private slots:
-    void treeview_chip_filter_model_item_changed_callback(QStandardItem *item);
+    void treeview_chip_filter_model_item_changed_callback(const QStandardItem *item);
     void tableview_chip_infos_selection_model_selection_changed_callback(const QItemSelection &selected,
                                                                          const QItemSelection &deselected);
-    void dialogbuttonbox_clicked_callback(QAbstractButton *button);
+    void dialogbuttonbox_clicked_callback(const QAbstractButton *button);
     void pushbutton_name_pressed_callback();
     void pushbutton_company_pressed_callback();
 
 private:
-    Ui::choose_chip_dialog *ui;
+    Ui::choose_chip_dialog *_ui;
     repo                   *_repo_instance;
     project                *_project_instance = nullptr;
 

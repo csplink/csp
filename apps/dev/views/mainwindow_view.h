@@ -56,14 +56,14 @@ public:
 
 private:
     void init_mode();
-    void set_mode(stack_index_type index);
+    void set_mode(int index);
 
 public slots:
-    void update_modules_treeview(const QString &company, const QString &name);
+    void update_modules_treeview(const QString &company, const QString &name) const;
     void create_project();
 
 private slots:
-    void action_new_chip_triggered_callback(bool checked);
+    void action_new_chip_triggered_callback(bool checked) const;
     void action_load_triggered_callback(bool checked);
     void action_save_triggered_callback(bool checked);
     void action_saveas_triggered_callback(bool checked);

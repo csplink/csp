@@ -34,11 +34,12 @@
 #include <QObject>
 #include <QString>
 
-class os {
+class os final {
 public:
     /**
      * @brief Show an information message box.
      * @param message: the text to be displayed in the message box.
+     * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
     static void
@@ -47,6 +48,7 @@ public:
     /**
      * @brief Show a warning message box.
      * @param message: the text to be displayed in the message box.
+     * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
     static void
@@ -55,6 +57,7 @@ public:
     /**
      * @brief Show a critical message box.
      * @param message: the text to be displayed in the message box.
+     * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
     static void
@@ -63,6 +66,7 @@ public:
     /**
      * @brief Show a error message box.
      * @param message: the text to be displayed in the message box.
+     * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
     static void
@@ -70,6 +74,8 @@ public:
 
     /**
      * @brief Display an error message and exit the application.
+     * @param title: windows title
+     * @param parent: windows parent
      * @param message: the text to be displayed in the message box.
      */
     static void show_error_and_exit(const QString &message,
@@ -79,6 +85,7 @@ public:
     /**
      * @brief Show a question message box.
      * @param message: the text to be displayed in the message box.
+     * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
     static void
@@ -157,7 +164,7 @@ public:
     /**
      * @brief traverse to get all the files in the specified directory
      * @param p: directory path
-     * @param filters: file filter
+     * @param filter: file filter
      * @return file list
      */
     static QStringList files(const QString &p, const QString &filter);
@@ -173,7 +180,7 @@ public:
     /**
      * @brief traverse to get all the directories in the specified directory
      * @param p: directory path
-     * @param filters: file filter
+     * @param filter: file filter
      * @return directory list
      */
     static QStringList dirs(const QString &p, const QString &filter);
@@ -240,11 +247,10 @@ public:
     static bool rm(const QString &p);
 
 private:
-    os();
-    ~os();
+    os()  = default;
+    ~os() = default;
 
-    os(const os &signal);
-    const os &operator=(const os &signal);
+    Q_DISABLE_COPY_MOVE(os)
 };
 
 #endif  // COMMON_CORE_CSP_OS_H

@@ -39,16 +39,15 @@ generate_xmake::~generate_xmake() = default;
 
 QString generate_xmake::generate(const project_table::project_t &project_table)
 {
-    QString buffer;
-    QFile   file(":/lib/project/template/xmake.lua");
-    auto    date_time    = QDateTime::currentDateTime();
-    auto    date         = date_time.toString("yyyy-MM-dd hh:mm:ss");
-    auto    version      = CONFIGURE_PROJECT_VERSION;
-    auto    project_name = project_table.core[CSP_PROJECT_CORE_NAME];
-    auto    hal          = project_table.core[CSP_PROJECT_CORE_HAL];
+    QFile      file(":/lib/project/template/xmake.lua");
+    const auto date_time    = QDateTime::currentDateTime();
+    const auto date         = date_time.toString("yyyy-MM-dd hh:mm:ss");
+    const auto version      = CONFIGURE_PROJECT_VERSION;
+    const auto project_name = project_table.core[CSP_PROJECT_CORE_NAME];
+    const auto hal          = project_table.core[CSP_PROJECT_CORE_HAL];
 
     file.open(QFileDevice::ReadOnly | QIODevice::Text);
-    buffer = file.readAll();
+    QString buffer = file.readAll();
     file.close();
 
     buffer.replace("{{version}}", version);

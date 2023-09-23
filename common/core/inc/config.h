@@ -32,7 +32,7 @@
 
 #include <QSettings>
 
-class config {
+class config final {
 public:
     /**
      * @brief check if the key is config
@@ -45,6 +45,11 @@ public:
      * @brief init config
      */
     static void init();
+
+    /**
+     * @brief deinit config
+     */
+    static void deinit();
 
     /**
      * @brief get value by key
@@ -79,10 +84,12 @@ public:
     static QString workspace();
 
 private:
-    config();
-    ~config();
+    inline static QSettings *_settings = nullptr;
 
-    config(const config &signal);
-    const config &operator=(const config &signal);
+private:
+    config()  = default;
+    ~config() = default;
+
+    Q_DISABLE_COPY_MOVE(config)
 };
 #endif  //  COMMON_CORE_CSP_CONFIG_H

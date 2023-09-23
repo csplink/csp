@@ -30,13 +30,10 @@
 #ifndef CSP_GRAPHICSITEM_CHIPBODY_H
 #define CSP_GRAPHICSITEM_CHIPBODY_H
 
-#include <QFont>
-#include <QFontMetrics>
 #include <QGraphicsItem>
 #include <QPainter>
-#include <QStyleOptionGraphicsItem>
 
-class graphicsitem_chipbody : public QGraphicsItem {
+class graphicsitem_chipbody final : public QGraphicsItem {
 public:
     explicit graphicsitem_chipbody(qreal          width,
                                    qreal          height,

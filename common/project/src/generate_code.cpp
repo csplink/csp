@@ -35,6 +35,7 @@ generate_code::~generate_code() = default;
 
 generate_code::code_content_t generate_code::generate_code_content(const project_table::project_t &project_table)
 {
+    Q_UNUSED(project_table);
     code_content_t code_content;
 
     return code_content;
@@ -42,6 +43,7 @@ generate_code::code_content_t generate_code::generate_code_content(const project
 
 QString generate_code_content_main(const project_table::project_t &project_table)
 {
+    Q_UNUSED(project_table);
     QString code_content;
 
     return code_content;

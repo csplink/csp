@@ -33,7 +33,7 @@
 #include <os.h>
 #include <project_table.h>
 
-class testcase_project_table : public QObject {
+class testcase_project_table final : public QObject {
     Q_OBJECT
 
 private slots:

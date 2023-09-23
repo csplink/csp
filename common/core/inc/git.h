@@ -32,7 +32,7 @@
 
 #include "os.h"
 
-class git {
+class git final {
 public:
     typedef enum
     {
@@ -54,17 +54,17 @@ public:
 
     /**
      * @brief get git variables
-     * @param variables_type: type
+     * @param type: type
      * @param program: program path or name
+     * @param workdir: work dir
      * @return the variables corresponding to type
      */
-    static QString variables(variables_type type, const QString &program = "git", const QString &workdir = "");
+    static QString variables(int type, const QString &program = "git", const QString &workdir = "");
 
 private:
-    git();
-    ~git();
+    git()  = default;
+    ~git() = default;
 
-    git(const git &signal);
-    const git &operator=(const git &signal);
+    Q_DISABLE_COPY_MOVE(git)
 };
 #endif  //  CSP_COMMON_CORE_GIT_H

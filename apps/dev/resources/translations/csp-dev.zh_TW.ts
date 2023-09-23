@@ -4,22 +4,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/main.cpp" line="60"/>
+        <location filename="../../src/main.cpp" line="65"/>
         <source>load font: &lt;%1&gt; failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="72"/>
+        <location filename="../../src/main.cpp" line="77"/>
         <source>Tools for flexible configuration of chips and boards.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="75"/>
+        <location filename="../../src/main.cpp" line="80"/>
         <source>Project file path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="84"/>
+        <location filename="../../src/main.cpp" line="89"/>
         <source>file: &lt;%1&gt; is not exist.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -111,87 +111,87 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="46"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="45"/>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="359"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="47"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="127"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="258"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="126"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="257"/>
         <source>Company</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="128"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="127"/>
         <source>Series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="129"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="128"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="130"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="259"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="129"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="258"/>
         <source>Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="131"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="253"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="130"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="252"/>
         <source>Package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="140"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="139"/>
         <source>Chip Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="249"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="251"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="252"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="251"/>
         <source>Unit price for 10kU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="254"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="253"/>
         <source>Flash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="255"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="254"/>
         <source>RAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="256"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="255"/>
         <source>IO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="257"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="256"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="265"/>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="266"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="267"/>
         <source>Unavailable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -261,12 +261,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="86"/>
+        <location filename="../../views/mainwindow_view.ui" line="74"/>
+        <location filename="../../views/mainwindow_view.ui" line="93"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="125"/>
+        <location filename="../../views/mainwindow_view.ui" line="132"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
@@ -276,52 +277,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="155"/>
+        <location filename="../../views/mainwindow_view.ui" line="162"/>
         <source>Load Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="158"/>
+        <location filename="../../views/mainwindow_view.ui" line="165"/>
         <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="163"/>
+        <location filename="../../views/mainwindow_view.ui" line="170"/>
         <source>Import Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="168"/>
+        <location filename="../../views/mainwindow_view.ui" line="175"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="171"/>
+        <location filename="../../views/mainwindow_view.ui" line="178"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="176"/>
+        <location filename="../../views/mainwindow_view.ui" line="183"/>
         <source>Save Project As ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="181"/>
+        <location filename="../../views/mainwindow_view.ui" line="188"/>
         <source>Close Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="186"/>
+        <location filename="../../views/mainwindow_view.ui" line="193"/>
         <source>Generate Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="191"/>
+        <location filename="../../views/mainwindow_view.ui" line="198"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="133"/>
+        <location filename="../../views/mainwindow_view.ui" line="203"/>
+        <source>Generate code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="163"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -329,57 +335,57 @@
 <context>
     <name>wizard_new_project</name>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="43"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="44"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="47"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="48"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="48"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="49"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="49"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="50"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="50"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="51"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="63"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="64"/>
         <source>Please input project path and name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="80"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="81"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="82"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="83"/>
         <source>this will create a new project in the path you choose.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="85"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="86"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="100"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="101"/>
         <source>Project Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/wizard_new_project.cpp" line="103"/>
+        <location filename="../../dialogs/wizard_new_project.cpp" line="104"/>
         <source>Project Name</source>
         <translation type="unfinished"></translation>
     </message>

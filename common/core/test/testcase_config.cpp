@@ -32,14 +32,24 @@
 
 #include "config.h"
 
-class testcase_config : public QObject {
+class testcase_config final : public QObject {
     Q_OBJECT
 
 private slots:
 
-    void repodir()
+    static void initTestCase()
+    {
+        config::init();
+    }
+
+    static void repodir()
     {
         QVERIFY(!config::repodir().isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 

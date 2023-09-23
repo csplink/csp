@@ -30,14 +30,6 @@
 #ifndef CSP_LQFP_H
 #define CSP_LQFP_H
 
-#include <QFont>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QWidget>
-
-#include "graphicsitem_chipbody.h"
 #include "graphicsitem_pin.h"
 #include "pinout_table.h"
 
@@ -45,7 +37,7 @@
 #define LQFP_PIN_HEIGHT  50
 #define LQFP_PIN_SPACING 6
 
-class lqfp : public QObject {
+class lqfp final : public QObject {
     Q_OBJECT
 public:
     explicit lqfp(QObject *parent);

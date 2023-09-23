@@ -33,8 +33,8 @@
 
 #define MARGIN 6
 
-graphicsitem_chipbody::graphicsitem_chipbody(qreal          width,
-                                             qreal          height,
+graphicsitem_chipbody::graphicsitem_chipbody(const qreal    width,
+                                             const qreal    height,
                                              const QString &name,
                                              const QString &company,
                                              const QString &package)
@@ -57,7 +57,7 @@ graphicsitem_chipbody::graphicsitem_chipbody(qreal          width,
 graphicsitem_chipbody::~graphicsitem_chipbody()
 {
     delete _font;
-};
+}
 
 QRectF graphicsitem_chipbody::boundingRect() const
 {
@@ -73,15 +73,15 @@ QPainterPath graphicsitem_chipbody::shape() const
 
 void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(widget);
-    Q_UNUSED(option);
+    Q_UNUSED(widget)
+    Q_UNUSED(option)
 
-    auto b = painter->brush();
+    const auto b = painter->brush();
 
     /******************** draw background **************************/
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setBrush(QColor(50, 50, 50));
-    painter->drawRect(0, 0, (int)_width, (int)_height);
+    painter->drawRect(0, 0, static_cast<int>(_width), static_cast<int>(_height));
 
     /******************** draw pin1 circle **************************/
     painter->setBrush(QColor(220, 230, 240));
@@ -89,22 +89,22 @@ void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     /******************** draw text **************************/
     _font->setStyle(QFont::StyleNormal);
-    _font->setPointSize((int)(_width / 20));
+    _font->setPointSize(static_cast<int>(_width / 20));
     painter->setPen(QPen(QColor(255, 255, 255), 1));
     painter->setFont(*_font);
-    QFontMetrics fm(*_font);
-    int          pixels = fm.horizontalAdvance(_name);
+    const QFontMetrics fm(*_font);
+    int                pixels = fm.horizontalAdvance(_name);
     painter->drawText(QPointF((_width - pixels) / 2, _height / 2), _name);
 
-    _font->setPointSize((int)(_width / 30));
+    _font->setPointSize(static_cast<int>(_width / 30));
     _font->setStyle(QFont::StyleItalic);
     painter->setFont(*_font);
 
-    pixels = (int)(fm.horizontalAdvance(_package) * 0.8);
+    pixels = static_cast<int>(fm.horizontalAdvance(_package) * 0.8);
     painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9)), _package);
 
-    int height = fm.height();
-    pixels     = (int)(fm.horizontalAdvance(_company) * 0.8);
+    const int height = fm.height();
+    pixels           = static_cast<int>(fm.horizontalAdvance(_company) * 0.8);
     painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9) - height - 10), _company);
 
     /******************** draw border (with margin) **************************/

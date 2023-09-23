@@ -45,13 +45,12 @@ map_table::map_t map_table::load_map(const QString &path)
 
     try
     {
-        std::string buffer;
-        QFile       file(path);
+        QFile file(path);
 
         file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
+        const std::string buffer = file.readAll().toStdString();
         file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
+        const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<map_table::map_t>();
     }
     catch (YAML::BadFile &e)
@@ -69,8 +68,6 @@ map_table::map_t map_table::load_map(const QString &path)
         qDebug() << e.what();
         throw;
     }
-
-    return {};
 }
 
 map_table::map_t map_table::load_map(const QString &hal, const QString &map)
@@ -78,7 +75,7 @@ map_table::map_t map_table::load_map(const QString &hal, const QString &map)
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!map.isEmpty());
 
-    QString path = QString("%1/db/hal/%2/map/%3.yml").arg(config::repodir(), hal.toLower(), map.toLower());
+    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(config::repodir(), hal.toLower(), map.toLower());
     return load_map(path);
 }
 
@@ -86,8 +83,8 @@ map_table::maps_t map_table::load_maps(const QString &hal)
 {
     Q_ASSERT(!hal.isEmpty());
 
-    maps_t  maps;
-    QString p = QString("%1/db/hal/%2/map").arg(config::repodir(), hal.toLower());
+    maps_t        maps;
+    const QString p = QString("%1/db/hal/%2/map").arg(config::repodir(), hal.toLower());
     for (const QString &file : os::files(p, QString("*.yml")))
     {
         auto map      = load_map(file);

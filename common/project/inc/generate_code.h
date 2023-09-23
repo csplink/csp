@@ -34,7 +34,7 @@
 
 #include "project_table.h"
 
-class generate_code {
+class generate_code final {
 public:
     typedef QMap<QString, QString> code_content_t;  // <file name, file content>
 
@@ -53,8 +53,7 @@ private:
     generate_code();
     ~generate_code();
 
-    generate_code(const generate_code &signal);
-    const generate_code &operator=(const generate_code &signal);
+    Q_DISABLE_COPY_MOVE(generate_code)
 };
 
 #endif  // CSP_GENERATE_CODE_H

@@ -38,6 +38,7 @@
 #include "mainwindow_view.h"
 #include "os.h"
 #include "project.h"
+#include "repo.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,12 +53,14 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE(qtpropertybrowser);
 
     config::init();
+    repo::init();
+    project::init();
 
     for (const QString &dir : os::dirs("./fonts", QString("*")))
     {
         for (const QString &file : os::files(dir, QString("*.ttf")))
         {
-            auto id = QFontDatabase::addApplicationFont(file);
+            const auto id = QFontDatabase::addApplicationFont(file);
             if (id == -1)
                 qDebug() << QObject::tr("load font: <%1> failed.").arg(file);
         }
@@ -65,7 +68,7 @@ int main(int argc, char *argv[])
 
     for (const QString &file : os::files("./translations", QString("*%1.qm").arg(config::language())))
     {
-        auto translator = new QTranslator(&app);
+        const auto translator = new QTranslator(&app);
         translator->load(file);
         qApp->installTranslator(translator);
     }
@@ -80,7 +83,7 @@ int main(int argc, char *argv[])
 
     if (!parser.positionalArguments().isEmpty())
     {
-        auto file = parser.positionalArguments().at(0);
+        const auto file = parser.positionalArguments().at(0);
         if (!os::isfile(file))
         {
             qCritical() << QObject::tr("file: <%1> is not exist.").arg(file);
@@ -100,8 +103,15 @@ int main(int argc, char *argv[])
         }
     }
 
-    app.setWindowIcon(QIcon(":/images/logo.ico"));
+    QApplication::setWindowIcon(QIcon(":/images/logo.ico"));
     mainwindow_view w;
     w.show();
-    return app.exec();
+
+    const int rtn = QApplication::exec();
+
+    project::deinit();
+    repo::deinit();
+    config::deinit();
+
+    return rtn;
 }

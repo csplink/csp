@@ -42,8 +42,8 @@ QString xmake::version(const QString &program)
 
     if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
     {
-        QRegularExpression      regex("v(\\d+\\.\\d+\\.\\d+\\+\\w+\\.\\w+)");
-        QRegularExpressionMatch match = regex.match(output);
+        const QRegularExpression      regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
+        const QRegularExpressionMatch match = regex.match(output);
 
         if (match.hasMatch())
         {
@@ -66,7 +66,3 @@ QString xmake::lua(const QString &p, const QString &program, const QString &work
 
     return output;
 }
-
-xmake::xmake() = default;
-
-xmake::~xmake() = default;

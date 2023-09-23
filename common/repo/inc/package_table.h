@@ -32,7 +32,7 @@
 
 #include "qtyaml.h"
 
-class package_model {
+class package_model final {
 public:
     struct
     {

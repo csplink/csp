@@ -41,8 +41,8 @@ QString git::version(const QString &program)
 
     if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
     {
-        QRegularExpression      regex("git version (\\d+\\.\\d+\\.\\d+)");
-        QRegularExpressionMatch match = regex.match(output);
+        const QRegularExpression      regex(R"(git version (\d+\.\d+\.\d+))");
+        const QRegularExpressionMatch match = regex.match(output);
 
         if (match.hasMatch())
         {
@@ -52,7 +52,7 @@ QString git::version(const QString &program)
     return version;
 }
 
-QString git::variables(git::variables_type type, const QString &program, const QString &workdir)
+QString git::variables(int type, const QString &program, const QString &workdir)
 {
     QStringList argv;
     QByteArray  output;
@@ -62,11 +62,11 @@ QString git::variables(git::variables_type type, const QString &program, const Q
 
     switch (type)
     {
-        case git::TAG:
+        case TAG:
             argv << "describe"
                  << "--tags";
             break;
-        case git::TAG_LONG:
+        case TAG_LONG:
             argv << "describe"
                  << "--tags"
                  << "--long";
@@ -81,7 +81,7 @@ QString git::variables(git::variables_type type, const QString &program, const Q
                  << "--short"
                  << "HEAD";
             break;
-        case git::COMMIT_LONG:
+        case COMMIT_LONG:
             argv << "rev-parse"
                  << "HEAD";
             break;
@@ -91,6 +91,7 @@ QString git::variables(git::variables_type type, const QString &program, const Q
                  << "--date=format:%Y%m%d%H%M%S"
                  << "--format=%ad";
             break;
+        default: return "";
     }
 
     if (os::execv(program, argv, {}, 1000, workdir, &output, nullptr))
@@ -99,7 +100,3 @@ QString git::variables(git::variables_type type, const QString &program, const Q
     }
     return var;
 }
-
-git::git() = default;
-
-git::~git() = default;

@@ -77,7 +77,7 @@ void mainwindow_view::init_mode()
         set_mode(STACK_INDEX_HOME);
 }
 
-void mainwindow_view::set_mode(stack_index_type index)
+void mainwindow_view::set_mode(const int index)
 {
     switch (index)
     {
@@ -107,29 +107,29 @@ void mainwindow_view::set_mode(stack_index_type index)
     }
 }
 
-void mainwindow_view::update_modules_treeview(const QString &company, const QString &name)
+void mainwindow_view::update_modules_treeview(const QString &company, const QString &name) const
 {
     ui->treeview->header()->hide();
-    auto *model        = new QStandardItemModel(ui->treeview);
-    auto  chip_summary = chip_summary_table::load_chip_summary(company, name);
-    auto  modules      = &chip_summary.modules;
-    auto  modules_i    = modules->constBegin();
+    auto      *model        = new QStandardItemModel(ui->treeview);
+    const auto chip_summary = chip_summary_table::load_chip_summary(company, name);
+    const auto modules      = &chip_summary.modules;
+    auto       modules_i    = modules->constBegin();
     while (modules_i != modules->constEnd())
     {
-        auto item = new QStandardItem(modules_i.key());
+        const auto item = new QStandardItem(modules_i.key());
         item->setEditable(false);
         model->appendRow(item);
 
-        auto module   = &modules_i.value();
-        auto module_i = module->constBegin();
+        const auto module   = &modules_i.value();
+        auto       module_i = module->constBegin();
         while (module_i != module->constEnd())
         {
-            auto item_child = new QStandardItem(module_i.key());
+            const auto item_child = new QStandardItem(module_i.key());
             item_child->setEditable(false);
             item->appendRow(item_child);
-            module_i++;
+            ++module_i;
         }
-        modules_i++;
+        ++modules_i;
     }
     delete ui->treeview->model();
     ui->treeview->setModel(model);
@@ -141,16 +141,16 @@ void mainwindow_view::create_project()
     init_mode();
 }
 
-void mainwindow_view::action_new_chip_triggered_callback(bool checked)
+void mainwindow_view::action_new_chip_triggered_callback(const bool checked) const
 {
     ui->page_home_view->button_create_chip_project_clicked_callback(checked);
 }
 
-void mainwindow_view::action_load_triggered_callback(bool checked)
+void mainwindow_view::action_load_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 
-    auto file = os::getexistfile();
+    const auto file = os::getexistfile();
     if (file.isEmpty())
         return;
     try
@@ -164,14 +164,14 @@ void mainwindow_view::action_load_triggered_callback(bool checked)
     }
 }
 
-void mainwindow_view::action_save_triggered_callback(bool checked)
+void mainwindow_view::action_save_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 
     if (_project_instance->get_path().isEmpty())
     {
         wizard_new_project wizard(this);
-        connect(&wizard, &wizard_new_project::finished, this, [=](int result) {
+        connect(&wizard, &wizard_new_project::finished, this, [=](const int result) {
             if (result == QDialog::Accepted)
             {
                 _project_instance->save_project();
@@ -185,22 +185,22 @@ void mainwindow_view::action_save_triggered_callback(bool checked)
     }
 }
 
-void mainwindow_view::action_saveas_triggered_callback(bool checked)
+void mainwindow_view::action_saveas_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_close_triggered_callback(bool checked)
+void mainwindow_view::action_close_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_report_triggered_callback(bool checked)
+void mainwindow_view::action_report_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_generate_triggered_callback(bool checked)
+void mainwindow_view::action_generate_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 

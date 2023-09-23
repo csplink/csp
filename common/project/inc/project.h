@@ -31,13 +31,12 @@
 #define COMMON_PROJECT_CSP_PROJECT_H
 
 #include <QObject>
-#include <QVariant>
 
 #include "ip_table.h"
 #include "map_table.h"
 #include "project_table.h"
 
-class project : public QObject {
+class project final : public QObject {
     Q_OBJECT
 
 public:
@@ -48,6 +47,16 @@ public:
     } code_project_type;
 
 public:
+    /**
+     * @brief init config
+     */
+    static void init();
+
+    /**
+     * @brief deinit config
+     */
+    static void deinit();
+
     /******************* core ***********************/
     /**
      * @brief get core config value by core name
@@ -93,7 +102,6 @@ public:
     /**
      * @brief load hal map from db
      * @param hal: hal name
-     * @param name: chip name
      * @return hal map as a modifiable reference
      */
     map_table::maps_t &load_maps(const QString &hal);
@@ -205,18 +213,18 @@ public:
      * @brief save project to file
      * @param path: project file path
      */
-    void save_project(const QString &path);
+    void save_project(const QString &path) const;
 
     /**
      * @brief save project to file
      */
-    void save_project();
+    void save_project() const;
 
     /**
      * @brief dump project
      * @return project string
      */
-    QString dump_project();
+    QString dump_project() const;
 
     /**
      * @brief clear project
@@ -227,9 +235,10 @@ public:
      * @brief generate_code code
      * @param type: code type
      */
-    void generate_code(code_project_type type);
+    void generate_code(int type);
 
 private:
+    static project          *_instance;
     project_table::project_t _project;  // project table
     QString                  _path;     // project file path
     ip_table::ips_t          _ips;      // ip map
@@ -262,14 +271,10 @@ signals:
     void signals_project_clear();
 
 private:
-    project();
-    ~project() override;
+    project()           = default;
+    ~project() override = default;
 
-    project(const project &signal);
-    const project &operator=(const project &signal);
-
-private:
-    static project *_instance;
+    Q_DISABLE_COPY_MOVE(project)
 };
 
 #endif  // COMMON_PROJECT_CSP_PROJECT_H

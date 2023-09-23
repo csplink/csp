@@ -30,14 +30,14 @@
 
 #include <ip_table.h>
 
-class testcase_ip_table : public QObject {
+class testcase_ip_table final : public QObject {
     Q_OBJECT
 
 private slots:
 
     static void load_ip()
     {
-        auto ip = ip_table::load_ip(":/ip.yml");
+        const auto ip = ip_table::load_ip(":/ip.yml");
         QVERIFY(!ip.isEmpty());
     }
 };

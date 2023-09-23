@@ -50,7 +50,7 @@ home_view::~home_view()
     delete ui;
 }
 
-void home_view::button_create_chip_project_clicked_callback(bool checked)
+void home_view::button_create_chip_project_clicked_callback(const bool checked)
 {
     Q_UNUSED(checked)
     choose_chip_dialog dialog(this);
@@ -61,12 +61,12 @@ void home_view::button_create_chip_project_clicked_callback(bool checked)
     dialog.exec();
 }
 
-void home_view::button_create_board_project_clicked_callback(bool checked)
+void home_view::button_create_board_project_clicked_callback(const bool checked)
 {
     Q_UNUSED(checked)
 }
 
-void home_view::choose_chip_dialog_finished_callback(int result)
+void home_view::choose_chip_dialog_finished_callback(const int result)
 {
     Q_UNUSED(result)
 }

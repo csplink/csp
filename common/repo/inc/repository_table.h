@@ -32,7 +32,7 @@
 
 #include "qtyaml.h"
 
-class repository_table {
+class repository_table final {
 public:
     typedef struct
     {

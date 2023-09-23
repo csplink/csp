@@ -33,7 +33,6 @@
 #include <QGraphicsItem>
 #include <QMenu>
 #include <QPainter>
-#include <QStyleOptionGraphicsItem>
 
 #define GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR        "user.menu.ptr"
 #define GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR "user.pinout_unit.ptr"

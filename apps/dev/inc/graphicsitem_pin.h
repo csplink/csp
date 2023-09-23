@@ -30,18 +30,11 @@
 #ifndef CSP_GRAPHICSITEM_PIN_H
 #define CSP_GRAPHICSITEM_PIN_H
 
-#include <QFont>
-#include <QFontMetrics>
-#include <QGraphicsItem>
-#include <QMenu>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-
 #include "interface_graphicsitem_pin.h"
 #include "pinout_table.h"
 #include "project.h"
 
-class graphicsitem_pin : public interface_graphicsitem_pin {
+class graphicsitem_pin final : public interface_graphicsitem_pin {
     Q_OBJECT
 public:
     enum direction
@@ -60,7 +53,7 @@ public:
      * @brief set pin direction
      * @param direct: pin direction
      */
-    void set_direction(enum direction direct);
+    void set_direction(int direct);
 
     /**
      * @brief set pinout unit
@@ -98,14 +91,14 @@ private slots:
                                        const QVariant &new_value);
 
 private:
-    const QColor default_color  = QColor(185, 196, 202);
-    const QColor power_color    = QColor(255, 246, 204);
-    const QColor other_color    = QColor(187, 204, 0);
-    const QColor selected_color = QColor(0, 204, 68);
+    inline static constexpr QColor default_color  = QColor(185, 196, 202);
+    inline static constexpr QColor power_color    = QColor(255, 246, 204);
+    inline static constexpr QColor other_color    = QColor(187, 204, 0);
+    inline static constexpr QColor selected_color = QColor(0, 204, 68);
 
     qreal                        _width;
     qreal                        _height;
-    enum direction               _direction   = LEFT;
+    int                          _direction   = LEFT;
     pinout_table::pinout_unit_t *_pinout_unit = nullptr;
     bool                         _locked      = false;
     QString                      _name;

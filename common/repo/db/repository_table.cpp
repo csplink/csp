@@ -42,13 +42,12 @@ repository_table::repository_t repository_table::load_repository(const QString &
 
     try
     {
-        std::string buffer;
-        QFile       file(path);
+        QFile file(path);
 
         file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
+        const std::string buffer = file.readAll().toStdString();
         file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
+        const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<repository_table::repository_t>();
     }
     catch (YAML::BadFile &e)
@@ -66,8 +65,6 @@ repository_table::repository_t repository_table::load_repository(const QString &
         qDebug() << e.what();
         throw;
     }
-
-    return {};
 }
 
 repository_table::~repository_table() = default;

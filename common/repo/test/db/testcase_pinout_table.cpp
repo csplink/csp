@@ -31,14 +31,14 @@
 
 #include <pinout_table.h>
 
-class testcase_pinout_table : public QObject {
+class testcase_pinout_table final : public QObject {
     Q_OBJECT
 
 private slots:
 
     static void load_pinout()
     {
-        auto pinout = pinout_table::load_pinout(":/pinout.yml");
+        const auto pinout = pinout_table::load_pinout(":/pinout.yml");
         QVERIFY(!pinout.isEmpty());
     }
 };

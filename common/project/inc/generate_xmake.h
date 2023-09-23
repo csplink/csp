@@ -32,7 +32,7 @@
 
 #include "project_table.h"
 
-class generate_xmake {
+class generate_xmake final {
 public:
     /**
      * @brief generate xmake code file content from project table
@@ -45,8 +45,7 @@ private:
     generate_xmake();
     ~generate_xmake();
 
-    generate_xmake(const generate_xmake &signal);
-    const generate_xmake &operator=(const generate_xmake &signal);
+    Q_DISABLE_COPY_MOVE(generate_xmake)
 };
 
 #endif  // CSP_GENERATE_XMAKE_H

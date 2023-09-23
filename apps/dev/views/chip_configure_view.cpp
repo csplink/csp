@@ -35,15 +35,15 @@
 #include "lqfp.h"
 #include "ui_chip_configure_view.h"
 
-chip_configure_view::chip_configure_view(QWidget *parent) : QWidget(parent), ui(new Ui::chip_configure_view)
+chip_configure_view::chip_configure_view(QWidget *parent) : QWidget(parent), _ui(new Ui::chip_configure_view)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
     _project_instance = project::get_instance();
 }
 
 chip_configure_view::~chip_configure_view()
 {
-    delete ui;
+    delete _ui;
 }
 
 void chip_configure_view::showEvent(QShowEvent *event)
@@ -55,33 +55,33 @@ void chip_configure_view::set_propertybrowser(propertybrowser *instance)
 {
     _propertybrowser_instance = instance;
 
-    connect(ui->graphicsview, &graphicsview_panzoom::signals_selected_item_clicked, _propertybrowser_instance,
+    connect(_ui->graphicsview, &graphicsview_panzoom::signals_selected_item_clicked, _propertybrowser_instance,
             &propertybrowser::update_property_by_pin);
 }
 
 void chip_configure_view::init_view()
 {
-    auto package = _project_instance->get_core(CSP_PROJECT_CORE_PACKAGE).toLower();
-    auto hal     = _project_instance->get_core(CSP_PROJECT_CORE_HAL).toLower();
-    auto company = _project_instance->get_core(CSP_PROJECT_CORE_COMPANY);
-    auto name    = _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME);
+    const auto package = _project_instance->get_core(CSP_PROJECT_CORE_PACKAGE).toLower();
+    const auto hal     = _project_instance->get_core(CSP_PROJECT_CORE_HAL).toLower();
+    const auto company = _project_instance->get_core(CSP_PROJECT_CORE_COMPANY);
+    const auto name    = _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME);
 
-    delete ui->graphicsview->scene();
-    auto graphicsscene = new QGraphicsScene(ui->graphicsview);
+    delete _ui->graphicsview->scene();
+    const auto graphicsscene = new QGraphicsScene(_ui->graphicsview);
     if (package.startsWith("lqfp"))
     {
         lqfp lqfp(nullptr);
 
         auto items = lqfp.get_lqfp(hal, company, name);
-        for (auto &item : items)
+        for (const auto &item : items)
         {
             graphicsscene->addItem(item);
             if (item->flags() & QGraphicsItem::ItemIsFocusable)
             {
                 connect(dynamic_cast<graphicsitem_pin *>(item), &graphicsitem_pin::signal_property_changed,
-                        ui->graphicsview, &graphicsview_panzoom::property_changed_callback, Qt::UniqueConnection);
+                        _ui->graphicsview, &graphicsview_panzoom::property_changed_callback, Qt::UniqueConnection);
             }
         }
     }
-    ui->graphicsview->setScene(graphicsscene);
+    _ui->graphicsview->setScene(graphicsscene);
 }

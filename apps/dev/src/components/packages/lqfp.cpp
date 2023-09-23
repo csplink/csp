@@ -29,6 +29,7 @@
 
 #include <QDebug>
 
+#include "graphicsitem_chipbody.h"
 #include "lqfp.h"
 #include "os.h"
 
@@ -48,13 +49,13 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     QList<QGraphicsItem *> items;
     QVector<QString>       vector(_pin_count);  // sort pinout
 
-    auto num      = _pin_count / 4;
-    auto pinout_i = _pinout.constBegin();
+    const auto num      = _pin_count / 4;
+    auto       pinout_i = _pinout.constBegin();
     while (pinout_i != _pinout.constEnd())
     {
-        auto index    = pinout_i.value()->position - 1;
-        vector[index] = pinout_i.key();
-        pinout_i++;
+        const auto index = pinout_i.value()->position - 1;
+        vector[index]    = pinout_i.key();
+        ++pinout_i;
     }
 
     int                         x;
@@ -66,39 +67,39 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     {
         if (i < num)
         {
-            auto index = i;
-            direction  = graphicsitem_pin::direction::LEFT;
-            w          = LQFP_PIN_WIDTH;
-            h          = LQFP_PIN_HEIGHT;
-            x          = 0;
-            y          = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
+            const auto index = i;
+            direction        = graphicsitem_pin::direction::LEFT;
+            w                = LQFP_PIN_WIDTH;
+            h                = LQFP_PIN_HEIGHT;
+            x                = 0;
+            y                = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
         }
         else if (i >= num && i < 2 * num)
         {
-            auto index = i - num;
-            direction  = graphicsitem_pin::direction::BOTTOM;
-            w          = LQFP_PIN_HEIGHT;
-            h          = LQFP_PIN_WIDTH;
-            x          = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
-            y          = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
+            const auto index = i - num;
+            direction        = graphicsitem_pin::direction::BOTTOM;
+            w                = LQFP_PIN_HEIGHT;
+            h                = LQFP_PIN_WIDTH;
+            x                = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
+            y                = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
         }
         else if (i >= 2 * num && i < 3 * num)
         {
-            auto index = 3 * num - i;
-            direction  = graphicsitem_pin::direction::RIGHT;
-            w          = LQFP_PIN_WIDTH;
-            h          = LQFP_PIN_HEIGHT;
-            x          = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
-            y          = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
+            const auto index = 3 * num - i;
+            direction        = graphicsitem_pin::direction::RIGHT;
+            w                = LQFP_PIN_WIDTH;
+            h                = LQFP_PIN_HEIGHT;
+            x                = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
+            y                = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
         }
         else
         {
-            auto index = 4 * num - i;
-            direction  = graphicsitem_pin::direction::TOP;
-            w          = LQFP_PIN_HEIGHT;
-            h          = LQFP_PIN_WIDTH;
-            x          = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
-            y          = 0;
+            const auto index = 4 * num - i;
+            direction        = graphicsitem_pin::direction::TOP;
+            w                = LQFP_PIN_HEIGHT;
+            h                = LQFP_PIN_WIDTH;
+            x                = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
+            y                = 0;
         }
         auto *item = new graphicsitem_pin(w, h);
         item->set_name(vector.at(i));  // it must be called first

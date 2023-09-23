@@ -30,14 +30,23 @@
 #include "repo.h"
 #include "config.h"
 
-repo *repo::_instance = new repo();
-
 repo::repo()
 {
     _repository = repository_table::load_repository(config::repodir() + "/db/repository.yml");
 }
 
 repo::~repo() = default;
+
+void repo::init()
+{
+    _instance = new repo();
+}
+
+void repo::deinit()
+{
+    delete _instance;
+    _instance = nullptr;
+}
 
 repo *repo::get_instance()
 {

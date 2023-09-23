@@ -39,7 +39,7 @@ namespace Ui {
 class chip_configure_view;
 }
 
-class chip_configure_view : public QWidget {
+class chip_configure_view final : public QWidget {
     Q_OBJECT
 
 public:
@@ -56,7 +56,7 @@ protected:
     void showEvent(QShowEvent *event) override;
 
 private:
-    Ui::chip_configure_view *ui;
+    Ui::chip_configure_view *_ui;
     propertybrowser         *_propertybrowser_instance;
     project                 *_project_instance;
 };

@@ -32,7 +32,7 @@
 
 #include "os.h"
 
-class xmake {
+class xmake final {
 public:
     /**
      * @brief get xmake version
@@ -51,10 +51,9 @@ public:
     static QString lua(const QString &p, const QString &program = "xmake", const QString &workdir = "");
 
 private:
-    xmake();
-    ~xmake();
+    xmake()  = default;
+    ~xmake() = default;
 
-    xmake(const xmake &signal);
-    const xmake &operator=(const xmake &signal);
+    Q_DISABLE_COPY_MOVE(xmake)
 };
 #endif  //  CSP_COMMON_CORE_XMAKE_H

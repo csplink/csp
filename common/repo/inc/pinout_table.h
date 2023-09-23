@@ -32,7 +32,7 @@
 
 #include "qtyaml.h"
 
-class pinout_table {
+class pinout_table final {
 public:
     typedef struct
     {

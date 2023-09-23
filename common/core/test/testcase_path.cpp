@@ -33,64 +33,64 @@
 
 #include "path.h"
 
-class testcase_path : public QObject {
+class testcase_path final : public QObject {
     Q_OBJECT
 
 private slots:
 
-    void basename()
+    static void basename()
     {
         // file
-        auto basename_file = path::basename("./testcase_path.exe");
+        const auto basename_file = path::basename("./testcase_path.exe");
         QVERIFY(basename_file == "testcase_path");
         // dir
-        auto basename_dir = path::basename(".");
+        const auto basename_dir = path::basename(".");
         QVERIFY(basename_dir.isEmpty());
         // not exist
-        auto basename_not_exist = path::basename("./not exist");
+        const auto basename_not_exist = path::basename("./not exist");
         QVERIFY(!basename_not_exist.isEmpty());
     }
 
-    void filename()
+    static void filename()
     {
         // file
-        auto filename_file = path::filename("./testcase_path.exe");
+        const auto filename_file = path::filename("./testcase_path.exe");
         QVERIFY(filename_file == "testcase_path.exe");
         // dir
-        auto filename_dir = path::filename(".");
+        const auto filename_dir = path::filename(".");
         QVERIFY(filename_dir.isEmpty());
         // not exist
-        auto filename_not_exist = path::filename("./not exist");
+        const auto filename_not_exist = path::filename("./not exist");
         QVERIFY(!filename_not_exist.isEmpty());
     }
 
-    void extension()
+    static void extension()
     {
         // file
-        auto extension_file = path::extension("./testcase_path.exe");
+        const auto extension_file = path::extension("./testcase_path.exe");
         QVERIFY(extension_file == "exe");
         // dir
-        auto extension_dir = path::extension(".");
+        const auto extension_dir = path::extension(".");
         QVERIFY(extension_dir.isEmpty());
         // not exist
-        auto extension_not_exist = path::extension("./not exist");
+        const auto extension_not_exist = path::extension("./not exist");
         QVERIFY(extension_not_exist.isEmpty());
     }
 
-    void directory()
+    static void directory()
     {
         // file
-        auto directory_file = path::directory("./testcase_path.exe");
+        const auto directory_file = path::directory("./testcase_path.exe");
         QVERIFY(!directory_file.isEmpty());
         // dir
-        auto directory_dir = path::directory(".");
+        const auto directory_dir = path::directory(".");
         QVERIFY(!directory_dir.isEmpty());
         // not exist
-        auto directory_not_exist = path::directory("./not exist");
+        const auto directory_not_exist = path::directory("./not exist");
         QVERIFY(!directory_not_exist.isEmpty());
     }
 
-    void relative()
+    static void relative()
     {
         // file
         auto relative_file = path::relative(path::appfile());
@@ -111,11 +111,11 @@ private slots:
         relative_dir = path::relative(path::appdir(), path::appdir() + "/..");
         QVERIFY(relative_dir == "core");
         // not exist
-        auto relative_not_exist = path::relative("./not exist");
+        const auto relative_not_exist = path::relative("./not exist");
         QVERIFY(relative_not_exist.isEmpty());
     }
 
-    void absolute()
+    static void absolute()
     {
         // file
 
@@ -126,14 +126,14 @@ private slots:
 #endif
         QVERIFY(absolute_file == path::appfile());
         // dir
-        auto absolute_dir = path::absolute(".");
+        const auto absolute_dir = path::absolute(".");
         QVERIFY(absolute_dir == path::appdir() + "/.");
         // not exist
-        auto absolute_not_exist = path::absolute("./not exist");
+        const auto absolute_not_exist = path::absolute("./not exist");
         QVERIFY(absolute_not_exist.isEmpty());
     }
 
-    void is_absolute()
+    static void is_absolute()
     {
         QVERIFY(path::is_absolute(path::appfile()));
         QVERIFY(!path::is_absolute("."));

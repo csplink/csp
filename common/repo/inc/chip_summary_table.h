@@ -32,7 +32,7 @@
 
 #include "qtyaml.h"
 
-class chip_summary_table {
+class chip_summary_table final {
 public:
     typedef struct
     {

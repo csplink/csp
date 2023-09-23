@@ -30,13 +30,11 @@
 #ifndef COMMON_COMPAT_LAYER_QTYAML_H
 #define COMMON_COMPAT_LAYER_QTYAML_H
 
-#include <iostream>
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QPair>
 #include <QtCore/QString>
 #include <QtCore/QVector>
-#include <type_traits>
 
 #include <yaml-cpp/yaml.h>
 
@@ -80,7 +78,7 @@ template <typename Key, typename Value> struct convert<QMap<Key, Value>>
             return false;
 
         rhs.clear();
-        const_iterator it = node.begin();
+        auto it = node.begin();
         while (it != node.end())
         {
             if (it->second.IsNull())
@@ -112,7 +110,7 @@ template <typename T> struct convert<QVector<T>>
             return false;
 
         rhs.clear();
-        const_iterator it = node.begin();
+        auto it = node.begin();
         while (it != node.end())
         {
             rhs.push_back(it->as<T>());
@@ -141,7 +139,7 @@ template <typename T> struct convert<QList<T>>
             return false;
 
         rhs.clear();
-        const_iterator it = node.begin();
+        auto it = node.begin();
         while (it != node.end())
         {
             rhs.push_back(it->as<T>());
@@ -194,7 +192,7 @@ template <> struct convert<QStringList>
             return false;
 
         rhs.clear();
-        const_iterator it = node.begin();
+        auto it = node.begin();
         while (it != node.end())
         {
             rhs.push_back(it->as<QString>());

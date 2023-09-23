@@ -44,27 +44,23 @@
 #define CSP_CONFIG_KEY_WORKSPACE           "core/workspace"
 #define CSP_CONFIG_VALUE_DEFAULT_WORKSPACE "workspace"
 
-static QSettings settings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
-
-config::config() = default;
-
-config::~config() = default;
-
 bool config::is_config(const QString &key)
 {
-    return settings.value(key, CSP_CONFIG_DEFAULT_VALUE).toString() != CSP_CONFIG_DEFAULT_VALUE;
+    return _settings->value(key, CSP_CONFIG_DEFAULT_VALUE).toString() != CSP_CONFIG_DEFAULT_VALUE;
 }
 
 void config::init()
 {
+    _settings = new QSettings(CSP_CONFIG_FILE_PATH, QSettings::IniFormat);
+
     if (!is_config(CSP_CONFIG_KEY_REPO_DIR))
-        settings.setValue(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR);
+        _settings->setValue(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR);
     if (!is_config(CSP_CONFIG_KEY_LANGUAGE))
-        settings.setValue(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE);
+        _settings->setValue(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE);
 
     if (!is_config(CSP_CONFIG_KEY_WORKSPACE))
     {
-        auto appdir = QString("%1/%2").arg(path::appdir(), CSP_CONFIG_VALUE_DEFAULT_WORKSPACE);
+        const auto appdir = QString("%1/%2").arg(path::appdir(), CSP_CONFIG_VALUE_DEFAULT_WORKSPACE);
         if (!os::exists(appdir))
         {
             os::mkdir(appdir);
@@ -76,33 +72,44 @@ void config::init()
                 os::show_error_and_exit(QObject::tr("The workspace <%1> path is not a directory!").arg(appdir));
             }
         }
-        settings.setValue(CSP_CONFIG_KEY_WORKSPACE, appdir);
+        _settings->setValue(CSP_CONFIG_KEY_WORKSPACE, appdir);
     }
+}
+
+void config::deinit()
+{
+    delete _settings;
+    _settings = nullptr;
 }
 
 QString config::get(const QString &key)
 {
+    Q_ASSERT(_settings != nullptr);
     Q_ASSERT(!key.isEmpty());
-    return settings.value(key, CSP_CONFIG_DEFAULT_VALUE).toString();
+    return _settings->value(key, CSP_CONFIG_DEFAULT_VALUE).toString();
 }
 
 QString config::repodir()
 {
-    return settings.value(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR).toString();
+    Q_ASSERT(_settings != nullptr);
+    return _settings->value(CSP_CONFIG_KEY_REPO_DIR, CSP_CONFIG_VALUE_DEFAULT_REPO_DIR).toString();
 }
 
 void config::set(const QString &key, const QString &value)
 {
-    settings.setValue(key, value);
+    Q_ASSERT(_settings != nullptr);
+    _settings->setValue(key, value);
 }
 
 QString config::language()
 {
-    return settings.value(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE).toString();
+    Q_ASSERT(_settings != nullptr);
+    return _settings->value(CSP_CONFIG_KEY_LANGUAGE, CSP_CONFIG_VALUE_DEFAULT_LANGUAGE).toString();
 }
 
 QString config::workspace()
 {
-    auto appdir = QString("%1/%2").arg(path::appdir(), CSP_CONFIG_VALUE_DEFAULT_WORKSPACE);
-    return settings.value(CSP_CONFIG_KEY_WORKSPACE, appdir).toString();
+    Q_ASSERT(_settings != nullptr);
+    const auto appdir = QString("%1/%2").arg(path::appdir(), CSP_CONFIG_VALUE_DEFAULT_WORKSPACE);
+    return _settings->value(CSP_CONFIG_KEY_WORKSPACE, appdir).toString();
 }

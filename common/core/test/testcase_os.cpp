@@ -32,12 +32,24 @@
 
 #include "os.h"
 
-class testcase_os : public QObject {
+class testcase_os final : public QObject {
     Q_OBJECT
 
 private slots:
 
-    void files()
+    static void mkdir()
+    {
+        const auto string = "./test_mkdir";
+        if (os::isdir(string))
+            os::rmdir(string);
+
+        os::mkdir(string);
+        QVERIFY(!os::isdir(string));
+
+        os::rmdir(string);
+    }
+
+    static void files()
     {
         auto list = os::files(".", "*.cmake");
         QVERIFY(!list.isEmpty());
@@ -45,7 +57,7 @@ private slots:
         QVERIFY(!list.isEmpty());
     }
 
-    void dirs()
+    static void dirs()
     {
         auto list = os::dirs(".", "*_autogen");
         QVERIFY(!list.isEmpty());
@@ -53,7 +65,7 @@ private slots:
         QVERIFY(!list.isEmpty());
     }
 
-    void execv()
+    static void execv()
     {
         auto result = os::execv("git", QStringList() << "--version");
         QVERIFY(result);
@@ -69,13 +81,13 @@ private slots:
         QVERIFY(output.startsWith("git version"));
     }
 
-    void readfile()
+    static void readfile()
     {
-        auto result = os::readfile("./Makefile");
+        const auto result = os::readfile("./cmake_install.cmake");
         QVERIFY(!result.isEmpty());
     }
 
-    void writefile()
+    static void writefile()
     {
         os::writefile("./.write_test", "test1");
         auto result = os::readfile("./.write_test");

@@ -45,13 +45,12 @@ chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const Q
 
     try
     {
-        std::string buffer;
-        QFile       file(path);
+        QFile file(path);
 
         file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
+        const std::string buffer = file.readAll().toStdString();
         file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
+        const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<chip_summary_table::chip_summary_t>();
     }
     catch (YAML::BadFile &e)
@@ -69,8 +68,6 @@ chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const Q
         qDebug() << e.what();
         throw;
     }
-
-    return {};
 }
 
 chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const QString &company, const QString &name)
@@ -78,6 +75,6 @@ chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const Q
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    QString path = QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower());
+    const QString path = QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower());
     return load_chip_summary(path);
 }

@@ -32,18 +32,18 @@
 
 #include "git.h"
 
-class testcase_git : public QObject {
+class testcase_git final : public QObject {
     Q_OBJECT
 
 private slots:
 
-    void version()
+    static void version()
     {
-        auto result = git::version();
+        const auto result = git::version();
         QVERIFY(!result.isEmpty());
     }
 
-    void variables()
+    static void variables()
     {
         auto result = git::variables(git::BRANCH);
         QVERIFY(!result.isEmpty());

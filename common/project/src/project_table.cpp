@@ -44,13 +44,12 @@ project_table::project_t project_table::load_project(const QString &path)
 
     try
     {
-        std::string buffer;
-        QFile       file(path);
+        QFile file(path);
 
         file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
+        const std::string buffer = file.readAll().toStdString();
         file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
+        const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<project_table::project_t>();
     }
     catch (YAML::BadFile &e)
@@ -68,16 +67,14 @@ project_table::project_t project_table::load_project(const QString &path)
         qDebug() << e.what();
         throw;
     }
-
-    return {};
 }
 
 void project_table::save_project(const project_table::project_t &p, const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
 
-    auto  yaml = dump_project(p);
-    QFile file(path);
+    const auto yaml = dump_project(p);
+    QFile      file(path);
     file.open(QFileDevice::WriteOnly | QIODevice::Text);
     file.write(yaml.toUtf8());
     file.close();

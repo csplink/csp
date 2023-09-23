@@ -32,7 +32,7 @@
 
 #include "qtyaml.h"
 
-class ip_table {
+class ip_table final {
 public:
     typedef QMap<QString, QStringList> ip_map_t;
     typedef QMap<QString, ip_map_t>    ip_t;

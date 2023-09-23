@@ -30,6 +30,7 @@
 #include <QtOpenGL>
 
 #include "graphicsview_panzoom.h"
+#include "interface_graphicsitem_pin.h"
 
 #define MIN_SCALE 0
 #define MAX_SCALE 1000
@@ -56,7 +57,8 @@ graphicsview_panzoom::~graphicsview_panzoom() = default;
 
 void graphicsview_panzoom::setup_matrix()
 {
-    qreal      scale = qPow(qreal(2), (_scale - (int)((MIN_SCALE + MAX_SCALE) / 2)) / qreal(50));
+    const qreal scale =
+        qPow(static_cast<qreal>(2), (_scale - (int)((MIN_SCALE + MAX_SCALE) / 2)) / static_cast<qreal>(50));
     QTransform matrix;
     matrix.scale(scale, scale);
     //    matrix.rotate(90);
@@ -97,14 +99,14 @@ void graphicsview_panzoom::mouseReleaseEvent(QMouseEvent *event)
 
 void graphicsview_panzoom::wheelEvent(QWheelEvent *event)
 {
-    QPoint scrollAmount = event->angleDelta();
-    if (scrollAmount.y() > 0)
+    const QPoint scroll_amount = event->angleDelta();
+    if (scroll_amount.y() > 0)
         zoom_in(6);
     else
         zoom_out(6);
 }
 
-void graphicsview_panzoom::zoom_in(int value)
+void graphicsview_panzoom::zoom_in(const int value)
 {
     _scale += value;
     if (_scale >= MAX_SCALE)
@@ -112,7 +114,7 @@ void graphicsview_panzoom::zoom_in(int value)
     setup_matrix();
 }
 
-void graphicsview_panzoom::zoom_out(int value)
+void graphicsview_panzoom::zoom_out(const int value)
 {
     _scale -= value;
     if (_scale <= MIN_SCALE)
@@ -123,13 +125,13 @@ void graphicsview_panzoom::zoom_out(int value)
 void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
 {
     QGraphicsView::contextMenuEvent(event);
-    auto *item = dynamic_cast<interface_graphicsitem_pin *>(this->itemAt(event->pos()));
+    const auto *item = dynamic_cast<interface_graphicsitem_pin *>(this->itemAt(event->pos()));
     if (item == nullptr)
         return;
     if (!(item->flags() & QGraphicsItem::ItemIsFocusable))
         return;
 
-    auto menu = item->property(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR).value<QMenu *>();
+    const auto menu = item->property(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR).value<QMenu *>();
     Q_ASSERT(menu != nullptr);
 
     menu->exec(event->globalPos());

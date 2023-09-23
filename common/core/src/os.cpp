@@ -30,7 +30,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDesktopServices>
-#include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
@@ -40,10 +39,6 @@
 #include <QUrl>
 
 #include "os.h"
-
-os::os() = default;
-
-os::~os() = default;
 
 void os::show_info(const QString &message, const QString &title, QWidget *parent)
 {
@@ -101,8 +96,7 @@ void os::mkdir(const QString &dir)
     if (isdir(dir))
         return;
 
-    QDir d(dir);
-    d.mkpath(dir);
+    const QDir d(dir);
 }
 
 bool os::isdir(const QString &p)
@@ -110,7 +104,7 @@ bool os::isdir(const QString &p)
     if (p.isEmpty())
         return false;
 
-    QFileInfo fi(p);
+    const QFileInfo fi(p);
     return fi.isDir();
 }
 
@@ -119,7 +113,7 @@ bool os::isfile(const QString &p)
     if (p.isEmpty())
         return false;
 
-    QFileInfo fi(p);
+    const QFileInfo fi(p);
     return fi.isFile();
 }
 
@@ -128,7 +122,7 @@ bool os::exists(const QString &p)
     if (p.isEmpty())
         return false;
 
-    QFileInfo fi(p);
+    const QFileInfo fi(p);
     return fi.exists();
 }
 
@@ -152,7 +146,7 @@ QStringList os::files(const QString &p, const QStringList &filters)
     if (!isdir(p))
         return {};
 
-    QDir        dir(p);
+    const QDir  dir(p);
     auto        files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &file : files)
@@ -171,11 +165,11 @@ QStringList os::dirs(const QString &p, const QStringList &filters)
     if (!isdir(p))
         return {};
 
-    QDir        dir(p);
+    const QDir  dir(p);
     auto        dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QStringList paths;
-    for (const QFileInfo &_dir : dirs)
-        paths.append(_dir.absoluteFilePath());
+    for (const QFileInfo &info : dirs)
+        paths.append(info.absoluteFilePath());
 
     return paths;
 }
@@ -188,14 +182,14 @@ QStringList os::dirs(const QString &p, const QString &filter)
 bool os::execvf(const QString                &program,
                 const QStringList            &argv,
                 const QMap<QString, QString> &env,
-                int                           msecs,
+                const int                     msecs,
                 const QString                &workdir,
                 const QString                &output_file,
                 const QString                &error_file)
 {
     QProcess            process;
-    bool                use_output  = !output_file.isEmpty();
-    bool                use_error   = !error_file.isEmpty();
+    const bool          use_output  = !output_file.isEmpty();
+    const bool          use_error   = !error_file.isEmpty();
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
 
     Q_ASSERT(!program.isEmpty());
@@ -204,7 +198,7 @@ bool os::execvf(const QString                &program,
     while (env_i != env.constEnd())
     {
         environment.insert(env_i.key(), env_i.value());
-        env_i++;
+        ++env_i;
     }
 
     process.setProgram(program);
@@ -243,7 +237,7 @@ bool os::execv(const QString                &program,
     while (env_i != env.constEnd())
     {
         environment.insert(env_i.key(), env_i.value());
-        env_i++;
+        ++env_i;
     }
 
     process.setProgram(program);
@@ -268,8 +262,6 @@ bool os::execv(const QString                &program,
 
 QByteArray os::readfile(const QString &p)
 {
-    QByteArray data;
-
     if (!isfile(p))
         return {};
 
@@ -277,7 +269,7 @@ QByteArray os::readfile(const QString &p)
 
     if (!file.open(QIODevice::ReadOnly))
         return {};
-    data = file.readAll();
+    QByteArray data = file.readAll();
     file.close();
 
     return data;

@@ -31,14 +31,14 @@
 
 #include <map_table.h>
 
-class testcase_map_table : public QObject {
+class testcase_map_table final : public QObject {
     Q_OBJECT
 
 private slots:
 
     static void load_map()
     {
-        auto map = map_table::load_map(":/map.yml");
+        const auto map = map_table::load_map(":/map.yml");
         QVERIFY(!map.groups.isEmpty());
         QVERIFY(!map.properties.isEmpty());
         QVERIFY(!map.total.isEmpty());

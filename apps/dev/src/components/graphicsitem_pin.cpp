@@ -82,16 +82,16 @@ QPainterPath graphicsitem_pin::shape() const
 
 void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    Q_UNUSED(widget);
-    Q_UNUSED(option);
+    Q_UNUSED(widget)
+    Q_UNUSED(option)
     // const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform()); // get lod
 
     if (_pinout_unit == nullptr)
         return;
 
-    int  x, y;
-    int  width, height;
-    auto b = painter->brush();
+    int        x, y;
+    int        width, height;
+    const auto b = painter->brush();
     /******************** draw background **************************/
     if (_pinout_unit->type.toUpper() == "I/O")
     {
@@ -111,16 +111,16 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     if (_direction == LEFT)
     {
-        x      = (int)_width - 100;
+        x      = static_cast<int>(_width) - 100;
         y      = 0;
         width  = PIN_LENGTH;
-        height = (int)_height;
+        height = static_cast<int>(_height);
     }
     else if (_direction == BOTTOM)
     {
         x      = 0;
         y      = 0;
-        width  = (int)_width;
+        width  = static_cast<int>(_width);
         height = PIN_LENGTH;
     }
     else if (_direction == RIGHT)
@@ -128,13 +128,13 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         x      = 0;
         y      = 0;
         width  = PIN_LENGTH;
-        height = (int)_height;
+        height = static_cast<int>(_height);
     }
     else
     {
         x      = 0;
-        y      = (int)_height - PIN_LENGTH;
-        width  = (int)_width;
+        y      = static_cast<int>(_height) - PIN_LENGTH;
+        width  = static_cast<int>(_width);
         height = PIN_LENGTH;
     }
     painter->drawRect(x, y, width, height);
@@ -163,31 +163,31 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         text = QString("%1(%2)").arg(_comment, _function);
     if (_direction == LEFT)
     {
-        text       = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
-        int pixels = _font_metrics->horizontalAdvance(text);
+        text             = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_width - PIN_LENGTH - 20));
+        const int pixels = _font_metrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
     else if (_direction == BOTTOM)
     {
-        text       = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
-        int pixels = _font_metrics->horizontalAdvance(text);
+        text             = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_height - PIN_LENGTH - 20));
+        const int pixels = _font_metrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
     else if (_direction == RIGHT)
     {
-        text = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_width - PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_width - PIN_LENGTH - 20));
         painter->translate(PIN_LENGTH, 0);
     }
     else
     {
-        text = _font_metrics->elidedText(text, Qt::ElideRight, (int)(_height - PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_height - PIN_LENGTH - 20));
         painter->translate(PIN_LENGTH, 0);
     }
     painter->drawText(0, 0, text);
     painter->resetTransform();
 }
 
-void graphicsitem_pin::set_direction(graphicsitem_pin::direction direct)
+void graphicsitem_pin::set_direction(const int direct)
 {
     _direction = direct;
 }
@@ -206,7 +206,7 @@ void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
         action->setText(function_i.key());
         action->setCheckable(true);
         _menu->addAction(action);
-        function_i++;
+        ++function_i;
     }
     this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR, QVariant::fromValue(_menu));
     this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(unit));
@@ -260,7 +260,7 @@ void graphicsitem_pin::pin_property_changed_callback(const QString  &property,
                                                      const QVariant &old_value,
                                                      const QVariant &new_value)
 {
-    Q_UNUSED(old_value);
+    Q_UNUSED(old_value)
 
     if (name != _name)
         return;

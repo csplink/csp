@@ -32,25 +32,25 @@
 
 #include "xmake.h"
 
-class testcase_xmake : public QObject {
+class testcase_xmake final : public QObject {
     Q_OBJECT
 
 private slots:
 
-    void version()
+    static void version()
     {
-        auto result = xmake::version();
+        const auto result = xmake::version();
         QVERIFY(!result.isEmpty());
     }
 
-    void lua()
+    static void lua()
     {
-        QByteArray data = os::readfile(":/test.lua");
+        const QByteArray data = os::readfile(":/test.lua");
         QVERIFY(!data.isEmpty());
 
         os::writefile("./test.lua", data);
 
-        auto result = xmake::lua("./test.lua");
+        const auto result = xmake::lua("./test.lua");
         QVERIFY(result == "hello world\n");
 
         os::rm("./test.lua");

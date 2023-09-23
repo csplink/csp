@@ -34,16 +34,12 @@
 #include "os.h"
 #include "path.h"
 
-path::path() = default;
-
-path::~path() = default;
-
 QString path::basename(const QString &p)
 {
     if (p.isEmpty())
         return "";
 
-    QFileInfo info(p);
+    const QFileInfo info(p);
     return info.baseName();
 }
 
@@ -55,7 +51,7 @@ QString path::filename(const QString &p)
     if (os::isdir(p))
         return "";
 
-    QFileInfo info(p);
+    const QFileInfo info(p);
     return info.fileName();
 }
 
@@ -64,7 +60,7 @@ QString path::extension(const QString &p)
     if (p.isEmpty())
         return "";
 
-    QFileInfo info(p);
+    const QFileInfo info(p);
     return info.suffix();
 }
 
@@ -73,7 +69,7 @@ QString path::directory(const QString &p)
     if (p.isEmpty())
         return "";
 
-    QFileInfo info(p);
+    const QFileInfo info(p);
     return info.dir().absolutePath();
 }
 
@@ -82,7 +78,7 @@ QString path::relative(const QString &p, const QString &rootdir)
     if (!os::exists(p) || !os::exists(rootdir))
         return "";
 
-    QDir root(rootdir);
+    const QDir root(rootdir);
     return root.relativeFilePath(p);
 }
 
@@ -91,7 +87,7 @@ QString path::absolute(const QString &p, const QString &rootdir)
     if (!os::exists(p) || !os::exists(rootdir))
         return "";
 
-    QDir root(rootdir);
+    const QDir root(rootdir);
     return root.absoluteFilePath(p);
 }
 
@@ -100,7 +96,7 @@ bool path::is_absolute(const QString &p)
     if (!os::exists(p))
         return false;
 
-    QFileInfo info(p);
+    const QFileInfo info(p);
     return info.isAbsolute();
 }
 
