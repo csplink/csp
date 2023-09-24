@@ -105,7 +105,7 @@ private slots:
 
                 auto url1   = document_i.value().url;
                 auto url1_i = url1.constBegin();
-                while (url1_i != url.constEnd())
+                while (url1_i != url1.constEnd())
                 {
                     QVERIFY(!url1_i.key().isEmpty());
                     QVERIFY(!url1_i.value().isEmpty());
