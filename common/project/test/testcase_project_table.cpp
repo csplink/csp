@@ -40,7 +40,7 @@ private slots:
 
     static void load_project()
     {
-        auto p = project_table::load_project(":/project.yml");
+        const auto p = project_table::load_project(":/project.yml");
         QVERIFY(!p.core.isEmpty());
     }
 
@@ -60,7 +60,7 @@ private slots:
         auto p = project_table::project_t();
         p.core.insert("name", "test");
         p.pin_configs.insert("test", project_table::pin_config_t());
-        auto str = project_table::dump_project(p);
+        const auto str = project_table::dump_project(p);
         QVERIFY(!str.isEmpty());
     }
 };

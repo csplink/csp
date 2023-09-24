@@ -26,15 +26,21 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-05-03     xqyjlj       initial version
  */
-
+#include <QDebug>
 #include <QtTest>
 
-#include <repository_table.h>
+#include "config.h"
+#include "repository_table.h"
 
 class testcase_repository_table final : public QObject {
     Q_OBJECT
 
 private slots:
+
+    static void initTestCase()
+    {
+        config::init();
+    }
 
     static void load_repository()
     {
@@ -90,6 +96,11 @@ private slots:
             }
             ++chips_i;
         }
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 

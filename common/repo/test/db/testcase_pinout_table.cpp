@@ -26,20 +26,31 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-05-28     xqyjlj       initial version
  */
-
+#include <QDebug>
 #include <QtTest>
 
-#include <pinout_table.h>
+#include "config.h"
+#include "pinout_table.h"
 
 class testcase_pinout_table final : public QObject {
     Q_OBJECT
 
 private slots:
 
+    static void initTestCase()
+    {
+        config::init();
+    }
+
     static void load_pinout()
     {
         const auto pinout = pinout_table::load_pinout(":/pinout.yml");
         QVERIFY(!pinout.isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 

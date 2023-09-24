@@ -42,6 +42,7 @@ private slots:
 
     static void initTestCase()
     {
+        project::init();
         g_project_instance = project::get_instance();
     }
 
@@ -65,6 +66,11 @@ private slots:
         cfg.comment = "PA1-OUT";
 
         QVERIFY(g_project_instance->get_pin_config("PA1").comment == "PA1-OUT");
+    }
+
+    static void cleanupTestCase()
+    {
+        project::deinit();
     }
 };
 

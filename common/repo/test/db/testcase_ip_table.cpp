@@ -26,8 +26,10 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-06-17     xqyjlj       initial version
  */
+#include <QDebug>
 #include <QtTest>
 
+#include "config.h"
 #include <ip_table.h>
 
 class testcase_ip_table final : public QObject {
@@ -35,10 +37,20 @@ class testcase_ip_table final : public QObject {
 
 private slots:
 
+    static void initTestCase()
+    {
+        config::init();
+    }
+
     static void load_ip()
     {
         const auto ip = ip_table::load_ip(":/ip.yml");
         QVERIFY(!ip.isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 

@@ -26,15 +26,21 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-05-21     xqyjlj       initial version
  */
-
+#include <QDebug>
 #include <QtTest>
 
+#include "config.h"
 #include <chip_summary_table.h>
 
 class testcase_chip_summary_table final : public QObject {
     Q_OBJECT
 
 private slots:
+
+    static void initTestCase()
+    {
+        config::init();
+    }
 
     static void load_chip_summary()
     {
@@ -135,6 +141,11 @@ private slots:
             }
             ++modules_i;
         }
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 

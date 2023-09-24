@@ -36,12 +36,22 @@ class testcase_map_table final : public QObject {
 
 private slots:
 
+    static void initTestCase()
+    {
+        config::init();
+    }
+
     static void load_map()
     {
         const auto map = map_table::load_map(":/map.yml");
         QVERIFY(!map.groups.isEmpty());
         QVERIFY(!map.properties.isEmpty());
         QVERIFY(!map.total.isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 
