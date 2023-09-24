@@ -51,7 +51,11 @@ private slots:
         os::writefile("./test.lua", data);
 
         const auto result = xmake::lua("./test.lua");
+#ifdef Q_OS_WINDOWS
+        QVERIFY(result == "hello world\r\n");
+#elif defined(Q_OS_LINUX)
         QVERIFY(result == "hello world\n");
+#endif
 
         os::rm("./test.lua");
     }
