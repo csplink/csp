@@ -59,6 +59,8 @@ jobs:
           cache: "true"
       - name: ⬇️ checkout csp
         uses: actions/checkout@v4
+      - name: ⬇️ install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
       - name: 👷 build
         shell: pwsh
         run: |
@@ -70,8 +72,8 @@ jobs:
             cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=ninja `
                 -DCMAKE_CXX_COMPILER=g++ `
                 -DCMAKE_C_COMPILER=gcc
-          popd 
-          cmake --build build
+            ninja -v -j $(Get-WmiObject -Class Win32_Processor).NumberOfLogicalProcessors
+          popd
       - name: 🩺 test
         shell: pwsh
         run: |
