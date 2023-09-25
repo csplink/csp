@@ -44,6 +44,7 @@ jobs:
     env:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
       QT_QPA_PLATFORM: "offscreen"
+      XMAKE_ROOT: "y"
     steps:
       - name: ⬇️ install Qt
         uses: jurplel/install-qt-action@v3
@@ -55,16 +56,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+      - name: ⬇️ install xmake
+        uses: xmake-io/github-action-setup-xmake@v1
       - name: 👷 build
         shell: bash
         run: |
           mkdir build
           pushd build
-             cmake .. -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_CXX_COMPILER=g++ \
-                -DCMAKE_C_COMPILER=gcc
-          popd 
-          cmake --build build
+            cmake .. -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_CXX_COMPILER=g++ \
+              -DCMAKE_C_COMPILER=gcc
+            make -j$(nproc) VERBOSE=1
+          popd
       - name: 🩺 test
         shell: bash
         run: |
