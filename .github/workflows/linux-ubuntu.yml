@@ -71,11 +71,6 @@ jobs:
       - name: 🩺 test
         shell: bash
         run: |
-          for var in $(find -name "testcase_*" -executable -type f); do
-            fullpath=$(realpath ${var})
-            directory=$(dirname ${var})
-            pushd ${directory}
-              echo -e "\n🧪 run: <${fullpath}>"
-              ${fullpath}
-            popd
-          done
+          pushd build
+            ctest --output-on-failure
+          popd

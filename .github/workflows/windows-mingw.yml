@@ -77,28 +77,6 @@ jobs:
       - name: 🩺 test
         shell: pwsh
         run: |
-          $executable_files = Get-ChildItem -Recurse -Filter "testcase_*.exe"
-          foreach ($file in $executable_files) {
-            $parent_directory = Split-Path -Path $file -Parent
-            pushd $parent_directory
-              Write-Host "🧪 run: <$($file.FullName)>"
-
-              $startInfo = New-Object System.Diagnostics.ProcessStartInfo
-              $startInfo.FileName = $file
-              $startInfo.RedirectStandardOutput = $true
-              $startInfo.UseShellExecute = $false
-              $startInfo.WorkingDirectory = $parent_directory
-
-              $process = New-Object System.Diagnostics.Process
-              $process.StartInfo = $startInfo
-              $process.Start() | Out-Null
-              $process.WaitForExit()
-
-              $output = $process.StandardOutput.ReadToEnd()
-              Write-Host "$output"
-
-              if ($output -match "FAIL!") {
-                throw "🚧 testcase: <$($file.FullName)> failed!"
-              }
-            popd
-          }
+          pushd build
+            ctest --output-on-failure
+          popd
