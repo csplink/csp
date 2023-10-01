@@ -52,7 +52,7 @@ QString git::version(const QString &program)
     return version;
 }
 
-QString git::variables(int type, const QString &program, const QString &workdir)
+QString git::variables(const int type, const QString &program, const QString &workdir)
 {
     QStringList argv;
     QByteArray  output;

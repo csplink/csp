@@ -58,6 +58,8 @@ get_git_commit(GIT_COMMIT)
 get_git_commit_long(GIT_COMMIT_LONG)
 get_git_commit_date(GIT_COMMIT_DATE)
 
+enable_testing()
+
 add_subdirectory(apps)
 add_subdirectory(common)
 add_subdirectory(components)

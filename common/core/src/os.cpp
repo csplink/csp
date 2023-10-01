@@ -223,7 +223,7 @@ bool os::execvf(const QString                &program,
 bool os::execv(const QString                &program,
                const QStringList            &argv,
                const QMap<QString, QString> &env,
-               int                           msecs,
+               const int                     msecs,
                const QString                &workdir,
                QByteArray                   *output,
                QByteArray                   *error)
@@ -275,7 +275,7 @@ QByteArray os::readfile(const QString &p)
     return data;
 }
 
-bool os::writefile(const QString &p, const QByteArray &data, bool overwrite)
+bool os::writefile(const QString &p, const QByteArray &data, const bool overwrite)
 {
     Q_ASSERT(!p.isEmpty());
 
