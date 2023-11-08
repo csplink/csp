@@ -35,10 +35,11 @@
 
 project *g_project_instance = nullptr;
 
-class testcase_project final : public QObject {
+class testcase_project final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {
@@ -62,7 +63,7 @@ private slots:
 
     static void get_pin_config()
     {
-        auto &cfg   = g_project_instance->get_pin_config("PA1");
+        auto &cfg = g_project_instance->get_pin_config("PA1");
         cfg.comment = "PA1-OUT";
 
         QVERIFY(g_project_instance->get_pin_config("PA1").comment == "PA1-OUT");

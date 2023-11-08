@@ -155,9 +155,7 @@ bool project::get_pin_locked(const QString &key)
     return _project.pin_configs[key].locked;
 }
 
-void project::set_pin_config_fp(const QString &key,
-                                const QString &module,
-                                const QString &property,
+void project::set_pin_config_fp(const QString &key, const QString &module, const QString &property,
                                 const QString &value)
 {
     Q_ASSERT(!key.isEmpty());
@@ -220,7 +218,7 @@ QString &project::get_pin_config_fp(const QString &key, const QString &module, c
 void project::load_project(const QString &path)
 {
     _project = project_table::load_project(path);
-    _path    = path;
+    _path = path;
 
     load_maps(_project.core[CSP_PROJECT_CORE_HAL]);
     load_ips(_project.core[CSP_PROJECT_CORE_HAL], _project.core[CSP_PROJECT_CORE_HAL_NAME]);
@@ -242,7 +240,7 @@ void project::save_project() const
     }
     else
     {
-        if (!os::isdir(p))  // check if it not is a directory
+        if (!os::isdir(p)) // check if it not is a directory
         {
             os::show_error_and_exit(tr("The project <%1> path is not a directory!").arg(p));
         }
@@ -265,13 +263,14 @@ void project::generate_code(const int type)
 {
     switch (type)
     {
-        case CODE_PROJECT_TYPE_XMAKE: {
-            generate_xmake::generate(_project);
-            break;
-        }
-        case CODE_PROJECT_TYPE_MDK_ARM: {
-            break;
-        }
-        default: return;
+    case CODE_PROJECT_TYPE_XMAKE: {
+        generate_xmake::generate(_project);
+        break;
+    }
+    case CODE_PROJECT_TYPE_MDK_ARM: {
+        break;
+    }
+    default:
+        return;
     }
 }

@@ -32,16 +32,16 @@
 #include "os.h"
 #include "path.h"
 
-#define CSP_CONFIG_FILE_PATH               "config.ini"
-#define CSP_CONFIG_DEFAULT_VALUE           "null"
+#define CSP_CONFIG_FILE_PATH "config.ini"
+#define CSP_CONFIG_DEFAULT_VALUE "null"
 
-#define CSP_CONFIG_KEY_REPO_DIR            "core/repodir"
-#define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR  "csp_repo"
+#define CSP_CONFIG_KEY_REPO_DIR "core/repodir"
+#define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
 
-#define CSP_CONFIG_KEY_LANGUAGE            "core/language"
-#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE  "zh_CN"
+#define CSP_CONFIG_KEY_LANGUAGE "core/language"
+#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE "zh_CN"
 
-#define CSP_CONFIG_KEY_WORKSPACE           "core/workspace"
+#define CSP_CONFIG_KEY_WORKSPACE "core/workspace"
 #define CSP_CONFIG_VALUE_DEFAULT_WORKSPACE "workspace"
 
 bool config::is_config(const QString &key)
@@ -67,7 +67,7 @@ void config::init()
         }
         else
         {
-            if (!os::isdir(appdir))  // check if it not is a directory
+            if (!os::isdir(appdir)) // check if it not is a directory
             {
                 os::show_error_and_exit(QObject::tr("The workspace <%1> path is not a directory!").arg(appdir));
             }

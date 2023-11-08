@@ -32,10 +32,11 @@
 
 #include "git.h"
 
-class testcase_git final : public QObject {
+class testcase_git final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void version()
     {

@@ -74,7 +74,7 @@ void project_table::save_project(const project_table::project_t &p, const QStrin
     Q_ASSERT(!path.isEmpty());
 
     const auto yaml = dump_project(p);
-    QFile      file(path);
+    QFile file(path);
     file.open(QFileDevice::WriteOnly | QIODevice::Text);
     file.write(yaml.toUtf8());
     file.close();

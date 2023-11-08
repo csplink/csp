@@ -32,33 +32,34 @@
 
 #include "qtyaml.h"
 
-#define CSP_PROJECT_CORE_NAME     "name"
-#define CSP_PROJECT_CORE_HAL      "hal"
+#define CSP_PROJECT_CORE_NAME "name"
+#define CSP_PROJECT_CORE_HAL "hal"
 #define CSP_PROJECT_CORE_HAL_NAME "hal.name"
-#define CSP_PROJECT_CORE_PACKAGE  "package"
-#define CSP_PROJECT_CORE_COMPANY  "company"
-#define CSP_PROJECT_CORE_TYPE     "type"
+#define CSP_PROJECT_CORE_PACKAGE "package"
+#define CSP_PROJECT_CORE_COMPANY "company"
+#define CSP_PROJECT_CORE_TYPE "type"
 
-class project_table {
-public:
-    typedef QMap<QString, QString>                 pin_function_property_t;
+class project_table
+{
+  public:
+    typedef QMap<QString, QString> pin_function_property_t;
     typedef QMap<QString, pin_function_property_t> pin_function_properties_t;
 
     typedef struct
     {
-        QString                   function;  // pin selected function
-        QString                   comment;   // pin comment
-        bool                      locked;    // pin locked
-        pin_function_properties_t fp;        // pin function properties
+        QString function;             // pin selected function
+        QString comment;              // pin comment
+        bool locked;                  // pin locked
+        pin_function_properties_t fp; // pin function properties
     } pin_config_t;
 
     typedef struct
     {
-        QMap<QString, pin_config_t> pin_configs;  // pin configs
-        QMap<QString, QString>      core;         // core configs
+        QMap<QString, pin_config_t> pin_configs; // pin configs
+        QMap<QString, QString> core;             // core configs
     } project_t;
 
-public:
+  public:
     /**
      * @brief load project from yaml file
      * @param path: project file path
@@ -80,12 +81,13 @@ public:
      */
     static QString dump_project(const project_t &p);
 
-private:
+  private:
     explicit project_table();
     ~project_table();
 };
 
-namespace YAML {
+namespace YAML
+{
 template <> struct convert<project_table::project_t>
 {
     static Node encode(const project_table::project_t &rhs)
@@ -126,13 +128,13 @@ template <> struct convert<project_table::pin_config_t>
             return false;
 
         rhs.function = node["Function"].as<QString>();
-        rhs.comment  = node["Comment"].as<QString>();
-        rhs.locked   = node["Locked"].as<bool>();
+        rhs.comment = node["Comment"].as<QString>();
+        rhs.locked = node["Locked"].as<bool>();
         if (node["FunctionProperty"].IsDefined())
             rhs.fp = node["FunctionProperty"].as<project_table::pin_function_properties_t>();
         return true;
     }
 };
-}  // namespace YAML
+} // namespace YAML
 
-#endif  // COMMON_PROJECT_CSP_PROJECT_TABLE_H
+#endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H

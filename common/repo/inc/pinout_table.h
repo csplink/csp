@@ -32,8 +32,9 @@
 
 #include "qtyaml.h"
 
-class pinout_table final {
-public:
+class pinout_table final
+{
+  public:
     typedef struct
     {
         QString mode;
@@ -42,21 +43,21 @@ public:
 
     typedef struct
     {
-        int                       position;
-        QString                   type;
+        int position;
+        QString type;
         QMap<QString, function_t> functions;
     } pinout_unit_t;
 
     typedef QMap<QString, pinout_unit_t *> pinout_t;
 
-public:
+  public:
     static pinout_t load_pinout(const QString &path);
     static pinout_t load_pinout(const QString &hal, const QString &name);
 
-private:
+  private:
     typedef QMap<QString, pinout_unit_t> _pinout_t;
 
-private:
+  private:
     explicit pinout_table();
     ~pinout_table();
 
@@ -66,7 +67,8 @@ private:
 Q_DECLARE_METATYPE(pinout_table::pinout_unit_t)
 Q_DECLARE_METATYPE(pinout_table::pinout_unit_t *)
 
-namespace YAML {
+namespace YAML
+{
 
 template <> struct convert<pinout_table::function_t>
 {
@@ -120,14 +122,14 @@ template <> struct convert<pinout_table::pinout_unit_t>
 
         if (node.size() == 2)
         {
-            rhs.position  = node["Position"].as<int>();
-            rhs.type      = node["Type"].as<QString>();
+            rhs.position = node["Position"].as<int>();
+            rhs.type = node["Type"].as<QString>();
             rhs.functions = QMap<QString, pinout_table::function_t>();
         }
         else if (node.size() == 3)
         {
-            rhs.position  = node["Position"].as<int>();
-            rhs.type      = node["Type"].as<QString>();
+            rhs.position = node["Position"].as<int>();
+            rhs.type = node["Type"].as<QString>();
             rhs.functions = node["Functions"].as<QMap<QString, pinout_table::function_t>>();
         }
         else
@@ -137,6 +139,6 @@ template <> struct convert<pinout_table::pinout_unit_t>
         return true;
     }
 };
-}  // namespace YAML
+} // namespace YAML
 
-#endif  // COMMON_REPO_CSP_PINOUT_TABLE_H
+#endif // COMMON_REPO_CSP_PINOUT_TABLE_H

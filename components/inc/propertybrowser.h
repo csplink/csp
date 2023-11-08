@@ -37,20 +37,21 @@
 #include "interface_graphicsitem_pin.h"
 #include "project.h"
 
-class propertybrowser final : public QtTreePropertyBrowser {
+class propertybrowser final : public QtTreePropertyBrowser
+{
     Q_OBJECT
-public:
+  public:
     explicit propertybrowser(QWidget *parent = nullptr);
     ~propertybrowser() override;
 
-private:
+  private:
     enum
     {
         PROPERTY_ID_FUNCTION_TYPE = 0,
         PROPERTY_ID_PARAMETER_NAME
     };
 
-public slots:
+  public slots:
     /**
      * @brief update property by pin
      * @param item: pin item
@@ -59,15 +60,15 @@ public slots:
     void pin_value_changed_callback(const QtProperty *property, const QVariant &value);
     void pin_attribute_changed_callback(const QtProperty *property, const QString &attribute, const QVariant &value);
 
-private:
+  private:
     QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked);
     QtProperty *set_pin_system(const QString &function);
 
-private:
-    project                  *_project_instance;
+  private:
+    project *_project_instance;
     QtVariantPropertyManager *_variant_manager = new QtVariantPropertyManager(this);
-    QtVariantEditorFactory   *_variant_factory = new QtVariantEditorFactory(this);
-    QString                   _pin_name        = QString();
+    QtVariantEditorFactory *_variant_factory = new QtVariantEditorFactory(this);
+    QString _pin_name = QString();
 };
 
-#endif  // CSP_PROPERTYBROWSER_H
+#endif // CSP_PROPERTYBROWSER_H

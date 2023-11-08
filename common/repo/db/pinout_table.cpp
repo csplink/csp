@@ -42,8 +42,8 @@ pinout_table::pinout_t pinout_table::load_pinout(const QString &path)
 {
     pinout_t pinout;
 
-    const auto p   = _load_pinout(path);
-    auto       p_i = p.constBegin();
+    const auto p = _load_pinout(path);
+    auto p_i = p.constBegin();
     while (p_i != p.constEnd())
     {
         pinout[p_i.key()] = new pinout_unit_t(p_i.value());

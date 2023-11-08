@@ -34,16 +34,17 @@
 #include <QObject>
 #include <QString>
 
-class os final {
-public:
+class os final
+{
+  public:
     /**
      * @brief Show an information message box.
      * @param message: the text to be displayed in the message box.
      * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
-    static void
-    show_info(const QString &message, const QString &title = QObject::tr("Information"), QWidget *parent = nullptr);
+    static void show_info(const QString &message, const QString &title = QObject::tr("Information"),
+                          QWidget *parent = nullptr);
 
     /**
      * @brief Show a warning message box.
@@ -51,8 +52,8 @@ public:
      * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
-    static void
-    show_warning(const QString &message, const QString &title = QObject::tr("Warning"), QWidget *parent = nullptr);
+    static void show_warning(const QString &message, const QString &title = QObject::tr("Warning"),
+                             QWidget *parent = nullptr);
 
     /**
      * @brief Show a critical message box.
@@ -60,8 +61,8 @@ public:
      * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
-    static void
-    show_critical(const QString &message, const QString &title = QObject::tr("Critical"), QWidget *parent = nullptr);
+    static void show_critical(const QString &message, const QString &title = QObject::tr("Critical"),
+                              QWidget *parent = nullptr);
 
     /**
      * @brief Show a error message box.
@@ -69,8 +70,8 @@ public:
      * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
-    static void
-    show_error(const QString &message, const QString &title = QObject::tr("Error"), QWidget *parent = nullptr);
+    static void show_error(const QString &message, const QString &title = QObject::tr("Error"),
+                           QWidget *parent = nullptr);
 
     /**
      * @brief Display an error message and exit the application.
@@ -78,9 +79,8 @@ public:
      * @param parent: windows parent
      * @param message: the text to be displayed in the message box.
      */
-    static void show_error_and_exit(const QString &message,
-                                    const QString &title  = QObject::tr("Critical"),
-                                    QWidget       *parent = nullptr);
+    static void show_error_and_exit(const QString &message, const QString &title = QObject::tr("Critical"),
+                                    QWidget *parent = nullptr);
 
     /**
      * @brief Show a question message box.
@@ -88,8 +88,8 @@ public:
      * @param title: windows title
      * @param parent: the parent widget that owns the message box.
      */
-    static void
-    show_question(const QString &message, const QString &title = QObject::tr("Question"), QWidget *parent = nullptr);
+    static void show_question(const QString &message, const QString &title = QObject::tr("Question"),
+                              QWidget *parent = nullptr);
 
     /**
      * @brief open a url in the default browser.
@@ -149,9 +149,8 @@ public:
      * @param filter: file filter
      * @return a file path selected by the user
      */
-    static QString getsavefile(const QString &title        = QObject::tr(""),
-                               const QString &default_file = QString(),
-                               const QString &filter       = QString());
+    static QString getsavefile(const QString &title = QObject::tr(""), const QString &default_file = QString(),
+                               const QString &filter = QString());
 
     /**
      * @brief traverse to get all the files in the specified directory
@@ -196,13 +195,9 @@ public:
      * @param error_file: the process' standard error to the file fileName
      * @return true if run successfully, otherwise false.
      */
-    static bool execvf(const QString                &program,
-                       const QStringList            &argv        = {},
-                       const QMap<QString, QString> &env         = {},
-                       int                           msecs       = 30000,
-                       const QString                &workdir     = "",
-                       const QString                &output_file = "",
-                       const QString                &error_file  = "");
+    static bool execvf(const QString &program, const QStringList &argv = {}, const QMap<QString, QString> &env = {},
+                       int msecs = 30000, const QString &workdir = "", const QString &output_file = "",
+                       const QString &error_file = "");
 
     /**
      * @brief running native shell commands with qbytearray log
@@ -215,13 +210,9 @@ public:
      * @param error: the process' standard error to the qbytearray
      * @return true if run successfully, otherwise false.
      */
-    static bool execv(const QString                &program,
-                      const QStringList            &argv    = {},
-                      const QMap<QString, QString> &env     = {},
-                      int                           msecs   = 30000,
-                      const QString                &workdir = "",
-                      QByteArray                   *output  = nullptr,
-                      QByteArray                   *error   = nullptr);
+    static bool execv(const QString &program, const QStringList &argv = {}, const QMap<QString, QString> &env = {},
+                      int msecs = 30000, const QString &workdir = "", QByteArray *output = nullptr,
+                      QByteArray *error = nullptr);
 
     /**
      * @brief read a file
@@ -246,11 +237,11 @@ public:
      */
     static bool rm(const QString &p);
 
-private:
-    os()  = default;
+  private:
+    os() = default;
     ~os() = default;
 
     Q_DISABLE_COPY_MOVE(os)
 };
 
-#endif  // COMMON_CORE_CSP_OS_H
+#endif // COMMON_CORE_CSP_OS_H

@@ -38,7 +38,7 @@ choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), _ui(n
 {
     _ui->setupUi(this);
 
-    _repo_instance    = repo::get_instance();
+    _repo_instance = repo::get_instance();
     _project_instance = project::get_instance();
 
     _ui->splitter_2->setSizes(QList<int>() << 156 << 1102);
@@ -71,32 +71,32 @@ choose_chip_dialog::~choose_chip_dialog()
 void choose_chip_dialog::find_all_keys()
 {
     const auto repository = _repo_instance->get_repository();
-    const auto chips      = &repository->chips;
-    auto       chips_i    = chips->constBegin();
+    const auto chips = &repository->chips;
+    auto chips_i = chips->constBegin();
     while (chips_i != chips->constEnd())
     {
         auto company_name = chips_i.key();
         if (!_company_keys.contains(company_name))
             _company_keys << company_name;
 
-        const auto company   = &chips_i.value();
-        auto       company_i = company->constBegin();
+        const auto company = &chips_i.value();
+        auto company_i = company->constBegin();
         while (company_i != company->constEnd())
         {
             auto series_name = company_i.key();
             if (!_series_keys.contains(series_name))
                 _series_keys << series_name;
 
-            const auto series   = &company_i.value();
-            auto       series_i = series->constBegin();
+            const auto series = &company_i.value();
+            auto series_i = series->constBegin();
             while (series_i != series->constEnd())
             {
                 auto line_name = series_i.key();
                 if (!_line_keys.contains(line_name))
                     _line_keys << line_name;
 
-                const auto line   = &series_i.value();
-                auto       line_i = line->constBegin();
+                const auto line = &series_i.value();
+                auto line_i = line->constBegin();
                 while (line_i != line->constEnd())
                 {
                     auto mcu = const_cast<repository_table::chip_info_t *>(&line_i.value());
@@ -105,10 +105,10 @@ void choose_chip_dialog::find_all_keys()
                     if (!_package_keys.contains(mcu->package))
                         _package_keys << mcu->package;
 
-                    mcu->name    = line_i.key();
+                    mcu->name = line_i.key();
                     mcu->company = company_name;
-                    mcu->series  = series_name;
-                    mcu->line    = line_name;
+                    mcu->series = series_name;
+                    mcu->line = line_name;
                     _chips.append(mcu);
 
                     ++line_i;
@@ -124,9 +124,9 @@ void choose_chip_dialog::find_all_keys()
 void choose_chip_dialog::init_treeview_chip_filter()
 {
     _company_root = new QStandardItem(tr("Company"));
-    _series_root  = new QStandardItem(tr("Series"));
-    _line_root    = new QStandardItem(tr("Line"));
-    _core_root    = new QStandardItem(tr("Core"));
+    _series_root = new QStandardItem(tr("Series"));
+    _line_root = new QStandardItem(tr("Line"));
+    _core_root = new QStandardItem(tr("Core"));
     _package_root = new QStandardItem(tr("Package"));
 
     _company_root->setCheckable(true);
@@ -147,8 +147,8 @@ void choose_chip_dialog::init_treeview_chip_filter()
     QStringList::const_iterator iter;
     for (iter = _company_keys.constBegin(); iter != _company_keys.constEnd(); ++iter)
     {
-        const QString &str  = *iter;
-        auto          *item = new QStandardItem(str);
+        const QString &str = *iter;
+        auto *item = new QStandardItem(str);
         item->setCheckable(true);
         _company_items.append(item);
     }
@@ -156,8 +156,8 @@ void choose_chip_dialog::init_treeview_chip_filter()
 
     for (iter = _series_keys.constBegin(); iter != _series_keys.constEnd(); ++iter)
     {
-        const QString &str  = *iter;
-        auto          *item = new QStandardItem(str);
+        const QString &str = *iter;
+        auto *item = new QStandardItem(str);
         item->setCheckable(true);
         _series_items.append(item);
     }
@@ -165,8 +165,8 @@ void choose_chip_dialog::init_treeview_chip_filter()
 
     for (iter = _line_keys.constBegin(); iter != _line_keys.constEnd(); ++iter)
     {
-        const QString &str  = *iter;
-        auto          *item = new QStandardItem(str);
+        const QString &str = *iter;
+        auto *item = new QStandardItem(str);
         item->setCheckable(true);
         _line_items.append(item);
     }
@@ -174,8 +174,8 @@ void choose_chip_dialog::init_treeview_chip_filter()
 
     for (iter = _core_keys.constBegin(); iter != _core_keys.constEnd(); ++iter)
     {
-        const QString &str  = *iter;
-        auto          *item = new QStandardItem(str);
+        const QString &str = *iter;
+        auto *item = new QStandardItem(str);
         item->setCheckable(true);
         _core_items.append(item);
     }
@@ -183,8 +183,8 @@ void choose_chip_dialog::init_treeview_chip_filter()
 
     for (iter = _package_keys.constBegin(); iter != _package_keys.constEnd(); ++iter)
     {
-        const QString &str  = *iter;
-        auto          *item = new QStandardItem(str);
+        const QString &str = *iter;
+        auto *item = new QStandardItem(str);
         item->setCheckable(true);
         _package_items.append(item);
     }
@@ -204,7 +204,7 @@ void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const 
         return;
 
     const auto row_count = item->rowCount();
-    if (row_count > 0)  // root item
+    if (row_count > 0) // root item
     {
         for (int i = 0; i < row_count; ++i)
         {
@@ -218,11 +218,11 @@ void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const 
                 child_item->setCheckState(Qt::Unchecked);
         }
     }
-    else  // root item's child
+    else // root item's child
     {
-        QStandardItem *parent        = item->parent();
-        const auto     count         = parent->rowCount();
-        auto           checked_count = 0;
+        QStandardItem *parent = item->parent();
+        const auto count = parent->rowCount();
+        auto checked_count = 0;
         for (int i = 0; i < count; ++i)
         {
             const auto *child_item = parent->child(i);
@@ -243,7 +243,7 @@ void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const 
 void choose_chip_dialog::init_tableview_chip_infos()
 {
     _tableview_chip_infos_proxy_model = new QSortFilterProxyModel(this);
-    const auto model                  = new QStandardItemModel(this);
+    const auto model = new QStandardItemModel(this);
     /*设置列字段名*/
     model->setColumnCount(10);
     model->setHeaderData(0, Qt::Horizontal, tr("Name"));
@@ -294,8 +294,7 @@ void choose_chip_dialog::init_tableview_chip_infos()
 }
 
 void choose_chip_dialog::tableview_chip_infos_selection_model_selection_changed_callback(
-    const QItemSelection &selected,
-    const QItemSelection &deselected)
+    const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(deselected)
     set_chips_info_ui(selected.indexes());
@@ -306,12 +305,12 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     if (selected_indexes.isEmpty())
         return;
 
-    _chip_name               = selected_indexes[0].data().toString();
+    _chip_name = selected_indexes[0].data().toString();
     const auto market_status = selected_indexes[1].data().toString();
-    const auto price         = selected_indexes[2].data().toString();
-    const auto package       = selected_indexes[3].data().toString();
-    const auto company       = selected_indexes[8].data().toString();
-    const auto package_path  = QString(":/packages/%1.png").arg(package);
+    const auto price = selected_indexes[2].data().toString();
+    const auto package = selected_indexes[3].data().toString();
+    const auto company = selected_indexes[8].data().toString();
+    const auto package_path = QString(":/packages/%1.png").arg(package);
 
     _ui->label_market_status->setText(market_status);
     _ui->label_price->setText(price);
@@ -329,9 +328,9 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     if (repo::chip_summary_exists(company, _chip_name))
     {
         auto chip_summary = repo::load_chip_summary(company, _chip_name);
-        _hal_name         = chip_summary.hal;
-        _package_name     = chip_summary.package;
-        _company_name     = company;
+        _hal_name = chip_summary.hal;
+        _package_name = chip_summary.package;
+        _company_name = company;
 
         _ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(_chip_name) +
                                              chip_summary.illustrate[config::language()]);
@@ -340,7 +339,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     }
     else
     {
-        _hal_name     = QString();
+        _hal_name = QString();
         _package_name = QString();
         _company_name = QString();
 

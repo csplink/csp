@@ -32,10 +32,11 @@
 #include "config.h"
 #include <chip_summary_table.h>
 
-class testcase_chip_summary_table final : public QObject {
+class testcase_chip_summary_table final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {
@@ -54,8 +55,8 @@ private slots:
         QVERIFY(!chip_summary.package.isEmpty());
         QVERIFY(!chip_summary.series.isEmpty());
 
-        const auto company_url   = chip_summary.company_url;
-        auto       company_url_i = company_url.constBegin();
+        const auto company_url = chip_summary.company_url;
+        auto company_url_i = company_url.constBegin();
         while (company_url_i != company_url.constEnd())
         {
             QVERIFY(!company_url_i.key().isEmpty());
@@ -63,8 +64,8 @@ private slots:
             ++company_url_i;
         }
 
-        const auto illustrate   = chip_summary.illustrate;
-        auto       illustrate_i = illustrate.constBegin();
+        const auto illustrate = chip_summary.illustrate;
+        auto illustrate_i = illustrate.constBegin();
         while (illustrate_i != illustrate.constEnd())
         {
             QVERIFY(!illustrate_i.key().isEmpty());
@@ -72,8 +73,8 @@ private slots:
             ++illustrate_i;
         }
 
-        const auto introduction   = chip_summary.introduction;
-        auto       introduction_i = introduction.constBegin();
+        const auto introduction = chip_summary.introduction;
+        auto introduction_i = introduction.constBegin();
         while (introduction_i != introduction.constEnd())
         {
             QVERIFY(!introduction_i.key().isEmpty());
@@ -81,8 +82,8 @@ private slots:
             ++introduction_i;
         }
 
-        const auto url   = chip_summary.url;
-        auto       url_i = url.constBegin();
+        const auto url = chip_summary.url;
+        auto url_i = url.constBegin();
         while (url_i != url.constEnd())
         {
             QVERIFY(!url_i.key().isEmpty());
@@ -90,20 +91,20 @@ private slots:
             ++url_i;
         }
 
-        const auto documents   = chip_summary.documents;
-        auto       documents_i = documents.constBegin();
+        const auto documents = chip_summary.documents;
+        auto documents_i = documents.constBegin();
         while (documents_i != documents.constEnd())
         {
             QVERIFY(!documents_i.key().isEmpty());
             QVERIFY(!documents_i.value().isEmpty());
 
-            auto document   = documents_i.value();
+            auto document = documents_i.value();
             auto document_i = document.constBegin();
             while (document_i != document.constEnd())
             {
                 QVERIFY(!document_i.key().isEmpty());
 
-                auto url1   = document_i.value().url;
+                auto url1 = document_i.value().url;
                 auto url1_i = url1.constBegin();
                 while (url1_i != url1.constEnd())
                 {
@@ -116,20 +117,20 @@ private slots:
             ++documents_i;
         }
 
-        const auto modules   = chip_summary.modules;
-        auto       modules_i = modules.constBegin();
+        const auto modules = chip_summary.modules;
+        auto modules_i = modules.constBegin();
         while (modules_i != modules.constEnd())
         {
             QVERIFY(!modules_i.key().isEmpty());
             QVERIFY(!modules_i.value().isEmpty());
 
-            auto module   = modules_i.value();
+            auto module = modules_i.value();
             auto module_i = module.constBegin();
             while (module_i != module.constEnd())
             {
                 QVERIFY(!module_i.key().isEmpty());
 
-                auto description   = module_i.value().description;
+                auto description = module_i.value().description;
                 auto description_i = description.constBegin();
                 while (description_i != description.constEnd())
                 {

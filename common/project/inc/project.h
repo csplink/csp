@@ -36,17 +36,18 @@
 #include "map_table.h"
 #include "project_table.h"
 
-class project final : public QObject {
+class project final : public QObject
+{
     Q_OBJECT
 
-public:
+  public:
     typedef enum
     {
         CODE_PROJECT_TYPE_XMAKE = 0,
         CODE_PROJECT_TYPE_MDK_ARM
     } code_project_type;
 
-public:
+  public:
     /**
      * @brief init config
      */
@@ -237,21 +238,21 @@ public:
      */
     void generate_code(int type);
 
-private:
-    static project          *_instance;
-    project_table::project_t _project;  // project table
-    QString                  _path;     // project file path
-    ip_table::ips_t          _ips;      // ip map
-    map_table::maps_t        _maps;     // hal map
+  private:
+    static project *_instance;
+    project_table::project_t _project; // project table
+    QString _path;                     // project file path
+    ip_table::ips_t _ips;              // ip map
+    map_table::maps_t _maps;           // hal map
 
-public:
+  public:
     /**
      * @brief get project instance
      * @return project instance
      */
     static project *get_instance();
 
-signals:
+  signals:
     /**
      * @brief project property changed signal
      * @param property: property name
@@ -259,22 +260,17 @@ signals:
      * @param old_value: old value
      * @param new_value: new value
      */
-    void signals_pin_property_changed(const QString  &property,
-                                      const QString  &name,
-                                      const QVariant &old_value,
+    void signals_pin_property_changed(const QString &property, const QString &name, const QVariant &old_value,
                                       const QVariant &new_value);
-    void signals_pin_function_property_changed(const QString  &module,
-                                               const QString  &property,
-                                               const QString  &name,
-                                               const QVariant &old_value,
-                                               const QVariant &new_value);
+    void signals_pin_function_property_changed(const QString &module, const QString &property, const QString &name,
+                                               const QVariant &old_value, const QVariant &new_value);
     void signals_project_clear();
 
-private:
-    project()           = default;
+  private:
+    project() = default;
     ~project() override = default;
 
     Q_DISABLE_COPY_MOVE(project)
 };
 
-#endif  // COMMON_PROJECT_CSP_PROJECT_H
+#endif // COMMON_PROJECT_CSP_PROJECT_H

@@ -32,8 +32,9 @@
 
 #include "qtyaml.h"
 
-class repository_table final {
-public:
+class repository_table final
+{
+  public:
     typedef struct
     {
         float lowest;
@@ -54,21 +55,21 @@ public:
 
     typedef struct
     {
-        QString            core;
-        QString            company;
-        QString            line;
-        QString            series;
-        QString            name;
-        current_t          current;
-        float              flash;
-        float              frequency;
-        int                io;
-        QString            package;
+        QString core;
+        QString company;
+        QString line;
+        QString series;
+        QString name;
+        current_t current;
+        float flash;
+        float frequency;
+        int io;
+        QString package;
         QMap<QString, int> peripherals;
-        float              price;
-        float              ram;
-        temperature_t      temperature;
-        voltage_t          voltage;
+        float price;
+        float ram;
+        temperature_t temperature;
+        voltage_t voltage;
     } chip_info_t;
 
     typedef QMap<QString, chip_info_t> chip_line_t;
@@ -84,15 +85,16 @@ public:
         chip_t chips;
     } repository_t;
 
-public:
+  public:
     static repository_t load_repository(const QString &path);
 
-private:
+  private:
     explicit repository_table();
     ~repository_table();
 };
 
-namespace YAML {
+namespace YAML
+{
 
 template <> struct convert<repository_table::current_t>
 {
@@ -110,7 +112,7 @@ template <> struct convert<repository_table::current_t>
             return false;
 
         rhs.lowest = node["Lowest"].as<float>();
-        rhs.run    = node["Run"].as<float>();
+        rhs.run = node["Run"].as<float>();
         return true;
     }
 };
@@ -180,16 +182,16 @@ template <> struct convert<repository_table::chip_info_t>
         if (!node.IsMap() || node.size() != 10)
             return false;
 
-        rhs.core        = node["Core"].as<QString>();
-        rhs.current     = node["Current"].as<repository_table::current_t>();
-        rhs.flash       = node["Flash"].as<float>();
-        rhs.frequency   = node["Frequency"].as<float>();
-        rhs.io          = node["IO"].as<int>();
-        rhs.package     = node["Package"].as<QString>();
+        rhs.core = node["Core"].as<QString>();
+        rhs.current = node["Current"].as<repository_table::current_t>();
+        rhs.flash = node["Flash"].as<float>();
+        rhs.frequency = node["Frequency"].as<float>();
+        rhs.io = node["IO"].as<int>();
+        rhs.package = node["Package"].as<QString>();
         rhs.peripherals = node["Peripherals"].as<QMap<QString, int>>();
-        rhs.ram         = node["Ram"].as<float>();
+        rhs.ram = node["Ram"].as<float>();
         rhs.temperature = node["Temperature"].as<repository_table::temperature_t>();
-        rhs.voltage     = node["Voltage"].as<repository_table::voltage_t>();
+        rhs.voltage = node["Voltage"].as<repository_table::voltage_t>();
         return true;
     }
 };
@@ -212,6 +214,6 @@ template <> struct convert<repository_table::repository_t>
         return true;
     }
 };
-}  // namespace YAML
+} // namespace YAML
 
-#endif  // COMMON_REPO_REPOSITORY_TABLE_H
+#endif // COMMON_REPO_REPOSITORY_TABLE_H

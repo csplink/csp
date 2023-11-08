@@ -33,8 +33,9 @@
 #include "config.h"
 #include "qtyaml.h"
 
-class map_table final {
-public:
+class map_table final
+{
+  public:
     typedef struct
     {
         QMap<QString, QString> comment;
@@ -50,31 +51,32 @@ public:
     {
         QMap<QString, QString> display_name;
         QMap<QString, QString> description;
-        QString                category;
-        bool                   readonly;
+        QString category;
+        bool readonly;
     } property_t;
 
     typedef struct
     {
-        QMap<QString, group_t>    groups;
+        QMap<QString, group_t> groups;
         QMap<QString, property_t> properties;
-        QMap<QString, QString>    total;
-        QMap<QString, QString>    reverse_total;
+        QMap<QString, QString> total;
+        QMap<QString, QString> reverse_total;
     } map_t;
 
     typedef QMap<QString, map_t> maps_t;
 
-public:
-    static map_t  load_map(const QString &path);
-    static map_t  load_map(const QString &hal, const QString &map);
+  public:
+    static map_t load_map(const QString &path);
+    static map_t load_map(const QString &hal, const QString &map);
     static maps_t load_maps(const QString &hal);
 
-private:
+  private:
     explicit map_table();
     ~map_table();
 };
 
-namespace YAML {
+namespace YAML
+{
 
 template <> struct convert<map_table::value_t>
 {
@@ -111,7 +113,7 @@ template <> struct convert<map_table::group_t>
             return false;
 
         rhs.comment = node["Comment"].as<QMap<QString, QString>>();
-        rhs.values  = node["Values"].as<QMap<QString, map_table::value_t>>();
+        rhs.values = node["Values"].as<QMap<QString, map_table::value_t>>();
         return true;
     }
 };
@@ -134,9 +136,9 @@ template <> struct convert<map_table::property_t>
             return false;
 
         rhs.display_name = node["DisplayName"].as<QMap<QString, QString>>();
-        rhs.description  = node["Description"].as<QMap<QString, QString>>();
-        rhs.category     = node["Category"].as<QString>();
-        rhs.readonly     = node["ReadOnly"].as<bool>();
+        rhs.description = node["Description"].as<QMap<QString, QString>>();
+        rhs.category = node["Category"].as<QString>();
+        rhs.readonly = node["ReadOnly"].as<bool>();
         return true;
     }
 };
@@ -156,17 +158,17 @@ template <> struct convert<map_table::map_t>
         if (!node.IsMap() || node.size() != 2)
             return false;
 
-        rhs.groups     = node["Groups"].as<QMap<QString, map_table::group_t>>();
+        rhs.groups = node["Groups"].as<QMap<QString, map_table::group_t>>();
         rhs.properties = node["Properties"].as<QMap<QString, map_table::property_t>>();
 
         auto group_i = rhs.groups.constBegin();
         while (group_i != rhs.groups.constEnd())
         {
-            auto values   = group_i.value().values;
+            auto values = group_i.value().values;
             auto values_i = values.constBegin();
             while (values_i != values.constEnd())
             {
-                auto name  = values_i.key();
+                auto name = values_i.key();
                 auto value = values_i.value();
                 rhs.total.insert(name, value.comment[config::language()]);
                 rhs.reverse_total.insert(value.comment[config::language()], name);
@@ -178,6 +180,6 @@ template <> struct convert<map_table::map_t>
         return true;
     }
 };
-}  // namespace YAML
+} // namespace YAML
 
-#endif  // CSP_MAP_TABLE_H
+#endif // CSP_MAP_TABLE_H

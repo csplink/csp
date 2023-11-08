@@ -33,21 +33,22 @@
 #include "graphicsitem_pin.h"
 #include "pinout_table.h"
 
-#define LQFP_PIN_WIDTH   500
-#define LQFP_PIN_HEIGHT  50
+#define LQFP_PIN_WIDTH 500
+#define LQFP_PIN_HEIGHT 50
 #define LQFP_PIN_SPACING 6
 
-class lqfp final : public QObject {
+class lqfp final : public QObject
+{
     Q_OBJECT
-public:
+  public:
     explicit lqfp(QObject *parent);
     ~lqfp() override;
 
     QList<QGraphicsItem *> get_lqfp(const QString &hal, const QString &company, const QString &name);
 
-private:
-    int                    _pin_count = 0;
+  private:
+    int _pin_count = 0;
     pinout_table::pinout_t _pinout;
 };
 
-#endif  // CSP_LQFP_H
+#endif // CSP_LQFP_H

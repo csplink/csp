@@ -34,32 +34,34 @@
 
 #include "project.h"
 
-namespace Ui {
+namespace Ui
+{
 class home_view;
 }
 
-class home_view : public QWidget {
+class home_view : public QWidget
+{
     Q_OBJECT
 
-public:
+  public:
     explicit home_view(QWidget *parent = nullptr);
     ~home_view() override;
 
-signals:
+  signals:
     void signal_create_project();
 
-public slots:
+  public slots:
     void button_create_chip_project_clicked_callback(bool checked);
     void create_chip_project();
 
-private slots:
+  private slots:
     void button_create_board_project_clicked_callback(bool checked);
     void choose_chip_dialog_finished_callback(int result);
 
-private:
+  private:
     Ui::home_view *ui;
 
     project *_project_instance;
 };
 
-#endif  // HOME_VIEW_H
+#endif // HOME_VIEW_H

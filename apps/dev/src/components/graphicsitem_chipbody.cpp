@@ -33,20 +33,17 @@
 
 #define MARGIN 6
 
-graphicsitem_chipbody::graphicsitem_chipbody(const qreal    width,
-                                             const qreal    height,
-                                             const QString &name,
-                                             const QString &company,
-                                             const QString &package)
+graphicsitem_chipbody::graphicsitem_chipbody(const qreal width, const qreal height, const QString &name,
+                                             const QString &company, const QString &package)
 {
     Q_ASSERT(width > 0 && height > 0);
     Q_ASSERT(!name.isEmpty());
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!package.isEmpty());
 
-    _width   = width;
-    _height  = height;
-    _name    = name.toUpper();
+    _width = width;
+    _height = height;
+    _name = name.toUpper();
     _company = company;
     _package = package.toUpper();
 
@@ -93,7 +90,7 @@ void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsI
     painter->setPen(QPen(QColor(255, 255, 255), 1));
     painter->setFont(*_font);
     const QFontMetrics fm(*_font);
-    int                pixels = fm.horizontalAdvance(_name);
+    int pixels = fm.horizontalAdvance(_name);
     painter->drawText(QPointF((_width - pixels) / 2, _height / 2), _name);
 
     _font->setPointSize(static_cast<int>(_width / 30));
@@ -104,7 +101,7 @@ void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsI
     painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9)), _package);
 
     const int height = fm.height();
-    pixels           = static_cast<int>(fm.horizontalAdvance(_company) * 0.8);
+    pixels = static_cast<int>(fm.horizontalAdvance(_company) * 0.8);
     painter->drawText(QPointF((_width - pixels) / 2, _height * (0.9) - height - 10), _company);
 
     /******************** draw border (with margin) **************************/

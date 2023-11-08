@@ -37,10 +37,11 @@
 #include "config.h"
 #include "repository_table.h"
 
-class repo final : public QObject {
+class repo final : public QObject
+{
     Q_OBJECT
 
-public:
+  public:
     /**
      * @brief init config
      */
@@ -66,15 +67,15 @@ public:
 
     static repo *get_instance();
 
-private:
-    inline static repo            *_instance = nullptr;
+  private:
+    inline static repo *_instance = nullptr;
     repository_table::repository_t _repository;
 
-private:
+  private:
     repo();
     ~repo() override;
 
     Q_DISABLE_COPY_MOVE(repo)
 };
 
-#endif  // COMMON_REPO_CSP_REPO_H
+#endif // COMMON_REPO_CSP_REPO_H

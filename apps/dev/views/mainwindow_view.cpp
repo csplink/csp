@@ -81,47 +81,47 @@ void mainwindow_view::set_mode(const int index)
 {
     switch (index)
     {
-        case STACK_INDEX_HOME: {
-            ui->dockwidget_left->hide();
-            ui->dockwidget_right->hide();
-            ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
-            break;
-        }
-        case STACK_INDEX_CHIP_CONFIGURE: {
-            ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
+    case STACK_INDEX_HOME: {
+        ui->dockwidget_left->hide();
+        ui->dockwidget_right->hide();
+        ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
+        break;
+    }
+    case STACK_INDEX_CHIP_CONFIGURE: {
+        ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
 
-            connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
-                    &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
+        connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
+                &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
 
-            update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
-                                    _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
+        update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
+                                _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
 
-            ui->page_chip_configure_view->init_view();
+        ui->page_chip_configure_view->init_view();
 
-            this->setWindowState(Qt::WindowMaximized);
-            break;
-        }
-        default: {
-            break;
-        }
+        this->setWindowState(Qt::WindowMaximized);
+        break;
+    }
+    default: {
+        break;
+    }
     }
 }
 
 void mainwindow_view::update_modules_treeview(const QString &company, const QString &name) const
 {
     ui->treeview->header()->hide();
-    auto      *model        = new QStandardItemModel(ui->treeview);
+    auto *model = new QStandardItemModel(ui->treeview);
     const auto chip_summary = chip_summary_table::load_chip_summary(company, name);
-    const auto modules      = &chip_summary.modules;
-    auto       modules_i    = modules->constBegin();
+    const auto modules = &chip_summary.modules;
+    auto modules_i = modules->constBegin();
     while (modules_i != modules->constEnd())
     {
         const auto item = new QStandardItem(modules_i.key());
         item->setEditable(false);
         model->appendRow(item);
 
-        const auto module   = &modules_i.value();
-        auto       module_i = module->constBegin();
+        const auto module = &modules_i.value();
+        auto module_i = module->constBegin();
         while (module_i != module->constEnd())
         {
             const auto item_child = new QStandardItem(module_i.key());

@@ -34,9 +34,10 @@
 #include "pinout_table.h"
 #include "project.h"
 
-class graphicsitem_pin final : public interface_graphicsitem_pin {
+class graphicsitem_pin final : public interface_graphicsitem_pin
+{
     Q_OBJECT
-public:
+  public:
     enum direction
     {
         TOP = 0,
@@ -45,7 +46,7 @@ public:
         RIGHT
     } direction_type;
 
-public:
+  public:
     explicit graphicsitem_pin(qreal width, qreal height);
     ~graphicsitem_pin() override;
 
@@ -67,10 +68,10 @@ public:
      */
     void set_name(const QString &name);
 
-signals:
+  signals:
     void signal_property_changed(QGraphicsItem *item);
 
-private slots:
+  private slots:
 
     /**
      * @brief menu triggered callback
@@ -85,34 +86,32 @@ private slots:
      * @param old_value: old value
      * @param new_value: new value
      */
-    void pin_property_changed_callback(const QString  &property,
-                                       const QString  &name,
-                                       const QVariant &old_value,
+    void pin_property_changed_callback(const QString &property, const QString &name, const QVariant &old_value,
                                        const QVariant &new_value);
 
-private:
-    inline static constexpr QColor default_color  = QColor(185, 196, 202);
-    inline static constexpr QColor power_color    = QColor(255, 246, 204);
-    inline static constexpr QColor other_color    = QColor(187, 204, 0);
+  private:
+    inline static constexpr QColor default_color = QColor(185, 196, 202);
+    inline static constexpr QColor power_color = QColor(255, 246, 204);
+    inline static constexpr QColor other_color = QColor(187, 204, 0);
     inline static constexpr QColor selected_color = QColor(0, 204, 68);
 
-    qreal                        _width;
-    qreal                        _height;
-    int                          _direction   = LEFT;
+    qreal _width;
+    qreal _height;
+    int _direction = LEFT;
     pinout_table::pinout_unit_t *_pinout_unit = nullptr;
-    bool                         _locked      = false;
-    QString                      _name;
-    QFont                       *_font;
-    QFontMetrics                *_font_metrics;
-    QString                      _comment;
-    QString                      _function;
-    project                     *_project_instance;
+    bool _locked = false;
+    QString _name;
+    QFont *_font;
+    QFontMetrics *_font_metrics;
+    QString _comment;
+    QString _function;
+    project *_project_instance;
 
-    QMenu   *_menu                    = nullptr;
+    QMenu *_menu = nullptr;
     QAction *_previous_checked_action = nullptr;
-    QAction *_current_checked_action  = nullptr;
+    QAction *_current_checked_action = nullptr;
 
-protected:
+  protected:
     /**
      * @brief defines the outer bounds of the item as a rectangle;
      * @return bounding rectangle
@@ -134,4 +133,4 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 
-#endif  // CSP_GRAPHICSITEM_PIN_H
+#endif // CSP_GRAPHICSITEM_PIN_H

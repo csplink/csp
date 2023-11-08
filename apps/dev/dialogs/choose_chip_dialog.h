@@ -38,21 +38,23 @@
 #include "project.h"
 #include "repo.h"
 
-namespace Ui {
+namespace Ui
+{
 class choose_chip_dialog;
 }
 
-class choose_chip_dialog final : public QDialog {
+class choose_chip_dialog final : public QDialog
+{
     Q_OBJECT
 
-public:
+  public:
     explicit choose_chip_dialog(QWidget *parent = nullptr);
     ~choose_chip_dialog() override;
 
-signals:
+  signals:
     void signals_create_project();
 
-private slots:
+  private slots:
     void treeview_chip_filter_model_item_changed_callback(const QStandardItem *item);
     void tableview_chip_infos_selection_model_selection_changed_callback(const QItemSelection &selected,
                                                                          const QItemSelection &deselected);
@@ -60,10 +62,10 @@ private slots:
     void pushbutton_name_pressed_callback();
     void pushbutton_company_pressed_callback();
 
-private:
+  private:
     Ui::choose_chip_dialog *_ui;
-    repo                   *_repo_instance;
-    project                *_project_instance = nullptr;
+    repo *_repo_instance;
+    project *_project_instance = nullptr;
 
     QString _chip_name;
     QString _hal_name;
@@ -77,9 +79,9 @@ private:
     QStringList _package_keys;
 
     QStandardItem *_company_root = nullptr;
-    QStandardItem *_series_root  = nullptr;
-    QStandardItem *_line_root    = nullptr;
-    QStandardItem *_core_root    = nullptr;
+    QStandardItem *_series_root = nullptr;
+    QStandardItem *_line_root = nullptr;
+    QStandardItem *_core_root = nullptr;
     QStandardItem *_package_root = nullptr;
 
     QList<QStandardItem *> _company_items;
@@ -88,15 +90,15 @@ private:
     QList<QStandardItem *> _core_items;
     QList<QStandardItem *> _package_items;
 
-    QList<QList<QStandardItem *> *>        _chips_items;
-    QSortFilterProxyModel                 *_tableview_chip_infos_proxy_model = nullptr;
+    QList<QList<QStandardItem *> *> _chips_items;
+    QSortFilterProxyModel *_tableview_chip_infos_proxy_model = nullptr;
     QList<repository_table::chip_info_t *> _chips;
 
-private:
+  private:
     void find_all_keys();
     void init_treeview_chip_filter();
     void init_tableview_chip_infos();
     void set_chips_info_ui(const QModelIndexList &selected_indexes);
 };
 
-#endif  // CHOOSE_MCU_DIALOG_H
+#endif // CHOOSE_MCU_DIALOG_H

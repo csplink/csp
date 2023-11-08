@@ -31,10 +31,11 @@
 
 #include <map_table.h>
 
-class testcase_map_table final : public QObject {
+class testcase_map_table final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {

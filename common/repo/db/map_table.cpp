@@ -83,11 +83,11 @@ map_table::maps_t map_table::load_maps(const QString &hal)
 {
     Q_ASSERT(!hal.isEmpty());
 
-    maps_t        maps;
+    maps_t maps;
     const QString p = QString("%1/db/hal/%2/map").arg(config::repodir(), hal.toLower());
     for (const QString &file : os::files(p, QString("*.yml")))
     {
-        auto map      = load_map(file);
+        auto map = load_map(file);
         auto basename = path::basename(file).toLower();
         maps.insert(basename, map);
     }

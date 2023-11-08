@@ -146,8 +146,8 @@ QStringList os::files(const QString &p, const QStringList &filters)
     if (!isdir(p))
         return {};
 
-    const QDir  dir(p);
-    auto        files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    const QDir dir(p);
+    auto files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &file : files)
         paths.append(file.absoluteFilePath());
@@ -165,8 +165,8 @@ QStringList os::dirs(const QString &p, const QStringList &filters)
     if (!isdir(p))
         return {};
 
-    const QDir  dir(p);
-    auto        dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    const QDir dir(p);
+    auto dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &info : dirs)
         paths.append(info.absoluteFilePath());
@@ -179,17 +179,12 @@ QStringList os::dirs(const QString &p, const QString &filter)
     return dirs(p, QStringList() << filter);
 }
 
-bool os::execvf(const QString                &program,
-                const QStringList            &argv,
-                const QMap<QString, QString> &env,
-                const int                     msecs,
-                const QString                &workdir,
-                const QString                &output_file,
-                const QString                &error_file)
+bool os::execvf(const QString &program, const QStringList &argv, const QMap<QString, QString> &env, const int msecs,
+                const QString &workdir, const QString &output_file, const QString &error_file)
 {
-    QProcess            process;
-    const bool          use_output  = !output_file.isEmpty();
-    const bool          use_error   = !error_file.isEmpty();
+    QProcess process;
+    const bool use_output = !output_file.isEmpty();
+    const bool use_error = !error_file.isEmpty();
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
 
     Q_ASSERT(!program.isEmpty());
@@ -220,15 +215,10 @@ bool os::execvf(const QString                &program,
     return true;
 }
 
-bool os::execv(const QString                &program,
-               const QStringList            &argv,
-               const QMap<QString, QString> &env,
-               const int                     msecs,
-               const QString                &workdir,
-               QByteArray                   *output,
-               QByteArray                   *error)
+bool os::execv(const QString &program, const QStringList &argv, const QMap<QString, QString> &env, const int msecs,
+               const QString &workdir, QByteArray *output, QByteArray *error)
 {
-    QProcess            process;
+    QProcess process;
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
 
     Q_ASSERT(!program.isEmpty());

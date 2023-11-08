@@ -38,7 +38,8 @@
 
 #include <yaml-cpp/yaml.h>
 
-namespace YAML {
+namespace YAML
+{
 
 // QString
 template <> struct convert<QString>
@@ -167,7 +168,7 @@ template <typename T, typename U> struct convert<QPair<T, U>>
         if (node.size() != 2)
             return false;
 
-        rhs.first  = node[0].as<T>();
+        rhs.first = node[0].as<T>();
         rhs.second = node[1].as<U>();
         return true;
     }
@@ -204,6 +205,6 @@ template <> struct convert<QStringList>
 
 // TODO: QLinkedList, QStack, QQueue, QSet, QMultiMap, QHash, QMultiHash, ...
 
-}  // end namespace YAML
+} // end namespace YAML
 
-#endif  // COMMON_COMPAT_LAYER_QTYAML_H
+#endif // COMMON_COMPAT_LAYER_QTYAML_H

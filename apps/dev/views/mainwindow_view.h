@@ -35,34 +35,36 @@
 #include "project.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
+namespace Ui
+{
 class mainwindow_view;
 }
 QT_END_NAMESPACE
 
-class mainwindow_view : public QMainWindow {
+class mainwindow_view : public QMainWindow
+{
     Q_OBJECT
 
-private:
+  private:
     typedef enum
     {
         STACK_INDEX_HOME = 0,
         STACK_INDEX_CHIP_CONFIGURE
     } stack_index_type;
 
-public:
+  public:
     explicit mainwindow_view(QWidget *parent = nullptr);
     ~mainwindow_view() override;
 
-private:
+  private:
     void init_mode();
     void set_mode(int index);
 
-public slots:
+  public slots:
     void update_modules_treeview(const QString &company, const QString &name) const;
     void create_project();
 
-private slots:
+  private slots:
     void action_new_chip_triggered_callback(bool checked) const;
     void action_load_triggered_callback(bool checked);
     void action_save_triggered_callback(bool checked);
@@ -71,8 +73,8 @@ private slots:
     void action_report_triggered_callback(bool checked);
     void action_generate_triggered_callback(bool checked);
 
-private:
+  private:
     Ui::mainwindow_view *ui;
-    project             *_project_instance;
+    project *_project_instance;
 };
-#endif  // MAINWINDOW_VIEW_H
+#endif // MAINWINDOW_VIEW_H

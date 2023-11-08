@@ -32,10 +32,11 @@
 #include "config.h"
 #include "repository_table.h"
 
-class testcase_repository_table final : public QObject {
+class testcase_repository_table final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {
@@ -45,28 +46,28 @@ private slots:
     static void load_repository()
     {
         const auto repository = repository_table::load_repository(":/repository.yml");
-        const auto chips      = repository.chips;
-        auto       chips_i    = chips.constBegin();
+        const auto chips = repository.chips;
+        auto chips_i = chips.constBegin();
         while (chips_i != chips.constEnd())
         {
             QVERIFY(!chips_i.key().isEmpty());
             QVERIFY(!chips_i.value().isEmpty());
 
-            auto company   = chips_i.value();
+            auto company = chips_i.value();
             auto company_i = company.constBegin();
             while (company_i != company.constEnd())
             {
                 QVERIFY(!company_i.key().isEmpty());
                 QVERIFY(!company_i.value().isEmpty());
 
-                auto series   = company_i.value();
+                auto series = company_i.value();
                 auto series_i = series.constBegin();
                 while (series_i != series.constEnd())
                 {
                     QVERIFY(!series_i.key().isEmpty());
                     QVERIFY(!series_i.value().isEmpty());
 
-                    auto line   = series_i.value();
+                    auto line = series_i.value();
                     auto line_i = line.constBegin();
                     while (line_i != line.constEnd())
                     {

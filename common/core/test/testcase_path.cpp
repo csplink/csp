@@ -33,10 +33,11 @@
 
 #include "path.h"
 
-class testcase_path final : public QObject {
+class testcase_path final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void basename()
     {

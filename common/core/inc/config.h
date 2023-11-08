@@ -32,8 +32,9 @@
 
 #include <QSettings>
 
-class config final {
-public:
+class config final
+{
+  public:
     /**
      * @brief check if the key is config
      * @param key: config key
@@ -83,13 +84,13 @@ public:
      */
     static QString workspace();
 
-private:
+  private:
     inline static QSettings *_settings = nullptr;
 
-private:
-    config()  = default;
+  private:
+    config() = default;
     ~config() = default;
 
     Q_DISABLE_COPY_MOVE(config)
 };
-#endif  //  COMMON_CORE_CSP_CONFIG_H
+#endif //  COMMON_CORE_CSP_CONFIG_H

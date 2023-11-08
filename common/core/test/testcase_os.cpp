@@ -32,10 +32,11 @@
 
 #include "os.h"
 
-class testcase_os final : public QObject {
+class testcase_os final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void mkdir()
     {

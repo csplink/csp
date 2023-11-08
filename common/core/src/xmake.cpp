@@ -36,13 +36,13 @@
 QString xmake::version(const QString &program)
 {
     QByteArray output;
-    QString    version = "";
+    QString version = "";
 
     Q_ASSERT(!program.isEmpty());
 
     if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
     {
-        const QRegularExpression      regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
+        const QRegularExpression regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
         const QRegularExpressionMatch match = regex.match(output);
 
         if (match.hasMatch())

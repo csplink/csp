@@ -91,7 +91,7 @@ ip_table::ips_t ip_table::load_ips(const QString &hal, const QString &name)
     const QString path = QString("%1/db/hal/%2/%3/ip").arg(config::repodir(), hal.toLower(), name.toLower());
     for (const QString &file : os::files(path, QString("*.yml")))
     {
-        auto ip       = load_ip(file);
+        auto ip = load_ip(file);
         auto basename = path::basename(file).toLower();
         ips.insert(basename, ip);
     }

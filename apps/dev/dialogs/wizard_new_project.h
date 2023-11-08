@@ -35,22 +35,23 @@
 
 #include "project.h"
 
-class wizard_new_project final : public QWizard {
+class wizard_new_project final : public QWizard
+{
     Q_OBJECT
 
-public:
+  public:
     explicit wizard_new_project(const QWidget *parent);
 
     void accept() override;
 
-private:
+  private:
     QLineEdit *_lineedit_project_path = nullptr;
     QLineEdit *_lineedit_project_name = nullptr;
 
-private:
-    project     *_project_instance = nullptr;
+  private:
+    project *_project_instance = nullptr;
     QWizardPage *create_page_introduce();
     QWizardPage *create_page_choose_path();
 };
 
-#endif  // WIZARD_NEW_PROJECT_H
+#endif // WIZARD_NEW_PROJECT_H

@@ -35,13 +35,13 @@
 QString git::version(const QString &program)
 {
     QByteArray output;
-    QString    version = "";
+    QString version = "";
 
     Q_ASSERT(!program.isEmpty());
 
     if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
     {
-        const QRegularExpression      regex(R"(git version (\d+\.\d+\.\d+))");
+        const QRegularExpression regex(R"(git version (\d+\.\d+\.\d+))");
         const QRegularExpressionMatch match = regex.match(output);
 
         if (match.hasMatch())
@@ -55,43 +55,44 @@ QString git::version(const QString &program)
 QString git::variables(const int type, const QString &program, const QString &workdir)
 {
     QStringList argv;
-    QByteArray  output;
-    QString     var = "";
+    QByteArray output;
+    QString var = "";
 
     Q_ASSERT(!program.isEmpty());
 
     switch (type)
     {
-        case TAG:
-            argv << "describe"
-                 << "--tags";
-            break;
-        case TAG_LONG:
-            argv << "describe"
-                 << "--tags"
-                 << "--long";
-            break;
-        case git::BRANCH:
-            argv << "rev-parse"
-                 << "--abbrev-ref"
-                 << "HEAD";
-            break;
-        case git::COMMIT:
-            argv << "rev-parse"
-                 << "--short"
-                 << "HEAD";
-            break;
-        case COMMIT_LONG:
-            argv << "rev-parse"
-                 << "HEAD";
-            break;
-        case git::COMMIT_DATE:
-            argv << "log"
-                 << "-1"
-                 << "--date=format:%Y%m%d%H%M%S"
-                 << "--format=%ad";
-            break;
-        default: return "";
+    case TAG:
+        argv << "describe"
+             << "--tags";
+        break;
+    case TAG_LONG:
+        argv << "describe"
+             << "--tags"
+             << "--long";
+        break;
+    case git::BRANCH:
+        argv << "rev-parse"
+             << "--abbrev-ref"
+             << "HEAD";
+        break;
+    case git::COMMIT:
+        argv << "rev-parse"
+             << "--short"
+             << "HEAD";
+        break;
+    case COMMIT_LONG:
+        argv << "rev-parse"
+             << "HEAD";
+        break;
+    case git::COMMIT_DATE:
+        argv << "log"
+             << "-1"
+             << "--date=format:%Y%m%d%H%M%S"
+             << "--format=%ad";
+        break;
+    default:
+        return "";
     }
 
     if (os::execv(program, argv, {}, 1000, workdir, &output, nullptr))

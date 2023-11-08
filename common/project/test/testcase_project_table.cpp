@@ -33,10 +33,11 @@
 #include <os.h>
 #include <project_table.h>
 
-class testcase_project_table final : public QObject {
+class testcase_project_table final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void load_project()
     {

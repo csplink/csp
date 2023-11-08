@@ -32,8 +32,9 @@
 
 #include "qtyaml.h"
 
-class package_model final {
-public:
+class package_model final
+{
+  public:
     struct
     {
         QString category;
@@ -46,7 +47,7 @@ public:
         QString target;
     } package_model_t;
 
-public:
+  public:
 };
 
-#endif  // COMMON_REPO_PACKAGE_TABLE_H
+#endif // COMMON_REPO_PACKAGE_TABLE_H

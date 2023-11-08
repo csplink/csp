@@ -32,8 +32,9 @@
 
 #include <QString>
 
-class path final {
-public:
+class path final
+{
+  public:
     /**
      * @brief get the file name with no suffix at the end of the path
      * @param p: path
@@ -97,11 +98,11 @@ public:
      */
     static QString appdir();
 
-private:
-    path()  = default;
+  private:
+    path() = default;
     ~path() = default;
 
     Q_DISABLE_COPY_MOVE(path)
 };
 
-#endif  // CSP_PATH_H
+#endif // CSP_PATH_H

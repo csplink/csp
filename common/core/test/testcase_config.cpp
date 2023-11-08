@@ -32,10 +32,11 @@
 
 #include "config.h"
 
-class testcase_config final : public QObject {
+class testcase_config final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {

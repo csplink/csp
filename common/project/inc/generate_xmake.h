@@ -32,8 +32,9 @@
 
 #include "project_table.h"
 
-class generate_xmake final {
-public:
+class generate_xmake final
+{
+  public:
     /**
      * @brief generate xmake code file content from project table
      * @param project_table: project table
@@ -41,11 +42,11 @@ public:
      */
     static QString generate(const project_table::project_t &project_table);
 
-private:
+  private:
     generate_xmake();
     ~generate_xmake();
 
     Q_DISABLE_COPY_MOVE(generate_xmake)
 };
 
-#endif  // CSP_GENERATE_XMAKE_H
+#endif // CSP_GENERATE_XMAKE_H

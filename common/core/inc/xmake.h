@@ -32,8 +32,9 @@
 
 #include "os.h"
 
-class xmake final {
-public:
+class xmake final
+{
+  public:
     /**
      * @brief get xmake version
      * @param program: program path or name
@@ -50,10 +51,10 @@ public:
      */
     static QString lua(const QString &p, const QString &program = "xmake", const QString &workdir = "");
 
-private:
-    xmake()  = default;
+  private:
+    xmake() = default;
     ~xmake() = default;
 
     Q_DISABLE_COPY_MOVE(xmake)
 };
-#endif  //  CSP_COMMON_CORE_XMAKE_H
+#endif //  CSP_COMMON_CORE_XMAKE_H

@@ -104,7 +104,7 @@ QWizardPage *wizard_new_project::create_page_choose_path()
     const auto label2 = new QLabel(tr("Project Name"), page);
     label2->setWordWrap(true);
 
-    auto workspace         = config::workspace();
+    auto workspace = config::workspace();
     _lineedit_project_path = new QLineEdit(workspace, page);
 
     int index = 0;

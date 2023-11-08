@@ -32,10 +32,11 @@
 
 #include "xmake.h"
 
-class testcase_xmake final : public QObject {
+class testcase_xmake final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void version()
     {

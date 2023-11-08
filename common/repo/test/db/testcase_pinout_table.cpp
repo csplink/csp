@@ -32,10 +32,11 @@
 #include "config.h"
 #include "pinout_table.h"
 
-class testcase_pinout_table final : public QObject {
+class testcase_pinout_table final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {

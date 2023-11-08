@@ -32,19 +32,20 @@
 
 #include "os.h"
 
-class git final {
-public:
+class git final
+{
+  public:
     typedef enum
     {
-        TAG = 0,      // "v0.0.0"
-        TAG_LONG,     // "v0.0.0-0-2fc1f208"
-        BRANCH,       // "generated-code-dev "
-        COMMIT,       // "2fc1f208"
-        COMMIT_LONG,  // "2fc1f208201480569aef0b19db1ec74b5d19ed1a"
-        COMMIT_DATE   // "20230814164314"
+        TAG = 0,     // "v0.0.0"
+        TAG_LONG,    // "v0.0.0-0-2fc1f208"
+        BRANCH,      // "generated-code-dev "
+        COMMIT,      // "2fc1f208"
+        COMMIT_LONG, // "2fc1f208201480569aef0b19db1ec74b5d19ed1a"
+        COMMIT_DATE  // "20230814164314"
     } variables_type;
 
-public:
+  public:
     /**
      * @brief get git version
      * @param program: program path or name
@@ -61,10 +62,10 @@ public:
      */
     static QString variables(int type, const QString &program = "git", const QString &workdir = "");
 
-private:
-    git()  = default;
+  private:
+    git() = default;
     ~git() = default;
 
     Q_DISABLE_COPY_MOVE(git)
 };
-#endif  //  CSP_COMMON_CORE_GIT_H
+#endif //  CSP_COMMON_CORE_GIT_H

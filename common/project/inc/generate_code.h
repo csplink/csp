@@ -34,11 +34,12 @@
 
 #include "project_table.h"
 
-class generate_code final {
-public:
-    typedef QMap<QString, QString> code_content_t;  // <file name, file content>
+class generate_code final
+{
+  public:
+    typedef QMap<QString, QString> code_content_t; // <file name, file content>
 
-public:
+  public:
     /**
      * @brief generate code file content from project table
      * @param project_table: project table
@@ -46,14 +47,14 @@ public:
      */
     static code_content_t generate_code_content(const project_table::project_t &project_table);
 
-private:
+  private:
     static QString generate_code_content_main(const project_table::project_t &project_table);
 
-private:
+  private:
     generate_code();
     ~generate_code();
 
     Q_DISABLE_COPY_MOVE(generate_code)
 };
 
-#endif  // CSP_GENERATE_CODE_H
+#endif // CSP_GENERATE_CODE_H
