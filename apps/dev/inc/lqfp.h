@@ -33,8 +33,8 @@
 #include "graphicsitem_pin.h"
 #include "pinout_table.h"
 
-#define LQFP_PIN_WIDTH 500
-#define LQFP_PIN_HEIGHT 50
+#define LQFP_PIN_WIDTH   500
+#define LQFP_PIN_HEIGHT  50
 #define LQFP_PIN_SPACING 6
 
 class lqfp final : public QObject

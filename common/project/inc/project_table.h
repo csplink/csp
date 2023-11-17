@@ -32,12 +32,12 @@
 
 #include "qtyaml.h"
 
-#define CSP_PROJECT_CORE_NAME "name"
-#define CSP_PROJECT_CORE_HAL "hal"
+#define CSP_PROJECT_CORE_NAME     "name"
+#define CSP_PROJECT_CORE_HAL      "hal"
 #define CSP_PROJECT_CORE_HAL_NAME "hal.name"
-#define CSP_PROJECT_CORE_PACKAGE "package"
-#define CSP_PROJECT_CORE_COMPANY "company"
-#define CSP_PROJECT_CORE_TYPE "type"
+#define CSP_PROJECT_CORE_PACKAGE  "package"
+#define CSP_PROJECT_CORE_COMPANY  "company"
+#define CSP_PROJECT_CORE_TYPE     "type"
 
 class project_table
 {

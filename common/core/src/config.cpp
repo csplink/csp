@@ -32,16 +32,16 @@
 #include "os.h"
 #include "path.h"
 
-#define CSP_CONFIG_FILE_PATH "config.ini"
-#define CSP_CONFIG_DEFAULT_VALUE "null"
+#define CSP_CONFIG_FILE_PATH               "config.ini"
+#define CSP_CONFIG_DEFAULT_VALUE           "null"
 
-#define CSP_CONFIG_KEY_REPO_DIR "core/repodir"
-#define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR "csp_repo"
+#define CSP_CONFIG_KEY_REPO_DIR            "core/repodir"
+#define CSP_CONFIG_VALUE_DEFAULT_REPO_DIR  "csp_repo"
 
-#define CSP_CONFIG_KEY_LANGUAGE "core/language"
-#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE "zh_CN"
+#define CSP_CONFIG_KEY_LANGUAGE            "core/language"
+#define CSP_CONFIG_VALUE_DEFAULT_LANGUAGE  "zh_CN"
 
-#define CSP_CONFIG_KEY_WORKSPACE "core/workspace"
+#define CSP_CONFIG_KEY_WORKSPACE           "core/workspace"
 #define CSP_CONFIG_VALUE_DEFAULT_WORKSPACE "workspace"
 
 bool config::is_config(const QString &key)

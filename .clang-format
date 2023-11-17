@@ -1,4 +1,6 @@
 BasedOnStyle: Microsoft
 ---
 Language: Cpp
-...
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+BraceWrapping:
+  AfterExternBlock: false
