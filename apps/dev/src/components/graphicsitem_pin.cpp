@@ -65,7 +65,7 @@ graphicsitem_pin::~graphicsitem_pin()
     delete _font;
     delete _menu;
     delete _pinout_unit;
-    this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(nullptr));
+    this->setProperty(interface_graphicsitem_pin::property_name_pinout_unit_ptr, QVariant::fromValue(nullptr));
 }
 
 QRectF graphicsitem_pin::boundingRect() const
@@ -208,8 +208,8 @@ void graphicsitem_pin::set_pinout_unit(pinout_table::pinout_unit_t *unit)
         _menu->addAction(action);
         ++function_i;
     }
-    this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR, QVariant::fromValue(_menu));
-    this->setProperty(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR, QVariant::fromValue(unit));
+    this->setProperty(interface_graphicsitem_pin::property_name_menu_ptr, QVariant::fromValue(_menu));
+    this->setProperty(interface_graphicsitem_pin::property_name_pinout_unit_ptr, QVariant::fromValue(unit));
 
     _comment = _project_instance->get_pin_comment(_name);
     _function = _project_instance->get_pin_function(_name);

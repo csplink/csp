@@ -61,10 +61,10 @@ void chip_configure_view::set_propertybrowser(propertybrowser *instance)
 
 void chip_configure_view::init_view()
 {
-    const auto package = _project_instance->get_core(CSP_PROJECT_CORE_PACKAGE).toLower();
-    const auto hal = _project_instance->get_core(CSP_PROJECT_CORE_HAL).toLower();
-    const auto company = _project_instance->get_core(CSP_PROJECT_CORE_COMPANY);
-    const auto name = _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME);
+    const auto package = _project_instance->get_core(project_table::core_package).toLower();
+    const auto hal = _project_instance->get_core(project_table::core_hal).toLower();
+    const auto company = _project_instance->get_core(project_table::core_company);
+    const auto name = _project_instance->get_core(project_table::core_hal_name);
 
     delete _ui->graphicsview->scene();
     const auto graphicsscene = new QGraphicsScene(_ui->graphicsview);

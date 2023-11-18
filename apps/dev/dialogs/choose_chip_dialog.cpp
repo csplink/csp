@@ -372,11 +372,11 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
         connect(&wizard, &wizard_new_project::finished, this, [=](int result) {
             if (result == QDialog::Accepted)
             {
-                _project_instance->set_core(CSP_PROJECT_CORE_HAL, _hal_name);
-                _project_instance->set_core(CSP_PROJECT_CORE_HAL_NAME, _chip_name);
-                _project_instance->set_core(CSP_PROJECT_CORE_PACKAGE, _package_name);
-                _project_instance->set_core(CSP_PROJECT_CORE_COMPANY, _company_name);
-                _project_instance->set_core(CSP_PROJECT_CORE_TYPE, "chip");
+                _project_instance->set_core(project_table::core_hal, _hal_name);
+                _project_instance->set_core(project_table::core_hal_name, _chip_name);
+                _project_instance->set_core(project_table::core_package, _package_name);
+                _project_instance->set_core(project_table::core_company, _company_name);
+                _project_instance->set_core(project_table::core_type, "chip");
                 _project_instance->load_ips(_hal_name, _chip_name);
                 _project_instance->load_maps(_hal_name);
 

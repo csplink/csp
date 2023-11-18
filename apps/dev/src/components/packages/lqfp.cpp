@@ -33,7 +33,14 @@
 #include "lqfp.h"
 #include "os.h"
 
-#define LENGTH_OF_BODY (LQFP_PIN_SPACING + (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) * num)
+static constexpr const int lqfp_pin_width = 500;
+static constexpr const int lqfp_pin_height = 50;
+static constexpr const int lqfp_pin_spacing = 6;
+
+static constexpr int get_body_length(const int num)
+{
+    return lqfp_pin_spacing + (lqfp_pin_height + lqfp_pin_spacing) * num;
+}
 
 lqfp::lqfp(QObject *parent) : QObject(parent)
 {
@@ -71,36 +78,36 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
         {
             const auto index = i;
             direction = graphicsitem_pin::direction::LEFT;
-            w = LQFP_PIN_WIDTH;
-            h = LQFP_PIN_HEIGHT;
+            w = lqfp_pin_width;
+            h = lqfp_pin_height;
             x = 0;
-            y = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
+            y = index * (lqfp_pin_height + lqfp_pin_spacing) + lqfp_pin_width + lqfp_pin_spacing;
         }
         else if (i >= num && i < 2 * num)
         {
             const auto index = i - num;
             direction = graphicsitem_pin::direction::BOTTOM;
-            w = LQFP_PIN_HEIGHT;
-            h = LQFP_PIN_WIDTH;
-            x = index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING) + LQFP_PIN_WIDTH + LQFP_PIN_SPACING;
-            y = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
+            w = lqfp_pin_height;
+            h = lqfp_pin_width;
+            x = index * (lqfp_pin_height + lqfp_pin_spacing) + lqfp_pin_width + lqfp_pin_spacing;
+            y = lqfp_pin_width + get_body_length(num);
         }
         else if (i >= 2 * num && i < 3 * num)
         {
             const auto index = 3 * num - i;
             direction = graphicsitem_pin::direction::RIGHT;
-            w = LQFP_PIN_WIDTH;
-            h = LQFP_PIN_HEIGHT;
-            x = LQFP_PIN_WIDTH + LENGTH_OF_BODY;
-            y = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
+            w = lqfp_pin_width;
+            h = lqfp_pin_height;
+            x = lqfp_pin_width + get_body_length(num);
+            y = lqfp_pin_width + get_body_length(num) - index * (lqfp_pin_height + lqfp_pin_spacing);
         }
         else
         {
             const auto index = 4 * num - i;
             direction = graphicsitem_pin::direction::TOP;
-            w = LQFP_PIN_HEIGHT;
-            h = LQFP_PIN_WIDTH;
-            x = LQFP_PIN_WIDTH + LENGTH_OF_BODY - index * (LQFP_PIN_HEIGHT + LQFP_PIN_SPACING);
+            w = lqfp_pin_height;
+            h = lqfp_pin_width;
+            x = lqfp_pin_width + get_body_length(num) - index * (lqfp_pin_height + lqfp_pin_spacing);
             y = 0;
         }
         auto *item = new graphicsitem_pin(w, h);
@@ -111,9 +118,9 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
         items << item;
     }
 
-    auto *item =
-        new graphicsitem_chipbody(LENGTH_OF_BODY, LENGTH_OF_BODY, name, company, "LQFP" + QString::number(_pin_count));
-    item->setPos(QPointF(LQFP_PIN_WIDTH, LQFP_PIN_WIDTH));
+    auto *item = new graphicsitem_chipbody(get_body_length(num), get_body_length(num), name, company,
+                                           "LQFP" + QString::number(_pin_count));
+    item->setPos(QPointF(lqfp_pin_width, lqfp_pin_width));
     items << item;
 
     return items;

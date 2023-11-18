@@ -32,12 +32,12 @@
 #include "graphicsview_panzoom.h"
 #include "interface_graphicsitem_pin.h"
 
-#define MIN_SCALE 0
-#define MAX_SCALE 1000
+static constexpr const int min_scale = 0;
+static constexpr const int max_scale = 1000;
 
 graphicsview_panzoom::graphicsview_panzoom(QWidget *parent) : QGraphicsView(parent)
 {
-    _scale = (MIN_SCALE + MAX_SCALE) / 2;
+    _scale = (min_scale + max_scale) / 2;
 
     this->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     this->setDragMode(QGraphicsView::ScrollHandDrag);
@@ -58,7 +58,7 @@ graphicsview_panzoom::~graphicsview_panzoom() = default;
 void graphicsview_panzoom::setup_matrix()
 {
     const qreal scale =
-        qPow(static_cast<qreal>(2), (_scale - (int)((MIN_SCALE + MAX_SCALE) / 2)) / static_cast<qreal>(50));
+        qPow(static_cast<qreal>(2), (_scale - (int)((min_scale + max_scale) / 2)) / static_cast<qreal>(50));
     QTransform matrix;
     matrix.scale(scale, scale);
     //    matrix.rotate(90);
@@ -109,16 +109,16 @@ void graphicsview_panzoom::wheelEvent(QWheelEvent *event)
 void graphicsview_panzoom::zoom_in(const int value)
 {
     _scale += value;
-    if (_scale >= MAX_SCALE)
-        _scale = MAX_SCALE;
+    if (_scale >= max_scale)
+        _scale = max_scale;
     setup_matrix();
 }
 
 void graphicsview_panzoom::zoom_out(const int value)
 {
     _scale -= value;
-    if (_scale <= MIN_SCALE)
-        _scale = MIN_SCALE;
+    if (_scale <= min_scale)
+        _scale = min_scale;
     setup_matrix();
 }
 
@@ -131,7 +131,7 @@ void graphicsview_panzoom::contextMenuEvent(QContextMenuEvent *event)
     if (!(item->flags() & QGraphicsItem::ItemIsFocusable))
         return;
 
-    const auto menu = item->property(GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR).value<QMenu *>();
+    const auto menu = item->property(interface_graphicsitem_pin::property_name_menu_ptr).value<QMenu *>();
     Q_ASSERT(menu != nullptr);
 
     menu->exec(event->globalPos());

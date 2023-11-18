@@ -32,13 +32,6 @@
 
 #include "qtyaml.h"
 
-#define CSP_PROJECT_CORE_NAME     "name"
-#define CSP_PROJECT_CORE_HAL      "hal"
-#define CSP_PROJECT_CORE_HAL_NAME "hal.name"
-#define CSP_PROJECT_CORE_PACKAGE  "package"
-#define CSP_PROJECT_CORE_COMPANY  "company"
-#define CSP_PROJECT_CORE_TYPE     "type"
-
 class project_table
 {
   public:
@@ -58,6 +51,13 @@ class project_table
         QMap<QString, pin_config_t> pin_configs; // pin configs
         QMap<QString, QString> core;             // core configs
     } project_t;
+
+    static constexpr const char *core_name = "name";
+    static constexpr const char *core_hal = "hal";
+    static constexpr const char *core_hal_name = "hal.name";
+    static constexpr const char *core_package = "package";
+    static constexpr const char *core_company = "company";
+    static constexpr const char *core_type = "type";
 
   public:
     /**

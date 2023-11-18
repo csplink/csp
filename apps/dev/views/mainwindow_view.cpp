@@ -71,7 +71,7 @@ mainwindow_view::~mainwindow_view()
 
 void mainwindow_view::init_mode()
 {
-    if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
+    if (_project_instance->get_core(project_table::core_type) == "chip")
         set_mode(STACK_INDEX_CHIP_CONFIGURE);
     else
         set_mode(STACK_INDEX_HOME);
@@ -93,8 +93,8 @@ void mainwindow_view::set_mode(const int index)
         connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
                 &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
 
-        update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
-                                _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
+        update_modules_treeview(_project_instance->get_core(project_table::core_company),
+                                _project_instance->get_core(project_table::core_hal_name));
 
         ui->page_chip_configure_view->init_view();
 

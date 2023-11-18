@@ -31,7 +31,7 @@
 
 #include "graphicsitem_chipbody.h"
 
-#define MARGIN 6
+static constexpr const int margin = 6;
 
 graphicsitem_chipbody::graphicsitem_chipbody(const qreal width, const qreal height, const QString &name,
                                              const QString &company, const QString &package)
@@ -82,7 +82,7 @@ void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     /******************** draw pin1 circle **************************/
     painter->setBrush(QColor(220, 230, 240));
-    painter->drawEllipse(QRectF(MARGIN * 2, MARGIN * 2, 20.0, 20.0));
+    painter->drawEllipse(QRectF(margin * 2, margin * 2, 20.0, 20.0));
 
     /******************** draw text **************************/
     _font->setStyle(QFont::StyleNormal);
@@ -106,10 +106,10 @@ void graphicsitem_chipbody::paint(QPainter *painter, const QStyleOptionGraphicsI
 
     /******************** draw border (with margin) **************************/
     QVarLengthArray<QLineF, 4> lines;
-    lines.append(QLineF(MARGIN, MARGIN, MARGIN, _height - MARGIN));
-    lines.append(QLineF(MARGIN, MARGIN, _width - MARGIN, MARGIN));
-    lines.append(QLineF(_width - MARGIN, _height - MARGIN, MARGIN, _height - MARGIN));
-    lines.append(QLineF(_width - MARGIN, _height - MARGIN, _width - MARGIN, MARGIN));
+    lines.append(QLineF(margin, margin, margin, _height - margin));
+    lines.append(QLineF(margin, margin, _width - margin, margin));
+    lines.append(QLineF(_width - margin, _height - margin, margin, _height - margin));
+    lines.append(QLineF(_width - margin, _height - margin, _width - margin, margin));
     painter->drawLines(lines.data(), lines.size());
 
     painter->setBrush(b);

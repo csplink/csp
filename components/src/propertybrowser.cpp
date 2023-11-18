@@ -87,7 +87,7 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
     const auto pin = dynamic_cast<interface_graphicsitem_pin *>(item);
     const auto name = pin->objectName();
     const auto pinout_unit =
-        pin->property(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR).value<pinout_table::pinout_unit_t *>();
+        pin->property(interface_graphicsitem_pin::property_name_pinout_unit_ptr).value<pinout_table::pinout_unit_t *>();
     const auto function = _project_instance->get_pin_function(name);            // such as "GPIO-Input"
     const auto comment = _project_instance->get_pin_comment(name);              // such as "LED0"
     const auto locked = _project_instance->get_pin_locked(name);                // such as "true"

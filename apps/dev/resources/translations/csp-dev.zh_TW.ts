@@ -112,7 +112,7 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="45"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="359"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="358"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
@@ -196,13 +196,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="348"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="368"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="347"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="367"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="363"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="362"/>
         <source>Please choose a chip.</source>
         <translation type="unfinished"></translation>
     </message>
