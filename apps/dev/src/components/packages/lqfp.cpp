@@ -33,9 +33,9 @@
 #include "lqfp.h"
 #include "os.h"
 
-static constexpr const int lqfp_pin_width = 500;
-static constexpr const int lqfp_pin_height = 50;
-static constexpr const int lqfp_pin_spacing = 6;
+static constexpr int lqfp_pin_width = 500;
+static constexpr int lqfp_pin_height = 50;
+static constexpr int lqfp_pin_spacing = 6;
 
 static constexpr int get_body_length(const int num)
 {

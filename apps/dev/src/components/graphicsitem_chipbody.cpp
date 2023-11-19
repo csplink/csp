@@ -31,7 +31,7 @@
 
 #include "graphicsitem_chipbody.h"
 
-static constexpr const int margin = 6;
+static constexpr int margin = 6;
 
 graphicsitem_chipbody::graphicsitem_chipbody(const qreal width, const qreal height, const QString &name,
                                              const QString &company, const QString &package)
