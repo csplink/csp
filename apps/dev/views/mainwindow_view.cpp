@@ -71,7 +71,7 @@ mainwindow_view::~mainwindow_view()
 
 void mainwindow_view::init_mode()
 {
-    if (_project_instance->get_core(project_table::core_type) == "chip")
+    if (_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
         set_mode(STACK_INDEX_CHIP_CONFIGURE);
     else
         set_mode(STACK_INDEX_HOME);
@@ -93,8 +93,8 @@ void mainwindow_view::set_mode(const int index)
         connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
                 &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
 
-        update_modules_treeview(_project_instance->get_core(project_table::core_company),
-                                _project_instance->get_core(project_table::core_hal_name));
+        update_modules_treeview(_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY),
+                                _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_HAL_NAME));
 
         ui->page_chip_configure_view->init_view();
 

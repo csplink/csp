@@ -23,12 +23,12 @@
 #
 
 Core:
-  name: untitled
-  hal: csp_hal_apm32f1
-  hal.name: apm32f103zet6
-  package: LQFP144
-  company: Geehy
-  type: chip
+  Name: untitled
+  HAL: csp_hal_apm32f1
+  HAL.Name: apm32f103zet6
+  Package: LQFP144
+  Company: Geehy
+  Type: chip
 PinConfigs:
   PA1:
     Function: ""

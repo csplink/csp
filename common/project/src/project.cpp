@@ -52,22 +52,60 @@ project *project::get_instance()
     return _instance;
 }
 
-QString project::get_core(const QString &key) const
+QString project::get_core(const core_attribute_type type) const
 {
-    Q_ASSERT(!key.isEmpty());
+    QString value;
 
-    if (_project.core.contains(key))
-        return _project.core[key];
-    else
-        return "";
+    switch (type)
+    {
+    case CORE_ATTRIBUTE_TYPE_NAME:
+        value = _project.core.name;
+        break;
+    case CORE_ATTRIBUTE_TYPE_HAL:
+        value = _project.core.hal;
+        break;
+    case CORE_ATTRIBUTE_TYPE_HAL_NAME:
+        value = _project.core.hal_name;
+        break;
+    case CORE_ATTRIBUTE_TYPE_PACKAGE:
+        value = _project.core.package;
+        break;
+    case CORE_ATTRIBUTE_TYPE_COMPANY:
+        value = _project.core.company;
+        break;
+    case CORE_ATTRIBUTE_TYPE_TYPE:
+        value = _project.core.type;
+        break;
+    }
+
+    return value;
 }
 
-void project::set_core(const QString &key, const QString &value)
+void project::set_core(const core_attribute_type type, const QString &value)
 {
-    Q_ASSERT(!key.isEmpty());
     Q_ASSERT(!value.isEmpty());
 
-    _project.core[key] = value;
+    switch (type)
+    {
+    case CORE_ATTRIBUTE_TYPE_NAME:
+        _project.core.name = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_HAL:
+        _project.core.hal = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_HAL_NAME:
+        _project.core.hal_name = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_PACKAGE:
+        _project.core.package = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_COMPANY:
+        _project.core.company = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_TYPE:
+        _project.core.type = value;
+        break;
+    }
 }
 
 QString project::get_path() const
@@ -142,7 +180,7 @@ QString &project::get_pin_function(const QString &key)
     return _project.pin_configs[key].function;
 }
 
-void project::set_pin_locked(const QString &key, bool locked)
+void project::set_pin_locked(const QString &key, const bool locked)
 {
     Q_ASSERT(!key.isEmpty());
     emit signals_pin_property_changed("locked", key, _project.pin_configs[key].locked, locked);
@@ -220,8 +258,8 @@ void project::load_project(const QString &path)
     _project = project_table::load_project(path);
     _path = path;
 
-    load_maps(_project.core[project_table::core_hal]);
-    load_ips(_project.core[project_table::core_hal], _project.core[project_table::core_hal_name]);
+    load_maps(_project.core.hal);
+    load_ips(_project.core.hal, _project.core.hal_name);
 }
 
 void project::save_project(const QString &path) const

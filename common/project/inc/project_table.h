@@ -48,16 +48,19 @@ class project_table
 
     typedef struct
     {
-        QMap<QString, pin_config_t> pin_configs; // pin configs
-        QMap<QString, QString> core;             // core configs
-    } project_t;
+        QString name;     // name
+        QString hal;      // hal
+        QString hal_name; // hal.name
+        QString package;  // package
+        QString company;  // company
+        QString type;     // type
+    } core_t;
 
-    static constexpr const char *core_name = "name";
-    static constexpr const char *core_hal = "hal";
-    static constexpr const char *core_hal_name = "hal.name";
-    static constexpr const char *core_package = "package";
-    static constexpr const char *core_company = "company";
-    static constexpr const char *core_type = "type";
+    typedef struct
+    {
+        QMap<QString, pin_config_t> pin_configs; // pin configs
+        core_t core;                             // core configs
+    } project_t;
 
   public:
     /**
@@ -103,7 +106,7 @@ template <> struct convert<project_table::project_t>
         if (!node.IsMap() || node.size() < 1)
             return false;
 
-        rhs.core = node["Core"].as<QMap<QString, QString>>();
+        rhs.core = node["Core"].as<project_table::core_t>();
         if (node["PinConfigs"].IsDefined())
             rhs.pin_configs = node["PinConfigs"].as<QMap<QString, project_table::pin_config_t>>();
         return true;
@@ -132,6 +135,35 @@ template <> struct convert<project_table::pin_config_t>
         rhs.locked = node["Locked"].as<bool>();
         if (node["FunctionProperty"].IsDefined())
             rhs.fp = node["FunctionProperty"].as<project_table::pin_function_properties_t>();
+        return true;
+    }
+};
+
+template <> struct convert<project_table::core_t>
+{
+    static Node encode(const project_table::core_t &rhs)
+    {
+        Node node;
+        node.force_insert("Name", rhs.name);
+        node.force_insert("HAL", rhs.hal);
+        node.force_insert("HAL.Name", rhs.hal_name);
+        node.force_insert("Package", rhs.package);
+        node.force_insert("Company", rhs.company);
+        node.force_insert("Type", rhs.type);
+        return node;
+    }
+
+    static bool decode(const Node &node, project_table::core_t &rhs)
+    {
+        if (!node.IsMap() || node.size() < 6)
+            return false;
+
+        rhs.name = node["Name"].as<QString>();
+        rhs.hal = node["HAL"].as<QString>();
+        rhs.hal_name = node["HAL.Name"].as<QString>();
+        rhs.package = node["Package"].as<QString>();
+        rhs.company = node["Company"].as<QString>();
+        rhs.type = node["Type"].as<QString>();
         return true;
     }
 };

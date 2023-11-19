@@ -66,7 +66,7 @@ void wizard_new_project::accept()
     }
 
     _project_instance->set_path(QString("%1/%2/%2.csp").arg(path, name));
-    _project_instance->set_core(project_table::core_name, name);
+    _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_NAME, name);
 
     QDialog::accept();
 }

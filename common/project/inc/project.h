@@ -47,6 +47,16 @@ class project final : public QObject
         CODE_PROJECT_TYPE_MDK_ARM
     } code_project_type;
 
+    typedef enum
+    {
+        CORE_ATTRIBUTE_TYPE_NAME = 0,
+        CORE_ATTRIBUTE_TYPE_HAL,
+        CORE_ATTRIBUTE_TYPE_HAL_NAME,
+        CORE_ATTRIBUTE_TYPE_PACKAGE,
+        CORE_ATTRIBUTE_TYPE_COMPANY,
+        CORE_ATTRIBUTE_TYPE_TYPE,
+    } core_attribute_type;
+
   public:
     /**
      * @brief init config
@@ -61,17 +71,17 @@ class project final : public QObject
     /******************* core ***********************/
     /**
      * @brief get core config value by core name
-     * @param key: core name
+     * @param type: core attribute type
      * @return core config value
      */
-    QString get_core(const QString &key) const;
+    QString get_core(core_attribute_type type) const;
 
     /**
      * @brief set core config value by core name
-     * @param key: core name
+     * @param type: core attribute type
      * @param value: core config value
      */
-    void set_core(const QString &key, const QString &value);
+    void set_core(core_attribute_type type, const QString &value);
     /***********************************************/
 
     /**

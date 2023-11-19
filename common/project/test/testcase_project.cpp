@@ -49,8 +49,8 @@ class testcase_project final : public QObject
 
     static void core()
     {
-        g_project_instance->set_core("name", "value");
-        const auto core = g_project_instance->get_core("name");
+        g_project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_NAME, "value");
+        const auto core = g_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_NAME);
         QVERIFY(core == "value");
     }
 

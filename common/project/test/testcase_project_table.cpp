@@ -42,13 +42,13 @@ class testcase_project_table final : public QObject
     static void load_project()
     {
         const auto p = project_table::load_project(":/project.yml");
-        QVERIFY(!p.core.isEmpty());
+        QVERIFY(!p.core.name.isEmpty());
     }
 
     static void save_project()
     {
         auto p = project_table::project_t();
-        p.core.insert("name", "test");
+        p.core.name = "test";
         project_table::pin_config_t pin_config;
         pin_config.comment = "PA1-OUT";
         p.pin_configs.insert("PA1", pin_config);
@@ -59,7 +59,7 @@ class testcase_project_table final : public QObject
     static void dump_project()
     {
         auto p = project_table::project_t();
-        p.core.insert("name", "test");
+        p.core.name = "test";
         p.pin_configs.insert("test", project_table::pin_config_t());
         const auto str = project_table::dump_project(p);
         QVERIFY(!str.isEmpty());
