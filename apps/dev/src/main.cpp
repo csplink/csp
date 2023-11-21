@@ -113,5 +113,9 @@ int main(int argc, char *argv[])
     repo::deinit();
     config::deinit();
 
+    Q_CLEANUP_RESOURCE(qtpropertybrowser);
+    Q_CLEANUP_RESOURCE(project);
+    Q_CLEANUP_RESOURCE(core);
+
     return rtn;
 }
