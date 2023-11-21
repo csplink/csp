@@ -111,24 +111,24 @@ class os final
 
     /**
      * @brief check if the directory exists.
-     * @param p: path
+     * @param path: path
      * @return true if the directory exists, otherwise false.
      */
-    static bool isdir(const QString &p);
+    static bool isdir(const QString &path);
 
     /**
      * @brief check if the file exists.
-     * @param p: path
+     * @param path: path
      * @return true if the file exists, otherwise false.
      */
-    static bool isfile(const QString &p);
+    static bool isfile(const QString &path);
 
     /**
      * @brief check if the path exists.
-     * @param p: path
+     * @param path: path
      * @return true if the path exists, otherwise false.
      */
-    static bool exists(const QString &p);
+    static bool exists(const QString &path);
 
     /**
      * @brief open dialog and get an existing directory selected by the user.
@@ -162,27 +162,27 @@ class os final
 
     /**
      * @brief traverse to get all the files in the specified directory
-     * @param p: directory path
+     * @param path: directory path
      * @param filter: file filter
      * @return file list
      */
-    static QStringList files(const QString &p, const QString &filter);
+    static QStringList files(const QString &path, const QString &filter);
 
     /**
      * @brief traverse to get all the directories in the specified directory
-     * @param p: directory path
+     * @param path: directory path
      * @param filters: file filter
      * @return directory list
      */
-    static QStringList dirs(const QString &p, const QStringList &filters);
+    static QStringList dirs(const QString &path, const QStringList &filters);
 
     /**
      * @brief traverse to get all the directories in the specified directory
-     * @param p: directory path
+     * @param path: directory path
      * @param filter: file filter
      * @return directory list
      */
-    static QStringList dirs(const QString &p, const QString &filter);
+    static QStringList dirs(const QString &path, const QString &filter);
 
     /**
      * @brief running native shell commands with file log
@@ -216,26 +216,26 @@ class os final
 
     /**
      * @brief read a file
-     * @param p: path
+     * @param path: path
      * @return file content
      */
-    static QByteArray readfile(const QString &p);
+    static QByteArray readfile(const QString &path);
 
     /**
      * @brief write data to file
-     * @param p: path
+     * @param path: path
      * @param data: data
      * @param overwrite: is overwrite
      * @return true if write successfully, otherwise false.
      */
-    static bool writefile(const QString &p, const QByteArray &data, bool overwrite = true);
+    static bool writefile(const QString &path, const QByteArray &data, bool overwrite = true);
 
     /**
      * @brief delete files or directory trees
-     * @param p: path
+     * @param path: path
      * @return true if delete successfully, otherwise false.
      */
-    static bool rm(const QString &p);
+    static bool rm(const QString &path);
 
   private:
     os() = default;
