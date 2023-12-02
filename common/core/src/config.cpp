@@ -113,3 +113,17 @@ QString config::workspace()
     const auto appdir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_workspace);
     return _settings->value(csp_config_key_workspace, appdir).toString();
 }
+
+QString config::default_workdir()
+{
+    const QString workdir = QString("%1/workdir").arg(path::appdir());
+    const QString xmake_lua = QString("%1/xmake.lua").arg(workdir);
+    os::mkdir(workdir);
+
+    if (!os::exists(xmake_lua))
+    {
+        os::writefile(xmake_lua, "", true);
+    }
+
+    return workdir;
+}

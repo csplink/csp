@@ -84,6 +84,12 @@ class config final
      */
     static QString workspace();
 
+    /**
+     * @brief get default work dir;
+     * @return work dir; <always returns a fixed value>
+     */
+    static QString default_workdir();
+
   private:
     inline static QSettings *_settings = nullptr;
 
