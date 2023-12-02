@@ -19,16 +19,9 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-05-11     xqyjlj       initial version
+# 2023-12-02     xqyjlj       initial version
 #
+set(name nlohmann-json)
 
-add_subdirectory(nlohmann-json)
-add_subdirectory(qtpropertybrowser)
-
-###############################################
-
-set(YAML_CPP_BUILD_CONTRIB OFF)
-set(YAML_CPP_BUILD_TESTS OFF)
-set(YAML_CPP_BUILD_TOOLS OFF)
-
-add_subdirectory(yaml-cpp)
+add_library(${name} INTERFACE)
+target_include_directories(${name} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
