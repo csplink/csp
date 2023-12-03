@@ -46,6 +46,80 @@ class generate_xmake final
     generate_xmake();
     ~generate_xmake();
 
+    /**
+     * @brief replace ${{key}} to value
+     * @param buffer: buffer
+     * @param key: key
+     * @param value: value
+     * @param is_newline: is inesrt new line
+     */
+    static void replace_var(QString &buffer, const QString &key, const QString &value, bool is_newline = false);
+
+    /**
+     * @brief replace ${{key}} to values
+     * @param buffer: buffer
+     * @param key: key
+     * @param values: value
+     * @param is_newline: is inesrt new line
+     */
+    static void replace_var(QString &buffer, const QString &key, const QStringList &values, bool is_newline = false);
+
+    /**
+     * @brief add includes
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_includes(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add requires
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_requires(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add warnings
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_warnings(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add languages
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_languages(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add deps
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_deps(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add rules
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_rules(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add includedirs
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_includedirs(QString &buffer, const QStringList &values);
+
+    /**
+     * @brief add
+     * @param buffer: buffer
+     * @param values: values
+     */
+    static void add_files(QString &buffer, const QStringList &values);
+
     Q_DISABLE_COPY_MOVE(generate_xmake)
 };
 
