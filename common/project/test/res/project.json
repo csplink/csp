@@ -1,0 +1,18 @@
+{
+  "core": {
+    "name": "untitled",
+    "hal": "csp_hal_apm32f1",
+    "hal_name": "APM32F103ZET6",
+    "package": "LQFP144",
+    "company": "Geehy",
+    "type": "chip",
+    "toolchains": "arm-none-eabi"
+  },
+  "pin_configs": {
+    "pa1": {
+      "function": "",
+      "comment": "",
+      "locked": false
+    }
+  }
+}

@@ -201,9 +201,9 @@ void project::set_pin_config_fp(const QString &key, const QString &module, const
     Q_ASSERT(!property.isEmpty());
     Q_ASSERT(!value.isEmpty());
 
-    emit signals_pin_function_property_changed(module, property, key, _project.pin_configs[key].fp[module][property],
+    emit signals_pin_function_property_changed(module, property, key, _project.pin_configs[key].function_property[module][property],
                                                value);
-    _project.pin_configs[key].fp[module][property] = value;
+    _project.pin_configs[key].function_property[module][property] = value;
 }
 
 void project::clear_pin_config_fp(const QString &key, const QString &module, const QString &property)
@@ -212,13 +212,13 @@ void project::clear_pin_config_fp(const QString &key, const QString &module, con
     Q_ASSERT(!module.isEmpty());
     Q_ASSERT(!property.isEmpty());
 
-    if (_project.pin_configs[key].fp.contains(module))
+    if (_project.pin_configs[key].function_property.contains(module))
     {
-        if (_project.pin_configs[key].fp[module].contains(property))
+        if (_project.pin_configs[key].function_property[module].contains(property))
         {
             emit signals_pin_function_property_changed(module, property, key,
-                                                       _project.pin_configs[key].fp[module][property], "");
-            _project.pin_configs[key].fp[module].remove(property);
+                                                       _project.pin_configs[key].function_property[module][property], "");
+            _project.pin_configs[key].function_property[module].remove(property);
         }
     }
 }
@@ -228,10 +228,10 @@ void project::clear_pin_config_fp_module(const QString &key, const QString &modu
     Q_ASSERT(!key.isEmpty());
     Q_ASSERT(!module.isEmpty());
 
-    if (_project.pin_configs[key].fp.contains(module))
+    if (_project.pin_configs[key].function_property.contains(module))
     {
         emit signals_pin_function_property_changed(module, "", key, "", "");
-        _project.pin_configs[key].fp.remove(module);
+        _project.pin_configs[key].function_property.remove(module);
     }
 }
 
@@ -239,7 +239,7 @@ project_table::pin_function_properties_t &project::get_pin_config_fps(const QStr
 {
     Q_ASSERT(!key.isEmpty());
 
-    return _project.pin_configs[key].fp;
+    return _project.pin_configs[key].function_property;
 }
 
 QString &project::get_pin_config_fp(const QString &key, const QString &module, const QString &property)
@@ -248,7 +248,7 @@ QString &project::get_pin_config_fp(const QString &key, const QString &module, c
     Q_ASSERT(!module.isEmpty());
     Q_ASSERT(!property.isEmpty());
 
-    return _project.pin_configs[key].fp[module][property];
+    return _project.pin_configs[key].function_property[module][property];
 }
 
 /***********************************************/

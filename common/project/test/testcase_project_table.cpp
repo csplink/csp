@@ -41,7 +41,7 @@ class testcase_project_table final : public QObject
 
     static void load_project()
     {
-        const auto p = project_table::load_project(":/project.yml");
+        const auto p = project_table::load_project(":/project.json");
         QVERIFY(!p.core.name.isEmpty());
     }
 
@@ -52,8 +52,8 @@ class testcase_project_table final : public QObject
         project_table::pin_config_t pin_config;
         pin_config.comment = "PA1-OUT";
         p.pin_configs.insert("PA1", pin_config);
-        project_table::save_project(p, "test.yml");
-        QVERIFY(os::isfile("test.yml"));
+        project_table::save_project(p, "test.json");
+        QVERIFY(os::isfile("test.json"));
     }
 
     static void dump_project()

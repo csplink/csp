@@ -73,16 +73,15 @@ void project_table::save_project(const project_table::project_t &p, const QStrin
 {
     Q_ASSERT(!path.isEmpty());
 
-    const auto yaml = dump_project(p);
+    const auto json = dump_project(p);
     QFile file(path);
     file.open(QFileDevice::WriteOnly | QIODevice::Text);
-    file.write(yaml.toUtf8());
+    file.write(json.toUtf8());
     file.close();
 }
 
 QString project_table::dump_project(const project_table::project_t &p)
 {
-    YAML::Node node;
-    node = p;
-    return QString::fromStdString(YAML::Dump(node));
+    const nlohmann::json j = p;
+    return QString::fromStdString(j.dump(2));
 }

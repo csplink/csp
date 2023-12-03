@@ -30,6 +30,7 @@
 #ifndef COMMON_PROJECT_CSP_PROJECT_TABLE_H
 #define COMMON_PROJECT_CSP_PROJECT_TABLE_H
 
+#include "qtjson.h"
 #include "qtyaml.h"
 
 class project_table
@@ -38,25 +39,26 @@ class project_table
     typedef QMap<QString, QString> pin_function_property_t;
     typedef QMap<QString, pin_function_property_t> pin_function_properties_t;
 
-    typedef struct
+    typedef struct pin_config_struct
     {
-        QString function;             // pin selected function
-        QString comment;              // pin comment
-        bool locked;                  // pin locked
-        pin_function_properties_t fp; // pin function properties
+        QString function;                            // pin selected function
+        QString comment;                             // pin comment
+        bool locked;                                 // pin locked
+        pin_function_properties_t function_property; // pin function properties
     } pin_config_t;
 
-    typedef struct
+    typedef struct core_struct
     {
-        QString name;     // name
-        QString hal;      // hal
-        QString hal_name; // hal.name
-        QString package;  // package
-        QString company;  // company
-        QString type;     // type
+        QString name;       // name
+        QString hal;        // hal
+        QString hal_name;   // hal.name
+        QString package;    // package
+        QString company;    // company
+        QString type;       // type
+        QString toolchains; // toolchains
     } core_t;
 
-    typedef struct
+    typedef struct project_struct
     {
         QMap<QString, pin_config_t> pin_configs; // pin configs
         core_t core;                             // core configs
@@ -64,21 +66,21 @@ class project_table
 
   public:
     /**
-     * @brief load project from yaml file
+     * @brief load project from json file
      * @param path: project file path
      * @return project
      */
     static project_t load_project(const QString &path);
 
     /**
-     * @brief save project to yaml file
+     * @brief save project to json file
      * @param p: project
      * @param path: project file path
      */
     static void save_project(const project_t &p, const QString &path);
 
     /**
-     * @brief dump project to yaml string
+     * @brief dump project to json string
      * @param p: project
      * @return yaml string
      */
@@ -96,8 +98,8 @@ template <> struct convert<project_table::project_t>
     static Node encode(const project_table::project_t &rhs)
     {
         Node node;
-        node.force_insert("Core", rhs.core);
-        node.force_insert("PinConfigs", rhs.pin_configs);
+        node.force_insert("core", rhs.core);
+        node.force_insert("pin_configs", rhs.pin_configs);
         return node;
     }
 
@@ -106,9 +108,9 @@ template <> struct convert<project_table::project_t>
         if (!node.IsMap() || node.size() < 1)
             return false;
 
-        rhs.core = node["Core"].as<project_table::core_t>();
-        if (node["PinConfigs"].IsDefined())
-            rhs.pin_configs = node["PinConfigs"].as<QMap<QString, project_table::pin_config_t>>();
+        rhs.core = node["core"].as<project_table::core_t>();
+        if (node["pin_configs"].IsDefined())
+            rhs.pin_configs = node["pin_configs"].as<QMap<QString, project_table::pin_config_t>>();
         return true;
     }
 };
@@ -118,10 +120,10 @@ template <> struct convert<project_table::pin_config_t>
     static Node encode(const project_table::pin_config_t &rhs)
     {
         Node node;
-        node.force_insert("Function", rhs.function);
-        node.force_insert("Comment", rhs.comment);
-        node.force_insert("Locked", rhs.locked);
-        node.force_insert("FunctionProperty", rhs.fp);
+        node.force_insert("function", rhs.function);
+        node.force_insert("comment", rhs.comment);
+        node.force_insert("locked", rhs.locked);
+        node.force_insert("function_property", rhs.function_property);
         return node;
     }
 
@@ -130,11 +132,11 @@ template <> struct convert<project_table::pin_config_t>
         if (!node.IsMap() || node.size() < 3)
             return false;
 
-        rhs.function = node["Function"].as<QString>();
-        rhs.comment = node["Comment"].as<QString>();
-        rhs.locked = node["Locked"].as<bool>();
-        if (node["FunctionProperty"].IsDefined())
-            rhs.fp = node["FunctionProperty"].as<project_table::pin_function_properties_t>();
+        rhs.function = node["function"].as<QString>();
+        rhs.comment = node["comment"].as<QString>();
+        rhs.locked = node["locked"].as<bool>();
+        if (node["function_property"].IsDefined())
+            rhs.function_property = node["function_property"].as<project_table::pin_function_properties_t>();
         return true;
     }
 };
@@ -144,29 +146,38 @@ template <> struct convert<project_table::core_t>
     static Node encode(const project_table::core_t &rhs)
     {
         Node node;
-        node.force_insert("Name", rhs.name);
-        node.force_insert("HAL", rhs.hal);
-        node.force_insert("HAL.Name", rhs.hal_name);
-        node.force_insert("Package", rhs.package);
-        node.force_insert("Company", rhs.company);
-        node.force_insert("Type", rhs.type);
+        node.force_insert("name", rhs.name);
+        node.force_insert("hal", rhs.hal);
+        node.force_insert("hal_name", rhs.hal_name);
+        node.force_insert("package", rhs.package);
+        node.force_insert("company", rhs.company);
+        node.force_insert("type", rhs.type);
+        node.force_insert("toolchains", rhs.toolchains);
         return node;
     }
 
     static bool decode(const Node &node, project_table::core_t &rhs)
     {
-        if (!node.IsMap() || node.size() < 6)
+        if (!node.IsMap() || node.size() < 7)
             return false;
 
-        rhs.name = node["Name"].as<QString>();
-        rhs.hal = node["HAL"].as<QString>();
-        rhs.hal_name = node["HAL.Name"].as<QString>();
-        rhs.package = node["Package"].as<QString>();
-        rhs.company = node["Company"].as<QString>();
-        rhs.type = node["Type"].as<QString>();
+        rhs.name = node["name"].as<QString>();
+        rhs.hal = node["hal"].as<QString>();
+        rhs.hal_name = node["hal_name"].as<QString>();
+        rhs.package = node["package"].as<QString>();
+        rhs.company = node["company"].as<QString>();
+        rhs.type = node["type"].as<QString>();
+        rhs.toolchains = node["toolchains"].as<QString>();
         return true;
     }
 };
 } // namespace YAML
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_struct, function, comment, locked, function_property)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_struct, name, hal, hal_name, package, company, type, toolchains)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_struct, core)
+} // namespace nlohmann
 
 #endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H
