@@ -28,19 +28,21 @@
  */
 
 #include <QDebug>
+#include <QFile>
 #include <QRegularExpression>
 
+#include "config.h"
 #include "path.h"
 #include "xmake.h"
 
 QString xmake::version(const QString &program)
 {
     QByteArray output;
-    QString version = "";
+    QString version;
 
     Q_ASSERT(!program.isEmpty());
 
-    if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
+    if (os::execv(program, QStringList() << "--version", {}, 10000, "", &output, nullptr))
     {
         const QRegularExpression regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
         const QRegularExpressionMatch match = regex.match(output);
@@ -53,16 +55,83 @@ QString xmake::version(const QString &program)
     return version;
 }
 
-QString xmake::lua(const QString &p, const QString &program, const QString &workdir)
+QString xmake::lua(const QString &lua_path, const QStringList &args, const QString &program, const QString &workdir)
 {
     QByteArray output;
 
-    Q_ASSERT(!p.isEmpty());
+    Q_ASSERT(!lua_path.isEmpty());
     Q_ASSERT(!program.isEmpty());
 
-    if (os::execv(program, QStringList() << "lua" << path::absolute(p), {}, 1000, workdir, &output, nullptr))
+    if (os::execv(program, QStringList() << "lua" << path::absolute(lua_path) << args, {}, 10000, workdir, &output,
+                  nullptr))
     {
+    }
+    else
+    {
+        qDebug()
+            << QString("%1 lua %2 %3 failed. < %4 >").arg(program, path::absolute(lua_path), args.join(" "), output);
     }
 
     return output;
+}
+
+xmake::packages_t xmake::load_packages_byfile(const QString &file)
+{
+    Q_ASSERT(!file.isEmpty());
+    Q_ASSERT(os::isfile(file));
+
+    try
+    {
+        const std::string buffer = os::readfile(file).toStdString();
+        const YAML::Node yaml_data = YAML::Load(buffer);
+        return yaml_data.as<xmake::packages_t>();
+    }
+    catch (YAML::BadFile &e)
+    {
+        os::show_error_and_exit(e.what());
+        throw;
+    }
+    catch (YAML::BadConversion &e)
+    {
+        os::show_error_and_exit(e.what());
+        throw;
+    }
+    catch (std::exception &e)
+    {
+        qDebug() << e.what();
+        throw;
+    }
+}
+
+xmake::packages_t xmake::load_packages(const QString &program, const QString &workdir)
+{
+    const QString repodir = config::repodir();
+    const QString script_path = QString("%1/tools/csp/dump_package.lua").arg(repodir);
+
+    Q_ASSERT(!script_path.isEmpty());
+    Q_ASSERT(os::isfile(script_path));
+    Q_ASSERT(!program.isEmpty());
+
+    const QString yml = xmake::lua(script_path, {"--json"}, program, workdir);
+    try
+    {
+        const std::string buffer = yml.toStdString();
+        const YAML::Node yaml_data = YAML::Load(buffer);
+        return yaml_data.as<xmake::packages_t>();
+    }
+    catch (YAML::BadFile &e)
+    {
+        os::show_error_and_exit(e.what());
+        throw;
+    }
+    catch (YAML::BadConversion &e)
+    {
+        os::show_error_and_exit(e.what());
+        throw;
+    }
+    catch (std::exception &e)
+    {
+        qDebug() << e.what();
+        throw;
+    }
 }

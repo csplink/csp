@@ -31,9 +31,29 @@
 #define CSP_COMMON_CORE_XMAKE_H
 
 #include "os.h"
+#include "qtjson.h"
+#include "qtyaml.h"
 
 class xmake final
 {
+  public:
+    typedef struct info_struct
+    {
+        QMap<QString, QString> versions;
+        QStringList urls;
+        QString homepage;
+        QString description;
+        QString license;
+    } info_t;
+
+    typedef QMap<QString, info_t> package_t;
+
+    typedef struct packages_struct
+    {
+        package_t toolchain;
+        package_t library;
+    } packages_t;
+
   public:
     /**
      * @brief get xmake version
@@ -44,12 +64,29 @@ class xmake final
 
     /**
      * @brief run the lua script.
-     * @param p: lua path
+     * @param lua_path: lua path
+     * @param args: args
      * @param program: program path or name
      * @param workdir: working directory
      * @return lua output
      */
-    static QString lua(const QString &p, const QString &program = "xmake", const QString &workdir = "");
+    static QString lua(const QString &lua_path, const QStringList &args = {}, const QString &program = "xmake",
+                       const QString &workdir = "");
+
+    /**
+     * @brief get package configuration from file
+     * @param file: json file path
+     * @return xmake:packages_t
+     */
+    static packages_t load_packages_byfile(const QString &file);
+
+    /**
+     * @brief get package configuration from csp repo
+     * @param program: xmake exe path
+     * @param workdir: xmake workdir
+     * @return xmake:packages_t
+     */
+    static packages_t load_packages(const QString &program = "xmake", const QString &workdir = "");
 
   private:
     xmake() = default;
@@ -57,4 +94,62 @@ class xmake final
 
     Q_DISABLE_COPY_MOVE(xmake)
 };
+
+namespace YAML
+{
+template <> struct convert<xmake::info_t>
+{
+    static Node encode(const xmake::info_t &rhs)
+    {
+        Node node;
+        node.force_insert("versions", rhs.versions);
+        node.force_insert("urls", rhs.urls);
+        node.force_insert("homepage", rhs.homepage);
+        node.force_insert("description", rhs.description);
+        node.force_insert("license", rhs.license);
+        return node;
+    }
+
+    static bool decode(const Node &node, xmake::info_t &rhs)
+    {
+        if (!node.IsMap() || node.size() < 2)
+            return false;
+
+        rhs.versions = node["versions"].as<QMap<QString, QString>>();
+        rhs.urls = node["urls"].as<QStringList>();
+        rhs.homepage = node["homepage"].as<QString>();
+        rhs.description = node["description"].as<QString>();
+        rhs.license = node["license"].as<QString>();
+        return true;
+    }
+};
+
+template <> struct convert<xmake::packages_t>
+{
+    static Node encode(const xmake::packages_t &rhs)
+    {
+        Node node;
+        node.force_insert("toolchain", rhs.toolchain);
+        node.force_insert("library", rhs.library);
+        return node;
+    }
+
+    static bool decode(const Node &node, xmake::packages_t &rhs)
+    {
+        if (!node.IsMap() || node.size() < 2)
+            return false;
+
+        rhs.toolchain = node["toolchain"].as<xmake::package_t>();
+        rhs.library = node["library"].as<xmake::package_t>();
+        return true;
+    }
+};
+} // namespace YAML
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::info_struct, versions, urls, homepage, description, license)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::packages_struct, toolchain, library)
+} // namespace nlohmann
+
 #endif //  CSP_COMMON_CORE_XMAKE_H

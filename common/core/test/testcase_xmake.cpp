@@ -30,6 +30,7 @@
 #include <QDebug>
 #include <QtTest>
 
+#include "config.h"
 #include "xmake.h"
 
 class testcase_xmake final : public QObject
@@ -38,9 +39,15 @@ class testcase_xmake final : public QObject
 
   private slots:
 
+    static void initTestCase()
+    {
+        config::init();
+    }
+
     static void version()
     {
         const auto result = xmake::version();
+        qDebug().noquote() << QString("xmake version :%1").arg(result);
         QVERIFY(!result.isEmpty());
     }
 
@@ -59,6 +66,25 @@ class testcase_xmake final : public QObject
 #endif
 
         os::rm("./test.lua");
+    }
+
+    static void load_packages_byfile()
+    {
+        const auto result = xmake::load_packages_byfile(":/packages.json");
+        QVERIFY(!result.toolchain.isEmpty());
+        QVERIFY(!result.library.isEmpty());
+    }
+
+    static void load_packages()
+    {
+        const auto result = xmake::load_packages();
+        QVERIFY(!result.toolchain.isEmpty());
+        QVERIFY(!result.library.isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 
