@@ -114,7 +114,7 @@ class generate_xmake final
     static void add_includedirs(QString &buffer, const QStringList &values);
 
     /**
-     * @brief add
+     * @brief add files
      * @param buffer: buffer
      * @param values: values
      */
