@@ -180,4 +180,27 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_struct, name, hal, hal_na
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_struct, core)
 } // namespace nlohmann
 
+#include <QDebug>
+
+inline QDebug operator<<(QDebug debug, const project_table::project_t &rhs)
+{
+    const nlohmann::json j = rhs;
+    debug << QString::fromStdString(j.dump(2));
+    return debug;
+}
+
+inline QDebug operator<<(QDebug debug, const project_table::pin_config_t &rhs)
+{
+    const nlohmann::json j = rhs;
+    debug << QString::fromStdString(j.dump(2));
+    return debug;
+}
+
+inline QDebug operator<<(QDebug debug, const project_table::core_t &rhs)
+{
+    const nlohmann::json j = rhs;
+    debug << QString::fromStdString(j.dump(2));
+    return debug;
+}
+
 #endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H
