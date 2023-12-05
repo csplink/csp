@@ -6,13 +6,15 @@
     "package": "LQFP144",
     "company": "Geehy",
     "type": "chip",
+    "modules": [],
     "toolchains": "arm-none-eabi"
   },
   "pin_configs": {
     "pa1": {
       "function": "",
       "comment": "",
-      "locked": false
+      "locked": false,
+      "function_property": {}
     }
   }
 }

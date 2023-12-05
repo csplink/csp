@@ -37,27 +37,19 @@ project_table::project_table() = default;
 
 project_table::~project_table() = default;
 
-project_table::project_t project_table::load_project(const QString &path)
+void project_table::load_project(project_t *project, const QString &path)
 {
+    Q_ASSERT(project != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
     try
     {
-        QFile file(path);
-
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        const std::string buffer = file.readAll().toStdString();
-        file.close();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<project_table::project_t>();
+        const std::string buffer = os::readfile(path).toStdString();
+        const nlohmann::json json = nlohmann::json::parse(buffer);
+        json.get_to(*project);
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
+    catch (const nlohmann::json::exception &e)
     {
         os::show_error_and_exit(e.what());
         throw;

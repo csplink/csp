@@ -201,8 +201,8 @@ void project::set_pin_config_fp(const QString &key, const QString &module, const
     Q_ASSERT(!property.isEmpty());
     Q_ASSERT(!value.isEmpty());
 
-    emit signals_pin_function_property_changed(module, property, key, _project.pin_configs[key].function_property[module][property],
-                                               value);
+    emit signals_pin_function_property_changed(module, property, key,
+                                               _project.pin_configs[key].function_property[module][property], value);
     _project.pin_configs[key].function_property[module][property] = value;
 }
 
@@ -216,8 +216,8 @@ void project::clear_pin_config_fp(const QString &key, const QString &module, con
     {
         if (_project.pin_configs[key].function_property[module].contains(property))
         {
-            emit signals_pin_function_property_changed(module, property, key,
-                                                       _project.pin_configs[key].function_property[module][property], "");
+            emit signals_pin_function_property_changed(
+                module, property, key, _project.pin_configs[key].function_property[module][property], "");
             _project.pin_configs[key].function_property[module].remove(property);
         }
     }
@@ -255,7 +255,10 @@ QString &project::get_pin_config_fp(const QString &key, const QString &module, c
 
 void project::load_project(const QString &path)
 {
-    _project = project_table::load_project(path);
+    Q_ASSERT(!path.isEmpty());
+    Q_ASSERT(os::isfile(path));
+
+    project_table::load_project(&_project, path);
     _path = path;
 
     load_maps(_project.core.hal);

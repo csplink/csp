@@ -70,16 +70,18 @@ class testcase_xmake final : public QObject
 
     static void load_packages_byfile()
     {
-        const auto result = xmake::load_packages_byfile(":/packages.json");
-        QVERIFY(!result.toolchain.isEmpty());
-        QVERIFY(!result.library.isEmpty());
+        xmake::packages_t packages;
+        xmake::load_packages_byfile(&packages, ":/packages.json");
+        QVERIFY(!packages.toolchain.isEmpty());
+        QVERIFY(!packages.library.isEmpty());
     }
 
     static void load_packages()
     {
-        const auto result = xmake::load_packages();
-        QVERIFY(!result.toolchain.isEmpty());
-        QVERIFY(!result.library.isEmpty());
+        xmake::packages_t packages;
+        xmake::load_packages(&packages);
+        QVERIFY(!packages.toolchain.isEmpty());
+        QVERIFY(!packages.library.isEmpty());
     }
 
     static void cleanupTestCase()

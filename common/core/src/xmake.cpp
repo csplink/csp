@@ -75,23 +75,19 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
     return output;
 }
 
-xmake::packages_t xmake::load_packages_byfile(const QString &file)
+void xmake::load_packages_byfile(packages_t *packages, const QString &file)
 {
+    Q_ASSERT(packages != nullptr);
     Q_ASSERT(!file.isEmpty());
     Q_ASSERT(os::isfile(file));
 
     try
     {
         const std::string buffer = os::readfile(file).toStdString();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<xmake::packages_t>();
+        const nlohmann::json json = nlohmann::json::parse(buffer);
+        json.get_to(*packages);
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
+    catch (const nlohmann::json::exception &e)
     {
         os::show_error_and_exit(e.what());
         throw;
@@ -103,11 +99,12 @@ xmake::packages_t xmake::load_packages_byfile(const QString &file)
     }
 }
 
-xmake::packages_t xmake::load_packages(const QString &program, const QString &workdir)
+void xmake::load_packages(packages_t *packages, const QString &program, const QString &workdir)
 {
     const QString repodir = config::repodir();
     const QString script_path = QString("%1/tools/csp/dump_package.lua").arg(repodir);
 
+    Q_ASSERT(packages != nullptr);
     Q_ASSERT(!script_path.isEmpty());
     Q_ASSERT(os::isfile(script_path));
     Q_ASSERT(!program.isEmpty());
@@ -116,15 +113,10 @@ xmake::packages_t xmake::load_packages(const QString &program, const QString &wo
     try
     {
         const std::string buffer = yml.toStdString();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<xmake::packages_t>();
+        const nlohmann::json json = nlohmann::json::parse(buffer);
+        json.get_to(*packages);
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
+    catch (const nlohmann::json::exception &e)
     {
         os::show_error_and_exit(e.what());
         throw;

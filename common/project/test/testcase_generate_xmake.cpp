@@ -47,7 +47,8 @@ class testcase_generate_xmake final : public QObject
 
     static void generate()
     {
-        const project_table::project_t p = project_table::load_project(":/project.json");
+        project_table::project_t p;
+        project_table::load_project(&p, ":/project.json");
         QVERIFY(!p.core.name.isEmpty());
 
         const QString data = generate_xmake::generate(p);

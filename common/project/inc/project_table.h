@@ -31,7 +31,6 @@
 #define COMMON_PROJECT_CSP_PROJECT_TABLE_H
 
 #include "qtjson.h"
-#include "qtyaml.h"
 
 class project_table
 {
@@ -49,13 +48,14 @@ class project_table
 
     typedef struct core_struct
     {
-        QString name;       // name
-        QString hal;        // hal
-        QString hal_name;   // hal.name
-        QString package;    // package
-        QString company;    // company
-        QString type;       // type
-        QString toolchains; // toolchains
+        QString name;        // name
+        QString hal;         // hal
+        QString hal_name;    // hal.name
+        QString package;     // package
+        QString company;     // company
+        QString type;        // type
+        QString toolchains;  // toolchains
+        QStringList modules; // modules
     } core_t;
 
     typedef struct project_struct
@@ -67,10 +67,11 @@ class project_table
   public:
     /**
      * @brief load project from json file
+     * @param project: project ptr
      * @param path: project file path
-     * @return project
+     * @return void
      */
-    static project_t load_project(const QString &path);
+    static void load_project(project_t *project, const QString &path);
 
     /**
      * @brief save project to json file
@@ -91,93 +92,12 @@ class project_table
     ~project_table();
 };
 
-namespace YAML
-{
-template <> struct convert<project_table::project_t>
-{
-    static Node encode(const project_table::project_t &rhs)
-    {
-        Node node;
-        node.force_insert("core", rhs.core);
-        node.force_insert("pin_configs", rhs.pin_configs);
-        return node;
-    }
-
-    static bool decode(const Node &node, project_table::project_t &rhs)
-    {
-        if (!node.IsMap() || node.size() < 1)
-            return false;
-
-        rhs.core = node["core"].as<project_table::core_t>();
-        if (node["pin_configs"].IsDefined())
-            rhs.pin_configs = node["pin_configs"].as<QMap<QString, project_table::pin_config_t>>();
-        return true;
-    }
-};
-
-template <> struct convert<project_table::pin_config_t>
-{
-    static Node encode(const project_table::pin_config_t &rhs)
-    {
-        Node node;
-        node.force_insert("function", rhs.function);
-        node.force_insert("comment", rhs.comment);
-        node.force_insert("locked", rhs.locked);
-        node.force_insert("function_property", rhs.function_property);
-        return node;
-    }
-
-    static bool decode(const Node &node, project_table::pin_config_t &rhs)
-    {
-        if (!node.IsMap() || node.size() < 3)
-            return false;
-
-        rhs.function = node["function"].as<QString>();
-        rhs.comment = node["comment"].as<QString>();
-        rhs.locked = node["locked"].as<bool>();
-        if (node["function_property"].IsDefined())
-            rhs.function_property = node["function_property"].as<project_table::pin_function_properties_t>();
-        return true;
-    }
-};
-
-template <> struct convert<project_table::core_t>
-{
-    static Node encode(const project_table::core_t &rhs)
-    {
-        Node node;
-        node.force_insert("name", rhs.name);
-        node.force_insert("hal", rhs.hal);
-        node.force_insert("hal_name", rhs.hal_name);
-        node.force_insert("package", rhs.package);
-        node.force_insert("company", rhs.company);
-        node.force_insert("type", rhs.type);
-        node.force_insert("toolchains", rhs.toolchains);
-        return node;
-    }
-
-    static bool decode(const Node &node, project_table::core_t &rhs)
-    {
-        if (!node.IsMap() || node.size() < 7)
-            return false;
-
-        rhs.name = node["name"].as<QString>();
-        rhs.hal = node["hal"].as<QString>();
-        rhs.hal_name = node["hal_name"].as<QString>();
-        rhs.package = node["package"].as<QString>();
-        rhs.company = node["company"].as<QString>();
-        rhs.type = node["type"].as<QString>();
-        rhs.toolchains = node["toolchains"].as<QString>();
-        return true;
-    }
-};
-} // namespace YAML
-
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_struct, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_struct, name, hal, hal_name, package, company, type, toolchains)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_struct, core)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_struct, name, hal, hal_name, package, company, type, toolchains,
+                                   modules)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_struct, core, pin_configs)
 } // namespace nlohmann
 
 #include <QDebug>

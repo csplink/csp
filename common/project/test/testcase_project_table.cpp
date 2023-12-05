@@ -41,8 +41,9 @@ class testcase_project_table final : public QObject
 
     static void load_project()
     {
-        const auto p = project_table::load_project(":/project.json");
-        QVERIFY(!p.core.name.isEmpty());
+        project_table::project_t project;
+        project_table::load_project(&project, ":/project.json");
+        QVERIFY(!project.core.name.isEmpty());
     }
 
     static void save_project()
