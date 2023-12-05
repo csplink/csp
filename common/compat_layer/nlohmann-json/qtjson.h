@@ -61,11 +61,18 @@ template <typename T> struct adl_serializer<QMap<QString, T>>
 {
     static void to_json(json &j, const QMap<QString, T> &rhs)
     {
-        auto it = rhs.constBegin();
-        while (it != rhs.constEnd())
+        if (rhs.isEmpty())
         {
-            j.emplace(it.key().toStdString(), it.value());
-            ++it;
+            j = json::object_t();
+        }
+        else
+        {
+            auto it = rhs.constBegin();
+            while (it != rhs.constEnd())
+            {
+                j.emplace(it.key().toStdString(), it.value());
+                ++it;
+            }
         }
     }
 
@@ -87,11 +94,18 @@ template <typename T> struct adl_serializer<QVector<T>>
 {
     static void to_json(json &j, const QVector<T> &rhs)
     {
-        QVectorIterator<T> it(rhs);
-
-        while (it.hasNext())
+        if (rhs.isEmpty())
         {
-            j.emplace_back(it.next());
+            j = json::array_t();
+        }
+        else
+        {
+            QVectorIterator<T> it(rhs);
+
+            while (it.hasNext())
+            {
+                j.emplace_back(it.next());
+            }
         }
     }
 
@@ -113,11 +127,18 @@ template <typename T> struct adl_serializer<QList<T>>
 {
     static void to_json(json &j, const QList<T> &rhs)
     {
-        QListIterator<T> it(rhs);
-
-        while (it.hasNext())
+        if (rhs.isEmpty())
         {
-            j.emplace_back(it.next());
+            j = json::array_t();
+        }
+        else
+        {
+            QListIterator<T> it(rhs);
+
+            while (it.hasNext())
+            {
+                j.emplace_back(it.next());
+            }
         }
     }
 
@@ -139,11 +160,18 @@ template <> struct adl_serializer<QStringList>
 {
     static void to_json(json &j, const QStringList &rhs)
     {
-        QStringListIterator it(rhs);
-
-        while (it.hasNext())
+        if (rhs.isEmpty())
         {
-            j.emplace_back(it.next());
+            j = json::array_t();
+        }
+        else
+        {
+            QStringListIterator it(rhs);
+
+            while (it.hasNext())
+            {
+                j.emplace_back(it.next());
+            }
         }
     }
 
