@@ -33,6 +33,23 @@
 #include "config.h"
 #include "os.h"
 #include "pinout_table.h"
+#include "qtjson.h"
+#include "qtyaml.h"
+
+namespace YAML
+{
+YAML_DEFINE_TYPE_NON_INTRUSIVE(pinout_table::function_t, mode, type)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(pinout_table::pinout_unit_t, position, type, functions)
+} // namespace YAML
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(pinout_table::function_t, mode, type)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(pinout_table::pinout_unit_t, position, type, functions)
+} // namespace nlohmann
+
+QT_DEBUG_ADD_TYPE(pinout_table::function_t)
+QT_DEBUG_ADD_TYPE(pinout_table::pinout_unit_t)
 
 pinout_table::pinout_table() = default;
 
@@ -77,19 +94,11 @@ pinout_table::_pinout_t pinout_table::_load_pinout(const QString &path)
         const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<_pinout_t>();
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }

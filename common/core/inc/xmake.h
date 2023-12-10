@@ -30,8 +30,7 @@
 #ifndef CSP_COMMON_CORE_XMAKE_H
 #define CSP_COMMON_CORE_XMAKE_H
 
-#include "os.h"
-#include "qtjson.h"
+#include <QString>
 
 class xmake final
 {
@@ -95,27 +94,5 @@ class xmake final
 
     Q_DISABLE_COPY_MOVE(xmake)
 };
-
-namespace nlohmann
-{
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::info_struct, versions, urls, homepage, description, license)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::packages_struct, toolchain, library)
-} // namespace nlohmann
-
-#include <QDebug>
-
-inline QDebug operator<<(QDebug debug, const xmake::info_t &rhs)
-{
-    const nlohmann::json j = rhs;
-    debug << QString::fromStdString(j.dump(2));
-    return debug;
-}
-
-inline QDebug operator<<(QDebug debug, const xmake::packages_t &rhs)
-{
-    const nlohmann::json j = rhs;
-    debug << QString::fromStdString(j.dump(2));
-    return debug;
-}
 
 #endif //  CSP_COMMON_CORE_XMAKE_H

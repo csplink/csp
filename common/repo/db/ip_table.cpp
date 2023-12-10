@@ -54,19 +54,11 @@ ip_table::ip_t ip_table::load_ip(const QString &path)
         const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<ip_table::ip_t>();
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }

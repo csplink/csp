@@ -32,6 +32,19 @@
 
 #include "os.h"
 #include "project_table.h"
+#include "qtjson.h"
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, name, hal, hal_name, package, company, type, toolchains,
+                                   modules)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_t, core, pin_configs)
+} // namespace nlohmann
+
+#include <QDebug>
+
+QT_DEBUG_ADD_TYPE(project_table::pin_config_t)
 
 project_table::project_table() = default;
 
@@ -49,14 +62,11 @@ void project_table::load_project(project_t *project, const QString &path)
         const nlohmann::json json = nlohmann::json::parse(buffer);
         json.get_to(*project);
     }
-    catch (const nlohmann::json::exception &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }

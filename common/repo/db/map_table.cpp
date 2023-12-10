@@ -33,6 +33,29 @@
 #include "map_table.h"
 #include "os.h"
 #include "path.h"
+#include "qtjson.h"
+#include "qtyaml.h"
+
+namespace YAML
+{
+YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::value_t, comment)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::group_t, comment, values)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::property_t, display_name, description, category, readonly)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::map_t, groups, properties)
+} // namespace YAML
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::value_t, comment)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::group_t, comment, values)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::property_t, display_name, description, category, readonly)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::map_t, groups, properties, total, reverse_total)
+} // namespace nlohmann
+
+QT_DEBUG_ADD_TYPE(map_table::value_t)
+QT_DEBUG_ADD_TYPE(map_table::group_t)
+QT_DEBUG_ADD_TYPE(map_table::property_t)
+QT_DEBUG_ADD_TYPE(map_table::map_t)
 
 map_table::map_table() = default;
 
@@ -53,19 +76,11 @@ map_table::map_t map_table::load_map(const QString &path)
         const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<map_table::map_t>();
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }

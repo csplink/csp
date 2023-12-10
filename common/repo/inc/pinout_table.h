@@ -30,18 +30,18 @@
 #ifndef COMMON_REPO_CSP_PINOUT_TABLE_H
 #define COMMON_REPO_CSP_PINOUT_TABLE_H
 
-#include "qtyaml.h"
+#include <QMap>
 
 class pinout_table final
 {
   public:
-    typedef struct
+    typedef struct function_struct
     {
         QString mode;
         QString type;
     } function_t;
 
-    typedef struct
+    typedef struct pinout_unit_struct
     {
         int position;
         QString type;
@@ -66,79 +66,5 @@ class pinout_table final
 
 Q_DECLARE_METATYPE(pinout_table::pinout_unit_t)
 Q_DECLARE_METATYPE(pinout_table::pinout_unit_t *)
-
-namespace YAML
-{
-
-template <> struct convert<pinout_table::function_t>
-{
-    static Node encode(const pinout_table::function_t &rhs)
-    {
-        Node node;
-        node.force_insert("Mode", rhs.mode);
-        node.force_insert("Type", rhs.type);
-        return node;
-    }
-
-    static bool decode(const Node &node, pinout_table::function_t &rhs)
-    {
-        if (!node.IsMap())
-            return false;
-
-        if (node.size() == 0)
-        {
-            rhs.mode = "";
-            rhs.type = "";
-        }
-        else if (node.size() == 2)
-        {
-            rhs.mode = node["Mode"].as<QString>();
-            rhs.type = node["Type"].as<QString>();
-        }
-        else
-        {
-            return false;
-        }
-
-        return true;
-    }
-};
-
-template <> struct convert<pinout_table::pinout_unit_t>
-{
-    static Node encode(const pinout_table::pinout_unit_t &rhs)
-    {
-        Node node;
-        node.force_insert("Position", rhs.position);
-        node.force_insert("Type", rhs.type);
-        node.force_insert("Functions", rhs.functions);
-        return node;
-    }
-
-    static bool decode(const Node &node, pinout_table::pinout_unit_t &rhs)
-    {
-        if (!node.IsMap())
-            return false;
-
-        if (node.size() == 2)
-        {
-            rhs.position = node["Position"].as<int>();
-            rhs.type = node["Type"].as<QString>();
-            rhs.functions = QMap<QString, pinout_table::function_t>();
-        }
-        else if (node.size() == 3)
-        {
-            rhs.position = node["Position"].as<int>();
-            rhs.type = node["Type"].as<QString>();
-            rhs.functions = node["Functions"].as<QMap<QString, pinout_table::function_t>>();
-        }
-        else
-        {
-            return false;
-        }
-        return true;
-    }
-};
-} // namespace YAML
 
 #endif // COMMON_REPO_CSP_PINOUT_TABLE_H

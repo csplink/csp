@@ -30,7 +30,7 @@
 #ifndef COMMON_PROJECT_CSP_PROJECT_TABLE_H
 #define COMMON_PROJECT_CSP_PROJECT_TABLE_H
 
-#include "qtjson.h"
+#include <QMap>
 
 class project_table
 {
@@ -91,36 +91,5 @@ class project_table
     explicit project_table();
     ~project_table();
 };
-
-namespace nlohmann
-{
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_struct, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_struct, name, hal, hal_name, package, company, type, toolchains,
-                                   modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_struct, core, pin_configs)
-} // namespace nlohmann
-
-#include <QDebug>
-
-inline QDebug operator<<(QDebug debug, const project_table::project_t &rhs)
-{
-    const nlohmann::json j = rhs;
-    debug << QString::fromStdString(j.dump(2));
-    return debug;
-}
-
-inline QDebug operator<<(QDebug debug, const project_table::pin_config_t &rhs)
-{
-    const nlohmann::json j = rhs;
-    debug << QString::fromStdString(j.dump(2));
-    return debug;
-}
-
-inline QDebug operator<<(QDebug debug, const project_table::core_t &rhs)
-{
-    const nlohmann::json j = rhs;
-    debug << QString::fromStdString(j.dump(2));
-    return debug;
-}
 
 #endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H

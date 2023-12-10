@@ -32,8 +32,19 @@
 #include <QRegularExpression>
 
 #include "config.h"
+#include "os.h"
 #include "path.h"
+#include "qtjson.h"
 #include "xmake.h"
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::info_t, versions, urls, homepage, description, license)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::packages_t, toolchain, library)
+} // namespace nlohmann
+
+QT_DEBUG_ADD_TYPE(xmake::info_t)
+QT_DEBUG_ADD_TYPE(xmake::packages_t)
 
 QString xmake::version(const QString &program)
 {
@@ -87,14 +98,11 @@ void xmake::load_packages_byfile(packages_t *packages, const QString &file)
         const nlohmann::json json = nlohmann::json::parse(buffer);
         json.get_to(*packages);
     }
-    catch (const nlohmann::json::exception &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(file, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }
@@ -116,14 +124,12 @@ void xmake::load_packages(packages_t *packages, const QString &program, const QS
         const nlohmann::json json = nlohmann::json::parse(buffer);
         json.get_to(*packages);
     }
-    catch (const nlohmann::json::exception &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str =
+            QString("try to parse packages \" xmake l %1\" failed. \n\nreason: %2").arg(script_path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }

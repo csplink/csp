@@ -32,6 +32,7 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include "config.h"
 #include "os.h"
 #include "wizard_new_project.h"
 

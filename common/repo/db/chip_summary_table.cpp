@@ -33,6 +33,27 @@
 #include "chip_summary_table.h"
 #include "config.h"
 #include "os.h"
+#include "qtjson.h"
+#include "qtyaml.h"
+
+namespace YAML
+{
+YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
+                               has_powerpad, illustrate, introduction, line, modules, name, package, series, url)
+} // namespace YAML
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
+                                   has_powerpad, illustrate, introduction, line, modules, name, package, series, url)
+} // namespace nlohmann
+QT_DEBUG_ADD_TYPE(chip_summary_table::document_t)
+QT_DEBUG_ADD_TYPE(chip_summary_table::module_t)
+QT_DEBUG_ADD_TYPE(chip_summary_table::chip_summary_t)
 
 chip_summary_table::chip_summary_table() = default;
 
@@ -53,19 +74,11 @@ chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const Q
         const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<chip_summary_table::chip_summary_t>();
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }

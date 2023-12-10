@@ -191,4 +191,12 @@ template <> struct adl_serializer<QStringList>
 
 } // namespace nlohmann
 
+#define QT_DEBUG_ADD_TYPE(Type)                                                                                        \
+    QDebug operator<<(QDebug debug, const Type &rhs)                                                                   \
+    {                                                                                                                  \
+        const nlohmann::json j = rhs;                                                                                  \
+        debug << QString::fromStdString(j.dump(2));                                                                    \
+        return debug;                                                                                                  \
+    }
+
 #endif // COMMON_COMPAT_LAYER_QTJSON_H

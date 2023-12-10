@@ -31,7 +31,35 @@
 #include <QFile>
 
 #include "os.h"
+#include "qtjson.h"
+#include "qtyaml.h"
 #include "repository_table.h"
+
+namespace YAML
+{
+YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::current_t, lowest, run)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::temperature_t, max, min)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::voltage_t, max, min)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::chip_info_t, core, current, flash, frequency, io, package, peripherals,
+                               ram, temperature, voltage)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::repository_t, chips)
+} // namespace YAML
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::current_t, lowest, run)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::temperature_t, max, min)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::voltage_t, max, min)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::chip_info_t, core, current, flash, frequency, io, package,
+                                   peripherals, ram, temperature, voltage)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::repository_t, chips)
+} // namespace nlohmann
+
+QT_DEBUG_ADD_TYPE(repository_table::current_t)
+QT_DEBUG_ADD_TYPE(repository_table::temperature_t)
+QT_DEBUG_ADD_TYPE(repository_table::voltage_t)
+QT_DEBUG_ADD_TYPE(repository_table::chip_info_t)
+QT_DEBUG_ADD_TYPE(repository_table::repository_t)
 
 repository_table::repository_table() = default;
 
@@ -50,19 +78,11 @@ repository_table::repository_t repository_table::load_repository(const QString &
         const YAML::Node yaml_data = YAML::Load(buffer);
         return yaml_data.as<repository_table::repository_t>();
     }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical() << str;
+        os::show_error_and_exit(str);
         throw;
     }
 }
