@@ -173,6 +173,15 @@
 
 #define YAML_TO(v1) node.force_insert(#v1, rhs.v1);
 #define YAML_FROM(v1) rhs.v1 = node[#v1].as<decltype(rhs.v1)>();
+#define YAML_FROM_MAYBE_UNUSED(v1)                                                                                     \
+    if (node[#v1].IsDefined())                                                                                         \
+    {                                                                                                                  \
+        rhs.v1 = node[#v1].as<decltype(rhs.v1)>();                                                                     \
+    }                                                                                                                  \
+    else                                                                                                               \
+    {                                                                                                                  \
+        rhs.v1 = decltype(rhs.v1)();                                                                                   \
+    }
 
 #define YAML_DEFINE_TYPE_NON_INTRUSIVE(Type, ...)                                                                      \
     template <> struct convert<Type>                                                                                   \
@@ -190,6 +199,21 @@
         }                                                                                                              \
     };
 
+#define YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                         \
+    template <> struct convert<Type>                                                                                   \
+    {                                                                                                                  \
+        static Node encode(const Type &rhs)                                                                            \
+        {                                                                                                              \
+            Node node;                                                                                                 \
+            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                                                              \
+            return node;                                                                                               \
+        }                                                                                                              \
+        static bool decode(const Node &node, Type &rhs)                                                                \
+        {                                                                                                              \
+            YAML_EXPAND(YAML_PASTE(YAML_FROM_MAYBE_UNUSED, __VA_ARGS__))                                               \
+            return true;                                                                                               \
+        }                                                                                                              \
+    };
 namespace YAML
 {
 

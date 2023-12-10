@@ -38,8 +38,8 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(pinout_table::function_t, mode, type)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(pinout_table::pinout_unit_t, position, type, functions)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(pinout_table::function_t, mode, type)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(pinout_table::pinout_unit_t, position, type, functions)
 } // namespace YAML
 
 namespace nlohmann
