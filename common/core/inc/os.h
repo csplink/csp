@@ -237,11 +237,32 @@ class os final
      */
     static bool rm(const QString &path);
 
+    /**
+     * @brief where cond is a boolean expression, writes the warning "${{str}}" and
+     * exits if cond is false.
+     * @param cond: condition
+     * @param str: message
+     */
+    static void raise(bool cond, const QString &str);
+
+    /**
+     * @brief where cond is a boolean expression, writes the warning "ASSERT: 'cond' in file xyz.cpp, line 234" and
+     * exits if cond is false.
+     * @param cond: condition
+     * @param assertion: assert message
+     * @param what: what
+     * @param file: file
+     * @param line: line
+     */
+    static void raise(bool cond, const char *assertion, const QString &what, const char *file, int line);
+
   private:
     os() = default;
     ~os() = default;
 
     Q_DISABLE_COPY_MOVE(os)
 };
+
+#define os_assert(cond, what) ((cond) ? static_cast<void>(0) : os::raise(0, #cond, what, __FILE__, __LINE__))
 
 #endif // COMMON_CORE_CSP_OS_H

@@ -63,25 +63,22 @@ QT_DEBUG_ADD_TYPE(repository_table::repository_t)
 
 repository_table::repository_table() = default;
 
-repository_table::repository_t repository_table::load_repository(const QString &path)
+void repository_table::load_repository(repository_t *repository, const QString &path)
 {
+    Q_ASSERT(repository != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
     try
     {
-        QFile file(path);
-
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        const std::string buffer = file.readAll().toStdString();
-        file.close();
+        const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<repository_table::repository_t>();
+        YAML::convert<repository_t>::decode(yaml_data, *repository);
     }
     catch (std::exception &e)
     {
         const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }

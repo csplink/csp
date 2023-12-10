@@ -29,6 +29,7 @@
 #include <QDebug>
 #include <QtTest>
 
+#include <config.h>
 #include <map_table.h>
 
 class testcase_map_table final : public QObject
@@ -44,7 +45,8 @@ class testcase_map_table final : public QObject
 
     static void load_map()
     {
-        const auto map = map_table::load_map(":/map.yml");
+        map_table::map_t map;
+        map_table::load_map(&map, ":/map.yml");
         QVERIFY(!map.groups.isEmpty());
         QVERIFY(!map.properties.isEmpty());
         QVERIFY(!map.total.isEmpty());

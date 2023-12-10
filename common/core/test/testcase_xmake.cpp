@@ -31,6 +31,7 @@
 #include <QtTest>
 
 #include "config.h"
+#include "os.h"
 #include "xmake.h"
 
 class testcase_xmake final : public QObject

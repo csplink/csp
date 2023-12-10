@@ -45,7 +45,8 @@ class testcase_chip_summary_table final : public QObject
 
     static void load_chip_summary()
     {
-        const auto chip_summary = chip_summary_table::load_chip_summary(":/geehy/apm32f103zet6.yml");
+        chip_summary_table::chip_summary_t chip_summary;
+        chip_summary_table::load_chip_summary(&chip_summary, ":/geehy/apm32f103zet6.yml");
 
         QVERIFY(!chip_summary.clocktree.isEmpty());
         QVERIFY(!chip_summary.company.isEmpty());

@@ -63,7 +63,7 @@ void os::show_error(const QString &message, const QString &title, QWidget *paren
 void os::show_error_and_exit(const QString &message, const QString &title, QWidget *parent)
 {
     QMessageBox::critical(parent, title, message, QMessageBox::Ok);
-    QApplication::quit();
+    QApplication::exit(-1);
 }
 
 void os::show_question(const QString &message, const QString &title, QWidget *parent)
@@ -302,4 +302,19 @@ bool os::rm(const QString &path)
         return dir.removeRecursively();
     }
     return false;
+}
+
+void os::raise(const bool cond, const QString &str)
+{
+    if (!cond)
+    {
+        qCritical().noquote() << str;
+        os::show_error(str);
+        exit(-1);
+    }
+}
+
+void os::raise(const bool cond, const char *assertion, const QString &what, const char *file, const int line)
+{
+    raise(cond, QString("ASSERT(%1): '%2' in file %3, line %4").arg(assertion, what, file).arg(line));
 }

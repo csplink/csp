@@ -45,7 +45,8 @@ class testcase_ip_table final : public QObject
 
     static void load_ip()
     {
-        const auto ip = ip_table::load_ip(":/ip.yml");
+        ip_table::ip_t ip;
+        ip_table::load_ip(&ip, ":/ip.yml");
         QVERIFY(!ip.isEmpty());
     }
 

@@ -59,35 +59,33 @@ chip_summary_table::chip_summary_table() = default;
 
 chip_summary_table::~chip_summary_table() = default;
 
-chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const QString &path)
+void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const QString &path)
 {
+    Q_ASSERT(chip_summary != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
     try
     {
-        QFile file(path);
-
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        const std::string buffer = file.readAll().toStdString();
-        file.close();
+        const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<chip_summary_table::chip_summary_t>();
+        YAML::convert<chip_summary_t>::decode(yaml_data, *chip_summary);
     }
     catch (std::exception &e)
     {
         const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }
 }
 
-chip_summary_table::chip_summary_t chip_summary_table::load_chip_summary(const QString &company, const QString &name)
+void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const QString &company, const QString &name)
 {
+    Q_ASSERT(chip_summary != nullptr);
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
     const QString path = QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower());
-    return load_chip_summary(path);
+    return load_chip_summary(chip_summary, path);
 }

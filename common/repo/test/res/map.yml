@@ -1,9 +1,8 @@
-#
-# Licensed under the GNU General Public License v. 3 (the "License");
+# Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.gnu.org/licenses/gpl-3.0.html
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -11,142 +10,154 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Copyright (C) 2023-2023 xqyjlj<xqyjlj@126.com>
+# Copyright (C) 2022-2023 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        map.yml
+# @file        gpio.yml
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-06-18     xqyjlj       initial version
+# 2023-01-07     xqyjlj       initial version
 #
 
-Groups:
+groups:
   chal_gpio_level_t:
-    Comment:
+    comment:
       zh_CN: GPIO电平类型
       en:
-    Values:
+    values:
       CHAL_GPIO_LEVEL_LOW:
-        Comment:
+        comment:
           zh_CN: 低电平
           en:
       CHAL_GPIO_LEVEL_HIGH:
-        Comment:
+        comment:
           zh_CN: 高电平
           en:
-  chal_gpio_mode_t:
-    Comment:
+  GPIO_MODE_T:
+    comment:
       zh_CN: GPIO模式类型
       en:
-    Values:
-      CHAL_GPIO_MODE_ANALOG:
-        Comment:
+    values:
+      GPIO_MODE_ANALOG:
+        comment:
           zh_CN: 模拟模式
           en:
-      CHAL_GPIO_MODE_FLOATING:
-        Comment:
-          zh_CN: 浮空模式
+      GPIO_MODE_IN_FLOATING:
+        comment:
+          zh_CN: 浮空输入
           en:
-      CHAL_GPIO_MODE_INPUT:
-        Comment:
-          zh_CN: 输入模式
+      GPIO_MODE_IN_PD:
+        comment:
+          zh_CN: 下拉输入
           en:
-      CHAL_GPIO_MODE_OUTPUT:
-        Comment:
-          zh_CN: 输出模式
+      GPIO_MODE_IN_PU:
+        comment:
+          zh_CN: 上拉输入
           en:
-      CHAL_GPIO_MODE_ALTERNATE:
-        Comment:
-          zh_CN: 复用模式
+      GPIO_MODE_OUT_PP:
+        comment:
+          zh_CN: 推挽输出
+          en:
+      GPIO_MODE_OUT_OD:
+        comment:
+          zh_CN: 开漏输出
+          en:
+      GPIO_MODE_AF_PP:
+        comment:
+          zh_CN: 推挽复用
+          en:
+      GPIO_MODE_AF_OD:
+        comment:
+          zh_CN: 开漏复用
           en:
   chal_gpio_output_type_t:
-    Comment:
+    comment:
       zh_CN: GPIO输出类型
       en:
-    Values:
+    values:
       CHAL_GPIO_OUTPUT_PP:
-        Comment:
+        comment:
           zh_CN: 推挽输出
           en:
       CHAL_GPIO_OUTPUT_OD:
-        Comment:
+        comment:
           zh_CN: 开漏输出
           en:
   chal_gpio_pull_t:
-    Comment:
+    comment:
       zh_CN: GPIO钳位类型
       en:
-    Values:
+    values:
       CHAL_GPIO_PULL_DOWN:
-        Comment:
+        comment:
           zh_CN: 下拉
           en:
       CHAL_GPIO_PULL_UP:
-        Comment:
+        comment:
           zh_CN: 上拉
           en:
   chal_gpio_speed_t:
-    Comment:
+    comment:
       zh_CN: GPIO速度类型
       en:
-    Values:
+    values:
       CHAL_GPIO_SPEED_10MHz:
-        Comment:
+        comment:
           zh_CN: 10MHz
           en:
       CHAL_GPIO_SPEED_20MHz:
-        Comment:
+        comment:
           zh_CN: 20MHz
           en:
       CHAL_GPIO_SPEED_50MHz:
-        Comment:
+        comment:
           zh_CN: 50MHz
           en:
-Properties:
+properties:
   chal_gpio_level_t:
-    DisplayName:
+    display_name:
       zh_CN: 电平
       en:
-    Description:
+    description:
       zh_CN: GPIO-电平
       en:
-    Category: GPIO
-    ReadOnly: false
+    category: GPIO
+    readonly: false
   chal_gpio_mode_t:
-    DisplayName:
+    display_name:
       zh_CN: 模式
       en:
-    Description:
+    description:
       zh_CN: GPIO-模式
       en:
-    Category: GPIO
-    ReadOnly: false
+    category: GPIO
+    readonly: false
   chal_gpio_output_type_t:
-    DisplayName:
+    display_name:
       zh_CN: 输出类型
       en:
-    Description:
+    description:
       zh_CN: GPIO-输出类型
       en:
-    Category: GPIO
-    ReadOnly: false
+    category: GPIO
+    readonly: false
   chal_gpio_pull_t:
-    DisplayName:
+    display_name:
       zh_CN: 钳位
       en:
-    Description:
+    description:
       zh_CN: GPIO-钳位
       en:
-    Category: GPIO
-    ReadOnly: false
+    category: GPIO
+    readonly: false
   chal_gpio_speed_t:
-    DisplayName:
+    display_name:
       zh_CN: 速度
       en:
-    Description:
+    description:
       zh_CN: GPIO-速度
       en:
-    Category: GPIO
-    ReadOnly: false
+    category: GPIO
+    readonly: false

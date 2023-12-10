@@ -32,7 +32,7 @@
 
 repo::repo()
 {
-    _repository = repository_table::load_repository(config::repodir() + "/db/repository.yml");
+    repository_table::load_repository(&_repository, config::repodir() + "/db/repository.yml");
 }
 
 repo::~repo() = default;

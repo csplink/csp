@@ -40,9 +40,9 @@ class ip_table final
     typedef QMap<QString, ip_t> ips_t;
 
   public:
-    static ip_t load_ip(const QString &path);
-    static ip_t load_ip(const QString &hal, const QString &name, const QString &ip);
-    static ips_t load_ips(const QString &hal, const QString &name);
+    static void load_ip(ip_t *ip, const QString &path);
+    static void load_ip(ip_t *ip, const QString &hal, const QString &name, const QString &ip_name);
+    static void load_ips(ips_t *ips, const QString &hal, const QString &name);
 
   private:
     explicit ip_table();

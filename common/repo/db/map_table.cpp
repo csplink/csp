@@ -61,50 +61,48 @@ map_table::map_table() = default;
 
 map_table::~map_table() = default;
 
-map_table::map_t map_table::load_map(const QString &path)
+void map_table::load_map(map_t *map, const QString &path)
 {
+    Q_ASSERT(map != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
     try
     {
-        QFile file(path);
-
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        const std::string buffer = file.readAll().toStdString();
-        file.close();
+        const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<map_table::map_t>();
+        YAML::convert<map_t>::decode(yaml_data, *map);
     }
     catch (std::exception &e)
     {
         const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }
 }
 
-map_table::map_t map_table::load_map(const QString &hal, const QString &map)
+void map_table::load_map(map_t *map, const QString &hal, const QString &map_name)
 {
+    Q_ASSERT(map != nullptr);
     Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!map.isEmpty());
+    Q_ASSERT(!map_name.isEmpty());
 
-    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(config::repodir(), hal.toLower(), map.toLower());
-    return load_map(path);
+    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(config::repodir(), hal.toLower(), map_name.toLower());
+    return load_map(map, path);
 }
 
-map_table::maps_t map_table::load_maps(const QString &hal)
+void map_table::load_maps(maps_t *maps, const QString &hal)
 {
+    Q_ASSERT(maps != nullptr);
     Q_ASSERT(!hal.isEmpty());
 
-    maps_t maps;
     const QString p = QString("%1/db/hal/%2/map").arg(config::repodir(), hal.toLower());
     for (const QString &file : os::files(p, QString("*.yml")))
     {
-        auto map = load_map(file);
+        map_t map;
+        load_map(&map, file);
         auto basename = path::basename(file).toLower();
-        maps.insert(basename, map);
+        maps->insert(basename, map);
     }
-    return maps;
 }

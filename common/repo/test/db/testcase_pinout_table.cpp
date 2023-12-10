@@ -45,7 +45,8 @@ class testcase_pinout_table final : public QObject
 
     static void load_pinout()
     {
-        const auto pinout = pinout_table::load_pinout(":/pinout.yml");
+        pinout_table::pinout_t pinout;
+        pinout_table::load_pinout(&pinout, ":/pinout.yml");
         QVERIFY(!pinout.isEmpty());
     }
 

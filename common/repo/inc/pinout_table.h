@@ -48,20 +48,15 @@ class pinout_table final
         QMap<QString, function_t> functions;
     } pinout_unit_t;
 
-    typedef QMap<QString, pinout_unit_t *> pinout_t;
+    typedef QMap<QString, pinout_unit_t> pinout_t;
 
   public:
-    static pinout_t load_pinout(const QString &path);
-    static pinout_t load_pinout(const QString &hal, const QString &name);
-
-  private:
-    typedef QMap<QString, pinout_unit_t> _pinout_t;
+    static void load_pinout(pinout_t *pinout, const QString &path);
+    static void load_pinout(pinout_t *pinout, const QString &hal, const QString &name);
 
   private:
     explicit pinout_table();
     ~pinout_table();
-
-    static _pinout_t _load_pinout(const QString &path);
 };
 
 Q_DECLARE_METATYPE(pinout_table::pinout_unit_t)

@@ -125,7 +125,7 @@ ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    _ips = ip_table::load_ips(hal, name);
+    ip_table::load_ips(&_ips, hal, name);
     return _ips;
 }
 
@@ -138,7 +138,7 @@ map_table::maps_t &project::load_maps(const QString &hal)
 {
     Q_ASSERT(!hal.isEmpty());
 
-    _maps = map_table::load_maps(hal);
+    map_table::load_maps(&_maps, hal);
     return _maps;
 }
 

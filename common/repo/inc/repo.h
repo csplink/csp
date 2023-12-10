@@ -54,9 +54,10 @@ class repo final : public QObject
 
     const repository_table::repository_t *get_repository() const;
 
-    static chip_summary_table::chip_summary_t load_chip_summary(const QString &company, const QString &name)
+    static void load_chip_summary(chip_summary_table::chip_summary_t *chip_summary, const QString &company,
+                                  const QString &name)
     {
-        return chip_summary_table::load_chip_summary(company, name);
+        chip_summary_table::load_chip_summary(chip_summary, company, name);
     }
 
     static bool chip_summary_exists(const QString &company, const QString &name)

@@ -39,53 +39,51 @@ ip_table::ip_table() = default;
 
 ip_table::~ip_table() = default;
 
-ip_table::ip_t ip_table::load_ip(const QString &path)
+void ip_table::load_ip(ip_t *ip, const QString &path)
 {
+    Q_ASSERT(ip != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
     try
     {
-        QFile file(path);
-
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        const std::string buffer = file.readAll().toStdString();
-        file.close();
+        const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<ip_table::ip_t>();
+        YAML::convert<ip_t>::decode(yaml_data, *ip);
     }
     catch (std::exception &e)
     {
         const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }
 }
 
-QMap<QString, ip_table::ip_map_t> ip_table::load_ip(const QString &hal, const QString &name, const QString &ip)
+void ip_table::load_ip(ip_t *ip, const QString &hal, const QString &name, const QString &ip_name)
 {
+    Q_ASSERT(ip != nullptr);
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
-    Q_ASSERT(!ip.isEmpty());
+    Q_ASSERT(!ip_name.isEmpty());
 
     const QString path =
-        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(config::repodir(), hal.toLower(), name.toLower(), ip.toLower());
-    return load_ip(path);
+        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(config::repodir(), hal.toLower(), name.toLower(), ip_name.toLower());
+    return load_ip(ip, path);
 }
 
-ip_table::ips_t ip_table::load_ips(const QString &hal, const QString &name)
+void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
 {
+    Q_ASSERT(ips != nullptr);
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    QMap<QString, ip_table::ip_t> ips;
     const QString path = QString("%1/db/hal/%2/%3/ip").arg(config::repodir(), hal.toLower(), name.toLower());
     for (const QString &file : os::files(path, QString("*.yml")))
     {
-        auto ip = load_ip(file);
+        ip_t ip;
+        load_ip(&ip, file);
         auto basename = path::basename(file).toLower();
-        ips.insert(basename, ip);
+        ips->insert(basename, ip);
     }
-    return ips;
 }

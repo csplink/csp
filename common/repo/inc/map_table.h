@@ -65,9 +65,9 @@ class map_table final
     typedef QMap<QString, map_t> maps_t;
 
   public:
-    static map_t load_map(const QString &path);
-    static map_t load_map(const QString &hal, const QString &map);
-    static maps_t load_maps(const QString &hal);
+    static void load_map(map_t *map, const QString &path);
+    static void load_map(map_t *map, const QString &hal, const QString &map_name);
+    static void load_maps(maps_t *maps, const QString &hal);
 
   private:
     explicit map_table();

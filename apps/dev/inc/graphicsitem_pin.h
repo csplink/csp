@@ -60,7 +60,7 @@ class graphicsitem_pin final : public interface_graphicsitem_pin
      * @brief set pinout unit
      * @param unit: pinout unit
      */
-    void set_pinout_unit(pinout_table::pinout_unit_t *unit);
+    void set_pinout_unit(const pinout_table::pinout_unit_t &unit);
 
     /**
      * @brief set pin name < it must be called first >
@@ -98,7 +98,7 @@ class graphicsitem_pin final : public interface_graphicsitem_pin
     qreal _width;
     qreal _height;
     int _direction = LEFT;
-    pinout_table::pinout_unit_t *_pinout_unit = nullptr;
+    pinout_table::pinout_unit_t _pinout_unit;
     bool _locked = false;
     QString _name;
     QFont *_font;

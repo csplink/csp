@@ -53,7 +53,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    _pinout = pinout_table::load_pinout(hal, name);
+    pinout_table::load_pinout(&_pinout, hal, name);
     _pin_count = _pinout.count();
     QList<QGraphicsItem *> items;
     QVector<QString> vector(_pin_count); // sort pinout
@@ -62,7 +62,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     auto pinout_i = _pinout.constBegin();
     while (pinout_i != _pinout.constEnd())
     {
-        const auto index = pinout_i.value()->position - 1;
+        const auto index = pinout_i.value().position - 1;
         vector[index] = pinout_i.key();
         ++pinout_i;
     }
@@ -113,7 +113,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
         auto *item = new graphicsitem_pin(w, h);
         item->set_name(vector.at(i)); // it must be called first
         item->set_direction(direction);
-        item->set_pinout_unit(_pinout.value(vector.at(i)));
+        item->set_pinout_unit(_pinout[vector.at(i)]);
         item->setPos(QPointF(x, y));
         items << item;
     }

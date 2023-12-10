@@ -327,7 +327,8 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
 
     if (repo::chip_summary_exists(company, _chip_name))
     {
-        auto chip_summary = repo::load_chip_summary(company, _chip_name);
+        chip_summary_table::chip_summary_t chip_summary;
+        repo::load_chip_summary(&chip_summary, company, _chip_name);
         _hal_name = chip_summary.hal;
         _package_name = chip_summary.package;
         _company_name = company;
