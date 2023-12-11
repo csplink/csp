@@ -72,6 +72,22 @@ void map_table::load_map(map_t *map, const QString &path)
         const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
         YAML::convert<map_t>::decode(yaml_data, *map);
+
+        auto group_i = map->groups.constBegin();
+        while (group_i != map->groups.constEnd())
+        {
+            auto values = group_i.value().values;
+            auto values_i = values.constBegin();
+            while (values_i != values.constEnd())
+            {
+                const QString &name = values_i.key();
+                const value_t &value = values_i.value();
+                map->total.insert(name, value.comment[config::language()]);
+                map->reverse_total.insert(value.comment[config::language()], name);
+                ++values_i;
+            }
+            ++group_i;
+        }
     }
     catch (std::exception &e)
     {
