@@ -57,12 +57,12 @@ class propertybrowser final : public QtTreePropertyBrowser
      * @param item: pin item
      */
     void update_property_by_pin(QGraphicsItem *item);
-    void pin_value_changed_callback(const QtProperty *property, const QVariant &value);
-    void pin_attribute_changed_callback(const QtProperty *property, const QString &attribute, const QVariant &value);
+    void pin_value_changed_callback(const QtProperty *property, const QVariant &value) const;
+    void pin_attribute_changed_callback(const QtProperty *property, const QString &attribute, const QVariant &value) const;
 
   private:
-    QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked);
-    QtProperty *set_pin_system(const QString &function);
+    QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked) const;
+    QtProperty *set_pin_system(const QString &function) const;
 
   private:
     project *_project_instance;

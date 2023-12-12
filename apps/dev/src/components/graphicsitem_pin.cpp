@@ -205,7 +205,7 @@ void graphicsitem_pin::set_pinout_unit(const pinout_table::pinout_unit_t &unit)
         ++function_i;
     }
     this->setProperty(interface_graphicsitem_pin::property_name_menu_ptr, QVariant::fromValue(_menu));
-    this->setProperty(interface_graphicsitem_pin::property_name_pinout_unit_ptr, QVariant::fromValue(unit));
+    this->setProperty(interface_graphicsitem_pin::property_name_pinout_unit_ptr, QVariant::fromValue(&_pinout_unit));
 
     _comment = _project_instance->get_pin_comment(_name);
     _function = _project_instance->get_pin_function(_name);

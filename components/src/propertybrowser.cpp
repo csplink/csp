@@ -41,7 +41,8 @@ propertybrowser::propertybrowser(QWidget *parent) : QtTreePropertyBrowser(parent
 
 propertybrowser::~propertybrowser() = default;
 
-QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, int position, bool locked)
+QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, const int position,
+                                          const bool locked) const
 {
     auto *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("Base"));
 
@@ -66,7 +67,7 @@ QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &co
     return group_item;
 }
 
-QtProperty *propertybrowser::set_pin_system(const QString &function)
+QtProperty *propertybrowser::set_pin_system(const QString &function) const
 {
     auto *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("System"));
 
@@ -88,6 +89,9 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
     const auto name = pin->objectName();
     const auto pinout_unit =
         pin->property(interface_graphicsitem_pin::property_name_pinout_unit_ptr).value<pinout_table::pinout_unit_t *>();
+    if (pinout_unit == nullptr)
+        return;
+
     const auto function = _project_instance->get_pin_function(name);            // such as "GPIO-Input"
     const auto comment = _project_instance->get_pin_comment(name);              // such as "LED0"
     const auto locked = _project_instance->get_pin_locked(name);                // such as "true"
@@ -173,7 +177,7 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
     _pin_name = name;
 }
 
-void propertybrowser::pin_value_changed_callback(const QtProperty *property, const QVariant &value)
+void propertybrowser::pin_value_changed_callback(const QtProperty *property, const QVariant &value) const
 {
     if (_pin_name.isEmpty())
         return;
@@ -220,7 +224,7 @@ void propertybrowser::pin_value_changed_callback(const QtProperty *property, con
 }
 
 void propertybrowser::pin_attribute_changed_callback(const QtProperty *property, const QString &attribute,
-                                                     const QVariant &value)
+                                                     const QVariant &value) const
 {
     Q_UNUSED(property)
     Q_UNUSED(attribute)
