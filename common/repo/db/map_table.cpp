@@ -121,4 +121,44 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
         auto basename = path::basename(file).toLower();
         maps->insert(basename, map);
     }
+
+    const QStringList list = {"gpio"};
+    for (const QString &file : list)
+    {
+        map_t map;
+        load_map(&map, QString(":/lib/repo/db/map/%1.yml").arg(file));
+        const QString basename = path::basename(file).toLower();
+        if (maps->contains(basename))
+        {
+            map_t &ref_map = (*maps)[basename];
+            auto group_i = map.groups.constBegin();
+            while (group_i != map.groups.constEnd())
+            {
+                ref_map.groups.insert(group_i.key(), group_i.value());
+                ++group_i;
+            }
+            auto properties_i = map.properties.constBegin();
+            while (properties_i != map.properties.constEnd())
+            {
+                ref_map.properties.insert(properties_i.key(), properties_i.value());
+                ++properties_i;
+            }
+            auto total_i = map.total.constBegin();
+            while (total_i != map.total.constEnd())
+            {
+                ref_map.total.insert(total_i.key(), total_i.value());
+                ++total_i;
+            }
+            auto reverse_total_i = map.reverse_total.constBegin();
+            while (reverse_total_i != map.reverse_total.constEnd())
+            {
+                ref_map.reverse_total.insert(reverse_total_i.key(), reverse_total_i.value());
+                ++reverse_total_i;
+            }
+        }
+        else
+        {
+            maps->insert(basename, map);
+        }
+    }
 }

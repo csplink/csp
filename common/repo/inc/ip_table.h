@@ -30,7 +30,7 @@
 #ifndef CSP_IP_TABLE_H
 #define CSP_IP_TABLE_H
 
-#include "qtyaml.h"
+#include <QMap>
 
 class ip_table final
 {

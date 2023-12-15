@@ -40,6 +40,7 @@ class testcase_repository_table final : public QObject
 
     static void initTestCase()
     {
+        Q_INIT_RESOURCE(repo);
         config::init();
     }
 
@@ -103,6 +104,7 @@ class testcase_repository_table final : public QObject
     static void cleanupTestCase()
     {
         config::deinit();
+        Q_CLEANUP_RESOURCE(repo);
     }
 };
 

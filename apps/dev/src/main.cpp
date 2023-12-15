@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE(core);
     Q_INIT_RESOURCE(project);
     Q_INIT_RESOURCE(qtpropertybrowser);
+    Q_INIT_RESOURCE(repo);
 
     config::init();
     repo::init();
@@ -89,17 +90,14 @@ int main(int argc, char *argv[])
             qCritical() << QObject::tr("file: <%1> is not exist.").arg(file);
             return ENOENT;
         }
-        else
+        try
         {
-            try
-            {
-                project::get_instance()->load_project(file);
-            }
-            catch (const std::exception &e)
-            {
-                qCritical() << e.what();
-                return EINVAL;
-            }
+            project::get_instance()->load_project(file);
+        }
+        catch (const std::exception &e)
+        {
+            qCritical() << e.what();
+            return EINVAL;
         }
     }
 
@@ -113,6 +111,7 @@ int main(int argc, char *argv[])
     repo::deinit();
     config::deinit();
 
+    Q_CLEANUP_RESOURCE(repo);
     Q_CLEANUP_RESOURCE(qtpropertybrowser);
     Q_CLEANUP_RESOURCE(project);
     Q_CLEANUP_RESOURCE(core);

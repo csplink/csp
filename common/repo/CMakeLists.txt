@@ -25,7 +25,8 @@
 file(GLOB_RECURSE SOURCES
         db/*.cpp
         inc/*.h
-        src/*.cpp)
+        src/*.cpp
+        resources/*.qrc)
 
 add_library(repo STATIC ${SOURCES})
 target_link_libraries(repo PUBLIC compat_layer core)

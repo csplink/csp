@@ -34,6 +34,12 @@
 #include "ip_table.h"
 #include "os.h"
 #include "path.h"
+#include "qtjson.h"
+#include "qtyaml.h"
+
+QT_DEBUG_ADD_TYPE(ip_table::ip_map_t)
+QT_DEBUG_ADD_TYPE(ip_table::ip_t)
+QT_DEBUG_ADD_TYPE(ip_table::ips_t)
 
 ip_table::ip_table() = default;
 
@@ -85,5 +91,27 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
         load_ip(&ip, file);
         auto basename = path::basename(file).toLower();
         ips->insert(basename, ip);
+    }
+
+    const QStringList list = {"gpio"};
+    for (const QString &file : list)
+    {
+        ip_t ip;
+        load_ip(&ip, QString(":/lib/repo/db/ip/%1.yml").arg(file));
+        const QString basename = path::basename(file).toLower();
+        if (ips->contains(basename))
+        {
+            ip_t &ref_ip = (*ips)[basename];
+            auto ip_i = ip.constBegin();
+            while (ip_i != ip.constEnd())
+            {
+                ref_ip.insert(ip_i.key(), ip_i.value());
+                ++ip_i;
+            }
+        }
+        else
+        {
+            ips->insert(basename, ip);
+        }
     }
 }
