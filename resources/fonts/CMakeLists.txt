@@ -33,13 +33,12 @@ foreach (source_file ${SOURCES})
     set(target_file ${CSP_EXE_DIR}/fonts/${relative_path})
     add_custom_command(OUTPUT ${target_file}
             POST_BUILD
-            COMMAND echo ${target_file}
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${source_file} ${target_file}
             DEPENDS ${source_file}
     )
     list(APPEND depends_list ${target_file})
 endforeach ()
 
-add_custom_target(${name} ALL
+add_custom_target(${name}
         DEPENDS ${depends_list}
 )

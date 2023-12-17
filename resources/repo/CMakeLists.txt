@@ -19,16 +19,26 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-04-21     xqyjlj       initial version
+# 2023-12-17     xqyjlj       initial version
 #
-set(name custom_res)
+set(name custom_res_repo)
+set(depends_list)
 
-add_subdirectory(fonts)
-add_subdirectory(repo)
+file(GLOB_RECURSE DB_SOURCES
+        db/*.yml
+)
 
-add_custom_target(${name})
+foreach (source_file ${DB_SOURCES})
+    file(RELATIVE_PATH relative_path ${CMAKE_CURRENT_SOURCE_DIR} ${source_file})
+    set(target_file ${CSP_EXE_DIR}/repo/${relative_path})
+    add_custom_command(OUTPUT ${target_file}
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${source_file} ${target_file}
+            DEPENDS ${source_file}
+    )
+    list(APPEND depends_list ${target_file})
+endforeach ()
 
-add_dependencies(${name}
-        custom_res_fonts
-        custom_res_repo
+add_custom_target(${name}
+        DEPENDS ${depends_list}
 )
