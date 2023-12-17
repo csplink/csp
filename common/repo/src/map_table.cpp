@@ -29,12 +29,12 @@
 #include <QDebug>
 #include <QFile>
 
-#include "config.h"
-#include "map_table.h"
-#include "os.h"
-#include "path.h"
-#include "qtjson.h"
-#include "qtyaml.h"
+#include "../../compat_layer/nlohmann-json/qtjson.h"
+#include "../../compat_layer/yaml-cpp/qtyaml.h"
+#include "../../core/inc/config.h"
+#include "../../core/inc/os.h"
+#include "../../core/inc/path.h"
+#include "../inc/map_table.h"
 
 namespace YAML
 {

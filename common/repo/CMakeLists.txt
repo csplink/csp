@@ -23,7 +23,6 @@
 #
 
 file(GLOB_RECURSE SOURCES
-        db/*.cpp
         inc/*.h
         src/*.cpp
         resources/*.qrc)

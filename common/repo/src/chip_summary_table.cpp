@@ -30,11 +30,11 @@
 #include <QDebug>
 #include <QFile>
 
-#include "chip_summary_table.h"
-#include "config.h"
-#include "os.h"
-#include "qtjson.h"
-#include "qtyaml.h"
+#include "../../compat_layer/nlohmann-json/qtjson.h"
+#include "../../compat_layer/yaml-cpp/qtyaml.h"
+#include "../../core/inc/config.h"
+#include "../../core/inc/os.h"
+#include "../inc/chip_summary_table.h"
 
 namespace YAML
 {
