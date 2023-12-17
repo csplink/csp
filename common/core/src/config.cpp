@@ -36,7 +36,7 @@ static constexpr const char *csp_config_file_path = "config.ini";
 static constexpr const char *csp_config_default_value = "null";
 
 static constexpr const char *csp_config_key_repo_dir = "core/repodir";
-static constexpr const char *csp_config_value_default_repo_dir = "csp_repo";
+static constexpr const char *csp_config_value_default_repo_dir = "repo";
 
 static constexpr const char *csp_config_key_language = "core/language";
 static constexpr const char *csp_config_value_default_language = "zh_CN";

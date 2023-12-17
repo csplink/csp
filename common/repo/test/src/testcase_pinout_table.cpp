@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_ip_table.cpp
+ *  @file        testcase_pinout_table.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,15 +24,20 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-17     xqyjlj       initial version
+ *  2023-05-28     xqyjlj       initial version
  */
 #include <QDebug>
 #include <QtTest>
 
 #include "config.h"
-#include <ip_table.h>
+#include "os.h"
+#include "pinout_table.h"
 
-class testcase_ip_table final : public QObject
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
+
+class testcase_pinout_table final : public QObject
 {
     Q_OBJECT
 
@@ -42,13 +47,25 @@ class testcase_ip_table final : public QObject
     {
         Q_INIT_RESOURCE(repo);
         config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_ip()
+    static void load_pinout()
     {
-        ip_table::ip_t ip;
-        ip_table::load_ip(&ip, ":/ip.yml");
-        QVERIFY(!ip.isEmpty());
+        pinout_table::pinout_t pinout;
+        for (const QString &company_dir : os::dirs(config::repodir() + "/db/hal", "*"))
+        {
+            for (const QString &chip_dir : os::dirs(company_dir, "*"))
+            {
+                const QString file = chip_dir + "/pinout.yml";
+                QVERIFY(os::isfile(file));
+
+                qDebug() << "Testing" << file;
+
+                pinout_table::load_pinout(&pinout, file);
+                QVERIFY(!pinout.isEmpty());
+            }
+        }
     }
 
     static void cleanupTestCase()
@@ -58,6 +75,6 @@ class testcase_ip_table final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_ip_table)
+QTEST_MAIN(testcase_pinout_table)
 
-#include "testcase_ip_table.moc"
+#include "testcase_pinout_table.moc"

@@ -141,12 +141,12 @@ QString os::getsavefile(const QString &title, const QString &default_file, const
     return QFileDialog::getSaveFileName(nullptr, title, default_file, filter);
 }
 
-QStringList os::files(const QString &p, const QStringList &filters)
+QStringList os::files(const QString &path, const QStringList &filters)
 {
-    if (!isdir(p))
+    if (!isdir(path))
         return {};
 
-    const QDir dir(p);
+    const QDir dir(path);
     auto files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &file : files)

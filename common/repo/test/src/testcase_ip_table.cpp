@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_pinout_table.cpp
+ *  @file        testcase_ip_table.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,15 +24,19 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-28     xqyjlj       initial version
+ *  2023-06-17     xqyjlj       initial version
  */
 #include <QDebug>
 #include <QtTest>
 
 #include "config.h"
-#include "pinout_table.h"
+#include <ip_table.h>
 
-class testcase_pinout_table final : public QObject
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
+
+class testcase_ip_table final : public QObject
 {
     Q_OBJECT
 
@@ -42,13 +46,14 @@ class testcase_pinout_table final : public QObject
     {
         Q_INIT_RESOURCE(repo);
         config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_pinout()
+    static void load_ip()
     {
-        pinout_table::pinout_t pinout;
-        pinout_table::load_pinout(&pinout, ":/pinout.yml");
-        QVERIFY(!pinout.isEmpty());
+        ip_table::ip_t ip;
+        ip_table::load_ip(&ip, ":/lib/repo/db/ip/gpio.yml");
+        QVERIFY(!ip.isEmpty());
     }
 
     static void cleanupTestCase()
@@ -58,6 +63,6 @@ class testcase_pinout_table final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_pinout_table)
+QTEST_MAIN(testcase_ip_table)
 
-#include "testcase_pinout_table.moc"
+#include "testcase_ip_table.moc"

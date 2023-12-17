@@ -32,6 +32,10 @@
 #include <config.h>
 #include <map_table.h>
 
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
+
 class testcase_map_table final : public QObject
 {
     Q_OBJECT
@@ -42,12 +46,13 @@ class testcase_map_table final : public QObject
     {
         Q_INIT_RESOURCE(repo);
         config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void load_map()
     {
         map_table::map_t map;
-        map_table::load_map(&map, ":/map.yml");
+        map_table::load_map(&map, ":/lib/repo/db/map/gpio.yml");
         QVERIFY(!map.groups.isEmpty());
         QVERIFY(!map.properties.isEmpty());
         QVERIFY(!map.total.isEmpty());

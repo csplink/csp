@@ -32,6 +32,10 @@
 #include "config.h"
 #include "repository_table.h"
 
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
+
 class testcase_repository_table final : public QObject
 {
     Q_OBJECT
@@ -42,12 +46,13 @@ class testcase_repository_table final : public QObject
     {
         Q_INIT_RESOURCE(repo);
         config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void load_repository()
     {
         repository_table::repository_t repository;
-        repository_table::load_repository(&repository, ":/repository.yml");
+        repository_table::load_repository(&repository, config::repodir() + "/db/repository.yml");
         const auto chips = repository.chips;
         auto chips_i = chips.constBegin();
         while (chips_i != chips.constEnd())

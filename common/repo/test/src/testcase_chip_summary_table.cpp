@@ -30,25 +30,20 @@
 #include <QtTest>
 
 #include "config.h"
+#include "os.h"
 #include <chip_summary_table.h>
+
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
 
 class testcase_chip_summary_table final : public QObject
 {
     Q_OBJECT
 
-  private slots:
-
-    static void initTestCase()
+  private:
+    static void check(const chip_summary_table::chip_summary_t &chip_summary)
     {
-        Q_INIT_RESOURCE(repo);
-        config::init();
-    }
-
-    static void load_chip_summary()
-    {
-        chip_summary_table::chip_summary_t chip_summary;
-        chip_summary_table::load_chip_summary(&chip_summary, ":/geehy/apm32f103zet6.yml");
-
         QVERIFY(!chip_summary.clocktree.isEmpty());
         QVERIFY(!chip_summary.company.isEmpty());
         QVERIFY(!chip_summary.hal.isEmpty());
@@ -143,6 +138,28 @@ class testcase_chip_summary_table final : public QObject
                 ++module_i;
             }
             ++modules_i;
+        }
+    }
+
+  private slots:
+    static void initTestCase()
+    {
+        Q_INIT_RESOURCE(repo);
+        config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+    }
+
+    static void load_chip_summary()
+    {
+        chip_summary_table::chip_summary_t chip_summary;
+        for (const QString &dir : os::dirs(config::repodir() + "/db/chips", "*"))
+        {
+            for (const QString &file : os::files(dir, QString("*.yml")))
+            {
+                qDebug() << "Testing" << file;
+                chip_summary_table::load_chip_summary(&chip_summary, file);
+                check(chip_summary);
+            }
         }
     }
 

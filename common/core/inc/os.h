@@ -154,11 +154,11 @@ class os final
 
     /**
      * @brief traverse to get all the files in the specified directory
-     * @param p: directory path
+     * @param path: directory path
      * @param filters: file filter
      * @return file list
      */
-    static QStringList files(const QString &p, const QStringList &filters);
+    static QStringList files(const QString &path, const QStringList &filters);
 
     /**
      * @brief traverse to get all the files in the specified directory
