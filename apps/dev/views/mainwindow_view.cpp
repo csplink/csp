@@ -172,7 +172,7 @@ void mainwindow_view::action_save_triggered_callback(const bool checked)
     if (_project_instance->get_path().isEmpty())
     {
         wizard_new_project wizard(this);
-        connect(&wizard, &wizard_new_project::finished, this, [=](const int result) {
+        connect(&wizard, &wizard_new_project::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
                 _project_instance->save_project();

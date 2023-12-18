@@ -129,7 +129,7 @@ QWizardPage *wizard_new_project::create_page_choose_path()
 
     page->setLayout(gridlayout);
 
-    connect(toolbutton1, &QToolButton::pressed, this, [=]() {
+    connect(toolbutton1, &QToolButton::pressed, this, [this]() {
         const QString path = os::getexistdir();
         if (!path.isEmpty())
         {

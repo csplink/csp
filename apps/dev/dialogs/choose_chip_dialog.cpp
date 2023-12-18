@@ -370,7 +370,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
         }
 
         wizard_new_project wizard(this);
-        connect(&wizard, &wizard_new_project::finished, this, [=](const int result) {
+        connect(&wizard, &wizard_new_project::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_HAL, _hal_name);
