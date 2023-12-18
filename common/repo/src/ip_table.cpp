@@ -30,12 +30,12 @@
 #include <QDebug>
 #include <QFile>
 
-#include "../../compat_layer/nlohmann-json/qtjson.h"
-#include "../../compat_layer/yaml-cpp/qtyaml.h"
-#include "../../core/inc/config.h"
-#include "../../core/inc/os.h"
-#include "../../core/inc/path.h"
-#include "../inc/ip_table.h"
+#include "config.h"
+#include "ip_table.h"
+#include "os.h"
+#include "path.h"
+#include "qtjson.h"
+#include "qtyaml.h"
 
 QT_DEBUG_ADD_TYPE(ip_table::ip_map_t)
 QT_DEBUG_ADD_TYPE(ip_table::ip_t)

@@ -30,11 +30,11 @@
 #include <QDebug>
 #include <QFile>
 
-#include "../../compat_layer/nlohmann-json/qtjson.h"
-#include "../../compat_layer/yaml-cpp/qtyaml.h"
-#include "../../core/inc/config.h"
-#include "../../core/inc/os.h"
-#include "../inc/pinout_table.h"
+#include "config.h"
+#include "os.h"
+#include "pinout_table.h"
+#include "qtjson.h"
+#include "qtyaml.h"
 
 namespace YAML
 {
