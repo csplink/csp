@@ -58,6 +58,7 @@ file(GLOB_RECURSE TESTCASES
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
     add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
+    target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()

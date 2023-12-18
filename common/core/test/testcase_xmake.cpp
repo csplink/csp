@@ -34,6 +34,10 @@
 #include "os.h"
 #include "xmake.h"
 
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
+
 class testcase_xmake final : public QObject
 {
     Q_OBJECT
@@ -43,6 +47,7 @@ class testcase_xmake final : public QObject
     static void initTestCase()
     {
         config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void version()

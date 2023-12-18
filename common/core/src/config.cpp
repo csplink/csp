@@ -38,6 +38,9 @@ static constexpr const char *csp_config_default_value = "null";
 static constexpr const char *csp_config_key_repo_dir = "core/repodir";
 static constexpr const char *csp_config_value_default_repo_dir = "repo";
 
+static constexpr const char *csp_config_key_xmake_repo_dir = "core/xmake_repodir";
+static constexpr const char *csp_config_value_default_xmake_repo_dir = "xmake";
+
 static constexpr const char *csp_config_key_language = "core/language";
 static constexpr const char *csp_config_value_default_language = "zh_CN";
 
@@ -55,6 +58,8 @@ void config::init()
 
     if (!is_config(csp_config_key_repo_dir))
         _settings->setValue(csp_config_key_repo_dir, csp_config_value_default_repo_dir);
+    if (!is_config(csp_config_key_xmake_repo_dir))
+        _settings->setValue(csp_config_key_xmake_repo_dir, csp_config_value_default_xmake_repo_dir);
     if (!is_config(csp_config_key_language))
         _settings->setValue(csp_config_key_language, csp_config_value_default_language);
 
@@ -93,6 +98,12 @@ QString config::repodir()
 {
     Q_ASSERT(_settings != nullptr);
     return _settings->value(csp_config_key_repo_dir, csp_config_value_default_repo_dir).toString();
+}
+
+QString config::xmake_repodir()
+{
+    Q_ASSERT(_settings != nullptr);
+    return _settings->value(csp_config_key_xmake_repo_dir, csp_config_value_default_xmake_repo_dir).toString();
 }
 
 void config::set(const QString &key, const QString &value)

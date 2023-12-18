@@ -66,6 +66,12 @@ class config final
     static QString repodir();
 
     /**
+     * @brief get csp_repo directory; <get("core/xmake_repodir")>
+     * @return csp_repo directory; <default: "xmake">
+     */
+    static QString xmake_repodir();
+
+    /**
      * @brief set value by key
      * @param key: config key
      * @param value: config value

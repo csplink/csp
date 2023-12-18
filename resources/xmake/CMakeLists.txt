@@ -19,19 +19,25 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-12-17     xqyjlj       initial version
+# 2023-12-18     xqyjlj       initial version
 #
-set(name custom_res_repo)
+set(name custom_res_xmake)
 set(depends_list)
 
 file(GLOB_RECURSE SOURCES
-        db/*.yml
-        scripts/xmake/*.lua
+        csp_repo/packages/*
+        csp_repo/tools/*
+        csp_repo/CHANGELOG.md
+        csp_repo/CODE_OF_CONDUCT.md
+        csp_repo/CONTRIBUTING.md
+        csp_repo/LICENSE
+        csp_repo/README*.md
+        csp_repo/xmake.lua
 )
 
 foreach (source_file ${SOURCES})
-    file(RELATIVE_PATH relative_path ${CMAKE_CURRENT_SOURCE_DIR} ${source_file})
-    set(target_file ${CSP_EXE_DIR}/repo/${relative_path})
+    file(RELATIVE_PATH relative_path ${CMAKE_CURRENT_SOURCE_DIR}/csp_repo ${source_file})
+    set(target_file ${CSP_EXE_DIR}/xmake/${relative_path})
     add_custom_command(OUTPUT ${target_file}
             POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${source_file} ${target_file}

@@ -79,7 +79,7 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
     }
     else
     {
-        qDebug()
+        qDebug().noquote()
             << QString("%1 lua %2 %3 failed. < %4 >").arg(program, path::absolute(lua_path), args.join(" "), output);
     }
 
@@ -101,7 +101,7 @@ void xmake::load_packages_byfile(packages_t *packages, const QString &file)
     catch (std::exception &e)
     {
         const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(file, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }
@@ -110,7 +110,7 @@ void xmake::load_packages_byfile(packages_t *packages, const QString &file)
 void xmake::load_packages(packages_t *packages, const QString &program, const QString &workdir)
 {
     const QString repodir = config::repodir();
-    const QString script_path = QString("%1/tools/csp/dump_package.lua").arg(repodir);
+    const QString script_path = QString("%1/scripts/xmake/dump_package.lua").arg(repodir);
 
     Q_ASSERT(packages != nullptr);
     Q_ASSERT(!script_path.isEmpty());
@@ -128,7 +128,7 @@ void xmake::load_packages(packages_t *packages, const QString &program, const QS
     {
         const QString str =
             QString("try to parse packages \" xmake l %1\" failed. \n\nreason: %2").arg(script_path, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }
