@@ -59,6 +59,8 @@ jobs:
           cache: "true"
       - name: ⬇️ checkout csp
         uses: actions/checkout@v4
+          submodules: recursive
+          fetch-depth: 1
       - name: ⬇️ install xmake
         uses: xmake-io/github-action-setup-xmake@v1
       - name: 👷 build
