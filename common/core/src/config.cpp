@@ -57,9 +57,11 @@ void config::init()
     _settings = new QSettings(csp_config_file_path, QSettings::IniFormat);
 
     if (!is_config(csp_config_key_repo_dir))
-        _settings->setValue(csp_config_key_repo_dir, csp_config_value_default_repo_dir);
+        _settings->setValue(csp_config_key_repo_dir,
+                            QString("%1/%2").arg(path::appdir(), csp_config_value_default_repo_dir));
     if (!is_config(csp_config_key_xmake_repo_dir))
-        _settings->setValue(csp_config_key_xmake_repo_dir, csp_config_value_default_xmake_repo_dir);
+        _settings->setValue(csp_config_key_xmake_repo_dir,
+                            QString("%1/%2").arg(path::appdir(), csp_config_value_default_xmake_repo_dir));
     if (!is_config(csp_config_key_language))
         _settings->setValue(csp_config_key_language, csp_config_value_default_language);
 
