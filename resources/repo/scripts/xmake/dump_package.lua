@@ -24,6 +24,7 @@
 import("lib.detect.find_tool")
 import("core.package.package")
 import("core.base.json")
+import("core.base.option")
 
 local packagelist = {toolchain = {}, library = {}}
 
@@ -63,27 +64,38 @@ function init_packagelist()
     end
 end
 
-function usage()
-
-end
-
 function dump_json()
     local jsonstr = json.encode(packagelist)
     print(jsonstr)
 end
 
-function main(...)
-    local args = {...}
+-- LuaFormatter off
+local common_options = {
+    {nil,   "json",             "k",    nil,                                        "export as json."},
+    {nil,   "dump",             "k",    nil,                                        "export as lua table."},
+    {"h",   "help",             "k",    nil,                                        "print this help message and exit."},
+}
+-- LuaFormatter on
 
-    if table.contains(args, "--help") or table.contains(args, "-h") then
-        usage()
-    elseif table.contains(args, "--json") then
-        init_packagelist()
-        dump_json()
-    elseif table.contains(args, "--dump") then
-        init_packagelist()
-        print(packagelist)
-    else
-        usage()
+function usage()
+    option.show_logo()
+    option.show_options(common_options)
+end
+
+function main(...)
+    local argv = table.pack(...)
+    local results, errors = option.raw_parse(argv, common_options)
+    if results then
+        if results["help"] then
+            usage()
+        elseif results["json"] then
+            init_packagelist()
+            dump_json()
+        elseif results["dump"] then
+            init_packagelist()
+            print(packagelist)
+        else
+            usage()
+        end
     end
 end
