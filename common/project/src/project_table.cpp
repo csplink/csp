@@ -37,7 +37,7 @@
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, name, hal, hal_name, package, company, type, toolchains,
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, name, hal, target, package, company, type, toolchains,
                                    modules)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_t, core, pin_configs)
 } // namespace nlohmann

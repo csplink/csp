@@ -55,13 +55,14 @@ pinout_table::pinout_table() = default;
 
 pinout_table::~pinout_table() = default;
 
-void pinout_table::load_pinout(pinout_t *pinout, const QString &hal, const QString &name)
+void pinout_table::load_pinout(pinout_t *pinout, const QString &company, const QString &hal, const QString &name)
 {
     Q_ASSERT(pinout != nullptr);
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    const QString path = QString("%1/db/hal/%2/%3/pinout.yml").arg(config::repodir(), hal.toLower(), name.toLower());
+    const QString path = QString("%1/db/hal/%2/%3/%4/pinout.yml")
+                             .arg(config::repodir(), company.toLower(), hal.toLower(), name.toLower());
     load_pinout(pinout, path);
 }
 

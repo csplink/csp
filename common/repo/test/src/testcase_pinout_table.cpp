@@ -55,15 +55,18 @@ class testcase_pinout_table final : public QObject
         pinout_table::pinout_t pinout;
         for (const QString &company_dir : os::dirs(config::repodir() + "/db/hal", "*"))
         {
-            for (const QString &chip_dir : os::dirs(company_dir, "*"))
+            for (const QString &hal_dir : os::dirs(company_dir, "*"))
             {
-                const QString file = chip_dir + "/pinout.yml";
-                QVERIFY(os::isfile(file));
+                for (const QString &chip_dir : os::dirs(hal_dir, "*"))
+                {
+                    const QString file = chip_dir + "/pinout.yml";
+                    QVERIFY(os::isfile(file));
 
-                qDebug() << "Testing" << file;
+                    qDebug() << "Testing" << file;
 
-                pinout_table::load_pinout(&pinout, file);
-                QVERIFY(!pinout.isEmpty());
+                    pinout_table::load_pinout(&pinout, file);
+                    QVERIFY(!pinout.isEmpty());
+                }
             }
         }
     }

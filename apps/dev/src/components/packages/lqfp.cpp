@@ -53,7 +53,7 @@ QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    pinout_table::load_pinout(&_pinout, hal, name);
+    pinout_table::load_pinout(&_pinout, company, hal, name);
     _pin_count = _pinout.count();
     QList<QGraphicsItem *> items;
     QVector<QString> vector(_pin_count); // sort pinout

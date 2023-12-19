@@ -52,7 +52,7 @@ class pinout_table final
 
   public:
     static void load_pinout(pinout_t *pinout, const QString &path);
-    static void load_pinout(pinout_t *pinout, const QString &hal, const QString &name);
+    static void load_pinout(pinout_t *pinout, const QString &company, const QString &hal, const QString &name);
 
   private:
     explicit pinout_table();

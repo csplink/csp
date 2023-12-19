@@ -64,8 +64,8 @@ QString project::get_core(const core_attribute_type type) const
     case CORE_ATTRIBUTE_TYPE_HAL:
         value = _project.core.hal;
         break;
-    case CORE_ATTRIBUTE_TYPE_HAL_NAME:
-        value = _project.core.hal_name;
+    case CORE_ATTRIBUTE_TYPE_TARGET:
+        value = _project.core.target;
         break;
     case CORE_ATTRIBUTE_TYPE_PACKAGE:
         value = _project.core.package;
@@ -93,8 +93,8 @@ void project::set_core(const core_attribute_type type, const QString &value)
     case CORE_ATTRIBUTE_TYPE_HAL:
         _project.core.hal = value;
         break;
-    case CORE_ATTRIBUTE_TYPE_HAL_NAME:
-        _project.core.hal_name = value;
+    case CORE_ATTRIBUTE_TYPE_TARGET:
+        _project.core.target = value;
         break;
     case CORE_ATTRIBUTE_TYPE_PACKAGE:
         _project.core.package = value;
@@ -262,7 +262,7 @@ void project::load_project(const QString &path)
     _path = path;
 
     load_maps(_project.core.hal);
-    load_ips(_project.core.hal, _project.core.hal_name);
+    load_ips(_project.core.hal, _project.core.target);
 }
 
 void project::save_project(const QString &path) const

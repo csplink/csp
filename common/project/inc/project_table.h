@@ -50,7 +50,7 @@ class project_table
     {
         QString name;        // name
         QString hal;         // hal
-        QString hal_name;    // hal.name
+        QString target;      // target
         QString package;     // package
         QString company;     // company
         QString type;        // type

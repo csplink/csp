@@ -64,7 +64,7 @@ void chip_configure_view::init_view()
     const auto package = _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
     const auto hal = _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_HAL).toLower();
     const auto company = _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY);
-    const auto name = _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_HAL_NAME);
+    const auto name = _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET);
 
     delete _ui->graphicsview->scene();
     const auto graphicsscene = new QGraphicsScene(_ui->graphicsview);

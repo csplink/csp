@@ -374,7 +374,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
             if (result == QDialog::Accepted)
             {
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_HAL, _hal_name);
-                _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_HAL_NAME, _chip_name);
+                _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_TARGET, _chip_name);
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_PACKAGE, _package_name);
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_COMPANY, _company_name);
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_TYPE, "chip");
