@@ -41,19 +41,19 @@ groups:
       zh_CN: GPIO模式类型
       en:
     values:
-      gpio_mode_analog:
+      std.gpio_mode_analog:
         comment:
           zh_CN: 模拟模式
           en:
-      gpio_mode_input:
+      std.gpio_mode_input:
         comment:
           zh_CN: 输入模式
           en:
-      gpio_mode_output:
+      std.gpio_mode_output:
         comment:
           zh_CN: 输出模式
           en:
-      gpio_mode_alternate:
+      std.gpio_mode_alternate:
         comment:
           zh_CN: 复用模式
           en:
