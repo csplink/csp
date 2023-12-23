@@ -44,6 +44,8 @@ local license = [[
 
 local user_code_begin_template = "/**< add user code begin %s */"
 local user_code_end_template = "/**> add user code end %s */"
+local user_code_begin_match = "/%*%*< add user code begin " -- .. "(.-) %*/"
+local user_code_end_match = "/%*%*> add user code end " -- .. "(.-) %*/"
 
 local project_table = {}
 local user_code = {header = nil}
@@ -64,7 +66,7 @@ function generate_header(file, project, coder, user)
     user = user or {}
     file:print(user_code_begin_template, "header")
     if user.header then
-        file:print(user.header)
+        file:printf(user.header)
     else
         local kind = path.basename(file:path())
         local builtinvars = {}
@@ -89,7 +91,7 @@ function generate_user(file, kind, user, is_end)
     is_end = is_end or false
     file:print(user_code_begin_template, kind)
     if user[kind] then
-        file:print(user[kind])
+        file:printf(user[kind])
     else
         file:print("")
     end
@@ -163,18 +165,32 @@ function generate_functions(file, project, coder)
     file:print("}")
 end
 
+function match_user(file_path)
+    local user = {}
+    local data = io.readfile(file_path)
+    for s in string.gmatch(data, user_code_end_match .. "(.-) %*/") do
+        local matcher = user_code_begin_match .. s .. " %*/\n(.-)" .. user_code_end_match .. s .. " %*/"
+        local match = string.match(data, matcher)
+        if match and string.len(match) > 0 then
+            user[s] = match
+        end
+    end
+    return user
+end
+
 function generate_h(project, coder, kind, outputdir)
     local file_path = path.join(outputdir, "core", "inc", string.lower(kind) .. ".h")
+    local user = match_user(file_path)
     local file = io.open(file_path, "w")
 
-    generate_header(file, project_table, coder, user_code)
-    generate_includes(file, project_table, coder, user_code)
-    generate_typedef(file, project_table, coder, user_code)
-    generate_define(file, project_table, coder, user_code)
-    generate_macro(file, project_table, coder, user_code)
-    generate_variables(file, project_table, coder, user_code)
-    generate_functions_prototypes(file, project_table, coder, user_code)
-    generate_user(file, "0", user_code, true)
+    generate_header(file, project_table, coder, user)
+    generate_includes(file, project_table, coder, user)
+    generate_typedef(file, project_table, coder, user)
+    generate_define(file, project_table, coder, user)
+    generate_macro(file, project_table, coder, user)
+    generate_variables(file, project_table, coder, user)
+    generate_functions_prototypes(file, project_table, coder, user)
+    generate_user(file, "0", user, true)
 
     file:close()
 
@@ -183,18 +199,19 @@ end
 
 function generate_c(project, coder, kind, outputdir)
     local file_path = path.join(outputdir, "core", "src", string.lower(kind) .. ".c")
+    local user = match_user(file_path)
     local file = io.open(file_path, "w")
 
-    generate_header(file, project_table, coder, user_code)
-    generate_includes(file, project_table, coder, user_code)
-    generate_typedef(file, project_table, coder, user_code)
-    generate_define(file, project_table, coder, user_code)
-    generate_macro(file, project_table, coder, user_code)
-    generate_variables(file, project_table, coder, user_code)
-    generate_functions_prototypes(file, project_table, coder, user_code)
-    generate_user(file, "0", user_code)
+    generate_header(file, project_table, coder, user)
+    generate_includes(file, project_table, coder, user)
+    generate_typedef(file, project_table, coder, user)
+    generate_define(file, project_table, coder, user)
+    generate_macro(file, project_table, coder, user)
+    generate_variables(file, project_table, coder, user)
+    generate_functions_prototypes(file, project_table, coder, user)
+    generate_user(file, "0", user)
     generate_functions(file, project_table, coder)
-    generate_user(file, "1", user_code, true)
+    generate_user(file, "1", user, true)
 
     file:close()
 
