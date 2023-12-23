@@ -138,9 +138,13 @@ function generate_gpio(project)
     return table.concat(code_table, "\n")
 end
 
+function generate_gpio_module(project)
+end
+
 function generate(project, kind)
     if string.lower(kind) == "gpio" then
-        return generate_gpio(project)
+        modules = generate_gpio_module(project)
+        return {code = generate_gpio(project), modules = modules}
     end
 end
 

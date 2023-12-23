@@ -156,9 +156,10 @@ end
 
 function generate_functions(file, project, coder)
     local kind = path.basename(file:path())
+    local code = coder.generate(project_table, kind)
     file:print("void csplink_%s_init(void)", string.lower(kind))
     file:print("{")
-    file:print(string.rtrim(coder.generate(project_table, kind)))
+    file:print(string.rtrim(code.code))
     file:print("}")
 end
 
