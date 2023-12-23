@@ -45,33 +45,17 @@ groups:
         comment:
           zh_CN: 模拟模式
           en:
-      gpio_mode_in_floating:
+      gpio_mode_input:
         comment:
-          zh_CN: 浮空输入
+          zh_CN: 输入模式
           en:
-      gpio_mode_in_pd:
+      gpio_mode_output:
         comment:
-          zh_CN: 下拉输入
+          zh_CN: 输出模式
           en:
-      gpio_mode_in_pu:
+      gpio_mode_alternate:
         comment:
-          zh_CN: 上拉输入
-          en:
-      gpio_mode_out_pp:
-        comment:
-          zh_CN: 推挽输出
-          en:
-      gpio_mode_out_od:
-        comment:
-          zh_CN: 开漏输出
-          en:
-      gpio_mode_af_pp:
-        comment:
-          zh_CN: 推挽复用
-          en:
-      gpio_mode_af_od:
-        comment:
-          zh_CN: 开漏复用
+          zh_CN: 复用模式
           en:
   std.gpio_output_type_t:
     comment:
@@ -98,6 +82,10 @@ groups:
       std.gpio_pull_up:
         comment:
           zh_CN: 上拉
+          en:
+      std.gpio_pull_no:
+        comment:
+          zh_CN: 浮空
           en:
   std.gpio_speed_t:
     comment:

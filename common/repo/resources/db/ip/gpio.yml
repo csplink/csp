@@ -26,6 +26,7 @@ std.input:
   std.gpio_pull_t:
     - std.gpio_pull_up
     - std.gpio_pull_down
+    - std.gpio_pull_no
   std.gpio_mode_t:
     - std.gpio_mode_input
 std.output:
@@ -60,3 +61,6 @@ std.exti:
   std.gpio_pull_t:
     - std.gpio_pull_up
     - std.gpio_pull_down
+    - std.gpio_pull_no
+  std.gpio_mode_t:
+    - std.gpio_mode_input
