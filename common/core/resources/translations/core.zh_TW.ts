@@ -30,7 +30,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/config.cpp" line="72"/>
+        <location filename="../../src/config.cpp" line="79"/>
         <source>The workspace &lt;%1&gt; path is not a directory!</source>
         <translation type="unfinished"></translation>
     </message>

@@ -30,7 +30,7 @@
         <translation>问题</translation>
     </message>
     <message>
-        <location filename="../../src/config.cpp" line="72"/>
+        <location filename="../../src/config.cpp" line="79"/>
         <source>The workspace &lt;%1&gt; path is not a directory!</source>
         <translation type="unfinished">工作区 &lt;%1&gt; 路径不是目录！</translation>
     </message>
