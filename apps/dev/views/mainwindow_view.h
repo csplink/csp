@@ -41,7 +41,7 @@ class mainwindow_view;
 }
 QT_END_NAMESPACE
 
-class mainwindow_view : public QMainWindow
+class mainwindow_view final : public QMainWindow
 {
     Q_OBJECT
 
@@ -56,9 +56,13 @@ class mainwindow_view : public QMainWindow
     explicit mainwindow_view(QWidget *parent = nullptr);
     ~mainwindow_view() override;
 
+signals:
+    void signal_add_log(QString string);
+
   private:
     void init_mode();
     void set_mode(int index);
+    static void log(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
   public slots:
     void update_modules_treeview(const QString &company, const QString &name) const;
@@ -68,10 +72,10 @@ class mainwindow_view : public QMainWindow
     void action_new_chip_triggered_callback(bool checked) const;
     void action_load_triggered_callback(bool checked);
     void action_save_triggered_callback(bool checked);
-    void action_saveas_triggered_callback(bool checked);
-    void action_close_triggered_callback(bool checked);
-    void action_report_triggered_callback(bool checked);
-    void action_generate_triggered_callback(bool checked);
+    void action_saveas_triggered_callback(bool checked) const;
+    void action_close_triggered_callback(bool checked) const;
+    void action_report_triggered_callback(bool checked) const;
+    void action_generate_triggered_callback(bool checked) const;
 
   private:
     Ui::mainwindow_view *ui;

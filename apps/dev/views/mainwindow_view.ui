@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string notr="true">CSP</string>
   </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::VerticalTabs</set>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
@@ -157,6 +163,64 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockwidget_bottom_output">
+   <property name="minimumSize">
+    <size>
+     <width>88</width>
+     <height>107</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::AllDockWidgetAreas</set>
+   </property>
+   <property name="windowTitle">
+    <string>Output</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_bottom_output_contents">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="logviewbox" name="textedit_output">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockwidget_bottom_configurations">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Configurations</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_bottom_configurations_contents"/>
+  </widget>
+  <widget class="QDockWidget" name="dockwidget_bottom_xmake_output">
+   <property name="windowTitle">
+    <string>Xmake Output</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_bottom_xmake_output_contents">
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0">
+      <widget class="logviewbox" name="textedit_xmake_output"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="action_load">
    <property name="text">
     <string>Load Project</string>
@@ -222,6 +286,11 @@
    <extends>QWidget</extends>
    <header>propertybrowser.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>logviewbox</class>
+   <extends>QTextEdit</extends>
+   <header>logviewbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

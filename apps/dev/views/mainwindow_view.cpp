@@ -27,7 +27,9 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
+#include <QDateTime>
 #include <QDebug>
+#include <QMutex>
 #include <QStandardItem>
 
 #include "chip_summary_table.h"
@@ -37,9 +39,55 @@
 #include "ui_mainwindow_view.h"
 #include "wizard_new_project.h"
 
+static mainwindow_view *mainwindow = nullptr;
+
+void mainwindow_view::log(const QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(context);
+
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+    const QByteArray local_msg = msg.toLocal8Bit();
+
+    QString strMsg("");
+    switch (type)
+    {
+    case QtDebugMsg:
+        strMsg = QString("Debug:");
+        break;
+    case QtInfoMsg:
+        strMsg = QString("Info:");
+        break;
+    case QtWarningMsg:
+        strMsg = QString("Warning:");
+        break;
+    case QtCriticalMsg:
+        strMsg = QString("Critical:");
+        break;
+    case QtFatalMsg:
+        strMsg = QString("Fatal:");
+        break;
+
+    default:
+        break;
+    }
+
+    const QString str_date_time = QDateTime::currentDateTime().toString("hh:mm:ss");
+    const QString str_message = QString("%1 %2:%3").arg(str_date_time).arg(strMsg).arg(local_msg.constData());
+
+    emit mainwindow->signal_add_log(str_message);
+}
+
 mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow_view)
 {
     ui->setupUi(this);
+    mainwindow = this;
+    qInstallMessageHandler(mainwindow_view::log);
+
+    tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_xmake_output);
+    tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_configurations);
+    ui->dockwidget_bottom_output->raise();
+
     _project_instance = project::get_instance();
     ui->page_chip_configure_view->set_propertybrowser(ui->treepropertybrowser);
 
@@ -60,6 +108,8 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
 
     connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
             Qt::UniqueConnection);
+
+    connect(this, &mainwindow_view::signal_add_log, ui->textedit_output, &logviewbox::append);
 
     init_mode();
 }
@@ -186,22 +236,22 @@ void mainwindow_view::action_save_triggered_callback(const bool checked)
     }
 }
 
-void mainwindow_view::action_saveas_triggered_callback(const bool checked)
+void mainwindow_view::action_saveas_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_close_triggered_callback(const bool checked)
+void mainwindow_view::action_close_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_report_triggered_callback(const bool checked)
+void mainwindow_view::action_report_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_generate_triggered_callback(const bool checked)
+void mainwindow_view::action_generate_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
 
