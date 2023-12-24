@@ -73,8 +73,8 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
     Q_ASSERT(!lua_path.isEmpty());
     Q_ASSERT(!program.isEmpty());
 
-    if (os::execv(program, QStringList() << "lua" << path::absolute(lua_path) << args, {}, 10000, workdir, &output,
-                  nullptr))
+    if (os::execv(program, QStringList() << "lua" << path::absolute(lua_path) << args, {{"XMAKE_THEME", "plain"}},
+                  10000, workdir, &output, nullptr))
     {
     }
     else
