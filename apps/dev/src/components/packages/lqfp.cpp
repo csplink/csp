@@ -45,6 +45,7 @@ static constexpr int get_body_length(const int num)
 lqfp::lqfp(QObject *parent) : QObject(parent)
 {
 }
+
 lqfp::~lqfp() = default;
 
 QList<QGraphicsItem *> lqfp::get_lqfp(const QString &hal, const QString &company, const QString &name)
