@@ -166,6 +166,10 @@ function generate_functions(file, project, coder)
 end
 
 function match_user(file_path)
+    if not os.isfile(file_path) then
+        return {}
+    end
+
     local user = {}
     local data = io.readfile(file_path)
     for s in string.gmatch(data, user_code_end_match .. "(.-) %*/") do
@@ -224,6 +228,7 @@ function generate(outputdir)
     local name = project_table.core.target
     local modules = project_table.core.modules
     local coder = find_coder(company, hal, name)
+    assert(#modules > 0, "modules is empty")
     for _, kind in ipairs(modules) do
         generate_h(project_table, coder, kind, outputdir)
         generate_c(project_table, coder, kind, outputdir)
