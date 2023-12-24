@@ -30,9 +30,9 @@
 #ifndef CSP_PROPERTYBROWSER_H
 #define CSP_PROPERTYBROWSER_H
 
-#include "qtvariantproperty.h"
 #include <qtpropertymanager.h>
 #include <qttreepropertybrowser.h>
+#include <qtvariantproperty.h>
 
 #include "interface_graphicsitem_pin.h"
 #include "project.h"
