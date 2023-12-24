@@ -34,6 +34,9 @@
 #include "path.h"
 #include "project.h"
 
+#include "config.h"
+#include "xmake.h"
+
 project *project::_instance = new project();
 
 void project::init()
@@ -300,11 +303,13 @@ void project::clear_project()
     emit signals_project_clear();
 }
 
-void project::generate_code(const int type)
+void project::generate_code(const int type) const
 {
     switch (type)
     {
     case CODE_PROJECT_TYPE_XMAKE: {
+        const QString rtn = xmake::lua(QString("%1/scripts/coder/coder.lua").arg(config::repodir()), {"-p", _path});
+        qDebug().noquote() << rtn;
         generate_xmake::generate(_project);
         break;
     }

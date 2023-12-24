@@ -246,7 +246,7 @@ class project final : public QObject
      * @brief generate_code code
      * @param type: code type
      */
-    void generate_code(int type);
+    void generate_code(int type) const;
 
   private:
     static project *_instance;
