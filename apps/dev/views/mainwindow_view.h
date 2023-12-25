@@ -57,12 +57,14 @@ class mainwindow_view final : public QMainWindow
     ~mainwindow_view() override;
 
 signals:
-    void signal_add_log(QString string);
+    void signal_add_sys_log(const QString &string);
+    void signal_add_xmake_log(const QString &string);
 
   private:
     void init_mode();
     void set_mode(int index);
-    static void log(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+    static void sys_message_log_handler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+    static void xmake_message_log_handler(const QString &msg);
 
   public slots:
     void update_modules_treeview(const QString &company, const QString &name) const;

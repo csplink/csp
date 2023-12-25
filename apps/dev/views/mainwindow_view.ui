@@ -185,7 +185,7 @@
    <widget class="QWidget" name="dockwidget_bottom_output_contents">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="logviewbox" name="textedit_output">
+      <widget class="logviewbox" name="logviewbox_output">
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -207,6 +207,9 @@
    <widget class="QWidget" name="dockwidget_bottom_configurations_contents"/>
   </widget>
   <widget class="QDockWidget" name="dockwidget_bottom_xmake_output">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Xmake Output</string>
    </property>
@@ -216,7 +219,7 @@
    <widget class="QWidget" name="dockwidget_bottom_xmake_output_contents">
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
-      <widget class="logviewbox" name="textedit_xmake_output"/>
+      <widget class="logviewbox" name="logviewbox_xmake_output"/>
      </item>
     </layout>
    </widget>

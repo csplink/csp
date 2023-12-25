@@ -35,9 +35,12 @@
 class logviewbox final : public QTextEdit
 {
     Q_OBJECT
-public:
+  public:
     explicit logviewbox(QWidget *parent = nullptr);
     ~logviewbox() override;
+
+  public slots:
+    void append_data(const QString &text);
 };
 
 #endif

@@ -309,7 +309,6 @@ void project::generate_code(const int type) const
     {
     case CODE_PROJECT_TYPE_XMAKE: {
         const QString rtn = xmake::lua(QString("%1/scripts/coder/coder.lua").arg(config::repodir()), {"-p", _path});
-        qDebug().noquote() << rtn;
         generate_xmake::generate(_project);
         break;
     }

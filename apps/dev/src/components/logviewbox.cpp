@@ -31,6 +31,14 @@
 
 logviewbox::logviewbox(QWidget *parent) : QTextEdit(parent)
 {
+    // TODO: save to file
+    const QFont font("JetBrains Mono");
+    this->setFont(font);
 }
 
 logviewbox::~logviewbox() = default;
+
+void logviewbox::append_data(const QString &text)
+{
+    this->append(text); // TODO: add max
+}

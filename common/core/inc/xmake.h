@@ -35,7 +35,7 @@
 class xmake final
 {
   public:
-    typedef struct info_struct
+    typedef struct
     {
         QMap<QString, QString> versions;
         QStringList urls;
@@ -46,11 +46,13 @@ class xmake final
 
     typedef QMap<QString, info_t> package_t;
 
-    typedef struct packages_struct
+    typedef struct
     {
         package_t toolchain;
         package_t library;
     } packages_t;
+
+    typedef void (*log_handler)(const QString &msg);
 
   public:
     /**
@@ -88,9 +90,25 @@ class xmake final
      */
     static void load_packages(packages_t *packages, const QString &program = "xmake", const QString &workdir = "");
 
+    static void install_log_handler(log_handler handler);
+
   private:
     xmake() = default;
     ~xmake() = default;
+
+    inline static log_handler _log_handler = nullptr;
+
+    static void log(const QString &msg)
+    {
+        if (_log_handler != nullptr)
+        {
+            _log_handler(msg);
+        }
+        else
+        {
+            qInfo().noquote() << msg;
+        }
+    }
 
     Q_DISABLE_COPY_MOVE(xmake)
 };

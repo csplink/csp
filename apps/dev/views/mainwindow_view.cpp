@@ -38,10 +38,12 @@
 #include "os.h"
 #include "ui_mainwindow_view.h"
 #include "wizard_new_project.h"
+#include "xmake.h"
 
 static mainwindow_view *mainwindow = nullptr;
 
-void mainwindow_view::log(const QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void mainwindow_view::sys_message_log_handler(const QtMsgType type, const QMessageLogContext &context,
+                                              const QString &msg)
 {
     Q_UNUSED(context);
 
@@ -75,14 +77,37 @@ void mainwindow_view::log(const QtMsgType type, const QMessageLogContext &contex
     const QString str_date_time = QDateTime::currentDateTime().toString("hh:mm:ss");
     const QString str_message = QString("%1 %2:%3").arg(str_date_time).arg(strMsg).arg(local_msg.constData());
 
-    emit mainwindow->signal_add_log(str_message);
+    if (mainwindow)
+    {
+        emit mainwindow->signal_add_sys_log(str_message);
+    }
+    else
+    {
+        // do nothing
+    }
+}
+
+void mainwindow_view::xmake_message_log_handler(const QString &msg)
+{
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+    if (mainwindow)
+    {
+        emit mainwindow->signal_add_xmake_log(msg);
+    }
+    else
+    {
+        // do nothing
+    }
 }
 
 mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow_view)
 {
     ui->setupUi(this);
     mainwindow = this;
-    qInstallMessageHandler(mainwindow_view::log);
+    qInstallMessageHandler(mainwindow_view::sys_message_log_handler);
+    xmake::install_log_handler(mainwindow_view::xmake_message_log_handler);
 
     tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_xmake_output);
     tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_configurations);
@@ -109,13 +134,15 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
             Qt::UniqueConnection);
 
-    connect(this, &mainwindow_view::signal_add_log, ui->textedit_output, &logviewbox::append);
+    connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append_data);
+    connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append_data);
 
     init_mode();
 }
 
 mainwindow_view::~mainwindow_view()
 {
+    mainwindow = nullptr;
     delete ui;
 }
 
