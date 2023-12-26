@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        generate_xmake.cpp
+ *  @file        generator.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -31,14 +31,14 @@
 #include <QFile>
 
 #include "configure.h"
-#include "generate_xmake.h"
+#include "generator.h"
 #include "os.h"
 
-generate_xmake::generate_xmake() = default;
+generator::generator() = default;
 
-generate_xmake::~generate_xmake() = default;
+generator::~generator() = default;
 
-void generate_xmake::replace_var(QString &buffer, const QString &key, const QString &value, const bool is_newline)
+void generator::replace_var(QString &buffer, const QString &key, const QString &value, const bool is_newline)
 {
     QString keyword;
     if (is_newline)
@@ -52,7 +52,7 @@ void generate_xmake::replace_var(QString &buffer, const QString &key, const QStr
     buffer.replace(keyword, value);
 }
 
-void generate_xmake::replace_var(QString &buffer, const QString &key, const QStringList &values, const bool is_newline)
+void generator::replace_var(QString &buffer, const QString &key, const QStringList &values, const bool is_newline)
 {
     QString keyword;
     if (is_newline)
@@ -66,7 +66,7 @@ void generate_xmake::replace_var(QString &buffer, const QString &key, const QStr
     buffer.replace(keyword, values.join("\n"));
 }
 
-void generate_xmake::add_includes(QString &buffer, const QStringList &values)
+void generator::add_includes(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -77,7 +77,7 @@ void generate_xmake::add_includes(QString &buffer, const QStringList &values)
     replace_var(buffer, "includes", list);
 }
 
-void generate_xmake::add_requires(QString &buffer, const QStringList &values)
+void generator::add_requires(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -88,7 +88,7 @@ void generate_xmake::add_requires(QString &buffer, const QStringList &values)
     replace_var(buffer, "requires", list);
 }
 
-void generate_xmake::add_warnings(QString &buffer, const QStringList &values)
+void generator::add_warnings(QString &buffer, const QStringList &values)
 {
     QStringList list;
     QStringList warnings;
@@ -115,7 +115,7 @@ void generate_xmake::add_warnings(QString &buffer, const QStringList &values)
     replace_var(buffer, "warnings", list.join("\n"));
 }
 
-void generate_xmake::add_languages(QString &buffer, const QStringList &values)
+void generator::add_languages(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -126,7 +126,7 @@ void generate_xmake::add_languages(QString &buffer, const QStringList &values)
     replace_var(buffer, "languages", list.join(", "));
 }
 
-void generate_xmake::add_deps(QString &buffer, const QStringList &values)
+void generator::add_deps(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -142,7 +142,7 @@ void generate_xmake::add_deps(QString &buffer, const QStringList &values)
     replace_var(buffer, "deps", list, true);
 }
 
-void generate_xmake::add_rules(QString &buffer, const QStringList &values)
+void generator::add_rules(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -158,7 +158,7 @@ void generate_xmake::add_rules(QString &buffer, const QStringList &values)
     replace_var(buffer, "rules", list, true);
 }
 
-void generate_xmake::add_includedirs(QString &buffer, const QStringList &values)
+void generator::add_includedirs(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -174,7 +174,7 @@ void generate_xmake::add_includedirs(QString &buffer, const QStringList &values)
     replace_var(buffer, "includedirs", list, true);
 }
 
-void generate_xmake::add_files(QString &buffer, const QStringList &values)
+void generator::add_files(QString &buffer, const QStringList &values)
 {
     QStringList list;
     for (int i = 0; i < values.size(); i++)
@@ -190,7 +190,7 @@ void generate_xmake::add_files(QString &buffer, const QStringList &values)
     replace_var(buffer, "files", list, true);
 }
 
-QString generate_xmake::generate(const project_table::project_t &project_table)
+QString generator::generate(const project_table::project_t &project_table)
 {
     const QDateTime date_time = QDateTime::currentDateTime();
     const QString date = date_time.toString("yyyy-MM-dd hh:mm:ss");

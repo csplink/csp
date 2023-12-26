@@ -29,7 +29,7 @@
 
 #include <QDebug>
 
-#include "generate_xmake.h"
+#include "generator.h"
 #include "os.h"
 #include "path.h"
 #include "project.h"
@@ -309,7 +309,7 @@ void project::generate_code(const int type) const
     {
     case CODE_PROJECT_TYPE_XMAKE: {
         const QString rtn = xmake::lua(QString("%1/scripts/coder/coder.lua").arg(config::repodir()), {"-p", _path});
-        generate_xmake::generate(_project);
+        generator::generate(_project);
         break;
     }
     case CODE_PROJECT_TYPE_MDK_ARM: {

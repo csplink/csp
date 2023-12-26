@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        generate_xmake.h
+ *  @file        generator.h
  *  @brief
  *
  * ****************************************************************************
@@ -32,7 +32,7 @@
 
 #include "project_table.h"
 
-class generate_xmake final
+class generator final
 {
   public:
     /**
@@ -43,8 +43,8 @@ class generate_xmake final
     static QString generate(const project_table::project_t &project_table);
 
   private:
-    generate_xmake();
-    ~generate_xmake();
+    generator();
+    ~generator();
 
     /**
      * @brief replace ${{key}} to value
@@ -120,7 +120,7 @@ class generate_xmake final
      */
     static void add_files(QString &buffer, const QStringList &values);
 
-    Q_DISABLE_COPY_MOVE(generate_xmake)
+    Q_DISABLE_COPY_MOVE(generator)
 };
 
 #endif // CSP_GENERATE_XMAKE_H
