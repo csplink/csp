@@ -149,9 +149,13 @@ mainwindow_view::~mainwindow_view()
 void mainwindow_view::init_mode()
 {
     if (_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
+    {
         set_mode(STACK_INDEX_CHIP_CONFIGURE);
+    }
     else
+    {
         set_mode(STACK_INDEX_HOME);
+    }
 }
 
 void mainwindow_view::set_mode(const int index)
@@ -161,11 +165,19 @@ void mainwindow_view::set_mode(const int index)
     case STACK_INDEX_HOME: {
         ui->dockwidget_left->hide();
         ui->dockwidget_right->hide();
+        ui->dockwidget_bottom_output->hide();
+        ui->dockwidget_bottom_xmake_output->hide();
+        ui->dockwidget_bottom_configurations->hide();
         ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
         break;
     }
     case STACK_INDEX_CHIP_CONFIGURE: {
         ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
+        ui->dockwidget_left->show();
+        ui->dockwidget_right->show();
+        ui->dockwidget_bottom_output->show();
+        ui->dockwidget_bottom_xmake_output->show();
+        ui->dockwidget_bottom_configurations->show();
 
         connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
                 &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);

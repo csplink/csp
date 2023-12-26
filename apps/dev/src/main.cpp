@@ -87,17 +87,19 @@ int main(int argc, char *argv[])
         const auto file = parser.positionalArguments().at(0);
         if (!os::isfile(file))
         {
-            qCritical() << QObject::tr("file: <%1> is not exist.").arg(file);
-            return ENOENT;
+            qCritical().noquote() << QObject::tr("file: <%1> is not exist.").arg(file);
         }
-        try
+        else
         {
-            project::get_instance()->load_project(file);
-        }
-        catch (const std::exception &e)
-        {
-            qCritical() << e.what();
-            return EINVAL;
+            try
+            {
+                project::get_instance()->load_project(file);
+            }
+            catch (const std::exception &e)
+            {
+                qCritical().noquote() << e.what();
+                return EINVAL;
+            }
         }
     }
 
