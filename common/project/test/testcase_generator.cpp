@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_generate_xmake.cpp
+ *  @file        testcase_generator.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -30,11 +30,11 @@
 #include <QDebug>
 #include <QtTest>
 
-#include <generate_xmake.h>
+#include <generator.h>
 #include <os.h>
 #include <project.h>
 
-class testcase_generate_xmake final : public QObject
+class testcase_generator final : public QObject
 {
     Q_OBJECT
 
@@ -51,7 +51,7 @@ class testcase_generate_xmake final : public QObject
         project_table::load_project(&p, ":/project.json");
         QVERIFY(!p.core.name.isEmpty());
 
-        const QString data = generate_xmake::generate(p);
+        const QString data = generator::generate(p);
         QVERIFY(!data.isEmpty());
         QVERIFY(!data.contains("${{"));
 
@@ -64,6 +64,6 @@ class testcase_generate_xmake final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_generate_xmake)
+QTEST_MAIN(testcase_generator)
 
-#include "testcase_generate_xmake.moc"
+#include "testcase_generator.moc"
