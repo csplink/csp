@@ -190,8 +190,10 @@ void generator::add_files(QString &buffer, const QStringList &values)
     replace_var(buffer, "files", list, true);
 }
 
-QString generator::generate(const project_table::project_t &project_table)
+QString generator::generate(const project_table::project_t &project_table, const QString type)
 {
+    Q_UNUSED(type)
+
     const QDateTime date_time = QDateTime::currentDateTime();
     const QString date = date_time.toString("yyyy-MM-dd hh:mm:ss");
     const QString version = CONFIGURE_PROJECT_VERSION;

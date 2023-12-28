@@ -51,7 +51,7 @@ class testcase_generator final : public QObject
         project_table::load_project(&p, ":/project.json");
         QVERIFY(!p.core.name.isEmpty());
 
-        const QString data = generator::generate(p);
+        const QString data = generator::generate(p, "xmake");
         QVERIFY(!data.isEmpty());
         QVERIFY(!data.contains("${{"));
 

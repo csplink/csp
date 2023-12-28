@@ -38,9 +38,10 @@ class generator final
     /**
      * @brief generate xmake code file content from project table
      * @param project_table: project table
+     * @param type: project type
      * @return code file
      */
-    static QString generate(const project_table::project_t &project_table);
+    static QString generate(const project_table::project_t &project_table, const QString type);
 
   private:
     generator();

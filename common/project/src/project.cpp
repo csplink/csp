@@ -268,12 +268,12 @@ void project::load_project(const QString &path)
     load_ips(_project.core.hal, _project.core.target);
 }
 
-void project::save_project(const QString &path) const
+void project::save_project(const QString &path)
 {
     project_table::save_project(_project, path);
 }
 
-void project::save_project() const
+void project::save_project()
 {
     Q_ASSERT(!_path.isEmpty());
 
@@ -292,7 +292,7 @@ void project::save_project() const
     project_table::save_project(_project, _path);
 }
 
-QString project::dump_project() const
+QString project::dump_project()
 {
     return project_table::dump_project(_project);
 }
@@ -303,19 +303,8 @@ void project::clear_project()
     emit signals_project_clear();
 }
 
-void project::generate_code(const int type) const
+void project::generate_code(const QString type) const
 {
-    switch (type)
-    {
-    case CODE_PROJECT_TYPE_XMAKE: {
-        const QString rtn = xmake::lua(QString("%1/scripts/coder/coder.lua").arg(config::repodir()), {"-p", _path});
-        generator::generate(_project);
-        break;
-    }
-    case CODE_PROJECT_TYPE_MDK_ARM: {
-        break;
-    }
-    default:
-        return;
-    }
+    const QString rtn = xmake::lua(QString("%1/scripts/coder/coder.lua").arg(config::repodir()), {"-p", _path});
+    generator::generate(_project, type);
 }

@@ -9,6 +9,8 @@
     "modules": [],
     "toolchains": "arm-none-eabi"
   },
+  "target": "xmake",
+  "version": "v0.0.0.1",
   "pin_configs": {
     "pa1": {
       "function": "",

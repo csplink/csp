@@ -32,6 +32,7 @@
 
 #include <QObject>
 
+#include "generator.h"
 #include "ip_table.h"
 #include "map_table.h"
 #include "project_table.h"
@@ -41,12 +42,6 @@ class project final : public QObject
     Q_OBJECT
 
   public:
-    typedef enum
-    {
-        CODE_PROJECT_TYPE_XMAKE = 0,
-        CODE_PROJECT_TYPE_MDK_ARM
-    } code_project_type;
-
     typedef enum
     {
         CORE_ATTRIBUTE_TYPE_NAME = 0,
@@ -224,18 +219,18 @@ class project final : public QObject
      * @brief save project to file
      * @param path: project file path
      */
-    void save_project(const QString &path) const;
+    void save_project(const QString &path);
 
     /**
      * @brief save project to file
      */
-    void save_project() const;
+    void save_project();
 
     /**
      * @brief dump project
      * @return project string
      */
-    QString dump_project() const;
+    QString dump_project();
 
     /**
      * @brief clear project
@@ -246,7 +241,7 @@ class project final : public QObject
      * @brief generate_code code
      * @param type: code type
      */
-    void generate_code(int type) const;
+    void generate_code(const QString type) const;
 
   private:
     static project *_instance;

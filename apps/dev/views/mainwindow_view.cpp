@@ -294,5 +294,5 @@ void mainwindow_view::action_generate_triggered_callback(const bool checked) con
 {
     Q_UNUSED(checked)
 
-    _project_instance->generate_code(project::code_project_type::CODE_PROJECT_TYPE_XMAKE);
+    _project_instance->generate_code("xmake");
 }

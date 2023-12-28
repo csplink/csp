@@ -30,6 +30,7 @@
 #include <QDebug>
 #include <QFile>
 
+#include "configure.h"
 #include "os.h"
 #include "project_table.h"
 #include "qtjson.h"
@@ -39,7 +40,7 @@ namespace nlohmann
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, name, hal, target, package, company, type, toolchains,
                                    modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_t, core, pin_configs)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_t, core, pin_configs, target, version)
 } // namespace nlohmann
 
 #include <QDebug>
@@ -71,7 +72,7 @@ void project_table::load_project(project_t *project, const QString &path)
     }
 }
 
-void project_table::save_project(const project_table::project_t &p, const QString &path)
+void project_table::save_project(project_table::project_t &p, const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
 
@@ -82,8 +83,9 @@ void project_table::save_project(const project_table::project_t &p, const QStrin
     file.close();
 }
 
-QString project_table::dump_project(const project_table::project_t &p)
+QString project_table::dump_project(project_table::project_t &p)
 {
+    p.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
     const nlohmann::json j = p;
     return QString::fromStdString(j.dump(2));
 }

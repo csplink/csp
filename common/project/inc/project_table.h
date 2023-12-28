@@ -38,7 +38,7 @@ class project_table
     typedef QMap<QString, QString> pin_function_property_t;
     typedef QMap<QString, pin_function_property_t> pin_function_properties_t;
 
-    typedef struct pin_config_struct
+    typedef struct
     {
         QString function;                            // pin selected function
         QString comment;                             // pin comment
@@ -46,7 +46,7 @@ class project_table
         pin_function_properties_t function_property; // pin function properties
     } pin_config_t;
 
-    typedef struct core_struct
+    typedef struct
     {
         QString name;        // name
         QString hal;         // hal
@@ -58,10 +58,12 @@ class project_table
         QStringList modules; // modules
     } core_t;
 
-    typedef struct project_struct
+    typedef struct
     {
         QMap<QString, pin_config_t> pin_configs; // pin configs
         core_t core;                             // core configs
+        QString target;                          // target type: xmake, mdk, cmake
+        QString version;                         // csp version
     } project_t;
 
   public:
@@ -78,14 +80,14 @@ class project_table
      * @param p: project
      * @param path: project file path
      */
-    static void save_project(const project_t &p, const QString &path);
+    static void save_project(project_t &p, const QString &path);
 
     /**
      * @brief dump project to json string
      * @param p: project
      * @return yaml string
      */
-    static QString dump_project(const project_t &p);
+    static QString dump_project(project_t &p);
 
   private:
     explicit project_table();
