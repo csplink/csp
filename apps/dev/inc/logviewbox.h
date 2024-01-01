@@ -30,17 +30,53 @@
 #ifndef CSP_LOGVIEWBOX_H
 #define CSP_LOGVIEWBOX_H
 
-#include <QTextEdit>
+#include <QPlainTextEdit>
 
-class logviewbox final : public QTextEdit
+class logviewbox final : public QPlainTextEdit
 {
     Q_OBJECT
   public:
     explicit logviewbox(QWidget *parent = nullptr);
     ~logviewbox() override;
 
+    void line_number_area_paint_event(const QPaintEvent *event) const;
+    int line_number_area_width() const;
+
   public slots:
-    void append_data(const QString &text);
+    void append(const QString &text);
+
+  protected:
+    void resizeEvent(QResizeEvent *event) override;
+
+  private:
+    class line_number_area final : public QWidget
+    {
+      public:
+        explicit line_number_area(logviewbox *editor) : QWidget(editor), codeEditor(editor)
+        {
+        }
+
+        QSize sizeHint() const override
+        {
+            return {codeEditor->line_number_area_width(), 0};
+        }
+
+      protected:
+        void paintEvent(QPaintEvent *event) override
+        {
+            codeEditor->line_number_area_paint_event(event);
+        }
+
+      private:
+        logviewbox *codeEditor;
+    };
+
+  private slots:
+    void update_line_number_area_width(int new_block_count);
+    void update_line_number_area(const QRect &rect, int dy);
+
+  private:
+    QWidget *_line_number_area;
 };
 
 #endif

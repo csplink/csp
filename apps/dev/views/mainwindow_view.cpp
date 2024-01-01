@@ -134,8 +134,8 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
             Qt::UniqueConnection);
 
-    connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append_data);
-    connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append_data);
+    connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append);
+    connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append);
 
     init_mode();
 }
@@ -293,6 +293,6 @@ void mainwindow_view::action_report_triggered_callback(const bool checked) const
 void mainwindow_view::action_generate_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
-
-    _project_instance->generate_code("xmake");
+    ui->dockwidget_bottom_xmake_output->raise();
+    _project_instance->generate_code();
 }
