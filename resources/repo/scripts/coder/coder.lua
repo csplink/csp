@@ -24,6 +24,7 @@
 import("core.base.json")
 import("core.base.option")
 import("core.base.semver")
+import("project", {alias = "generate_project"})
 
 local license = [[
 /**
@@ -47,13 +48,12 @@ local user_code_end_template = "/**> add user code end %s */"
 local user_code_begin_match = "/%*%*< add user code begin " -- .. "(.-) %*/"
 local user_code_end_match = "/%*%*> add user code end " -- .. "(.-) %*/"
 
-local project_table = {}
-local user_code = {header = nil}
-
-function find_coder(company, hal, name)
+function _find_coder(company, hal, name, repositories_dir)
     local moduledir
-    moduledir = string.format("%s.%s.xmake", string.lower(company), string.lower(hal))
-    coder = assert(import(moduledir, {anonymous = true, try = true}), "coder %s not found!", moduledir)
+    moduledir = string.format("%s.%s", string.lower(company), string.lower(hal))
+    coder = assert(
+                import(moduledir .. ".tools.coder.xmake", {anonymous = true, try = true, rootdir = repositories_dir}),
+                "coder %s not found! repositories: %s", moduledir, repositories_dir)
     if not coder.moduledir then
         coder.moduledir = function()
             return moduledir
@@ -62,7 +62,7 @@ function find_coder(company, hal, name)
     return coder
 end
 
-function generate_header(file, project, coder, user)
+function _generate_header(file, proj, coder, user)
     user = user or {}
     file:print(user_code_begin_template, "header")
     if user.header then
@@ -73,7 +73,11 @@ function generate_header(file, project, coder, user)
         builtinvars.author = string.format("csplink coder: %s(%s)", string.lower(coder.moduledir()),
                                            string.lower(coder.version()))
         builtinvars.file = path.filename(file:path())
-        builtinvars.brief = string.format("this file provides code for the %s initialization", string.lower(kind))
+        if kind == "main" then
+            builtinvars.brief = "main program body"
+        else
+            builtinvars.brief = string.format("this file provides code for the %s initialization", string.lower(kind))
+        end
         builtinvars.date = os.date("%Y")
 
         local header = string.gsub(license:trim(), "%${{(.-)}}", function(variable)
@@ -87,7 +91,7 @@ function generate_header(file, project, coder, user)
     file:print("")
 end
 
-function generate_user(file, kind, user, is_end)
+function _generate_user(file, kind, user, is_end)
     is_end = is_end or false
     file:print(user_code_begin_template, kind)
     if user[kind] then
@@ -101,71 +105,124 @@ function generate_user(file, kind, user, is_end)
     end
 end
 
-function generate_includes(file, project, coder, user)
+function _generate_includes(file, proj, coder, user)
     local kind = path.basename(file:path())
     local header_table = {}
     if path.extension(file:path()) == ".h" then
-        table.join2(header_table, coder.get_header("csp.base"))
+        table.join2(header_table, coder.get_header("base"))
         table.join2(header_table, coder.get_header(string.lower(kind)))
     else
-        table.insert(header_table, string.format("%s.h", kind))
+        if "main" == kind then
+            table.insert(header_table, string.format("%s.h", kind))
+            local modules = proj.core.modules
+            for _, m in ipairs(modules) do
+                table.insert(header_table, string.format("csplink/%s.h", string.lower(m)))
+            end
+        else
+            table.insert(header_table, string.format("csplink/%s.h", kind))
+        end
     end
     file:print("/* includes ------------------------------------------------------------------*/")
     for _, h in ipairs(header_table) do
         file:print("#include \"%s\"", h)
     end
-    generate_user(file, "includes", user)
+    _generate_user(file, "includes", user)
 end
 
-function generate_typedef(file, project, coder, user)
+function _generate_typedef(file, proj, coder, user)
     file:print("/* typedef -------------------------------------------------------------------*/")
-    generate_user(file, "typedef", user)
+    _generate_user(file, "typedef", user)
 end
 
-function generate_define(file, project, coder, user)
+function _generate_define(file, proj, coder, user)
     file:print("/* define --------------------------------------------------------------------*/")
-    generate_user(file, "define", user)
+    if path.extension(file:path()) == ".h" then
+        local kind = path.basename(file:path())
+        local data = coder.generate(proj, kind)
+        for _, map in ipairs(data.defines or {}) do
+            file:print("#define %s %s", map.key, map.value)
+        end
+    end
+    _generate_user(file, "define", user)
 end
 
-function generate_macro(file, project, coder, user)
+function _generate_macro(file, proj, coder, user)
     file:print("/* macro ---------------------------------------------------------------------*/")
-    generate_user(file, "macro", user)
+    _generate_user(file, "macro", user)
 end
 
-function generate_variables(file, project, coder, user)
+function _generate_variables(file, proj, coder, user)
     if path.extension(file:path()) == ".h" then
         file:print("/* extern variables ----------------------------------------------------------*/")
-        generate_user(file, "extern variables", user)
+        _generate_user(file, "extern variables", user)
     else
         file:print("/* variables -----------------------------------------------------------------*/")
-        generate_user(file, "variables", user)
+        _generate_user(file, "variables", user)
     end
 end
 
-function generate_functions_prototypes(file, project, coder, user)
+function _generate_functions_prototypes(file, proj, coder, user)
     file:print("/* functions prototypes ------------------------------------------------------*/")
     if path.extension(file:path()) == ".h" then
         local kind = string.lower(path.basename(file:path()))
-        file:print("")
-        file:print([[/**
+        if "main" ~= kind then
+            file:print("")
+            file:print([[/**
  * @brief configure %s
- *
  */]], kind)
-        file:print("extern void csplink_%s_init(void);", kind)
+            file:print("void csplink_%s_init(void);", kind)
+        end
     end
-    generate_user(file, "functions prototypes", user)
+    _generate_user(file, "functions prototypes", user)
 end
 
-function generate_functions(file, project, coder)
+function _generate_functions(file, proj, coder, user)
     local kind = path.basename(file:path())
-    local code = coder.generate(project_table, kind)
-    file:print("void csplink_%s_init(void)", string.lower(kind))
-    file:print("{")
-    file:print(string.rtrim(code.code))
-    file:print("}")
+    local data = coder.generate(proj, kind)
+    if "main" == kind then
+        file:print([[/**
+ * @brief the application entry point.
+ * @retval int
+ */]])
+        file:print("int main(void)")
+        file:print("{")
+        if data.code then
+            file:print(string.rtrim(data.code))
+        end
+        local modules = proj.core.modules
+        for _, m in ipairs(modules) do
+            file:print("    csplink_%s_init();", string.lower(m))
+        end
+
+        file:print("    /* infinite loop */")
+        file:print("    " .. user_code_begin_template, "while.0")
+        if user["while.0"] then
+            file:printf(user["while.0"])
+        else
+            file:print("    while (1)")
+            file:print("    {")
+        end
+        file:print("        " .. user_code_end_template, "while.0")
+
+        -- TODO: main fn
+
+        file:print("        " .. user_code_begin_template, "while.1")
+        if user["while.1"] then
+            file:printf(user["while.1"])
+        else
+            file:print("    }")
+        end
+        file:print("    " .. user_code_end_template, "while.1")
+        file:print("}")
+    else
+        file:print("void csplink_%s_init(void)", string.lower(kind))
+        file:print("{")
+        file:print(string.rtrim(data.code))
+        file:print("}")
+    end
 end
 
-function match_user(file_path)
+function _match_user(file_path)
     if not os.isfile(file_path) then
         return {}
     end
@@ -176,63 +233,73 @@ function match_user(file_path)
         local matcher = user_code_begin_match .. s .. " %*/\n(.-)" .. user_code_end_match .. s .. " %*/"
         local match = string.match(data, matcher)
         if match and string.len(match) > 0 then
-            user[s] = match
+            user[s] = string.rtrim(match, " ") -- we must ignore right whitespace
         end
     end
     return user
 end
 
-function generate_h(project, coder, kind, outputdir)
-    local file_path = path.join(outputdir, "core", "inc", string.lower(kind) .. ".h")
-    local user = match_user(file_path)
-    local file = io.open(file_path, "w")
-
-    generate_header(file, project_table, coder, user)
-    generate_includes(file, project_table, coder, user)
-    generate_typedef(file, project_table, coder, user)
-    generate_define(file, project_table, coder, user)
-    generate_macro(file, project_table, coder, user)
-    generate_variables(file, project_table, coder, user)
-    generate_functions_prototypes(file, project_table, coder, user)
-    generate_user(file, "0", user, true)
-
-    file:close()
-
-    cprint("${color.success}create %s ok!", file_path)
-end
-
-function generate_c(project, coder, kind, outputdir)
-    local file_path = path.join(outputdir, "core", "src", string.lower(kind) .. ".c")
-    local user = match_user(file_path)
-    local file = io.open(file_path, "w")
-
-    generate_header(file, project_table, coder, user)
-    generate_includes(file, project_table, coder, user)
-    generate_typedef(file, project_table, coder, user)
-    generate_define(file, project_table, coder, user)
-    generate_macro(file, project_table, coder, user)
-    generate_variables(file, project_table, coder, user)
-    generate_functions_prototypes(file, project_table, coder, user)
-    generate_user(file, "0", user)
-    generate_functions(file, project_table, coder)
-    generate_user(file, "1", user, true)
-
-    file:close()
-
-    cprint("${color.success}create %s ok!", file_path)
-end
-
-function generate(outputdir)
-    local company = project_table.core.company
-    local hal = project_table.core.hal
-    local name = project_table.core.target
-    local modules = project_table.core.modules
-    local coder = find_coder(company, hal, name)
-    assert(#modules > 0, "modules is empty")
-    for _, kind in ipairs(modules) do
-        generate_h(project_table, coder, kind, outputdir)
-        generate_c(project_table, coder, kind, outputdir)
+function _generate_h(proj, coder, kind, outputdir)
+    local file_path
+    if "main" == kind then
+        file_path = path.join(outputdir, "core", "inc", string.lower(kind) .. ".h")
+    else
+        file_path = path.join(outputdir, "core", "inc", "csplink", string.lower(kind) .. ".h")
     end
+    local user = _match_user(file_path)
+    local file = io.open(file_path, "w")
+
+    _generate_header(file, proj, coder, user)
+    _generate_includes(file, proj, coder, user)
+    _generate_typedef(file, proj, coder, user)
+    _generate_define(file, proj, coder, user)
+    _generate_macro(file, proj, coder, user)
+    _generate_variables(file, proj, coder, user)
+    _generate_functions_prototypes(file, proj, coder, user)
+    _generate_user(file, "0", user, true)
+
+    file:close()
+
+    cprint("${color.success}create %s ok!", file_path)
+end
+
+function _generate_c(proj, coder, kind, outputdir)
+    local file_path = path.join(outputdir, "core", "src", string.lower(kind) .. ".c")
+    local user = _match_user(file_path)
+    local file = io.open(file_path, "w")
+
+    _generate_header(file, proj, coder, user)
+    _generate_includes(file, proj, coder, user)
+    _generate_typedef(file, proj, coder, user)
+    _generate_define(file, proj, coder, user)
+    _generate_macro(file, proj, coder, user)
+    _generate_variables(file, proj, coder, user)
+    _generate_functions_prototypes(file, proj, coder, user)
+    _generate_user(file, "0", user)
+    _generate_functions(file, proj, coder, user)
+    _generate_user(file, "1", user, true)
+
+    file:close()
+
+    cprint("${color.success}create %s ok!", file_path)
+end
+
+function _generate(proj, outputdir, repositories_dir)
+    local company = proj.core.company
+    local hal = proj.core.hal
+    local name = proj.core.target
+    local modules = proj.core.modules
+    local coder = _find_coder(company, hal, name, repositories_dir)
+    assert(#modules > 0, "modules is empty")
+    modules = table.unique(modules)
+    for _, kind in ipairs(modules) do
+        _generate_h(proj, coder, kind, outputdir)
+        _generate_c(proj, coder, kind, outputdir)
+    end
+    _generate_h(proj, coder, "main", outputdir)
+    _generate_c(proj, coder, "main", outputdir)
+    coder.deploy(proj, outputdir)
+    generate_project(proj, coder, outputdir)
 end
 
 -- LuaFormatter off
@@ -240,10 +307,11 @@ local common_options = {
     {"p",   "project",          "kv",   nil,                                        "csp project file path."},
     {"h",   "help",             "k",    nil,                                        "print this help message and exit."},
     {"o",   "outputdir",        "v",    nil,                                        "set the output directory."},
+    {"r",   "repositories",     "kv",   nil,                                        "repositories dir."},
 }
 -- LuaFormatter on
 
-function usage()
+function _usage()
     option.show_logo()
     option.show_options(common_options)
 end
@@ -254,19 +322,20 @@ function main(...)
     if results then
         if not results["project"] then
             print("fatal error: no input files")
-            usage()
+            _usage()
             return
         end
 
         local outputdir = results["outputdir"] or path.directory(results["project"])
+        local repositories_dir = results["repositories"] or path.join(os.scriptdir(), "..", "..", "..", "repositories")
         if results["help"] then
-            usage()
+            _usage()
         elseif results["project"] then
             assert(os.isfile(results["project"]), "file: %s not found!", results["project"])
-            project_table = json.loadfile(results["project"])
-            generate(outputdir)
+            local proj = json.loadfile(results["project"])
+            _generate(proj, outputdir, repositories_dir)
         else
-            usage()
+            _usage()
         end
     end
 end
