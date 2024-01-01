@@ -28,8 +28,8 @@
  */
 
 #include <QDebug>
+#include <QProcess>
 
-#include "generator.h"
 #include "os.h"
 #include "path.h"
 #include "project.h"
@@ -61,9 +61,6 @@ QString project::get_core(const core_attribute_type type) const
 
     switch (type)
     {
-    case CORE_ATTRIBUTE_TYPE_NAME:
-        value = _project.core.name;
-        break;
     case CORE_ATTRIBUTE_TYPE_HAL:
         value = _project.core.hal;
         break;
@@ -90,9 +87,6 @@ void project::set_core(const core_attribute_type type, const QString &value)
 
     switch (type)
     {
-    case CORE_ATTRIBUTE_TYPE_NAME:
-        _project.core.name = value;
-        break;
     case CORE_ATTRIBUTE_TYPE_HAL:
         _project.core.hal = value;
         break;
@@ -121,6 +115,18 @@ void project::set_path(const QString &path)
     Q_ASSERT(!path.isEmpty());
 
     _path = path;
+}
+
+QString project::get_name() const
+{
+    return _project.name;
+}
+
+void project::set_name(const QString &name)
+{
+    Q_ASSERT(!name.isEmpty());
+
+    _project.name = name;
 }
 
 ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
@@ -303,8 +309,32 @@ void project::clear_project()
     emit signals_project_clear();
 }
 
-void project::generate_code(const QString type) const
+void project::generate_code() const
 {
-    const QString rtn = xmake::lua(QString("%1/scripts/coder/coder.lua").arg(config::repodir()), {"-p", _path});
-    generator::generate(_project, type);
+    const QString lua_path = QString("%1/scripts/coder/coder.lua").arg(config::repodir());
+    const QStringList args = {"lua", "-D", path::absolute(lua_path), "-p", _path};
+    QProcess process;
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    environment.insert("XMAKE_THEME", "plain");
+    process.setProgram("xmake");
+    process.setArguments(args);
+    process.setProcessEnvironment(environment);
+
+    xmake::log(QString("%1 %2").arg("xmake", args.join(" ")));
+    process.start();
+    connect(
+        &process, &QProcess::readyReadStandardOutput, this,
+        [&process]() {
+            const QByteArray err = process.readAllStandardOutput();
+            xmake::log(err.trimmed());
+        },
+        Qt::UniqueConnection);
+    if (!process.waitForFinished(10000))
+    {
+        xmake::log("failed in generate_code");
+    }
+    else
+    {
+        xmake::log("");
+    }
 }

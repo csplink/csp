@@ -48,22 +48,24 @@ class project_table
 
     typedef struct
     {
-        QString name;        // name
-        QString hal;         // hal
-        QString target;      // target
-        QString package;     // package
-        QString company;     // company
-        QString type;        // type
-        QString toolchains;  // toolchains
-        QStringList modules; // modules
+        QString hal;           // hal
+        QString target;        // target
+        QString package;       // package
+        QString company;       // company
+        QString type;          // type
+        QString toolchains;    // toolchains
+        QStringList modules;   // modules
+        QStringList warnings;  // warnings
+        QStringList languages; // languages
     } core_t;
 
     typedef struct
     {
+        QString name;                            // project name
+        QString version;                         // csp version
+        QString target;                          // target type: xmake, mdk, cmake
         QMap<QString, pin_config_t> pin_configs; // pin configs
         core_t core;                             // core configs
-        QString target;                          // target type: xmake, mdk, cmake
-        QString version;                         // csp version
     } project_t;
 
   public:

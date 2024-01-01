@@ -47,13 +47,6 @@ class testcase_project final : public QObject
         g_project_instance = project::get_instance();
     }
 
-    static void core()
-    {
-        g_project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_NAME, "value");
-        const auto core = g_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_NAME);
-        QVERIFY(core == "value");
-    }
-
     static void path()
     {
         g_project_instance->set_path("test");

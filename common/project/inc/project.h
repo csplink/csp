@@ -32,7 +32,6 @@
 
 #include <QObject>
 
-#include "generator.h"
 #include "ip_table.h"
 #include "map_table.h"
 #include "project_table.h"
@@ -44,8 +43,7 @@ class project final : public QObject
   public:
     typedef enum
     {
-        CORE_ATTRIBUTE_TYPE_NAME = 0,
-        CORE_ATTRIBUTE_TYPE_HAL,
+        CORE_ATTRIBUTE_TYPE_HAL = 0,
         CORE_ATTRIBUTE_TYPE_TARGET,
         CORE_ATTRIBUTE_TYPE_PACKAGE,
         CORE_ATTRIBUTE_TYPE_COMPANY,
@@ -90,6 +88,18 @@ class project final : public QObject
      * @param path: project file path
      */
     void set_path(const QString &path);
+
+    /**
+     * @brief get project name
+     * @return project name
+     */
+    QString get_name() const;
+
+    /**
+     * @brief set project name
+     * @param name: project name
+     */
+    void set_name(const QString &name);
 
     /**
      * @brief load ip map from db
@@ -239,9 +249,8 @@ class project final : public QObject
 
     /**
      * @brief generate_code code
-     * @param type: code type
      */
-    void generate_code(const QString type) const;
+    void generate_code() const;
 
   private:
     static project *_instance;

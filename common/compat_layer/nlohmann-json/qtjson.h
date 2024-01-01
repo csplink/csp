@@ -38,6 +38,25 @@
 
 #include <nlohmann/json.hpp>
 
+#define NLOHMANN_JSON_FROM_MAYBE_UNUSED(v1)                                                                            \
+    if (nlohmann_json_j.contains(#v1))                                                                                 \
+    {                                                                                                                  \
+        nlohmann_json_j.at(#v1).get_to(nlohmann_json_t.v1);                                                            \
+    }                                                                                                                  \
+    else                                                                                                               \
+    {                                                                                                                  \
+        nlohmann_json_t.v1 = decltype(nlohmann_json_t.v1)();                                                           \
+    }
+#define NLOHMANN_DEFINE_TYPE_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                         \
+    inline void to_json(nlohmann::json &nlohmann_json_j, const Type &nlohmann_json_t)                                  \
+    {                                                                                                                  \
+        NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_TO, __VA_ARGS__))                                       \
+    }                                                                                                                  \
+    inline void from_json(const nlohmann::json &nlohmann_json_j, Type &nlohmann_json_t)                                \
+    {                                                                                                                  \
+        NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_FROM_MAYBE_UNUSED, __VA_ARGS__))                        \
+    }
+
 namespace nlohmann
 {
 template <> struct adl_serializer<QString>

@@ -92,12 +92,6 @@ class xmake final
 
     static void install_log_handler(log_handler handler);
 
-  private:
-    xmake() = default;
-    ~xmake() = default;
-
-    inline static log_handler _log_handler = nullptr;
-
     static void log(const QString &msg)
     {
         if (_log_handler != nullptr)
@@ -109,6 +103,12 @@ class xmake final
             qInfo().noquote() << msg;
         }
     }
+
+  private:
+    xmake() = default;
+    ~xmake() = default;
+
+    inline static log_handler _log_handler = nullptr;
 
     Q_DISABLE_COPY_MOVE(xmake)
 };

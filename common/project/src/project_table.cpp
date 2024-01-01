@@ -38,9 +38,8 @@
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, name, hal, target, package, company, type, toolchains,
-                                   modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::project_t, core, pin_configs, target, version)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, hal, target, package, company, type, toolchains, modules)
+NLOHMANN_DEFINE_TYPE_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs)
 } // namespace nlohmann
 
 #include <QDebug>
@@ -62,11 +61,16 @@ void project_table::load_project(project_t *project, const QString &path)
         const std::string buffer = os::readfile(path).toStdString();
         const nlohmann::json json = nlohmann::json::parse(buffer);
         json.get_to(*project);
+
+        if (project->target.isEmpty())
+        {
+            project->target = "xmake";
+        }
     }
     catch (std::exception &e)
     {
         const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical() << str;
+        qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
     }
