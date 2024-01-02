@@ -76,7 +76,8 @@ void config::init()
 
     if (!is_config(csp_config_key_repositories))
     {
-        _settings->setValue(csp_config_key_repositories, csp_config_value_default_repositories);
+        _settings->setValue(csp_config_key_repositories,
+                            QString("%1/%2").arg(path::appdir(), csp_config_value_default_repositories));
     }
 
     if (!is_config(csp_config_key_workspace))
