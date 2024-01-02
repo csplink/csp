@@ -125,8 +125,10 @@ function _generate_define(file, proj, coder, user)
     if path.extension(file:path()) == ".h" then
         local kind = path.basename(file:path())
         local data = coder.generate(proj, kind)
-        for _, map in ipairs(data.defines or {}) do
-            file:print("#define %s %s", map.key, map.value)
+        if data then
+            for _, map in ipairs(data.defines or {}) do
+                file:print("#define %s %s", map.key, map.value)
+            end
         end
     end
     _generate_user(file, "define", user)
@@ -203,7 +205,9 @@ function _generate_functions(file, proj, coder, user)
     else
         file:print("void csplink_%s_init(void)", string.lower(kind))
         file:print("{")
-        file:print(string.rtrim(data.code))
+        if data and data.code then
+            file:print(string.rtrim(data.code))
+        end
         file:print("}")
     end
 end

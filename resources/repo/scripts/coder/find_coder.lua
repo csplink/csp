@@ -41,8 +41,9 @@ function main(company, hal, name, repositories_dir)
     else
         assert(0, "invalid hal (%s)", hal)
     end
-    local haldir = path.join(repositories_dir, hal, version)
-    moduledir = string.format("%s.%s", string.lower(company), string.lower(hal))
+    company = string.lower(company)
+    local haldir = path.join(repositories_dir, company, hal, version)
+    moduledir = string.format("%s.%s", company, string.lower(hal))
     coder = assert(import("tools.coder.xmake", {anonymous = true, try = true, rootdir = haldir}),
                    "coder %s not found! repositories: %s", moduledir, haldir)
     if not coder.moduledir then
