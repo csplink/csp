@@ -96,6 +96,12 @@ class config final
      */
     static QString default_workdir();
 
+    /**
+     * @brief get repositories directory; <get("core/repositories")>
+     * @return repositories; <default: "repositories">
+     */
+    static QString repositories();
+
   private:
     inline static QSettings *_settings = nullptr;
 

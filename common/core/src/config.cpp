@@ -47,6 +47,9 @@ static constexpr const char *csp_config_value_default_language = "zh_CN";
 static constexpr const char *csp_config_key_workspace = "core/workspace";
 static constexpr const char *csp_config_value_default_workspace = "workspace";
 
+static constexpr const char *csp_config_key_repositories = "core/repositories";
+static constexpr const char *csp_config_value_default_repositories = "repositories";
+
 bool config::is_config(const QString &key)
 {
     return _settings->value(key, csp_config_default_value).toString() != csp_config_default_value;
@@ -57,13 +60,24 @@ void config::init()
     _settings = new QSettings(csp_config_file_path, QSettings::IniFormat);
 
     if (!is_config(csp_config_key_repo_dir))
+    {
         _settings->setValue(csp_config_key_repo_dir,
                             QString("%1/%2").arg(path::appdir(), csp_config_value_default_repo_dir));
+    }
     if (!is_config(csp_config_key_xmake_repo_dir))
+    {
         _settings->setValue(csp_config_key_xmake_repo_dir,
                             QString("%1/%2").arg(path::appdir(), csp_config_value_default_xmake_repo_dir));
+    }
     if (!is_config(csp_config_key_language))
+    {
         _settings->setValue(csp_config_key_language, csp_config_value_default_language);
+    }
+
+    if (!is_config(csp_config_key_repositories))
+    {
+        _settings->setValue(csp_config_key_repositories, csp_config_value_default_repositories);
+    }
 
     if (!is_config(csp_config_key_workspace))
     {
@@ -123,8 +137,8 @@ QString config::language()
 QString config::workspace()
 {
     Q_ASSERT(_settings != nullptr);
-    const auto appdir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_workspace);
-    return _settings->value(csp_config_key_workspace, appdir).toString();
+    const auto dir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_workspace);
+    return _settings->value(csp_config_key_workspace, dir).toString();
 }
 
 QString config::default_workdir()
@@ -139,4 +153,11 @@ QString config::default_workdir()
     }
 
     return workdir;
+}
+
+QString config::repositories()
+{
+    Q_ASSERT(_settings != nullptr);
+    const QString dir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_repositories);
+    return _settings->value(csp_config_key_repositories, dir).toString();
 }
