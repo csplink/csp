@@ -55,7 +55,7 @@ function _generate_header(file, proj, coder, user)
     else
         local kind = path.basename(file:path())
         local builtinvars = {}
-        builtinvars.version = string.lower(proj["version"])
+        builtinvars.version = string.lower(proj["version"] or "v0.0.0.0")
         builtinvars.date_t = os.date()
         builtinvars.date = os.date("%Y")
 
@@ -87,6 +87,7 @@ end
 
 function _generate_includes(file, proj, coder, user)
     file:print("---------------------------------- includes -----------------------------------")
+    file:print("includes(\"hal/xmake.lua\")")
     _generate_user(file, "includes", user)
 end
 
@@ -105,7 +106,7 @@ function _generate_project_config(file, proj, coder, user)
     else
         file:print("set_project(\"%s\") -- Set project name", proj["name"])
         file:print("set_version(\"0.0.0\") -- Set version")
-        file:print("set_xmakever(\"2.7.9\") -- Set minimal xmake version")
+        file:print("set_xmakever(\"2.8.3\") -- Set minimal xmake version")
     end
     file:print(user_code_end_template, "project config")
     file:print("")
@@ -199,7 +200,10 @@ function _match_user(file_path)
         local matcher = user_code_begin_match .. s .. "\n(.-)" .. user_code_end_match .. s
         local match = string.match(data, matcher)
         if match and string.len(match) > 0 then
-            user[s] = string.rtrim(match, " ") -- we must ignore right whitespace
+            match = string.rtrim(match, " ") -- we must ignore right whitespace
+            if string.len(match) > 0 then
+                user[s] = match
+            end
         end
     end
     return user

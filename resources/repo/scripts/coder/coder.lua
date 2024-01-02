@@ -23,7 +23,7 @@
 --
 import("core.base.json")
 import("core.base.option")
-import("core.base.semver")
+import("find_coder")
 import("project", {alias = "generate_project"})
 
 local license = [[
@@ -47,20 +47,6 @@ local user_code_begin_template = "/**< add user code begin %s */"
 local user_code_end_template = "/**> add user code end %s */"
 local user_code_begin_match = "/%*%*< add user code begin " -- .. "(.-) %*/"
 local user_code_end_match = "/%*%*> add user code end " -- .. "(.-) %*/"
-
-function _find_coder(company, hal, name, repositories_dir)
-    local moduledir
-    moduledir = string.format("%s.%s", string.lower(company), string.lower(hal))
-    coder = assert(
-                import(moduledir .. ".tools.coder.xmake", {anonymous = true, try = true, rootdir = repositories_dir}),
-                "coder %s not found! repositories: %s", moduledir, repositories_dir)
-    if not coder.moduledir then
-        coder.moduledir = function()
-            return moduledir
-        end
-    end
-    return coder
-end
 
 function _generate_header(file, proj, coder, user)
     user = user or {}
@@ -233,7 +219,10 @@ function _match_user(file_path)
         local matcher = user_code_begin_match .. s .. " %*/\n(.-)" .. user_code_end_match .. s .. " %*/"
         local match = string.match(data, matcher)
         if match and string.len(match) > 0 then
-            user[s] = string.rtrim(match, " ") -- we must ignore right whitespace
+            match = string.rtrim(match, " ") -- we must ignore right whitespace
+            if string.len(match) > 0 then
+                user[s] = match
+            end
         end
     end
     return user
@@ -289,7 +278,7 @@ function _generate(proj, outputdir, repositories_dir)
     local hal = proj.core.hal
     local name = proj.core.target
     local modules = proj.core.modules
-    local coder = _find_coder(company, hal, name, repositories_dir)
+    local coder = find_coder(company, hal, name, repositories_dir)
     assert(#modules > 0, "modules is empty")
     modules = table.unique(modules)
     for _, kind in ipairs(modules) do
