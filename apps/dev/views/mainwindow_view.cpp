@@ -294,5 +294,6 @@ void mainwindow_view::action_generate_triggered_callback(const bool checked) con
 {
     Q_UNUSED(checked)
     ui->dockwidget_bottom_xmake_output->raise();
+    _project_instance->save_project();
     _project_instance->generate_code();
 }
