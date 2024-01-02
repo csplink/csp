@@ -87,9 +87,26 @@ void project_table::save_project(project_table::project_t &p, const QString &pat
     file.close();
 }
 
-QString project_table::dump_project(project_table::project_t &p)
+QString project_table::dump_project(project_table::project_t &proj)
 {
-    p.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
-    const nlohmann::json j = p;
+    proj.core.modules.clear();
+
+    auto pin_configs_i = proj.pin_configs.constBegin();
+    while (pin_configs_i != proj.pin_configs.constEnd())
+    {
+        const pin_config_t &config = pin_configs_i.value();
+
+        if (config.locked)
+        {
+            const QStringList list = config.function.split("-");
+            proj.core.modules << list[0];
+        }
+
+        ++pin_configs_i;
+    }
+
+    proj.core.modules.removeDuplicates();
+    proj.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
+    const nlohmann::json j = proj;
     return QString::fromStdString(j.dump(2));
 }

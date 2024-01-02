@@ -89,7 +89,7 @@ class project_table
      * @param p: project
      * @return yaml string
      */
-    static QString dump_project(project_t &p);
+    static QString dump_project(project_t &proj);
 
   private:
     explicit project_table();
