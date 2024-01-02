@@ -21,5 +21,16 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-04-21     xqyjlj       initial version
 #
+set(name custom_res)
 
-file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/fonts DESTINATION ${CSP_EXE_DIR})
+add_subdirectory(fonts)
+add_subdirectory(repo)
+add_subdirectory(xmake)
+
+add_custom_target(${name})
+
+add_dependencies(${name}
+        custom_res_fonts
+        custom_res_repo
+        custom_res_xmake
+)

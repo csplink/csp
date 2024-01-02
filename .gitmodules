@@ -1,0 +1,3 @@
+[submodule "resources/xmake/csp_repo"]
+	path = resources/xmake/csp_repo
+	url = ../csp_repo.git

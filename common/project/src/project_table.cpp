@@ -30,62 +30,83 @@
 #include <QDebug>
 #include <QFile>
 
+#include "configure.h"
 #include "os.h"
 #include "project_table.h"
+#include "qtjson.h"
+
+namespace nlohmann
+{
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, hal, target, package, company, type, toolchains, modules)
+NLOHMANN_DEFINE_TYPE_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs)
+} // namespace nlohmann
+
+#include <QDebug>
+
+QT_DEBUG_ADD_TYPE(project_table::pin_config_t)
 
 project_table::project_table() = default;
 
 project_table::~project_table() = default;
 
-project_table::project_t project_table::load_project(const QString &path)
+void project_table::load_project(project_t *project, const QString &path)
 {
+    Q_ASSERT(project != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
     try
     {
-        std::string buffer;
-        QFile       file(path);
+        const std::string buffer = os::readfile(path).toStdString();
+        const nlohmann::json json = nlohmann::json::parse(buffer);
+        json.get_to(*project);
 
-        file.open(QFileDevice::ReadOnly | QIODevice::Text);
-        buffer = file.readAll().toStdString();
-        file.close();
-        YAML::Node yaml_data = YAML::Load(buffer);
-        return yaml_data.as<project_table::project_t>();
-    }
-    catch (YAML::BadFile &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
-    }
-    catch (YAML::BadConversion &e)
-    {
-        os::show_error_and_exit(e.what());
-        throw;
+        if (project->target.isEmpty())
+        {
+            project->target = "xmake";
+        }
     }
     catch (std::exception &e)
     {
-        qDebug() << e.what();
+        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+        qCritical().noquote() << str;
+        os::show_error_and_exit(str);
         throw;
     }
-
-    return {};
 }
 
-void project_table::save_project(const project_table::project_t &p, const QString &path)
+void project_table::save_project(project_table::project_t &p, const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
 
-    auto  yaml = dump_project(p);
+    const auto json = dump_project(p);
     QFile file(path);
     file.open(QFileDevice::WriteOnly | QIODevice::Text);
-    file.write(yaml.toUtf8());
+    file.write(json.toUtf8());
     file.close();
 }
 
-QString project_table::dump_project(const project_table::project_t &p)
+QString project_table::dump_project(project_table::project_t &proj)
 {
-    YAML::Node node;
-    node = p;
-    return QString::fromStdString(YAML::Dump(node));
+    proj.core.modules.clear();
+
+    auto pin_configs_i = proj.pin_configs.constBegin();
+    while (pin_configs_i != proj.pin_configs.constEnd())
+    {
+        const pin_config_t &config = pin_configs_i.value();
+
+        if (config.locked)
+        {
+            const QStringList list = config.function.split("-");
+            proj.core.modules << list[0];
+        }
+
+        ++pin_configs_i;
+    }
+
+    proj.core.modules.removeDuplicates();
+    proj.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
+    const nlohmann::json j = proj;
+    return QString::fromStdString(j.dump(2));
 }

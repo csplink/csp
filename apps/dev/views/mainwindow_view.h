@@ -35,38 +35,52 @@
 #include "project.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
+namespace Ui
+{
 class mainwindow_view;
 }
 QT_END_NAMESPACE
 
-class mainwindow_view : public QMainWindow {
+class mainwindow_view final : public QMainWindow
+{
     Q_OBJECT
 
-private:
+  private:
     typedef enum
     {
-        ENUM_STACK_INDEX_HOME = 0,
-        ENUM_STACK_INDEX_CHIP_CONFIGURE
-    } stack_index_t;
+        STACK_INDEX_HOME = 0,
+        STACK_INDEX_CHIP_CONFIGURE
+    } stack_index_type;
 
-public:
+  public:
     explicit mainwindow_view(QWidget *parent = nullptr);
     ~mainwindow_view() override;
 
-public slots:
-    void update_modules_treeview(const QString &company, const QString &name);
+signals:
+    void signal_add_sys_log(const QString &string);
+    void signal_add_xmake_log(const QString &string);
 
-private slots:
-    void action_new_chip_triggered_callback(bool checked);
+  private:
+    void init_mode();
+    void set_mode(int index);
+    static void sys_message_log_handler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+    static void xmake_message_log_handler(const QString &msg);
+
+  public slots:
+    void update_modules_treeview(const QString &company, const QString &name) const;
+    void create_project();
+
+  private slots:
+    void action_new_chip_triggered_callback(bool checked) const;
     void action_load_triggered_callback(bool checked);
     void action_save_triggered_callback(bool checked);
-    void action_saveas_triggered_callback(bool checked);
-    void action_close_triggered_callback(bool checked);
-    void action_report_triggered_callback(bool checked);
+    void action_saveas_triggered_callback(bool checked) const;
+    void action_close_triggered_callback(bool checked) const;
+    void action_report_triggered_callback(bool checked) const;
+    void action_generate_triggered_callback(bool checked) const;
 
-private:
+  private:
     Ui::mainwindow_view *ui;
-    project             *_project_instance;
+    project *_project_instance;
 };
-#endif  // MAINWINDOW_VIEW_H
+#endif // MAINWINDOW_VIEW_H

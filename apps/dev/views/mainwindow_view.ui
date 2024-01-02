@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string notr="true">CSP</string>
   </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::VerticalTabs</set>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
@@ -69,7 +75,14 @@
     <addaction name="action_report"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuProject">
+    <property name="title">
+     <string>Project</string>
+    </property>
+    <addaction name="action_generate"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menuProject"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockwidget_left">
@@ -150,9 +163,77 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dockwidget_bottom_output">
+   <property name="minimumSize">
+    <size>
+     <width>88</width>
+     <height>107</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::AllDockWidgetAreas</set>
+   </property>
+   <property name="windowTitle">
+    <string>Output</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_bottom_output_contents">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="logviewbox" name="logviewbox_output">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockwidget_bottom_configurations">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Configurations</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_bottom_configurations_contents"/>
+  </widget>
+  <widget class="QDockWidget" name="dockwidget_bottom_xmake_output">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Xmake Output</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockwidget_bottom_xmake_output_contents">
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0">
+      <widget class="logviewbox" name="logviewbox_xmake_output">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="action_load">
    <property name="text">
     <string>Load Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
    </property>
   </action>
   <action name="action_import">
@@ -188,6 +269,11 @@
     <string>New Chip Project</string>
    </property>
   </action>
+  <action name="action_generate">
+   <property name="text">
+    <string>Generate code</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -207,6 +293,11 @@
    <extends>QWidget</extends>
    <header>propertybrowser.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>logviewbox</class>
+   <extends>QTextEdit</extends>
+   <header>logviewbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -4,39 +4,39 @@
 <context>
     <name>propertybrowser</name>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="44"/>
+        <location filename="../../src/propertybrowser.cpp" line="47"/>
         <source>Base</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="46"/>
-        <location filename="../../src/propertybrowser.cpp" line="146"/>
+        <location filename="../../src/propertybrowser.cpp" line="49"/>
+        <location filename="../../src/propertybrowser.cpp" line="194"/>
         <source>Locked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="50"/>
-        <location filename="../../src/propertybrowser.cpp" line="144"/>
+        <location filename="../../src/propertybrowser.cpp" line="53"/>
+        <location filename="../../src/propertybrowser.cpp" line="188"/>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="54"/>
+        <location filename="../../src/propertybrowser.cpp" line="57"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="59"/>
+        <location filename="../../src/propertybrowser.cpp" line="62"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="69"/>
+        <location filename="../../src/propertybrowser.cpp" line="72"/>
         <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/propertybrowser.cpp" line="71"/>
+        <location filename="../../src/propertybrowser.cpp" line="74"/>
         <source>Function</source>
         <translation type="unfinished"></translation>
     </message>

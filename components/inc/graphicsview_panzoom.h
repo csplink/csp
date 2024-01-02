@@ -32,15 +32,12 @@
 
 #include <QGraphicsView>
 #include <QKeyEvent>
-#include <QMouseEvent>
-#include <QWheelEvent>
 
-#include "interface_graphicsitem_pin.h"
-
-class graphicsview_panzoom : public QGraphicsView {
+class graphicsview_panzoom final : public QGraphicsView
+{
     Q_OBJECT
 
-public:
+  public:
     explicit graphicsview_panzoom(QWidget *parent = nullptr);
     ~graphicsview_panzoom() override;
 
@@ -56,32 +53,32 @@ public:
      */
     void zoom_out(int value);
 
-private:
+  private:
     /**
      * @brief resizing via setup matrix
      */
     void setup_matrix();
 
-signals:
+  signals:
     /**
      * @brief selected item changed
      * @param item: selected item
      */
     void signals_selected_item_clicked(QGraphicsItem *item);
 
-public:
+  public:
     void property_changed_callback(QGraphicsItem *item);
 
-protected:
+  protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
 
-private:
-    int  _scale;
+  private:
+    int _scale;
     bool _is_pressed = false;
 };
 
-#endif  // CSP_GRAPHICSVIEW_PANZOOM_H
+#endif // CSP_GRAPHICSVIEW_PANZOOM_H

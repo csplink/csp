@@ -27,11 +27,18 @@
  *  2023-05-25     xqyjlj       initial version
  */
 
+#include <QApplication>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QMessageBox>
+#include <QProcess>
+#include <QString>
+#include <QTemporaryFile>
+#include <QUrl>
+
 #include "os.h"
-
-os::os() = default;
-
-os::~os() = default;
 
 void os::show_info(const QString &message, const QString &title, QWidget *parent)
 {
@@ -56,7 +63,7 @@ void os::show_error(const QString &message, const QString &title, QWidget *paren
 void os::show_error_and_exit(const QString &message, const QString &title, QWidget *parent)
 {
     QMessageBox::critical(parent, title, message, QMessageBox::Ok);
-    QApplication::quit();
+    QApplication::exit(-1);
 }
 
 void os::show_question(const QString &message, const QString &title, QWidget *parent)
@@ -71,15 +78,15 @@ void os::open_url(const QString &url)
     QDesktopServices::openUrl(QUrl(url));
 }
 
-void os::rmdir(const QString &dir)
+bool os::rmdir(const QString &dir)
 {
     Q_ASSERT(!dir.isEmpty());
 
     if (!isdir(dir))
-        return;
+        return false;
 
     QDir d(dir);
-    d.removeRecursively();
+    return d.removeRecursively();
 }
 
 void os::mkdir(const QString &dir)
@@ -89,34 +96,33 @@ void os::mkdir(const QString &dir)
     if (isdir(dir))
         return;
 
-    QDir d(dir);
-    d.mkpath(dir);
+    const QDir d(dir);
 }
 
-bool os::isdir(const QString &p)
+bool os::isdir(const QString &path)
 {
-    if (p.isEmpty())
+    if (path.isEmpty())
         return false;
 
-    QFileInfo fi(p);
+    const QFileInfo fi(path);
     return fi.isDir();
 }
 
-bool os::isfile(const QString &p)
+bool os::isfile(const QString &path)
 {
-    if (p.isEmpty())
+    if (path.isEmpty())
         return false;
 
-    QFileInfo fi(p);
+    const QFileInfo fi(path);
     return fi.isFile();
 }
 
-bool os::exists(const QString &p)
+bool os::exists(const QString &path)
 {
-    if (p.isEmpty())
+    if (path.isEmpty())
         return false;
 
-    QFileInfo fi(p);
+    const QFileInfo fi(path);
     return fi.exists();
 }
 
@@ -125,18 +131,23 @@ QString os::getexistdir()
     return QFileDialog::getExistingDirectory();
 }
 
+QString os::getexistfile()
+{
+    return QFileDialog::getOpenFileName();
+}
+
 QString os::getsavefile(const QString &title, const QString &default_file, const QString &filter)
 {
     return QFileDialog::getSaveFileName(nullptr, title, default_file, filter);
 }
 
-QStringList os::files(const QString &p, const QStringList &filters)
+QStringList os::files(const QString &path, const QStringList &filters)
 {
-    if (!isdir(p))
+    if (!isdir(path))
         return {};
 
-    QDir        dir(p);
-    auto        files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    const QDir dir(path);
+    auto files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &file : files)
         paths.append(file.absoluteFilePath());
@@ -144,26 +155,166 @@ QStringList os::files(const QString &p, const QStringList &filters)
     return paths;
 }
 
-QStringList os::files(const QString &p, const QString &filter)
+QStringList os::files(const QString &path, const QString &filter)
 {
-    return files(p, QStringList() << filter);
+    return files(path, QStringList() << filter);
 }
 
-QStringList os::dirs(const QString &p, const QStringList &filters)
+QStringList os::dirs(const QString &path, const QStringList &filters)
 {
-    if (!isdir(p))
+    if (!isdir(path))
         return {};
 
-    QDir        dir(p);
-    auto        dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    const QDir dir(path);
+    auto dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QStringList paths;
-    for (const QFileInfo &_dir : dirs)
-        paths.append(_dir.absoluteFilePath());
+    for (const QFileInfo &info : dirs)
+        paths.append(info.absoluteFilePath());
 
     return paths;
 }
 
-QStringList os::dirs(const QString &p, const QString &filter)
+QStringList os::dirs(const QString &path, const QString &filter)
 {
-    return dirs(p, QStringList() << filter);
+    return dirs(path, QStringList() << filter);
+}
+
+bool os::execvf(const QString &program, const QStringList &argv, const QMap<QString, QString> &env, const int msecs,
+                const QString &workdir, const QString &output_file, const QString &error_file)
+{
+    QProcess process;
+    const bool use_output = !output_file.isEmpty();
+    const bool use_error = !error_file.isEmpty();
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+
+    Q_ASSERT(!program.isEmpty());
+
+    auto env_i = env.constBegin();
+    while (env_i != env.constEnd())
+    {
+        environment.insert(env_i.key(), env_i.value());
+        ++env_i;
+    }
+
+    process.setProgram(program);
+    process.setArguments(argv);
+    process.setProcessEnvironment(environment);
+
+    if (use_output)
+        process.setStandardOutputFile(output_file);
+    if (use_error)
+        process.setStandardErrorFile(error_file);
+    if (isdir(workdir))
+        process.setWorkingDirectory(workdir);
+
+    process.start();
+
+    if (!process.waitForFinished(msecs))
+        return false;
+
+    return true;
+}
+
+bool os::execv(const QString &program, const QStringList &argv, const QMap<QString, QString> &env, const int msecs,
+               const QString &workdir, QByteArray *output, QByteArray *error)
+{
+    QProcess process;
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+
+    Q_ASSERT(!program.isEmpty());
+
+    auto env_i = env.constBegin();
+    while (env_i != env.constEnd())
+    {
+        environment.insert(env_i.key(), env_i.value());
+        ++env_i;
+    }
+
+    process.setProgram(program);
+    process.setArguments(argv);
+    process.setProcessEnvironment(environment);
+
+    if (isdir(workdir))
+        process.setWorkingDirectory(workdir);
+
+    process.start();
+
+    if (!process.waitForFinished(msecs))
+        return false;
+
+    if (output != nullptr)
+        *output = process.readAllStandardOutput();
+    if (error != nullptr)
+        *error = process.readAllStandardError();
+
+    return true;
+}
+
+QByteArray os::readfile(const QString &path)
+{
+    if (!isfile(path))
+        return {};
+
+    QFile file(path);
+
+    if (!file.open(QIODevice::ReadOnly))
+        return {};
+    QByteArray data = file.readAll();
+    file.close();
+
+    return data;
+}
+
+bool os::writefile(const QString &path, const QByteArray &data, const bool overwrite)
+{
+    Q_ASSERT(!path.isEmpty());
+
+    QIODevice::OpenMode mode;
+
+    if (data.isEmpty())
+        return false;
+
+    QFile file(path);
+
+    if (overwrite)
+        mode = QIODevice::WriteOnly;
+    else
+        mode = QIODevice::Append;
+
+    if (!file.open(mode))
+        return false;
+
+    file.write(data);
+    file.close();
+
+    return true;
+}
+
+bool os::rm(const QString &path)
+{
+    if (isfile(path))
+    {
+        return QFile::remove(path);
+    }
+    else if (isdir(path))
+    {
+        QDir dir(path);
+        return dir.removeRecursively();
+    }
+    return false;
+}
+
+void os::raise(const bool cond, const QString &str)
+{
+    if (!cond)
+    {
+        qCritical().noquote() << str;
+        os::show_error(str);
+        exit(-1);
+    }
+}
+
+void os::raise(const bool cond, const char *assertion, const QString &what, const char *file, const int line)
+{
+    raise(cond, QString("ASSERT(%1): '%2' in file %3, line %4").arg(assertion, what, file).arg(line));
 }

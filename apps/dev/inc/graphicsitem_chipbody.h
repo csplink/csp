@@ -30,33 +30,28 @@
 #ifndef CSP_GRAPHICSITEM_CHIPBODY_H
 #define CSP_GRAPHICSITEM_CHIPBODY_H
 
-#include <QFont>
-#include <QFontMetrics>
 #include <QGraphicsItem>
 #include <QPainter>
-#include <QStyleOptionGraphicsItem>
 
-class graphicsitem_chipbody : public QGraphicsItem {
-public:
-    explicit graphicsitem_chipbody(qreal          width,
-                                   qreal          height,
-                                   const QString &name,
-                                   const QString &company,
+class graphicsitem_chipbody final : public QGraphicsItem
+{
+  public:
+    explicit graphicsitem_chipbody(qreal width, qreal height, const QString &name, const QString &company,
                                    const QString &package);
     ~graphicsitem_chipbody() override;
 
-private:
-    qreal   _width;
-    qreal   _height;
+  private:
+    qreal _width;
+    qreal _height;
     QString _name;
     QString _company;
     QString _package;
-    QFont  *_font;
+    QFont *_font;
 
-protected:
-    QRectF       boundingRect() const override;
+  protected:
+    QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    void         paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 
-#endif  // CSP_GRAPHICSITEM_CHIPBODY_H
+#endif // CSP_GRAPHICSITEM_CHIPBODY_H

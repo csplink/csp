@@ -23,9 +23,9 @@
 #
 
 file(GLOB_RECURSE SOURCES
-        db/*.cpp
         inc/*.h
-        src/*.cpp)
+        src/*.cpp
+        resources/*.qrc)
 
 add_library(repo STATIC ${SOURCES})
 target_link_libraries(repo PUBLIC compat_layer core)
@@ -34,10 +34,12 @@ target_include_directories(repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 ##########################################################################
 
 file(GLOB_RECURSE TESTCASES
-        test/db/*.cpp)
+        test/*.cpp)
 
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
     add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
+    target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test repo)
+    add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()

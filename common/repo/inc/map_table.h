@@ -30,152 +30,48 @@
 #ifndef CSP_MAP_TABLE_H
 #define CSP_MAP_TABLE_H
 
-#include "config.h"
-#include "qtyaml.h"
+#include <QMap>
 
-class map_table {
-public:
-    typedef struct
+class map_table final
+{
+  public:
+    typedef struct value_struct
     {
         QMap<QString, QString> comment;
     } value_t;
 
-    typedef struct
+    typedef struct group_struct
     {
         QMap<QString, QString> comment;
         QMap<QString, value_t> values;
     } group_t;
 
-    typedef struct
+    typedef struct property_struct
     {
         QMap<QString, QString> display_name;
         QMap<QString, QString> description;
-        QString                category;
-        bool                   readonly;
+        QString category;
+        bool readonly;
     } property_t;
 
     typedef struct
     {
-        QMap<QString, group_t>    groups;
+        QMap<QString, group_t> groups;
         QMap<QString, property_t> properties;
-        QMap<QString, QString>    total;
+        QMap<QString, QString> total;
+        QMap<QString, QString> reverse_total;
     } map_t;
 
     typedef QMap<QString, map_t> maps_t;
 
-public:
-    static map_t  load_map(const QString &path);
-    static map_t  load_map(const QString &hal, const QString &map);
-    static maps_t load_maps(const QString &hal);
+  public:
+    static void load_map(map_t *map, const QString &path);
+    static void load_map(map_t *map, const QString &hal, const QString &map_name);
+    static void load_maps(maps_t *maps, const QString &hal);
 
-private:
+  private:
     explicit map_table();
     ~map_table();
 };
 
-namespace YAML {
-
-template <> struct convert<map_table::value_t>
-{
-    static Node encode(const map_table::value_t &rhs)
-    {
-        Node node;
-        node.force_insert("Comment", rhs.comment);
-        return node;
-    }
-
-    static bool decode(const Node &node, map_table::value_t &rhs)
-    {
-        if (!node.IsMap() || node.size() != 1)
-            return false;
-
-        rhs.comment = node["Comment"].as<QMap<QString, QString>>();
-        return true;
-    }
-};
-
-template <> struct convert<map_table::group_t>
-{
-    static Node encode(const map_table::group_t &rhs)
-    {
-        Node node;
-        node.force_insert("Comment", rhs.comment);
-        node.force_insert("Values", rhs.values);
-        return node;
-    }
-
-    static bool decode(const Node &node, map_table::group_t &rhs)
-    {
-        if (!node.IsMap() || node.size() != 2)
-            return false;
-
-        rhs.comment = node["Comment"].as<QMap<QString, QString>>();
-        rhs.values  = node["Values"].as<QMap<QString, map_table::value_t>>();
-        return true;
-    }
-};
-
-template <> struct convert<map_table::property_t>
-{
-    static Node encode(const map_table::property_t &rhs)
-    {
-        Node node;
-        node.force_insert("DisplayName", rhs.display_name);
-        node.force_insert("Description", rhs.description);
-        node.force_insert("Category", rhs.category);
-        node.force_insert("ReadOnly", rhs.readonly);
-        return node;
-    }
-
-    static bool decode(const Node &node, map_table::property_t &rhs)
-    {
-        if (!node.IsMap() || node.size() != 4)
-            return false;
-
-        rhs.display_name = node["DisplayName"].as<QMap<QString, QString>>();
-        rhs.description  = node["Description"].as<QMap<QString, QString>>();
-        rhs.category     = node["Category"].as<QString>();
-        rhs.readonly     = node["ReadOnly"].as<bool>();
-        return true;
-    }
-};
-
-template <> struct convert<map_table::map_t>
-{
-    static Node encode(const map_table::map_t &rhs)
-    {
-        Node node;
-        node.force_insert("Groups", rhs.groups);
-        node.force_insert("Properties", rhs.properties);
-        return node;
-    }
-
-    static bool decode(const Node &node, map_table::map_t &rhs)
-    {
-        if (!node.IsMap() || node.size() != 2)
-            return false;
-
-        rhs.groups     = node["Groups"].as<QMap<QString, map_table::group_t>>();
-        rhs.properties = node["Properties"].as<QMap<QString, map_table::property_t>>();
-
-        auto group_i = rhs.groups.constBegin();
-        while (group_i != rhs.groups.constEnd())
-        {
-            auto values   = group_i.value().values;
-            auto values_i = values.constBegin();
-            while (values_i != values.constEnd())
-            {
-                auto name  = values_i.key();
-                auto value = values_i.value();
-                rhs.total.insert(name, value.comment[config::language()]);
-                values_i++;
-            }
-            group_i++;
-        }
-
-        return true;
-    }
-};
-}  // namespace YAML
-
-#endif  // CSP_MAP_TABLE_H
+#endif // CSP_MAP_TABLE_H

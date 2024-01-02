@@ -24,6 +24,11 @@
 
 set(name core)
 
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h
+)
+
 file(GLOB_RECURSE SOURCES
         inc/*.h
         src/*.cpp
@@ -42,7 +47,7 @@ endif ()
 qt5_create_translation(QM_FILES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/inc ${TS_FILES})
 
 add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
-target_link_libraries(${name} PUBLIC Qt5::Widgets)
+target_link_libraries(${name} PUBLIC Qt5::Widgets compat_layer)
 target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
@@ -52,7 +57,9 @@ file(GLOB_RECURSE TESTCASES
 
 foreach (TESTCASE ${TESTCASES})
     get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE})
+    add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
+    target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
+    add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()
 

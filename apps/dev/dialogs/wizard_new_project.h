@@ -30,28 +30,28 @@
 #ifndef WIZARD_NEW_PROJECT_H
 #define WIZARD_NEW_PROJECT_H
 
-#include <QLabel>
 #include <QLineEdit>
 #include <QWizard>
 
 #include "project.h"
 
-class wizard_new_project : public QWizard {
+class wizard_new_project final : public QWizard
+{
     Q_OBJECT
 
-public:
-    explicit wizard_new_project(QWidget *parent);
+  public:
+    explicit wizard_new_project(const QWidget *parent);
 
     void accept() override;
 
-private:
-    QLineEdit *lineedit_project_path = nullptr;
-    QLineEdit *lineedit_project_name = nullptr;
+  private:
+    QLineEdit *_lineedit_project_path = nullptr;
+    QLineEdit *_lineedit_project_name = nullptr;
 
-private:
-    project     *_project_instance = nullptr;
+  private:
+    project *_project_instance = nullptr;
     QWizardPage *create_page_introduce();
     QWizardPage *create_page_choose_path();
 };
 
-#endif  // WIZARD_NEW_PROJECT_H
+#endif // WIZARD_NEW_PROJECT_H

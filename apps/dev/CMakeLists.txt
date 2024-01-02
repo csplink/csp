@@ -24,15 +24,7 @@
 
 set(name csp-dev)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
-
 set(CSP_EXE_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "csp exe file dir")
-
-configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h
-)
 
 file(GLOB_RECURSE DIALOGS
         dialogs/*.ui
@@ -79,5 +71,7 @@ if (${CMAKE_BUILD_TYPE} MATCHES "Release")
 else ()
     add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
 endif ()
+
+add_dependencies(${name} custom_res)
 
 target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components qtpropertybrowser)

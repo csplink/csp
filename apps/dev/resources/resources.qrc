@@ -1,13 +1,14 @@
 <RCC>
     <qresource prefix="/">
+        <file>images/logo.original.svg</file>
+        <file>images/logo.svg</file>
         <file>images/logo.16.ico</file>
         <file>images/logo.32.ico</file>
         <file>images/logo.48.ico</file>
         <file>images/logo.64.ico</file>
         <file>images/logo.128.ico</file>
-        <file>images/logo.original.svg</file>
+        <file>images/logo.ico</file>
         <file>images/logo.png</file>
-        <file>images/logo.svg</file>
         <file>packages/LQFP48.png</file>
         <file>packages/LQFP64.png</file>
         <file>packages/LQFP144.png</file>

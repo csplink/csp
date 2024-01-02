@@ -35,30 +35,32 @@
 #include "project.h"
 #include "propertybrowser.h"
 
-namespace Ui {
+namespace Ui
+{
 class chip_configure_view;
 }
 
-class chip_configure_view : public QWidget {
+class chip_configure_view final : public QWidget
+{
     Q_OBJECT
 
-public:
+  public:
     explicit chip_configure_view(QWidget *parent = nullptr);
     ~chip_configure_view() override;
 
     void set_propertybrowser(propertybrowser *instance);
     void init_view();
 
-signals:
+  signals:
     void signal_update_modules_treeview(const QString &company, const QString &name);
 
-protected:
+  protected:
     void showEvent(QShowEvent *event) override;
 
-private:
-    Ui::chip_configure_view *ui;
-    propertybrowser         *_propertybrowser_instance;
-    project                 *_project_instance;
+  private:
+    Ui::chip_configure_view *_ui;
+    propertybrowser *_propertybrowser_instance;
+    project *_project_instance;
 };
 
-#endif  // CHIP_CONFIGURE_VIEW_H
+#endif // CHIP_CONFIGURE_VIEW_H

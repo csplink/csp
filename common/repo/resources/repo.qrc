@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/lib/repo">
+        <file>db/ip/gpio.yml</file>
+        <file>db/map/gpio.yml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,22 @@
+{
+  "name": "untitled",
+  "target": "xmake",
+  "version": "v0.0.0.1",
+  "core": {
+    "hal": "csp_hal_apm32f1",
+    "target": "APM32F103ZET6",
+    "package": "LQFP144",
+    "company": "Geehy",
+    "type": "chip",
+    "modules": [],
+    "toolchains": "arm-none-eabi"
+  },
+  "pin_configs": {
+    "pa1": {
+      "function": "",
+      "comment": "",
+      "locked": false,
+      "function_property": {}
+    }
+  }
+}

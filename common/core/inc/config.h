@@ -30,13 +30,11 @@
 #ifndef COMMON_CORE_CSP_CONFIG_H
 #define COMMON_CORE_CSP_CONFIG_H
 
-#include <QObject>
 #include <QSettings>
 
-class config : public QObject {
-    Q_OBJECT
-
-public:
+class config final
+{
+  public:
     /**
      * @brief check if the key is config
      * @param key: config key
@@ -50,6 +48,11 @@ public:
     static void init();
 
     /**
+     * @brief deinit config
+     */
+    static void deinit();
+
+    /**
      * @brief get value by key
      * @param key: config key
      * @return config value
@@ -61,6 +64,12 @@ public:
      * @return csp_repo directory; <default: "csp_repo">
      */
     static QString repodir();
+
+    /**
+     * @brief get csp_repo directory; <get("core/xmake_repodir")>
+     * @return csp_repo directory; <default: "xmake">
+     */
+    static QString xmake_repodir();
 
     /**
      * @brief set value by key
@@ -81,11 +90,25 @@ public:
      */
     static QString workspace();
 
-private:
-    config();
-    ~config() override;
+    /**
+     * @brief get default work dir;
+     * @return work dir; <always returns a fixed value>
+     */
+    static QString default_workdir();
 
-    config(const config &signal);
-    const config &operator=(const config &signal);
+    /**
+     * @brief get repositories directory; <get("core/repositories")>
+     * @return repositories; <default: "repositories">
+     */
+    static QString repositories();
+
+  private:
+    inline static QSettings *_settings = nullptr;
+
+  private:
+    config() = default;
+    ~config() = default;
+
+    Q_DISABLE_COPY_MOVE(config)
 };
-#endif  //  COMMON_CORE_CSP_CONFIG_H
+#endif //  COMMON_CORE_CSP_CONFIG_H

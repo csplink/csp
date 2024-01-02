@@ -33,14 +33,15 @@
 #include <QGraphicsItem>
 #include <QMenu>
 #include <QPainter>
-#include <QStyleOptionGraphicsItem>
 
-#define GRAPHICSITEM_PIN_PROPERTY_NAME_MENU_PTR        "user.menu.ptr"
-#define GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR "user.pinout_unit.ptr"
-
-class interface_graphicsitem_pin : public QObject, public QGraphicsItem {
+class interface_graphicsitem_pin : public QObject, public QGraphicsItem
+{
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
+
+  public:
+    static constexpr const char *property_name_menu_ptr = "user.menu.ptr";
+    static constexpr const char *property_name_pinout_unit_ptr = "user.pinout_unit.ptr";
 };
 
-#endif  // CSP_INTERFACE_GRAPHICSITEM_PIN_H
+#endif // CSP_INTERFACE_GRAPHICSITEM_PIN_H

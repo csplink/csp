@@ -31,30 +31,50 @@
 #define COMMON_PROJECT_CSP_PROJECT_H
 
 #include <QObject>
-#include <QVariant>
 
 #include "ip_table.h"
 #include "map_table.h"
 #include "project_table.h"
 
-class project : public QObject {
+class project final : public QObject
+{
     Q_OBJECT
 
-public:
+  public:
+    typedef enum
+    {
+        CORE_ATTRIBUTE_TYPE_HAL = 0,
+        CORE_ATTRIBUTE_TYPE_TARGET,
+        CORE_ATTRIBUTE_TYPE_PACKAGE,
+        CORE_ATTRIBUTE_TYPE_COMPANY,
+        CORE_ATTRIBUTE_TYPE_TYPE,
+    } core_attribute_type;
+
+  public:
+    /**
+     * @brief init config
+     */
+    static void init();
+
+    /**
+     * @brief deinit config
+     */
+    static void deinit();
+
     /******************* core ***********************/
     /**
      * @brief get core config value by core name
-     * @param key: core name
+     * @param type: core attribute type
      * @return core config value
      */
-    QString get_core(const QString &key) const;
+    QString get_core(core_attribute_type type) const;
 
     /**
      * @brief set core config value by core name
-     * @param key: core name
+     * @param type: core attribute type
      * @param value: core config value
      */
-    void set_core(const QString &key, const QString &value);
+    void set_core(core_attribute_type type, const QString &value);
     /***********************************************/
 
     /**
@@ -68,6 +88,18 @@ public:
      * @param path: project file path
      */
     void set_path(const QString &path);
+
+    /**
+     * @brief get project name
+     * @return project name
+     */
+    QString get_name() const;
+
+    /**
+     * @brief set project name
+     * @param name: project name
+     */
+    void set_name(const QString &name);
 
     /**
      * @brief load ip map from db
@@ -86,7 +118,6 @@ public:
     /**
      * @brief load hal map from db
      * @param hal: hal name
-     * @param name: chip name
      * @return hal map as a modifiable reference
      */
     map_table::maps_t &load_maps(const QString &hal);
@@ -146,6 +177,46 @@ public:
      */
     bool get_pin_locked(const QString &key);
 
+    /**
+     * @brief set pin config function property
+     * @param key: pin name
+     * @param module: module name
+     * @param property: property name
+     * @param value: property value
+     */
+    void set_pin_config_fp(const QString &key, const QString &module, const QString &property, const QString &value);
+
+    /**
+     * @brief clear pin config function property
+     * @param key: pin name
+     * @param module: module name
+     * @param property: property name
+     */
+    void clear_pin_config_fp(const QString &key, const QString &module, const QString &property);
+
+    /**
+     * @brief clear pin config function module properties
+     * @param key: pin name
+     * @param module: module name
+     */
+    void clear_pin_config_fp_module(const QString &key, const QString &module);
+
+    /**
+     * @brief get pin config function properties
+     * @param key: pin name
+     * @return pin config function properties as a modifiable reference
+     */
+    project_table::pin_function_properties_t &get_pin_config_fps(const QString &key);
+
+    /**
+     * @brief get pin config function property
+     * @param key: pin name
+     * @param module: module name
+     * @param property: property name
+     * @return pin config function property as a modifiable reference
+     */
+    QString &get_pin_config_fp(const QString &key, const QString &module, const QString &property);
+
     /***********************************************/
 
     /**
@@ -171,20 +242,31 @@ public:
      */
     QString dump_project();
 
-private:
-    project_table::project_t _project;  // project table
-    QString                  _path;     // project file path
-    ip_table::ips_t          _ips;      // ip map
-    map_table::maps_t        _maps;     // hal map
+    /**
+     * @brief clear project
+     */
+    void clear_project();
 
-public:
+    /**
+     * @brief generate_code code
+     */
+    void generate_code() const;
+
+  private:
+    static project *_instance;
+    project_table::project_t _project; // project table
+    QString _path;                     // project file path
+    ip_table::ips_t _ips;              // ip map
+    map_table::maps_t _maps;           // hal map
+
+  public:
     /**
      * @brief get project instance
      * @return project instance
      */
     static project *get_instance();
 
-signals:
+  signals:
     /**
      * @brief project property changed signal
      * @param property: property name
@@ -192,20 +274,17 @@ signals:
      * @param old_value: old value
      * @param new_value: new value
      */
-    void signals_pin_property_changed(const QString  &property,
-                                      const QString  &name,
-                                      const QVariant &old_value,
+    void signals_pin_property_changed(const QString &property, const QString &name, const QVariant &old_value,
                                       const QVariant &new_value);
+    void signals_pin_function_property_changed(const QString &module, const QString &property, const QString &name,
+                                               const QVariant &old_value, const QVariant &new_value);
+    void signals_project_clear();
 
-private:
-    project();
-    ~project() override;
+  private:
+    project() = default;
+    ~project() override = default;
 
-    project(const project &signal);
-    const project &operator=(const project &signal);
-
-private:
-    static project *_instance;
+    Q_DISABLE_COPY_MOVE(project)
 };
 
-#endif  // COMMON_PROJECT_CSP_PROJECT_H
+#endif // COMMON_PROJECT_CSP_PROJECT_H

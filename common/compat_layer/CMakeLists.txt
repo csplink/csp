@@ -21,11 +21,25 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-04-19     xqyjlj       initial version
 #
+set(name compat_layer)
 
-file(GLOB_RECURSE SOURCES
-        yaml-cpp/*.cpp
-        )
+add_library(${name} INTERFACE)
+target_link_libraries(${name} INTERFACE yaml-cpp Qt5::Core nlohmann-json)
+target_include_directories(${name} INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/yaml-cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/nlohmann-json
+)
 
-add_library(compat_layer STATIC ${SOURCES})
-target_link_libraries(compat_layer PUBLIC yaml-cpp Qt5::Core)
-target_include_directories(compat_layer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/yaml-cpp)
+##########################################################################
+
+file(GLOB_RECURSE TESTCASES
+        test/*.cpp)
+
+foreach (TESTCASE ${TESTCASES})
+    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TESTCASE}
+            test/testcase_qtjson.cpp)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
+    add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
+endforeach ()
+

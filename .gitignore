@@ -61,10 +61,16 @@ compile_commands.json
 
 #cmake
 build/
-apps/dev/inc/configure.h
+common/core/inc/configure.h
 
 #xmake
 .xmake/
 
 #clangd
 .cache/
+
+#vs
+.vs
+*.DotSettings
+out
+CMakeSettings.json

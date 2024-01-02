@@ -30,8 +30,16 @@ set(CMAKE_AUTOUIC ON) # Qt about
 set(CMAKE_AUTOMOC ON) # Qt Meta-Object Compiler
 set(CMAKE_AUTORCC ON) # Qt resource system
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -Wpedantic")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -Wpedantic")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+
+endif()
 
 add_definitions(-DQT_NO_FOREACH)
 
@@ -50,6 +58,8 @@ get_git_branch(GIT_BRANCH)
 get_git_commit(GIT_COMMIT)
 get_git_commit_long(GIT_COMMIT_LONG)
 get_git_commit_date(GIT_COMMIT_DATE)
+
+enable_testing()
 
 add_subdirectory(apps)
 add_subdirectory(common)

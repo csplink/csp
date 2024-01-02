@@ -27,7 +27,9 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
+#include <QDateTime>
 #include <QDebug>
+#include <QMutex>
 #include <QStandardItem>
 
 #include "chip_summary_table.h"
@@ -36,10 +38,81 @@
 #include "os.h"
 #include "ui_mainwindow_view.h"
 #include "wizard_new_project.h"
+#include "xmake.h"
+
+static mainwindow_view *mainwindow = nullptr;
+
+void mainwindow_view::sys_message_log_handler(const QtMsgType type, const QMessageLogContext &context,
+                                              const QString &msg)
+{
+    Q_UNUSED(context);
+
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+    const QByteArray local_msg = msg.toLocal8Bit();
+
+    QString strMsg("");
+    switch (type)
+    {
+    case QtDebugMsg:
+        strMsg = QString("Debug:");
+        break;
+    case QtInfoMsg:
+        strMsg = QString("Info:");
+        break;
+    case QtWarningMsg:
+        strMsg = QString("Warning:");
+        break;
+    case QtCriticalMsg:
+        strMsg = QString("Critical:");
+        break;
+    case QtFatalMsg:
+        strMsg = QString("Fatal:");
+        break;
+
+    default:
+        break;
+    }
+
+    const QString str_date_time = QDateTime::currentDateTime().toString("hh:mm:ss");
+    const QString str_message = QString("%1 %2:%3").arg(str_date_time).arg(strMsg).arg(local_msg.constData());
+
+    if (mainwindow)
+    {
+        emit mainwindow->signal_add_sys_log(str_message);
+    }
+    else
+    {
+        // do nothing
+    }
+}
+
+void mainwindow_view::xmake_message_log_handler(const QString &msg)
+{
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+    if (mainwindow)
+    {
+        emit mainwindow->signal_add_xmake_log(msg);
+    }
+    else
+    {
+        // do nothing
+    }
+}
 
 mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow_view)
 {
     ui->setupUi(this);
+    mainwindow = this;
+    qInstallMessageHandler(mainwindow_view::sys_message_log_handler);
+    xmake::install_log_handler(mainwindow_view::xmake_message_log_handler);
+
+    tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_xmake_output);
+    tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_configurations);
+    ui->dockwidget_bottom_output->raise();
+
     _project_instance = project::get_instance();
     ui->page_chip_configure_view->set_propertybrowser(ui->treepropertybrowser);
 
@@ -55,79 +128,140 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
             Qt::UniqueConnection);
     connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
             Qt::UniqueConnection);
+    connect(ui->action_generate, &QAction::triggered, this, &mainwindow_view::action_generate_triggered_callback,
+            Qt::UniqueConnection);
 
-    if (_project_instance->get_core(CSP_PROJECT_CORE_TYPE) == "chip")
-    {
-        ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_CHIP_CONFIGURE);
+    connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
+            Qt::UniqueConnection);
 
-        connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
-                &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
+    connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append);
+    connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append);
 
-        update_modules_treeview(_project_instance->get_core(CSP_PROJECT_CORE_COMPANY),
-                                _project_instance->get_core(CSP_PROJECT_CORE_HAL_NAME));
-
-        ui->page_chip_configure_view->init_view();
-    }
-    else
-    {
-        ui->dockwidget_left->hide();
-        ui->dockwidget_right->hide();
-        ui->stackedwidget->setCurrentIndex(ENUM_STACK_INDEX_HOME);
-    }
+    init_mode();
 }
 
 mainwindow_view::~mainwindow_view()
 {
+    mainwindow = nullptr;
     delete ui;
 }
 
-void mainwindow_view::update_modules_treeview(const QString &company, const QString &name)
+void mainwindow_view::init_mode()
+{
+    if (_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
+    {
+        set_mode(STACK_INDEX_CHIP_CONFIGURE);
+    }
+    else
+    {
+        set_mode(STACK_INDEX_HOME);
+    }
+}
+
+void mainwindow_view::set_mode(const int index)
+{
+    switch (index)
+    {
+    case STACK_INDEX_HOME: {
+        ui->dockwidget_left->hide();
+        ui->dockwidget_right->hide();
+        ui->dockwidget_bottom_output->hide();
+        ui->dockwidget_bottom_xmake_output->hide();
+        ui->dockwidget_bottom_configurations->hide();
+        ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
+        break;
+    }
+    case STACK_INDEX_CHIP_CONFIGURE: {
+        ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
+        ui->dockwidget_left->show();
+        ui->dockwidget_right->show();
+        ui->dockwidget_bottom_output->show();
+        ui->dockwidget_bottom_xmake_output->show();
+        ui->dockwidget_bottom_configurations->show();
+
+        connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
+                &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
+
+        update_modules_treeview(_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY),
+                                _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET));
+
+        ui->page_chip_configure_view->init_view();
+
+        this->setWindowState(Qt::WindowMaximized);
+        break;
+    }
+    default: {
+        break;
+    }
+    }
+}
+
+void mainwindow_view::update_modules_treeview(const QString &company, const QString &name) const
 {
     ui->treeview->header()->hide();
-    auto *model        = new QStandardItemModel(ui->treeview);
-    auto  chip_summary = chip_summary_table::load_chip_summary(company, name);
-    auto  modules      = &chip_summary.modules;
-    auto  modules_i    = modules->constBegin();
+    auto *model = new QStandardItemModel(ui->treeview);
+    chip_summary_table::chip_summary_t chip_summary;
+    chip_summary_table::load_chip_summary(&chip_summary, company, name);
+    const auto modules = &chip_summary.modules;
+    auto modules_i = modules->constBegin();
     while (modules_i != modules->constEnd())
     {
-        auto item = new QStandardItem(modules_i.key());
+        const auto item = new QStandardItem(modules_i.key());
         item->setEditable(false);
         model->appendRow(item);
 
-        auto module   = &modules_i.value();
+        const auto module = &modules_i.value();
         auto module_i = module->constBegin();
         while (module_i != module->constEnd())
         {
-            auto item_child = new QStandardItem(module_i.key());
+            const auto item_child = new QStandardItem(module_i.key());
             item_child->setEditable(false);
             item->appendRow(item_child);
-            module_i++;
+            ++module_i;
         }
-        modules_i++;
+        ++modules_i;
     }
     delete ui->treeview->model();
     ui->treeview->setModel(model);
     ui->treeview->expandAll();
 }
 
-void mainwindow_view::action_new_chip_triggered_callback(bool checked)
+void mainwindow_view::create_project()
 {
-    ui->page_home_view->button_create_mcu_project_clicked_callback(checked);
+    init_mode();
 }
 
-void mainwindow_view::action_load_triggered_callback(bool checked)
+void mainwindow_view::action_new_chip_triggered_callback(const bool checked) const
+{
+    ui->page_home_view->button_create_chip_project_clicked_callback(checked);
+}
+
+void mainwindow_view::action_load_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
+
+    const auto file = os::getexistfile();
+    if (file.isEmpty())
+        return;
+    try
+    {
+        _project_instance->load_project(file);
+        init_mode();
+    }
+    catch (const std::exception &e)
+    {
+        os::show_error(tr("Project load failed, reason: <%1>.").arg(e.what()));
+    }
 }
 
-void mainwindow_view::action_save_triggered_callback(bool checked)
+void mainwindow_view::action_save_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 
     if (_project_instance->get_path().isEmpty())
     {
         wizard_new_project wizard(this);
-        connect(&wizard, &wizard_new_project::finished, this, [=](int result) {
+        connect(&wizard, &wizard_new_project::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
                 _project_instance->save_project();
@@ -141,17 +275,25 @@ void mainwindow_view::action_save_triggered_callback(bool checked)
     }
 }
 
-void mainwindow_view::action_saveas_triggered_callback(bool checked)
+void mainwindow_view::action_saveas_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_close_triggered_callback(bool checked)
+void mainwindow_view::action_close_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
 }
 
-void mainwindow_view::action_report_triggered_callback(bool checked)
+void mainwindow_view::action_report_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
+}
+
+void mainwindow_view::action_generate_triggered_callback(const bool checked) const
+{
+    Q_UNUSED(checked)
+    ui->dockwidget_bottom_xmake_output->raise();
+    _project_instance->save_project();
+    _project_instance->generate_code();
 }

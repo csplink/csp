@@ -33,34 +33,36 @@
 #include <os.h>
 #include <project_table.h>
 
-class testcase_project_table : public QObject {
+class testcase_project_table final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void load_project()
     {
-        auto p = project_table::load_project(":/project.yml");
-        QVERIFY(!p.core.isEmpty());
+        project_table::project_t project;
+        project_table::load_project(&project, ":/project.json");
+        QVERIFY(!project.name.isEmpty());
     }
 
     static void save_project()
     {
         auto p = project_table::project_t();
-        p.core.insert("name", "test");
+        p.name = "test";
         project_table::pin_config_t pin_config;
         pin_config.comment = "PA1-OUT";
         p.pin_configs.insert("PA1", pin_config);
-        project_table::save_project(p, "test.yml");
-        QVERIFY(os::isfile("test.yml"));
+        project_table::save_project(p, "test.json");
+        QVERIFY(os::isfile("test.json"));
     }
 
     static void dump_project()
     {
         auto p = project_table::project_t();
-        p.core.insert("name", "test");
+        p.name = "test";
         p.pin_configs.insert("test", project_table::pin_config_t());
-        auto str = project_table::dump_project(p);
+        const auto str = project_table::dump_project(p);
         QVERIFY(!str.isEmpty());
     }
 };

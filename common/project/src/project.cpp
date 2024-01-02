@@ -28,38 +28,81 @@
  */
 
 #include <QDebug>
+#include <QProcess>
 
 #include "os.h"
 #include "path.h"
 #include "project.h"
 
+#include "config.h"
+#include "xmake.h"
+
 project *project::_instance = new project();
 
-project::project() = default;
+void project::init()
+{
+    _instance = new project();
+}
 
-project::~project() = default;
+void project::deinit()
+{
+    delete _instance;
+    _instance = nullptr;
+}
 
 project *project::get_instance()
 {
     return _instance;
 }
 
-QString project::get_core(const QString &key) const
+QString project::get_core(const core_attribute_type type) const
 {
-    Q_ASSERT(!key.isEmpty());
+    QString value;
 
-    if (_project.core.contains(key))
-        return _project.core[key];
-    else
-        return "";
+    switch (type)
+    {
+    case CORE_ATTRIBUTE_TYPE_HAL:
+        value = _project.core.hal;
+        break;
+    case CORE_ATTRIBUTE_TYPE_TARGET:
+        value = _project.core.target;
+        break;
+    case CORE_ATTRIBUTE_TYPE_PACKAGE:
+        value = _project.core.package;
+        break;
+    case CORE_ATTRIBUTE_TYPE_COMPANY:
+        value = _project.core.company;
+        break;
+    case CORE_ATTRIBUTE_TYPE_TYPE:
+        value = _project.core.type;
+        break;
+    }
+
+    return value;
 }
 
-void project::set_core(const QString &key, const QString &value)
+void project::set_core(const core_attribute_type type, const QString &value)
 {
-    Q_ASSERT(!key.isEmpty());
     Q_ASSERT(!value.isEmpty());
 
-    _project.core[key] = value;
+    switch (type)
+    {
+    case CORE_ATTRIBUTE_TYPE_HAL:
+        _project.core.hal = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_TARGET:
+        _project.core.target = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_PACKAGE:
+        _project.core.package = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_COMPANY:
+        _project.core.company = value;
+        break;
+    case CORE_ATTRIBUTE_TYPE_TYPE:
+        _project.core.type = value;
+        break;
+    }
 }
 
 QString project::get_path() const
@@ -74,12 +117,24 @@ void project::set_path(const QString &path)
     _path = path;
 }
 
+QString project::get_name() const
+{
+    return _project.name;
+}
+
+void project::set_name(const QString &name)
+{
+    Q_ASSERT(!name.isEmpty());
+
+    _project.name = name;
+}
+
 ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
 {
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    _ips = ip_table::load_ips(hal, name);
+    ip_table::load_ips(&_ips, hal, name);
     return _ips;
 }
 
@@ -92,7 +147,7 @@ map_table::maps_t &project::load_maps(const QString &hal)
 {
     Q_ASSERT(!hal.isEmpty());
 
-    _maps = map_table::load_maps(hal);
+    map_table::load_maps(&_maps, hal);
     return _maps;
 }
 
@@ -134,7 +189,7 @@ QString &project::get_pin_function(const QString &key)
     return _project.pin_configs[key].function;
 }
 
-void project::set_pin_locked(const QString &key, bool locked)
+void project::set_pin_locked(const QString &key, const bool locked)
 {
     Q_ASSERT(!key.isEmpty());
     emit signals_pin_property_changed("locked", key, _project.pin_configs[key].locked, locked);
@@ -147,15 +202,76 @@ bool project::get_pin_locked(const QString &key)
     return _project.pin_configs[key].locked;
 }
 
+void project::set_pin_config_fp(const QString &key, const QString &module, const QString &property,
+                                const QString &value)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
+    Q_ASSERT(!property.isEmpty());
+    Q_ASSERT(!value.isEmpty());
+
+    emit signals_pin_function_property_changed(module, property, key,
+                                               _project.pin_configs[key].function_property[module][property], value);
+    _project.pin_configs[key].function_property[module][property] = value;
+}
+
+void project::clear_pin_config_fp(const QString &key, const QString &module, const QString &property)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
+    Q_ASSERT(!property.isEmpty());
+
+    if (_project.pin_configs[key].function_property.contains(module))
+    {
+        if (_project.pin_configs[key].function_property[module].contains(property))
+        {
+            emit signals_pin_function_property_changed(
+                module, property, key, _project.pin_configs[key].function_property[module][property], "");
+            _project.pin_configs[key].function_property[module].remove(property);
+        }
+    }
+}
+
+void project::clear_pin_config_fp_module(const QString &key, const QString &module)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
+
+    if (_project.pin_configs[key].function_property.contains(module))
+    {
+        emit signals_pin_function_property_changed(module, "", key, "", "");
+        _project.pin_configs[key].function_property.remove(module);
+    }
+}
+
+project_table::pin_function_properties_t &project::get_pin_config_fps(const QString &key)
+{
+    Q_ASSERT(!key.isEmpty());
+
+    return _project.pin_configs[key].function_property;
+}
+
+QString &project::get_pin_config_fp(const QString &key, const QString &module, const QString &property)
+{
+    Q_ASSERT(!key.isEmpty());
+    Q_ASSERT(!module.isEmpty());
+    Q_ASSERT(!property.isEmpty());
+
+    return _project.pin_configs[key].function_property[module][property];
+}
+
 /***********************************************/
 
 void project::load_project(const QString &path)
 {
-    _project = project_table::load_project(path);
-    _path    = path;
+    Q_ASSERT(!path.isEmpty());
+    Q_ASSERT(os::isfile(path));
 
-    load_maps(_project.core[CSP_PROJECT_CORE_HAL]);
-    load_ips(_project.core[CSP_PROJECT_CORE_HAL], _project.core[CSP_PROJECT_CORE_HAL_NAME]);
+    project_table::load_project(&_project, path);
+    _path = path;
+
+    load_maps(_project.core.hal);
+    load_ips(_project.core.hal, _project.core.target);
 }
 
 void project::save_project(const QString &path)
@@ -167,14 +283,14 @@ void project::save_project()
 {
     Q_ASSERT(!_path.isEmpty());
 
-    auto p = path::directory(_path);
+    const auto p = path::directory(_path);
     if (!os::exists(p))
     {
         os::mkdir(p);
     }
     else
     {
-        if (!os::isdir(p))  // check if it not is a directory
+        if (!os::isdir(p)) // check if it not is a directory
         {
             os::show_error_and_exit(tr("The project <%1> path is not a directory!").arg(p));
         }
@@ -185,4 +301,40 @@ void project::save_project()
 QString project::dump_project()
 {
     return project_table::dump_project(_project);
+}
+
+void project::clear_project()
+{
+    _project.pin_configs.clear();
+    emit signals_project_clear();
+}
+
+void project::generate_code() const
+{
+    const QString lua_path = QString("%1/scripts/coder/coder.lua").arg(config::repodir());
+    const QStringList args = {"lua", "-D", path::absolute(lua_path), "-p", _path, "-r", config::repositories()};
+    QProcess process;
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    environment.insert("XMAKE_THEME", "plain");
+    process.setProgram("xmake");
+    process.setArguments(args);
+    process.setProcessEnvironment(environment);
+
+    xmake::log(QString("%1 %2").arg("xmake", args.join(" ")));
+    process.start();
+    connect(
+        &process, &QProcess::readyReadStandardOutput, this,
+        [&process]() {
+            const QByteArray err = process.readAllStandardOutput();
+            xmake::log(err.trimmed());
+        },
+        Qt::UniqueConnection);
+    if (!process.waitForFinished(10000))
+    {
+        xmake::log("failed in generate_code");
+    }
+    else
+    {
+        xmake::log("");
+    }
 }

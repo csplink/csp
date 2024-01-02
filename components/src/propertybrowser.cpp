@@ -30,6 +30,8 @@
 #include <QDebug>
 
 #include "config.h"
+#include "os.h"
+#include "pinout_table.h"
 #include "propertybrowser.h"
 
 propertybrowser::propertybrowser(QWidget *parent) : QtTreePropertyBrowser(parent)
@@ -39,7 +41,8 @@ propertybrowser::propertybrowser(QWidget *parent) : QtTreePropertyBrowser(parent
 
 propertybrowser::~propertybrowser() = default;
 
-QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, int position, bool locked)
+QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &comment, const int position,
+                                          const bool locked) const
 {
     auto *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("Base"));
 
@@ -64,7 +67,7 @@ QtProperty *propertybrowser::set_pin_base(const QString &name, const QString &co
     return group_item;
 }
 
-QtProperty *propertybrowser::set_pin_system(const QString &function)
+QtProperty *propertybrowser::set_pin_system(const QString &function) const
 {
     auto *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), tr("System"));
 
@@ -79,51 +82,87 @@ QtProperty *propertybrowser::set_pin_system(const QString &function)
 void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 {
     disconnect(_variant_manager, &QtVariantPropertyManager::valueChanged, this, nullptr);
+    disconnect(_variant_manager, &QtVariantPropertyManager::attributeChanged, this, nullptr);
 
     this->clear();
-    auto pin  = dynamic_cast<interface_graphicsitem_pin *>(item);
-    auto name = pin->objectName();
-    auto pinout_unit =
-        pin->property(GRAPHICSITEM_PIN_PROPERTY_NAME_PINOUT_UNIT_PTR).value<pinout_table::pinout_unit_t *>();
-    auto function      = _project_instance->get_pin_function(name);
-    auto comment       = _project_instance->get_pin_comment(name);
-    auto locked        = _project_instance->get_pin_locked(name);
-    auto function_type = pinout_unit->functions[function].type.toLower();
-    auto maps          = _project_instance->get_maps();
+    const auto pin = dynamic_cast<interface_graphicsitem_pin *>(item);
+    const auto name = pin->objectName();
+    const auto pinout_unit =
+        pin->property(interface_graphicsitem_pin::property_name_pinout_unit_ptr).value<pinout_table::pinout_unit_t *>();
+    if (pinout_unit == nullptr)
+        return;
 
-    auto base_group_item = set_pin_base(name, comment, pinout_unit->position, locked);
+    const auto function = _project_instance->get_pin_function(name);            // such as "GPIO-Input"
+    const auto comment = _project_instance->get_pin_comment(name);              // such as "LED0"
+    const auto locked = _project_instance->get_pin_locked(name);                // such as "true"
+    const auto function_type = pinout_unit->functions[function].type.toLower(); // such as "gpio"
+    const auto maps = _project_instance->get_maps();
+
+    const auto base_group_item = set_pin_base(name, comment, pinout_unit->position, locked);
     this->addProperty(base_group_item);
-    auto function_group_item = set_pin_system(function);
+    const auto function_group_item = set_pin_system(function);
     this->addProperty(function_group_item);
 
     if (maps.contains(function_type))
     {
-        auto        map           = _project_instance->get_maps()[function_type];
-        auto        function_mode = pinout_unit->functions[function].mode;
-        auto        ip            = _project_instance->get_ips()[function_type];
-        auto        ip_map        = ip[function_mode];
-        auto        ip_map_i      = ip_map.constBegin();
-        auto        type          = pinout_unit->functions[function].type;
-        QtProperty *group_item    = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), type);
+        auto map = _project_instance->get_maps()[function_type];          // such as "map/gpio.yml"
+        const auto fps = _project_instance->get_pin_config_fps(name);     // ping config function properties
+        const auto function_mode = pinout_unit->functions[function].mode; // such as "Input-Std <just string>"
+        auto ip = _project_instance->get_ips()[function_type];            // such as "apm32f103zet6/ip/gpio.yml"
+        const auto ip_map = ip[function_mode];                            // such as "Input-Std <just struct>"
+        auto ip_map_i = ip_map.constBegin();
+        const auto type = pinout_unit->functions[function].type; // such as "GPIO"
+        QtProperty *group_item = _variant_manager->addProperty(QtVariantPropertyManager::groupTypeId(), type);
+        project_table::pin_function_property_t fp = {};
+
+        if (fps.contains(function_type)) // already configured
+            fp = fps.value(function_type);
+
+        _project_instance->clear_pin_config_fp_module(name, function_type); // clear properties module
+
         while (ip_map_i != ip_map.constEnd())
         {
-            auto parameter_name = ip_map_i.key();
-            auto parameters     = ip_map_i.value();
-            auto property       = map.properties[parameter_name];
-            auto language       = config::language();
-
-            auto *variant_item =
-                _variant_manager->addProperty(QtVariantPropertyManager::enumTypeId(), property.display_name[language]);
+            auto parameter_name = ip_map_i.key();                // such as "chal_gpio_pull_t <just string>"
+            auto parameters = ip_map_i.value();                  // such as "CHAL_GPIO_PULL_UP, CHAL_GPIO_PULL_DOWN"
+            auto property = map.properties[parameter_name];      // such as "chal_gpio_pull_t <just struct>"
+            auto language = config::language();                  // such as "zh_CN"
+            auto display_name = property.display_name[language]; // such as "钳位<zh_CN>, means PULL<en>"
+            auto description = property.description[language];   // such as "GPIO-钳位<zh_CN>, means GPIO-PULL<en>"
+            const auto id = QtVariantPropertyManager::enumTypeId();
+            auto *variant_item = _variant_manager->addProperty(id, display_name);
             QStringList values;
             for (const auto &parameter : parameters)
             {
-                values.append(map.total[parameter]);
+                values.append(map.total[parameter]); // such as "上拉, 下拉"
             }
             variant_item->setAttribute("enumNames", values);
-            variant_item->setDescriptionToolTip(property.description[language]);
+
+            if (!fp.isEmpty()) // already configured
+            {
+                auto value = map.total.value(fp.value(parameter_name));
+                if (!value.isEmpty() && values.contains(value))
+                {
+                    variant_item->setValue(values.indexOf(value)); // just read
+                    _project_instance->set_pin_config_fp(name, function_type, parameter_name, fp.value(parameter_name));
+                }
+                else
+                {
+                    variant_item->setValue(0); // default value
+                    _project_instance->set_pin_config_fp(name, function_type, parameter_name, parameters[0]);
+                }
+            }
+            else
+            {
+                variant_item->setValue(0); // default value
+                _project_instance->set_pin_config_fp(name, function_type, parameter_name, parameters[0]);
+            }
+
+            variant_item->setDescriptionToolTip(description);
+            variant_item->set_user_property(PROPERTY_ID_FUNCTION_TYPE, function_type);
+            variant_item->set_user_property(PROPERTY_ID_PARAMETER_NAME, parameter_name);
             group_item->addSubProperty(variant_item);
 
-            ip_map_i++;
+            ++ip_map_i;
         }
         this->addProperty(group_item);
     }
@@ -132,19 +171,62 @@ void propertybrowser::update_property_by_pin(QGraphicsItem *item)
 
     connect(_variant_manager, &QtVariantPropertyManager::valueChanged, this,
             &propertybrowser::pin_value_changed_callback, Qt::UniqueConnection);
+    connect(_variant_manager, &QtVariantPropertyManager::attributeChanged, this,
+            &propertybrowser::pin_attribute_changed_callback, Qt::UniqueConnection);
 
     _pin_name = name;
 }
 
-void propertybrowser::pin_value_changed_callback(QtProperty *property, const QVariant &value)
+void propertybrowser::pin_value_changed_callback(const QtProperty *property, const QVariant &value) const
 {
     if (_pin_name.isEmpty())
         return;
 
-    if (property->propertyName() == tr("Comment"))
-        _project_instance->set_pin_comment(_pin_name, value.toString());
-    else if (property->propertyName() == tr("Locked"))
-        _project_instance->set_pin_locked(_pin_name, value.toBool());
-    else
-        qDebug() << property << property->propertyName() << value;
+    switch (const auto type = _variant_manager->propertyType(property))
+    {
+    case QVariant::String: {
+        if (property->propertyName() == tr("Comment"))
+            _project_instance->set_pin_comment(_pin_name, value.toString());
+
+        break;
+    }
+    case QVariant::Bool: {
+        if (property->propertyName() == tr("Locked"))
+            _project_instance->set_pin_locked(_pin_name, value.toBool());
+
+        break;
+    }
+    case QVariant::Int: {
+        break;
+    }
+    default: {
+        if (type == QtVariantPropertyManager::enumTypeId())
+        {
+            const auto property_name = property->propertyName();
+            const auto function_type = property->get_user_property(PROPERTY_ID_FUNCTION_TYPE).toString();
+            const auto parameter_name = property->get_user_property(PROPERTY_ID_PARAMETER_NAME).toString();
+            const auto parameter_value_translations = property->valueText();
+            auto total = _project_instance->get_maps()[function_type].reverse_total;
+            const auto parameter_value = total[property->valueText()];
+
+            Q_UNUSED(property_name)
+            Q_UNUSED(parameter_value_translations)
+
+            _project_instance->set_pin_config_fp(_pin_name, function_type, parameter_name, parameter_value);
+        }
+        else
+        {
+            qDebug() << _variant_manager->propertyType(property) << property << property->propertyName() << value;
+        }
+        break;
+    }
+    }
+}
+
+void propertybrowser::pin_attribute_changed_callback(const QtProperty *property, const QString &attribute,
+                                                     const QVariant &value) const
+{
+    Q_UNUSED(property)
+    Q_UNUSED(attribute)
+    Q_UNUSED(value)
 }

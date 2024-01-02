@@ -33,38 +33,38 @@
 #include <os.h>
 #include <project.h>
 
-project *project_instance = nullptr;
+project *g_project_instance = nullptr;
 
-class testcase_project : public QObject {
+class testcase_project final : public QObject
+{
     Q_OBJECT
 
-private slots:
+  private slots:
 
     static void initTestCase()
     {
-        project_instance = project::get_instance();
-    }
-
-    static void core()
-    {
-        project_instance->set_core("name", "value");
-        auto core = project_instance->get_core("name");
-        QVERIFY(core == "value");
+        project::init();
+        g_project_instance = project::get_instance();
     }
 
     static void path()
     {
-        project_instance->set_path("test");
-        auto path = project_instance->get_path();
+        g_project_instance->set_path("test");
+        const auto path = g_project_instance->get_path();
         QVERIFY(path == "test");
     }
 
     static void get_pin_config()
     {
-        auto &cfg   = project_instance->get_pin_config("PA1");
+        auto &cfg = g_project_instance->get_pin_config("PA1");
         cfg.comment = "PA1-OUT";
 
-        QVERIFY(project_instance->get_pin_config("PA1").comment == "PA1-OUT");
+        QVERIFY(g_project_instance->get_pin_config("PA1").comment == "PA1-OUT");
+    }
+
+    static void cleanupTestCase()
+    {
+        project::deinit();
     }
 };
 
