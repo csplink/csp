@@ -106,7 +106,7 @@ function _generate_project_config(file, proj, coder, user)
     else
         file:print("set_project(\"%s\") -- Set project name", proj["name"])
         file:print("set_version(\"0.0.0\") -- Set version")
-        file:print("set_xmakever(\"2.8.3\") -- Set minimal xmake version")
+        file:print("set_xmakever(\"2.8.6\") -- Set minimal xmake version")
     end
     file:print(user_code_end_template, "project config")
     file:print("")
