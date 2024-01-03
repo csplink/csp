@@ -26,6 +26,9 @@ name: mirror
 
 on:
   push:
+    branches:
+      - master
+      - dev
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
