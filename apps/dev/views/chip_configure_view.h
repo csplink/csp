@@ -63,6 +63,7 @@ class chip_configure_view final : public QWidget
     Ui::chip_configure_view *_ui;
     propertybrowser *_propertybrowser_instance;
     project *_project_instance;
+    int resize_counter = 0;
 };
 
 #endif // CHIP_CONFIGURE_VIEW_H

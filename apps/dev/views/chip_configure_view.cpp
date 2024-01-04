@@ -87,7 +87,16 @@ void chip_configure_view::init_view()
 
 void chip_configure_view::resizeEvent(QResizeEvent *event)
 {
-    resize_view();
+    if (resize_counter <= 1)
+    {
+        resize_view();
+
+        /**
+         * 0: view init
+         * 1: layout init
+         */
+        resize_counter++;
+    }
     QWidget::resizeEvent(event);
 }
 
