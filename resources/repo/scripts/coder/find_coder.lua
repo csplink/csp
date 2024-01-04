@@ -39,7 +39,7 @@ function main(company, hal, name, repositories_dir)
             version = string.format("v%s.%s.%s", ver:major(), ver:minor(), ver:patch())
         end
     else
-        assert(0, "invalid hal (%s)", hal)
+        assert(false, "invalid hal (%s)", hal)
     end
     company = string.lower(company)
     local haldir = path.join(repositories_dir, company, hal, version)
