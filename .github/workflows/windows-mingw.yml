@@ -43,10 +43,12 @@ jobs:
             qt_ver: 5.15.2
             qt_tools: "tools_ninja tools_mingw,qt.tools.win32_mingw810"
             qt_tools_mingw_install: mingw810_32
+            mingw_arch: x86
           - qt_arch: win64_mingw81
             qt_ver: 5.15.2
             qt_tools: "tools_ninja tools_mingw,qt.tools.win64_mingw810"
             qt_tools_mingw_install: mingw810_64
+            mingw_arch: x64
     env:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
     steps:
@@ -57,13 +59,16 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           tools: ${{ matrix.qt_tools }}
           cache: "true"
+
       - name: ⬇️ checkout csp
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 1
+
       - name: ⬇️ install xmake
         uses: xmake-io/github-action-setup-xmake@v1
+
       - name: 👷 build
         shell: pwsh
         run: |
@@ -77,9 +82,21 @@ jobs:
                 -DCMAKE_C_COMPILER=gcc
             ninja -v -j $(Get-WmiObject -Class Win32_Processor).NumberOfLogicalProcessors
           popd
+
       - name: 🩺 test
         shell: pwsh
         run: |
           pushd build
             ctest --output-on-failure
           popd
+
+      - name: ⬆️ release
+        shell: pwsh
+        run: |
+          & tools/release/windows-mingw.ps1 csp-windows-mingw-${{ matrix.mingw_arch }}-${{ github.run_number }} csp-dev.exe build
+
+      - name: ⬆️ upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: csp-windows-mingw-${{ matrix.mingw_arch }}-${{ github.run_number }}
+          path: csp-windows-mingw-${{ matrix.mingw_arch }}-${{ github.run_number }}

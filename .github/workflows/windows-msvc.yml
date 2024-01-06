@@ -11,18 +11,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Copyright (C) 2023-2023 xqyjlj<xqyjlj@126.com>
+# Copyright (C) 2023-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        linux-ubuntu.yml
+# @file        windows-msvc.yml
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-06-29     xqyjlj       initial version
+# 2024-01-06     xqyjlj       initial version
 #
 
-name: linux ubuntu
+name: windows msvc
 
 on:
   push:
@@ -35,24 +35,31 @@ concurrency:
 jobs:
   build:
     name: 🔧 build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         include:
-          - qt_arch: gcc_64
-            qt_ver: 5.15.2
-            gcc_arch: x64
+          - qt_ver: 5.15.2
+            qt_arch: win32_msvc2019
+            msvc_arch: x86
+          - qt_ver: 5.15.2
+            qt_arch: win64_msvc2019_64
+            msvc_arch: x64
     env:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
-      QT_QPA_PLATFORM: "offscreen"
-      XMAKE_ROOT: "y"
     steps:
       - name: ⬇️ install Qt
         uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_ver }}
           arch: ${{ matrix.qt_arch }}
-          cache: "true"
+          tools: tools_ninja
+          cache: true
+
+      - name: ⬇️ setup VS environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@master
+        with:
+          arch: ${{ matrix.msvc_arch }}
 
       - name: ⬇️ checkout csp
         uses: actions/checkout@v4
@@ -64,30 +71,32 @@ jobs:
         uses: xmake-io/github-action-setup-xmake@v1
 
       - name: 👷 build
-        shell: bash
+        shell: pwsh
         run: |
+          $env:Path = "${{ env.IQTA_TOOLS }}/Ninja/;" + $env:Path
+          $env:Path = "${{ env.Qt5_Dir }}/bin/;" + $env:Path
           mkdir build
           pushd build
-            cmake .. -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_CXX_COMPILER=g++ \
-              -DCMAKE_C_COMPILER=gcc
-            make -j$(nproc) VERBOSE=1
+            cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=ninja `
+                -DCMAKE_CXX_COMPILER=cl `
+                -DCMAKE_C_COMPILER=cl
+            ninja -v -j $(Get-WmiObject -Class Win32_Processor).NumberOfLogicalProcessors
           popd
 
       - name: 🩺 test
-        shell: bash
+        shell: pwsh
         run: |
           pushd build
             ctest --output-on-failure
           popd
 
       - name: ⬆️ release
-        shell: bash
+        shell: pwsh
         run: |
-          . ./tools/release/linux.sh csp-linux-ubuntu-${{ matrix.gcc_arch }}-${{ github.run_number }} csp-dev build
+          & tools/release/windows-msvc.ps1 csp-windows-msvc-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-dev.exe build
 
       - name: ⬆️ upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: csp-linux-ubuntu-${{ matrix.gcc_arch }}-${{ github.run_number }}
-          path: csp-linux-ubuntu-${{ matrix.gcc_arch }}-${{ github.run_number }}
+          name: csp-windows-msvc-${{ matrix.msvc_arch }}-${{ github.run_number }}
+          path: csp-windows-msvc-${{ matrix.msvc_arch }}-${{ github.run_number }}
