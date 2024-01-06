@@ -278,11 +278,10 @@ function _generate_c(proj, coder, kind, outputdir)
 end
 
 function _generate(proj, outputdir, repositories_dir)
-    local company = proj.core.company
     local hal = proj.core.hal
     local name = proj.core.target
     local modules = proj.core.modules
-    local coder = find_coder(company, hal, name, repositories_dir)
+    local coder = find_coder(hal, name, repositories_dir)
     assert(#modules > 0, "modules is empty")
     modules = table.unique(modules)
     for _, kind in ipairs(modules) do

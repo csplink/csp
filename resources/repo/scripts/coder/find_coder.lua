@@ -23,7 +23,7 @@
 --
 import("core.base.semver")
 
-function main(company, hal, name, repositories_dir)
+function main(hal, name, repositories_dir)
     local moduledir
     local version
     local l = hal:split(" ")
@@ -41,14 +41,12 @@ function main(company, hal, name, repositories_dir)
     else
         assert(false, "invalid hal (%s)", hal)
     end
-    company = string.lower(company)
-    local haldir = path.join(repositories_dir, company, hal, version)
-    moduledir = string.format("%s.%s", company, string.lower(hal))
+    local haldir = path.join(repositories_dir, hal, version)
     coder = assert(import("tools.coder.xmake", {anonymous = true, try = true, rootdir = haldir}),
-                   "coder %s not found! repositories: %s", moduledir, haldir)
+                   "coder %s not found! repositories: %s", hal, haldir)
     if not coder.moduledir then
         coder.moduledir = function()
-            return moduledir
+            return hal
         end
     end
     return coder
