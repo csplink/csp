@@ -39,25 +39,7 @@ jobs:
     name: 💕 mirror to another location
     runs-on: ubuntu-latest
     steps:
-      - name: 💕 mirror to gitee
+      - name: 💕 mirror
         uses: csplink/action_git_mirror/@master
         with:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          dest_token: ${{ secrets.GITEE_TOKEN }}
-          dest: gitee
-
-      - name: 💕 mirror to coding
-        uses: csplink/action_git_mirror/@master
-        with:
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          dest_token: ${{ secrets.CODING_TOKEN }}
-          dest_repo: git@e.coding.net:csplink/csplink/csp.git
-          dest: coding
-
-      - name: 💕 mirror to gitlab
-        uses: csplink/action_git_mirror/@master
-        with:
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          dest_token: ${{ secrets.GITLAB_TOKEN }}
-          dest_repo: git@gitlab.com:csplink/csp.git
-          dest: gitlab
