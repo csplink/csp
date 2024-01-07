@@ -135,7 +135,7 @@ QString config::language()
     return _settings->value(csp_config_key_language, csp_config_value_default_language).toString();
 }
 
-QString config::workspace()
+QString config::workspace_dir()
 {
     Q_ASSERT(_settings != nullptr);
     const auto dir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_workspace);
@@ -166,7 +166,7 @@ QMap<QString, QString> config::env()
     return map;
 }
 
-QString config::repositories()
+QString config::repositories_dir()
 {
     Q_ASSERT(_settings != nullptr);
     const QString dir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_repositories);

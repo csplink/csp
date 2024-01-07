@@ -88,7 +88,7 @@ class config final
      * @brief get workspace directory; <get("core/workspace")>
      * @return workspace; <default: "workspace">
      */
-    static QString workspace();
+    static QString workspace_dir();
 
     /**
      * @brief get default work dir;
@@ -106,7 +106,7 @@ class config final
      * @brief get repositories directory; <get("core/repositories")>
      * @return repositories; <default: "repositories">
      */
-    static QString repositories();
+    static QString repositories_dir();
 
   private:
     inline static QSettings *_settings = nullptr;

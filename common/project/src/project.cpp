@@ -312,7 +312,7 @@ void project::clear_project()
 void project::generate_code() const
 {
     const QString lua_path = QString("%1/scripts/coder/coder.lua").arg(config::repodir());
-    const QStringList args = {"lua", "-D", path::absolute(lua_path), "-p", _path, "-r", config::repositories()};
+    const QStringList args = {"lua", "-D", path::absolute(lua_path), "-p", _path, "-r", config::repositories_dir()};
     QProcess process;
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
     environment.insert("XMAKE_THEME", "plain");
