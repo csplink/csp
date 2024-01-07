@@ -169,9 +169,15 @@ void mainwindow_view::set_mode(const int index)
         ui->dockwidget_bottom_xmake_output->hide();
         ui->dockwidget_bottom_configurations->hide();
         ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
+        ui->menubar->hide();
+        ui->toolbar->hide();
+        ui->statusbar->hide();
         break;
     }
     case STACK_INDEX_CHIP_CONFIGURE: {
+        ui->menubar->show();
+        ui->toolbar->show();
+        ui->statusbar->show();
         ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
         ui->dockwidget_left->show();
         ui->dockwidget_right->show();
