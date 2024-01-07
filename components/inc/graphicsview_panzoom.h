@@ -53,6 +53,8 @@ class graphicsview_panzoom final : public QGraphicsView
      */
     void zoom_out(int value);
 
+    void zoom(qreal value);
+
   private:
     /**
      * @brief resizing via setup matrix
@@ -77,7 +79,7 @@ class graphicsview_panzoom final : public QGraphicsView
     void contextMenuEvent(QContextMenuEvent *event) override;
 
   private:
-    int _scale;
+    qreal _scale;
     bool _is_pressed = false;
 };
 

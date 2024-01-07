@@ -32,8 +32,9 @@
 #include "graphicsview_panzoom.h"
 #include "interface_graphicsitem_pin.h"
 
-static constexpr int min_scale = 0;
-static constexpr int max_scale = 1000;
+static constexpr qreal min_scale = 0;
+static constexpr qreal max_scale = 1000;
+static constexpr qreal resolution = 50;
 
 graphicsview_panzoom::graphicsview_panzoom(QWidget *parent) : QGraphicsView(parent)
 {
@@ -57,7 +58,7 @@ graphicsview_panzoom::~graphicsview_panzoom() = default;
 
 void graphicsview_panzoom::setup_matrix()
 {
-    const qreal scale = qPow(2, (_scale - static_cast<qreal>(min_scale + max_scale) / 2) / static_cast<qreal>(50));
+    const qreal scale = qPow(2, (_scale - (min_scale + max_scale) / 2) / resolution);
     QTransform matrix;
     matrix.scale(scale, scale);
     //    matrix.rotate(90);
@@ -118,6 +119,20 @@ void graphicsview_panzoom::zoom_out(const int value)
     _scale -= value;
     if (_scale <= min_scale)
         _scale = min_scale;
+    setup_matrix();
+}
+
+void graphicsview_panzoom::zoom(const qreal value)
+{
+    _scale = qLn(value) / qLn(2) * resolution + (min_scale + max_scale / 2);
+    if (_scale >= max_scale)
+    {
+        _scale = max_scale;
+    }
+    if (_scale <= min_scale)
+    {
+        _scale = min_scale;
+    }
     setup_matrix();
 }
 
