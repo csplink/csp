@@ -12,5 +12,7 @@
         <file>packages/LQFP48.png</file>
         <file>packages/LQFP64.png</file>
         <file>packages/LQFP144.png</file>
+        <file>icon/order.svg</file>
+        <file>icon/hammer-and-anvil.svg</file>
     </qresource>
 </RCC>

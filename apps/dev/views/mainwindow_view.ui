@@ -228,6 +228,18 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QToolBar" name="toolbar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_generate"/>
+  </widget>
   <action name="action_load">
    <property name="text">
     <string>Load Project</string>
@@ -270,6 +282,10 @@
    </property>
   </action>
   <action name="action_generate">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icon/order.svg</normaloff>:/icon/order.svg</iconset>
+   </property>
    <property name="text">
     <string>Generate code</string>
    </property>
@@ -300,6 +316,8 @@
    <header>logviewbox.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
