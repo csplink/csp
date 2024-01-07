@@ -273,9 +273,6 @@ bool os::writefile(const QString &fp, const QByteArray &data, const bool overwri
 
     QIODevice::OpenMode mode;
 
-    if (data.isEmpty())
-        return false;
-
     const QString parent_dir = path::directory(fp);
     mkdir(parent_dir);
 
@@ -289,7 +286,11 @@ bool os::writefile(const QString &fp, const QByteArray &data, const bool overwri
     if (!file.open(mode))
         return false;
 
-    file.write(data);
+    if (!data.isEmpty())
+    {
+        file.write(data);
+    }
+
     file.close();
 
     return true;
