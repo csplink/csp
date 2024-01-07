@@ -52,8 +52,8 @@ QString xmake::version(const QString &program)
     QString version;
 
     Q_ASSERT(!program.isEmpty());
-
-    if (os::execv(program, QStringList() << "--version", {}, 10000, "", &output, nullptr))
+    qDebug().noquote() << program;
+    if (os::execv(program, {"--version"}, config::env(), 10000, config::default_workdir(), &output, nullptr))
     {
         const QRegularExpression regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
         const QRegularExpressionMatch match = regex.match(output);
@@ -74,11 +74,13 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
     Q_ASSERT(!program.isEmpty());
     Q_ASSERT(!workdir.isEmpty());
 
-    log(QString("%1 lua %2 %3").arg(program, path::absolute(lua_path), args.join(" ")));
-    os::execv(program, QStringList() << "lua" << path::absolute(lua_path) << args, {{"XMAKE_THEME", "plain"}}, 10000,
-              workdir, &output, nullptr);
+    QStringList list = {"lua", "-D", path::absolute(lua_path)};
+    list << args;
 
-    QStringList list = QString(output.trimmed()).split("\n");
+    log(QString("%1 %2").arg(program, args.join(" ")));
+    os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
+
+    list = QString(output.trimmed()).split("\n");
     for (int i = 0; i < list.size(); ++i)
     {
         list[i] = list[i].trimmed();
@@ -97,10 +99,13 @@ QString xmake::cmd(const QString &command, const QStringList &args, const QStrin
     Q_ASSERT(!program.isEmpty());
     Q_ASSERT(!workdir.isEmpty());
 
-    log(QString("%1 %2 -D %3").arg(program, command, args.join(" ")));
-    os::execv(program, QStringList() << command << "-D" << args, config::env(), 10000, workdir, &output, nullptr);
+    QStringList list = {command, "-D"};
+    list << args;
 
-    QStringList list = QString(output.trimmed()).split("\n");
+    log(QString("%1 %2 -D %3").arg(program, command, args.join(" ")));
+    os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
+
+    list = QString(output.trimmed()).split("\n");
     for (int i = 0; i < list.size(); ++i)
     {
         list[i] = list[i].trimmed();

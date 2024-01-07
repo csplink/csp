@@ -314,13 +314,22 @@ void project::generate_code() const
     const QString lua_path = QString("%1/scripts/coder/coder.lua").arg(config::repodir());
     const QStringList args = {"lua", "-D", path::absolute(lua_path), "-p", _path, "-r", config::repositories_dir()};
     QProcess process;
+
+    const QMap<QString, QString> env = config::env();
+
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    environment.insert("XMAKE_THEME", "plain");
-    process.setProgram("xmake");
+    auto env_i = env.constBegin();
+    while (env_i != env.constEnd())
+    {
+        environment.insert(env_i.key(), env_i.value());
+        ++env_i;
+    }
+
+    process.setProgram(config::tool_xmake());
     process.setArguments(args);
     process.setProcessEnvironment(environment);
 
-    xmake::log(QString("%1 %2").arg("xmake", args.join(" ")));
+    xmake::log(QString("%1 %2").arg(config::tool_xmake(), args.join(" ")));
     process.start();
     connect(
         &process, &QProcess::readyReadStandardOutput, this,

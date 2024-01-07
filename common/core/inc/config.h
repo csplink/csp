@@ -108,8 +108,12 @@ class config final
      */
     static QString repositories_dir();
 
+    static QString tool_xmake();
+
   private:
     inline static QSettings *_settings = nullptr;
+
+    static QString find_tool_xmake();
 
   private:
     config() = default;

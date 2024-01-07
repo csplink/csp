@@ -50,6 +50,9 @@ static constexpr const char *csp_config_value_default_workspace = "workspace";
 static constexpr const char *csp_config_key_repositories = "core/repositories";
 static constexpr const char *csp_config_value_default_repositories = "repositories";
 
+static constexpr const char *csp_config_key_tool_xmake = "tool/xmake";
+static constexpr const char *csp_config_value_default_tool_xmake = "xmake";
+
 bool config::is_config(const QString &key)
 {
     return _settings->value(key, csp_config_default_value).toString() != csp_config_default_value;
@@ -95,6 +98,10 @@ void config::init()
             }
         }
         _settings->setValue(csp_config_key_workspace, appdir);
+    }
+    if (!is_config(csp_config_key_tool_xmake))
+    {
+        _settings->setValue(csp_config_key_tool_xmake, find_tool_xmake());
     }
 }
 
@@ -171,4 +178,27 @@ QString config::repositories_dir()
     Q_ASSERT(_settings != nullptr);
     const QString dir = QString("%1/%2").arg(path::appdir(), csp_config_value_default_repositories);
     return _settings->value(csp_config_key_repositories, dir).toString();
+}
+
+QString config::tool_xmake()
+{
+    Q_ASSERT(_settings != nullptr);
+    return _settings->value(csp_config_key_tool_xmake, csp_config_value_default_tool_xmake).toString();
+}
+
+QString config::find_tool_xmake()
+{
+    const QString tooldir = QString("%1/tools").arg(path::appdir());
+#ifdef Q_OS_WINDOWS
+    QString xmakepath = QString("%1/xmake/xmake.exe").arg(tooldir);
+#else
+    QString xmakepath = QString("%1/xmake/xmake").arg(tooldir);
+#endif
+
+    if (!os::exists(xmakepath))
+    {
+        return csp_config_value_default_tool_xmake;
+    }
+
+    return xmakepath;
 }

@@ -62,7 +62,7 @@ class xmake final
      * @param program: program path or name
      * @return version; <example: "v2.7.9+HEAD.c879226">
      */
-    static QString version(const QString &program = "xmake");
+    static QString version(const QString &program = config::tool_xmake());
 
     /**
      * @brief run the lua script.
@@ -72,7 +72,8 @@ class xmake final
      * @param workdir: working directory
      * @return lua output
      */
-    static QString lua(const QString &lua_path, const QStringList &args = {}, const QString &program = "xmake",
+    static QString lua(const QString &lua_path, const QStringList &args = {},
+                       const QString &program = config::tool_xmake(),
                        const QString &workdir = config::default_workdir());
 
     /**
@@ -92,7 +93,8 @@ class xmake final
         }
     }
 
-    static QString cmd(const QString &command, const QStringList &args = {}, const QString &program = "xmake",
+    static QString cmd(const QString &command, const QStringList &args = {},
+                       const QString &program = config::tool_xmake(),
                        const QString &workdir = config::default_workdir());
 
   private:
