@@ -81,10 +81,7 @@ void project_table::save_project(project_table::project_t &p, const QString &pat
     Q_ASSERT(!path.isEmpty());
 
     const auto json = dump_project(p);
-    QFile file(path);
-    file.open(QFileDevice::WriteOnly | QIODevice::Text);
-    file.write(json.toUtf8());
-    file.close();
+    os::writefile(path, json.toUtf8());
 }
 
 QString project_table::dump_project(project_table::project_t &proj)
