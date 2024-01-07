@@ -39,6 +39,7 @@
 #include <QUrl>
 
 #include "os.h"
+#include "path.h"
 
 void os::show_info(const QString &message, const QString &title, QWidget *parent)
 {
@@ -96,33 +97,34 @@ void os::mkdir(const QString &dir)
     if (isdir(dir))
         return;
 
-    const QDir d(dir);
+    const QDir d;
+    (void)d.mkpath(dir);
 }
 
-bool os::isdir(const QString &path)
+bool os::isdir(const QString &dp)
 {
-    if (path.isEmpty())
+    if (dp.isEmpty())
         return false;
 
-    const QFileInfo fi(path);
+    const QFileInfo fi(dp);
     return fi.isDir();
 }
 
-bool os::isfile(const QString &path)
+bool os::isfile(const QString &fp)
 {
-    if (path.isEmpty())
+    if (fp.isEmpty())
         return false;
 
-    const QFileInfo fi(path);
+    const QFileInfo fi(fp);
     return fi.isFile();
 }
 
-bool os::exists(const QString &path)
+bool os::exists(const QString &fp)
 {
-    if (path.isEmpty())
+    if (fp.isEmpty())
         return false;
 
-    const QFileInfo fi(path);
+    const QFileInfo fi(fp);
     return fi.exists();
 }
 
@@ -141,12 +143,12 @@ QString os::getsavefile(const QString &title, const QString &default_file, const
     return QFileDialog::getSaveFileName(nullptr, title, default_file, filter);
 }
 
-QStringList os::files(const QString &path, const QStringList &filters)
+QStringList os::files(const QString &dp, const QStringList &filters)
 {
-    if (!isdir(path))
+    if (!isdir(dp))
         return {};
 
-    const QDir dir(path);
+    const QDir dir(dp);
     auto files = dir.entryInfoList(filters, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &file : files)
@@ -155,17 +157,17 @@ QStringList os::files(const QString &path, const QStringList &filters)
     return paths;
 }
 
-QStringList os::files(const QString &path, const QString &filter)
+QStringList os::files(const QString &dp, const QString &filter)
 {
-    return files(path, QStringList() << filter);
+    return files(dp, QStringList() << filter);
 }
 
-QStringList os::dirs(const QString &path, const QStringList &filters)
+QStringList os::dirs(const QString &dp, const QStringList &filters)
 {
-    if (!isdir(path))
+    if (!isdir(dp))
         return {};
 
-    const QDir dir(path);
+    const QDir dir(dp);
     auto dirs = dir.entryInfoList(filters, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QStringList paths;
     for (const QFileInfo &info : dirs)
@@ -174,9 +176,9 @@ QStringList os::dirs(const QString &path, const QStringList &filters)
     return paths;
 }
 
-QStringList os::dirs(const QString &path, const QString &filter)
+QStringList os::dirs(const QString &dp, const QString &filter)
 {
-    return dirs(path, QStringList() << filter);
+    return dirs(dp, QStringList() << filter);
 }
 
 bool os::execvf(const QString &program, const QStringList &argv, const QMap<QString, QString> &env, const int msecs,
@@ -250,12 +252,12 @@ bool os::execv(const QString &program, const QStringList &argv, const QMap<QStri
     return true;
 }
 
-QByteArray os::readfile(const QString &path)
+QByteArray os::readfile(const QString &fp)
 {
-    if (!isfile(path))
+    if (!isfile(fp))
         return {};
 
-    QFile file(path);
+    QFile file(fp);
 
     if (!file.open(QIODevice::ReadOnly))
         return {};
@@ -265,16 +267,19 @@ QByteArray os::readfile(const QString &path)
     return data;
 }
 
-bool os::writefile(const QString &path, const QByteArray &data, const bool overwrite)
+bool os::writefile(const QString &fp, const QByteArray &data, const bool overwrite)
 {
-    Q_ASSERT(!path.isEmpty());
+    Q_ASSERT(!fp.isEmpty());
 
     QIODevice::OpenMode mode;
 
     if (data.isEmpty())
         return false;
 
-    QFile file(path);
+    const QString parent_dir = path::directory(fp);
+    mkdir(parent_dir);
+
+    QFile file(fp);
 
     if (overwrite)
         mode = QIODevice::WriteOnly;
@@ -290,17 +295,19 @@ bool os::writefile(const QString &path, const QByteArray &data, const bool overw
     return true;
 }
 
-bool os::rm(const QString &path)
+bool os::rm(const QString &fp)
 {
-    if (isfile(path))
+    if (isfile(fp))
     {
-        return QFile::remove(path);
+        return QFile::remove(fp);
     }
-    else if (isdir(path))
+
+    if (isdir(fp))
     {
-        QDir dir(path);
+        QDir dir(fp);
         return dir.removeRecursively();
     }
+
     return false;
 }
 

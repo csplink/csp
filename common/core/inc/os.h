@@ -111,24 +111,24 @@ class os final
 
     /**
      * @brief check if the directory exists.
-     * @param path: path
+     * @param dp: path
      * @return true if the directory exists, otherwise false.
      */
-    static bool isdir(const QString &path);
+    static bool isdir(const QString &dp);
 
     /**
      * @brief check if the file exists.
-     * @param path: path
+     * @param fp: path
      * @return true if the file exists, otherwise false.
      */
-    static bool isfile(const QString &path);
+    static bool isfile(const QString &fp);
 
     /**
      * @brief check if the path exists.
-     * @param path: path
+     * @param fp: path
      * @return true if the path exists, otherwise false.
      */
-    static bool exists(const QString &path);
+    static bool exists(const QString &fp);
 
     /**
      * @brief open dialog and get an existing directory selected by the user.
@@ -154,35 +154,35 @@ class os final
 
     /**
      * @brief traverse to get all the files in the specified directory
-     * @param path: directory path
+     * @param dp: directory path
      * @param filters: file filter
      * @return file list
      */
-    static QStringList files(const QString &path, const QStringList &filters);
+    static QStringList files(const QString &dp, const QStringList &filters);
 
     /**
      * @brief traverse to get all the files in the specified directory
-     * @param path: directory path
+     * @param dp: directory path
      * @param filter: file filter
      * @return file list
      */
-    static QStringList files(const QString &path, const QString &filter);
+    static QStringList files(const QString &dp, const QString &filter);
 
     /**
      * @brief traverse to get all the directories in the specified directory
-     * @param path: directory path
+     * @param dp: directory path
      * @param filters: file filter
      * @return directory list
      */
-    static QStringList dirs(const QString &path, const QStringList &filters);
+    static QStringList dirs(const QString &dp, const QStringList &filters);
 
     /**
      * @brief traverse to get all the directories in the specified directory
-     * @param path: directory path
+     * @param dp: directory path
      * @param filter: file filter
      * @return directory list
      */
-    static QStringList dirs(const QString &path, const QString &filter);
+    static QStringList dirs(const QString &dp, const QString &filter);
 
     /**
      * @brief running native shell commands with file log
@@ -216,26 +216,26 @@ class os final
 
     /**
      * @brief read a file
-     * @param path: path
+     * @param fp: path
      * @return file content
      */
-    static QByteArray readfile(const QString &path);
+    static QByteArray readfile(const QString &fp);
 
     /**
      * @brief write data to file
-     * @param path: path
+     * @param fp: path
      * @param data: data
      * @param overwrite: is overwrite
      * @return true if write successfully, otherwise false.
      */
-    static bool writefile(const QString &path, const QByteArray &data, bool overwrite = true);
+    static bool writefile(const QString &fp, const QByteArray &data, bool overwrite = true);
 
     /**
      * @brief delete files or directory trees
-     * @param path: path
+     * @param fp: path
      * @return true if delete successfully, otherwise false.
      */
-    static bool rm(const QString &path);
+    static bool rm(const QString &fp);
 
     /**
      * @brief where cond is a boolean expression, writes the warning "${{str}}" and

@@ -45,7 +45,7 @@ class testcase_os final : public QObject
             os::rmdir(string);
 
         os::mkdir(string);
-        QVERIFY(!os::isdir(string));
+        QVERIFY(os::isdir(string));
 
         os::rmdir(string);
     }
@@ -97,6 +97,10 @@ class testcase_os final : public QObject
         os::writefile("./.write_test", "test2", false);
         result = os::readfile("./.write_test");
         QVERIFY(result == "test1test2");
+
+        os::writefile("./write_test/write_test/.write_test", "test1");
+        result = os::readfile("./write_test/write_test/.write_test");
+        QVERIFY(!result.isEmpty());
     }
 };
 
