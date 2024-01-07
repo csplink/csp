@@ -72,6 +72,7 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
 
     Q_ASSERT(!lua_path.isEmpty());
     Q_ASSERT(!program.isEmpty());
+    Q_ASSERT(!workdir.isEmpty());
 
     log(QString("%1 lua %2 %3").arg(program, path::absolute(lua_path), args.join(" ")));
     os::execv(program, QStringList() << "lua" << path::absolute(lua_path) << args, {{"XMAKE_THEME", "plain"}}, 10000,
@@ -89,38 +90,35 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
     return output;
 }
 
-void xmake::load_packages_byfile(packages_t *packages, const QString &file)
+QString xmake::cmd(const QString &command, const QStringList &args, const QString &program, const QString &workdir)
 {
-    Q_ASSERT(packages != nullptr);
-    Q_ASSERT(!file.isEmpty());
-    Q_ASSERT(os::isfile(file));
+    QByteArray output;
+    Q_ASSERT(!command.isEmpty());
+    Q_ASSERT(!program.isEmpty());
+    Q_ASSERT(!workdir.isEmpty());
 
-    try
+    log(QString("%1 %2 -D %3").arg(program, command, args.join(" ")));
+    os::execv(program, QStringList() << command << "-D" << args, config::env(), 10000, workdir, &output, nullptr);
+
+    QStringList list = QString(output.trimmed()).split("\n");
+    for (int i = 0; i < list.size(); ++i)
     {
-        const std::string buffer = os::readfile(file).toStdString();
-        const nlohmann::json json = nlohmann::json::parse(buffer);
-        json.get_to(*packages);
+        list[i] = list[i].trimmed();
+        list[i] = "  " + list[i];
     }
-    catch (std::exception &e)
-    {
-        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(file, e.what());
-        log(str);
-        os::show_error_and_exit(str);
-        throw;
-    }
+
+    log(list.join("\n"));
+
+    return output;
 }
 
-void xmake::load_packages(packages_t *packages, const QString &program, const QString &workdir)
+void xmake::load_packages(packages_t *packages)
 {
     const QString repodir = config::repodir();
-    const QString script_path = QString("%1/scripts/xmake/dump_package.lua").arg(repodir);
 
     Q_ASSERT(packages != nullptr);
-    Q_ASSERT(!script_path.isEmpty());
-    Q_ASSERT(os::isfile(script_path));
-    Q_ASSERT(!program.isEmpty());
 
-    const QString yml = xmake::lua(script_path, {"--json"}, program, workdir);
+    const QString yml = xmake::cmd("csp-repo", {"--dump=json"});
     try
     {
         const std::string buffer = yml.toStdString();
@@ -129,11 +127,10 @@ void xmake::load_packages(packages_t *packages, const QString &program, const QS
     }
     catch (std::exception &e)
     {
-        const QString str =
-            QString("try to parse packages \" xmake l %1\" failed. \n\nreason: %2").arg(script_path, e.what());
+        const QString str = QString("try to parse packages failed. \n\nreason: %1").arg(e.what());
         log(str);
-        os::show_error_and_exit(str);
-        throw;
+        packages->library.clear();
+        packages->toolchain.clear();
     }
 }
 

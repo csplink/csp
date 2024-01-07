@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>packages.json</file>
         <file>test.lua</file>
     </qresource>
 </RCC>

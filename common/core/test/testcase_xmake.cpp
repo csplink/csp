@@ -48,6 +48,7 @@ class testcase_xmake final : public QObject
     {
         config::init();
         config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+        config::set("core/xmake_repodir", QString(CSP_EXE_DIR) + "/xmake");
     }
 
     static void version()
@@ -72,14 +73,6 @@ class testcase_xmake final : public QObject
 #endif
 
         os::rm("./test.lua");
-    }
-
-    static void load_packages_byfile()
-    {
-        xmake::packages_t packages;
-        xmake::load_packages_byfile(&packages, ":/packages.json");
-        QVERIFY(!packages.toolchain.isEmpty());
-        QVERIFY(!packages.library.isEmpty());
     }
 
     static void load_packages()

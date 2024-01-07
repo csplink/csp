@@ -32,6 +32,8 @@
 
 #include <QString>
 
+#include "config.h"
+
 class xmake final
 {
   public:
@@ -71,24 +73,14 @@ class xmake final
      * @return lua output
      */
     static QString lua(const QString &lua_path, const QStringList &args = {}, const QString &program = "xmake",
-                       const QString &workdir = "");
-
-    /**
-     * @brief get package configuration from file
-     * @param packages: packages ptr
-     * @param file: json file path
-     * @return void
-     */
-    static void load_packages_byfile(packages_t *packages, const QString &file);
+                       const QString &workdir = config::default_workdir());
 
     /**
      * @brief get package configuration from csp repo
      * @param packages: packages ptr
-     * @param program: xmake exe path
-     * @param workdir: xmake workdir
      * @return void
      */
-    static void load_packages(packages_t *packages, const QString &program = "xmake", const QString &workdir = "");
+    static void load_packages(packages_t *packages);
 
     static void install_log_handler(log_handler handler);
 
@@ -98,11 +90,10 @@ class xmake final
         {
             _log_handler(msg);
         }
-        else
-        {
-            qInfo().noquote() << msg;
-        }
     }
+
+    static QString cmd(const QString &command, const QStringList &args = {}, const QString &program = "xmake",
+                       const QString &workdir = config::default_workdir());
 
   private:
     xmake() = default;
