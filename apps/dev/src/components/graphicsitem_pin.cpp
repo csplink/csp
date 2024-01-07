@@ -31,9 +31,7 @@
 
 #include "graphicsitem_pin.h"
 
-#define PIN_LENGTH 100
-
-graphicsitem_pin::graphicsitem_pin(qreal width, qreal height)
+graphicsitem_pin::graphicsitem_pin(const qreal width, const qreal height)
 {
     Q_ASSERT(width > 0 && height > 0);
     Q_ASSERT(width > 100 || height > 100);
@@ -109,7 +107,7 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     {
         x = static_cast<int>(_width) - 100;
         y = 0;
-        width = PIN_LENGTH;
+        width = pin_length;
         height = static_cast<int>(_height);
     }
     else if (_direction == BOTTOM)
@@ -117,21 +115,21 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         x = 0;
         y = 0;
         width = static_cast<int>(_width);
-        height = PIN_LENGTH;
+        height = pin_length;
     }
     else if (_direction == RIGHT)
     {
         x = 0;
         y = 0;
-        width = PIN_LENGTH;
+        width = pin_length;
         height = static_cast<int>(_height);
     }
     else
     {
         x = 0;
-        y = static_cast<int>(_height) - PIN_LENGTH;
+        y = static_cast<int>(_height) - pin_length;
         width = static_cast<int>(_width);
-        height = PIN_LENGTH;
+        height = pin_length;
     }
     painter->drawRect(x, y, width, height);
     painter->setBrush(b);
@@ -140,13 +138,13 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     QString text;
     if (_direction == LEFT || _direction == RIGHT)
     {
-        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(pin_length - 20));
         painter->translate(10 + x, (_height / 2) + 8);
     }
     else
     {
-        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(PIN_LENGTH - 20));
-        painter->translate((_width / 2) + 8, PIN_LENGTH - 10 + y);
+        text = _font_metrics->elidedText(_name, Qt::ElideRight, (int)(pin_length - 20));
+        painter->translate((_width / 2) + 8, pin_length - 10 + y);
         painter->rotate(-90);
     }
     painter->setFont(*_font);
@@ -159,25 +157,25 @@ void graphicsitem_pin::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         text = QString("%1(%2)").arg(_comment, _function);
     if (_direction == LEFT)
     {
-        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_width - PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_width - pin_length - 20));
         const int pixels = _font_metrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
     else if (_direction == BOTTOM)
     {
-        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_height - PIN_LENGTH - 20));
+        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_height - pin_length - 20));
         const int pixels = _font_metrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
     else if (_direction == RIGHT)
     {
-        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_width - PIN_LENGTH - 20));
-        painter->translate(PIN_LENGTH, 0);
+        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_width - pin_length - 20));
+        painter->translate(pin_length, 0);
     }
     else
     {
-        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_height - PIN_LENGTH - 20));
-        painter->translate(PIN_LENGTH, 0);
+        text = _font_metrics->elidedText(text, Qt::ElideRight, static_cast<int>(_height - pin_length - 20));
+        painter->translate(pin_length, 0);
     }
     painter->drawText(0, 0, text);
     painter->resetTransform();

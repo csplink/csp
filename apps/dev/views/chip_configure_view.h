@@ -50,12 +50,14 @@ class chip_configure_view final : public QWidget
 
     void set_propertybrowser(propertybrowser *instance);
     void init_view();
+    void resize_view() const;
 
   signals:
     void signal_update_modules_treeview(const QString &company, const QString &name);
 
   protected:
     void showEvent(QShowEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
   private:
     Ui::chip_configure_view *_ui;

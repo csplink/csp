@@ -46,6 +46,8 @@ class graphicsitem_pin final : public interface_graphicsitem_pin
         RIGHT
     } direction_type;
 
+    static constexpr int pin_length = 100;
+
   public:
     explicit graphicsitem_pin(qreal width, qreal height);
     ~graphicsitem_pin() override;

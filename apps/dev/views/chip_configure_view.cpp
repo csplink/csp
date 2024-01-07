@@ -71,7 +71,6 @@ void chip_configure_view::init_view()
     if (package.startsWith("lqfp"))
     {
         lqfp lqfp(nullptr);
-
         auto items = lqfp.get_lqfp(hal, company, name);
         for (const auto &item : items)
         {
@@ -84,4 +83,26 @@ void chip_configure_view::init_view()
         }
     }
     _ui->graphicsview->setScene(graphicsscene);
+}
+
+void chip_configure_view::resizeEvent(QResizeEvent *event)
+{
+    resize_view();
+    QWidget::resizeEvent(event);
+}
+
+void chip_configure_view::resize_view() const
+{
+    const qreal graphicsscene_width = _ui->graphicsview->scene()->itemsBoundingRect().width();
+    const qreal graphicsscene_height = _ui->graphicsview->scene()->itemsBoundingRect().height();
+    const qreal view_width = _ui->graphicsview->width();
+    const qreal view_height = _ui->graphicsview->height();
+    const qreal scene_max = graphicsscene_width > graphicsscene_height ? graphicsscene_width : graphicsscene_height;
+    const qreal view_min = view_width > view_height ? view_height : view_width;
+
+    _ui->graphicsview->centerOn(_ui->graphicsview->scene()->itemsBoundingRect().width() / 2,
+                                _ui->graphicsview->scene()->itemsBoundingRect().height() / 2);
+
+    const qreal scale = view_min / scene_max;
+    _ui->graphicsview->zoom(scale);
 }
