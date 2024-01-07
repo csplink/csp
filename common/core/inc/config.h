@@ -97,6 +97,12 @@ class config final
     static QString default_workdir();
 
     /**
+     * @brief get work env
+     * @return env map
+     */
+    static QMap<QString, QString> env();
+
+    /**
      * @brief get repositories directory; <get("core/repositories")>
      * @return repositories; <default: "repositories">
      */

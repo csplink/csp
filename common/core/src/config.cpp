@@ -156,6 +156,16 @@ QString config::default_workdir()
     return workdir;
 }
 
+QMap<QString, QString> config::env()
+{
+    QMap<QString, QString> map;
+
+    map.insert("XMAKE_RCFILES", QString("%1/tools/scripts/xmake.lua").arg(xmake_repodir()));
+    map.insert("XMAKE_THEME", "plain");
+
+    return map;
+}
+
 QString config::repositories()
 {
     Q_ASSERT(_settings != nullptr);
