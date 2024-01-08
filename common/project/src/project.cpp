@@ -37,11 +37,12 @@
 #include "config.h"
 #include "xmake.h"
 
-project *project::_instance = new project();
-
 void project::init()
 {
-    _instance = new project();
+    if (_instance == nullptr)
+    {
+        _instance = new project();
+    }
 }
 
 void project::deinit()

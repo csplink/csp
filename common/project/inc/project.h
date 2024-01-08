@@ -253,7 +253,7 @@ class project final : public QObject
     void generate_code() const;
 
   private:
-    static project *_instance;
+    inline static project *_instance = nullptr;
     project_table::project_t _project; // project table
     QString _path;                     // project file path
     ip_table::ips_t _ips;              // ip map
