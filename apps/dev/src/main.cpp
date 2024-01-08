@@ -39,6 +39,33 @@
 #include "os.h"
 #include "project.h"
 #include "repo.h"
+#include "xmake.h"
+
+static void init()
+{
+    Q_INIT_RESOURCE(core);
+    Q_INIT_RESOURCE(project);
+    Q_INIT_RESOURCE(qtpropertybrowser);
+    Q_INIT_RESOURCE(repo);
+
+    config::init();
+    repo::init();
+    project::init();
+    xmake::init();
+}
+
+static void deinit()
+{
+    xmake::deinit();
+    project::deinit();
+    repo::deinit();
+    config::deinit();
+
+    Q_CLEANUP_RESOURCE(repo);
+    Q_CLEANUP_RESOURCE(qtpropertybrowser);
+    Q_CLEANUP_RESOURCE(project);
+    Q_CLEANUP_RESOURCE(core);
+}
 
 int main(int argc, char *argv[])
 {
@@ -50,14 +77,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("csplink");
     QApplication::setOrganizationName("csplink.top");
 
-    Q_INIT_RESOURCE(core);
-    Q_INIT_RESOURCE(project);
-    Q_INIT_RESOURCE(qtpropertybrowser);
-    Q_INIT_RESOURCE(repo);
-
-    config::init();
-    repo::init();
-    project::init();
+    init();
 
     for (const QString &dir : os::dirs("./fonts", QString("*")))
     {
@@ -111,14 +131,7 @@ int main(int argc, char *argv[])
 
     const int rtn = QApplication::exec();
 
-    project::deinit();
-    repo::deinit();
-    config::deinit();
-
-    Q_CLEANUP_RESOURCE(repo);
-    Q_CLEANUP_RESOURCE(qtpropertybrowser);
-    Q_CLEANUP_RESOURCE(project);
-    Q_CLEANUP_RESOURCE(core);
+    deinit();
 
     return rtn;
 }

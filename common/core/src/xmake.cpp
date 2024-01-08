@@ -46,6 +46,25 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::packages_t, toolchain, library)
 QT_DEBUG_ADD_TYPE(xmake::info_t)
 QT_DEBUG_ADD_TYPE(xmake::packages_t)
 
+void xmake::init()
+{
+    if (_instance == nullptr)
+    {
+        _instance = new xmake();
+    }
+}
+
+void xmake::deinit()
+{
+    delete _instance;
+    _instance = nullptr;
+}
+
+xmake *xmake::get_instance()
+{
+    return _instance;
+}
+
 QString xmake::version(const QString &program)
 {
     QByteArray output;
@@ -77,17 +96,7 @@ QString xmake::lua(const QString &lua_path, const QStringList &args, const QStri
     QStringList list = {"lua", "-D", path::absolute(lua_path)};
     list << args;
 
-    log(QString("%1 %2").arg(program, args.join(" ")));
     os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
-
-    list = QString(output.trimmed()).split("\n");
-    for (int i = 0; i < list.size(); ++i)
-    {
-        list[i] = list[i].trimmed();
-        list[i] = "  " + list[i];
-    }
-
-    log(list.join("\n"));
 
     return output;
 }
@@ -102,15 +111,7 @@ QString xmake::cmd(const QString &command, const QStringList &args, const QStrin
     QStringList list = {command, "-D"};
     list << args;
 
-    log(QString("%1 %2 -D %3").arg(program, command, args.join(" ")));
     os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
-
-    list = QString(output.trimmed()).split("\n");
-    for (int i = 0; i < list.size(); ++i)
-    {
-        list[i] = list[i].trimmed();
-        list[i] = "  " + list[i];
-    }
 
     log(list.join("\n"));
 

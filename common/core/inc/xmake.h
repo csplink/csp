@@ -30,12 +30,15 @@
 #ifndef CSP_COMMON_CORE_XMAKE_H
 #define CSP_COMMON_CORE_XMAKE_H
 
+#include <QObject>
 #include <QString>
 
 #include "config.h"
 
-class xmake final
+class xmake final : public QObject
 {
+    Q_OBJECT
+
   public:
     typedef struct
     {
@@ -63,6 +66,10 @@ class xmake final
      * @return version; <example: "v2.7.9+HEAD.c879226">
      */
     static QString version(const QString &program = config::tool_xmake());
+
+    static void init();
+    static void deinit();
+    static xmake *get_instance();
 
     /**
      * @brief run the lua script.
@@ -99,8 +106,9 @@ class xmake final
 
   private:
     xmake() = default;
-    ~xmake() = default;
+    ~xmake() override = default;
 
+    inline static xmake *_instance = nullptr;
     inline static log_handler _log_handler = nullptr;
 
     Q_DISABLE_COPY_MOVE(xmake)
