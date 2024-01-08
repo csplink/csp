@@ -39,7 +39,10 @@ repo::~repo() = default;
 
 void repo::init()
 {
-    _instance = new repo();
+    if (_instance == nullptr)
+    {
+        _instance = new repo();
+    }
 }
 
 void repo::deinit()
