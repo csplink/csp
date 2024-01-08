@@ -26,8 +26,6 @@ set(depends_list)
 
 file(GLOB_RECURSE SOURCES
         db/*.yml
-        scripts/coder/*.lua
-        scripts/xmake/*.lua
 )
 
 foreach (source_file ${SOURCES})
