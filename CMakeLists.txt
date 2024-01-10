@@ -51,13 +51,16 @@ find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
 
 include(cmake/git.cmake)
 
-string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d %H:%M:%S")
-get_git_tag(GIT_TAG)
-get_git_tag_long(GIT_TAG_LONG)
-get_git_branch(GIT_BRANCH)
-get_git_commit(GIT_COMMIT)
-get_git_commit_long(GIT_COMMIT_LONG)
-get_git_commit_date(GIT_COMMIT_DATE)
+if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+else ()
+    string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d %H:%M:%S")
+    get_git_tag(GIT_TAG)
+    get_git_tag_long(GIT_TAG_LONG)
+    get_git_branch(GIT_BRANCH)
+    get_git_commit(GIT_COMMIT)
+    get_git_commit_long(GIT_COMMIT_LONG)
+    get_git_commit_date(GIT_COMMIT_DATE)
+endif()
 
 enable_testing()
 

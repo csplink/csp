@@ -55,8 +55,6 @@ extern "C" {
 #define CONFIGURE_GIT_COMMIT_LONG "@GIT_COMMIT_LONG@"
 #define CONFIGURE_GIT_COMMIT_DATE "@GIT_COMMIT_DATE@"
 
-#define CONFIGURE_CSP_EXE_DIR     "@CSP_EXE_DIR@"
-
 #ifdef __cplusplus
 }
 #endif
