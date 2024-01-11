@@ -71,7 +71,7 @@ QString xmake::version(const QString &program)
     QString version;
 
     Q_ASSERT(!program.isEmpty());
-    qDebug().noquote() << program;
+
     if (os::execv(program, {"--version"}, config::env(), 10000, config::default_workdir(), &output, nullptr))
     {
         const QRegularExpression regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
@@ -85,18 +85,14 @@ QString xmake::version(const QString &program)
     return version;
 }
 
-QString xmake::lua(const QString &lua_path, const QStringList &args, const QString &program, const QString &workdir)
+QString xmake::lua(const QString &lua_path, const QStringList &args)
 {
-    QByteArray output;
-
     Q_ASSERT(!lua_path.isEmpty());
-    Q_ASSERT(!program.isEmpty());
-    Q_ASSERT(!workdir.isEmpty());
 
-    QStringList list = {"lua", "-D", path::absolute(lua_path)};
+    QStringList list = {"-D", path::absolute(lua_path)};
     list << args;
 
-    os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
+    QString output = cmd("lua", list);
 
     return output;
 }
@@ -112,8 +108,6 @@ QString xmake::cmd(const QString &command, const QStringList &args, const QStrin
     list << args;
 
     os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
-
-    log(list.join("\n"));
 
     return output;
 }
@@ -134,7 +128,7 @@ void xmake::load_packages(packages_t *packages)
     catch (std::exception &e)
     {
         const QString str = QString("try to parse packages failed. \n\nreason: %1").arg(e.what());
-        log(str);
+        qWarning().noquote() << str;
         packages->library.clear();
         packages->toolchain.clear();
     }

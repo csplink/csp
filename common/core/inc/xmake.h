@@ -75,13 +75,9 @@ class xmake final : public QObject
      * @brief run the lua script.
      * @param lua_path: lua path
      * @param args: args
-     * @param program: program path or name
-     * @param workdir: working directory
      * @return lua output
      */
-    static QString lua(const QString &lua_path, const QStringList &args = {},
-                       const QString &program = config::tool_xmake(),
-                       const QString &workdir = config::default_workdir());
+    static QString lua(const QString &lua_path, const QStringList &args = {});
 
     /**
      * @brief get package configuration from csp repo
