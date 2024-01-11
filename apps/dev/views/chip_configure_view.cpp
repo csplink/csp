@@ -87,13 +87,14 @@ void chip_configure_view::init_view()
 
 void chip_configure_view::resizeEvent(QResizeEvent *event)
 {
-    if (resize_counter <= 1)
+    if (resize_counter <= 2)
     {
         resize_view();
 
         /**
-         * 0: view init
-         * 1: layout init
+         * 0: 视图初始化
+         * 1: 布局初始化
+         * 2: 全局最大化
          */
         resize_counter++;
     }
