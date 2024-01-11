@@ -29,6 +29,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QProcess>
 #include <QRegularExpression>
 
 #include "config.h"
@@ -112,6 +113,49 @@ QString xmake::cmd(const QString &command, const QStringList &args, const QStrin
     return output;
 }
 
+void xmake::cmd_log(const QString &command, const QStringList &args, const QString &program, const QString &workdir)
+{
+    QProcess process;
+    const QMap<QString, QString> env = config::env();
+    QStringList list = {command, "-D"};
+    list << args;
+
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    auto env_i = env.constBegin();
+    while (env_i != env.constEnd())
+    {
+        environment.insert(env_i.key(), env_i.value());
+        ++env_i;
+    }
+
+    process.setProgram(program);
+    process.setArguments(list);
+    process.setProcessEnvironment(environment);
+
+    if (os::isdir(workdir))
+        process.setWorkingDirectory(workdir);
+
+    log(QString("%1 %2").arg(program, args.join(" ")));
+    process.start();
+
+    connect(
+        &process, &QProcess::readyReadStandardOutput, this,
+        [&process]() {
+            const QByteArray err = process.readAllStandardOutput();
+            xmake::log(err.trimmed());
+        },
+        Qt::UniqueConnection);
+
+    if (!process.waitForFinished(30000))
+    {
+        log("failed;");
+    }
+    else
+    {
+        log("");
+    }
+}
+
 void xmake::load_packages(packages_t *packages)
 {
     const QString repodir = config::repodir();
@@ -137,4 +181,21 @@ void xmake::load_packages(packages_t *packages)
 void xmake::install_log_handler(const log_handler handler)
 {
     _log_handler = handler;
+}
+
+void xmake::csp_repo_dump_log(const QString &type)
+{
+    Q_ASSERT(!type.isEmpty());
+
+    cmd_log("csp-repo", {QString("--dump=") + type});
+}
+
+void xmake::csp_coder_log(const QString &project_file, const QString &output, const QString &repositories)
+{
+    Q_ASSERT(!project_file.isEmpty());
+    Q_ASSERT(!output.isEmpty());
+    Q_ASSERT(!repositories.isEmpty());
+
+    cmd_log("csp-coder", {QString("--project-file=") + project_file, QString("--output=") + output,
+                          QString("--repositories=") + repositories});
 }

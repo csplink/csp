@@ -100,6 +100,13 @@ class xmake final : public QObject
                        const QString &program = config::tool_xmake(),
                        const QString &workdir = config::default_workdir());
 
+    void cmd_log(const QString &command, const QStringList &args = {}, const QString &program = config::tool_xmake(),
+                 const QString &workdir = config::default_workdir());
+
+    void csp_repo_dump_log(const QString &type);
+
+    void csp_coder_log(const QString &project_file, const QString &output, const QString &repositories);
+
   private:
     xmake() = default;
     ~xmake() override = default;

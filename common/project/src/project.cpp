@@ -115,7 +115,7 @@ void project::set_path(const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
 
-    _path = path;
+    _path = path::absolute(path);
 }
 
 QString project::get_name() const
@@ -269,7 +269,7 @@ void project::load_project(const QString &path)
     Q_ASSERT(os::isfile(path));
 
     project_table::load_project(&_project, path);
-    _path = path;
+    set_path(path);
 
     load_maps(_project.core.hal);
     load_ips(_project.core.hal, _project.core.target);
@@ -312,39 +312,6 @@ void project::clear_project()
 
 void project::generate_code() const
 {
-    const QString lua_path = QString("%1/scripts/coder/coder.lua").arg(config::repodir());
-    const QStringList args = {"lua", "-D", path::absolute(lua_path), "-p", _path, "-r", config::repositories_dir()};
-    QProcess process;
-
-    const QMap<QString, QString> env = config::env();
-
-    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    auto env_i = env.constBegin();
-    while (env_i != env.constEnd())
-    {
-        environment.insert(env_i.key(), env_i.value());
-        ++env_i;
-    }
-
-    process.setProgram(config::tool_xmake());
-    process.setArguments(args);
-    process.setProcessEnvironment(environment);
-
-    xmake::log(QString("%1 %2").arg(config::tool_xmake(), args.join(" ")));
-    process.start();
-    connect(
-        &process, &QProcess::readyReadStandardOutput, this,
-        [&process]() {
-            const QByteArray err = process.readAllStandardOutput();
-            xmake::log(err.trimmed());
-        },
-        Qt::UniqueConnection);
-    if (!process.waitForFinished(10000))
-    {
-        xmake::log("failed in generate_code");
-    }
-    else
-    {
-        xmake::log("");
-    }
+    xmake *xmake_instance = xmake::get_instance();
+    xmake_instance->csp_coder_log(_path, path::directory(_path), config::repositories_dir());
 }
