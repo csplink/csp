@@ -90,13 +90,31 @@ jobs:
             ctest --output-on-failure
           popd
 
-      - name: ⬆️ release
+      - name: ⬆️ release lite
         shell: pwsh
         run: |
-          & tools/release/windows-msvc.ps1 csp-windows-msvc-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-dev.exe build
+          & tools/release/windows-msvc.ps1 csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-dev.exe build
 
-      - name: ⬆️ upload artifact
+      - name: ⬆️ upload lite artifact
         uses: actions/upload-artifact@v3
         with:
-          name: csp-windows-msvc-${{ matrix.msvc_arch }}-${{ github.run_number }}
-          path: csp-windows-msvc-${{ matrix.msvc_arch }}-${{ github.run_number }}
+          name: csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }}
+          path: csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }}
+
+      - name: ⬆️ release full
+        shell: pwsh
+        run: |
+          copy-Item csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }} -Recurse -Verbose
+          pushd csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
+            $env:XMAKE_RCFILES=tools/scripts/xmake.lua
+            pushd xmake
+              xmake csp-repo --install csp_hal_apm32f1@latest -r ../repositories
+            popd
+          popd
+
+
+      - name: ⬆️ upload full artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
+          path: csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
