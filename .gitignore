@@ -73,4 +73,4 @@ common/core/inc/configure.h
 .vs
 *.DotSettings
 out
-CMakeSettings.json
+CMake*.json
