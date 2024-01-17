@@ -51,7 +51,8 @@ class testcase_project final : public QObject
     {
         g_project_instance->set_path("test");
         const auto path = g_project_instance->get_path();
-        QVERIFY(path == "test");
+        qDebug() << path;
+        QVERIFY(path.endsWith("test"));
     }
 
     static void get_pin_config()

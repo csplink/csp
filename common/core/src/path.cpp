@@ -84,7 +84,7 @@ QString path::relative(const QString &p, const QString &rootdir)
 
 QString path::absolute(const QString &p, const QString &rootdir)
 {
-    if (!os::exists(p) || !os::exists(rootdir))
+    if (!os::exists(rootdir))
         return "";
 
     const QDir root(rootdir);

@@ -131,7 +131,7 @@ class testcase_path final : public QObject
         QVERIFY(absolute_dir == path::appdir() + "/.");
         // not exist
         const auto absolute_not_exist = path::absolute("./not exist");
-        QVERIFY(absolute_not_exist.isEmpty());
+        QVERIFY(!absolute_not_exist.isEmpty());
     }
 
     static void is_absolute()
