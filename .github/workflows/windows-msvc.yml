@@ -106,7 +106,7 @@ jobs:
         run: |
           copy-Item csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }} -Recurse -Verbose
           pushd csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
-            $env:XMAKE_RCFILES=tools/scripts/xmake.lua
+            $env:XMAKE_RCFILES=($pwd).Path+"/xmake/tools/scripts/xmake.lua"
             pushd xmake
               xmake csp-repo --install csp_hal_apm32f1@latest -r ../repositories
             popd
