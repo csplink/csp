@@ -150,6 +150,7 @@ void mainwindow_view::init_mode()
 {
     if (_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
     {
+        set_mode(STACK_INDEX_EMPTY);
         set_mode(STACK_INDEX_CHIP_CONFIGURE);
     }
     else
@@ -178,7 +179,6 @@ void mainwindow_view::set_mode(const int index)
         ui->menubar->show();
         ui->toolbar->show();
         ui->statusbar->show();
-        ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
         ui->dockwidget_left->show();
         ui->dockwidget_right->show();
         ui->dockwidget_bottom_output->show();
@@ -192,7 +192,21 @@ void mainwindow_view::set_mode(const int index)
                                 _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET));
 
         ui->page_chip_configure_view->init_view();
+        ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
 
+        this->setWindowState(Qt::WindowMaximized);
+        break;
+    }
+    case STACK_INDEX_EMPTY: {
+        ui->stackedwidget->setCurrentIndex(STACK_INDEX_EMPTY);
+        ui->menubar->show();
+        ui->toolbar->show();
+        ui->statusbar->show();
+        ui->dockwidget_left->show();
+        ui->dockwidget_right->show();
+        ui->dockwidget_bottom_output->show();
+        ui->dockwidget_bottom_xmake_output->show();
+        ui->dockwidget_bottom_configurations->show();
         this->setWindowState(Qt::WindowMaximized);
         break;
     }

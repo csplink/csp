@@ -43,6 +43,7 @@
       </property>
       <widget class="home_view" name="page_home_view"/>
       <widget class="chip_configure_view" name="page_chip_configure_view"/>
+        <widget class="QWidget" name="page_empty" />
      </widget>
     </item>
    </layout>

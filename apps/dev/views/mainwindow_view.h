@@ -49,7 +49,8 @@ class mainwindow_view final : public QMainWindow
     typedef enum
     {
         STACK_INDEX_HOME = 0,
-        STACK_INDEX_CHIP_CONFIGURE
+        STACK_INDEX_CHIP_CONFIGURE,
+        STACK_INDEX_EMPTY,
     } stack_index_type;
 
   public:
