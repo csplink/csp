@@ -4,22 +4,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/main.cpp" line="66"/>
+        <location filename="../../src/main.cpp" line="88"/>
         <source>load font: &lt;%1&gt; failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="78"/>
+        <location filename="../../src/main.cpp" line="100"/>
         <source>Tools for flexible configuration of chips and boards.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="81"/>
+        <location filename="../../src/main.cpp" line="103"/>
         <source>Project file path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="90"/>
+        <location filename="../../src/main.cpp" line="112"/>
         <source>file: &lt;%1&gt; is not exist.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>graphicsitem_pin</name>
     <message>
-        <location filename="../../src/components/graphicsitem_pin.cpp" line="195"/>
+        <location filename="../../src/components/graphicsitem_pin.cpp" line="193"/>
         <source>Reset State</source>
         <translation type="unfinished"></translation>
     </message>
@@ -256,93 +256,98 @@
 <context>
     <name>mainwindow_view</name>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="61"/>
+        <location filename="../../views/mainwindow_view.ui" line="62"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="80"/>
-        <location filename="../../views/mainwindow_view.ui" line="99"/>
+        <location filename="../../views/mainwindow_view.ui" line="81"/>
+        <location filename="../../views/mainwindow_view.ui" line="100"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="138"/>
+        <location filename="../../views/mainwindow_view.ui" line="139"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="65"/>
+        <location filename="../../views/mainwindow_view.ui" line="66"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="180"/>
+        <location filename="../../views/mainwindow_view.ui" line="181"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="202"/>
+        <location filename="../../views/mainwindow_view.ui" line="203"/>
         <source>Configurations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="214"/>
+        <location filename="../../views/mainwindow_view.ui" line="215"/>
         <source>Xmake Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="233"/>
-        <source>Load Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="236"/>
-        <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="241"/>
-        <source>Import Project</source>
+        <location filename="../../views/mainwindow_view.ui" line="234"/>
+        <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="246"/>
-        <source>Save Project</source>
+        <source>Load Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="249"/>
-        <source>Ctrl+S</source>
+        <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="254"/>
-        <source>Save Project As ...</source>
+        <source>Import Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="259"/>
+        <source>Save Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="262"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="267"/>
+        <source>Save Project As ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="272"/>
         <source>Close Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="264"/>
+        <location filename="../../views/mainwindow_view.ui" line="277"/>
         <source>Generate Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="269"/>
+        <location filename="../../views/mainwindow_view.ui" line="282"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="274"/>
+        <location filename="../../views/mainwindow_view.ui" line="291"/>
         <source>Generate code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="253"/>
+        <location filename="../../views/mainwindow_view.cpp" line="273"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
