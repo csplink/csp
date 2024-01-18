@@ -315,3 +315,9 @@ void project::generate_code() const
     xmake *xmake_instance = xmake::get_instance();
     xmake_instance->csp_coder_log(_path, path::directory(_path), config::repositories_dir());
 }
+
+void project::build(const QString &mode) const
+{
+    xmake *xmake_instance = xmake::get_instance();
+    xmake_instance->build_log(path::directory(_path), mode);
+}

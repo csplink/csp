@@ -47,6 +47,17 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::packages_t, toolchain, library)
 QT_DEBUG_ADD_TYPE(xmake::info_t)
 QT_DEBUG_ADD_TYPE(xmake::packages_t)
 
+xmake::xmake()
+{
+    _process = new QProcess();
+}
+
+xmake::~xmake()
+{
+    delete _process;
+    _process = nullptr;
+}
+
 void xmake::init()
 {
     if (_instance == nullptr)
@@ -115,9 +126,12 @@ QString xmake::cmd(const QString &command, const QStringList &args, const QStrin
 
 void xmake::cmd_log(const QString &command, const QStringList &args, const QString &program, const QString &workdir)
 {
-    QProcess process;
     const QMap<QString, QString> env = config::env();
-    QStringList list = {command, "-D"};
+    QStringList list;
+    if (!command.isEmpty())
+    {
+        list = QStringList{command, "-D"};
+    }
     list << args;
 
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
@@ -128,25 +142,29 @@ void xmake::cmd_log(const QString &command, const QStringList &args, const QStri
         ++env_i;
     }
 
-    process.setProgram(program);
-    process.setArguments(list);
-    process.setProcessEnvironment(environment);
+    _process->setProgram(program);
+    _process->setArguments(list);
+    _process->setProcessEnvironment(environment);
 
     if (os::isdir(workdir))
-        process.setWorkingDirectory(workdir);
+        _process->setWorkingDirectory(workdir);
 
-    log(QString("%1 %2").arg(program, args.join(" ")));
-    process.start();
+    log(QString("%1 %2").arg(program, list.join(" ")));
+    _process->start();
 
     connect(
-        &process, &QProcess::readyReadStandardOutput, this,
-        [&process]() {
-            const QByteArray err = process.readAllStandardOutput();
-            xmake::log(err.trimmed());
+        _process, &QProcess::readyReadStandardOutput, this,
+        [this]() {
+            const QByteArray err = _process->readAllStandardOutput();
+            qDebug() << err;
+            if (!err.isEmpty())
+            {
+                xmake::log(err.trimmed());
+            }
         },
         Qt::UniqueConnection);
 
-    if (!process.waitForFinished(30000))
+    if (!_process->waitForFinished(30000))
     {
         log("failed;");
     }
@@ -198,4 +216,14 @@ void xmake::csp_coder_log(const QString &project_file, const QString &output, co
 
     cmd_log("csp-coder", {QString("--project-file=") + project_file, QString("--output=") + output,
                           QString("--repositories=") + repositories});
+}
+
+void xmake::build_log(const QString &projectdir, const QString &mode)
+{
+    Q_ASSERT(!projectdir.isEmpty());
+    Q_ASSERT(!mode.isEmpty());
+    Q_ASSERT(os::isdir(projectdir));
+
+    cmd_log("f", {"-y", "-m", mode}, config::tool_xmake(), projectdir);
+    cmd_log("", {"-y", "-j8"}, config::tool_xmake(), projectdir);
 }

@@ -248,9 +248,14 @@ class project final : public QObject
     void clear_project();
 
     /**
-     * @brief generate_code code
+     * @brief 生成代码
      */
     void generate_code() const;
+
+    /**
+     * @brief 构建工程
+     */
+    void build(const QString &mode) const;
 
   private:
     inline static project *_instance = nullptr;

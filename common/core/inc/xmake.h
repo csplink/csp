@@ -32,6 +32,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QProcess>
 
 #include "config.h"
 
@@ -107,9 +108,13 @@ class xmake final : public QObject
 
     void csp_coder_log(const QString &project_file, const QString &output, const QString &repositories);
 
+    void build_log(const QString &projectdir, const QString &mode);
+
   private:
-    xmake() = default;
-    ~xmake() override = default;
+    xmake();
+    ~xmake() override;
+
+    QProcess *_process = nullptr;
 
     inline static xmake *_instance = nullptr;
     inline static log_handler _log_handler = nullptr;
