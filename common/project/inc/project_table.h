@@ -71,11 +71,11 @@ class project_table
   public:
     /**
      * @brief load project from json file
-     * @param project: project ptr
+     * @param proj: project ptr
      * @param path: project file path
      * @return void
      */
-    static void load_project(project_t *project, const QString &path);
+    static void load_project(project_t *proj, const QString &path);
 
     /**
      * @brief save project to json file
@@ -94,6 +94,8 @@ class project_table
   private:
     explicit project_table();
     ~project_table();
+
+    static void set_value(project_t &proj);
 };
 
 #endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H

@@ -50,9 +50,9 @@ project_table::project_table() = default;
 
 project_table::~project_table() = default;
 
-void project_table::load_project(project_t *project, const QString &path)
+void project_table::load_project(project_t *proj, const QString &path)
 {
-    Q_ASSERT(project != nullptr);
+    Q_ASSERT(proj != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
@@ -60,12 +60,9 @@ void project_table::load_project(project_t *project, const QString &path)
     {
         const std::string buffer = os::readfile(path).toStdString();
         const nlohmann::json json = nlohmann::json::parse(buffer);
-        json.get_to(*project);
+        json.get_to(*proj);
 
-        if (project->target.isEmpty())
-        {
-            project->target = "xmake";
-        }
+        set_value(*proj);
     }
     catch (std::exception &e)
     {
@@ -86,24 +83,39 @@ void project_table::save_project(project_table::project_t &p, const QString &pat
 
 QString project_table::dump_project(project_table::project_t &proj)
 {
-    proj.core.modules.clear();
-
-    auto pin_configs_i = proj.pin_configs.constBegin();
-    while (pin_configs_i != proj.pin_configs.constEnd())
-    {
-        const pin_config_t &config = pin_configs_i.value();
-
-        if (config.locked)
-        {
-            const QStringList list = config.function.split("-");
-            proj.core.modules << list[0];
-        }
-
-        ++pin_configs_i;
-    }
-
-    proj.core.modules.removeDuplicates();
-    proj.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
+    set_value(proj);
     const nlohmann::json j = proj;
     return QString::fromStdString(j.dump(2));
+}
+
+void project_table::set_value(project_table::project_t &proj)
+{
+    if (proj.target.isEmpty())
+    {
+        proj.target = "xmake";
+    }
+    if (proj.core.toolchains.isEmpty())
+    {
+        proj.core.toolchains = "arm-none-eabi";
+    }
+    proj.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
+    /* 填充 modules */
+    {
+        proj.core.modules.clear();
+        auto pin_configs_i = proj.pin_configs.constBegin();
+        while (pin_configs_i != proj.pin_configs.constEnd())
+        {
+            const pin_config_t &config = pin_configs_i.value();
+
+            if (config.locked)
+            {
+                const QStringList list = config.function.split("-");
+                proj.core.modules << list[0];
+            }
+
+            ++pin_configs_i;
+        }
+
+        proj.core.modules.removeDuplicates();
+    }
 }
