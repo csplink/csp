@@ -1,8 +1,11 @@
-# Licensed under the GNU Lesser General Public License v. 3 (the "License");
+#!/bin/bash
+
+#
+# Licensed under the GNU General Public License v. 3 (the "License")
 # You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.gnu.org/licenses/lgpl-3.0.html
+#     https://www.gnu.org/licenses/gpl-3.0.html
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -10,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+# Copyright (C) 2023-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        windows-msvc.ps1
+# @file        linux-lite.sh
 #
 # Change Logs:
 # Date           Author       Notes
@@ -21,20 +24,18 @@
 # 2024-01-06     xqyjlj       initial version
 #
 
-[CmdletBinding()]
-param (
-    [string] ${dir} = "csp", [string] ${target} = "csp-dev.exe", [string] ${buildir} = "build"
-)
+set -v
 
-function Main() {
-    New-Item -ItemType Directory ${dir} -Verbose
-    Copy-Item ${buildir}/apps/dev/${target} ${dir}/ -Verbose
+lite_dir=${1}
+full_dir=${2}
 
-    Push-Location ${dir}
-    windeployqt ${target}
-    Pop-Location
+cp -rf ${lite_dir} ${full_dir}
 
-    & ${PSScriptRoot}/windows.ps1 ${dir} ${buildir}
-}
+pushd ${full_dir}
+pushd xmake
+. ./tools/env.sh
+xmake csp-repo --install=csp_hal_apm32f1@latest -r ../repositories
+popd
+popd
 
-Main
+set +v

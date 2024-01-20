@@ -16,7 +16,7 @@
 # Copyright (C) 2023-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        linux.sh
+# @file        linux-lite.sh
 #
 # Change Logs:
 # Date           Author       Notes

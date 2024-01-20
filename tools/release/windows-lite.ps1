@@ -13,7 +13,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        windows.ps1
+# @file        windows-lite.ps1
 #
 # Change Logs:
 # Date           Author       Notes
@@ -23,10 +23,21 @@
 
 [CmdletBinding()]
 param (
-    [string] ${dir} = "csp", [string] ${buildir} = "build"
+    [string] ${dir} = "csp", [string] ${target} = "csp-dev.exe", [string] ${buildir} = "build"
 )
 
-Copy-Item ${buildir}/apps/dev/fonts ${dir}/ -Recurse -Verbose
-Copy-Item ${buildir}/apps/dev/repo ${dir}/ -Recurse -Verbose
-Copy-Item ${buildir}/apps/dev/translations/*.qm ${dir}/translations -Recurse -Verbose
-Copy-Item ${buildir}/apps/dev/xmake ${dir}/ -Recurse -Verbose
+function Main() {
+    New-Item -ItemType Directory ${dir}
+    Copy-Item ${buildir}/apps/dev/${target} ${dir}/
+
+    Push-Location ${dir}
+    windeployqt ${target}
+    Pop-Location
+
+    Copy-Item ${buildir}/apps/dev/fonts ${dir}/ -Recurse
+    Copy-Item ${buildir}/apps/dev/repo ${dir}/ -Recurse
+    Copy-Item ${buildir}/apps/dev/translations/*.qm ${dir}/translations -Recurse
+    Copy-Item ${buildir}/apps/dev/xmake ${dir}/ -Recurse
+}
+
+Main

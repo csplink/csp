@@ -46,6 +46,8 @@ jobs:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
       QT_QPA_PLATFORM: "offscreen"
       XMAKE_ROOT: "y"
+      BUILD_LITE_DIR: csp-linux-ubuntu-lite-${{ matrix.gcc_arch }}-${{ github.run_number }}
+      BUILD_FULL_DIR: csp-linux-ubuntu-full-${{ matrix.gcc_arch }}-${{ github.run_number }}
     steps:
       - name: ⬇️ install Qt
         uses: jurplel/install-qt-action@v3
@@ -81,13 +83,24 @@ jobs:
             ctest --output-on-failure
           popd
 
-      - name: ⬆️ release
+      - name: ⬆️ release lite
         shell: bash
         run: |
-          . ./tools/release/linux.sh csp-linux-ubuntu-${{ matrix.gcc_arch }}-${{ github.run_number }} csp-dev build
+          . ./tools/release/linux-lite.sh ${{ env.BUILD_LITE_DIR }} csp-dev build
 
-      - name: ⬆️ upload artifact
+      - name: ⬆️ upload lite artifact
         uses: actions/upload-artifact@v3
         with:
-          name: csp-linux-ubuntu-${{ matrix.gcc_arch }}-${{ github.run_number }}
-          path: csp-linux-ubuntu-${{ matrix.gcc_arch }}-${{ github.run_number }}
+          name: ${{ env.BUILD_LITE_DIR }}
+          path: ${{ env.BUILD_LITE_DIR }}
+
+      - name: ⬆️ release full
+        shell: bash
+        run: |
+          . ./tools/release/linux-full.sh ${{ env.BUILD_LITE_DIR }} ${{ env.BUILD_FULL_DIR }}
+
+      - name: ⬆️ upload full artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.BUILD_FULL_DIR }}
+          path: ${{ env.BUILD_FULL_DIR }}

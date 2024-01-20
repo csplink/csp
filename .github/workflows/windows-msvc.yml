@@ -47,6 +47,8 @@ jobs:
             msvc_arch: x64
     env:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
+      BUILD_LITE_DIR: csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }}
+      BUILD_FULL_DIR: csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
     steps:
       - name: ⬇️ install Qt
         uses: jurplel/install-qt-action@v3
@@ -93,28 +95,21 @@ jobs:
       - name: ⬆️ release lite
         shell: pwsh
         run: |
-          & tools/release/windows-msvc.ps1 csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-dev.exe build
+          & tools/release/windows-lite.ps1 ${{ env.BUILD_LITE_DIR }} csp-dev.exe build
 
       - name: ⬆️ upload lite artifact
         uses: actions/upload-artifact@v3
         with:
-          name: csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }}
-          path: csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }}
+          name: ${{ env.BUILD_LITE_DIR }}
+          path: ${{ env.BUILD_LITE_DIR }}
 
       - name: ⬆️ release full
         shell: pwsh
         run: |
-          copy-Item csp-windows-msvc-lite-${{ matrix.msvc_arch }}-${{ github.run_number }} csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }} -Recurse -Verbose
-          pushd csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
-            pushd xmake
-              ./tools/env.ps1
-              xmake csp-repo --install=csp_hal_apm32f1@latest -r ../repositories
-            popd
-          popd
-
+          & tools/release/windows-full.ps1 ${{ env.BUILD_LITE_DIR }} ${{ env.BUILD_FULL_DIR }} ${{ matrix.msvc_arch }}
 
       - name: ⬆️ upload full artifact
         uses: actions/upload-artifact@v3
         with:
-          name: csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
-          path: csp-windows-msvc-full-${{ matrix.msvc_arch }}-${{ github.run_number }}
+          name: ${{ env.BUILD_FULL_DIR }}
+          path: ${{ env.BUILD_FULL_DIR }}
