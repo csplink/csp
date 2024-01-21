@@ -268,7 +268,7 @@ void choose_chip_dialog::init_tableview_chip_infos()
         chips_item->append(new QStandardItem(QString::number((*iter)->flash, 'f', 2)));
         chips_item->append(new QStandardItem(QString::number((*iter)->ram, 'f', 2)));
         chips_item->append(new QStandardItem(QString::number((*iter)->io, 10)));
-        chips_item->append(new QStandardItem(QString::number((*iter)->flash, 'f', 2)));
+        chips_item->append(new QStandardItem(QString::number((*iter)->frequency, 'f', 2)));
         chips_item->append(new QStandardItem((*iter)->company));
         chips_item->append(new QStandardItem((*iter)->core));
         _chips_items.append(chips_item);
