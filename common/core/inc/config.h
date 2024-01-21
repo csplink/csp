@@ -110,10 +110,13 @@ class config final
 
     static QString tool_xmake();
 
+    static QString tool_git();
+
   private:
     inline static QSettings *_settings = nullptr;
 
     static QString find_tool_xmake();
+    static QString find_tool_git();
 
   private:
     config() = default;

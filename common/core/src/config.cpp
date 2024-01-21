@@ -27,6 +27,8 @@
  *  2023-05-14     xqyjlj       initial version
  */
 #include <QFile>
+#include <QProcess>
+#include <QSysInfo>
 
 #include "config.h"
 #include "os.h"
@@ -52,6 +54,9 @@ static constexpr const char *csp_config_value_default_repositories = "repositori
 
 static constexpr const char *csp_config_key_tool_xmake = "tool/xmake";
 static constexpr const char *csp_config_value_default_tool_xmake = "xmake";
+
+static constexpr const char *csp_config_key_tool_git = "tool/git";
+static constexpr const char *csp_config_value_default_tool_git = "git";
 
 bool config::is_config(const QString &key)
 {
@@ -102,6 +107,10 @@ void config::init()
     if (!is_config(csp_config_key_tool_xmake))
     {
         _settings->setValue(csp_config_key_tool_xmake, find_tool_xmake());
+    }
+    if (!is_config(csp_config_key_tool_git))
+    {
+        _settings->setValue(csp_config_key_tool_git, find_tool_git());
     }
 }
 
@@ -166,6 +175,26 @@ QString config::default_workdir()
 QMap<QString, QString> config::env()
 {
     QMap<QString, QString> map;
+#ifdef Q_OS_WINDOWS
+    const QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    QString env_path = environment.value("Path");
+    const QString arch = QSysInfo::currentCpuArchitecture();
+    const QString tooldir = QString("%1/tools").arg(path::appdir());
+    const QString gitpath = QString("%1/git/cmd/git.exe").arg(tooldir);
+    if (os::exists(gitpath))
+    {
+        env_path = QString("%1/git/cmd;%2").arg(tooldir, env_path);
+        if ("x86_64" == arch)
+        {
+            env_path = QString("%1;%2/git/mingw64/bin").arg(env_path, tooldir);
+        }
+        else if ("i386" == arch)
+        {
+            env_path = QString("%1;%2/git/mingw32/bin").arg(env_path, tooldir);
+        }
+        map.insert("Path", env_path);
+    }
+#endif
 
     map.insert("XMAKE_RCFILES", QString("%1/tools/scripts/xmake.lua").arg(xmake_repodir()));
     map.insert("XMAKE_THEME", "plain");
@@ -186,19 +215,36 @@ QString config::tool_xmake()
     return _settings->value(csp_config_key_tool_xmake, csp_config_value_default_tool_xmake).toString();
 }
 
+QString config::tool_git()
+{
+    Q_ASSERT(_settings != nullptr);
+    return _settings->value(csp_config_key_tool_git, csp_config_value_default_tool_git).toString();
+}
+
 QString config::find_tool_xmake()
 {
     const QString tooldir = QString("%1/tools").arg(path::appdir());
 #ifdef Q_OS_WINDOWS
     QString xmakepath = QString("%1/xmake/xmake.exe").arg(tooldir);
-#else
-    QString xmakepath = QString("%1/xmake/xmake").arg(tooldir);
+    if (os::exists(xmakepath))
+    {
+        return xmakepath;
+    }
 #endif
 
-    if (!os::exists(xmakepath))
-    {
-        return csp_config_value_default_tool_xmake;
-    }
+    return csp_config_value_default_tool_xmake;
+}
 
-    return xmakepath;
+QString config::find_tool_git()
+{
+    const QString tooldir = QString("%1/tools").arg(path::appdir());
+#ifdef Q_OS_WINDOWS
+    QString gitpath = QString("%1/git/cmd/git.exe").arg(tooldir);
+    if (os::exists(gitpath))
+    {
+        return gitpath;
+    }
+#endif
+
+    return csp_config_value_default_tool_git;
 }
