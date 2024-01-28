@@ -22,6 +22,7 @@
 # 2023-05-11     xqyjlj       initial version
 #
 
+add_subdirectory(cmake-cargo-corrosion)
 add_subdirectory(nlohmann-json)
 add_subdirectory(qtpropertybrowser)
 
