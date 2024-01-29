@@ -72,6 +72,6 @@ else ()
     add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
 endif ()
 
-add_dependencies(${name} custom_res)
+add_dependencies(${name} custom_res custom_tools)
 
 target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components qtpropertybrowser)

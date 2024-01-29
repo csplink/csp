@@ -44,11 +44,15 @@ jobs:
             qt_tools: "tools_ninja tools_mingw,qt.tools.win32_mingw810"
             qt_tools_mingw_install: mingw810_32
             mingw_arch: x86
+            rust_toolchain: stable-i686-pc-windows-gnu
+            rust_target: i686-pc-windows-gnu
           - qt_arch: win64_mingw81
             qt_ver: 5.15.2
             qt_tools: "tools_ninja tools_mingw,qt.tools.win64_mingw810"
             qt_tools_mingw_install: mingw810_64
             mingw_arch: x64
+            rust_toolchain: stable-x86_64-pc-windows-gnu
+            rust_target: x86_64-pc-windows-gnu
     env:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
       BUILD_LITE_DIR: csp-windows-mingw-lite-${{ matrix.mingw_arch }}-${{ github.run_number }}
@@ -71,6 +75,11 @@ jobs:
       - name: ⬇️ install xmake
         uses: xmake-io/github-action-setup-xmake@v1
 
+      - name: ⬇️ install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ matrix.rust_toolchain }}
+
       - name: 👷 build
         shell: pwsh
         run: |
@@ -81,7 +90,9 @@ jobs:
           pushd build
             cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=ninja `
                 -DCMAKE_CXX_COMPILER=g++ `
-                -DCMAKE_C_COMPILER=gcc
+                -DCMAKE_C_COMPILER=gcc `
+                -DRust_TOOLCHAIN=${{ matrix.rust_toolchain }} `
+                -DRust_CARGO_TARGET=${{ matrix.rust_target }}
             ninja -v -j $(Get-WmiObject -Class Win32_Processor).NumberOfLogicalProcessors
           popd
 
