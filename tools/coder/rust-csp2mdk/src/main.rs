@@ -1,3 +1,6 @@
+// Copyright (c) HalfSweet 2024
+// All rights reserved. Licensed under GPL-v3.
+
 #![allow(non_snake_case)]
 #![allow(unused_assignments)]
 #![allow(dead_code)]
