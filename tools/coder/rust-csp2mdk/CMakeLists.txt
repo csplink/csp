@@ -21,18 +21,16 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-01-29     xqyjlj       initial version
 #
+set(project_name csp2mdk)
 set(name custom_tools_coder_csp2mdk)
 
-if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
-    set(build_type "dev")
-else ()
-    set(build_type "release")
-endif ()
+include(../../../cmake/check_rust_change.cmake)
 
-corrosion_import_crate(
-        MANIFEST_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml"
-        LOCKED
-        PROFILE ${build_type}
+file(GLOB_RECURSE SOURCES
+        src/*.rs
+        template/*
+        Cargo.lock
+        Cargo.toml
 )
 
 if (WIN32)
@@ -44,6 +42,28 @@ endif ()
 set(source_file ${CMAKE_CURRENT_BINARY_DIR}/${CSP2MDK_EXE})
 set(target_file ${CSP_EXE_DIR}/xmake/tools/scripts/tasks/csp-project/mdk/${CSP2MDK_EXE})
 
+check_rust_change(
+        SOURCE_FILES ${SOURCES}
+        TARGET_FILE ${source_file}
+        IS_CHANGED is_project_changed
+)
+
+if (${is_project_changed})
+    if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+        set(build_type "dev")
+    else ()
+        set(build_type "release")
+    endif ()
+
+    corrosion_import_crate(
+            MANIFEST_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Cargo.toml"
+            LOCKED
+            PROFILE ${build_type}
+    )
+else ()
+    message(STATUS "because target \"${name}\" has not been modified, we do not compile it")
+endif ()
+
 add_custom_command(OUTPUT ${target_file}
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${source_file} ${target_file}
@@ -53,3 +73,9 @@ add_custom_command(OUTPUT ${target_file}
 add_custom_target(${name}
         DEPENDS ${target_file}
 )
+
+if (${is_project_changed})
+    add_dependencies(${name}
+            _cargo-build_${project_name}
+    )
+endif ()
