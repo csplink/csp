@@ -55,58 +55,58 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="73"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="79"/>
         <source>Chip Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="113"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="119"/>
         <source>Package Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="141"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="153"/>
         <source>Unit price for 10kU:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="179"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="197"/>
         <source>Version:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="223"/>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="230"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="241"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="248"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="243"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="261"/>
         <source>Market:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="250"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="268"/>
         <source>Package:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="272"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="290"/>
         <source>Company Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="298"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="316"/>
         <source>Diagram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="303"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="321"/>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="308"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="326"/>
         <source>Buy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -218,37 +218,42 @@
 <context>
     <name>home_view</name>
     <message>
-        <location filename="../../views/home_view.ui" line="50"/>
+        <location filename="../../views/home_view.ui" line="29"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="100"/>
+        <location filename="../../views/home_view.ui" line="53"/>
         <source>New project from Chip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="126"/>
+        <location filename="../../views/home_view.ui" line="118"/>
         <source>New project from Board</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="164"/>
+        <location filename="../../views/home_view.ui" line="153"/>
         <source>Recent Projects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="204"/>
+        <location filename="../../views/home_view.ui" line="137"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="224"/>
+        <location filename="../../views/home_view.ui" line="162"/>
+        <source>Open existing project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/home_view.ui" line="185"/>
         <source>About CSP</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="229"/>
+        <location filename="../../views/home_view.ui" line="190"/>
         <source>Other Tools</source>
         <translation type="unfinished"></translation>
     </message>
@@ -347,7 +352,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="273"/>
+        <location filename="../../views/mainwindow_view.cpp" line="267"/>
+        <source>CSP project file(*.csp)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="277"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>

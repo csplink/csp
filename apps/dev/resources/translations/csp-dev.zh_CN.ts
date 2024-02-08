@@ -59,58 +59,58 @@
         <translation>特征</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="179"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="197"/>
         <source>Version:</source>
         <translation>版本：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="250"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="268"/>
         <source>Package:</source>
         <translation>封装：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="223"/>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="230"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="241"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="248"/>
         <source>Unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="141"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="153"/>
         <source>Unit price for 10kU:</source>
         <translation>价格（元/10K）：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="73"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="79"/>
         <source>Chip Name</source>
         <translation>芯片名</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="272"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="290"/>
         <source>Company Name</source>
         <translation>公司名</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="243"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="261"/>
         <source>Market:</source>
         <translation>市场：</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="113"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="119"/>
         <source>Package Image</source>
         <translation>封装图</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="298"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="316"/>
         <source>Diagram</source>
         <translation>框图</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="303"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="321"/>
         <source>Document</source>
         <translation>文档</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.ui" line="308"/>
+        <location filename="../../dialogs/choose_chip_dialog.ui" line="326"/>
         <source>Buy</source>
         <translation>购买</translation>
     </message>
@@ -241,7 +241,7 @@
 <context>
     <name>home_view</name>
     <message>
-        <location filename="../../views/home_view.ui" line="50"/>
+        <location filename="../../views/home_view.ui" line="29"/>
         <source>New Project</source>
         <translation>新建工程</translation>
     </message>
@@ -250,32 +250,37 @@
         <translation type="vanished">新建MCU工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="100"/>
+        <location filename="../../views/home_view.ui" line="53"/>
         <source>New project from Chip</source>
         <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="126"/>
+        <location filename="../../views/home_view.ui" line="118"/>
         <source>New project from Board</source>
         <translation>新建开发板工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="164"/>
+        <location filename="../../views/home_view.ui" line="153"/>
         <source>Recent Projects</source>
         <translation>最近工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="204"/>
+        <location filename="../../views/home_view.ui" line="137"/>
         <source>Developer</source>
         <translation>开发者</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="224"/>
+        <location filename="../../views/home_view.ui" line="162"/>
+        <source>Open existing project</source>
+        <translation>打开已存在的工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/home_view.ui" line="185"/>
         <source>About CSP</source>
         <translation>关于CSP</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="229"/>
+        <location filename="../../views/home_view.ui" line="190"/>
         <source>Other Tools</source>
         <translation>其他工具</translation>
     </message>
@@ -321,7 +326,7 @@
     <message>
         <location filename="../../views/mainwindow_view.ui" line="234"/>
         <source>toolBar</source>
-        <translation type="unfinished"></translation>
+        <translation>工具栏</translation>
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="246"/>
@@ -374,7 +379,12 @@
         <translation>生成代码</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="273"/>
+        <location filename="../../views/mainwindow_view.cpp" line="267"/>
+        <source>CSP project file(*.csp)</source>
+        <translation>CSP工程文件(*.csp)</translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="277"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
