@@ -39,16 +39,17 @@ namespace Ui
 class home_view;
 }
 
-class home_view : public QWidget
+class home_view final : public QWidget
 {
     Q_OBJECT
 
   public:
     explicit home_view(QWidget *parent = nullptr);
-    ~home_view() override;
+    virtual ~home_view() override;
 
   signals:
     void signal_create_project();
+    void signal_open_existing_project(bool checked);
 
   public slots:
     void button_create_chip_project_clicked_callback(bool checked);
@@ -57,6 +58,7 @@ class home_view : public QWidget
   private slots:
     void button_create_board_project_clicked_callback(bool checked);
     void choose_chip_dialog_finished_callback(int result);
+    void button_open_existing_project_clicked_callback(bool checked);
 
   private:
     Ui::home_view *ui;

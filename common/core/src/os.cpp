@@ -133,9 +133,9 @@ QString os::getexistdir()
     return QFileDialog::getExistingDirectory();
 }
 
-QString os::getexistfile()
+QString os::getexistfile(const QString &filter)
 {
-    return QFileDialog::getOpenFileName();
+    return QFileDialog::getOpenFileName(nullptr, QString(), QString(), filter, nullptr);
 }
 
 QString os::getsavefile(const QString &title, const QString &default_file, const QString &filter)

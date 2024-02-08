@@ -140,7 +140,7 @@ class os final
      * @brief open dialog and get an existing file selected by the user.
      * @return file path.
      */
-    static QString getexistfile();
+    static QString getexistfile(const QString &filter = QString());
 
     /**
      * @brief open dialog and get a file name selected by the user.

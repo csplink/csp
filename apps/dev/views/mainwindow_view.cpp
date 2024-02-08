@@ -33,7 +33,6 @@
 #include <QStandardItem>
 
 #include "chip_summary_table.h"
-#include "config.h"
 #include "mainwindow_view.h"
 #include "os.h"
 #include "ui_mainwindow_view.h"
@@ -75,9 +74,9 @@ void mainwindow_view::sys_message_log_handler(const QtMsgType type, const QMessa
     }
 
     const QString str_date_time = QDateTime::currentDateTime().toString("hh:mm:ss");
-    const QString str_message = QString("%1 %2:%3").arg(str_date_time).arg(strMsg).arg(local_msg.constData());
+    const QString str_message = QString("%1 %2:%3").arg(str_date_time, strMsg, local_msg.constData());
 
-    if (mainwindow)
+    if (mainwindow != nullptr)
     {
         emit mainwindow->signal_add_sys_log(str_message);
     }
@@ -92,7 +91,7 @@ void mainwindow_view::xmake_message_log_handler(const QString &msg)
     static QMutex mutex;
     QMutexLocker locker(&mutex);
 
-    if (mainwindow)
+    if (mainwindow != nullptr)
     {
         emit mainwindow->signal_add_xmake_log(msg);
     }
@@ -106,7 +105,7 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
 {
     ui->setupUi(this);
     mainwindow = this;
-    qInstallMessageHandler(mainwindow_view::sys_message_log_handler);
+    (void)qInstallMessageHandler(mainwindow_view::sys_message_log_handler);
     xmake::install_log_handler(mainwindow_view::xmake_message_log_handler);
 
     tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_xmake_output);
@@ -116,26 +115,31 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
     _project_instance = project::get_instance();
     ui->page_chip_configure_view->set_propertybrowser(ui->treepropertybrowser);
 
-    connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
-            Qt::UniqueConnection);
-    connect(ui->action_load, &QAction::triggered, this, &mainwindow_view::action_load_triggered_callback,
-            Qt::UniqueConnection);
-    connect(ui->action_save, &QAction::triggered, this, &mainwindow_view::action_save_triggered_callback,
-            Qt::UniqueConnection);
-    connect(ui->action_saveas, &QAction::triggered, this, &mainwindow_view::action_saveas_triggered_callback,
-            Qt::UniqueConnection);
-    connect(ui->action_close, &QAction::triggered, this, &mainwindow_view::action_close_triggered_callback,
-            Qt::UniqueConnection);
-    connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
-            Qt::UniqueConnection);
-    connect(ui->action_generate, &QAction::triggered, this, &mainwindow_view::action_generate_triggered_callback,
-            Qt::UniqueConnection);
+    (void)connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->action_load, &QAction::triggered, this, &mainwindow_view::action_load_triggered_callback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->action_save, &QAction::triggered, this, &mainwindow_view::action_save_triggered_callback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->action_saveas, &QAction::triggered, this, &mainwindow_view::action_saveas_triggered_callback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->action_close, &QAction::triggered, this, &mainwindow_view::action_close_triggered_callback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->action_generate, &QAction::triggered, this, &mainwindow_view::action_generate_triggered_callback,
+                  Qt::UniqueConnection);
 
-    connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
-            Qt::UniqueConnection);
+    (void)connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
+                  Qt::UniqueConnection);
 
-    connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append);
-    connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append);
+    (void)connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append,
+                  Qt::UniqueConnection);
+    (void)connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append,
+                  Qt::UniqueConnection);
+
+    (void)connect(ui->page_home_view, &home_view::signal_open_existing_project, this,
+                  &mainwindow_view::action_load_triggered_callback, Qt::UniqueConnection);
 
     init_mode();
 }
@@ -185,8 +189,8 @@ void mainwindow_view::set_mode(const int index)
         ui->dockwidget_bottom_xmake_output->show();
         ui->dockwidget_bottom_configurations->show();
 
-        connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
-                &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
+        (void)connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
+                      &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
 
         update_modules_treeview(_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY),
                                 _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET));
@@ -260,17 +264,18 @@ void mainwindow_view::action_load_triggered_callback(const bool checked)
 {
     Q_UNUSED(checked)
 
-    const auto file = os::getexistfile();
-    if (file.isEmpty())
-        return;
-    try
+    const auto file = os::getexistfile(tr("CSP project file(*.csp)"));
+    if (!file.isEmpty())
     {
-        _project_instance->load_project(file);
-        init_mode();
-    }
-    catch (const std::exception &e)
-    {
-        os::show_error(tr("Project load failed, reason: <%1>.").arg(e.what()));
+        try
+        {
+            _project_instance->load_project(file);
+            init_mode();
+        }
+        catch (const std::exception &e)
+        {
+            os::show_error(tr("Project load failed, reason: <%1>.").arg(e.what()));
+        }
     }
 }
 
@@ -281,13 +286,13 @@ void mainwindow_view::action_save_triggered_callback(const bool checked)
     if (_project_instance->get_path().isEmpty())
     {
         wizard_new_project wizard(this);
-        connect(&wizard, &wizard_new_project::finished, this, [this](const int result) {
+        (void)connect(&wizard, &wizard_new_project::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
                 _project_instance->save_project();
             }
         });
-        wizard.exec();
+        (void)wizard.exec();
     }
     else
     {

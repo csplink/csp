@@ -48,16 +48,16 @@ class mainwindow_view final : public QMainWindow
   private:
     typedef enum
     {
-        STACK_INDEX_HOME = 0,
+        STACK_INDEX_HOME,
         STACK_INDEX_CHIP_CONFIGURE,
         STACK_INDEX_EMPTY,
     } stack_index_type;
 
   public:
     explicit mainwindow_view(QWidget *parent = nullptr);
-    ~mainwindow_view() override;
+    virtual ~mainwindow_view() override;
 
-signals:
+  signals:
     void signal_add_sys_log(const QString &string);
     void signal_add_xmake_log(const QString &string);
 
