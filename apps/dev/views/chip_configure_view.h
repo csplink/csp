@@ -30,8 +30,6 @@
 #ifndef CHIP_CONFIGURE_VIEW_H
 #define CHIP_CONFIGURE_VIEW_H
 
-#include <QWidget>
-
 #include "project.h"
 #include "propertybrowser.h"
 
@@ -46,7 +44,7 @@ class chip_configure_view final : public QWidget
 
   public:
     explicit chip_configure_view(QWidget *parent = nullptr);
-    ~chip_configure_view() override;
+    virtual ~chip_configure_view() override;
 
     void set_propertybrowser(propertybrowser *instance);
     void init_view();
@@ -56,8 +54,8 @@ class chip_configure_view final : public QWidget
     void signal_update_modules_treeview(const QString &company, const QString &name);
 
   protected:
-    void showEvent(QShowEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+    virtual void showEvent(QShowEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *event) override;
 
   private:
     Ui::chip_configure_view *_ui;

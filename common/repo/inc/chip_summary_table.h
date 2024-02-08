@@ -48,6 +48,19 @@ class chip_summary_table final
     typedef QMap<QString, QMap<QString, document_t>> documents_t;
     typedef QMap<QString, QMap<QString, module_t>> modules_t;
 
+    typedef struct mdk_arm_struct
+    {
+        QString device;     // pack 中的名字
+        QStringList packs;  // pack 列表
+        QString pack_url;   // cmsis pack更新url
+        QString cmsis_core; // 依赖的cmsis core最低版本
+    } mdk_arm_t;
+
+    typedef struct target_project_struct
+    {
+        mdk_arm_t mdk_arm;
+    } target_project_t;
+
     typedef struct chip_summary_struct
     {
         QString clocktree;
@@ -64,6 +77,7 @@ class chip_summary_table final
         QString package;
         QString series;
         QMap<QString, QString> url;
+        target_project_t target_project;
     } chip_summary_t;
 
   public:

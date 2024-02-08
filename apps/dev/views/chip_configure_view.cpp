@@ -27,8 +27,6 @@
  *  2023-05-14     xqyjlj       initial version
  */
 
-#include <QDebug>
-#include <QOpenGLWidget>
 #include <QtCore>
 
 #include "chip_configure_view.h"
@@ -55,8 +53,8 @@ void chip_configure_view::set_propertybrowser(propertybrowser *instance)
 {
     _propertybrowser_instance = instance;
 
-    connect(_ui->graphicsview, &graphicsview_panzoom::signals_selected_item_clicked, _propertybrowser_instance,
-            &propertybrowser::update_property_by_pin);
+    (void)connect(_ui->graphicsview, &graphicsview_panzoom::signals_selected_item_clicked, _propertybrowser_instance,
+                  &propertybrowser::update_property_by_pin);
 }
 
 void chip_configure_view::init_view()
@@ -75,10 +73,11 @@ void chip_configure_view::init_view()
         for (const auto &item : items)
         {
             graphicsscene->addItem(item);
-            if (item->flags() & QGraphicsItem::ItemIsFocusable)
+            if ((item->flags() & QGraphicsItem::ItemIsFocusable) == QGraphicsItem::ItemIsFocusable)
             {
-                connect(dynamic_cast<graphicsitem_pin *>(item), &graphicsitem_pin::signal_property_changed,
-                        _ui->graphicsview, &graphicsview_panzoom::property_changed_callback, Qt::UniqueConnection);
+                (void)connect(dynamic_cast<const graphicsitem_pin *>(item), &graphicsitem_pin::signal_property_changed,
+                              _ui->graphicsview, &graphicsview_panzoom::property_changed_callback,
+                              Qt::UniqueConnection);
             }
         }
     }
@@ -105,13 +104,13 @@ void chip_configure_view::resize_view() const
 {
     const qreal graphicsscene_width = _ui->graphicsview->scene()->itemsBoundingRect().width();
     const qreal graphicsscene_height = _ui->graphicsview->scene()->itemsBoundingRect().height();
-    const qreal view_width = _ui->graphicsview->width();
-    const qreal view_height = _ui->graphicsview->height();
+    const qreal view_width = static_cast<qreal>(this->_ui->graphicsview->width());
+    const qreal view_height = static_cast<qreal>(this->_ui->graphicsview->height());
     const qreal scene_max = graphicsscene_width > graphicsscene_height ? graphicsscene_width : graphicsscene_height;
     const qreal view_min = view_width > view_height ? view_height : view_width;
 
-    _ui->graphicsview->centerOn(_ui->graphicsview->scene()->itemsBoundingRect().width() / 2,
-                                _ui->graphicsview->scene()->itemsBoundingRect().height() / 2);
+    _ui->graphicsview->centerOn(_ui->graphicsview->scene()->itemsBoundingRect().width() / static_cast<qreal>(2),
+                                _ui->graphicsview->scene()->itemsBoundingRect().height() / static_cast<qreal>(2));
 
     const qreal scale = view_min / scene_max;
     _ui->graphicsview->zoom(scale);

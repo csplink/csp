@@ -346,8 +346,8 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
 
         _ui->textbrowser_readme->setMarkdown(QString("# %1\n\n").arg(_chip_name) +
                                              tr("The chip description file <%1.yml> does not exist").arg(_chip_name));
-        _ui->pushbutton_name->setProperty("user_url", "nil");
-        _ui->pushbutton_company->setProperty("user_url", "nil");
+        _ui->pushbutton_name->setProperty("user_url", "");
+        _ui->pushbutton_company->setProperty("user_url", "");
     }
 }
 
@@ -391,7 +391,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
 void choose_chip_dialog::pushbutton_name_pressed_callback()
 {
     const auto url = _ui->pushbutton_name->property("user_url").toString();
-    if (url == "nil" || url.isEmpty())
+    if (url.isEmpty())
         return;
 
     os::open_url(url);
@@ -400,7 +400,7 @@ void choose_chip_dialog::pushbutton_name_pressed_callback()
 void choose_chip_dialog::pushbutton_company_pressed_callback()
 {
     const auto url = _ui->pushbutton_company->property("user_url").toString();
-    if (url == "nil" || url.isEmpty())
+    if (url.isEmpty())
         return;
 
     os::open_url(url);
