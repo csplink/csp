@@ -241,36 +241,40 @@
 <context>
     <name>home_view</name>
     <message>
-        <location filename="../../views/home_view.ui" line="29"/>
         <source>New Project</source>
-        <translation>新建工程</translation>
+        <translation type="vanished">新建工程</translation>
     </message>
     <message>
         <source>New project from MCU</source>
         <translation type="vanished">新建MCU工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="53"/>
+        <location filename="../../views/home_view.ui" line="66"/>
         <source>New project from Chip</source>
         <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="118"/>
+        <location filename="../../views/home_view.ui" line="79"/>
         <source>New project from Board</source>
         <translation>新建开发板工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="153"/>
+        <location filename="../../views/home_view.ui" line="160"/>
         <source>Recent Projects</source>
         <translation>最近工程</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="137"/>
+        <location filename="../../views/home_view.ui" line="144"/>
         <source>Developer</source>
         <translation>开发者</translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="162"/>
+        <location filename="../../views/home_view.ui" line="29"/>
+        <source>Project Operation</source>
+        <translation type="unfinished">工程操作</translation>
+    </message>
+    <message>
+        <location filename="../../views/home_view.ui" line="134"/>
         <source>Open existing project</source>
         <translation>打开已存在的工程</translation>
     </message>

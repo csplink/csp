@@ -218,32 +218,32 @@
 <context>
     <name>home_view</name>
     <message>
-        <location filename="../../views/home_view.ui" line="29"/>
-        <source>New Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/home_view.ui" line="53"/>
+        <location filename="../../views/home_view.ui" line="66"/>
         <source>New project from Chip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="118"/>
+        <location filename="../../views/home_view.ui" line="79"/>
         <source>New project from Board</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="153"/>
+        <location filename="../../views/home_view.ui" line="160"/>
         <source>Recent Projects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="137"/>
+        <location filename="../../views/home_view.ui" line="144"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="162"/>
+        <location filename="../../views/home_view.ui" line="29"/>
+        <source>Project Operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/home_view.ui" line="134"/>
         <source>Open existing project</source>
         <translation type="unfinished"></translation>
     </message>
