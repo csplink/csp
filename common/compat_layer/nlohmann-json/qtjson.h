@@ -47,7 +47,7 @@
     {                                                                                                                  \
         nlohmann_json_t.v1 = decltype(nlohmann_json_t.v1)();                                                           \
     }
-#define NLOHMANN_DEFINE_TYPE_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                         \
+#define NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                     \
     inline void to_json(nlohmann::json &nlohmann_json_j, const Type &nlohmann_json_t)                                  \
     {                                                                                                                  \
         NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_TO, __VA_ARGS__))                                       \

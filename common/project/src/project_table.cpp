@@ -39,7 +39,7 @@ namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, hal, target, package, company, type, toolchains, modules)
-NLOHMANN_DEFINE_TYPE_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs)
 } // namespace nlohmann
 
 #include <QDebug>

@@ -41,7 +41,7 @@ namespace YAML
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::mdk_arm_t, device, packs, pack_url, cmsis_core)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::target_project_t, mdk_arm)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::target_project_t, mdk_arm)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
                                has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
                                target_project)
@@ -52,11 +52,12 @@ namespace nlohmann
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::mdk_arm_t, device, packs, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::target_project_t, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::target_project_t, mdk_arm)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
                                    has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
                                    target_project)
 } // namespace nlohmann
+
 QT_DEBUG_ADD_TYPE(chip_summary_table::document_t)
 QT_DEBUG_ADD_TYPE(chip_summary_table::module_t)
 QT_DEBUG_ADD_TYPE(chip_summary_table::mdk_arm_t)
