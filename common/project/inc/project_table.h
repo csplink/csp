@@ -59,6 +59,19 @@ class project_table
         QStringList languages; // languages
     } core_t;
 
+    typedef struct mdk_arm_struct
+    {
+        QString device;     // pack 中的名字
+        QString pack;       // pack
+        QString pack_url;   // cmsis pack更新url
+        QString cmsis_core; // 依赖的cmsis core最低版本
+    } mdk_arm_t;
+
+    typedef struct target_project_struct
+    {
+        mdk_arm_t mdk_arm;
+    } target_project_t;
+
     typedef struct
     {
         QString name;                            // project name
@@ -66,6 +79,7 @@ class project_table
         QString target;                          // target type: xmake, mdk, cmake
         QMap<QString, pin_config_t> pin_configs; // pin configs
         core_t core;                             // core configs
+        target_project_t target_project;
     } project_t;
 
   public:

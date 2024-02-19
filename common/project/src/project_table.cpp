@@ -39,12 +39,19 @@ namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, hal, target, package, company, type, toolchains, modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::mdk_arm_t, device, pack, pack_url, cmsis_core)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(project_table::target_project_t, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs,
+                                                target_project)
 } // namespace nlohmann
 
 #include <QDebug>
 
 QT_DEBUG_ADD_TYPE(project_table::pin_config_t)
+QT_DEBUG_ADD_TYPE(project_table::core_t)
+QT_DEBUG_ADD_TYPE(project_table::mdk_arm_t)
+QT_DEBUG_ADD_TYPE(project_table::target_project_t)
+QT_DEBUG_ADD_TYPE(project_table::project_t)
 
 project_table::project_table() = default;
 
