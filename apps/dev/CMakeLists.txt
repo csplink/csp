@@ -46,7 +46,10 @@ file(GLOB_RECURSE RESOURCES
 file(GLOB_RECURSE VIEWS
         views/*.ui
         views/*.h
-        views/*.cpp)
+        views/*.cpp
+        views/chip_configure_view/*.ui
+        views/chip_configure_view/*.h
+        views/chip_configure_view/*.cpp)
 
 set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
@@ -57,7 +60,8 @@ set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_
 include_directories(
         dialogs
         inc
-        views)
+        views
+        views/chip_configure_view)
 
 foreach (TS_FILE ${TS_FILES})
     set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION

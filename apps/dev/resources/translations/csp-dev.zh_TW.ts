@@ -41,6 +41,69 @@
         <source>Timer Configure</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../views/chip_configure_view.ui" line="87"/>
+        <source>Project Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>chip_configure_view_project_manager</name>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="24"/>
+        <source>Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="71"/>
+        <source>Project Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="77"/>
+        <source>Build Script/IDE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="121"/>
+        <source>Linker Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="127"/>
+        <source>Minimum Stack Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="163"/>
+        <source>Minimum Heap Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="202"/>
+        <source>Package Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="243"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="250"/>
+        <source>Package Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="288"/>
+        <source>Package Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>choose_chip_dialog</name>
@@ -197,7 +260,7 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="348"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="368"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="369"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation type="unfinished"></translation>
     </message>

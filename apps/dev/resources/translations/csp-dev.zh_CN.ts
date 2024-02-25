@@ -41,6 +41,125 @@
         <source>Timer Configure</source>
         <translation>时钟配置</translation>
     </message>
+    <message>
+        <location filename="../../views/chip_configure_view.ui" line="87"/>
+        <source>Project Manager</source>
+        <translation>工程管理</translation>
+    </message>
+    <message>
+        <source>Project</source>
+        <translation type="vanished">项目</translation>
+    </message>
+    <message>
+        <source>Project Settings</source>
+        <translation type="vanished">工程设置</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="vanished">名称</translation>
+    </message>
+    <message>
+        <source>Package Manager</source>
+        <translation type="vanished">包管理器</translation>
+    </message>
+    <message>
+        <source>ToolChain/IDE</source>
+        <translation type="vanished">构建脚本/IDE</translation>
+    </message>
+    <message>
+        <source>Build Script/IDE</source>
+        <translation type="vanished">构建脚本/IDE</translation>
+    </message>
+    <message>
+        <source>Linker Settings</source>
+        <translation type="vanished">链接设置</translation>
+    </message>
+    <message>
+        <source>Minimun Stack Size</source>
+        <translation type="vanished">最小栈大小</translation>
+    </message>
+    <message>
+        <source>Minimun Heap Size</source>
+        <translation type="vanished">最小堆大小</translation>
+    </message>
+    <message>
+        <source>Package Settings</source>
+        <translation type="vanished">包设置</translation>
+    </message>
+    <message>
+        <source>Package Version</source>
+        <translation type="vanished">包版本</translation>
+    </message>
+    <message>
+        <source>Project Configure</source>
+        <translation type="vanished">项目配置</translation>
+    </message>
+</context>
+<context>
+    <name>chip_configure_view_project_manager</name>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="24"/>
+        <source>Project</source>
+        <translation>项目</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="71"/>
+        <source>Project Settings</source>
+        <translation>工程设置</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="77"/>
+        <source>Build Script/IDE</source>
+        <translation>构建脚本/IDE</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="121"/>
+        <source>Linker Settings</source>
+        <translation>链接设置</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="127"/>
+        <source>Minimum Stack Size</source>
+        <translation>最小栈大小</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="163"/>
+        <source>Minimum Heap Size</source>
+        <translation>最小堆大小</translation>
+    </message>
+    <message>
+        <source>Minimun Stack Size</source>
+        <translation type="vanished">最小栈大小</translation>
+    </message>
+    <message>
+        <source>Minimun Heap Size</source>
+        <translation type="vanished">最小堆大小</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="202"/>
+        <source>Package Settings</source>
+        <translation>包设置</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="243"/>
+        <source>Name</source>
+        <translation>名称</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="250"/>
+        <source>Package Version</source>
+        <translation>包版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/chip_configure_view/chip_configure_view_project_manager.ui" line="288"/>
+        <source>Package Manager</source>
+        <translation>包管理器</translation>
+    </message>
 </context>
 <context>
     <name>choose_chip_dialog</name>
@@ -174,7 +293,7 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="348"/>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="368"/>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="369"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation>芯片描述文件 &lt;%1.yml&gt; 不存在</translation>
     </message>
@@ -271,7 +390,7 @@
     <message>
         <location filename="../../views/home_view.ui" line="29"/>
         <source>Project Operation</source>
-        <translation type="unfinished">工程操作</translation>
+        <translation>工程操作</translation>
     </message>
     <message>
         <location filename="../../views/home_view.ui" line="134"/>

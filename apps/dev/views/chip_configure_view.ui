@@ -40,7 +40,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_timer_configure">
+     <widget class="QWidget" name="tab_pinout_configure">
       <attribute name="title">
        <string>Pinout Configure</string>
       </attribute>
@@ -77,10 +77,20 @@
        <string>System View</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tab_pinout_configure">
+     <widget class="QWidget" name="tab_timer_configure">
       <attribute name="title">
        <string>Timer Configure</string>
       </attribute>
+     </widget>
+     <widget class="QWidget" name="tab_project_configure">
+      <attribute name="title">
+       <string>Project Manager</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_5" columnstretch="0,0">
+       <item row="0" column="0">
+        <widget class="chip_configure_view_project_manager" name="widget" native="true"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -91,6 +101,12 @@
    <class>graphicsview_panzoom</class>
    <extends>QGraphicsView</extends>
    <header>graphicsview_panzoom.h</header>
+  </customwidget>
+  <customwidget>
+   <class>chip_configure_view_project_manager</class>
+   <extends>QWidget</extends>
+   <header>chip_configure_view_project_manager.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
