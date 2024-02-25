@@ -104,6 +104,8 @@ void project::set_core(const core_attribute_type type, const QString &value)
         _project.core.type = value;
         break;
     }
+
+    load_db();
 }
 
 QString project::get_path() const
@@ -130,13 +132,33 @@ void project::set_name(const QString &name)
     _project.name = name;
 }
 
-ip_table::ips_t &project::load_ips(const QString &hal, const QString &name)
+void project::load_ips(const QString &hal, const QString &name)
 {
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    ip_table::load_ips(&_ips, hal, name);
-    return _ips;
+    if (_ips.isEmpty())
+    {
+        ip_table::load_ips(&_ips, hal, name);
+    }
+}
+
+void project::load_db()
+{
+    if (!_project.core.hal.isEmpty())
+    {
+        load_maps(_project.core.hal);
+    }
+
+    if (!_project.core.target.isEmpty() && !_project.core.hal.isEmpty())
+    {
+        load_ips(_project.core.hal, _project.core.target);
+    }
+
+    if (!_project.core.company.isEmpty() && !_project.core.hal.isEmpty())
+    {
+        load_chip_summary(_project.core.company, _project.core.target);
+    }
 }
 
 ip_table::ips_t &project::get_ips()
@@ -144,17 +166,35 @@ ip_table::ips_t &project::get_ips()
     return _ips;
 }
 
-map_table::maps_t &project::load_maps(const QString &hal)
+void project::load_maps(const QString &hal)
 {
     Q_ASSERT(!hal.isEmpty());
 
-    map_table::load_maps(&_maps, hal);
-    return _maps;
+    if (_maps.isEmpty())
+    {
+        map_table::load_maps(&_maps, hal);
+    }
 }
 
 map_table::maps_t &project::get_maps()
 {
     return _maps;
+}
+
+void project::load_chip_summary(const QString &company, const QString &name)
+{
+    Q_ASSERT(!company.isEmpty());
+    Q_ASSERT(!name.isEmpty());
+
+    if (_chip_summary.name.isEmpty())
+    {
+        chip_summary_table::load_chip_summary(&_chip_summary, company, name);
+    }
+}
+
+chip_summary_table::chip_summary_t &project::get_chip_summary()
+{
+    return _chip_summary;
 }
 
 /******************* pin ************************/
@@ -271,8 +311,7 @@ void project::load_project(const QString &path)
     project_table::load_project(&_project, path);
     set_path(path);
 
-    load_maps(_project.core.hal);
-    load_ips(_project.core.hal, _project.core.target);
+    load_db();
 }
 
 void project::save_project(const QString &path)

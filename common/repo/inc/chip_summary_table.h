@@ -58,8 +58,16 @@ class chip_summary_table final
 
     typedef struct target_project_struct
     {
+        bool xmake;
+        bool cmake;
         mdk_arm_t mdk_arm;
     } target_project_t;
+
+    typedef struct linker_struct
+    {
+        QString default_minimum_heap_size;
+        QString default_minimum_stack_size;
+    } linker_t;
 
     typedef struct chip_summary_struct
     {
@@ -78,6 +86,7 @@ class chip_summary_table final
         QString series;
         QMap<QString, QString> url;
         target_project_t target_project;
+        linker_t linker;
     } chip_summary_t;
 
   public:

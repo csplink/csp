@@ -35,16 +35,19 @@
 #include "os.h"
 #include "qtjson.h"
 #include "qtyaml.h"
+#include "utils.h"
 
 namespace YAML
 {
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::mdk_arm_t, device, packs, pack_url, cmsis_core)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::target_project_t, mdk_arm)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::target_project_t, xmake, cmake, mdk_arm)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::linker_t, default_minimum_heap_size,
+                                            default_minimum_stack_size)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
                                has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
-                               target_project)
+                               target_project, linker)
 } // namespace YAML
 
 namespace nlohmann
@@ -52,10 +55,11 @@ namespace nlohmann
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::mdk_arm_t, device, packs, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::target_project_t, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::target_project_t, xmake, cmake, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::linker_t, default_minimum_heap_size, default_minimum_stack_size)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
                                    has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
-                                   target_project)
+                                   target_project, linker)
 } // namespace nlohmann
 
 QT_DEBUG_ADD_TYPE(chip_summary_table::document_t)
@@ -86,6 +90,28 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
         qCritical().noquote() << str;
         os::show_error_and_exit(str);
         throw;
+    }
+
+    if (!chip_summary->linker.default_minimum_heap_size.isEmpty())
+    {
+        if (!utils::is_hex(chip_summary->linker.default_minimum_heap_size))
+        {
+            qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
+                                      "illegal value %1, and the default value 0x200 is used.")
+                              .arg(chip_summary->linker.default_minimum_heap_size);
+            chip_summary->linker.default_minimum_heap_size = "0x200";
+        }
+    }
+
+    if (!chip_summary->linker.default_minimum_stack_size.isEmpty())
+    {
+        if (!utils::is_hex(chip_summary->linker.default_minimum_stack_size))
+        {
+            qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
+                                      "illegal value %1, and the default value 0x400 is used.")
+                              .arg(chip_summary->linker.default_minimum_stack_size);
+            chip_summary->linker.default_minimum_stack_size = "0x400";
+        }
     }
 }
 

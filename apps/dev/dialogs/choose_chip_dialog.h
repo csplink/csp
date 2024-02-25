@@ -55,12 +55,12 @@ class choose_chip_dialog final : public QDialog
     void signals_create_project();
 
   private slots:
-    void treeview_chip_filter_model_item_changed_callback(const QStandardItem *item);
+    void treeview_chip_filter_model_item_changed_callback(const QStandardItem *item) const;
     void tableview_chip_infos_selection_model_selection_changed_callback(const QItemSelection &selected,
                                                                          const QItemSelection &deselected);
     void dialogbuttonbox_clicked_callback(const QAbstractButton *button);
-    void pushbutton_name_pressed_callback();
-    void pushbutton_company_pressed_callback();
+    void pushbutton_name_pressed_callback() const;
+    void pushbutton_company_pressed_callback() const;
 
   private:
     Ui::choose_chip_dialog *_ui;

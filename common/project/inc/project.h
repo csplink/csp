@@ -32,6 +32,7 @@
 
 #include <QObject>
 
+#include "chip_summary_table.h"
 #include "ip_table.h"
 #include "map_table.h"
 #include "project_table.h"
@@ -102,31 +103,20 @@ class project final : public QObject
     void set_name(const QString &name);
 
     /**
-     * @brief load ip map from db
-     * @param hal: hal name
-     * @param name: chip name
-     * @return ip map as a modifiable reference
-     */
-    ip_table::ips_t &load_ips(const QString &hal, const QString &name);
-
-    /**
      * @brief get ip map
      * @return ip map as a modifiable reference
      */
     ip_table::ips_t &get_ips();
 
     /**
-     * @brief load hal map from db
-     * @param hal: hal name
-     * @return hal map as a modifiable reference
-     */
-    map_table::maps_t &load_maps(const QString &hal);
-
-    /**
      * @brief get hal map
      * @return hal map as a modifiable reference
      */
     map_table::maps_t &get_maps();
+
+    void load_chip_summary(const QString &company, const QString &name);
+    chip_summary_table::chip_summary_t &get_chip_summary();
+
     /******************* pin ************************/
     /**
      * @brief get pin config by pin name
@@ -263,6 +253,7 @@ class project final : public QObject
     QString _path;                     // project file path
     ip_table::ips_t _ips;              // ip map
     map_table::maps_t _maps;           // hal map
+    chip_summary_table::chip_summary_t _chip_summary;
 
   public:
     /**
@@ -290,6 +281,23 @@ class project final : public QObject
     ~project() override = default;
 
     Q_DISABLE_COPY_MOVE(project)
+
+    /**
+     * @brief load hal map from db
+     * @param hal: hal name
+     * @return hal map as a modifiable reference
+     */
+    void load_maps(const QString &hal);
+
+    /**
+     * @brief load ip map from db
+     * @param hal: hal name
+     * @param name: chip name
+     * @return ip map as a modifiable reference
+     */
+    void load_ips(const QString &hal, const QString &name);
+
+    void load_db();
 };
 
 #endif // COMMON_PROJECT_CSP_PROJECT_H

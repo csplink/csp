@@ -217,9 +217,14 @@ url:
   en:
   zh_CN: https://geehy.com/apm32?id=17
 target_project:
+  xmake: true
+  cmake: true
   mdk_arm:
     device: APM32F103ZE
     packs:
       - Geehy.APM32F1xx_DFP@1.1.0
     pack_url: https://www.geehy.com/uploads/tool/
     cmsis_core: 5.7.0
+linker:
+  default_minimum_heap_size: 0x200
+  default_minimum_stack_size: 0x400

@@ -198,7 +198,7 @@ void choose_chip_dialog::init_treeview_chip_filter()
             &choose_chip_dialog::treeview_chip_filter_model_item_changed_callback, Qt::QueuedConnection);
 }
 
-void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const QStandardItem *item)
+void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const QStandardItem *item) const
 {
     if (item == nullptr)
         return;
@@ -363,7 +363,8 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
             os::show_warning(tr("Please choose a chip."));
             return;
         }
-        else if (_hal_name.isEmpty() || _package_name.isEmpty() || _company_name.isEmpty())
+
+        if (_hal_name.isEmpty() || _package_name.isEmpty() || _company_name.isEmpty())
         {
             os::show_warning(tr("The chip description file <%1.yml> does not exist").arg(_chip_name));
             return;
@@ -378,9 +379,6 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_PACKAGE, _package_name);
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_COMPANY, _company_name);
                 _project_instance->set_core(project::CORE_ATTRIBUTE_TYPE_TYPE, "chip");
-                _project_instance->load_ips(_hal_name, _chip_name);
-                _project_instance->load_maps(_hal_name);
-
                 emit signals_create_project();
             }
         });
@@ -388,7 +386,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
     }
 }
 
-void choose_chip_dialog::pushbutton_name_pressed_callback()
+void choose_chip_dialog::pushbutton_name_pressed_callback() const
 {
     const auto url = _ui->pushbutton_name->property("user_url").toString();
     if (url.isEmpty())
@@ -397,7 +395,7 @@ void choose_chip_dialog::pushbutton_name_pressed_callback()
     os::open_url(url);
 }
 
-void choose_chip_dialog::pushbutton_company_pressed_callback()
+void choose_chip_dialog::pushbutton_company_pressed_callback() const
 {
     const auto url = _ui->pushbutton_company->property("user_url").toString();
     if (url.isEmpty())
