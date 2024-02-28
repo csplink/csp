@@ -3,7 +3,6 @@ BasedOnStyle: Microsoft
 Language: Cpp
 ColumnLimit: 0
 AlignConsecutiveMacros: AcrossEmptyLinesAndComments
-AlignArrayOfStructures: Right
 BraceWrapping:
   AfterExternBlock: false
 Cpp11BracedListStyle: false
