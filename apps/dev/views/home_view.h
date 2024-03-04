@@ -61,7 +61,7 @@ class home_view final : public QWidget
     void button_open_existing_project_clicked_callback(bool checked);
 
   private:
-    Ui::home_view *ui;
+    Ui::home_view *_ui;
 
     project *_project_instance;
 };

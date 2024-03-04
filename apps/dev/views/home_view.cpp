@@ -34,14 +34,15 @@
 #include "home_view.h"
 #include "ui_home_view.h"
 
-home_view::home_view(QWidget *parent) : QWidget(parent), ui(new Ui::home_view)
+home_view::home_view(QWidget *parent)
+    : QWidget(parent), _ui(new Ui::home_view)
 {
-    ui->setupUi(this);
-    (void)connect(ui->button_create_mcu_project, &QPushButton::clicked, this,
+    _ui->setupUi(this);
+    (void)connect(_ui->button_create_mcu_project, &QPushButton::clicked, this,
                   &home_view::button_create_chip_project_clicked_callback, Qt::UniqueConnection);
-    (void)connect(ui->button_create_board_project, &QPushButton::clicked, this,
+    (void)connect(_ui->button_create_board_project, &QPushButton::clicked, this,
                   &home_view::button_create_board_project_clicked_callback, Qt::UniqueConnection);
-    (void)connect(ui->button_open_existing_project, &QPushButton::clicked, this,
+    (void)connect(_ui->button_open_existing_project, &QPushButton::clicked, this,
                   &home_view::button_open_existing_project_clicked_callback, Qt::UniqueConnection);
 
     _project_instance = project::get_instance();
@@ -49,7 +50,7 @@ home_view::home_view(QWidget *parent) : QWidget(parent), ui(new Ui::home_view)
 
 home_view::~home_view()
 {
-    delete ui;
+    delete _ui;
 }
 
 void home_view::button_create_chip_project_clicked_callback(const bool checked)
