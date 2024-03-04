@@ -79,9 +79,10 @@ class mainwindow_view final : public QMainWindow
     void action_close_triggered_callback(bool checked) const;
     void action_report_triggered_callback(bool checked) const;
     void action_generate_triggered_callback(bool checked) const;
+    void action_package_manager_triggered_callback(bool checked);
 
   private:
-    Ui::mainwindow_view *ui;
+    Ui::mainwindow_view *_ui;
     project *_project_instance;
 };
 #endif // MAINWINDOW_VIEW_H

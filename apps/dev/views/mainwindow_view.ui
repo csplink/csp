@@ -43,7 +43,7 @@
       </property>
       <widget class="home_view" name="page_home_view"/>
       <widget class="chip_configure_view" name="page_chip_configure_view"/>
-        <widget class="QWidget" name="page_empty" />
+      <widget class="QWidget" name="page_empty"/>
      </widget>
     </item>
    </layout>
@@ -80,10 +80,18 @@
     <property name="title">
      <string>Project</string>
     </property>
+    <addaction name="separator"/>
     <addaction name="action_generate"/>
+    <addaction name="action_package_manager"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
    </widget>
    <addaction name="menu"/>
    <addaction name="menuProject"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockwidget_left">
@@ -240,6 +248,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_generate"/>
+   <addaction name="action_package_manager"/>
   </widget>
   <action name="action_load">
    <property name="text">
@@ -285,10 +294,19 @@
   <action name="action_generate">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icon/order.svg</normaloff>:/icon/order.svg</iconset>
+     <normaloff>:/icon/code-s-slash-line.svg</normaloff>:/icon/code-s-slash-line.svg</iconset>
    </property>
    <property name="text">
     <string>Generate code</string>
+   </property>
+  </action>
+  <action name="action_package_manager">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icon/dropbox-line.svg</normaloff>:/icon/dropbox-line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Package Manager</string>
    </property>
   </action>
  </widget>

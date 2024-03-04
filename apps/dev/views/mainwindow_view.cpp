@@ -35,6 +35,7 @@
 #include "chip_summary_table.h"
 #include "mainwindow_view.h"
 #include "os.h"
+#include "package_manager_dialog.h"
 #include "ui_mainwindow_view.h"
 #include "wizard_new_project.h"
 #include "xmake.h"
@@ -101,44 +102,47 @@ void mainwindow_view::xmake_message_log_handler(const QString &msg)
     }
 }
 
-mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainwindow_view)
+mainwindow_view::mainwindow_view(QWidget *parent)
+    : QMainWindow(parent), _ui(new Ui::mainwindow_view)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
     mainwindow = this;
     (void)qInstallMessageHandler(mainwindow_view::sys_message_log_handler);
     xmake::install_log_handler(mainwindow_view::xmake_message_log_handler);
 
-    tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_xmake_output);
-    tabifyDockWidget(ui->dockwidget_bottom_output, ui->dockwidget_bottom_configurations);
-    ui->dockwidget_bottom_output->raise();
+    tabifyDockWidget(_ui->dockwidget_bottom_output, _ui->dockwidget_bottom_xmake_output);
+    tabifyDockWidget(_ui->dockwidget_bottom_output, _ui->dockwidget_bottom_configurations);
+    _ui->dockwidget_bottom_output->raise();
 
     _project_instance = project::get_instance();
-    ui->page_chip_configure_view->set_propertybrowser(ui->treepropertybrowser);
+    _ui->page_chip_configure_view->set_propertybrowser(_ui->treepropertybrowser);
 
-    (void)connect(ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
+    (void)connect(_ui->action_new_chip, &QAction::triggered, this, &mainwindow_view::action_new_chip_triggered_callback,
                   Qt::UniqueConnection);
-    (void)connect(ui->action_load, &QAction::triggered, this, &mainwindow_view::action_load_triggered_callback,
+    (void)connect(_ui->action_load, &QAction::triggered, this, &mainwindow_view::action_load_triggered_callback,
                   Qt::UniqueConnection);
-    (void)connect(ui->action_save, &QAction::triggered, this, &mainwindow_view::action_save_triggered_callback,
+    (void)connect(_ui->action_save, &QAction::triggered, this, &mainwindow_view::action_save_triggered_callback,
                   Qt::UniqueConnection);
-    (void)connect(ui->action_saveas, &QAction::triggered, this, &mainwindow_view::action_saveas_triggered_callback,
+    (void)connect(_ui->action_saveas, &QAction::triggered, this, &mainwindow_view::action_saveas_triggered_callback,
                   Qt::UniqueConnection);
-    (void)connect(ui->action_close, &QAction::triggered, this, &mainwindow_view::action_close_triggered_callback,
+    (void)connect(_ui->action_close, &QAction::triggered, this, &mainwindow_view::action_close_triggered_callback,
                   Qt::UniqueConnection);
-    (void)connect(ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
+    (void)connect(_ui->action_report, &QAction::triggered, this, &mainwindow_view::action_report_triggered_callback,
                   Qt::UniqueConnection);
-    (void)connect(ui->action_generate, &QAction::triggered, this, &mainwindow_view::action_generate_triggered_callback,
+    (void)connect(_ui->action_generate, &QAction::triggered, this, &mainwindow_view::action_generate_triggered_callback,
                   Qt::UniqueConnection);
-
-    (void)connect(ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
-                  Qt::UniqueConnection);
-
-    (void)connect(this, &mainwindow_view::signal_add_sys_log, ui->logviewbox_output, &logviewbox::append,
-                  Qt::UniqueConnection);
-    (void)connect(this, &mainwindow_view::signal_add_xmake_log, ui->logviewbox_xmake_output, &logviewbox::append,
+    (void)connect(_ui->action_package_manager, &QAction::triggered, this, &mainwindow_view::action_package_manager_triggered_callback,
                   Qt::UniqueConnection);
 
-    (void)connect(ui->page_home_view, &home_view::signal_open_existing_project, this,
+    (void)connect(_ui->page_home_view, &home_view::signal_create_project, this, &mainwindow_view::create_project,
+                  Qt::UniqueConnection);
+
+    (void)connect(this, &mainwindow_view::signal_add_sys_log, _ui->logviewbox_output, &logviewbox::append,
+                  Qt::UniqueConnection);
+    (void)connect(this, &mainwindow_view::signal_add_xmake_log, _ui->logviewbox_xmake_output, &logviewbox::append,
+                  Qt::UniqueConnection);
+
+    (void)connect(_ui->page_home_view, &home_view::signal_open_existing_project, this,
                   &mainwindow_view::action_load_triggered_callback, Qt::UniqueConnection);
 
     init_mode();
@@ -147,7 +151,7 @@ mainwindow_view::mainwindow_view(QWidget *parent) : QMainWindow(parent), ui(new 
 mainwindow_view::~mainwindow_view()
 {
     mainwindow = nullptr;
-    delete ui;
+    delete _ui;
 }
 
 void mainwindow_view::init_mode()
@@ -168,49 +172,49 @@ void mainwindow_view::set_mode(const int index)
     switch (index)
     {
     case STACK_INDEX_HOME: {
-        ui->dockwidget_left->hide();
-        ui->dockwidget_right->hide();
-        ui->dockwidget_bottom_output->hide();
-        ui->dockwidget_bottom_xmake_output->hide();
-        ui->dockwidget_bottom_configurations->hide();
-        ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
-        ui->menubar->hide();
-        ui->toolbar->hide();
-        ui->statusbar->hide();
+        _ui->dockwidget_left->hide();
+        _ui->dockwidget_right->hide();
+        _ui->dockwidget_bottom_output->hide();
+        _ui->dockwidget_bottom_xmake_output->hide();
+        _ui->dockwidget_bottom_configurations->hide();
+        _ui->stackedwidget->setCurrentIndex(STACK_INDEX_HOME);
+        _ui->menubar->hide();
+        _ui->toolbar->hide();
+        _ui->statusbar->hide();
         break;
     }
     case STACK_INDEX_CHIP_CONFIGURE: {
-        ui->menubar->show();
-        ui->toolbar->show();
-        ui->statusbar->show();
-        ui->dockwidget_left->show();
-        ui->dockwidget_right->show();
-        ui->dockwidget_bottom_output->show();
-        ui->dockwidget_bottom_xmake_output->show();
-        ui->dockwidget_bottom_configurations->show();
+        _ui->menubar->show();
+        _ui->toolbar->show();
+        _ui->statusbar->show();
+        _ui->dockwidget_left->show();
+        _ui->dockwidget_right->show();
+        _ui->dockwidget_bottom_output->show();
+        _ui->dockwidget_bottom_xmake_output->show();
+        _ui->dockwidget_bottom_configurations->show();
 
-        (void)connect(ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
+        (void)connect(_ui->page_chip_configure_view, &chip_configure_view::signal_update_modules_treeview, this,
                       &mainwindow_view::update_modules_treeview, Qt::UniqueConnection);
 
         update_modules_treeview(_project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY),
                                 _project_instance->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET));
 
-        ui->page_chip_configure_view->init_view();
-        ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
+        _ui->page_chip_configure_view->init_view();
+        _ui->stackedwidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
 
         this->setWindowState(Qt::WindowMaximized);
         break;
     }
     case STACK_INDEX_EMPTY: {
-        ui->stackedwidget->setCurrentIndex(STACK_INDEX_EMPTY);
-        ui->menubar->show();
-        ui->toolbar->show();
-        ui->statusbar->show();
-        ui->dockwidget_left->show();
-        ui->dockwidget_right->show();
-        ui->dockwidget_bottom_output->show();
-        ui->dockwidget_bottom_xmake_output->show();
-        ui->dockwidget_bottom_configurations->show();
+        _ui->stackedwidget->setCurrentIndex(STACK_INDEX_EMPTY);
+        _ui->menubar->show();
+        _ui->toolbar->show();
+        _ui->statusbar->show();
+        _ui->dockwidget_left->show();
+        _ui->dockwidget_right->show();
+        _ui->dockwidget_bottom_output->show();
+        _ui->dockwidget_bottom_xmake_output->show();
+        _ui->dockwidget_bottom_configurations->show();
         this->setWindowState(Qt::WindowMaximized);
         break;
     }
@@ -222,8 +226,8 @@ void mainwindow_view::set_mode(const int index)
 
 void mainwindow_view::update_modules_treeview(const QString &company, const QString &name) const
 {
-    ui->treeview->header()->hide();
-    auto *model = new QStandardItemModel(ui->treeview);
+    _ui->treeview->header()->hide();
+    auto *model = new QStandardItemModel(_ui->treeview);
     chip_summary_table::chip_summary_t chip_summary;
     chip_summary_table::load_chip_summary(&chip_summary, company, name);
     const auto modules = &chip_summary.modules;
@@ -245,9 +249,9 @@ void mainwindow_view::update_modules_treeview(const QString &company, const QStr
         }
         ++modules_i;
     }
-    delete ui->treeview->model();
-    ui->treeview->setModel(model);
-    ui->treeview->expandAll();
+    delete _ui->treeview->model();
+    _ui->treeview->setModel(model);
+    _ui->treeview->expandAll();
 }
 
 void mainwindow_view::create_project()
@@ -257,7 +261,7 @@ void mainwindow_view::create_project()
 
 void mainwindow_view::action_new_chip_triggered_callback(const bool checked) const
 {
-    ui->page_home_view->button_create_chip_project_clicked_callback(checked);
+    _ui->page_home_view->button_create_chip_project_clicked_callback(checked);
 }
 
 void mainwindow_view::action_load_triggered_callback(const bool checked)
@@ -318,7 +322,15 @@ void mainwindow_view::action_report_triggered_callback(const bool checked) const
 void mainwindow_view::action_generate_triggered_callback(const bool checked) const
 {
     Q_UNUSED(checked)
-    ui->dockwidget_bottom_xmake_output->raise();
+    _ui->dockwidget_bottom_xmake_output->raise();
     _project_instance->save_project();
     _project_instance->generate_code();
+}
+
+void mainwindow_view::action_package_manager_triggered_callback(const bool checked)
+{
+    Q_UNUSED(checked)
+
+    package_manager_dialog dialog(this);
+    (void)dialog.exec();
 }

@@ -12,7 +12,9 @@
         <file>packages/LQFP48.png</file>
         <file>packages/LQFP64.png</file>
         <file>packages/LQFP144.png</file>
-        <file>icon/order.svg</file>
-        <file>icon/hammer-and-anvil.svg</file>
+        <file>icon/code-s-slash-line.svg</file>
+        <file>icon/collapse-diagonal-line.svg</file>
+        <file>icon/dropbox-line.svg</file>
+        <file>icon/expand-diagonal-line.svg</file>
     </qresource>
 </RCC>
