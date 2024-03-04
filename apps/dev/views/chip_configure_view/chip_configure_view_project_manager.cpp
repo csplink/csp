@@ -28,6 +28,7 @@
  */
 
 #include "chip_configure_view_project_manager.h"
+#include "package_manager_dialog.h"
 #include "ui_chip_configure_view_project_manager.h"
 
 chip_configure_view_project_manager::chip_configure_view_project_manager(QWidget *parent)
@@ -35,6 +36,10 @@ chip_configure_view_project_manager::chip_configure_view_project_manager(QWidget
 {
     _ui->setupUi(this);
     _project_instance = project::get_instance();
+
+    (void)connect(_ui->pushbutton_package_manager, &QPushButton::clicked, this,
+                  &chip_configure_view_project_manager::pushbutton_package_manager_clicked_callback, Qt::UniqueConnection);
+
     init_project_settings();
     init_linker_settings();
     init_package_settings();
@@ -97,4 +102,12 @@ void chip_configure_view_project_manager::init_package_settings() const
     {
         _ui->lineedit_package_name->setText(chip_summary.hal);
     }
+}
+
+void chip_configure_view_project_manager::pushbutton_package_manager_clicked_callback(const bool checked)
+{
+    Q_UNUSED(checked)
+
+    package_manager_dialog dialog(this);
+    (void)dialog.exec();
 }

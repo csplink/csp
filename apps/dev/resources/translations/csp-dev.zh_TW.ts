@@ -224,7 +224,7 @@
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
-        <source>Status</source>
+        <source>Market status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -330,12 +330,12 @@
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="81"/>
-        <location filename="../../views/mainwindow_view.ui" line="100"/>
+        <location filename="../../views/mainwindow_view.ui" line="108"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="139"/>
+        <location filename="../../views/mainwindow_view.ui" line="147"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
@@ -345,83 +345,179 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="181"/>
+        <location filename="../../views/mainwindow_view.ui" line="89"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="189"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="203"/>
+        <location filename="../../views/mainwindow_view.ui" line="211"/>
         <source>Configurations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="215"/>
+        <location filename="../../views/mainwindow_view.ui" line="223"/>
         <source>Xmake Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="234"/>
+        <location filename="../../views/mainwindow_view.ui" line="242"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="246"/>
+        <location filename="../../views/mainwindow_view.ui" line="255"/>
         <source>Load Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="249"/>
+        <location filename="../../views/mainwindow_view.ui" line="258"/>
         <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="254"/>
+        <location filename="../../views/mainwindow_view.ui" line="263"/>
         <source>Import Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="259"/>
+        <location filename="../../views/mainwindow_view.ui" line="268"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="262"/>
+        <location filename="../../views/mainwindow_view.ui" line="271"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="267"/>
+        <location filename="../../views/mainwindow_view.ui" line="276"/>
         <source>Save Project As ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="272"/>
+        <location filename="../../views/mainwindow_view.ui" line="281"/>
         <source>Close Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="277"/>
+        <location filename="../../views/mainwindow_view.ui" line="286"/>
         <source>Generate Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="282"/>
+        <location filename="../../views/mainwindow_view.ui" line="291"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="291"/>
+        <location filename="../../views/mainwindow_view.ui" line="300"/>
         <source>Generate code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="267"/>
+        <location filename="../../views/mainwindow_view.ui" line="309"/>
+        <source>Package Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="271"/>
         <source>CSP project file(*.csp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="277"/>
+        <location filename="../../views/mainwindow_view.cpp" line="281"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>package_manager_dialog</name>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="14"/>
+        <source>Package Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="46"/>
+        <source>Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="56"/>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="66"/>
+        <source>Uninstall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="73"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="99"/>
+        <source>Expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="113"/>
+        <source>Collapse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="78"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="79"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="80"/>
+        <source>Home Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="81"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="82"/>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="83"/>
+        <source>License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="84"/>
+        <source>Sha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="126"/>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="311"/>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="323"/>
+        <source>Installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="126"/>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="319"/>
+        <source>Not Installed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

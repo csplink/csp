@@ -239,9 +239,8 @@
         <translation>芯片名称</translation>
     </message>
     <message>
-        <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
         <source>Status</source>
-        <translation>市场状态</translation>
+        <translation type="vanished">市场状态</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="251"/>
@@ -264,6 +263,11 @@
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="46"/>
         <source>Cancel</source>
         <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/choose_chip_dialog.cpp" line="250"/>
+        <source>Market status</source>
+        <translation>市场状态</translation>
     </message>
     <message>
         <location filename="../../dialogs/choose_chip_dialog.cpp" line="253"/>
@@ -417,12 +421,12 @@
     </message>
     <message>
         <location filename="../../views/mainwindow_view.ui" line="81"/>
-        <location filename="../../views/mainwindow_view.ui" line="100"/>
+        <location filename="../../views/mainwindow_view.ui" line="108"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="139"/>
+        <location filename="../../views/mainwindow_view.ui" line="147"/>
         <source>Property</source>
         <translation>属性</translation>
     </message>
@@ -432,84 +436,188 @@
         <translation>新建工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="181"/>
+        <location filename="../../views/mainwindow_view.ui" line="89"/>
+        <source>Help</source>
+        <translation>帮助</translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.ui" line="189"/>
         <source>Output</source>
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="203"/>
+        <location filename="../../views/mainwindow_view.ui" line="211"/>
         <source>Configurations</source>
         <translation>配置</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="215"/>
+        <location filename="../../views/mainwindow_view.ui" line="223"/>
         <source>Xmake Output</source>
         <translation>Xmake输出</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="234"/>
+        <location filename="../../views/mainwindow_view.ui" line="242"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="246"/>
+        <location filename="../../views/mainwindow_view.ui" line="255"/>
         <source>Load Project</source>
         <translation>加载工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="249"/>
+        <location filename="../../views/mainwindow_view.ui" line="258"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="254"/>
+        <location filename="../../views/mainwindow_view.ui" line="263"/>
         <source>Import Project</source>
         <translation>导入工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="259"/>
+        <location filename="../../views/mainwindow_view.ui" line="268"/>
         <source>Save Project</source>
         <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="262"/>
+        <location filename="../../views/mainwindow_view.ui" line="271"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="267"/>
+        <location filename="../../views/mainwindow_view.ui" line="276"/>
         <source>Save Project As ...</source>
         <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="272"/>
+        <location filename="../../views/mainwindow_view.ui" line="281"/>
         <source>Close Project</source>
         <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="277"/>
+        <location filename="../../views/mainwindow_view.ui" line="286"/>
         <source>Generate Report</source>
         <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="282"/>
+        <location filename="../../views/mainwindow_view.ui" line="291"/>
         <source>New Chip Project</source>
         <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="291"/>
+        <location filename="../../views/mainwindow_view.ui" line="300"/>
         <source>Generate code</source>
         <translation>生成代码</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="267"/>
+        <location filename="../../views/mainwindow_view.ui" line="309"/>
+        <source>Package Manager</source>
+        <translation>包管理器</translation>
+    </message>
+    <message>
+        <location filename="../../views/mainwindow_view.cpp" line="271"/>
         <source>CSP project file(*.csp)</source>
         <translation>CSP工程文件(*.csp)</translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="277"/>
+        <location filename="../../views/mainwindow_view.cpp" line="281"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
+    </message>
+</context>
+<context>
+    <name>package_manager_dialog</name>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="14"/>
+        <source>Package Manager</source>
+        <translation>包管理器</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="46"/>
+        <source>Install</source>
+        <translation>安装</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="56"/>
+        <source>Update</source>
+        <translation>更新</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="66"/>
+        <source>Uninstall</source>
+        <translation>卸载</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="73"/>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="99"/>
+        <source>Expand</source>
+        <translation>展开</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.ui" line="113"/>
+        <source>Collapse</source>
+        <translation>折叠</translation>
+    </message>
+    <message>
+        <source>install</source>
+        <translation type="obsolete">安装</translation>
+    </message>
+    <message>
+        <source>close</source>
+        <translation type="obsolete">关闭</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="78"/>
+        <source>Name</source>
+        <translation>名称</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="79"/>
+        <source>Size</source>
+        <translation>大小</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="80"/>
+        <source>Home Page</source>
+        <translation>主页</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="81"/>
+        <source>Status</source>
+        <translation>状态</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="82"/>
+        <source>Description</source>
+        <translation>描述</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="83"/>
+        <source>License</source>
+        <translation>开源协议</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="84"/>
+        <source>Sha</source>
+        <translation>Sha值</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="126"/>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="311"/>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="323"/>
+        <source>Installed</source>
+        <translation>已安装</translation>
+    </message>
+    <message>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="126"/>
+        <location filename="../../dialogs/package_manager_dialog.cpp" line="319"/>
+        <source>Not Installed</source>
+        <translation>未安装</translation>
     </message>
 </context>
 <context>

@@ -247,7 +247,7 @@ void choose_chip_dialog::init_tableview_chip_infos()
     /*设置列字段名*/
     model->setColumnCount(10);
     model->setHeaderData(0, Qt::Horizontal, tr("Name"));
-    model->setHeaderData(1, Qt::Horizontal, tr("Status"));
+    model->setHeaderData(1, Qt::Horizontal, tr("Market status"));
     model->setHeaderData(2, Qt::Horizontal, tr("Unit price for 10kU"));
     model->setHeaderData(3, Qt::Horizontal, tr("Package"));
     model->setHeaderData(4, Qt::Horizontal, tr("Flash"));

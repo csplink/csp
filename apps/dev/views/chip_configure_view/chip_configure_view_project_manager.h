@@ -54,6 +54,9 @@ class chip_configure_view_project_manager final : public QWidget
     void init_project_settings() const;
     void init_linker_settings() const;
     void init_package_settings() const;
+
+  private slots:
+    void pushbutton_package_manager_clicked_callback(bool checked);
 };
 
 #endif // CHIP_CONFIGURE_VIEW_PROJECT_MANAGER_H
