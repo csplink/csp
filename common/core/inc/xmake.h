@@ -31,8 +31,8 @@
 #define CSP_COMMON_CORE_XMAKE_H
 
 #include <QObject>
-#include <QString>
 #include <QProcess>
+#include <QString>
 
 #include "config.h"
 
@@ -43,11 +43,19 @@ class xmake final : public QObject
   public:
     typedef struct
     {
-        QMap<QString, QString> versions;
+        float size;
+        bool installed;
+        QString sha256;
+    } version_t;
+
+    typedef struct
+    {
+        QMap<QString, version_t> versions;
         QStringList urls;
         QString homepage;
         QString description;
         QString license;
+        QString company;
     } info_t;
 
     typedef QMap<QString, info_t> package_t;
@@ -83,9 +91,10 @@ class xmake final : public QObject
     /**
      * @brief get package configuration from csp repo
      * @param packages: packages ptr
+     * @param repositories: repositories dir
      * @return void
      */
-    static void load_packages(packages_t *packages);
+    static void load_packages(packages_t *packages, const QString &repositories = config::repositories_dir());
 
     static void install_log_handler(log_handler handler);
 
@@ -104,9 +113,15 @@ class xmake final : public QObject
     void cmd_log(const QString &command, const QStringList &args = {}, const QString &program = config::tool_xmake(),
                  const QString &workdir = config::default_workdir());
 
+    void install_package(const QString &name, const QString &version, const QString &repositories = config::repositories_dir());
+
+    void update_package(const QString &name, const QString &repositories = config::repositories_dir());
+
+    void uninstall_package(const QString &name, const QString &version, const QString &repositories = config::repositories_dir());
+
     void csp_repo_dump_log(const QString &type);
 
-    void csp_coder_log(const QString &project_file, const QString &output, const QString &repositories);
+    void csp_coder_log(const QString &project_file, const QString &output, const QString &repositories = config::repositories_dir());
 
     void build_log(const QString &projectdir, const QString &mode);
 
@@ -114,12 +129,15 @@ class xmake final : public QObject
     xmake();
     ~xmake() override;
 
+    Q_DISABLE_COPY_MOVE(xmake)
+
     QProcess *_process = nullptr;
 
     inline static xmake *_instance = nullptr;
     inline static log_handler _log_handler = nullptr;
 
-    Q_DISABLE_COPY_MOVE(xmake)
+  private slots:
+    void ready_read_standard_output_callback() const;
 };
 
 #endif //  CSP_COMMON_CORE_XMAKE_H

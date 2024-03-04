@@ -40,10 +40,12 @@
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::info_t, versions, urls, homepage, description, license)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::version_t, size, installed, sha256)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::info_t, versions, urls, homepage, description, license, company)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(xmake::packages_t, toolchain, library)
 } // namespace nlohmann
 
+QT_DEBUG_ADD_TYPE(xmake::version_t)
 QT_DEBUG_ADD_TYPE(xmake::info_t)
 QT_DEBUG_ADD_TYPE(xmake::packages_t)
 
@@ -82,44 +84,58 @@ QString xmake::version(const QString &program)
     QByteArray output;
     QString version;
 
-    Q_ASSERT(!program.isEmpty());
-
-    if (os::execv(program, {"--version"}, config::env(), 10000, config::default_workdir(), &output, nullptr))
+    if (!program.isEmpty())
     {
-        const QRegularExpression regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
-        const QRegularExpressionMatch match = regex.match(output);
-
-        if (match.hasMatch())
+        if (os::execv(program, { "--version" }, config::env(), 10000, config::default_workdir(), &output, nullptr))
         {
-            version = "v" + match.captured(1);
+            static const QRegularExpression regex(R"(v(\d+\.\d+\.\d+\+\w+\.\w+))");
+            const QRegularExpressionMatch match = regex.match(output);
+
+            if (match.hasMatch())
+            {
+                version = "v" + match.captured(1);
+            }
         }
+    }
+    else
+    {
+        return "";
     }
     return version;
 }
 
 QString xmake::lua(const QString &lua_path, const QStringList &args)
 {
-    Q_ASSERT(!lua_path.isEmpty());
-
-    QStringList list = {"-D", path::absolute(lua_path)};
-    list << args;
-
-    QString output = cmd("lua", list);
-
+    QString output;
+    if (!lua_path.isEmpty())
+    {
+        QStringList list = { "-D", path::absolute(lua_path) };
+        list << args;
+        output = cmd("lua", list);
+    }
+    else
+    {
+        output = "";
+        // TODO: Invalid parameter
+    }
     return output;
 }
 
 QString xmake::cmd(const QString &command, const QStringList &args, const QString &program, const QString &workdir)
 {
     QByteArray output;
-    Q_ASSERT(!command.isEmpty());
-    Q_ASSERT(!program.isEmpty());
-    Q_ASSERT(!workdir.isEmpty());
+    if (!command.isEmpty() && !program.isEmpty() && !workdir.isEmpty())
+    {
+        QStringList list = { command, "-D" };
+        list << args;
 
-    QStringList list = {command, "-D"};
-    list << args;
-
-    os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
+        (void)os::execv(program, list, config::env(), 10000, workdir, &output, nullptr);
+    }
+    else
+    {
+        output = "";
+        // TODO: Invalid parameter
+    }
 
     return output;
 }
@@ -130,7 +146,7 @@ void xmake::cmd_log(const QString &command, const QStringList &args, const QStri
     QStringList list;
     if (!command.isEmpty())
     {
-        list = QStringList{command, "-D"};
+        list = QStringList{ command, "-D" };
     }
     list << args;
 
@@ -147,22 +163,15 @@ void xmake::cmd_log(const QString &command, const QStringList &args, const QStri
     _process->setProcessEnvironment(environment);
 
     if (os::isdir(workdir))
+    {
         _process->setWorkingDirectory(workdir);
+    }
 
     log(QString("%1 %2").arg(program, list.join(" ")));
     _process->start();
 
-    connect(
-        _process, &QProcess::readyReadStandardOutput, this,
-        [this]() {
-            const QByteArray err = _process->readAllStandardOutput();
-            qDebug() << err;
-            if (!err.isEmpty())
-            {
-                xmake::log(err.trimmed());
-            }
-        },
-        Qt::UniqueConnection);
+    (void)connect(_process, &QProcess::readyReadStandardOutput, this, &xmake::ready_read_standard_output_callback,
+                  Qt::UniqueConnection);
 
     if (!_process->waitForFinished(30000))
     {
@@ -174,25 +183,52 @@ void xmake::cmd_log(const QString &command, const QStringList &args, const QStri
     }
 }
 
-void xmake::load_packages(packages_t *packages)
+void xmake::load_packages(packages_t *packages, const QString &repositories)
 {
-    const QString repodir = config::repodir();
-
-    Q_ASSERT(packages != nullptr);
-
-    const QString yml = xmake::cmd("csp-repo", {"--dump=json"});
-    try
+    if (packages != nullptr && !repositories.isEmpty())
     {
-        const std::string buffer = yml.toStdString();
-        const nlohmann::json json = nlohmann::json::parse(buffer);
-        json.get_to(*packages);
+        const QString data = xmake::cmd("csp-repo", { "--dump=json", QString("--repositories=") + repositories });
+        try
+        {
+            const std::string buffer = data.toStdString();
+            const nlohmann::json json = nlohmann::json::parse(buffer);
+            (void)json.get_to(*packages);
+        }
+        catch (std::exception &e)
+        {
+            const QString str = QString("try to parse packages failed. \n\nreason: %1").arg(e.what());
+            qWarning().noquote() << str;
+            packages->library.clear();
+            packages->toolchain.clear();
+        }
     }
-    catch (std::exception &e)
+    else
     {
-        const QString str = QString("try to parse packages failed. \n\nreason: %1").arg(e.what());
-        qWarning().noquote() << str;
-        packages->library.clear();
-        packages->toolchain.clear();
+        // TODO: Invalid parameter
+    }
+}
+
+void xmake::install_package(const QString &name, const QString &version, const QString &repositories)
+{
+    if (!name.isEmpty() && !version.isEmpty() && !repositories.isEmpty())
+    {
+        cmd_log("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + repositories });
+    }
+}
+
+void xmake::update_package(const QString &name, const QString &repositories)
+{
+    if (!name.isEmpty() && !repositories.isEmpty())
+    {
+        cmd_log("csp-repo", { QString("--update=") + name, QString("--repositories=") + repositories });
+    }
+}
+
+void xmake::uninstall_package(const QString &name, const QString &version, const QString &repositories)
+{
+    if (!name.isEmpty() && !version.isEmpty() && !repositories.isEmpty())
+    {
+        cmd_log("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + repositories });
     }
 }
 
@@ -203,27 +239,48 @@ void xmake::install_log_handler(const log_handler handler)
 
 void xmake::csp_repo_dump_log(const QString &type)
 {
-    Q_ASSERT(!type.isEmpty());
-
-    cmd_log("csp-repo", {QString("--dump=") + type});
+    if (!type.isEmpty())
+    {
+        cmd_log("csp-repo", { QString("--dump=") + type });
+    }
+    else
+    {
+        // TODO: Invalid parameter
+    }
 }
 
 void xmake::csp_coder_log(const QString &project_file, const QString &output, const QString &repositories)
 {
-    Q_ASSERT(!project_file.isEmpty());
-    Q_ASSERT(!output.isEmpty());
-    Q_ASSERT(!repositories.isEmpty());
-
-    cmd_log("csp-coder", {QString("--project-file=") + project_file, QString("--output=") + output,
-                          QString("--repositories=") + repositories});
+    if (!project_file.isEmpty() && !output.isEmpty() && !repositories.isEmpty())
+    {
+        cmd_log("csp-coder", { QString("--project-file=") + project_file, QString("--output=") + output,
+                               QString("--repositories=") + repositories });
+    }
+    else
+    {
+        // TODO: Invalid parameter
+    }
 }
 
 void xmake::build_log(const QString &projectdir, const QString &mode)
 {
-    Q_ASSERT(!projectdir.isEmpty());
-    Q_ASSERT(!mode.isEmpty());
-    Q_ASSERT(os::isdir(projectdir));
+    if (!projectdir.isEmpty() && !mode.isEmpty() && os::isdir(projectdir))
+    {
+        cmd_log("f", { "-y", "-m", mode }, config::tool_xmake(), projectdir);
+        cmd_log("", { "-y", "-j8" }, config::tool_xmake(), projectdir);
+    }
+    else
+    {
+        // TODO: Invalid parameter
+    }
+}
 
-    cmd_log("f", {"-y", "-m", mode}, config::tool_xmake(), projectdir);
-    cmd_log("", {"-y", "-j8"}, config::tool_xmake(), projectdir);
+void xmake::ready_read_standard_output_callback() const
+{
+    const QByteArray err = _process->readAllStandardOutput();
+    qDebug() << err;
+    if (!err.isEmpty())
+    {
+        xmake::log(err.trimmed());
+    }
 }
