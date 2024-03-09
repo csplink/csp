@@ -232,9 +232,14 @@ void xmake::uninstall_package(const QString &name, const QString &version, const
     }
 }
 
-void xmake::install_log_handler(const log_handler handler)
+void xmake::set_log_handler(const log_handler_t handler)
 {
     _log_handler = handler;
+}
+
+xmake::log_handler_t xmake::get_log_handler()
+{
+    return _log_handler;
 }
 
 void xmake::csp_repo_dump_log(const QString &type)
@@ -278,7 +283,6 @@ void xmake::build_log(const QString &projectdir, const QString &mode)
 void xmake::ready_read_standard_output_callback() const
 {
     const QByteArray err = _process->readAllStandardOutput();
-    qDebug() << err;
     if (!err.isEmpty())
     {
         xmake::log(err.trimmed());

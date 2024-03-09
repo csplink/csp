@@ -66,7 +66,7 @@ class xmake final : public QObject
         package_t library;
     } packages_t;
 
-    typedef void (*log_handler)(const QString &msg);
+    typedef void (*log_handler_t)(const QString &msg);
 
   public:
     /**
@@ -96,7 +96,9 @@ class xmake final : public QObject
      */
     static void load_packages(packages_t *packages, const QString &repositories = config::repositories_dir());
 
-    static void install_log_handler(log_handler handler);
+    static void set_log_handler(log_handler_t handler);
+
+    static log_handler_t get_log_handler();
 
     static void log(const QString &msg)
     {
@@ -134,7 +136,7 @@ class xmake final : public QObject
     QProcess *_process = nullptr;
 
     inline static xmake *_instance = nullptr;
-    inline static log_handler _log_handler = nullptr;
+    inline static log_handler_t _log_handler = nullptr;
 
   private slots:
     void ready_read_standard_output_callback() const;
