@@ -35,7 +35,7 @@
 #include "chip_summary_table.h"
 #include "mainwindow_view.h"
 #include "os.h"
-#include "package_manager_dialog.h"
+#include "dialog_package_manager.h"
 #include "ui_mainwindow_view.h"
 #include "wizard_new_project.h"
 #include "xmake.h"
@@ -108,7 +108,7 @@ mainwindow_view::mainwindow_view(QWidget *parent)
     _ui->setupUi(this);
     mainwindow = this;
     (void)qInstallMessageHandler(mainwindow_view::sys_message_log_handler);
-    xmake::install_log_handler(mainwindow_view::xmake_message_log_handler);
+    xmake::set_log_handler(mainwindow_view::xmake_message_log_handler);
 
     tabifyDockWidget(_ui->dockwidget_bottom_output, _ui->dockwidget_bottom_xmake_output);
     tabifyDockWidget(_ui->dockwidget_bottom_output, _ui->dockwidget_bottom_configurations);
@@ -331,6 +331,6 @@ void mainwindow_view::action_package_manager_triggered_callback(const bool check
 {
     Q_UNUSED(checked)
 
-    package_manager_dialog dialog(this);
+    dialog_package_manager dialog(this);
     (void)dialog.exec();
 }

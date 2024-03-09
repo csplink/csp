@@ -29,7 +29,7 @@
 
 #include <QDebug>
 
-#include "choose_chip_dialog.h"
+#include "dialog_choose_chip.h"
 
 #include "home_view.h"
 #include "ui_home_view.h"
@@ -56,10 +56,10 @@ home_view::~home_view()
 void home_view::button_create_chip_project_clicked_callback(const bool checked)
 {
     Q_UNUSED(checked)
-    choose_chip_dialog dialog(this);
-    (void)connect(&dialog, &choose_chip_dialog::finished, this, &home_view::choose_chip_dialog_finished_callback,
+    dialog_choose_chip dialog(this);
+    (void)connect(&dialog, &dialog_choose_chip::finished, this, &home_view::dialog_choose_chip_finished_callback,
                   Qt::UniqueConnection);
-    (void)connect(&dialog, &choose_chip_dialog::signals_create_project, this, &home_view::create_chip_project,
+    (void)connect(&dialog, &dialog_choose_chip::signals_create_project, this, &home_view::create_chip_project,
                   Qt::UniqueConnection);
     (void)dialog.exec();
 }
@@ -69,7 +69,7 @@ void home_view::button_create_board_project_clicked_callback(const bool checked)
     Q_UNUSED(checked)
 }
 
-void home_view::choose_chip_dialog_finished_callback(const int result)
+void home_view::dialog_choose_chip_finished_callback(const int result)
 {
     Q_UNUSED(result)
 }

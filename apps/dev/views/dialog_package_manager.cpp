@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        package_manager_dialog.cpp
+ * @file        dialog_package_manager.cpp
  * @brief
  *
  *****************************************************************************
@@ -32,15 +32,15 @@
 #include <QStandardItemModel>
 #include <QStyle>
 
-#include "package_manager_dialog.h"
-#include "ui_package_manager_dialog.h"
+#include "dialog_package_manager.h"
+#include "ui_dialog_package_manager.h"
 #include "xmake.h"
 
 #include <qtjson.h>
 
-package_manager_dialog::package_manager_dialog(QWidget *parent)
+dialog_package_manager::dialog_package_manager(QWidget *parent)
     : QDialog(parent),
-      _ui(new Ui::package_manager_dialog)
+      _ui(new Ui::dialog_package_manager)
 {
     _ui->setupUi(this);
 
@@ -49,28 +49,28 @@ package_manager_dialog::package_manager_dialog(QWidget *parent)
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint |
                    Qt::WindowMaximizeButtonHint);
 
-    connect(_ui->toolbutton_collapse, &QPushButton::pressed, this, &package_manager_dialog::toolbutton_collapse_pressed_callback,
+    connect(_ui->toolbutton_collapse, &QPushButton::pressed, this, &dialog_package_manager::toolbutton_collapse_pressed_callback,
             Qt::UniqueConnection);
-    connect(_ui->toolbutton_expand, &QPushButton::pressed, this, &package_manager_dialog::toolbutton_expand_pressed_callback,
+    connect(_ui->toolbutton_expand, &QPushButton::pressed, this, &dialog_package_manager::toolbutton_expand_pressed_callback,
             Qt::UniqueConnection);
-    connect(_ui->pushbutton_close, &QPushButton::pressed, this, &package_manager_dialog::pushbutton_close_pressed_callback,
+    connect(_ui->pushbutton_close, &QPushButton::pressed, this, &dialog_package_manager::pushbutton_close_pressed_callback,
             Qt::UniqueConnection);
-    connect(_ui->pushbutton_install, &QPushButton::pressed, this, &package_manager_dialog::pushbutton_install_pressed_callback,
+    connect(_ui->pushbutton_install, &QPushButton::pressed, this, &dialog_package_manager::pushbutton_install_pressed_callback,
             Qt::UniqueConnection);
-    connect(_ui->pushbutton_update, &QPushButton::pressed, this, &package_manager_dialog::pushbutton_update_pressed_callback,
+    connect(_ui->pushbutton_update, &QPushButton::pressed, this, &dialog_package_manager::pushbutton_update_pressed_callback,
             Qt::UniqueConnection);
-    connect(_ui->pushbutton_uninstall, &QPushButton::pressed, this, &package_manager_dialog::pushbutton_uninstall_pressed_callback,
+    connect(_ui->pushbutton_uninstall, &QPushButton::pressed, this, &dialog_package_manager::pushbutton_uninstall_pressed_callback,
             Qt::UniqueConnection);
 
     init_treeview();
 }
 
-package_manager_dialog::~package_manager_dialog()
+dialog_package_manager::~dialog_package_manager()
 {
     delete _ui;
 }
 
-void package_manager_dialog::init_treeview()
+void dialog_package_manager::init_treeview()
 {
     _tableview_proxy_model = new QSortFilterProxyModel(this);
     QStandardItemModel *model = new QStandardItemModel(_ui->treeview);
@@ -149,7 +149,7 @@ void package_manager_dialog::init_treeview()
 
         ++library_i;
     }
-    connect(model, &QStandardItemModel::itemChanged, this, &package_manager_dialog::treeview_model_item_changed_callback, Qt::UniqueConnection);
+    connect(model, &QStandardItemModel::itemChanged, this, &dialog_package_manager::treeview_model_item_changed_callback, Qt::UniqueConnection);
     _tableview_proxy_model->setSourceModel(model);
 
     delete _ui->treeview->model();
@@ -161,9 +161,9 @@ void package_manager_dialog::init_treeview()
     _ui->treeview->header()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
-void package_manager_dialog::treeview_model_item_changed_callback(QStandardItem *item)
+void dialog_package_manager::treeview_model_item_changed_callback(QStandardItem *item)
 {
-    disconnect(dynamic_cast<QStandardItemModel *>(_tableview_proxy_model->sourceModel()), &QStandardItemModel::itemChanged, this, &package_manager_dialog::treeview_model_item_changed_callback);
+    disconnect(dynamic_cast<QStandardItemModel *>(_tableview_proxy_model->sourceModel()), &QStandardItemModel::itemChanged, this, &dialog_package_manager::treeview_model_item_changed_callback);
     if (item != nullptr)
     {
         if (item->isCheckable())
@@ -228,11 +228,11 @@ void package_manager_dialog::treeview_model_item_changed_callback(QStandardItem 
             }
         }
     }
-    connect(dynamic_cast<QStandardItemModel *>(_tableview_proxy_model->sourceModel()), &QStandardItemModel::itemChanged, this, &package_manager_dialog::treeview_model_item_changed_callback, Qt::UniqueConnection);
+    connect(dynamic_cast<QStandardItemModel *>(_tableview_proxy_model->sourceModel()), &QStandardItemModel::itemChanged, this, &dialog_package_manager::treeview_model_item_changed_callback, Qt::UniqueConnection);
     update_pushbutton_install_update_uninstall_status();
 }
 
-Qt::CheckState package_manager_dialog::treeview_item_sibling_check_state(const QStandardItem *item) const
+Qt::CheckState dialog_package_manager::treeview_item_sibling_check_state(const QStandardItem *item) const
 {
     Qt::CheckState check_state;
     const QStandardItem *parent = item->parent();
@@ -273,7 +273,7 @@ Qt::CheckState package_manager_dialog::treeview_item_sibling_check_state(const Q
     return check_state;
 }
 
-void package_manager_dialog::update_pushbutton_install_update_uninstall_status()
+void dialog_package_manager::update_pushbutton_install_update_uninstall_status()
 {
     QStack<QStandardItem *> stack;
     const int row_count = dynamic_cast<QStandardItemModel *>(_tableview_proxy_model->sourceModel())->rowCount();
@@ -332,42 +332,43 @@ void package_manager_dialog::update_pushbutton_install_update_uninstall_status()
     _ui->pushbutton_update->setEnabled(_update_count > 0);
 }
 
-void package_manager_dialog::toolbutton_collapse_pressed_callback() const
+void dialog_package_manager::toolbutton_collapse_pressed_callback() const
 {
     _ui->treeview->collapseAll();
 }
 
-void package_manager_dialog::toolbutton_expand_pressed_callback() const
+void dialog_package_manager::toolbutton_expand_pressed_callback() const
 {
     _ui->treeview->expandAll();
 }
 
-void package_manager_dialog::pushbutton_close_pressed_callback()
+void dialog_package_manager::pushbutton_close_pressed_callback()
 {
     close();
 }
 
-void package_manager_dialog::pushbutton_install_pressed_callback() const
+void dialog_package_manager::pushbutton_install_pressed_callback() const
 {
-    int count = 0;
     auto info_i = _selected_package_infos.constBegin();
+    const xmake::log_handler_t handler = xmake::get_log_handler();
+    xmake::set_log_handler(nullptr);
     while (info_i != _selected_package_infos.constEnd())
     {
         if (!info_i.value().installed)
         {
             _xmake_instance->install_package(info_i.key(), info_i.value().version);
-            count++;
         }
         ++info_i;
     }
+    xmake::set_log_handler(handler);
 }
 
-void package_manager_dialog::pushbutton_update_pressed_callback() const
+void dialog_package_manager::pushbutton_update_pressed_callback() const
 {
     qDebug() << _update_count;
 }
 
-void package_manager_dialog::pushbutton_uninstall_pressed_callback() const
+void dialog_package_manager::pushbutton_uninstall_pressed_callback() const
 {
     qDebug() << _install_count;
 }

@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        package_manager_dialog.h
+ * @file        dialog_package_manager.h
  * @brief
  *
  *****************************************************************************
@@ -38,20 +38,20 @@
 
 namespace Ui
 {
-class package_manager_dialog;
+class dialog_package_manager;
 }
 
-class package_manager_dialog final : public QDialog
+class dialog_package_manager final : public QDialog
 {
     Q_OBJECT
 
   public:
-    explicit package_manager_dialog(QWidget *parent = nullptr);
+    explicit dialog_package_manager(QWidget *parent = nullptr);
 
-    ~package_manager_dialog();
+    ~dialog_package_manager();
 
   private:
-    Ui::package_manager_dialog *_ui;
+    Ui::dialog_package_manager *_ui;
     QSortFilterProxyModel *_tableview_proxy_model = nullptr;
     typedef struct
     {

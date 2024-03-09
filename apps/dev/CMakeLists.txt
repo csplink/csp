@@ -26,11 +26,6 @@ set(name csp-dev)
 
 set(CSP_EXE_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "csp exe file dir")
 
-file(GLOB_RECURSE DIALOGS
-        dialogs/*.ui
-        dialogs/*.h
-        dialogs/*.cpp)
-
 file(GLOB_RECURSE HEADERS
         inc/*.h)
 
@@ -46,22 +41,17 @@ file(GLOB_RECURSE RESOURCES
 file(GLOB_RECURSE VIEWS
         views/*.ui
         views/*.h
-        views/*.cpp
-        views/chip_configure_view/*.ui
-        views/chip_configure_view/*.h
-        views/chip_configure_view/*.cpp)
+        views/*.cpp)
 
 set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
         ./resources/translations/${name}.zh_TW.ts)
 
-set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_FILES})
+set(PROJECT_SOURCES ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_FILES})
 
 include_directories(
-        dialogs
         inc
-        views
-        views/chip_configure_view)
+        views)
 
 foreach (TS_FILE ${TS_FILES})
     set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION

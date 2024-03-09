@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        choose_chip_dialog.cpp
+ *  @file        dialog_choose_chip.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -29,12 +29,12 @@
 
 #include <QDebug>
 
-#include "choose_chip_dialog.h"
+#include "dialog_choose_chip.h"
 #include "os.h"
-#include "ui_choose_chip_dialog.h"
+#include "ui_dialog_choose_chip.h"
 #include "wizard_new_project.h"
 
-choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), _ui(new Ui::choose_chip_dialog)
+dialog_choose_chip::dialog_choose_chip(QWidget *parent) : QDialog(parent), _ui(new Ui::dialog_choose_chip)
 {
     _ui->setupUi(this);
 
@@ -50,25 +50,25 @@ choose_chip_dialog::choose_chip_dialog(QWidget *parent) : QDialog(parent), _ui(n
     setWindowState(Qt::WindowMaximized);
 
     connect(_ui->dialogbuttonbox, &QDialogButtonBox::clicked, this,
-            &choose_chip_dialog::dialogbuttonbox_clicked_callback, Qt::UniqueConnection);
-    connect(_ui->pushbutton_name, &QPushButton::pressed, this, &choose_chip_dialog::pushbutton_name_pressed_callback,
+            &dialog_choose_chip::dialogbuttonbox_clicked_callback, Qt::UniqueConnection);
+    connect(_ui->pushbutton_name, &QPushButton::pressed, this, &dialog_choose_chip::pushbutton_name_pressed_callback,
             Qt::UniqueConnection);
     connect(_ui->pushbutton_company, &QPushButton::pressed, this,
-            &choose_chip_dialog::pushbutton_company_pressed_callback, Qt::UniqueConnection);
-    connect(_ui->dialogbuttonbox, &QDialogButtonBox::accepted, this, &choose_chip_dialog::accept, Qt::UniqueConnection);
-    connect(_ui->dialogbuttonbox, &QDialogButtonBox::rejected, this, &choose_chip_dialog::reject, Qt::UniqueConnection);
+            &dialog_choose_chip::pushbutton_company_pressed_callback, Qt::UniqueConnection);
+    connect(_ui->dialogbuttonbox, &QDialogButtonBox::accepted, this, &dialog_choose_chip::accept, Qt::UniqueConnection);
+    connect(_ui->dialogbuttonbox, &QDialogButtonBox::rejected, this, &dialog_choose_chip::reject, Qt::UniqueConnection);
 
     find_all_keys();
     init_treeview_chip_filter();
     init_tableview_chip_infos();
 }
 
-choose_chip_dialog::~choose_chip_dialog()
+dialog_choose_chip::~dialog_choose_chip()
 {
     delete _ui;
 }
 
-void choose_chip_dialog::find_all_keys()
+void dialog_choose_chip::find_all_keys()
 {
     const auto repository = _repo_instance->get_repository();
     const auto chips = &repository->chips;
@@ -121,7 +121,7 @@ void choose_chip_dialog::find_all_keys()
     }
 }
 
-void choose_chip_dialog::init_treeview_chip_filter()
+void dialog_choose_chip::init_treeview_chip_filter()
 {
     _company_root = new QStandardItem(tr("Company"));
     _series_root = new QStandardItem(tr("Series"));
@@ -195,10 +195,10 @@ void choose_chip_dialog::init_treeview_chip_filter()
     _ui->treeview_chip_filter->expandAll();
 
     connect(model, &QStandardItemModel::itemChanged, this,
-            &choose_chip_dialog::treeview_chip_filter_model_item_changed_callback, Qt::QueuedConnection);
+            &dialog_choose_chip::treeview_chip_filter_model_item_changed_callback, Qt::QueuedConnection);
 }
 
-void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const QStandardItem *item) const
+void dialog_choose_chip::treeview_chip_filter_model_item_changed_callback(const QStandardItem *item) const
 {
     if (item == nullptr)
         return;
@@ -240,7 +240,7 @@ void choose_chip_dialog::treeview_chip_filter_model_item_changed_callback(const 
     }
 }
 
-void choose_chip_dialog::init_tableview_chip_infos()
+void dialog_choose_chip::init_tableview_chip_infos()
 {
     _tableview_chip_infos_proxy_model = new QSortFilterProxyModel(this);
     const auto model = new QStandardItemModel(this);
@@ -290,17 +290,17 @@ void choose_chip_dialog::init_tableview_chip_infos()
     _ui->tableview_chip_infos->horizontalHeader()->setMinimumSectionSize(10);
     _ui->tableview_chip_infos->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     connect(_ui->tableview_chip_infos->selectionModel(), &QItemSelectionModel::selectionChanged, this,
-            &choose_chip_dialog::tableview_chip_infos_selection_model_selection_changed_callback, Qt::UniqueConnection);
+            &dialog_choose_chip::tableview_chip_infos_selection_model_selection_changed_callback, Qt::UniqueConnection);
 }
 
-void choose_chip_dialog::tableview_chip_infos_selection_model_selection_changed_callback(
+void dialog_choose_chip::tableview_chip_infos_selection_model_selection_changed_callback(
     const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(deselected)
     set_chips_info_ui(selected.indexes());
 }
 
-void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_indexes)
+void dialog_choose_chip::set_chips_info_ui(const QModelIndexList &selected_indexes)
 {
     if (selected_indexes.isEmpty())
         return;
@@ -351,7 +351,7 @@ void choose_chip_dialog::set_chips_info_ui(const QModelIndexList &selected_index
     }
 }
 
-void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton *button)
+void dialog_choose_chip::dialogbuttonbox_clicked_callback(const QAbstractButton *button)
 {
     if (button == nullptr)
         return;
@@ -386,7 +386,7 @@ void choose_chip_dialog::dialogbuttonbox_clicked_callback(const QAbstractButton 
     }
 }
 
-void choose_chip_dialog::pushbutton_name_pressed_callback() const
+void dialog_choose_chip::pushbutton_name_pressed_callback() const
 {
     const auto url = _ui->pushbutton_name->property("user_url").toString();
     if (url.isEmpty())
@@ -395,7 +395,7 @@ void choose_chip_dialog::pushbutton_name_pressed_callback() const
     os::open_url(url);
 }
 
-void choose_chip_dialog::pushbutton_company_pressed_callback() const
+void dialog_choose_chip::pushbutton_company_pressed_callback() const
 {
     const auto url = _ui->pushbutton_company->property("user_url").toString();
     if (url.isEmpty())

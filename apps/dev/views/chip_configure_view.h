@@ -62,6 +62,13 @@ class chip_configure_view final : public QWidget
     propertybrowser *_propertybrowser_instance;
     project *_project_instance;
     int resize_counter = 0;
+
+    void init_project_settings() const;
+    void init_linker_settings() const;
+    void init_package_settings() const;
+
+  private slots:
+    void pushbutton_package_manager_pressed_callback();
 };
 
 #endif // CHIP_CONFIGURE_VIEW_H

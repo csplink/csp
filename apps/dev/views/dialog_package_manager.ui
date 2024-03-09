@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>package_manager_dialog</class>
- <widget class="QDialog" name="package_manager_dialog">
+    <class>dialog_package_manager</class>
+    <widget class="QDialog" name="dialog_package_manager">
   <property name="geometry">
    <rect>
     <x>0</x>

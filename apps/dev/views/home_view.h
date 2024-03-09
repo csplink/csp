@@ -57,7 +57,7 @@ class home_view final : public QWidget
 
   private slots:
     void button_create_board_project_clicked_callback(bool checked);
-    void choose_chip_dialog_finished_callback(int result);
+    void dialog_choose_chip_finished_callback(int result);
     void button_open_existing_project_clicked_callback(bool checked);
 
   private:

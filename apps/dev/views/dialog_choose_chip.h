@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        choose_chip_dialog.h
+ *  @file        dialog_choose_chip.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,8 +27,8 @@
  *  2023-05-13     xqyjlj       initial version
  */
 
-#ifndef CHOOSE_MCU_DIALOG_H
-#define CHOOSE_MCU_DIALOG_H
+#ifndef DIALOG_CHOOSE_CHIP_H
+#define DIALOG_CHOOSE_CHIP_H
 
 #include <QAbstractButton>
 #include <QDialog>
@@ -40,16 +40,16 @@
 
 namespace Ui
 {
-class choose_chip_dialog;
+class dialog_choose_chip;
 }
 
-class choose_chip_dialog final : public QDialog
+class dialog_choose_chip final : public QDialog
 {
     Q_OBJECT
 
   public:
-    explicit choose_chip_dialog(QWidget *parent = nullptr);
-    ~choose_chip_dialog() override;
+    explicit dialog_choose_chip(QWidget *parent = nullptr);
+    ~dialog_choose_chip() override;
 
   signals:
     void signals_create_project();
@@ -63,7 +63,7 @@ class choose_chip_dialog final : public QDialog
     void pushbutton_company_pressed_callback() const;
 
   private:
-    Ui::choose_chip_dialog *_ui;
+    Ui::dialog_choose_chip *_ui;
     repo *_repo_instance;
     project *_project_instance = nullptr;
 
@@ -101,4 +101,4 @@ class choose_chip_dialog final : public QDialog
     void set_chips_info_ui(const QModelIndexList &selected_indexes);
 };
 
-#endif // CHOOSE_MCU_DIALOG_H
+#endif // DIALOG_CHOOSE_CHIP_H
