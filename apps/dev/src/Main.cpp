@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        main.cpp
+ *  @file        Main.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -33,9 +33,9 @@
 #include <QFontDatabase>
 #include <QTranslator>
 
+#include "ViewMainWindow.h"
 #include "config.h"
 #include "configure.h"
-#include "mainwindow_view.h"
 #include "os.h"
 #include "project.h"
 #include "repo.h"
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
     }
 
     QApplication::setWindowIcon(QIcon(":/images/logo.ico"));
-    mainwindow_view w;
+    ViewMainWindow w;
     w.show();
 
     const int rtn = QApplication::exec();

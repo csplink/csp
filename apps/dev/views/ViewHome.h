@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        lqfp.h
+ *  @file        ViewHome.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,27 +24,45 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-03     xqyjlj       initial version
+ *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef CSP_LQFP_H
-#define CSP_LQFP_H
+#ifndef VIEW_HOME_H
+#define VIEW_HOME_H
 
-#include "graphicsitem_pin.h"
-#include "pinout_table.h"
+#include <QWidget>
 
-class lqfp final : public QObject
+#include "project.h"
+
+namespace Ui
+{
+class viewHome;
+}
+
+class ViewHome final : public QWidget
 {
     Q_OBJECT
-  public:
-    explicit lqfp(QObject *parent);
-    ~lqfp() override;
 
-    QList<QGraphicsItem *> get_lqfp(const QString &hal, const QString &company, const QString &name);
+  public:
+    explicit ViewHome(QWidget *parent = nullptr);
+    ~ViewHome() override;
+
+  signals:
+    void signalCreateProject();
+    void signalOpenExistingProject(bool checked);
+
+  public slots:
+    void pushButtonCreateChipProjectClickedCallback(bool checked);
+    void createChipProject();
+
+  private slots:
+    void pushButtonCreateBoardProjectClickedCallback(bool checked) const;
+    void dialogChooseChipFinishedCallback(int result) const;
+    void pushButtonOpenExistingProjectClickedCallback(bool checked);
 
   private:
-    int _pin_count = 0;
-    pinout_table::pinout_t _pinout;
+    Ui::viewHome *ui_;
+    project *projectInstance_;
 };
 
-#endif // CSP_LQFP_H
+#endif /** VIEW_HOME_H */

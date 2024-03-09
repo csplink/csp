@@ -2,572 +2,581 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_TW">
 <context>
-    <name>QObject</name>
+    <name>DialogChooseChip</name>
     <message>
-        <location filename="../../src/main.cpp" line="88"/>
-        <source>load font: &lt;%1&gt; failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/main.cpp" line="100"/>
-        <source>Tools for flexible configuration of chips and boards.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/main.cpp" line="103"/>
-        <source>Project file path.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/main.cpp" line="112"/>
-        <source>file: &lt;%1&gt; is not exist.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>chip_configure_view</name>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="45"/>
-        <source>Pinout Configure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="77"/>
-        <source>System View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="82"/>
-        <source>Timer Configure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="87"/>
-        <source>Project Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="97"/>
-        <source>Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="144"/>
-        <source>Project Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="150"/>
-        <source>Build Script/IDE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="194"/>
-        <source>Linker Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="200"/>
-        <source>Minimum Stack Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="236"/>
-        <source>Minimum Heap Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="275"/>
-        <source>Package Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="316"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="323"/>
-        <source>Package Version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/chip_configure_view.ui" line="361"/>
-        <source>Package Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dialog_choose_chip</name>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="14"/>
-        <source>New project from Chip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="40"/>
-        <source>Feature</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="79"/>
-        <source>Chip Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="119"/>
-        <source>Package Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="153"/>
-        <source>Unit price for 10kU:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="197"/>
-        <source>Version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="241"/>
-        <location filename="../../views/dialog_choose_chip.ui" line="248"/>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="261"/>
-        <source>Market:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="268"/>
-        <source>Package:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="290"/>
-        <source>Company Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="316"/>
-        <source>Diagram</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="321"/>
-        <source>Document</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.ui" line="326"/>
-        <source>Buy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="45"/>
-        <location filename="../../views/dialog_choose_chip.cpp" line="359"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="46"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="357"/>
         <source>Create</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="46"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="47"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="126"/>
-        <location filename="../../views/dialog_choose_chip.cpp" line="257"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="124"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="255"/>
         <source>Company</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="127"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="125"/>
         <source>Series</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="128"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="126"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="129"/>
-        <location filename="../../views/dialog_choose_chip.cpp" line="258"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="127"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="256"/>
         <source>Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="130"/>
-        <location filename="../../views/dialog_choose_chip.cpp" line="252"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="128"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="250"/>
         <source>Package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="139"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="137"/>
         <source>Chip Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="249"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="247"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="250"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="248"/>
         <source>Market status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="251"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="249"/>
         <source>Unit price for 10kU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="253"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="251"/>
         <source>Flash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="254"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="252"/>
         <source>RAM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="255"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="253"/>
         <source>IO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="256"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="254"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="265"/>
-        <location filename="../../views/dialog_choose_chip.cpp" line="266"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="263"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="264"/>
         <source>Unavailable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="348"/>
-        <location filename="../../views/dialog_choose_chip.cpp" line="369"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="346"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="367"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_choose_chip.cpp" line="363"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="361"/>
         <source>Please choose a chip.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>dialog_package_manager</name>
+    <name>DialogPackageManager</name>
     <message>
-        <location filename="../../views/dialog_package_manager.ui" line="14"/>
-        <source>Package Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.ui" line="46"/>
-        <source>Install</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.ui" line="56"/>
-        <source>Update</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.ui" line="66"/>
-        <source>Uninstall</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.ui" line="73"/>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.ui" line="99"/>
-        <source>Expand</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.ui" line="113"/>
-        <source>Collapse</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="78"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="68"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="79"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="69"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="80"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="70"/>
         <source>Home Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="81"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="82"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="83"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
         <source>License</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="84"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
         <source>Sha</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="126"/>
-        <location filename="../../views/dialog_package_manager.cpp" line="311"/>
-        <location filename="../../views/dialog_package_manager.cpp" line="323"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="116"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="301"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="313"/>
         <source>Installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialog_package_manager.cpp" line="126"/>
-        <location filename="../../views/dialog_package_manager.cpp" line="319"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="116"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="309"/>
         <source>Not Installed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>graphicsitem_pin</name>
+    <name>GraphicsItemPin</name>
     <message>
-        <location filename="../../src/components/graphicsitem_pin.cpp" line="193"/>
+        <location filename="../../src/components/GraphicsItemPin.cpp" line="193"/>
         <source>Reset State</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>home_view</name>
+    <name>QObject</name>
     <message>
-        <location filename="../../views/home_view.ui" line="66"/>
-        <source>New project from Chip</source>
+        <location filename="../../src/Main.cpp" line="88"/>
+        <source>load font: &lt;%1&gt; failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="79"/>
-        <source>New project from Board</source>
+        <location filename="../../src/Main.cpp" line="100"/>
+        <source>Tools for flexible configuration of chips and boards.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="160"/>
-        <source>Recent Projects</source>
+        <location filename="../../src/Main.cpp" line="103"/>
+        <source>Project file path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/home_view.ui" line="144"/>
-        <source>Developer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/home_view.ui" line="29"/>
-        <source>Project Operation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/home_view.ui" line="134"/>
-        <source>Open existing project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/home_view.ui" line="185"/>
-        <source>About CSP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/home_view.ui" line="190"/>
-        <source>Other Tools</source>
+        <location filename="../../src/Main.cpp" line="112"/>
+        <source>file: &lt;%1&gt; is not exist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>mainwindow_view</name>
+    <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/mainwindow_view.ui" line="62"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="81"/>
-        <location filename="../../views/mainwindow_view.ui" line="108"/>
-        <source>Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="147"/>
-        <source>Property</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="66"/>
-        <source>New Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="89"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="189"/>
-        <source>Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="211"/>
-        <source>Configurations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="223"/>
-        <source>Xmake Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="242"/>
-        <source>toolBar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="255"/>
-        <source>Load Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="258"/>
-        <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="263"/>
-        <source>Import Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="268"/>
-        <source>Save Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="271"/>
-        <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="276"/>
-        <source>Save Project As ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="281"/>
-        <source>Close Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="286"/>
-        <source>Generate Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="291"/>
-        <source>New Chip Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="300"/>
-        <source>Generate code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.ui" line="309"/>
-        <source>Package Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/mainwindow_view.cpp" line="271"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="257"/>
         <source>CSP project file(*.csp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/mainwindow_view.cpp" line="281"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="267"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>wizard_new_project</name>
+    <name>WizardNewProject</name>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="45"/>
+        <location filename="../../views/WizardNewProject.cpp" line="45"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="49"/>
+        <location filename="../../views/WizardNewProject.cpp" line="49"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="50"/>
+        <location filename="../../views/WizardNewProject.cpp" line="50"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="51"/>
+        <location filename="../../views/WizardNewProject.cpp" line="51"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="52"/>
+        <location filename="../../views/WizardNewProject.cpp" line="52"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="65"/>
+        <location filename="../../views/WizardNewProject.cpp" line="65"/>
         <source>Please input project path and name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="82"/>
+        <location filename="../../views/WizardNewProject.cpp" line="82"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="84"/>
+        <location filename="../../views/WizardNewProject.cpp" line="84"/>
         <source>this will create a new project in the path you choose.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="87"/>
+        <location filename="../../views/WizardNewProject.cpp" line="87"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="102"/>
+        <location filename="../../views/WizardNewProject.cpp" line="102"/>
         <source>Project Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/wizard_new_project.cpp" line="105"/>
+        <location filename="../../views/WizardNewProject.cpp" line="105"/>
         <source>Project Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>dialogChooseChip</name>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="14"/>
+        <source>New project from Chip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="40"/>
+        <source>Feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="79"/>
+        <source>Chip Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="119"/>
+        <source>Package Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="153"/>
+        <source>Unit price for 10kU:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="197"/>
+        <source>Version:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="241"/>
+        <location filename="../../views/DialogChooseChip.ui" line="248"/>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="261"/>
+        <source>Market:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="268"/>
+        <source>Package:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="290"/>
+        <source>Company Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="316"/>
+        <source>Diagram</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="321"/>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogChooseChip.ui" line="326"/>
+        <source>Buy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>dialogPackageManager</name>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="14"/>
+        <source>Package Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="46"/>
+        <source>Install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="56"/>
+        <source>Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="66"/>
+        <source>Uninstall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="73"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="99"/>
+        <source>Expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/DialogPackageManager.ui" line="113"/>
+        <source>Collapse</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>viewConfigure</name>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="45"/>
+        <source>Pinout Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="77"/>
+        <source>System View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="82"/>
+        <source>Timer Configure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="87"/>
+        <source>Project Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="97"/>
+        <source>Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="144"/>
+        <source>Project Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="150"/>
+        <source>Build Script/IDE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="194"/>
+        <source>Linker Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="200"/>
+        <source>Minimum Stack Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="236"/>
+        <source>Minimum Heap Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="275"/>
+        <source>Package Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="316"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="323"/>
+        <source>Package Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="361"/>
+        <source>Package Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>viewHome</name>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="29"/>
+        <source>Project Operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="66"/>
+        <source>New project from Chip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="79"/>
+        <source>New project from Board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="134"/>
+        <source>Open existing project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="144"/>
+        <source>Developer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="160"/>
+        <source>Recent Projects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="185"/>
+        <source>About CSP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewHome.ui" line="190"/>
+        <source>Other Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>viewMainWindow</name>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="62"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="66"/>
+        <source>New Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="81"/>
+        <location filename="../../views/ViewMainWindow.ui" line="108"/>
+        <source>Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="89"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="147"/>
+        <source>Property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="189"/>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="211"/>
+        <source>Configurations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="223"/>
+        <source>Xmake Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="242"/>
+        <source>toolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="255"/>
+        <source>Load Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="258"/>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="263"/>
+        <source>Import Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="268"/>
+        <source>Save Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="271"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="276"/>
+        <source>Save Project As ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="281"/>
+        <source>Close Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="286"/>
+        <source>Generate Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="291"/>
+        <source>New Chip Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="300"/>
+        <source>Generate code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="309"/>
+        <source>Package Manager</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

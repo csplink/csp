@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        home_view.h
+ *  @file        ViewConfigure.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,46 +24,51 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-11     xqyjlj       initial version
+ *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef HOME_VIEW_H
-#define HOME_VIEW_H
-
-#include <QWidget>
+#ifndef VIEW_CONFIGURE_H
+#define VIEW_CONFIGURE_H
 
 #include "project.h"
+#include "propertybrowser.h"
 
 namespace Ui
 {
-class home_view;
+class viewConfigure;
 }
 
-class home_view final : public QWidget
+class ViewConfigure final : public QWidget
 {
     Q_OBJECT
 
   public:
-    explicit home_view(QWidget *parent = nullptr);
-    virtual ~home_view() override;
+    explicit ViewConfigure(QWidget *parent = nullptr);
+    ~ViewConfigure() override;
+
+    void setPropertyBrowser(propertybrowser *instance);
+    void initView();
+    void resizeView() const;
 
   signals:
-    void signal_create_project();
-    void signal_open_existing_project(bool checked);
+    void signalUpdateModulesTreeView(const QString &company, const QString &name);
 
-  public slots:
-    void button_create_chip_project_clicked_callback(bool checked);
-    void create_chip_project();
-
-  private slots:
-    void button_create_board_project_clicked_callback(bool checked);
-    void dialog_choose_chip_finished_callback(int result);
-    void button_open_existing_project_clicked_callback(bool checked);
+  protected:
+    void showEvent(QShowEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
   private:
-    Ui::home_view *_ui;
+    Ui::viewConfigure *ui_;
+    propertybrowser *propertyBrowserInstance_;
+    project *projectInstance_;
+    int resizeCounter_ = 0;
 
-    project *_project_instance;
+    void initProjectSettings() const;
+    void initLinkerSettings() const;
+    void initPackageSettings() const;
+
+  private slots:
+    void pushButtonPackageManagerPressedCallback();
 };
 
-#endif // HOME_VIEW_H
+#endif /** VIEW_CONFIGURE_H */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>mainwindow_view</class>
- <widget class="QMainWindow" name="mainwindow_view">
+ <class>viewMainWindow</class>
+ <widget class="QMainWindow" name="viewMainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
   <property name="dockOptions">
    <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::VerticalTabs</set>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
      <number>0</number>
@@ -37,18 +37,18 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QStackedWidget" name="stackedwidget">
+     <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
-      <widget class="home_view" name="page_home_view"/>
-      <widget class="chip_configure_view" name="page_chip_configure_view"/>
-      <widget class="QWidget" name="page_empty"/>
+      <widget class="ViewHome" name="pageViewHome"/>
+      <widget class="ViewConfigure" name="pageViewConfigure"/>
+      <widget class="QWidget" name="pageEmpty"/>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -61,19 +61,19 @@
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menu_new">
+    <widget class="QMenu" name="menuNew">
      <property name="title">
       <string>New Project</string>
      </property>
-     <addaction name="action_new_chip"/>
+     <addaction name="actionNewChip"/>
     </widget>
-    <addaction name="menu_new"/>
-    <addaction name="action_load"/>
-    <addaction name="action_import"/>
-    <addaction name="action_save"/>
-    <addaction name="action_saveas"/>
-    <addaction name="action_close"/>
-    <addaction name="action_report"/>
+    <addaction name="menuNew"/>
+    <addaction name="actionLoad"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionReport"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuProject">
@@ -81,8 +81,8 @@
      <string>Project</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="action_generate"/>
-    <addaction name="action_package_manager"/>
+    <addaction name="actionGenerate"/>
+    <addaction name="actionPackageManager"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -93,8 +93,8 @@
    <addaction name="menuProject"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QDockWidget" name="dockwidget_left">
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidgetLeft">
    <property name="minimumSize">
     <size>
      <width>250</width>
@@ -110,7 +110,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockwidget_left_contents">
+   <widget class="QWidget" name="dockWidgetLeftContents">
     <layout class="QGridLayout" name="gridLayout">
      <property name="leftMargin">
       <number>9</number>
@@ -128,12 +128,12 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="QTreeView" name="treeview"/>
+      <widget class="QTreeView" name="treeView"/>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockwidget_right">
+  <widget class="QDockWidget" name="dockWidgetRight">
    <property name="minimumSize">
     <size>
      <width>250</width>
@@ -149,7 +149,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockwidget_right_contents">
+   <widget class="QWidget" name="dockWidgetRightContents">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="leftMargin">
       <number>0</number>
@@ -167,12 +167,12 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="propertybrowser" name="treepropertybrowser" native="true"/>
+      <widget class="propertybrowser" name="treePropertyBrowser" native="true"/>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockwidget_bottom_output">
+  <widget class="QDockWidget" name="dockWidgetBottomOutput">
    <property name="minimumSize">
     <size>
      <width>88</width>
@@ -191,10 +191,10 @@
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="dockwidget_bottom_output_contents">
+   <widget class="QWidget" name="dockWidgetBottomOutputContents">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="logviewbox" name="logviewbox_output">
+      <widget class="LogBox" name="LogBoxOutput">
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -203,7 +203,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockwidget_bottom_configurations">
+  <widget class="QDockWidget" name="dockWidgetBottomConfigurations">
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
@@ -213,9 +213,9 @@
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="dockwidget_bottom_configurations_contents"/>
+   <widget class="QWidget" name="dockWidgetBottomConfigurationsContents"/>
   </widget>
-  <widget class="QDockWidget" name="dockwidget_bottom_xmake_output">
+  <widget class="QDockWidget" name="dockWidgetBottomXmakeOutput">
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
@@ -225,10 +225,10 @@
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="dockwidget_bottom_xmake_output_contents">
+   <widget class="QWidget" name="dockWidgetBottomXmakeOutputContents">
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
-      <widget class="logviewbox" name="logviewbox_xmake_output">
+      <widget class="LogBox" name="LogBoxXmakeOutput">
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -237,7 +237,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="toolbar">
+  <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -247,10 +247,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_generate"/>
-   <addaction name="action_package_manager"/>
+   <addaction name="actionGenerate"/>
+   <addaction name="actionPackageManager"/>
   </widget>
-  <action name="action_load">
+  <action name="actionLoad">
    <property name="text">
     <string>Load Project</string>
    </property>
@@ -258,12 +258,12 @@
     <string>Ctrl+L</string>
    </property>
   </action>
-  <action name="action_import">
+  <action name="actionImport">
    <property name="text">
     <string>Import Project</string>
    </property>
   </action>
-  <action name="action_save">
+  <action name="actionSave">
    <property name="text">
     <string>Save Project</string>
    </property>
@@ -271,27 +271,27 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="action_saveas">
+  <action name="actionSaveAs">
    <property name="text">
     <string>Save Project As ...</string>
    </property>
   </action>
-  <action name="action_close">
+  <action name="actionClose">
    <property name="text">
     <string>Close Project</string>
    </property>
   </action>
-  <action name="action_report">
+  <action name="actionReport">
    <property name="text">
     <string>Generate Report</string>
    </property>
   </action>
-  <action name="action_new_chip">
+  <action name="actionNewChip">
    <property name="text">
     <string>New Chip Project</string>
    </property>
   </action>
-  <action name="action_generate">
+  <action name="actionGenerate">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
      <normaloff>:/icon/code-s-slash-line.svg</normaloff>:/icon/code-s-slash-line.svg</iconset>
@@ -300,7 +300,7 @@
     <string>Generate code</string>
    </property>
   </action>
-  <action name="action_package_manager">
+  <action name="actionPackageManager">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
      <normaloff>:/icon/dropbox-line.svg</normaloff>:/icon/dropbox-line.svg</iconset>
@@ -312,27 +312,27 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>home_view</class>
-   <extends>QWidget</extends>
-   <header location="global">home_view.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>chip_configure_view</class>
-   <extends>QWidget</extends>
-   <header location="global">chip_configure_view.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>propertybrowser</class>
    <extends>QWidget</extends>
    <header>propertybrowser.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>logviewbox</class>
+   <class>ViewConfigure</class>
+   <extends>QWidget</extends>
+   <header location="global">ViewConfigure.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ViewHome</class>
+   <extends>QWidget</extends>
+   <header location="global">ViewHome.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LogBox</class>
    <extends>QTextEdit</extends>
-   <header>logviewbox.h</header>
+   <header>LogBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

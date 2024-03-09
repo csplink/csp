@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        wizard_new_project.cpp
+ *  @file        WizardNewProject.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -32,33 +32,33 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include "WizardNewProject.h"
 #include "config.h"
 #include "os.h"
-#include "wizard_new_project.h"
 
-wizard_new_project::wizard_new_project(const QWidget *parent)
+WizardNewProject::WizardNewProject(const QWidget *parent)
 {
     Q_UNUSED(parent)
 
-    _project_instance = project::get_instance();
+    projectInstance_ = project::get_instance();
 
     setWindowTitle(tr("New Project"));
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint |
                    Qt::WindowMaximizeButtonHint);
 
-    setButtonText(QWizard::NextButton, tr("Next"));
-    setButtonText(QWizard::BackButton, tr("Back"));
-    setButtonText(QWizard::FinishButton, tr("Finish"));
-    setButtonText(QWizard::CancelButton, tr("Cancel"));
+    setButtonText(NextButton, tr("Next"));
+    setButtonText(BackButton, tr("Back"));
+    setButtonText(FinishButton, tr("Finish"));
+    setButtonText(CancelButton, tr("Cancel"));
 
-    addPage(create_page_introduce());
-    addPage(create_page_choose_path());
+    addPage(createPageIntroduce());
+    addPage(createPageChoosePath());
 }
 
-void wizard_new_project::accept()
+void WizardNewProject::accept()
 {
-    auto path = _lineedit_project_path->text();
-    auto name = _lineedit_project_name->text();
+    auto path = lineEditProjectPath_->text();
+    auto name = lineEditProjectName_->text();
 
     if (path.isEmpty() || name.isEmpty())
     {
@@ -66,13 +66,13 @@ void wizard_new_project::accept()
         return;
     }
 
-    _project_instance->set_path(QString("%1/%2/%2.csp").arg(path, name));
-    _project_instance->set_name(name);
+    projectInstance_->set_path(QString("%1/%2/%2.csp").arg(path, name));
+    projectInstance_->set_name(name);
 
     QDialog::accept();
 }
 
-QWizardPage *wizard_new_project::create_page_introduce()
+QWizardPage *WizardNewProject::createPageIntroduce()
 {
     QFont font;
     font.setBold(true);
@@ -95,7 +95,7 @@ QWizardPage *wizard_new_project::create_page_introduce()
     return page;
 }
 
-QWizardPage *wizard_new_project::create_page_choose_path()
+QWizardPage *WizardNewProject::createPageChoosePath()
 {
     auto *page = new QWizardPage(this);
 
@@ -106,34 +106,34 @@ QWizardPage *wizard_new_project::create_page_choose_path()
     label2->setWordWrap(true);
 
     auto workspace = config::workspace_dir();
-    _lineedit_project_path = new QLineEdit(workspace, page);
+    lineEditProjectPath_ = new QLineEdit(workspace, page);
 
     int index = 0;
     while (os::isdir(QString("%1/untitled%2").arg(workspace, index == 0 ? "" : QString::number(index))))
     {
         index++;
     }
-    _lineedit_project_name = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
+    lineEditProjectName_ = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
 
-    const auto toolbutton1 = new QToolButton(page);
-    toolbutton1->setMaximumSize(30, 30);
-    toolbutton1->setText("...");
+    const auto toolButton = new QToolButton(page);
+    toolButton->setMaximumSize(30, 30);
+    toolButton->setText("...");
 
-    const auto gridlayout = new QGridLayout(page);
+    const auto gridLayout = new QGridLayout(page);
 
-    gridlayout->addWidget(label1, 0, 0, 1, 1);
-    gridlayout->addWidget(_lineedit_project_path, 0, 1, 1, 1);
-    gridlayout->addWidget(toolbutton1, 0, 2, 1, 1);
-    gridlayout->addWidget(label2, 1, 0, 1, 1);
-    gridlayout->addWidget(_lineedit_project_name, 1, 1, 1, 1);
+    gridLayout->addWidget(label1, 0, 0, 1, 1);
+    gridLayout->addWidget(lineEditProjectPath_, 0, 1, 1, 1);
+    gridLayout->addWidget(toolButton, 0, 2, 1, 1);
+    gridLayout->addWidget(label2, 1, 0, 1, 1);
+    gridLayout->addWidget(lineEditProjectName_, 1, 1, 1, 1);
 
-    page->setLayout(gridlayout);
+    page->setLayout(gridLayout);
 
-    connect(toolbutton1, &QToolButton::pressed, this, [this]() {
+    connect(toolButton, &QToolButton::pressed, this, [this]() {
         const QString path = os::getexistdir();
         if (!path.isEmpty())
         {
-            _lineedit_project_path->setText(path);
+            lineEditProjectPath_->setText(path);
         }
     });
 

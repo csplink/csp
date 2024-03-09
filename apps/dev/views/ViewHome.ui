@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>home_view</class>
- <widget class="QWidget" name="home_view">
+ <class>viewHome</class>
+ <widget class="QWidget" name="viewHome">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -61,7 +61,7 @@
        </spacer>
       </item>
       <item row="1" column="1">
-       <widget class="QCommandLinkButton" name="button_create_mcu_project">
+       <widget class="QCommandLinkButton" name="commandLinkButtonCreateChipProject">
         <property name="text">
          <string>New project from Chip</string>
         </property>
@@ -74,7 +74,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCommandLinkButton" name="button_create_board_project">
+       <widget class="QCommandLinkButton" name="commandLinkButtonCreateBoardProject">
         <property name="text">
          <string>New project from Board</string>
         </property>
@@ -129,7 +129,7 @@
        </spacer>
       </item>
       <item row="3" column="1">
-       <widget class="QCommandLinkButton" name="button_open_existing_project">
+       <widget class="QCommandLinkButton" name="commandLinkButtonOpenExistingProject">
         <property name="text">
          <string>Open existing project</string>
         </property>
@@ -178,14 +178,14 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="tab_about_csp">
+     <widget class="QWidget" name="tabAboutCsp">
       <attribute name="title">
        <string>About CSP</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tab_other_tools">
+     <widget class="QWidget" name="tabOtherTools">
       <attribute name="title">
        <string>Other Tools</string>
       </attribute>

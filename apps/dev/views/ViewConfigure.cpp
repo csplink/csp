@@ -1,0 +1,186 @@
+/*
+ * ****************************************************************************
+ *  @author      xqyjlj
+ *  @file        ViewConfigure.cpp
+ *  @brief
+ *
+ * ****************************************************************************
+ *  @attention
+ *  Licensed under the GNU General Public License v. 3 (the "License");
+ *  You may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  Copyright (C) 2023-2023 xqyjlj<xqyjlj@126.com>
+ *
+ * ****************************************************************************
+ *  Change Logs:
+ *  Date           Author       Notes
+ *  ------------   ----------   -----------------------------------------------
+ *  2023-05-14     xqyjlj       initial version
+ */
+
+#include <QtCore>
+
+#include "DialogPackageManager.h"
+#include "LQFP.h"
+#include "ViewConfigure.h"
+#include "ui_ViewConfigure.h"
+
+ViewConfigure::ViewConfigure(QWidget *parent)
+    : QWidget(parent), ui_(new Ui::viewConfigure)
+{
+    ui_->setupUi(this);
+    projectInstance_ = project::get_instance();
+
+    (void)connect(ui_->pushButtonPackageManager, &QPushButton::pressed, this, &ViewConfigure::pushButtonPackageManagerPressedCallback, Qt::UniqueConnection);
+
+    initProjectSettings();
+    initLinkerSettings();
+    initPackageSettings();
+}
+
+ViewConfigure::~ViewConfigure()
+{
+    delete ui_;
+}
+
+void ViewConfigure::showEvent(QShowEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void ViewConfigure::setPropertyBrowser(propertybrowser *instance)
+{
+    propertyBrowserInstance_ = instance;
+
+    (void)connect(ui_->graphicsView, &graphicsview_panzoom::signals_selected_item_clicked, propertyBrowserInstance_,
+                  &propertybrowser::update_property_by_pin);
+}
+
+void ViewConfigure::initView()
+{
+    const auto package = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
+    const auto hal = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_HAL).toLower();
+    const auto company = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY);
+    const auto name = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET);
+
+    delete ui_->graphicsView->scene();
+    const auto scene = new QGraphicsScene(ui_->graphicsView);
+    if (package.startsWith("lqfp"))
+    {
+        LQFP lqfp(nullptr);
+        auto items = lqfp.getLqfp(hal, company, name);
+        for (const auto &item : items)
+        {
+            scene->addItem(item);
+            if ((item->flags() & QGraphicsItem::ItemIsFocusable) == QGraphicsItem::ItemIsFocusable)
+            {
+                (void)connect(dynamic_cast<const GraphicsItemPin *>(item), &GraphicsItemPin::signalPropertyChanged,
+                              ui_->graphicsView, &graphicsview_panzoom::property_changed_callback,
+                              Qt::UniqueConnection);
+            }
+        }
+    }
+    ui_->graphicsView->setScene(scene);
+}
+
+void ViewConfigure::resizeEvent(QResizeEvent *event)
+{
+    if (resizeCounter_ <= 2)
+    {
+        resizeView();
+
+        /**
+         * 0: 视图初始化
+         * 1: 布局初始化
+         * 2: 全局最大化
+         */
+        resizeCounter_++;
+    }
+    QWidget::resizeEvent(event);
+}
+
+void ViewConfigure::resizeView() const
+{
+    const qreal graphicsSceneWidth = ui_->graphicsView->scene()->itemsBoundingRect().width();
+    const qreal graphicsSceneHeight = ui_->graphicsView->scene()->itemsBoundingRect().height();
+    const qreal viewWidth = this->ui_->graphicsView->width();
+    const qreal viewHeight = this->ui_->graphicsView->height();
+    const qreal sceneMax = graphicsSceneWidth > graphicsSceneHeight ? graphicsSceneWidth : graphicsSceneHeight;
+    const qreal viewMin = viewWidth > viewHeight ? viewHeight : viewWidth;
+
+    ui_->graphicsView->centerOn(ui_->graphicsView->scene()->itemsBoundingRect().width() / static_cast<qreal>(2),
+                                ui_->graphicsView->scene()->itemsBoundingRect().height() / static_cast<qreal>(2));
+
+    const qreal scale = viewMin / sceneMax;
+    ui_->graphicsView->zoom(scale);
+}
+
+void ViewConfigure::initProjectSettings() const
+{
+    const chip_summary_table::target_project_t &target_project = projectInstance_->get_chip_summary().target_project;
+    ui_->comboBoxBuildScriptIde->clear();
+    if (target_project.xmake)
+    {
+        ui_->comboBoxBuildScriptIde->addItem("xmake");
+    }
+    if (target_project.cmake)
+    {
+        ui_->comboBoxBuildScriptIde->addItem("cmake");
+    }
+    if (!target_project.mdk_arm.device.isEmpty())
+    {
+        ui_->comboBoxBuildScriptIde->addItem("mdk_arm");
+    }
+}
+
+void ViewConfigure::initLinkerSettings() const
+{
+    const chip_summary_table::linker_t &linker = projectInstance_->get_chip_summary().linker;
+    ui_->lineEditMinimumHeapSize->clear();
+    if (!linker.default_minimum_heap_size.isEmpty())
+    {
+        ui_->lineEditMinimumHeapSize->setText(linker.default_minimum_heap_size);
+    }
+    else
+    {
+        ui_->lineEditMinimumHeapSize->setReadOnly(true);
+        ui_->lineEditMinimumHeapSize->setDisabled(true);
+    }
+
+    ui_->lineEditMinimumStackSize->clear();
+    if (!linker.default_minimum_stack_size.isEmpty())
+    {
+        ui_->lineEditMinimumStackSize->setText(linker.default_minimum_stack_size);
+    }
+    else
+    {
+        ui_->lineEditMinimumStackSize->setReadOnly(true);
+        ui_->lineEditMinimumStackSize->setDisabled(true);
+    }
+}
+
+void ViewConfigure::initPackageSettings() const
+{
+    const chip_summary_table::chip_summary_t &chip_summary = projectInstance_->get_chip_summary();
+
+    if (!chip_summary.hal.isEmpty())
+    {
+        ui_->lineEditPackageName->setText(chip_summary.hal);
+    }
+}
+
+void ViewConfigure::pushButtonPackageManagerPressedCallback()
+{
+    DialogPackageManager dialog(this);
+    (void)dialog.exec();
+}
+

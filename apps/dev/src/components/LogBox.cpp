@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        logviewbox.cpp
+ * @file        LogBox.cpp
  * @brief
  *
  *****************************************************************************
@@ -30,28 +30,29 @@
 #include <QPainter>
 #include <QTextBlock>
 
-#include "logviewbox.h"
+#include "LogBox.h"
 
-logviewbox::logviewbox(QWidget *parent) : QPlainTextEdit(parent)
+LogBox::LogBox(QWidget *parent)
+    : QPlainTextEdit(parent)
 {
-    _line_number_area = new line_number_area(this);
+    lineNumberArea_ = new LineNumberArea(this);
 
-    connect(this, &logviewbox::blockCountChanged, this, &logviewbox::update_line_number_area_width,
+    connect(this, &LogBox::blockCountChanged, this, &LogBox::updateLineNumberAreaWidth,
             Qt::UniqueConnection);
-    connect(this, &logviewbox::updateRequest, this, &logviewbox::update_line_number_area, Qt::UniqueConnection);
+    connect(this, &LogBox::updateRequest, this, &LogBox::updateLineNumberArea, Qt::UniqueConnection);
 
-    update_line_number_area_width(0);
+    updateLineNumberAreaWidth(0);
 
     // TODO: save to file
     const QFont font("JetBrains Mono");
     this->setFont(font);
 }
 
-logviewbox::~logviewbox() = default;
+LogBox::~LogBox() = default;
 
-void logviewbox::line_number_area_paint_event(const QPaintEvent *event) const
+void LogBox::lineNumberAreaPaintEvent(const QPaintEvent *event) const
 {
-    QPainter painter(_line_number_area);
+    QPainter painter(lineNumberArea_);
     painter.fillRect(event->rect(), Qt::lightGray);
 
     QTextBlock block = firstVisibleBlock();
@@ -65,7 +66,7 @@ void logviewbox::line_number_area_paint_event(const QPaintEvent *event) const
         {
             QString number = QString::number(blockNumber + 1);
             painter.setPen(Qt::black);
-            painter.drawText(0, top, _line_number_area->width(), fontMetrics().height(), Qt::AlignRight, number);
+            painter.drawText(0, top, lineNumberArea_->width(), fontMetrics().height(), Qt::AlignRight, number);
         }
 
         block = block.next();
@@ -75,7 +76,7 @@ void logviewbox::line_number_area_paint_event(const QPaintEvent *event) const
     }
 }
 
-int logviewbox::line_number_area_width() const
+int LogBox::lineNumberAreaWidth() const
 {
     int digits = 1;
     int max = qMax(1, blockCount());
@@ -90,39 +91,39 @@ int logviewbox::line_number_area_width() const
     return space;
 }
 
-void logviewbox::append(const QString &text)
+void LogBox::append(const QString &text)
 {
     this->appendPlainText(text); // TODO: add max
 }
 
-void logviewbox::resizeEvent(QResizeEvent *event)
+void LogBox::resizeEvent(QResizeEvent *event)
 {
     QPlainTextEdit::resizeEvent(event);
 
     const QRect cr = contentsRect();
-    _line_number_area->setGeometry(QRect(cr.left(), cr.top(), line_number_area_width(), cr.height()));
+    lineNumberArea_->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
-void logviewbox::update_line_number_area_width(const int new_block_count)
+void LogBox::updateLineNumberAreaWidth(const int new_block_count)
 {
     Q_UNUSED(new_block_count)
 
-    setViewportMargins(line_number_area_width(), 0, 0, 0);
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
-void logviewbox::update_line_number_area(const QRect &rect, int dy)
+void LogBox::updateLineNumberArea(const QRect &rect, const int dy)
 {
     if (dy)
     {
-        _line_number_area->scroll(0, dy);
+        lineNumberArea_->scroll(0, dy);
     }
     else
     {
-        _line_number_area->update(0, rect.y(), _line_number_area->width(), rect.height());
+        lineNumberArea_->update(0, rect.y(), lineNumberArea_->width(), rect.height());
     }
 
     if (rect.contains(viewport()->rect()))
     {
-        update_line_number_area_width(0);
+        updateLineNumberAreaWidth(0);
     }
 }

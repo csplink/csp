@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        wizard_new_project.h
+ *  @file        GraphicsItemChipBody.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,34 +24,34 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-29     xqyjlj       initial version
+ *  2023-06-05     xqyjlj       initial version
  */
 
-#ifndef WIZARD_NEW_PROJECT_H
-#define WIZARD_NEW_PROJECT_H
+#ifndef GRAPHICS_ITEM_CHIP_BODY_H
+#define GRAPHICS_ITEM_CHIP_BODY_H
 
-#include <QLineEdit>
-#include <QWizard>
+#include <QGraphicsItem>
+#include <QPainter>
 
-#include "project.h"
-
-class wizard_new_project final : public QWizard
+class GraphicsItemChipBody final : public QGraphicsItem
 {
-    Q_OBJECT
-
   public:
-    explicit wizard_new_project(const QWidget *parent);
-
-    void accept() override;
-
-  private:
-    QLineEdit *_lineedit_project_path = nullptr;
-    QLineEdit *_lineedit_project_name = nullptr;
+    explicit GraphicsItemChipBody(qreal width, qreal height, const QString &name, const QString &company,
+                                  const QString &package);
+    ~GraphicsItemChipBody() override;
 
   private:
-    project *_project_instance = nullptr;
-    QWizardPage *create_page_introduce();
-    QWizardPage *create_page_choose_path();
+    qreal width_;
+    qreal height_;
+    QString name_;
+    QString company_;
+    QString package_;
+    QFont *font_;
+
+  protected:
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 
-#endif // WIZARD_NEW_PROJECT_H
+#endif // GRAPHICS_ITEM_CHIP_BODY_H

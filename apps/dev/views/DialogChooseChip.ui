@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>dialog_choose_chip</class>
-    <widget class="QDialog" name="dialog_choose_chip">
+ <class>dialogChooseChip</class>
+ <widget class="QDialog" name="dialogChooseChip">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QTreeView" name="treeview_chip_filter">
+     <widget class="QTreeView" name="treeViewChipFilter">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -35,7 +35,7 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tab_feature">
+       <widget class="QWidget" name="tabFeature">
         <attribute name="title">
          <string>Feature</string>
         </attribute>
@@ -62,7 +62,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout_6" rowstretch="1,1,0">
             <item row="0" column="0">
-             <widget class="QPushButton" name="pushbutton_name">
+             <widget class="QPushButton" name="pushButtonName">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -81,7 +81,7 @@
              </widget>
             </item>
             <item row="0" column="2" rowspan="3">
-             <widget class="QLabel" name="label_package_image">
+             <widget class="QLabel" name="labelPackageImage">
               <property name="enabled">
                <bool>true</bool>
               </property>
@@ -155,7 +155,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="label_price">
+                <widget class="QLabel" name="labelPrice">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -199,7 +199,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="label_versions">
+                <widget class="QLabel" name="labelVersions">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -230,7 +230,7 @@
               </property>
               <layout class="QGridLayout" name="gridLayout_5">
                <item row="2" column="1">
-                <widget class="QLabel" name="label_market_status">
+                <widget class="QLabel" name="labelMarketStatus">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                    <horstretch>0</horstretch>
@@ -243,7 +243,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="label_package">
+                <widget class="QLabel" name="labelPackage">
                  <property name="text">
                   <string>Unknown</string>
                  </property>
@@ -273,7 +273,7 @@
              </widget>
             </item>
             <item row="1" column="0" rowspan="2">
-             <widget class="QPushButton" name="pushbutton_company">
+             <widget class="QPushButton" name="pushButtonCompany">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -295,7 +295,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QTextBrowser" name="textbrowser_readme">
+          <widget class="QTextBrowser" name="textBrowserReadme">
            <property name="font">
             <font>
              <family>JetBrains Mono</family>
@@ -311,17 +311,17 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_diagram">
+       <widget class="QWidget" name="tabDiagram">
         <attribute name="title">
          <string>Diagram</string>
         </attribute>
        </widget>
-       <widget class="QWidget" name="tab_document">
+       <widget class="QWidget" name="tabDocument">
         <attribute name="title">
          <string>Document</string>
         </attribute>
        </widget>
-       <widget class="QWidget" name="tab_buy">
+       <widget class="QWidget" name="tabBuy">
         <attribute name="title">
          <string>Buy</string>
         </attribute>
@@ -333,7 +333,7 @@
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <widget class="QTableView" name="tableview_chip_infos">
+         <widget class="QTableView" name="tableViewChipInfos">
           <attribute name="horizontalHeaderHighlightSections">
            <bool>false</bool>
           </attribute>
@@ -348,7 +348,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="dialogbuttonbox">
+    <widget class="QDialogButtonBox" name="dialogButtonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        graphicsitem_chipbody.h
+ *  @file        WizardNewProject.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,34 +24,32 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-05     xqyjlj       initial version
+ *  2023-05-29     xqyjlj       initial version
  */
 
-#ifndef CSP_GRAPHICSITEM_CHIPBODY_H
-#define CSP_GRAPHICSITEM_CHIPBODY_H
+#ifndef WIZARD_NEW_PROJECT_H
+#define WIZARD_NEW_PROJECT_H
 
-#include <QGraphicsItem>
-#include <QPainter>
+#include <QLineEdit>
+#include <QWizard>
 
-class graphicsitem_chipbody final : public QGraphicsItem
+#include "project.h"
+
+class WizardNewProject final : public QWizard
 {
+    Q_OBJECT
+
   public:
-    explicit graphicsitem_chipbody(qreal width, qreal height, const QString &name, const QString &company,
-                                   const QString &package);
-    ~graphicsitem_chipbody() override;
+    explicit WizardNewProject(const QWidget *parent);
+    void accept() override;
 
   private:
-    qreal _width;
-    qreal _height;
-    QString _name;
-    QString _company;
-    QString _package;
-    QFont *_font;
+    QLineEdit *lineEditProjectPath_ = nullptr;
+    QLineEdit *lineEditProjectName_ = nullptr;
+    project *projectInstance_ = nullptr;
 
-  protected:
-    QRectF boundingRect() const override;
-    QPainterPath shape() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QWizardPage *createPageIntroduce();
+    QWizardPage *createPageChoosePath();
 };
 
-#endif // CSP_GRAPHICSITEM_CHIPBODY_H
+#endif /** WIZARD_NEW_PROJECT_H */

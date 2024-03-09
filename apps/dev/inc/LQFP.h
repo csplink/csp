@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        chip_configure_view.h
+ *  @file        LQFP.h
  *  @brief
  *
  * ****************************************************************************
@@ -24,51 +24,27 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-14     xqyjlj       initial version
+ *  2023-06-03     xqyjlj       initial version
  */
 
-#ifndef CHIP_CONFIGURE_VIEW_H
-#define CHIP_CONFIGURE_VIEW_H
+#ifndef LQFP_H
+#define LQFP_H
 
-#include "project.h"
-#include "propertybrowser.h"
+#include "GraphicsItemPin.h"
+#include "pinout_table.h"
 
-namespace Ui
-{
-class chip_configure_view;
-}
-
-class chip_configure_view final : public QWidget
+class LQFP final : public QObject
 {
     Q_OBJECT
-
   public:
-    explicit chip_configure_view(QWidget *parent = nullptr);
-    virtual ~chip_configure_view() override;
+    explicit LQFP(QObject *parent);
+    ~LQFP() override;
 
-    void set_propertybrowser(propertybrowser *instance);
-    void init_view();
-    void resize_view() const;
-
-  signals:
-    void signal_update_modules_treeview(const QString &company, const QString &name);
-
-  protected:
-    virtual void showEvent(QShowEvent *event) override;
-    virtual void resizeEvent(QResizeEvent *event) override;
+    QList<QGraphicsItem *> getLqfp(const QString &hal, const QString &company, const QString &name);
 
   private:
-    Ui::chip_configure_view *_ui;
-    propertybrowser *_propertybrowser_instance;
-    project *_project_instance;
-    int resize_counter = 0;
-
-    void init_project_settings() const;
-    void init_linker_settings() const;
-    void init_package_settings() const;
-
-  private slots:
-    void pushbutton_package_manager_pressed_callback();
+    int pinCount_ = 0;
+    pinout_table::pinout_t pinout_;
 };
 
-#endif // CHIP_CONFIGURE_VIEW_H
+#endif // CSP_LQFP_H

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>dialog_package_manager</class>
-    <widget class="QDialog" name="dialog_package_manager">
+ <class>dialogPackageManager</class>
+ <widget class="QDialog" name="dialogPackageManager">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <widget class="QTreeView" name="treeview">
+    <widget class="QTreeView" name="treeView">
      <attribute name="headerVisible">
       <bool>true</bool>
      </attribute>
@@ -38,7 +38,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushbutton_install">
+       <widget class="QPushButton" name="pushButtonInstall">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -48,7 +48,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushbutton_update">
+       <widget class="QPushButton" name="pushButtonUpdate">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -58,7 +58,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushbutton_uninstall">
+       <widget class="QPushButton" name="pushButtonUninstall">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -68,7 +68,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushbutton_close">
+       <widget class="QPushButton" name="pushButtonClose">
         <property name="text">
          <string>Close</string>
         </property>
@@ -84,7 +84,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLineEdit" name="lineedit_filter"/>
+       <widget class="QLineEdit" name="lineEditFilter"/>
       </item>
       <item>
        <widget class="Line" name="line">
@@ -94,7 +94,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="toolbutton_expand">
+       <widget class="QToolButton" name="toolButtonExpand">
         <property name="toolTip">
          <string>Expand</string>
         </property>
@@ -108,7 +108,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="toolbutton_collapse">
+       <widget class="QToolButton" name="toolButtonCollapse">
         <property name="toolTip">
          <string>Collapse</string>
         </property>

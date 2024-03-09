@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        logviewbox.h
+ * @file        LogBox.h
  * @brief
  *
  *****************************************************************************
@@ -27,20 +27,20 @@
  * 2023-12-24     xqyjlj       initial version
  */
 
-#ifndef CSP_LOGVIEWBOX_H
-#define CSP_LOGVIEWBOX_H
+#ifndef LOG_BOX_H
+#define LOG_BOX_H
 
 #include <QPlainTextEdit>
 
-class logviewbox final : public QPlainTextEdit
+class LogBox final : public QPlainTextEdit
 {
     Q_OBJECT
   public:
-    explicit logviewbox(QWidget *parent = nullptr);
-    ~logviewbox() override;
+    explicit LogBox(QWidget *parent = nullptr);
+    ~LogBox() override;
 
-    void line_number_area_paint_event(const QPaintEvent *event) const;
-    int line_number_area_width() const;
+    void lineNumberAreaPaintEvent(const QPaintEvent *event) const;
+    int lineNumberAreaWidth() const;
 
   public slots:
     void append(const QString &text);
@@ -49,34 +49,35 @@ class logviewbox final : public QPlainTextEdit
     void resizeEvent(QResizeEvent *event) override;
 
   private:
-    class line_number_area final : public QWidget
+    class LineNumberArea final : public QWidget
     {
       public:
-        explicit line_number_area(logviewbox *editor) : QWidget(editor), codeEditor(editor)
+        explicit LineNumberArea(LogBox *editor)
+            : QWidget(editor), codeEditor(editor)
         {
         }
 
         QSize sizeHint() const override
         {
-            return {codeEditor->line_number_area_width(), 0};
+            return { codeEditor->lineNumberAreaWidth(), 0 };
         }
 
       protected:
         void paintEvent(QPaintEvent *event) override
         {
-            codeEditor->line_number_area_paint_event(event);
+            codeEditor->lineNumberAreaPaintEvent(event);
         }
 
       private:
-        logviewbox *codeEditor;
+        LogBox *codeEditor;
     };
 
   private slots:
-    void update_line_number_area_width(int new_block_count);
-    void update_line_number_area(const QRect &rect, int dy);
+    void updateLineNumberAreaWidth(int new_block_count);
+    void updateLineNumberArea(const QRect &rect, int dy);
 
   private:
-    QWidget *_line_number_area;
+    QWidget *lineNumberArea_;
 };
 
-#endif
+#endif /** LOG_BOX_H */

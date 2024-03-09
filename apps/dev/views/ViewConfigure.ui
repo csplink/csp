@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>chip_configure_view</class>
- <widget class="QWidget" name="chip_configure_view">
+ <class>viewConfigure</class>
+ <widget class="QWidget" name="viewConfigure">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabwidget_main">
+    <widget class="QTabWidget" name="tabWidgetMain">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
        <horstretch>0</horstretch>
@@ -38,9 +38,9 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_pinout_configure">
+     <widget class="QWidget" name="tabPinoutConfigure">
       <attribute name="title">
        <string>Pinout Configure</string>
       </attribute>
@@ -61,7 +61,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="graphicsview_panzoom" name="graphicsview">
+        <widget class="graphicsview_panzoom" name="graphicsView">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>2</horstretch>
@@ -72,17 +72,17 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_system_view">
+     <widget class="QWidget" name="tabSystemView">
       <attribute name="title">
        <string>System View</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tab_timer_configure">
+     <widget class="QWidget" name="tabTimerConfigure">
       <attribute name="title">
        <string>Timer Configure</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tab_project_configure">
+     <widget class="QWidget" name="tabProjectConfigure">
       <attribute name="title">
        <string>Project Manager</string>
       </attribute>
@@ -155,7 +155,7 @@ background-color:transparent;
                    <widget class="QWidget" name="widget_2" native="true">
                     <layout class="QGridLayout" name="gridLayout_3">
                      <item row="0" column="0">
-                      <widget class="QComboBox" name="combobox_build_script_ide">
+                      <widget class="QComboBox" name="comboBoxBuildScriptIde">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -205,7 +205,7 @@ background-color:transparent;
                    <widget class="QWidget" name="widget_3" native="true">
                     <layout class="QGridLayout" name="gridLayout_9">
                      <item row="0" column="0">
-                      <widget class="QLineEdit" name="lineedit_minimun_stack_size">
+                      <widget class="QLineEdit" name="lineEditMinimumStackSize">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -241,7 +241,7 @@ background-color:transparent;
                    <widget class="QWidget" name="widget_4" native="true">
                     <layout class="QGridLayout" name="gridLayout_7">
                      <item row="0" column="0">
-                      <widget class="QLineEdit" name="lineedit_minimun_heap_size">
+                      <widget class="QLineEdit" name="lineEditMinimumHeapSize">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -279,7 +279,7 @@ background-color:transparent;
                    <widget class="QWidget" name="widget_5" native="true">
                     <layout class="QGridLayout" name="gridLayout_10">
                      <item row="0" column="0">
-                      <widget class="QLineEdit" name="lineedit_package_name">
+                      <widget class="QLineEdit" name="lineEditPackageName">
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
@@ -341,7 +341,7 @@ background-color:transparent;
                       </spacer>
                      </item>
                      <item row="0" column="0">
-                      <widget class="QComboBox" name="combobox_package_version">
+                      <widget class="QComboBox" name="comboBoxPackageVersion">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -356,7 +356,7 @@ background-color:transparent;
                       </widget>
                      </item>
                      <item row="0" column="1">
-                      <widget class="QPushButton" name="pushbutton_package_manager">
+                      <widget class="QPushButton" name="pushButtonPackageManager">
                        <property name="text">
                         <string>Package Manager</string>
                        </property>
