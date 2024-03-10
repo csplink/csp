@@ -368,68 +368,78 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="77"/>
+        <location filename="../../views/ViewConfigure.ui" line="98"/>
+        <source>Zoom in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="118"/>
+        <source>Zoom reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="138"/>
+        <source>Zoom out</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="175"/>
         <source>System View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="82"/>
+        <location filename="../../views/ViewConfigure.ui" line="180"/>
         <source>Timer Configure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="87"/>
+        <location filename="../../views/ViewConfigure.ui" line="185"/>
         <source>Project Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="97"/>
+        <location filename="../../views/ViewConfigure.ui" line="195"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="144"/>
+        <location filename="../../views/ViewConfigure.ui" line="242"/>
         <source>Project Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="150"/>
+        <location filename="../../views/ViewConfigure.ui" line="248"/>
         <source>Build Script/IDE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="194"/>
+        <location filename="../../views/ViewConfigure.ui" line="292"/>
         <source>Linker Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="200"/>
+        <location filename="../../views/ViewConfigure.ui" line="298"/>
         <source>Minimum Stack Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="236"/>
+        <location filename="../../views/ViewConfigure.ui" line="334"/>
         <source>Minimum Heap Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="275"/>
+        <location filename="../../views/ViewConfigure.ui" line="373"/>
         <source>Package Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="316"/>
+        <location filename="../../views/ViewConfigure.ui" line="414"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="323"/>
+        <location filename="../../views/ViewConfigure.ui" line="421"/>
         <source>Package Version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewConfigure.ui" line="361"/>
-        <source>Package Manager</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -479,103 +489,103 @@
 <context>
     <name>viewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="62"/>
+        <location filename="../../views/ViewMainwindow.ui" line="62"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="66"/>
+        <location filename="../../views/ViewMainwindow.ui" line="66"/>
         <source>New Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="81"/>
-        <location filename="../../views/ViewMainWindow.ui" line="108"/>
+        <location filename="../../views/ViewMainwindow.ui" line="81"/>
+        <location filename="../../views/ViewMainwindow.ui" line="108"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="89"/>
+        <location filename="../../views/ViewMainwindow.ui" line="89"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="147"/>
+        <location filename="../../views/ViewMainwindow.ui" line="147"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="189"/>
+        <location filename="../../views/ViewMainwindow.ui" line="189"/>
         <source>Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="211"/>
+        <location filename="../../views/ViewMainwindow.ui" line="211"/>
         <source>Configurations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="223"/>
+        <location filename="../../views/ViewMainwindow.ui" line="223"/>
         <source>Xmake Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="242"/>
+        <location filename="../../views/ViewMainwindow.ui" line="242"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="255"/>
+        <location filename="../../views/ViewMainwindow.ui" line="255"/>
         <source>Load Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="258"/>
+        <location filename="../../views/ViewMainwindow.ui" line="258"/>
         <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="263"/>
+        <location filename="../../views/ViewMainwindow.ui" line="263"/>
         <source>Import Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="268"/>
+        <location filename="../../views/ViewMainwindow.ui" line="268"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="271"/>
+        <location filename="../../views/ViewMainwindow.ui" line="271"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="276"/>
+        <location filename="../../views/ViewMainwindow.ui" line="276"/>
         <source>Save Project As ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="281"/>
+        <location filename="../../views/ViewMainwindow.ui" line="281"/>
         <source>Close Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="286"/>
+        <location filename="../../views/ViewMainwindow.ui" line="286"/>
         <source>Generate Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="291"/>
+        <location filename="../../views/ViewMainwindow.ui" line="291"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="300"/>
+        <location filename="../../views/ViewMainwindow.ui" line="300"/>
         <source>Generate code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="309"/>
+        <location filename="../../views/ViewMainwindow.ui" line="309"/>
         <source>Package Manager</source>
         <translation type="unfinished"></translation>
     </message>

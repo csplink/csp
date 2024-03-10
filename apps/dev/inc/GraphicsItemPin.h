@@ -30,11 +30,11 @@
 #ifndef GRAPHICS_ITEM_PIN_H
 #define GRAPHICS_ITEM_PIN_H
 
-#include "interface_graphicsitem_pin.h"
+#include "InterfaceGraphicsItemPin.h"
 #include "pinout_table.h"
 #include "project.h"
 
-class GraphicsItemPin final : public interface_graphicsitem_pin
+class GraphicsItemPin final : public InterfaceGraphicsItemPin
 {
     Q_OBJECT
   public:

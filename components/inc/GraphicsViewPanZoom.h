@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        graphicsview_panzoom.h
+ *  @file        GraphicsViewPanZoom.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,49 +27,51 @@
  *  2023-06-09     xqyjlj       initial version
  */
 
-#ifndef CSP_GRAPHICSVIEW_PANZOOM_H
-#define CSP_GRAPHICSVIEW_PANZOOM_H
+#ifndef GRAPHICS_VIEW_PAN_ZOOM_H
+#define GRAPHICS_VIEW_PAN_ZOOM_H
 
 #include <QGraphicsView>
 #include <QKeyEvent>
 
-class graphicsview_panzoom final : public QGraphicsView
+class GraphicsViewPanZoom final : public QGraphicsView
 {
     Q_OBJECT
 
   public:
-    explicit graphicsview_panzoom(QWidget *parent = nullptr);
-    ~graphicsview_panzoom() override;
+    explicit GraphicsViewPanZoom(QWidget *parent = nullptr);
+    ~GraphicsViewPanZoom() override;
 
     /**
      * @brief zoom in
      * @param value: zoom value
      */
-    void zoom_in(int value);
+    void zoomIn(int value);
 
     /**
      * @brief zoom out
      * @param value: zoom value
      */
-    void zoom_out(int value);
+    void zoomOut(int value);
 
     void zoom(qreal value);
+
+    void resize();
 
   private:
     /**
      * @brief resizing via setup matrix
      */
-    void setup_matrix();
+    void setupMatrix();
 
   signals:
     /**
      * @brief selected item changed
      * @param item: selected item
      */
-    void signals_selected_item_clicked(QGraphicsItem *item);
+    void signalsSelectedItemClicked(QGraphicsItem *item);
 
   public:
-    void property_changed_callback(QGraphicsItem *item);
+    void propertyChangedCallback(QGraphicsItem *item);
 
   protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -79,8 +81,8 @@ class graphicsview_panzoom final : public QGraphicsView
     void contextMenuEvent(QContextMenuEvent *event) override;
 
   private:
-    qreal _scale;
-    bool _is_pressed = false;
+    qreal scale_;
+    bool isPressed_ = false;
 };
 
-#endif // CSP_GRAPHICSVIEW_PANZOOM_H
+#endif /** GRAPHICS_VIEW_PAN_ZOOM_H */

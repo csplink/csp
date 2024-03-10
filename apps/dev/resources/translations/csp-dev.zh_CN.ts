@@ -4,58 +4,6 @@
 <context>
     <name>DialogChooseChip</name>
     <message>
-        <source>New project from Chip</source>
-        <translation type="vanished">新建芯片工程</translation>
-    </message>
-    <message>
-        <source>Feature</source>
-        <translation type="vanished">特征</translation>
-    </message>
-    <message>
-        <source>Version:</source>
-        <translation type="vanished">版本：</translation>
-    </message>
-    <message>
-        <source>Package:</source>
-        <translation type="vanished">封装：</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="vanished">未知</translation>
-    </message>
-    <message>
-        <source>Unit price for 10kU:</source>
-        <translation type="vanished">价格（元/10K）：</translation>
-    </message>
-    <message>
-        <source>Chip Name</source>
-        <translation type="vanished">芯片名</translation>
-    </message>
-    <message>
-        <source>Company Name</source>
-        <translation type="vanished">公司名</translation>
-    </message>
-    <message>
-        <source>Market:</source>
-        <translation type="vanished">市场：</translation>
-    </message>
-    <message>
-        <source>Package Image</source>
-        <translation type="vanished">封装图</translation>
-    </message>
-    <message>
-        <source>Diagram</source>
-        <translation type="vanished">框图</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation type="vanished">文档</translation>
-    </message>
-    <message>
-        <source>Buy</source>
-        <translation type="vanished">购买</translation>
-    </message>
-    <message>
         <location filename="../../views/DialogChooseChip.cpp" line="247"/>
         <source>Name</source>
         <translation>芯片名称</translation>
@@ -155,34 +103,6 @@
 <context>
     <name>DialogPackageManager</name>
     <message>
-        <source>Package Manager</source>
-        <translation type="vanished">包管理器</translation>
-    </message>
-    <message>
-        <source>Install</source>
-        <translation type="vanished">安装</translation>
-    </message>
-    <message>
-        <source>Update</source>
-        <translation type="vanished">更新</translation>
-    </message>
-    <message>
-        <source>Uninstall</source>
-        <translation type="vanished">卸载</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="vanished">关闭</translation>
-    </message>
-    <message>
-        <source>Expand</source>
-        <translation type="vanished">展开</translation>
-    </message>
-    <message>
-        <source>Collapse</source>
-        <translation type="vanished">折叠</translation>
-    </message>
-    <message>
         <location filename="../../views/DialogPackageManager.cpp" line="68"/>
         <source>Name</source>
         <translation>名称</translation>
@@ -263,114 +183,7 @@
     </message>
 </context>
 <context>
-    <name>ViewHome</name>
-    <message>
-        <source>New project from Chip</source>
-        <translation type="vanished">新建芯片工程</translation>
-    </message>
-    <message>
-        <source>New project from Board</source>
-        <translation type="vanished">新建开发板工程</translation>
-    </message>
-    <message>
-        <source>Recent Projects</source>
-        <translation type="vanished">最近工程</translation>
-    </message>
-    <message>
-        <source>Developer</source>
-        <translation type="vanished">开发者</translation>
-    </message>
-    <message>
-        <source>Project Operation</source>
-        <translation type="vanished">工程操作</translation>
-    </message>
-    <message>
-        <source>Open existing project</source>
-        <translation type="vanished">打开已存在的工程</translation>
-    </message>
-    <message>
-        <source>About CSP</source>
-        <translation type="vanished">关于CSP</translation>
-    </message>
-    <message>
-        <source>Other Tools</source>
-        <translation type="vanished">其他工具</translation>
-    </message>
-</context>
-<context>
     <name>ViewMainWindow</name>
-    <message>
-        <source>File</source>
-        <translation type="vanished">文件</translation>
-    </message>
-    <message>
-        <source>Project</source>
-        <translation type="vanished">项目</translation>
-    </message>
-    <message>
-        <source>Property</source>
-        <translation type="vanished">属性</translation>
-    </message>
-    <message>
-        <source>New Project</source>
-        <translation type="vanished">新建工程</translation>
-    </message>
-    <message>
-        <source>Help</source>
-        <translation type="vanished">帮助</translation>
-    </message>
-    <message>
-        <source>Output</source>
-        <translation type="vanished">输出</translation>
-    </message>
-    <message>
-        <source>Configurations</source>
-        <translation type="vanished">配置</translation>
-    </message>
-    <message>
-        <source>Xmake Output</source>
-        <translation type="vanished">Xmake输出</translation>
-    </message>
-    <message>
-        <source>toolBar</source>
-        <translation type="vanished">工具栏</translation>
-    </message>
-    <message>
-        <source>Load Project</source>
-        <translation type="vanished">加载工程</translation>
-    </message>
-    <message>
-        <source>Import Project</source>
-        <translation type="vanished">导入工程</translation>
-    </message>
-    <message>
-        <source>Save Project</source>
-        <translation type="vanished">保存工程</translation>
-    </message>
-    <message>
-        <source>Save Project As ...</source>
-        <translation type="vanished">另存工程为...</translation>
-    </message>
-    <message>
-        <source>Close Project</source>
-        <translation type="vanished">关闭工程</translation>
-    </message>
-    <message>
-        <source>Generate Report</source>
-        <translation type="vanished">生成报告</translation>
-    </message>
-    <message>
-        <source>New Chip Project</source>
-        <translation type="vanished">新建芯片工程</translation>
-    </message>
-    <message>
-        <source>Generate code</source>
-        <translation type="vanished">生成代码</translation>
-    </message>
-    <message>
-        <source>Package Manager</source>
-        <translation type="vanished">包管理器</translation>
-    </message>
     <message>
         <location filename="../../views/ViewMainWindow.cpp" line="257"/>
         <source>CSP project file(*.csp)</source>
@@ -445,68 +258,68 @@
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="14"/>
         <source>New project from Chip</source>
-        <translation type="unfinished">新建芯片工程</translation>
+        <translation>新建芯片工程</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="40"/>
         <source>Feature</source>
-        <translation type="unfinished">特征</translation>
+        <translation>特征</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="79"/>
         <source>Chip Name</source>
-        <translation type="unfinished">芯片名</translation>
+        <translation>芯片名</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="119"/>
         <source>Package Image</source>
-        <translation type="unfinished">封装图</translation>
+        <translation>封装图</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="153"/>
         <source>Unit price for 10kU:</source>
-        <translation type="unfinished">价格（元/10K）：</translation>
+        <translation>价格（元/10K）：</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="197"/>
         <source>Version:</source>
-        <translation type="unfinished">版本：</translation>
+        <translation>版本：</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="241"/>
         <location filename="../../views/DialogChooseChip.ui" line="248"/>
         <source>Unknown</source>
-        <translation type="unfinished">未知</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="261"/>
         <source>Market:</source>
-        <translation type="unfinished">市场：</translation>
+        <translation>市场：</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="268"/>
         <source>Package:</source>
-        <translation type="unfinished">封装：</translation>
+        <translation>封装：</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="290"/>
         <source>Company Name</source>
-        <translation type="unfinished">公司名</translation>
+        <translation>公司名</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="316"/>
         <source>Diagram</source>
-        <translation type="unfinished">框图</translation>
+        <translation>框图</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="321"/>
         <source>Document</source>
-        <translation type="unfinished">文档</translation>
+        <translation>文档</translation>
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.ui" line="326"/>
         <source>Buy</source>
-        <translation type="unfinished">购买</translation>
+        <translation>购买</translation>
     </message>
 </context>
 <context>
@@ -514,37 +327,37 @@
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="14"/>
         <source>Package Manager</source>
-        <translation type="unfinished">包管理器</translation>
+        <translation>包管理器</translation>
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="46"/>
         <source>Install</source>
-        <translation type="unfinished">安装</translation>
+        <translation>安装</translation>
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="56"/>
         <source>Update</source>
-        <translation type="unfinished">更新</translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="66"/>
         <source>Uninstall</source>
-        <translation type="unfinished">卸载</translation>
+        <translation>卸载</translation>
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="73"/>
         <source>Close</source>
-        <translation type="unfinished">关闭</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="99"/>
         <source>Expand</source>
-        <translation type="unfinished">展开</translation>
+        <translation>展开</translation>
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.ui" line="113"/>
         <source>Collapse</source>
-        <translation type="unfinished">折叠</translation>
+        <translation>折叠</translation>
     </message>
 </context>
 <context>
@@ -555,69 +368,79 @@
         <translation>引脚配置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="77"/>
+        <location filename="../../views/ViewConfigure.ui" line="98"/>
+        <source>Zoom in</source>
+        <translation>放大</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="118"/>
+        <source>Zoom reset</source>
+        <translation>重置缩放</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="138"/>
+        <source>Zoom out</source>
+        <translation>缩小</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="175"/>
         <source>System View</source>
         <translation>系统视图</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="82"/>
+        <location filename="../../views/ViewConfigure.ui" line="180"/>
         <source>Timer Configure</source>
         <translation>时钟配置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="87"/>
+        <location filename="../../views/ViewConfigure.ui" line="185"/>
         <source>Project Manager</source>
         <translation>工程管理</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="97"/>
+        <location filename="../../views/ViewConfigure.ui" line="195"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="144"/>
+        <location filename="../../views/ViewConfigure.ui" line="242"/>
         <source>Project Settings</source>
         <translation>工程设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="150"/>
+        <location filename="../../views/ViewConfigure.ui" line="248"/>
         <source>Build Script/IDE</source>
         <translation>构建脚本/IDE</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="194"/>
+        <location filename="../../views/ViewConfigure.ui" line="292"/>
         <source>Linker Settings</source>
         <translation>链接设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="200"/>
+        <location filename="../../views/ViewConfigure.ui" line="298"/>
         <source>Minimum Stack Size</source>
         <translation>最小栈大小</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="236"/>
+        <location filename="../../views/ViewConfigure.ui" line="334"/>
         <source>Minimum Heap Size</source>
         <translation>最小堆大小</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="275"/>
+        <location filename="../../views/ViewConfigure.ui" line="373"/>
         <source>Package Settings</source>
         <translation>包设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="316"/>
+        <location filename="../../views/ViewConfigure.ui" line="414"/>
         <source>Name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="323"/>
+        <location filename="../../views/ViewConfigure.ui" line="421"/>
         <source>Package Version</source>
         <translation>包版本</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewConfigure.ui" line="361"/>
-        <source>Package Manager</source>
-        <translation>包管理器</translation>
     </message>
 </context>
 <context>
@@ -625,146 +448,146 @@
     <message>
         <location filename="../../views/ViewHome.ui" line="29"/>
         <source>Project Operation</source>
-        <translation type="unfinished">工程操作</translation>
+        <translation>工程操作</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="66"/>
         <source>New project from Chip</source>
-        <translation type="unfinished">新建芯片工程</translation>
+        <translation>新建芯片工程</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="79"/>
         <source>New project from Board</source>
-        <translation type="unfinished">新建开发板工程</translation>
+        <translation>新建开发板工程</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="134"/>
         <source>Open existing project</source>
-        <translation type="unfinished">打开已存在的工程</translation>
+        <translation>打开已存在的工程</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="144"/>
         <source>Developer</source>
-        <translation type="unfinished">开发者</translation>
+        <translation>开发者</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="160"/>
         <source>Recent Projects</source>
-        <translation type="unfinished">最近工程</translation>
+        <translation>最近工程</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="185"/>
         <source>About CSP</source>
-        <translation type="unfinished">关于CSP</translation>
+        <translation>关于CSP</translation>
     </message>
     <message>
         <location filename="../../views/ViewHome.ui" line="190"/>
         <source>Other Tools</source>
-        <translation type="unfinished">其他工具</translation>
+        <translation>其他工具</translation>
     </message>
 </context>
 <context>
     <name>viewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="62"/>
+        <location filename="../../views/ViewMainwindow.ui" line="62"/>
         <source>File</source>
-        <translation type="unfinished">文件</translation>
+        <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="66"/>
+        <location filename="../../views/ViewMainwindow.ui" line="66"/>
         <source>New Project</source>
-        <translation type="unfinished">新建工程</translation>
+        <translation>新建工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="81"/>
-        <location filename="../../views/ViewMainWindow.ui" line="108"/>
+        <location filename="../../views/ViewMainwindow.ui" line="81"/>
+        <location filename="../../views/ViewMainwindow.ui" line="108"/>
         <source>Project</source>
-        <translation type="unfinished">项目</translation>
+        <translation>项目</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="89"/>
+        <location filename="../../views/ViewMainwindow.ui" line="89"/>
         <source>Help</source>
-        <translation type="unfinished">帮助</translation>
+        <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="147"/>
+        <location filename="../../views/ViewMainwindow.ui" line="147"/>
         <source>Property</source>
-        <translation type="unfinished">属性</translation>
+        <translation>属性</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="189"/>
+        <location filename="../../views/ViewMainwindow.ui" line="189"/>
         <source>Output</source>
-        <translation type="unfinished">输出</translation>
+        <translation>输出</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="211"/>
+        <location filename="../../views/ViewMainwindow.ui" line="211"/>
         <source>Configurations</source>
-        <translation type="unfinished">配置</translation>
+        <translation>配置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="223"/>
+        <location filename="../../views/ViewMainwindow.ui" line="223"/>
         <source>Xmake Output</source>
-        <translation type="unfinished">Xmake输出</translation>
+        <translation>Xmake输出</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="242"/>
+        <location filename="../../views/ViewMainwindow.ui" line="242"/>
         <source>toolBar</source>
-        <translation type="unfinished">工具栏</translation>
+        <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="255"/>
+        <location filename="../../views/ViewMainwindow.ui" line="255"/>
         <source>Load Project</source>
-        <translation type="unfinished">加载工程</translation>
+        <translation>加载工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="258"/>
+        <location filename="../../views/ViewMainwindow.ui" line="258"/>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="263"/>
+        <location filename="../../views/ViewMainwindow.ui" line="263"/>
         <source>Import Project</source>
-        <translation type="unfinished">导入工程</translation>
+        <translation>导入工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="268"/>
+        <location filename="../../views/ViewMainwindow.ui" line="268"/>
         <source>Save Project</source>
-        <translation type="unfinished">保存工程</translation>
+        <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="271"/>
+        <location filename="../../views/ViewMainwindow.ui" line="271"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="276"/>
+        <location filename="../../views/ViewMainwindow.ui" line="276"/>
         <source>Save Project As ...</source>
-        <translation type="unfinished">另存工程为...</translation>
+        <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="281"/>
+        <location filename="../../views/ViewMainwindow.ui" line="281"/>
         <source>Close Project</source>
-        <translation type="unfinished">关闭工程</translation>
+        <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="286"/>
+        <location filename="../../views/ViewMainwindow.ui" line="286"/>
         <source>Generate Report</source>
-        <translation type="unfinished">生成报告</translation>
+        <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="291"/>
+        <location filename="../../views/ViewMainwindow.ui" line="291"/>
         <source>New Chip Project</source>
-        <translation type="unfinished">新建芯片工程</translation>
+        <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="300"/>
+        <location filename="../../views/ViewMainwindow.ui" line="300"/>
         <source>Generate code</source>
-        <translation type="unfinished">生成代码</translation>
+        <translation>生成代码</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="309"/>
+        <location filename="../../views/ViewMainwindow.ui" line="309"/>
         <source>Package Manager</source>
-        <translation type="unfinished">包管理器</translation>
+        <translation>包管理器</translation>
     </message>
 </context>
 </TS>

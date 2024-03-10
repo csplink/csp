@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        propertybrowser.h
+ *  @file        PropertyBrowserPin.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,22 +27,21 @@
  *  2023-06-17     xqyjlj       initial version
  */
 
-#ifndef CSP_PROPERTYBROWSER_H
-#define CSP_PROPERTYBROWSER_H
+#ifndef PROPERTY_BROWSER_PIN_H
+#define PROPERTY_BROWSER_PIN_H
 
-#include <qtpropertymanager.h>
-#include <qttreepropertybrowser.h>
+#include <qttreePropertyBrowser.h>
 #include <qtvariantproperty.h>
 
-#include "interface_graphicsitem_pin.h"
+#include "InterfaceGraphicsItemPin.h"
 #include "project.h"
 
-class propertybrowser final : public QtTreePropertyBrowser
+class PropertyBrowserPin final : public QtTreePropertyBrowser
 {
     Q_OBJECT
   public:
-    explicit propertybrowser(QWidget *parent = nullptr);
-    ~propertybrowser() override;
+    explicit PropertyBrowserPin(QWidget *parent = nullptr);
+    ~PropertyBrowserPin() override;
 
   private:
     enum
@@ -56,19 +55,18 @@ class propertybrowser final : public QtTreePropertyBrowser
      * @brief update property by pin
      * @param item: pin item
      */
-    void update_property_by_pin(QGraphicsItem *item);
-    void pin_value_changed_callback(const QtProperty *property, const QVariant &value) const;
-    void pin_attribute_changed_callback(const QtProperty *property, const QString &attribute, const QVariant &value) const;
+    void updatePropertyByPin(QGraphicsItem *item);
+    void pinValueChangedCallback(const QtProperty *property, const QVariant &value) const;
+    void pinAttributeChangedCallback(const QtProperty *property, const QString &attribute, const QVariant &value) const;
 
   private:
-    QtProperty *set_pin_base(const QString &name, const QString &comment, int position, bool locked) const;
-    QtProperty *set_pin_system(const QString &function) const;
+    project *projectInstance_;
+    QtVariantPropertyManager *variantManager_ = new QtVariantPropertyManager(this);
+    QtVariantEditorFactory *variantFactory_ = new QtVariantEditorFactory(this);
+    QString pinName_ = QString();
 
-  private:
-    project *_project_instance;
-    QtVariantPropertyManager *_variant_manager = new QtVariantPropertyManager(this);
-    QtVariantEditorFactory *_variant_factory = new QtVariantEditorFactory(this);
-    QString _pin_name = QString();
+    QtProperty *setPinBase(const QString &name, const QString &comment, int position, bool locked) const;
+    QtProperty *setPinSystem(const QString &function) const;
 };
 
-#endif // CSP_PROPERTYBROWSER_H
+#endif /** PROPERTY_BROWSER_PIN_H */

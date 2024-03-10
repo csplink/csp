@@ -30,8 +30,8 @@
 #ifndef VIEW_CONFIGURE_H
 #define VIEW_CONFIGURE_H
 
+#include "PropertyBrowserPin.h"
 #include "project.h"
-#include "propertybrowser.h"
 
 namespace Ui
 {
@@ -46,9 +46,8 @@ class ViewConfigure final : public QWidget
     explicit ViewConfigure(QWidget *parent = nullptr);
     ~ViewConfigure() override;
 
-    void setPropertyBrowser(propertybrowser *instance);
+    void setPropertyBrowser(PropertyBrowserPin *instance);
     void initView();
-    void resizeView() const;
 
   signals:
     void signalUpdateModulesTreeView(const QString &company, const QString &name);
@@ -59,8 +58,8 @@ class ViewConfigure final : public QWidget
 
   private:
     Ui::viewConfigure *ui_;
-    propertybrowser *propertyBrowserInstance_;
-    project *projectInstance_;
+    PropertyBrowserPin *propertyBrowserInstance_ = nullptr;
+    project *projectInstance_ = nullptr;
     int resizeCounter_ = 0;
 
     void initProjectSettings() const;
@@ -69,6 +68,9 @@ class ViewConfigure final : public QWidget
 
   private slots:
     void pushButtonPackageManagerPressedCallback();
+    void pushButtonZoomInPressedCallback() const;
+    void pushButtonZoomResetPressedCallback() const;
+    void pushButtonZoomOutPressedCallback() const;
 };
 
 #endif /** VIEW_CONFIGURE_H */

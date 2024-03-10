@@ -61,13 +61,111 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="graphicsview_panzoom" name="graphicsView">
+        <widget class="GraphicsViewPanZoom" name="graphicsView">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>2</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QWidget" name="widget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>581</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonZoomIn">
+            <property name="toolTip">
+             <string>Zoom in</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/resources.qrc">
+              <normaloff>:/icon/zoom-in-line.svg</normaloff>:/icon/zoom-in-line.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonZoomReset">
+            <property name="toolTip">
+             <string>Zoom reset</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/resources.qrc">
+              <normaloff>:/icon/refresh-line.svg</normaloff>:/icon/refresh-line.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButtonZoomOut">
+            <property name="toolTip">
+             <string>Zoom out</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/resources.qrc">
+              <normaloff>:/icon/zoom-out-line.svg</normaloff>:/icon/zoom-out-line.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>581</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -134,7 +232,7 @@ background-color:transparent;
               <property name="styleSheet">
                <string notr="true">#scrollAreaWidgetContents
 {
-        background: transparent; 
+        background: transparent;
 }</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout">
@@ -358,7 +456,11 @@ background-color:transparent;
                      <item row="0" column="1">
                       <widget class="QPushButton" name="pushButtonPackageManager">
                        <property name="text">
-                        <string>Package Manager</string>
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../resources/resources.qrc">
+                         <normaloff>:/icon/more-fill.svg</normaloff>:/icon/more-fill.svg</iconset>
                        </property>
                       </widget>
                      </item>
@@ -397,11 +499,13 @@ background-color:transparent;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>graphicsview_panzoom</class>
+   <class>GraphicsViewPanZoom</class>
    <extends>QGraphicsView</extends>
-   <header>graphicsview_panzoom.h</header>
+   <header>GraphicsViewPanZoom.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -167,7 +167,7 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="propertybrowser" name="treePropertyBrowser" native="true"/>
+      <widget class="PropertyBrowserPin" name="treePropertyBrowser" native="true"/>
      </item>
     </layout>
    </widget>
@@ -312,9 +312,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>propertybrowser</class>
+   <class>PropertyBrowserPin</class>
    <extends>QWidget</extends>
-   <header>propertybrowser.h</header>
+   <header>PropertyBrowserPin.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

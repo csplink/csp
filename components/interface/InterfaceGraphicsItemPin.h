@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        interface_graphicsitem_pin.h
+ *  @file        InterfaceGraphicsItemPin.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,14 +27,14 @@
  *  2023-06-11     xqyjlj       initial version
  */
 
-#ifndef CSP_INTERFACE_GRAPHICSITEM_PIN_H
-#define CSP_INTERFACE_GRAPHICSITEM_PIN_H
+#ifndef INTERFACE_GRAPHICS_ITEM_PIN_H
+#define INTERFACE_GRAPHICS_ITEM_PIN_H
 
 #include <QGraphicsItem>
 #include <QMenu>
 #include <QPainter>
 
-class interface_graphicsitem_pin : public QObject, public QGraphicsItem
+class InterfaceGraphicsItemPin : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -44,4 +44,4 @@ class interface_graphicsitem_pin : public QObject, public QGraphicsItem
     static constexpr const char *property_name_pinout_unit_ptr = "user.pinout_unit.ptr";
 };
 
-#endif // CSP_INTERFACE_GRAPHICSITEM_PIN_H
+#endif /** INTERFACE_GRAPHICS_ITEM_PIN_H */

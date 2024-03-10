@@ -41,6 +41,9 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     projectInstance_ = project::get_instance();
 
     (void)connect(ui_->pushButtonPackageManager, &QPushButton::pressed, this, &ViewConfigure::pushButtonPackageManagerPressedCallback, Qt::UniqueConnection);
+    (void)connect(ui_->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomInPressedCallback, Qt::UniqueConnection);
+    (void)connect(ui_->pushButtonZoomReset, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomResetPressedCallback, Qt::UniqueConnection);
+    (void)connect(ui_->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback, Qt::UniqueConnection);
 
     initProjectSettings();
     initLinkerSettings();
@@ -57,12 +60,11 @@ void ViewConfigure::showEvent(QShowEvent *event)
     Q_UNUSED(event);
 }
 
-void ViewConfigure::setPropertyBrowser(propertybrowser *instance)
+void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
 {
     propertyBrowserInstance_ = instance;
 
-    (void)connect(ui_->graphicsView, &graphicsview_panzoom::signals_selected_item_clicked, propertyBrowserInstance_,
-                  &propertybrowser::update_property_by_pin);
+    (void)connect(ui_->graphicsView, &GraphicsViewPanZoom::signalsSelectedItemClicked, propertyBrowserInstance_, &PropertyBrowserPin::updatePropertyByPin);
 }
 
 void ViewConfigure::initView()
@@ -83,9 +85,8 @@ void ViewConfigure::initView()
             scene->addItem(item);
             if ((item->flags() & QGraphicsItem::ItemIsFocusable) == QGraphicsItem::ItemIsFocusable)
             {
-                (void)connect(dynamic_cast<const GraphicsItemPin *>(item), &GraphicsItemPin::signalPropertyChanged,
-                              ui_->graphicsView, &graphicsview_panzoom::property_changed_callback,
-                              Qt::UniqueConnection);
+                (void)connect(dynamic_cast<const GraphicsItemPin *>(item), &GraphicsItemPin::signalPropertyChanged, ui_->graphicsView,
+                              &GraphicsViewPanZoom::propertyChangedCallback, Qt::UniqueConnection);
             }
         }
     }
@@ -96,7 +97,7 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
 {
     if (resizeCounter_ <= 2)
     {
-        resizeView();
+        ui_->graphicsView->resize();
 
         /**
          * 0: 视图初始化
@@ -106,22 +107,6 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
         resizeCounter_++;
     }
     QWidget::resizeEvent(event);
-}
-
-void ViewConfigure::resizeView() const
-{
-    const qreal graphicsSceneWidth = ui_->graphicsView->scene()->itemsBoundingRect().width();
-    const qreal graphicsSceneHeight = ui_->graphicsView->scene()->itemsBoundingRect().height();
-    const qreal viewWidth = this->ui_->graphicsView->width();
-    const qreal viewHeight = this->ui_->graphicsView->height();
-    const qreal sceneMax = graphicsSceneWidth > graphicsSceneHeight ? graphicsSceneWidth : graphicsSceneHeight;
-    const qreal viewMin = viewWidth > viewHeight ? viewHeight : viewWidth;
-
-    ui_->graphicsView->centerOn(ui_->graphicsView->scene()->itemsBoundingRect().width() / static_cast<qreal>(2),
-                                ui_->graphicsView->scene()->itemsBoundingRect().height() / static_cast<qreal>(2));
-
-    const qreal scale = viewMin / sceneMax;
-    ui_->graphicsView->zoom(scale);
 }
 
 void ViewConfigure::initProjectSettings() const
@@ -184,3 +169,17 @@ void ViewConfigure::pushButtonPackageManagerPressedCallback()
     (void)dialog.exec();
 }
 
+void ViewConfigure::pushButtonZoomInPressedCallback() const
+{
+    ui_->graphicsView->zoomIn(6);
+}
+
+void ViewConfigure::pushButtonZoomResetPressedCallback() const
+{
+    ui_->graphicsView->resize();
+}
+
+void ViewConfigure::pushButtonZoomOutPressedCallback() const
+{
+    ui_->graphicsView->zoomOut(6);
+}
