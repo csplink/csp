@@ -37,9 +37,8 @@
 #include "config.h"
 #include "configure.h"
 #include "os.h"
-#include "project.h"
+#include "Project.h"
 #include "repo.h"
-#include "xmake.h"
 
 static void init()
 {
@@ -50,14 +49,12 @@ static void init()
 
     config::init();
     repo::init();
-    project::init();
-    xmake::init();
+    Project::init();
 }
 
 static void deinit()
 {
-    xmake::deinit();
-    project::deinit();
+    Project::deinit();
     repo::deinit();
     config::deinit();
 
@@ -115,7 +112,7 @@ int main(int argc, char *argv[])
         {
             try
             {
-                project::get_instance()->load_project(file);
+                Project::getInstance()->loadProject(file);
             }
             catch (const std::exception &e)
             {

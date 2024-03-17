@@ -19,47 +19,28 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-04-21     xqyjlj       initial version
+# 2024-03-16     xqyjlj       initial version
 #
-
-set(name core)
-
-configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h
-)
+set(name CspXMake)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
         src/*.cpp
         resources/*.qrc)
 
-set(TS_FILES
-        ./resources/translations/${name}.zh_CN.ts
-        ./resources/translations/${name}.zh_TW.ts)
-
-if (DEFINED CSP_EXE_DIR)
-    foreach (TS_FILE ${TS_FILES})
-        set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION ${CSP_EXE_DIR}/translations)
-    endforeach ()
-endif ()
-
-qt5_create_translation(QM_FILES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/inc ${TS_FILES})
-
-add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
-target_link_libraries(${name} PUBLIC Qt5::Widgets compat_layer)
+add_library(${name} STATIC ${SOURCES})
+target_link_libraries(${name} PUBLIC compat_layer core)
 target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
-file(GLOB_RECURSE TESTCASES
+file(GLOB_RECURSE TEST_CASES
         test/*.cpp)
 
-foreach (TESTCASE ${TESTCASES})
-    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE})
+foreach (TEST_CASE ${TEST_CASES})
+    get_filename_component(TARGET_NAME ${TEST_CASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TEST_CASE} test/res/res.qrc)
     target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()
-

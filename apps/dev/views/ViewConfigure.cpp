@@ -38,7 +38,7 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     : QWidget(parent), ui_(new Ui::viewConfigure)
 {
     ui_->setupUi(this);
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
 
     (void)connect(ui_->pushButtonPackageManager, &QPushButton::pressed, this, &ViewConfigure::pushButtonPackageManagerPressedCallback, Qt::UniqueConnection);
     (void)connect(ui_->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomInPressedCallback, Qt::UniqueConnection);
@@ -69,10 +69,10 @@ void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
 
 void ViewConfigure::initView()
 {
-    const auto package = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
-    const auto hal = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_HAL).toLower();
-    const auto company = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY);
-    const auto name = projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET);
+    const auto package = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
+    const auto hal = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_HAL).toLower();
+    const auto company = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_COMPANY);
+    const auto name = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TARGET);
 
     delete ui_->graphicsView->scene();
     const auto scene = new QGraphicsScene(ui_->graphicsView);
@@ -111,7 +111,7 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
 
 void ViewConfigure::initProjectSettings() const
 {
-    const chip_summary_table::target_project_t &target_project = projectInstance_->get_chip_summary().target_project;
+    const chip_summary_table::target_project_t &target_project = projectInstance_->getChipSummary().target_project;
     ui_->comboBoxBuildScriptIde->clear();
     if (target_project.xmake)
     {
@@ -129,7 +129,7 @@ void ViewConfigure::initProjectSettings() const
 
 void ViewConfigure::initLinkerSettings() const
 {
-    const chip_summary_table::linker_t &linker = projectInstance_->get_chip_summary().linker;
+    const chip_summary_table::linker_t &linker = projectInstance_->getChipSummary().linker;
     ui_->lineEditMinimumHeapSize->clear();
     if (!linker.default_minimum_heap_size.isEmpty())
     {
@@ -155,7 +155,7 @@ void ViewConfigure::initLinkerSettings() const
 
 void ViewConfigure::initPackageSettings() const
 {
-    const chip_summary_table::chip_summary_t &chip_summary = projectInstance_->get_chip_summary();
+    const chip_summary_table::chip_summary_t &chip_summary = projectInstance_->getChipSummary();
 
     if (!chip_summary.hal.isEmpty())
     {

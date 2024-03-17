@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        project_table.h
+ *  @file        ProjectTable.h
  *  @brief
  *
  * ****************************************************************************
@@ -32,7 +32,7 @@
 
 #include <QMap>
 
-class project_table
+class ProjectTable
 {
   public:
     typedef QMap<QString, QString> pin_function_property_t;
@@ -106,8 +106,8 @@ class project_table
     static QString dump_project(project_t &proj);
 
   private:
-    explicit project_table();
-    ~project_table();
+    explicit ProjectTable();
+    ~ProjectTable();
 
     static void set_value(project_t &proj);
 };

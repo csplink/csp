@@ -33,7 +33,7 @@
 #include <QLineEdit>
 #include <QWizard>
 
-#include "project.h"
+#include "Project.h"
 
 class WizardNewProject final : public QWizard
 {
@@ -46,7 +46,7 @@ class WizardNewProject final : public QWizard
   private:
     QLineEdit *lineEditProjectPath_ = nullptr;
     QLineEdit *lineEditProjectName_ = nullptr;
-    project *projectInstance_ = nullptr;
+    Project *projectInstance_ = nullptr;
 
     QWizardPage *createPageIntroduce();
     QWizardPage *createPageChoosePath();

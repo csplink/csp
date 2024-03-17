@@ -46,15 +46,14 @@ GraphicsItemPin::GraphicsItemPin(const qreal width, const qreal height)
     menu_ = new QMenu();
     menu_->setFont(QFont("JetBrains Mono", 12));
 
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
 
     this->setFlags(ItemIsFocusable);
     this->setAcceptHoverEvents(true);
     this->setAcceptedMouseButtons(Qt::RightButton);
 
     connect(menu_, &QMenu::triggered, this, &GraphicsItemPin::menuTriggeredCallback, Qt::UniqueConnection);
-    connect(projectInstance_, &project::signals_pin_property_changed, this,
-            &GraphicsItemPin::pinPropertyChangedCallback, Qt::UniqueConnection);
+    connect(projectInstance_, &Project::signalsPinPropertyChanged, this, &GraphicsItemPin::pinPropertyChangedCallback, Qt::UniqueConnection);
 }
 
 GraphicsItemPin::~GraphicsItemPin()
@@ -90,9 +89,13 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     if (pinoutUnit_.type.toUpper() == "I/O")
     {
         if (locked_)
+        {
             painter->setBrush(selectedColor);
+        }
         else
+        {
             painter->setBrush(defaultColor);
+        }
     }
     else if (pinoutUnit_.type.toUpper() == "POWER")
     {
@@ -152,9 +155,13 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
     /******************** draw comment **************************/
     if (comment_.isEmpty())
+    {
         text = function_;
+    }
     else
+    {
         text = QString("%1(%2)").arg(comment_, function_);
+    }
     if (direction_ == LEFT)
     {
         text = fontMetrics_->elidedText(text, Qt::ElideRight, static_cast<int>(width_ - pinLength - 20));
@@ -205,9 +212,9 @@ void GraphicsItemPin::setPinOutUnit(const pinout_table::pinout_unit_t &unit)
     this->setProperty(property_name_menu_ptr, QVariant::fromValue(menu_));
     this->setProperty(property_name_pinout_unit_ptr, QVariant::fromValue(&pinoutUnit_));
 
-    comment_ = projectInstance_->get_pin_comment(name_);
-    function_ = projectInstance_->get_pin_function(name_);
-    locked_ = projectInstance_->get_pin_locked(name_);
+    comment_ = projectInstance_->getPinComment(name_);
+    function_ = projectInstance_->getPinFunction(name_);
+    locked_ = projectInstance_->getPinLocked(name_);
 }
 
 void GraphicsItemPin::setName(const QString &name)
@@ -216,7 +223,7 @@ void GraphicsItemPin::setName(const QString &name)
     this->setToolTip(name_);
     this->setObjectName(name_);
 
-    comment_ = projectInstance_->get_pin_comment(name_);
+    comment_ = projectInstance_->getPinComment(name_);
 }
 
 void GraphicsItemPin::menuTriggeredCallback(QAction *action)
@@ -230,17 +237,19 @@ void GraphicsItemPin::menuTriggeredCallback(QAction *action)
         }
         if (action->isChecked())
         {
-            projectInstance_->set_pin_locked(name_, true);
-            projectInstance_->set_pin_function(name_, action->text());
+            projectInstance_->setPinLocked(name_, true);
+            projectInstance_->setPinFunction(name_, action->text());
         }
     }
     else // Reset State
     {
         if (previousCheckedAction_ != nullptr)
+        {
             previousCheckedAction_->setChecked(false);
+        }
         previousCheckedAction_ = nullptr;
-        projectInstance_->set_pin_locked(name_, false);
-        projectInstance_->set_pin_function(name_, "");
+        projectInstance_->setPinLocked(name_, false);
+        projectInstance_->setPinFunction(name_, "");
     }
     if (previousCheckedAction_ != action)
     {
@@ -254,14 +263,22 @@ void GraphicsItemPin::pinPropertyChangedCallback(const QString &property, const 
     Q_UNUSED(old_value)
 
     if (name != name_)
+    {
         return;
+    }
 
     if (property == "comment")
+    {
         comment_ = new_value.toString();
+    }
     else if (property == "function")
+    {
         function_ = new_value.toString();
+    }
     else if (property == "locked")
+    {
         locked_ = new_value.toBool();
+    }
 
     this->update();
 }

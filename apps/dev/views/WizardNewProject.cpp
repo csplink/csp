@@ -40,7 +40,7 @@ WizardNewProject::WizardNewProject(const QWidget *parent)
 {
     Q_UNUSED(parent)
 
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
 
     setWindowTitle(tr("New Project"));
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint |
@@ -66,8 +66,8 @@ void WizardNewProject::accept()
         return;
     }
 
-    projectInstance_->set_path(QString("%1/%2/%2.csp").arg(path, name));
-    projectInstance_->set_name(name);
+    projectInstance_->setPath(QString("%1/%2/%2.csp").arg(path, name));
+    projectInstance_->setName(name);
 
     QDialog::accept();
 }

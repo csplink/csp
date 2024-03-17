@@ -34,7 +34,7 @@
 #include <qtvariantproperty.h>
 
 #include "InterfaceGraphicsItemPin.h"
-#include "project.h"
+#include "Project.h"
 
 class PropertyBrowserPin final : public QtTreePropertyBrowser
 {
@@ -60,7 +60,7 @@ class PropertyBrowserPin final : public QtTreePropertyBrowser
     void pinAttributeChangedCallback(const QtProperty *property, const QString &attribute, const QVariant &value) const;
 
   private:
-    project *projectInstance_;
+    Project *projectInstance_;
     QtVariantPropertyManager *variantManager_ = new QtVariantPropertyManager(this);
     QtVariantEditorFactory *variantFactory_ = new QtVariantEditorFactory(this);
     QString pinName_ = QString();

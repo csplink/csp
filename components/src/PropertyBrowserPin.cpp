@@ -37,7 +37,7 @@
 PropertyBrowserPin::PropertyBrowserPin(QWidget *parent)
     : QtTreePropertyBrowser(parent)
 {
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
 }
 
 PropertyBrowserPin::~PropertyBrowserPin() = default;
@@ -93,11 +93,11 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
     if (pinout_unit == nullptr)
         return;
 
-    const auto function = projectInstance_->get_pin_function(name);             // such as "GPIO-Input"
-    const auto comment = projectInstance_->get_pin_comment(name);               // such as "LED0"
-    const auto locked = projectInstance_->get_pin_locked(name);                 // such as "true"
+    const auto function = projectInstance_->getPinFunction(name);               // such as "GPIO-Input"
+    const auto comment = projectInstance_->getPinComment(name);                 // such as "LED0"
+    const auto locked = projectInstance_->getPinLocked(name);                   // such as "true"
     const auto function_type = pinout_unit->functions[function].type.toLower(); // such as "gpio"
-    const auto maps = projectInstance_->get_maps();
+    const auto maps = projectInstance_->getMaps();
 
     const auto base_group_item = setPinBase(name, comment, pinout_unit->position, locked);
     this->addProperty(base_group_item);
@@ -106,20 +106,20 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
 
     if (maps.contains(function_type))
     {
-        auto map = projectInstance_->get_maps()[function_type];           // such as "map/gpio.yml"
-        const auto fps = projectInstance_->get_pin_config_fps(name);      // ping config function properties
+        auto map = projectInstance_->getMaps()[function_type];                 // such as "map/gpio.yml"
+        const auto fps = projectInstance_->getPinConfigFunctionProperty(name); // ping config function properties
         const auto function_mode = pinout_unit->functions[function].mode; // such as "Input-Std <just string>"
-        auto ip = projectInstance_->get_ips()[function_type];             // such as "apm32f103zet6/ip/gpio.yml"
+        auto ip = projectInstance_->getIps()[function_type];                   // such as "apm32f103zet6/ip/gpio.yml"
         const auto ip_map = ip[function_mode];                            // such as "Input-Std <just struct>"
         auto ip_map_i = ip_map.constBegin();
         const auto type = pinout_unit->functions[function].type; // such as "GPIO"
         QtProperty *group_item = variantManager_->addProperty(QtVariantPropertyManager::groupTypeId(), type);
-        project_table::pin_function_property_t fp = {};
+        ProjectTable::pin_function_property_t fp = {};
 
         if (fps.contains(function_type)) // already configured
             fp = fps.value(function_type);
 
-        projectInstance_->clear_pin_config_fp_module(name, function_type); // clear properties module
+        projectInstance_->clearPinConfigFunctionProperty(name, function_type); // clear properties module
 
         while (ip_map_i != ip_map.constEnd())
         {
@@ -144,18 +144,18 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
                 if (!value.isEmpty() && values.contains(value))
                 {
                     variant_item->setValue(values.indexOf(value)); // just read
-                    projectInstance_->set_pin_config_fp(name, function_type, parameter_name, fp.value(parameter_name));
+                    projectInstance_->setPinConfigFunctionProperty(name, function_type, parameter_name, fp.value(parameter_name));
                 }
                 else
                 {
                     variant_item->setValue(0); // default value
-                    projectInstance_->set_pin_config_fp(name, function_type, parameter_name, parameters[0]);
+                    projectInstance_->setPinConfigFunctionProperty(name, function_type, parameter_name, parameters[0]);
                 }
             }
             else
             {
                 variant_item->setValue(0); // default value
-                projectInstance_->set_pin_config_fp(name, function_type, parameter_name, parameters[0]);
+                projectInstance_->setPinConfigFunctionProperty(name, function_type, parameter_name, parameters[0]);
             }
 
             variant_item->setDescriptionToolTip(description);
@@ -187,13 +187,13 @@ void PropertyBrowserPin::pinValueChangedCallback(const QtProperty *property, con
     {
     case QVariant::String: {
         if (property->propertyName() == tr("Comment"))
-            projectInstance_->set_pin_comment(pinName_, value.toString());
+            projectInstance_->setPinComment(pinName_, value.toString());
 
         break;
     }
     case QVariant::Bool: {
         if (property->propertyName() == tr("Locked"))
-            projectInstance_->set_pin_locked(pinName_, value.toBool());
+            projectInstance_->setPinLocked(pinName_, value.toBool());
 
         break;
     }
@@ -207,13 +207,13 @@ void PropertyBrowserPin::pinValueChangedCallback(const QtProperty *property, con
             const auto function_type = property->get_user_property(PROPERTY_ID_FUNCTION_TYPE).toString();
             const auto parameter_name = property->get_user_property(PROPERTY_ID_PARAMETER_NAME).toString();
             const auto parameter_value_translations = property->valueText();
-            auto total = projectInstance_->get_maps()[function_type].reverse_total;
+            auto total = projectInstance_->getMaps()[function_type].reverse_total;
             const auto parameter_value = total[property->valueText()];
 
             Q_UNUSED(property_name)
             Q_UNUSED(parameter_value_translations)
 
-            projectInstance_->set_pin_config_fp(pinName_, function_type, parameter_name, parameter_value);
+            projectInstance_->setPinConfigFunctionProperty(pinName_, function_type, parameter_name, parameter_value);
         }
         else
         {

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_project_table.cpp
+ *  @file        TestCaseProject.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,49 +24,51 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-28     xqyjlj       initial version
+ *  2023-06-14     xqyjlj       initial version
  */
 
 #include <QDebug>
 #include <QtTest>
 
 #include <os.h>
-#include <project_table.h>
+#include <Project.h>
 
-class testcase_project_table final : public QObject
+Project *ProjectInstance = nullptr;
+
+class TestCaseProject final : public QObject
 {
     Q_OBJECT
 
   private slots:
 
-    static void load_project()
+    static void initTestCase()
     {
-        project_table::project_t project;
-        project_table::load_project(&project, ":/project.json");
-        QVERIFY(!project.name.isEmpty());
+        Project::init();
+        ProjectInstance = Project::getInstance();
     }
 
-    static void save_project()
+    static void path()
     {
-        auto p = project_table::project_t();
-        p.name = "test";
-        project_table::pin_config_t pin_config;
-        pin_config.comment = "PA1-OUT";
-        p.pin_configs.insert("PA1", pin_config);
-        project_table::save_project(p, "test.json");
-        QVERIFY(os::isfile("test.json"));
+        ProjectInstance->setPath("test");
+        const auto path = ProjectInstance->getPath();
+        qDebug() << path;
+        QVERIFY(path.endsWith("test"));
     }
 
-    static void dump_project()
+    static void get_pin_config()
     {
-        auto p = project_table::project_t();
-        p.name = "test";
-        p.pin_configs.insert("test", project_table::pin_config_t());
-        const auto str = project_table::dump_project(p);
-        QVERIFY(!str.isEmpty());
+        auto &cfg = ProjectInstance->getPinConfig("PA1");
+        cfg.comment = "PA1-OUT";
+
+        QVERIFY(ProjectInstance->getPinConfig("PA1").comment == "PA1-OUT");
+    }
+
+    static void cleanupTestCase()
+    {
+        Project::deinit();
     }
 };
 
-QTEST_MAIN(testcase_project_table)
+QTEST_MAIN(TestCaseProject)
 
-#include "testcase_project_table.moc"
+#include "TestCaseProject.moc"

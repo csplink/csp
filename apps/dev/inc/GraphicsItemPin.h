@@ -32,7 +32,7 @@
 
 #include "InterfaceGraphicsItemPin.h"
 #include "pinout_table.h"
-#include "project.h"
+#include "Project.h"
 
 class GraphicsItemPin final : public InterfaceGraphicsItemPin
 {
@@ -105,7 +105,7 @@ class GraphicsItemPin final : public InterfaceGraphicsItemPin
     QFontMetrics *fontMetrics_;
     QString comment_;
     QString function_;
-    project *projectInstance_;
+    Project *projectInstance_;
 
     QMenu *menu_ = nullptr;
     QAction *previousCheckedAction_ = nullptr;

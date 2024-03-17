@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        ViewHome.h
+ *  @file        TestCaseProjectTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,45 +24,49 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-11     xqyjlj       initial version
+ *  2023-05-28     xqyjlj       initial version
  */
 
-#ifndef VIEW_HOME_H
-#define VIEW_HOME_H
+#include <QDebug>
+#include <QtTest>
 
-#include <QWidget>
+#include <os.h>
+#include <ProjectTable.h>
 
-#include "Project.h"
-
-namespace Ui
-{
-class viewHome;
-}
-
-class ViewHome final : public QWidget
+class TestCaseProjectTable final : public QObject
 {
     Q_OBJECT
 
-  public:
-    explicit ViewHome(QWidget *parent = nullptr);
-    ~ViewHome() override;
-
-  signals:
-    void signalCreateProject();
-    void signalOpenExistingProject(bool checked);
-
-  public slots:
-    void pushButtonCreateChipProjectClickedCallback(bool checked);
-    void createChipProject();
-
   private slots:
-    void pushButtonCreateBoardProjectClickedCallback(bool checked) const;
-    void dialogChooseChipFinishedCallback(int result) const;
-    void pushButtonOpenExistingProjectClickedCallback(bool checked);
 
-  private:
-    Ui::viewHome *ui_;
-    Project *projectInstance_;
+    static void load_project()
+    {
+        ProjectTable::project_t project;
+        ProjectTable::load_project(&project, ":/project.json");
+        QVERIFY(!project.name.isEmpty());
+    }
+
+    static void save_project()
+    {
+        auto p = ProjectTable::project_t();
+        p.name = "test";
+        ProjectTable::pin_config_t pin_config;
+        pin_config.comment = "PA1-OUT";
+        p.pin_configs.insert("PA1", pin_config);
+        ProjectTable::save_project(p, "test.json");
+        QVERIFY(os::isfile("test.json"));
+    }
+
+    static void dump_project()
+    {
+        auto p = ProjectTable::project_t();
+        p.name = "test";
+        p.pin_configs.insert("test", ProjectTable::pin_config_t());
+        const auto str = ProjectTable::dump_project(p);
+        QVERIFY(!str.isEmpty());
+    }
 };
 
-#endif /** VIEW_HOME_H */
+QTEST_MAIN(TestCaseProjectTable)
+
+#include "TestCaseProjectTable.moc"

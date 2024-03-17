@@ -34,7 +34,7 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItem>
 
-#include "xmake.h"
+#include "XMake.h"
 
 namespace Ui
 {
@@ -50,22 +50,25 @@ class DialogPackageManager final : public QDialog
     ~DialogPackageManager() override;
 
   private:
-    Ui::dialogPackageManager *ui_;
-    QSortFilterProxyModel *tableViewProxyModel_ = nullptr;
     typedef struct
     {
         QString Version;
         bool Installed;
+        int Row;
+        const QStandardItem *Parent;
     } PackageInfoType;
+
+    Ui::dialogPackageManager *ui_;
+    QSortFilterProxyModel *tableViewProxyModel_ = nullptr;
     QMap<QString, PackageInfoType> selectedPackageInfos_;
     int installCount_ = 0;
     int uninstallCount_ = 0;
     int updateCount_ = 0;
-    xmake *xmakeInstance_ = nullptr;
 
     void initTreeView();
     Qt::CheckState treeViewItemSiblingCheckState(const QStandardItem *item) const;
     void updatePushButtonInstallUpdateUninstallStatus();
+    int runXmake(const QString &command, const QStringList &args) const;
 
   private slots:
     void treeViewModelItemChangedCallback(QStandardItem *item);

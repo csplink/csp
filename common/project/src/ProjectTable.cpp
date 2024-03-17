@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        project_table.cpp
+ *  @file        ProjectTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -32,32 +32,32 @@
 
 #include "configure.h"
 #include "os.h"
-#include "project_table.h"
+#include "ProjectTable.h"
 #include "qtjson.h"
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::pin_config_t, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::core_t, hal, target, package, company, type, toolchains, modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(project_table::mdk_arm_t, device, pack, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(project_table::target_project_t, mdk_arm)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(project_table::project_t, name, version, target, core, pin_configs,
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::pin_config_t, function, comment, locked, function_property)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::core_t, hal, target, package, company, type, toolchains, modules)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::mdk_arm_t, device, pack, pack_url, cmsis_core)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::target_project_t, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::project_t, name, version, target, core, pin_configs,
                                                 target_project)
 } // namespace nlohmann
 
 #include <QDebug>
 
-QT_DEBUG_ADD_TYPE(project_table::pin_config_t)
-QT_DEBUG_ADD_TYPE(project_table::core_t)
-QT_DEBUG_ADD_TYPE(project_table::mdk_arm_t)
-QT_DEBUG_ADD_TYPE(project_table::target_project_t)
-QT_DEBUG_ADD_TYPE(project_table::project_t)
+QT_DEBUG_ADD_TYPE(ProjectTable::pin_config_t)
+QT_DEBUG_ADD_TYPE(ProjectTable::core_t)
+QT_DEBUG_ADD_TYPE(ProjectTable::mdk_arm_t)
+QT_DEBUG_ADD_TYPE(ProjectTable::target_project_t)
+QT_DEBUG_ADD_TYPE(ProjectTable::project_t)
 
-project_table::project_table() = default;
+ProjectTable::ProjectTable() = default;
 
-project_table::~project_table() = default;
+ProjectTable::~ProjectTable() = default;
 
-void project_table::load_project(project_t *proj, const QString &path)
+void ProjectTable::load_project(project_t *proj, const QString &path)
 {
     Q_ASSERT(proj != nullptr);
     Q_ASSERT(!path.isEmpty());
@@ -80,7 +80,7 @@ void project_table::load_project(project_t *proj, const QString &path)
     }
 }
 
-void project_table::save_project(project_table::project_t &p, const QString &path)
+void ProjectTable::save_project(ProjectTable::project_t &p, const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
 
@@ -88,14 +88,14 @@ void project_table::save_project(project_table::project_t &p, const QString &pat
     os::writefile(path, json.toUtf8());
 }
 
-QString project_table::dump_project(project_table::project_t &proj)
+QString ProjectTable::dump_project(ProjectTable::project_t &proj)
 {
     set_value(proj);
     const nlohmann::json j = proj;
     return QString::fromStdString(j.dump(2));
 }
 
-void project_table::set_value(project_table::project_t &proj)
+void ProjectTable::set_value(ProjectTable::project_t &proj)
 {
     if (proj.target.isEmpty())
     {

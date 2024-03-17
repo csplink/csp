@@ -40,7 +40,7 @@ DialogChooseChip::DialogChooseChip(QWidget *parent)
     ui_->setupUi(this);
 
     repoInstance_ = repo::get_instance();
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
 
     ui_->splitter_2->setSizes(QList<int>() << 156 << 1102);
     ui_->dialogButtonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
@@ -372,11 +372,11 @@ void DialogChooseChip::dialogButtonBoxClickedCallback(const QAbstractButton *but
         connect(&wizard, &WizardNewProject::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
-                projectInstance_->set_core(project::CORE_ATTRIBUTE_TYPE_HAL, halName_);
-                projectInstance_->set_core(project::CORE_ATTRIBUTE_TYPE_TARGET, chipName_);
-                projectInstance_->set_core(project::CORE_ATTRIBUTE_TYPE_PACKAGE, packageName_);
-                projectInstance_->set_core(project::CORE_ATTRIBUTE_TYPE_COMPANY, companyName_);
-                projectInstance_->set_core(project::CORE_ATTRIBUTE_TYPE_TYPE, "chip");
+                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_HAL, halName_);
+                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TARGET, chipName_);
+                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_PACKAGE, packageName_);
+                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_COMPANY, companyName_);
+                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TYPE, "chip");
                 emit signalsCreateProject();
             }
         });

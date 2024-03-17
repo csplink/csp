@@ -43,8 +43,8 @@ endif ()
 
 add_definitions(-DQT_NO_FOREACH)
 
-find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
-find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
+find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets OpenGL Test Concurrent)
+find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test Concurrent)
 
 find_package(QT NAMES Qt5 REQUIRED COMPONENTS LinguistTools)
 find_package(Qt5 REQUIRED COMPONENTS LinguistTools)

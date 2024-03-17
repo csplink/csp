@@ -35,7 +35,7 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
-#include "project.h"
+#include "Project.h"
 #include "repo.h"
 
 namespace Ui
@@ -65,7 +65,7 @@ class DialogChooseChip final : public QDialog
   private:
     Ui::dialogChooseChip *ui_;
     repo *repoInstance_;
-    project *projectInstance_ = nullptr;
+    Project *projectInstance_ = nullptr;
 
     QString chipName_;
     QString halName_;

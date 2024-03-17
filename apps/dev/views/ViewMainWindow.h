@@ -32,7 +32,7 @@
 
 #include <QMainWindow>
 
-#include "project.h"
+#include "Project.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -48,6 +48,8 @@ class ViewMainWindow final : public QMainWindow
   public:
     explicit ViewMainWindow(QWidget *parent = nullptr);
     ~ViewMainWindow() override;
+
+    static void xmakeMessageLogHandler(const QString &msg);
 
   signals:
     void signalAddSysLog(const QString &string);
@@ -69,7 +71,7 @@ class ViewMainWindow final : public QMainWindow
 
   private:
     Ui::viewMainWindow *ui_;
-    project *projectInstance_;
+    Project *projectInstance_;
 
     typedef enum
     {
@@ -81,6 +83,5 @@ class ViewMainWindow final : public QMainWindow
     void initMode();
     void setMode(StackIndexType index);
     static void sysMessageLogHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
-    static void xmakeMessageLogHandler(const QString &msg);
 };
 #endif /** VIEW_MAIN_WINDOW_H */

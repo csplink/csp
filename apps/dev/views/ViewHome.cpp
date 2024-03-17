@@ -42,7 +42,7 @@ ViewHome::ViewHome(QWidget *parent)
     (void)connect(ui_->commandLinkButtonCreateBoardProject, &QPushButton::clicked, this, &ViewHome::pushButtonCreateBoardProjectClickedCallback, Qt::UniqueConnection);
     (void)connect(ui_->commandLinkButtonOpenExistingProject, &QPushButton::clicked, this, &ViewHome::pushButtonOpenExistingProjectClickedCallback, Qt::UniqueConnection);
 
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
 }
 
 ViewHome::~ViewHome()
@@ -79,7 +79,7 @@ void ViewHome::pushButtonOpenExistingProjectClickedCallback(const bool checked)
 
 void ViewHome::createChipProject()
 {
-    projectInstance_->clear_project();
-    projectInstance_->save_project();
+    projectInstance_->clearProject();
+    projectInstance_->saveProject();
     emit signalCreateProject();
 }

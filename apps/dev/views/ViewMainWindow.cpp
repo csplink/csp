@@ -37,7 +37,6 @@
 #include "chip_summary_table.h"
 #include "os.h"
 #include "ui_ViewMainWindow.h"
-#include "xmake.h"
 
 static ViewMainWindow *mainWindow = nullptr;
 
@@ -107,13 +106,12 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     ui_->setupUi(this);
     mainWindow = this;
     (void)qInstallMessageHandler(ViewMainWindow::sysMessageLogHandler);
-    xmake::set_log_handler(ViewMainWindow::xmakeMessageLogHandler);
 
     tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomXmakeOutput);
     tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomConfigurations);
     ui_->dockWidgetBottomOutput->raise();
 
-    projectInstance_ = project::get_instance();
+    projectInstance_ = Project::getInstance();
     ui_->pageViewConfigure->setPropertyBrowser(ui_->treePropertyBrowser);
 
     (void)connect(ui_->actionNewChip, &QAction::triggered, this, &ViewMainWindow::actionNewChipTriggeredCallback, Qt::UniqueConnection);
@@ -130,6 +128,7 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(this, &ViewMainWindow::signalAddXmakeLog, ui_->LogBoxXmakeOutput, &LogBox::append, Qt::UniqueConnection);
 
     (void)connect(ui_->pageViewHome, &ViewHome::signalOpenExistingProject, this, &ViewMainWindow::actionLoadTriggeredCallback, Qt::UniqueConnection);
+    (void)connect(projectInstance_, &Project::signalsXMakeLog, ui_->LogBoxXmakeOutput, &LogBox::append, Qt::UniqueConnection);
 
     initMode();
 }
@@ -142,7 +141,7 @@ ViewMainWindow::~ViewMainWindow()
 
 void ViewMainWindow::initMode()
 {
-    if (projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
+    if (projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
     {
         setMode(STACK_INDEX_EMPTY);
         setMode(STACK_INDEX_CHIP_CONFIGURE);
@@ -182,8 +181,8 @@ void ViewMainWindow::setMode(const StackIndexType index)
         (void)connect(ui_->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, this,
                       &ViewMainWindow::updateModulesTreeView, Qt::UniqueConnection);
 
-        updateModulesTreeView(projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_COMPANY),
-                              projectInstance_->get_core(project::CORE_ATTRIBUTE_TYPE_TARGET));
+        updateModulesTreeView(projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_COMPANY),
+                              projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TARGET));
 
         ui_->pageViewConfigure->initView();
         ui_->stackedWidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
@@ -259,7 +258,7 @@ void ViewMainWindow::actionLoadTriggeredCallback(const bool checked)
     {
         try
         {
-            projectInstance_->load_project(file);
+            projectInstance_->loadProject(file);
             initMode();
         }
         catch (const std::exception &e)
@@ -273,20 +272,20 @@ void ViewMainWindow::actionSaveTriggeredCallback(const bool checked)
 {
     Q_UNUSED(checked)
 
-    if (projectInstance_->get_path().isEmpty())
+    if (projectInstance_->getPath().isEmpty())
     {
         WizardNewProject wizard(this);
         (void)connect(&wizard, &WizardNewProject::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
-                projectInstance_->save_project();
+                projectInstance_->saveProject();
             }
         });
         (void)wizard.exec();
     }
     else
     {
-        projectInstance_->save_project();
+        projectInstance_->saveProject();
     }
 }
 
@@ -309,8 +308,8 @@ void ViewMainWindow::actionGenerateTriggeredCallback(const bool checked) const
 {
     Q_UNUSED(checked)
     ui_->dockWidgetBottomXmakeOutput->raise();
-    projectInstance_->save_project();
-    projectInstance_->generate_code();
+    projectInstance_->saveProject();
+    projectInstance_->generateCode();
 }
 
 void ViewMainWindow::actionPackageManagerTriggeredCallback(const bool checked)

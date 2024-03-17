@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_project.cpp
+ *  @file        TestCaseXMake.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,18 +24,21 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-14     xqyjlj       initial version
+ *  2023-08-14     xqyjlj       initial version
  */
 
 #include <QDebug>
 #include <QtTest>
 
-#include <os.h>
-#include <project.h>
+#include "XMake.h"
+#include "config.h"
+#include "os.h"
 
-project *g_project_instance = nullptr;
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
 
-class testcase_project final : public QObject
+class TestCaseXMake final : public QObject
 {
     Q_OBJECT
 
@@ -43,32 +46,48 @@ class testcase_project final : public QObject
 
     static void initTestCase()
     {
-        project::init();
-        g_project_instance = project::get_instance();
+        config::init();
+        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+        config::set("core/xmake_repodir", QString(CSP_EXE_DIR) + "/xmake");
     }
 
-    static void path()
+    static void version()
     {
-        g_project_instance->set_path("test");
-        const auto path = g_project_instance->get_path();
-        qDebug() << path;
-        QVERIFY(path.endsWith("test"));
+        const auto result = XMake::version();
+        qDebug().noquote() << QString("xmake version :%1").arg(result);
+        QVERIFY(!result.isEmpty());
     }
 
-    static void get_pin_config()
+    static void lua()
     {
-        auto &cfg = g_project_instance->get_pin_config("PA1");
-        cfg.comment = "PA1-OUT";
+        const QByteArray data = os::readfile(":/test.lua");
+        QVERIFY(!data.isEmpty());
 
-        QVERIFY(g_project_instance->get_pin_config("PA1").comment == "PA1-OUT");
+        os::writefile("./test.lua", data);
+
+        const auto result = XMake::lua("./test.lua");
+#ifdef Q_OS_WINDOWS
+        QVERIFY(result == "hello world\r\n");
+#elif defined(Q_OS_LINUX)
+        QVERIFY(result == "hello world\n");
+#endif
+
+        os::rm("./test.lua");
+    }
+
+    static void load_packages()
+    {
+        XMake::PackageType packages;
+        XMake::loadPackages(&packages);
+        QVERIFY(!packages.isEmpty());
     }
 
     static void cleanupTestCase()
     {
-        project::deinit();
+        config::deinit();
     }
 };
 
-QTEST_MAIN(testcase_project)
+QTEST_MAIN(TestCaseXMake)
 
-#include "testcase_project.moc"
+#include "TestCaseXMake.moc"
