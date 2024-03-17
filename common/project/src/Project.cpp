@@ -374,7 +374,7 @@ int Project::runXmake(const QString &Command, const QStringList &Args, const QSt
         process->setWorkingDirectory(WorkDir);
     }
 
-    connect(process, &QProcess::readyReadStandardOutput, this, [=]() {
+    connect(process, &QProcess::readyReadStandardOutput, this, [this, process]() {
         const QByteArray output = process->readAllStandardOutput();
         if (!output.isEmpty())
         {

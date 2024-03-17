@@ -448,7 +448,7 @@ int DialogPackageManager::runXmake(const QString &command, const QStringList &ar
         process->setWorkingDirectory(workDir);
     }
 
-    connect(process, &QProcess::readyReadStandardOutput, this, [=]() {
+    connect(process, &QProcess::readyReadStandardOutput, this, [process, this]() {
         const QByteArray output = process->readAllStandardOutput();
         if (!output.isEmpty())
         {
