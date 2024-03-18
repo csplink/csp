@@ -503,103 +503,103 @@
 <context>
     <name>viewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="62"/>
+        <location filename="../../views/ViewMainWindow.ui" line="62"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="66"/>
+        <location filename="../../views/ViewMainWindow.ui" line="66"/>
         <source>New Project</source>
         <translation>新建工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="81"/>
-        <location filename="../../views/ViewMainwindow.ui" line="108"/>
+        <location filename="../../views/ViewMainWindow.ui" line="81"/>
+        <location filename="../../views/ViewMainWindow.ui" line="108"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="89"/>
+        <location filename="../../views/ViewMainWindow.ui" line="89"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="147"/>
+        <location filename="../../views/ViewMainWindow.ui" line="147"/>
         <source>Property</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="189"/>
+        <location filename="../../views/ViewMainWindow.ui" line="189"/>
         <source>Output</source>
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="211"/>
+        <location filename="../../views/ViewMainWindow.ui" line="211"/>
         <source>Configurations</source>
         <translation>配置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="223"/>
+        <location filename="../../views/ViewMainWindow.ui" line="223"/>
         <source>Xmake Output</source>
         <translation>Xmake输出</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="242"/>
+        <location filename="../../views/ViewMainWindow.ui" line="242"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="255"/>
+        <location filename="../../views/ViewMainWindow.ui" line="255"/>
         <source>Load Project</source>
         <translation>加载工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="258"/>
+        <location filename="../../views/ViewMainWindow.ui" line="258"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="263"/>
+        <location filename="../../views/ViewMainWindow.ui" line="263"/>
         <source>Import Project</source>
         <translation>导入工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="268"/>
+        <location filename="../../views/ViewMainWindow.ui" line="268"/>
         <source>Save Project</source>
         <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="271"/>
+        <location filename="../../views/ViewMainWindow.ui" line="271"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="276"/>
+        <location filename="../../views/ViewMainWindow.ui" line="276"/>
         <source>Save Project As ...</source>
         <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="281"/>
+        <location filename="../../views/ViewMainWindow.ui" line="281"/>
         <source>Close Project</source>
         <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="286"/>
+        <location filename="../../views/ViewMainWindow.ui" line="286"/>
         <source>Generate Report</source>
         <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="291"/>
+        <location filename="../../views/ViewMainWindow.ui" line="291"/>
         <source>New Chip Project</source>
         <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="300"/>
+        <location filename="../../views/ViewMainWindow.ui" line="300"/>
         <source>Generate code</source>
         <translation>生成代码</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainwindow.ui" line="309"/>
+        <location filename="../../views/ViewMainWindow.ui" line="309"/>
         <source>Package Manager</source>
         <translation>包管理器</translation>
     </message>

@@ -30,7 +30,7 @@
 #ifndef PROPERTY_BROWSER_PIN_H
 #define PROPERTY_BROWSER_PIN_H
 
-#include <qttreePropertyBrowser.h>
+#include <qttreepropertybrowser.h>
 #include <qtvariantproperty.h>
 
 #include "InterfaceGraphicsItemPin.h"
