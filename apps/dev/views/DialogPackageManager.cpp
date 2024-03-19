@@ -349,7 +349,7 @@ void DialogPackageManager::pushButtonInstallPressedCallback() const
             QFuture<void> future = QtConcurrent::run([infoIterator, this] {
                 const QString &name = infoIterator.key();
                 const QString &version = infoIterator.value().Version;
-                runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + Config::repositories_dir() });
+                runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
             });
             while (!future.isFinished())
             {
@@ -370,7 +370,7 @@ void DialogPackageManager::pushButtonUpdatePressedCallback() const
         {
             const QString &name = infoIterator.key();
             QFuture<int> future = QtConcurrent::run([this, name] {
-                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + Config::repositories_dir() });
+                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + Config::repositoriesDir() });
                 return errorCode;
             });
             QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -407,7 +407,7 @@ void DialogPackageManager::pushButtonUninstallPressedCallback() const
             QFuture<void> future = QtConcurrent::run([infoIterator, this] {
                 const QString &name = infoIterator.key();
                 const QString &version = infoIterator.value().Version;
-                runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + Config::repositories_dir() });
+                runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
             });
             while (!future.isFinished())
             {
@@ -421,8 +421,8 @@ void DialogPackageManager::pushButtonUninstallPressedCallback() const
 
 int DialogPackageManager::runXmake(const QString &command, const QStringList &args) const
 {
-    const QString program = Config::tool_xmake();
-    const QString workDir = Config::default_workdir();
+    const QString program = Config::toolXmake();
+    const QString workDir = Config::defaultWorkDir();
     const QMap<QString, QString> env = Config::env();
     QStringList list;
     if (!command.isEmpty())

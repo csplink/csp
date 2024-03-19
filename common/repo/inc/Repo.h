@@ -63,7 +63,7 @@ class repo final : public QObject
     static bool chip_summary_exists(const QString &company, const QString &name)
     {
         return QFile::exists(
-            QString("%1/db/chips/%2/%3.yml").arg(Config::repodir(), company.toLower(), name.toLower()));
+            QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower()));
     }
 
     static repo *get_instance();

@@ -30,7 +30,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
-#include <QFileInfo>
 #include <QMessageBox>
 #include <QProcess>
 #include <QSysInfo>
@@ -61,34 +60,34 @@ static constexpr const char *ConfigValueDefaultToolXmake = "xmake";
 static constexpr const char *ConfigKeyToolGit = "tool/git";
 static constexpr const char *ConfigValueDefaultToolGit = "git";
 
-bool Config::is_config(const QString &key)
+bool Config::isConfig(const QString &key)
 {
-    return _settings->value(key, ConfigDefaultValue).toString() != ConfigDefaultValue;
+    return settings_->value(key, ConfigDefaultValue).toString() != ConfigDefaultValue;
 }
 
 void Config::init()
 {
-    _settings = new QSettings(ConfigFilePath, QSettings::IniFormat);
+    settings_ = new QSettings(ConfigFilePath, QSettings::IniFormat);
 
-    if (!is_config(ConfigKeyRepoDir))
+    if (!isConfig(ConfigKeyRepoDir))
     {
-        _settings->setValue(ConfigKeyRepoDir, QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultRepoDir));
+        settings_->setValue(ConfigKeyRepoDir, QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultRepoDir));
     }
-    if (!is_config(ConfigKeyXmakeRepoDir))
+    if (!isConfig(ConfigKeyXmakeRepoDir))
     {
-        _settings->setValue(ConfigKeyXmakeRepoDir, QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultXmakeRepoDir));
+        settings_->setValue(ConfigKeyXmakeRepoDir, QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultXmakeRepoDir));
     }
-    if (!is_config(ConfigKeyLanguage))
+    if (!isConfig(ConfigKeyLanguage))
     {
-        _settings->setValue(ConfigKeyLanguage, ConfigValueDefaultLanguage);
-    }
-
-    if (!is_config(ConfigKeyRepositories))
-    {
-        _settings->setValue(ConfigKeyRepositories, QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultRepositories));
+        settings_->setValue(ConfigKeyLanguage, ConfigValueDefaultLanguage);
     }
 
-    if (!is_config(ConfigKeyWorkspace))
+    if (!isConfig(ConfigKeyRepositories))
+    {
+        settings_->setValue(ConfigKeyRepositories, QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultRepositories));
+    }
+
+    if (!isConfig(ConfigKeyWorkspace))
     {
         const auto appDir = QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultWorkspace);
         const QDir dir(appDir);
@@ -100,63 +99,63 @@ void Config::init()
                 QApplication::exit(-1);
             }
         }
-        _settings->setValue(ConfigKeyWorkspace, appDir);
+        settings_->setValue(ConfigKeyWorkspace, appDir);
     }
-    if (!is_config(ConfigKeyToolXmake))
+    if (!isConfig(ConfigKeyToolXmake))
     {
-        _settings->setValue(ConfigKeyToolXmake, find_tool_xmake());
+        settings_->setValue(ConfigKeyToolXmake, findToolXmake());
     }
-    if (!is_config(ConfigKeyToolGit))
+    if (!isConfig(ConfigKeyToolGit))
     {
-        _settings->setValue(ConfigKeyToolGit, find_tool_git());
+        settings_->setValue(ConfigKeyToolGit, findToolGit());
     }
 }
 
 void Config::deinit()
 {
-    delete _settings;
-    _settings = nullptr;
+    delete settings_;
+    settings_ = nullptr;
 }
 
 QString Config::get(const QString &key)
 {
-    Q_ASSERT(_settings != nullptr);
+    Q_ASSERT(settings_ != nullptr);
     Q_ASSERT(!key.isEmpty());
-    return _settings->value(key, ConfigDefaultValue).toString();
+    return settings_->value(key, ConfigDefaultValue).toString();
 }
 
-QString Config::repodir()
+QString Config::repoDir()
 {
-    Q_ASSERT(_settings != nullptr);
-    return _settings->value(ConfigKeyRepoDir, ConfigValueDefaultRepoDir).toString();
+    Q_ASSERT(settings_ != nullptr);
+    return settings_->value(ConfigKeyRepoDir, ConfigValueDefaultRepoDir).toString();
 }
 
-QString Config::xmake_repodir()
+QString Config::xmakeRepoDir()
 {
-    Q_ASSERT(_settings != nullptr);
-    return _settings->value(ConfigKeyXmakeRepoDir, ConfigValueDefaultXmakeRepoDir).toString();
+    Q_ASSERT(settings_ != nullptr);
+    return settings_->value(ConfigKeyXmakeRepoDir, ConfigValueDefaultXmakeRepoDir).toString();
 }
 
 void Config::set(const QString &key, const QString &value)
 {
-    Q_ASSERT(_settings != nullptr);
-    _settings->setValue(key, value);
+    Q_ASSERT(settings_ != nullptr);
+    settings_->setValue(key, value);
 }
 
 QString Config::language()
 {
-    Q_ASSERT(_settings != nullptr);
-    return _settings->value(ConfigKeyLanguage, ConfigValueDefaultLanguage).toString();
+    Q_ASSERT(settings_ != nullptr);
+    return settings_->value(ConfigKeyLanguage, ConfigValueDefaultLanguage).toString();
 }
 
-QString Config::workspace_dir()
+QString Config::workspaceDir()
 {
-    Q_ASSERT(_settings != nullptr);
+    Q_ASSERT(settings_ != nullptr);
     const auto dir = QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultWorkspace);
-    return _settings->value(ConfigKeyWorkspace, dir).toString();
+    return settings_->value(ConfigKeyWorkspace, dir).toString();
 }
 
-QString Config::default_workdir()
+QString Config::defaultWorkDir()
 {
     const QString workDir = QString("%1/workDir").arg(QCoreApplication::applicationDirPath());
     const QString xmakeLua = QString("%1/xmake.lua").arg(workDir);
@@ -202,32 +201,32 @@ QMap<QString, QString> Config::env()
     }
 #endif
 
-    map.insert("XMAKE_RCFILES", QString("%1/tools/scripts/xmake.lua").arg(xmake_repodir()));
+    map.insert("XMAKE_RCFILES", QString("%1/tools/scripts/xmake.lua").arg(xmakeRepoDir()));
     map.insert("XMAKE_THEME", "plain");
 
     return map;
 }
 
-QString Config::repositories_dir()
+QString Config::repositoriesDir()
 {
-    Q_ASSERT(_settings != nullptr);
+    Q_ASSERT(settings_ != nullptr);
     const QString dir = QString("%1/%2").arg(QCoreApplication::applicationDirPath(), ConfigValueDefaultRepositories);
-    return _settings->value(ConfigKeyRepositories, dir).toString();
+    return settings_->value(ConfigKeyRepositories, dir).toString();
 }
 
-QString Config::tool_xmake()
+QString Config::toolXmake()
 {
-    Q_ASSERT(_settings != nullptr);
-    return _settings->value(ConfigKeyToolXmake, ConfigValueDefaultToolXmake).toString();
+    Q_ASSERT(settings_ != nullptr);
+    return settings_->value(ConfigKeyToolXmake, ConfigValueDefaultToolXmake).toString();
 }
 
-QString Config::tool_git()
+QString Config::toolGit()
 {
-    Q_ASSERT(_settings != nullptr);
-    return _settings->value(ConfigKeyToolGit, ConfigValueDefaultToolGit).toString();
+    Q_ASSERT(settings_ != nullptr);
+    return settings_->value(ConfigKeyToolGit, ConfigValueDefaultToolGit).toString();
 }
 
-QString Config::find_tool_xmake()
+QString Config::findToolXmake()
 {
     const QString toolDir = QString("%1/tools").arg(QCoreApplication::applicationDirPath());
 #ifdef Q_OS_WINDOWS
@@ -241,7 +240,7 @@ QString Config::find_tool_xmake()
     return ConfigValueDefaultToolXmake;
 }
 
-QString Config::find_tool_git()
+QString Config::findToolGit()
 {
     const QString toolDir = QString("%1/tools").arg(QCoreApplication::applicationDirPath());
 #ifdef Q_OS_WINDOWS

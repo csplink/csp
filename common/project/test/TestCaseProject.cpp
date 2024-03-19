@@ -55,7 +55,7 @@ class TestCaseProject final : public QObject
         QVERIFY(path.endsWith("test"));
     }
 
-    static void get_pin_config()
+    static void getPinConfig()
     {
         auto &cfg = ProjectInstance->getPinConfig("PA1");
         cfg.comment = "PA1-OUT";

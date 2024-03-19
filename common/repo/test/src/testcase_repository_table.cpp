@@ -52,7 +52,7 @@ class testcase_repository_table final : public QObject
     static void load_repository()
     {
         repository_table::repository_t repository;
-        repository_table::load_repository(&repository, Config::repodir() + "/db/repository.yml");
+        repository_table::load_repository(&repository, Config::repoDir() + "/db/repository.yml");
         const auto chips = repository.chips;
         auto chips_i = chips.constBegin();
         while (chips_i != chips.constEnd())

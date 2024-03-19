@@ -105,7 +105,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     const auto label2 = new QLabel(tr("Project Name"), page);
     label2->setWordWrap(true);
 
-    auto workspace = Config::workspace_dir();
+    auto workspace = Config::workspaceDir();
     lineEditProjectPath_ = new QLineEdit(workspace, page);
 
     int index = 0;

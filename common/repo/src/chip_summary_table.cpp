@@ -123,6 +123,6 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    const QString path = QString("%1/db/chips/%2/%3.yml").arg(Config::repodir(), company.toLower(), name.toLower());
+    const QString path = QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower());
     return load_chip_summary(chip_summary, path);
 }

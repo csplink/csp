@@ -43,9 +43,9 @@ class TestCaseConfig final : public QObject
         Config::init();
     }
 
-    static void repodir()
+    static void repoDir()
     {
-        QVERIFY(!Config::repodir().isEmpty());
+        QVERIFY(!Config::repoDir().isEmpty());
     }
 
     static void cleanupTestCase()

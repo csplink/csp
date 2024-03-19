@@ -53,7 +53,7 @@ class testcase_pinout_table final : public QObject
     static void load_pinout()
     {
         pinout_table::pinout_t pinout;
-        for (const QString &company_dir : os::dirs(Config::repodir() + "/db/hal", "*"))
+        for (const QString &company_dir : os::dirs(Config::repoDir() + "/db/hal", "*"))
         {
             for (const QString &hal_dir : os::dirs(company_dir, "*"))
             {

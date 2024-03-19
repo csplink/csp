@@ -104,7 +104,7 @@ void map_table::load_map(map_t *map, const QString &hal, const QString &map_name
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!map_name.isEmpty());
 
-    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(Config::repodir(), hal.toLower(), map_name.toLower());
+    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(Config::repoDir(), hal.toLower(), map_name.toLower());
     return load_map(map, path);
 }
 
@@ -113,7 +113,7 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
     Q_ASSERT(maps != nullptr);
     Q_ASSERT(!hal.isEmpty());
 
-    const QString p = QString("%1/db/hal/%2/map").arg(Config::repodir(), hal.toLower());
+    const QString p = QString("%1/db/hal/%2/map").arg(Config::repoDir(), hal.toLower());
     for (const QString &file : os::files(p, QString("*.yml")))
     {
         map_t map;

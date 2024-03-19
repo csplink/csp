@@ -36,7 +36,7 @@
 
 bool Git::execv(const QStringList &argv, QByteArray *output, QByteArray *error, const QString &workDir)
 {
-    const QString &program = Config::tool_git();
+    const QString &program = Config::toolGit();
     const QMap<QString, QString> &env = Config::env();
     constexpr int msecs = 30000;
     QProcess process;

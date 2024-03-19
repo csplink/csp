@@ -198,7 +198,7 @@ chip_summary_table::chip_summary_t &Project::getChipSummary()
 }
 
 /******************* pin ************************/
-ProjectTable::pin_config_t &Project::getPinConfig(const QString &Key)
+ProjectTable::PinConfigType &Project::getPinConfig(const QString &Key)
 {
     Q_ASSERT(!Key.isEmpty());
     return project_.pin_configs[Key];
@@ -305,7 +305,7 @@ void Project::loadProject(const QString &Path)
     Q_ASSERT(!Path.isEmpty());
     Q_ASSERT(os::isfile(Path));
 
-    ProjectTable::load_project(&project_, Path);
+    ProjectTable::loadProject(&project_, Path);
     setPath(Path);
 
     loadDb();
@@ -313,7 +313,7 @@ void Project::loadProject(const QString &Path)
 
 void Project::saveProject(const QString &Path)
 {
-    ProjectTable::save_project(project_, Path);
+    ProjectTable::saveProject(project_, Path);
 }
 
 void Project::saveProject()
@@ -333,12 +333,12 @@ void Project::saveProject()
             os::show_error_and_exit(tr("The Project <%1> path is not a directory!").arg(path));
         }
     }
-    ProjectTable::save_project(project_, path_);
+    ProjectTable::saveProject(project_, path_);
 }
 
 QString Project::dumpProject()
 {
-    return ProjectTable::dump_project(project_);
+    return ProjectTable::dumpProject(project_);
 }
 
 void Project::clearProject()
@@ -349,7 +349,7 @@ void Project::clearProject()
 
 int Project::runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir) const
 {
-    const QString program = Config::tool_xmake();
+    const QString program = Config::toolXmake();
     const QMap<QString, QString> env = Config::env();
     QStringList list;
     if (!Command.isEmpty())
@@ -397,7 +397,7 @@ int Project::runXmake(const QString &Command, const QStringList &Args, const QSt
 void Project::generateCode() const
 {
     const QFileInfo info(path_);
-    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + info.dir().absolutePath(), QString("--repositories=") + Config::repositories_dir() });
+    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + info.dir().absolutePath(), QString("--repositories=") + Config::repositoriesDir() });
 }
 
 void Project::build(const QString &Mode) const

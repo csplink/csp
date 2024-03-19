@@ -37,29 +37,29 @@
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::pin_config_t, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::core_t, hal, target, package, company, type, toolchains, modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::mdk_arm_t, device, pack, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::target_project_t, mdk_arm)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::project_t, name, version, target, core, pin_configs,
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, function, comment, locked, function_property)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::CoreType, hal, target, package, company, type, toolchains, modules)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::MdkArmType, device, pack, pack_url, cmsis_core)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::TargetProjectType, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, name, version, target, core, pin_configs,
                                                 target_project)
 } // namespace nlohmann
 
 #include <QDebug>
 
-QT_DEBUG_ADD_TYPE(ProjectTable::pin_config_t)
-QT_DEBUG_ADD_TYPE(ProjectTable::core_t)
-QT_DEBUG_ADD_TYPE(ProjectTable::mdk_arm_t)
-QT_DEBUG_ADD_TYPE(ProjectTable::target_project_t)
-QT_DEBUG_ADD_TYPE(ProjectTable::project_t)
+QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
+QT_DEBUG_ADD_TYPE(ProjectTable::CoreType)
+QT_DEBUG_ADD_TYPE(ProjectTable::MdkArmType)
+QT_DEBUG_ADD_TYPE(ProjectTable::TargetProjectType)
+QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)
 
 ProjectTable::ProjectTable() = default;
 
 ProjectTable::~ProjectTable() = default;
 
-void ProjectTable::load_project(project_t *proj, const QString &path)
+void ProjectTable::loadProject(ProjectType *project, const QString &path)
 {
-    Q_ASSERT(proj != nullptr);
+    Q_ASSERT(project != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
@@ -67,9 +67,9 @@ void ProjectTable::load_project(project_t *proj, const QString &path)
     {
         const std::string buffer = os::readfile(path).toStdString();
         const nlohmann::json json = nlohmann::json::parse(buffer);
-        json.get_to(*proj);
+        json.get_to(*project);
 
-        set_value(*proj);
+        setValue(*project);
     }
     catch (std::exception &e)
     {
@@ -80,49 +80,49 @@ void ProjectTable::load_project(project_t *proj, const QString &path)
     }
 }
 
-void ProjectTable::save_project(ProjectTable::project_t &p, const QString &path)
+void ProjectTable::saveProject(ProjectType &project, const QString &path)
 {
     Q_ASSERT(!path.isEmpty());
 
-    const auto json = dump_project(p);
+    const auto json = dumpProject(project);
     os::writefile(path, json.toUtf8());
 }
 
-QString ProjectTable::dump_project(ProjectTable::project_t &proj)
+QString ProjectTable::dumpProject(ProjectType &project)
 {
-    set_value(proj);
-    const nlohmann::json j = proj;
+    setValue(project);
+    const nlohmann::json j = project;
     return QString::fromStdString(j.dump(2));
 }
 
-void ProjectTable::set_value(ProjectTable::project_t &proj)
+void ProjectTable::setValue(ProjectType &project)
 {
-    if (proj.target.isEmpty())
+    if (project.target.isEmpty())
     {
-        proj.target = "xmake";
+        project.target = "xmake";
     }
-    if (proj.core.toolchains.isEmpty())
+    if (project.core.toolchains.isEmpty())
     {
-        proj.core.toolchains = "arm-none-eabi";
+        project.core.toolchains = "arm-none-eabi";
     }
-    proj.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
+    project.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
     /* 填充 modules */
     {
-        proj.core.modules.clear();
-        auto pin_configs_i = proj.pin_configs.constBegin();
-        while (pin_configs_i != proj.pin_configs.constEnd())
+        project.core.modules.clear();
+        auto pin_configs_i = project.pin_configs.constBegin();
+        while (pin_configs_i != project.pin_configs.constEnd())
         {
-            const pin_config_t &config = pin_configs_i.value();
+            const PinConfigType &config = pin_configs_i.value();
 
             if (config.locked)
             {
                 const QStringList list = config.function.split("-");
-                proj.core.modules << list[0];
+                project.core.modules << list[0];
             }
 
             ++pin_configs_i;
         }
 
-        proj.core.modules.removeDuplicates();
+        project.core.modules.removeDuplicates();
     }
 }

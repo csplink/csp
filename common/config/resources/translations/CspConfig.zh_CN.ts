@@ -4,12 +4,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/Config.cpp" line="99"/>
+        <location filename="../../src/Config.cpp" line="98"/>
         <source>Critical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Config.cpp" line="99"/>
+        <location filename="../../src/Config.cpp" line="98"/>
         <source>The workspace &lt;%1&gt; path is not a directory!</source>
         <translation type="unfinished"></translation>
     </message>

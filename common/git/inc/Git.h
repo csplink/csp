@@ -47,7 +47,7 @@ class Git final
         COMMIT_DATE  // "20230814164314"
     } VariablesType;
 
-    static bool execv(const QStringList &argv, QByteArray *output, QByteArray *error, const QString &workDir = Config::default_workdir());
+    static bool execv(const QStringList &argv, QByteArray *output, QByteArray *error, const QString &workDir = Config::defaultWorkDir());
 
     /**
      * @brief get git version

@@ -123,7 +123,7 @@ class Project final : public QObject
      * @param Key: pin name
      * @return pin config as a modifiable reference
      */
-    ProjectTable::pin_config_t &getPinConfig(const QString &Key);
+    ProjectTable::PinConfigType &getPinConfig(const QString &Key);
 
     /**
      * @brief set pin comment by pin name
@@ -247,11 +247,11 @@ class Project final : public QObject
      */
     void build(const QString &Mode) const;
 
-    int runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir = Config::default_workdir()) const;
+    int runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir = Config::defaultWorkDir()) const;
 
   private:
     inline static Project *instance_ = nullptr;
-    ProjectTable::project_t project_; // project table
+    ProjectTable::ProjectType project_; // project table
     QString path_;                    // project file path
     ip_table::ips_t ips_;             // ip map
     map_table::maps_t maps_;          // hal map

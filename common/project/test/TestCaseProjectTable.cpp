@@ -39,30 +39,30 @@ class TestCaseProjectTable final : public QObject
 
   private slots:
 
-    static void load_project()
+    static void loadProject()
     {
-        ProjectTable::project_t project;
-        ProjectTable::load_project(&project, ":/project.json");
+        ProjectTable::ProjectType project;
+        ProjectTable::loadProject(&project, ":/project.json");
         QVERIFY(!project.name.isEmpty());
     }
 
-    static void save_project()
+    static void saveProject()
     {
-        auto p = ProjectTable::project_t();
+        auto p = ProjectTable::ProjectType();
         p.name = "test";
-        ProjectTable::pin_config_t pin_config;
+        ProjectTable::PinConfigType pin_config;
         pin_config.comment = "PA1-OUT";
         p.pin_configs.insert("PA1", pin_config);
-        ProjectTable::save_project(p, "test.json");
+        ProjectTable::saveProject(p, "test.json");
         QVERIFY(os::isfile("test.json"));
     }
 
-    static void dump_project()
+    static void dumpProject()
     {
-        auto p = ProjectTable::project_t();
+        auto p = ProjectTable::ProjectType();
         p.name = "test";
-        p.pin_configs.insert("test", ProjectTable::pin_config_t());
-        const auto str = ProjectTable::dump_project(p);
+        p.pin_configs.insert("test", ProjectTable::PinConfigType());
+        const auto str = ProjectTable::dumpProject(p);
         QVERIFY(!str.isEmpty());
     }
 };

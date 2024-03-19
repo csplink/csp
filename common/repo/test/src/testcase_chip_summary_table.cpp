@@ -41,7 +41,6 @@ class testcase_chip_summary_table final : public QObject
 {
     Q_OBJECT
 
-  private:
     static void check(const chip_summary_table::chip_summary_t &chip_summary)
     {
         QVERIFY(!chip_summary.clocktree.isEmpty());
@@ -64,7 +63,7 @@ class testcase_chip_summary_table final : public QObject
     static void load_chip_summary()
     {
         chip_summary_table::chip_summary_t chip_summary;
-        for (const QString &dir : os::dirs(Config::repodir() + "/db/chips", "*"))
+        for (const QString &dir : os::dirs(Config::repoDir() + "/db/chips", "*"))
         {
             for (const QString &file : os::files(dir, QString("*.yml")))
             {

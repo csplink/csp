@@ -44,7 +44,7 @@ class ProjectTable
         QString comment;                             // pin comment
         bool locked;                                 // pin locked
         pin_function_properties_t function_property; // pin function properties
-    } pin_config_t;
+    } PinConfigType;
 
     typedef struct
     {
@@ -57,7 +57,7 @@ class ProjectTable
         QStringList modules;   // modules
         QStringList warnings;  // warnings
         QStringList languages; // languages
-    } core_t;
+    } CoreType;
 
     typedef struct mdk_arm_struct
     {
@@ -65,51 +65,51 @@ class ProjectTable
         QString pack;       // pack
         QString pack_url;   // cmsis pack更新url
         QString cmsis_core; // 依赖的cmsis core最低版本
-    } mdk_arm_t;
+    } MdkArmType;
 
     typedef struct target_project_struct
     {
-        mdk_arm_t mdk_arm;
-    } target_project_t;
+        MdkArmType mdk_arm;
+    } TargetProjectType;
 
     typedef struct
     {
         QString name;                            // project name
         QString version;                         // csp version
         QString target;                          // target type: xmake, mdk, cmake
-        QMap<QString, pin_config_t> pin_configs; // pin configs
-        core_t core;                             // core configs
-        target_project_t target_project;
-    } project_t;
+        QMap<QString, PinConfigType> pin_configs; // pin configs
+        CoreType core;                            // core configs
+        TargetProjectType target_project;
+    } ProjectType;
 
   public:
     /**
      * @brief load project from json file
-     * @param proj: project ptr
+     * @param project: project ptr
      * @param path: project file path
      * @return void
      */
-    static void load_project(project_t *proj, const QString &path);
+    static void loadProject(ProjectType *project, const QString &path);
 
     /**
      * @brief save project to json file
-     * @param p: project
+     * @param project: project
      * @param path: project file path
      */
-    static void save_project(project_t &p, const QString &path);
+    static void saveProject(ProjectType &project, const QString &path);
 
     /**
      * @brief dump project to json string
-     * @param p: project
+     * @param project: project
      * @return yaml string
      */
-    static QString dump_project(project_t &proj);
+    static QString dumpProject(ProjectType &project);
 
   private:
     explicit ProjectTable();
     ~ProjectTable();
 
-    static void set_value(project_t &proj);
+    static void setValue(ProjectType &project);
 };
 
 #endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H

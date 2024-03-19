@@ -54,10 +54,10 @@ XMake::~XMake() = default;
 
 bool XMake::execv(const QStringList &argv, QByteArray *output, QByteArray *error)
 {
-    const QString &program = Config::tool_xmake();
+    const QString &program = Config::toolXmake();
     const QMap<QString, QString> &env = Config::env();
     constexpr int msecs = 30000;
-    const QString &workDir = Config::default_workdir();
+    const QString &workDir = Config::defaultWorkDir();
     QProcess process;
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
     bool rtn = false;
@@ -149,7 +149,7 @@ void XMake::loadPackages(PackageType *packages)
 {
     if (packages != nullptr)
     {
-        const QString data = cmd("csp-repo", { "--dump=json", QString("--repositories=") + Config::repositories_dir() });
+        const QString data = cmd("csp-repo", { "--dump=json", QString("--repositories=") + Config::repositoriesDir() });
         try
         {
             const std::string buffer = data.toStdString();

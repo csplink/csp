@@ -40,7 +40,7 @@ class Config final
      * @param key: Config key
      * @return true if the key is Config, otherwise false
      */
-    static bool is_config(const QString &key);
+    static bool isConfig(const QString &key);
 
     /**
      * @brief init Config
@@ -63,13 +63,13 @@ class Config final
      * @brief get csp_repo directory; <get("core/repoDir")>
      * @return csp_repo directory; <default: "csp_repo">
      */
-    static QString repodir();
+    static QString repoDir();
 
     /**
      * @brief get csp_repo directory; <get("core/xmakeRepoDir")>
      * @return csp_repo directory; <default: "xmake">
      */
-    static QString xmake_repodir();
+    static QString xmakeRepoDir();
 
     /**
      * @brief set value by key
@@ -88,13 +88,13 @@ class Config final
      * @brief get workspace directory; <get("core/workspace")>
      * @return workspace; <default: "workspace">
      */
-    static QString workspace_dir();
+    static QString workspaceDir();
 
     /**
      * @brief get default work dir;
      * @return work dir; <always returns a fixed value>
      */
-    static QString default_workdir();
+    static QString defaultWorkDir();
 
     /**
      * @brief get work env
@@ -106,19 +106,18 @@ class Config final
      * @brief get repositories directory; <get("core/repositories")>
      * @return repositories; <default: "repositories">
      */
-    static QString repositories_dir();
+    static QString repositoriesDir();
 
-    static QString tool_xmake();
+    static QString toolXmake();
 
-    static QString tool_git();
-
-  private:
-    inline static QSettings *_settings = nullptr;
-
-    static QString find_tool_xmake();
-    static QString find_tool_git();
+    static QString toolGit();
 
   private:
+    inline static QSettings *settings_ = nullptr;
+
+    static QString findToolXmake();
+    static QString findToolGit();
+
     Config() = default;
     ~Config() = default;
 
