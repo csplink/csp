@@ -34,7 +34,7 @@
 
 #include "Git.h"
 
-bool Git::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, const QString &WorkDir)
+bool Git::execv(const QStringList &argv, QByteArray *output, QByteArray *error, const QString &workDir)
 {
     const QString &program = Config::tool_git();
     const QMap<QString, QString> &env = Config::env();
@@ -51,13 +51,13 @@ bool Git::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, 
     }
 
     process.setProgram(program);
-    process.setArguments(Argv);
+    process.setArguments(argv);
     process.setProcessEnvironment(environment);
 
-    const QFileInfo fileInfo(WorkDir);
+    const QFileInfo fileInfo(workDir);
     if (fileInfo.isDir())
     {
-        process.setWorkingDirectory(WorkDir);
+        process.setWorkingDirectory(workDir);
     }
 
     process.start();
@@ -65,20 +65,20 @@ bool Git::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, 
     if (process.waitForFinished(msecs))
     {
         rtn = true;
-        if (Output != nullptr)
+        if (output != nullptr)
         {
-            *Output = process.readAllStandardOutput();
+            *output = process.readAllStandardOutput();
         }
-        if (Error != nullptr)
+        if (error != nullptr)
         {
-            *Error = process.readAllStandardError();
+            *error = process.readAllStandardError();
         }
     }
 
     return rtn;
 }
 
-QString Git::version(void)
+QString Git::version()
 {
     QByteArray output;
     QString version = "";
@@ -96,13 +96,13 @@ QString Git::version(void)
     return version;
 }
 
-QString Git::variables(const int Type, const QString &WorkDir)
+QString Git::variables(const VariablesType type, const QString &WorkDir)
 {
     QStringList argv;
     QByteArray output;
     QString var = "";
 
-    switch (Type)
+    switch (type)
     {
     case TAG:
         argv = QStringList({ "describe", "--tags" });

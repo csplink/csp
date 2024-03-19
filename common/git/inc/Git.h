@@ -45,24 +45,23 @@ class Git final
         COMMIT,      // "2fc1f208"
         COMMIT_LONG, // "2fc1f208201480569aef0b19db1ec74b5d19ed1a"
         COMMIT_DATE  // "20230814164314"
-    } variables_type;
+    } VariablesType;
 
-  public:
-    static bool execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, const QString &WorkDir = Config::default_workdir());
+    static bool execv(const QStringList &argv, QByteArray *output, QByteArray *error, const QString &workDir = Config::default_workdir());
 
     /**
      * @brief get git version
      * @return version; <example: "v2.34.1">
      */
-    static QString version(void);
+    static QString version();
 
     /**
      * @brief get git variables
-     * @param Type: type
+     * @param type: type
      * @param WorkDir: work dir
      * @return the variables corresponding to type
      */
-    static QString variables(int Type, const QString &WorkDir = "");
+    static QString variables(VariablesType type, const QString &WorkDir = "");
 
   private:
     Git() = default;
