@@ -31,10 +31,10 @@
 #include <QDebug>
 #include <QMutex>
 
+#include "ChipSummaryTable.h"
 #include "DialogPackageManager.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
-#include "chip_summary_table.h"
 #include "os.h"
 #include "ui_ViewMainWindow.h"
 

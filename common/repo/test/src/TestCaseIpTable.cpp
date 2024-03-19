@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        package_table.h
+ *  @file        TestCaseIpTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,30 +24,45 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-04-19     xqyjlj       initial version
+ *  2023-06-17     xqyjlj       initial version
  */
+#include <QDebug>
+#include <QtTest>
 
-#ifndef COMMON_REPO_PACKAGE_TABLE_H
-#define COMMON_REPO_PACKAGE_TABLE_H
+#include "Config.h"
+#include "IpTable.h"
 
-#include "qtyaml.h"
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
 
-class package_model final
+class TestCaseIpTable final : public QObject
 {
-  public:
-    struct
-    {
-        QString category;
-        QString homepage;
-        QString license;
-        QString name;
-        QString option;
-        QString readme;
-        QString rule;
-        QString target;
-    } package_model_t;
+    Q_OBJECT
 
-  public:
+  private slots:
+
+    static void initTestCase()
+    {
+        Q_INIT_RESOURCE(repo);
+        Config::init();
+        Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
+    }
+
+    static void load_ip()
+    {
+        ip_table::ip_t ip;
+        ip_table::load_ip(&ip, ":/lib/repo/db/ip/gpio.yml");
+        QVERIFY(!ip.isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        Config::deinit();
+        Q_CLEANUP_RESOURCE(repo);
+    }
 };
 
-#endif // COMMON_REPO_PACKAGE_TABLE_H
+QTEST_MAIN(TestCaseIpTable)
+
+#include "TestCaseIpTable.moc"

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        repository_table.cpp
+ *  @file        RepositoryTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -30,10 +30,10 @@
 #include <QDebug>
 #include <QFile>
 
+#include "RepositoryTable.h"
 #include "os.h"
 #include "qtjson.h"
 #include "qtyaml.h"
-#include "repository_table.h"
 
 namespace YAML
 {

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        map_table.cpp
+ *  @file        MapTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -31,7 +31,7 @@
 #include <QFileInfo>
 
 #include "Config.h"
-#include "map_table.h"
+#include "MapTable.h"
 #include "os.h"
 #include "qtjson.h"
 #include "qtyaml.h"

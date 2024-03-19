@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        chip_summary_table.h
+ *  @file        ChipSummaryTable.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,8 +27,8 @@
  *  2023-05-21     xqyjlj       initial version
  */
 
-#ifndef COMMON_REPO_CHIP_SUMMARY_TABLE_H
-#define COMMON_REPO_CHIP_SUMMARY_TABLE_H
+#ifndef CSP_REPO_CHIP_SUMMARY_TABLE_H
+#define CSP_REPO_CHIP_SUMMARY_TABLE_H
 
 #include <QMap>
 
@@ -98,4 +98,4 @@ class chip_summary_table final
     ~chip_summary_table();
 };
 
-#endif // COMMON_REPO_CHIP_SUMMARY_TABLE_H
+#endif // CSP_REPO_CHIP_SUMMARY_TABLE_H

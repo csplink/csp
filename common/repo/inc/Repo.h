@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        csp_repo.h
+ *  @file        Repo.h
  *  @brief
  *
  * ****************************************************************************
@@ -33,9 +33,9 @@
 #include <QFile>
 #include <QObject>
 
+#include "ChipSummaryTable.h"
 #include "Config.h"
-#include "chip_summary_table.h"
-#include "repository_table.h"
+#include "RepositoryTable.h"
 
 class repo final : public QObject
 {

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_map_table.cpp
+ *  @file        TestCasePinoutTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,19 +24,20 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-17     xqyjlj       initial version
+ *  2023-05-28     xqyjlj       initial version
  */
 #include <QDebug>
 #include <QtTest>
 
-#include <Config.h>
-#include <map_table.h>
+#include "Config.h"
+#include "PinoutTable.h"
+#include "os.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
 #endif
 
-class testcase_map_table final : public QObject
+class TestCasePinoutTable final : public QObject
 {
     Q_OBJECT
 
@@ -49,13 +50,25 @@ class testcase_map_table final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_map()
+    static void load_pinout()
     {
-        map_table::map_t map;
-        map_table::load_map(&map, ":/lib/repo/db/map/gpio.yml");
-        QVERIFY(!map.groups.isEmpty());
-        QVERIFY(!map.properties.isEmpty());
-        QVERIFY(!map.total.isEmpty());
+        pinout_table::pinout_t pinout;
+        for (const QString &company_dir : os::dirs(Config::repoDir() + "/db/hal", "*"))
+        {
+            for (const QString &hal_dir : os::dirs(company_dir, "*"))
+            {
+                for (const QString &chip_dir : os::dirs(hal_dir, "*"))
+                {
+                    const QString file = chip_dir + "/pinout.yml";
+                    QVERIFY(os::isfile(file));
+
+                    qDebug() << "Testing" << file;
+
+                    pinout_table::load_pinout(&pinout, file);
+                    QVERIFY(!pinout.isEmpty());
+                }
+            }
+        }
     }
 
     static void cleanupTestCase()
@@ -65,6 +78,6 @@ class testcase_map_table final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_map_table)
+QTEST_MAIN(TestCasePinoutTable)
 
-#include "testcase_map_table.moc"
+#include "TestCasePinoutTable.moc"

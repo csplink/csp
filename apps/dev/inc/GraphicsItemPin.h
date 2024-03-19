@@ -31,7 +31,7 @@
 #define GRAPHICS_ITEM_PIN_H
 
 #include "InterfaceGraphicsItemPin.h"
-#include "pinout_table.h"
+#include "PinoutTable.h"
 #include "Project.h"
 
 class GraphicsItemPin final : public InterfaceGraphicsItemPin

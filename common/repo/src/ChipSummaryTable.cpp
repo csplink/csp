@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        chip_summary_table.cpp
+ *  @file        ChipSummaryTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -31,8 +31,8 @@
 #include <QFile>
 #include <QRegularExpression>
 
+#include "ChipSummaryTable.h"
 #include "Config.h"
-#include "chip_summary_table.h"
 #include "os.h"
 #include "qtjson.h"
 #include "qtyaml.h"

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_ip_table.cpp
+ *  @file        TestCaseChipSummaryTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,24 +24,35 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-06-17     xqyjlj       initial version
+ *  2023-05-21     xqyjlj       initial version
  */
 #include <QDebug>
 #include <QtTest>
 
+#include "ChipSummaryTable.h"
 #include "Config.h"
-#include <ip_table.h>
+#include "os.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
 #endif
 
-class testcase_ip_table final : public QObject
+class TestCaseChipSummaryTable final : public QObject
 {
     Q_OBJECT
 
-  private slots:
+    static void check(const chip_summary_table::chip_summary_t &chip_summary)
+    {
+        QVERIFY(!chip_summary.clocktree.isEmpty());
+        QVERIFY(!chip_summary.company.isEmpty());
+        QVERIFY(!chip_summary.hal.isEmpty());
+        QVERIFY(!chip_summary.line.isEmpty());
+        QVERIFY(!chip_summary.name.isEmpty());
+        QVERIFY(!chip_summary.package.isEmpty());
+        QVERIFY(!chip_summary.series.isEmpty());
+    }
 
+  private slots:
     static void initTestCase()
     {
         Q_INIT_RESOURCE(repo);
@@ -49,11 +60,18 @@ class testcase_ip_table final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_ip()
+    static void load_chip_summary()
     {
-        ip_table::ip_t ip;
-        ip_table::load_ip(&ip, ":/lib/repo/db/ip/gpio.yml");
-        QVERIFY(!ip.isEmpty());
+        chip_summary_table::chip_summary_t chip_summary;
+        for (const QString &dir : os::dirs(Config::repoDir() + "/db/chips", "*"))
+        {
+            for (const QString &file : os::files(dir, QString("*.yml")))
+            {
+                qDebug() << "Testing" << file;
+                chip_summary_table::load_chip_summary(&chip_summary, file);
+                check(chip_summary);
+            }
+        }
     }
 
     static void cleanupTestCase()
@@ -63,6 +81,6 @@ class testcase_ip_table final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_ip_table)
+QTEST_MAIN(TestCaseChipSummaryTable)
 
-#include "testcase_ip_table.moc"
+#include "TestCaseChipSummaryTable.moc"

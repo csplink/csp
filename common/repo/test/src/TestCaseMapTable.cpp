@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_chip_summary_table.cpp
+ *  @file        TestCaseMapTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -24,35 +24,24 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-21     xqyjlj       initial version
+ *  2023-06-17     xqyjlj       initial version
  */
 #include <QDebug>
 #include <QtTest>
 
 #include "Config.h"
-#include "os.h"
-#include <chip_summary_table.h>
+#include "MapTable.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
 #endif
 
-class testcase_chip_summary_table final : public QObject
+class TestCaseMapTable final : public QObject
 {
     Q_OBJECT
 
-    static void check(const chip_summary_table::chip_summary_t &chip_summary)
-    {
-        QVERIFY(!chip_summary.clocktree.isEmpty());
-        QVERIFY(!chip_summary.company.isEmpty());
-        QVERIFY(!chip_summary.hal.isEmpty());
-        QVERIFY(!chip_summary.line.isEmpty());
-        QVERIFY(!chip_summary.name.isEmpty());
-        QVERIFY(!chip_summary.package.isEmpty());
-        QVERIFY(!chip_summary.series.isEmpty());
-    }
-
   private slots:
+
     static void initTestCase()
     {
         Q_INIT_RESOURCE(repo);
@@ -60,18 +49,13 @@ class testcase_chip_summary_table final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_chip_summary()
+    static void load_map()
     {
-        chip_summary_table::chip_summary_t chip_summary;
-        for (const QString &dir : os::dirs(Config::repoDir() + "/db/chips", "*"))
-        {
-            for (const QString &file : os::files(dir, QString("*.yml")))
-            {
-                qDebug() << "Testing" << file;
-                chip_summary_table::load_chip_summary(&chip_summary, file);
-                check(chip_summary);
-            }
-        }
+        map_table::map_t map;
+        map_table::load_map(&map, ":/lib/repo/db/map/gpio.yml");
+        QVERIFY(!map.groups.isEmpty());
+        QVERIFY(!map.properties.isEmpty());
+        QVERIFY(!map.total.isEmpty());
     }
 
     static void cleanupTestCase()
@@ -81,6 +65,6 @@ class testcase_chip_summary_table final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_chip_summary_table)
+QTEST_MAIN(TestCaseMapTable)
 
-#include "testcase_chip_summary_table.moc"
+#include "TestCaseMapTable.moc"

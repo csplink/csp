@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        ip_table.cpp
+ *  @file        IpTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -32,7 +32,7 @@
 #include <QFileInfo>
 
 #include "Config.h"
-#include "ip_table.h"
+#include "IpTable.h"
 #include "os.h"
 #include "qtjson.h"
 #include "qtyaml.h"

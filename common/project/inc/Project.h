@@ -32,11 +32,11 @@
 
 #include <QObject>
 
+#include "ChipSummaryTable.h"
 #include "Config.h"
+#include "IpTable.h"
+#include "MapTable.h"
 #include "ProjectTable.h"
-#include "chip_summary_table.h"
-#include "ip_table.h"
-#include "map_table.h"
 
 class Project final : public QObject
 {
@@ -252,9 +252,9 @@ class Project final : public QObject
   private:
     inline static Project *instance_ = nullptr;
     ProjectTable::ProjectType project_; // project table
-    QString path_;                    // project file path
-    ip_table::ips_t ips_;             // ip map
-    map_table::maps_t maps_;          // hal map
+    QString path_;                      // project file path
+    ip_table::ips_t ips_;               // ip map
+    map_table::maps_t maps_;            // hal map
     chip_summary_table::chip_summary_t chipSummary_;
 
   public:

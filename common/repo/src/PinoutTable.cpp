@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        pinout_table.cpp
+ *  @file        PinoutTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -31,8 +31,8 @@
 #include <QFile>
 
 #include "Config.h"
+#include "PinoutTable.h"
 #include "os.h"
-#include "pinout_table.h"
 #include "qtjson.h"
 #include "qtyaml.h"
 

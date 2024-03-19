@@ -31,7 +31,7 @@
 #define LQFP_H
 
 #include "GraphicsItemPin.h"
-#include "pinout_table.h"
+#include "PinoutTable.h"
 
 class LQFP final : public QObject
 {

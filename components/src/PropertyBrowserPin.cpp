@@ -30,9 +30,9 @@
 #include <QDebug>
 
 #include "Config.h"
+#include "PinoutTable.h"
 #include "PropertyBrowserPin.h"
 #include "os.h"
-#include "pinout_table.h"
 
 PropertyBrowserPin::PropertyBrowserPin(QWidget *parent)
     : QtTreePropertyBrowser(parent)

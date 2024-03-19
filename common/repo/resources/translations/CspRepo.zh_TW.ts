@@ -4,12 +4,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/chip_summary_table.cpp" line="101"/>
+        <location filename="../../src/ChipSummaryTable.cpp" line="101"/>
         <source>The field chip_summary_t::linker_t::default_minimum_heap_size is an illegal value %1, and the default value 0x200 is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/chip_summary_table.cpp" line="112"/>
+        <location filename="../../src/ChipSummaryTable.cpp" line="112"/>
         <source>The field chip_summary_t::linker_t::default_minimum_stack_size is an illegal value %1, and the default value 0x400 is used.</source>
         <translation type="unfinished"></translation>
     </message>

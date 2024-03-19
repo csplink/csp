@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_repository_table.cpp
+ *  @file        TestCaseRepositoryTable.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -30,13 +30,13 @@
 #include <QtTest>
 
 #include "Config.h"
-#include "repository_table.h"
+#include "RepositoryTable.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
 #endif
 
-class testcase_repository_table final : public QObject
+class TestCaseRepositoryTable final : public QObject
 {
     Q_OBJECT
 
@@ -113,6 +113,6 @@ class testcase_repository_table final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_repository_table)
+QTEST_MAIN(TestCaseRepositoryTable)
 
-#include "testcase_repository_table.moc"
+#include "TestCaseRepositoryTable.moc"
