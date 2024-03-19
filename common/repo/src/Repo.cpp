@@ -32,7 +32,7 @@
 
 repo::repo()
 {
-    repository_table::load_repository(&_repository, Config::repoDir() + "/db/repository.yml");
+    RepositoryTable::loadRepository(&_repository, Config::repoDir() + "/db/repository.yml");
 }
 
 repo::~repo() = default;
@@ -56,7 +56,7 @@ repo *repo::get_instance()
     return _instance;
 }
 
-const repository_table::repository_t *repo::get_repository() const
+const RepositoryTable::RepositoryType *repo::get_repository() const
 {
     return &_repository;
 }

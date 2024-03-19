@@ -92,7 +92,7 @@ class DialogChooseChip final : public QDialog
 
     QList<QList<QStandardItem *> *> chipsItems_;
     QSortFilterProxyModel *tableViewChipInfosProxyModel_ = nullptr;
-    QList<repository_table::chip_info_t *> chips_;
+    QList<RepositoryTable::ChipInfoType *> chips_;
 
     void findAllKeys();
     void initTreeViewChipFilter();

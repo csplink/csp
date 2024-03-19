@@ -52,12 +52,12 @@ class repo final : public QObject
      */
     static void deinit();
 
-    const repository_table::repository_t *get_repository() const;
+    const RepositoryTable::RepositoryType *get_repository() const;
 
-    static void load_chip_summary(chip_summary_table::chip_summary_t *chip_summary, const QString &company,
+    static void load_chip_summary(ChipSummaryTable::ChipSummaryType *chip_summary, const QString &company,
                                   const QString &name)
     {
-        chip_summary_table::load_chip_summary(chip_summary, company, name);
+        ChipSummaryTable::loadChipSummary(chip_summary, company, name);
     }
 
     static bool chip_summary_exists(const QString &company, const QString &name)
@@ -70,7 +70,7 @@ class repo final : public QObject
 
   private:
     inline static repo *_instance = nullptr;
-    repository_table::repository_t _repository;
+    RepositoryTable::RepositoryType _repository;
 
   private:
     repo();

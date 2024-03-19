@@ -49,10 +49,10 @@ class TestCaseRepositoryTable final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_repository()
+    static void loadRepository()
     {
-        repository_table::repository_t repository;
-        repository_table::load_repository(&repository, Config::repoDir() + "/db/repository.yml");
+        RepositoryTable::RepositoryType repository;
+        RepositoryTable::loadRepository(&repository, Config::repoDir() + "/db/repository.yml");
         const auto chips = repository.chips;
         auto chips_i = chips.constBegin();
         while (chips_i != chips.constEnd())

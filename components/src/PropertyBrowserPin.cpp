@@ -89,7 +89,7 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
     const auto pin = dynamic_cast<InterfaceGraphicsItemPin *>(item);
     const auto name = pin->objectName();
     const auto pinout_unit =
-        pin->property(InterfaceGraphicsItemPin::property_name_pinout_unit_ptr).value<pinout_table::pinout_unit_t *>();
+        pin->property(InterfaceGraphicsItemPin::property_name_pinout_unit_ptr).value<PinoutTable::PinoutUnitType *>();
     if (pinout_unit == nullptr)
         return;
 

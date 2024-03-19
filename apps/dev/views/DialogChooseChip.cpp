@@ -97,7 +97,7 @@ void DialogChooseChip::findAllKeys()
                 auto line_i = line->constBegin();
                 while (line_i != line->constEnd())
                 {
-                    auto mcu = const_cast<repository_table::chip_info_t *>(&line_i.value());
+                    auto mcu = const_cast<RepositoryTable::ChipInfoType *>(&line_i.value());
                     if (!coreKeys_.contains(mcu->core))
                         coreKeys_ << mcu->core;
                     if (!packageKeys_.contains(mcu->package))
@@ -255,7 +255,7 @@ void DialogChooseChip::initTableViewChipInfos()
     model->setHeaderData(8, Qt::Horizontal, tr("Company"));
     model->setHeaderData(9, Qt::Horizontal, tr("Core"));
 
-    for (QList<repository_table::chip_info_t *>::const_iterator iter = chips_.constBegin(); iter != chips_.constEnd();
+    for (QList<RepositoryTable::ChipInfoType *>::const_iterator iter = chips_.constBegin(); iter != chips_.constEnd();
          ++iter)
     {
         auto chips_item = new QList<QStandardItem *>();
@@ -325,7 +325,7 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selected_indexes)
 
     if (repo::chip_summary_exists(company, chipName_))
     {
-        chip_summary_table::chip_summary_t chip_summary;
+        ChipSummaryTable::ChipSummaryType chip_summary;
         repo::load_chip_summary(&chip_summary, company, chipName_);
         halName_ = chip_summary.hal;
         packageName_ = chip_summary.package;

@@ -139,7 +139,7 @@ void Project::loadIps(const QString &Hal, const QString &Name)
 
     if (ips_.isEmpty())
     {
-        ip_table::load_ips(&ips_, Hal, Name);
+        IpTable::loadIps(&ips_, Hal, Name);
     }
 }
 
@@ -161,7 +161,7 @@ void Project::loadDb()
     }
 }
 
-ip_table::ips_t &Project::getIps()
+IpTable::IpsType &Project::getIps()
 {
     return ips_;
 }
@@ -172,11 +172,11 @@ void Project::loadMaps(const QString &Hal)
 
     if (maps_.isEmpty())
     {
-        map_table::load_maps(&maps_, Hal);
+        MapTable::loadMaps(&maps_, Hal);
     }
 }
 
-map_table::maps_t &Project::getMaps()
+MapTable::MapsType &Project::getMaps()
 {
     return maps_;
 }
@@ -188,11 +188,11 @@ void Project::loadChipSummary(const QString &Company, const QString &Name)
 
     if (chipSummary_.name.isEmpty())
     {
-        chip_summary_table::load_chip_summary(&chipSummary_, Company, Name);
+        ChipSummaryTable::loadChipSummary(&chipSummary_, Company, Name);
     }
 }
 
-chip_summary_table::chip_summary_t &Project::getChipSummary()
+ChipSummaryTable::ChipSummaryType &Project::getChipSummary()
 {
     return chipSummary_;
 }

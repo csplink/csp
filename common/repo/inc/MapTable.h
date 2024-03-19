@@ -27,24 +27,24 @@
  *  2023-06-17     xqyjlj       initial version
  */
 
-#ifndef CSP_MAP_TABLE_H
-#define CSP_MAP_TABLE_H
+#ifndef CSP_REPO_MAP_TABLE_H
+#define CSP_REPO_MAP_TABLE_H
 
 #include <QMap>
 
-class map_table final
+class MapTable final
 {
   public:
-    typedef struct value_struct
+    typedef struct
     {
         QMap<QString, QString> comment;
-    } value_t;
+    } ValueType;
 
     typedef struct group_struct
     {
         QMap<QString, QString> comment;
-        QMap<QString, value_t> values;
-    } group_t;
+        QMap<QString, ValueType> values;
+    } GroupType;
 
     typedef struct property_struct
     {
@@ -52,26 +52,25 @@ class map_table final
         QMap<QString, QString> description;
         QString category;
         bool readonly;
-    } property_t;
+    } PropertyType;
 
     typedef struct
     {
-        QMap<QString, group_t> groups;
-        QMap<QString, property_t> properties;
+        QMap<QString, GroupType> groups;
+        QMap<QString, PropertyType> properties;
         QMap<QString, QString> total;
         QMap<QString, QString> reverse_total;
-    } map_t;
+    } MapType;
 
-    typedef QMap<QString, map_t> maps_t;
+    typedef QMap<QString, MapType> MapsType;
 
-  public:
-    static void load_map(map_t *map, const QString &path);
-    static void load_map(map_t *map, const QString &hal, const QString &map_name);
-    static void load_maps(maps_t *maps, const QString &hal);
+    static void loadMap(MapType *map, const QString &path);
+    static void loadMap(MapType *map, const QString &hal, const QString &mapName);
+    static void loadMaps(MapsType *maps, const QString &hal);
 
   private:
-    explicit map_table();
-    ~map_table();
+    explicit MapTable();
+    ~MapTable();
 };
 
-#endif // CSP_MAP_TABLE_H
+#endif /** CSP_REPO_MAP_TABLE_H */

@@ -41,7 +41,7 @@ class TestCaseChipSummaryTable final : public QObject
 {
     Q_OBJECT
 
-    static void check(const chip_summary_table::chip_summary_t &chip_summary)
+    static void check(const ChipSummaryTable::ChipSummaryType &chip_summary)
     {
         QVERIFY(!chip_summary.clocktree.isEmpty());
         QVERIFY(!chip_summary.company.isEmpty());
@@ -60,15 +60,15 @@ class TestCaseChipSummaryTable final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_chip_summary()
+    static void loadChipSummary()
     {
-        chip_summary_table::chip_summary_t chip_summary;
+        ChipSummaryTable::ChipSummaryType chip_summary;
         for (const QString &dir : os::dirs(Config::repoDir() + "/db/chips", "*"))
         {
             for (const QString &file : os::files(dir, QString("*.yml")))
             {
                 qDebug() << "Testing" << file;
-                chip_summary_table::load_chip_summary(&chip_summary, file);
+                ChipSummaryTable::loadChipSummary(&chip_summary, file);
                 check(chip_summary);
             }
         }

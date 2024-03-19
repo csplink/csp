@@ -49,10 +49,10 @@ class TestCaseMapTable final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_map()
+    static void loadMap()
     {
-        map_table::map_t map;
-        map_table::load_map(&map, ":/lib/repo/db/map/gpio.yml");
+        MapTable::MapType map;
+        MapTable::loadMap(&map, ":/lib/repo/db/map/gpio.yml");
         QVERIFY(!map.groups.isEmpty());
         QVERIFY(!map.properties.isEmpty());
         QVERIFY(!map.total.isEmpty());

@@ -38,30 +38,30 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::value_t, comment)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::group_t, comment, values)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::property_t, display_name, description, category, readonly)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(map_table::map_t, groups, properties)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, comment)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, comment, values)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, display_name, description, category, readonly)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, groups, properties)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::value_t, comment)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::group_t, comment, values)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::property_t, display_name, description, category, readonly)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(map_table::map_t, groups, properties, total, reverse_total)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, comment)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, comment, values)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, display_name, description, category, readonly)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, groups, properties, total, reverse_total)
 } // namespace nlohmann
 
-QT_DEBUG_ADD_TYPE(map_table::value_t)
-QT_DEBUG_ADD_TYPE(map_table::group_t)
-QT_DEBUG_ADD_TYPE(map_table::property_t)
-QT_DEBUG_ADD_TYPE(map_table::map_t)
+QT_DEBUG_ADD_TYPE(MapTable::ValueType)
+QT_DEBUG_ADD_TYPE(MapTable::GroupType)
+QT_DEBUG_ADD_TYPE(MapTable::PropertyType)
+QT_DEBUG_ADD_TYPE(MapTable::MapType)
 
-map_table::map_table() = default;
+MapTable::MapTable() = default;
 
-map_table::~map_table() = default;
+MapTable::~MapTable() = default;
 
-void map_table::load_map(map_t *map, const QString &path)
+void MapTable::loadMap(MapType *map, const QString &path)
 {
     Q_ASSERT(map != nullptr);
     Q_ASSERT(!path.isEmpty());
@@ -71,7 +71,7 @@ void map_table::load_map(map_t *map, const QString &path)
     {
         const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<map_t>::decode(yaml_data, *map);
+        YAML::convert<MapType>::decode(yaml_data, *map);
 
         auto group_i = map->groups.constBegin();
         while (group_i != map->groups.constEnd())
@@ -81,7 +81,7 @@ void map_table::load_map(map_t *map, const QString &path)
             while (values_i != values.constEnd())
             {
                 const QString &name = values_i.key();
-                const value_t &value = values_i.value();
+                const ValueType &value = values_i.value();
                 map->total.insert(name, value.comment[Config::language()]);
                 map->reverse_total.insert(value.comment[Config::language()], name);
                 ++values_i;
@@ -98,17 +98,17 @@ void map_table::load_map(map_t *map, const QString &path)
     }
 }
 
-void map_table::load_map(map_t *map, const QString &hal, const QString &map_name)
+void MapTable::loadMap(MapType *map, const QString &hal, const QString &mapName)
 {
     Q_ASSERT(map != nullptr);
     Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!map_name.isEmpty());
+    Q_ASSERT(!mapName.isEmpty());
 
-    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(Config::repoDir(), hal.toLower(), map_name.toLower());
-    return load_map(map, path);
+    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(Config::repoDir(), hal.toLower(), mapName.toLower());
+    return loadMap(map, path);
 }
 
-void map_table::load_maps(maps_t *maps, const QString &hal)
+void MapTable::loadMaps(MapsType *maps, const QString &hal)
 {
     Q_ASSERT(maps != nullptr);
     Q_ASSERT(!hal.isEmpty());
@@ -116,8 +116,8 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
     const QString p = QString("%1/db/hal/%2/map").arg(Config::repoDir(), hal.toLower());
     for (const QString &file : os::files(p, QString("*.yml")))
     {
-        map_t map;
-        load_map(&map, file);
+        MapType map;
+        loadMap(&map, file);
         const QFileInfo info(file);
         auto basename = info.baseName().toLower();
         maps->insert(basename, map);
@@ -126,13 +126,13 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
     const QStringList list = { "gpio" };
     for (const QString &file : list)
     {
-        map_t map;
-        load_map(&map, QString(":/lib/repo/db/map/%1.yml").arg(file));
+        MapType map;
+        loadMap(&map, QString(":/lib/repo/db/map/%1.yml").arg(file));
         const QFileInfo info(file);
         const QString basename = info.baseName().toLower();
         if (maps->contains(basename))
         {
-            map_t &ref_map = (*maps)[basename];
+            MapType &ref_map = (*maps)[basename];
             auto group_i = map.groups.constBegin();
             while (group_i != map.groups.constEnd())
             {

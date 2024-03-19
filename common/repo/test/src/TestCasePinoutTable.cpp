@@ -50,9 +50,9 @@ class TestCasePinoutTable final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_pinout()
+    static void loadPinout()
     {
-        pinout_table::pinout_t pinout;
+        PinoutTable::PinoutType pinout;
         for (const QString &company_dir : os::dirs(Config::repoDir() + "/db/hal", "*"))
         {
             for (const QString &hal_dir : os::dirs(company_dir, "*"))
@@ -64,7 +64,7 @@ class TestCasePinoutTable final : public QObject
 
                     qDebug() << "Testing" << file;
 
-                    pinout_table::load_pinout(&pinout, file);
+                    PinoutTable::loadPinout(&pinout, file);
                     QVERIFY(!pinout.isEmpty());
                 }
             }

@@ -61,7 +61,7 @@ class GraphicsItemPin final : public InterfaceGraphicsItemPin
      * @brief set pin out unit
      * @param unit: pin out unit
      */
-    void setPinOutUnit(const pinout_table::pinout_unit_t &unit);
+    void setPinOutUnit(const PinoutTable::PinoutUnitType &unit);
 
     /**
      * @brief set pin name < it must be called first >
@@ -98,7 +98,7 @@ class GraphicsItemPin final : public InterfaceGraphicsItemPin
     qreal width_;
     qreal height_;
     int direction_ = LEFT;
-    pinout_table::pinout_unit_t pinoutUnit_;
+    PinoutTable::PinoutUnitType pinoutUnit_;
     bool locked_ = false;
     QString name_;
     QFont *font_;

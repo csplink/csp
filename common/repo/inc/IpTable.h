@@ -27,26 +27,25 @@
  *  2023-06-16     xqyjlj       initial version
  */
 
-#ifndef CSP_IP_TABLE_H
-#define CSP_IP_TABLE_H
+#ifndef CSP_REPO_IP_TABLE_H
+#define CSP_REPO_IP_TABLE_H
 
 #include <QMap>
 
-class ip_table final
+class IpTable final
 {
   public:
-    typedef QMap<QString, QStringList> ip_map_t;
-    typedef QMap<QString, ip_map_t> ip_t;
-    typedef QMap<QString, ip_t> ips_t;
+    typedef QMap<QString, QStringList> IpMapType;
+    typedef QMap<QString, IpMapType> IpType;
+    typedef QMap<QString, IpType> IpsType;
 
-  public:
-    static void load_ip(ip_t *ip, const QString &path);
-    static void load_ip(ip_t *ip, const QString &hal, const QString &name, const QString &ip_name);
-    static void load_ips(ips_t *ips, const QString &hal, const QString &name);
+    static void loadIp(IpType *ip, const QString &path);
+    static void loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName);
+    static void loadIps(IpsType *ips, const QString &hal, const QString &name);
 
   private:
-    explicit ip_table();
-    ~ip_table();
+    explicit IpTable();
+    ~IpTable();
 };
 
-#endif // CSP_IP_TABLE_H
+#endif /** CSP_REPO_IP_TABLE_H */

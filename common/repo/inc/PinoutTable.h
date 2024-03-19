@@ -27,39 +27,38 @@
  *  2023-05-28     xqyjlj       initial version
  */
 
-#ifndef COMMON_REPO_CSP_PINOUT_TABLE_H
-#define COMMON_REPO_CSP_PINOUT_TABLE_H
+#ifndef CSP_REPO_PINOUT_TABLE_H
+#define CSP_REPO_PINOUT_TABLE_H
 
 #include <QMap>
 
-class pinout_table final
+class PinoutTable final
 {
   public:
-    typedef struct function_struct
+    typedef struct
     {
         QString mode;
         QString type;
-    } function_t;
+    } FunctionType;
 
-    typedef struct pinout_unit_struct
+    typedef struct
     {
         int position;
         QString type;
-        QMap<QString, function_t> functions;
-    } pinout_unit_t;
+        QMap<QString, FunctionType> functions;
+    } PinoutUnitType;
 
-    typedef QMap<QString, pinout_unit_t> pinout_t;
+    typedef QMap<QString, PinoutUnitType> PinoutType;
 
-  public:
-    static void load_pinout(pinout_t *pinout, const QString &path);
-    static void load_pinout(pinout_t *pinout, const QString &company, const QString &hal, const QString &name);
+    static void loadPinout(PinoutType *pinout, const QString &path);
+    static void loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name);
 
   private:
-    explicit pinout_table();
-    ~pinout_table();
+    explicit PinoutTable();
+    ~PinoutTable();
 };
 
-Q_DECLARE_METATYPE(pinout_table::pinout_unit_t)
-Q_DECLARE_METATYPE(pinout_table::pinout_unit_t *)
+Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType)
+Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType *)
 
-#endif // COMMON_REPO_CSP_PINOUT_TABLE_H
+#endif /** CSP_REPO_PINOUT_TABLE_H */

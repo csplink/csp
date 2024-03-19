@@ -44,7 +44,7 @@ class LQFP final : public QObject
 
   private:
     int pinCount_ = 0;
-    pinout_table::pinout_t pinout_;
+    PinoutTable::PinoutType pinout_;
 };
 
 #endif // CSP_LQFP_H

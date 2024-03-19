@@ -37,33 +37,33 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::current_t, lowest, run)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::temperature_t, max, min)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::voltage_t, max, min)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::chip_info_t, core, current, flash, frequency, io, package, peripherals,
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, lowest, run)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, max, min)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, max, min)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, core, current, flash, frequency, io, package, peripherals,
                                ram, temperature, voltage)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(repository_table::repository_t, chips)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, chips)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::current_t, lowest, run)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::temperature_t, max, min)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::voltage_t, max, min)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::chip_info_t, core, current, flash, frequency, io, package,
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, lowest, run)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, max, min)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, max, min)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, core, current, flash, frequency, io, package,
                                    peripherals, ram, temperature, voltage)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(repository_table::repository_t, chips)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, chips)
 } // namespace nlohmann
 
-QT_DEBUG_ADD_TYPE(repository_table::current_t)
-QT_DEBUG_ADD_TYPE(repository_table::temperature_t)
-QT_DEBUG_ADD_TYPE(repository_table::voltage_t)
-QT_DEBUG_ADD_TYPE(repository_table::chip_info_t)
-QT_DEBUG_ADD_TYPE(repository_table::repository_t)
+QT_DEBUG_ADD_TYPE(RepositoryTable::CurrentType)
+QT_DEBUG_ADD_TYPE(RepositoryTable::TemperatureType)
+QT_DEBUG_ADD_TYPE(RepositoryTable::VoltageType)
+QT_DEBUG_ADD_TYPE(RepositoryTable::ChipInfoType)
+QT_DEBUG_ADD_TYPE(RepositoryTable::RepositoryType)
 
-repository_table::repository_table() = default;
+RepositoryTable::RepositoryTable() = default;
 
-void repository_table::load_repository(repository_t *repository, const QString &path)
+void RepositoryTable::loadRepository(RepositoryType *repository, const QString &path)
 {
     Q_ASSERT(repository != nullptr);
     Q_ASSERT(!path.isEmpty());
@@ -73,7 +73,7 @@ void repository_table::load_repository(repository_t *repository, const QString &
     {
         const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<repository_t>::decode(yaml_data, *repository);
+        YAML::convert<RepositoryType>::decode(yaml_data, *repository);
     }
     catch (std::exception &e)
     {
@@ -84,4 +84,4 @@ void repository_table::load_repository(repository_t *repository, const QString &
     }
 }
 
-repository_table::~repository_table() = default;
+RepositoryTable::~RepositoryTable() = default;

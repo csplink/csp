@@ -32,70 +32,69 @@
 
 #include <QMap>
 
-class chip_summary_table final
+class ChipSummaryTable final
 {
   public:
-    typedef struct document_struct
+    typedef struct
     {
         QMap<QString, QString> url;
-    } document_t;
+    } DocumentType;
 
-    typedef struct module_struct
+    typedef struct
     {
         QMap<QString, QString> description;
-    } module_t;
+    } ModuleType;
 
-    typedef QMap<QString, QMap<QString, document_t>> documents_t;
-    typedef QMap<QString, QMap<QString, module_t>> modules_t;
+    typedef QMap<QString, QMap<QString, DocumentType>> DocumentsType;
+    typedef QMap<QString, QMap<QString, ModuleType>> ModulesType;
 
-    typedef struct mdk_arm_struct
+    typedef struct
     {
         QString device;     // pack 中的名字
         QStringList packs;  // pack 列表
         QString pack_url;   // cmsis pack更新url
         QString cmsis_core; // 依赖的cmsis core最低版本
-    } mdk_arm_t;
+    } MdkArmType;
 
-    typedef struct target_project_struct
+    typedef struct
     {
         bool xmake;
         bool cmake;
-        mdk_arm_t mdk_arm;
-    } target_project_t;
+        MdkArmType mdk_arm;
+    } TargetProjectType;
 
-    typedef struct linker_struct
+    typedef struct
     {
         QString default_minimum_heap_size;
         QString default_minimum_stack_size;
-    } linker_t;
+    } LinkerType;
 
-    typedef struct chip_summary_struct
+    typedef struct
     {
         QString clocktree;
         QString company;
         QMap<QString, QString> company_url;
-        documents_t documents;
+        DocumentsType documents;
         QString hal;
         bool has_powerpad;
         QMap<QString, QString> illustrate;
         QMap<QString, QString> introduction;
         QString line;
-        modules_t modules;
+        ModulesType modules;
         QString name;
         QString package;
         QString series;
         QMap<QString, QString> url;
-        target_project_t target_project;
-        linker_t linker;
-    } chip_summary_t;
+        TargetProjectType target_project;
+        LinkerType linker;
+    } ChipSummaryType;
 
-  public:
-    static void load_chip_summary(chip_summary_t *chip_summary, const QString &path);
-    static void load_chip_summary(chip_summary_t *chip_summary, const QString &company, const QString &name);
+    static void loadChipSummary(ChipSummaryType *chipSummary, const QString &path);
+    static void loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name);
 
   private:
-    explicit chip_summary_table();
-    ~chip_summary_table();
+    explicit ChipSummaryTable();
+    ~ChipSummaryTable();
 };
 
-#endif // CSP_REPO_CHIP_SUMMARY_TABLE_H
+#endif /** CSP_REPO_CHIP_SUMMARY_TABLE_H */

@@ -37,15 +37,15 @@
 #include "qtjson.h"
 #include "qtyaml.h"
 
-QT_DEBUG_ADD_TYPE(ip_table::ip_map_t)
-QT_DEBUG_ADD_TYPE(ip_table::ip_t)
-QT_DEBUG_ADD_TYPE(ip_table::ips_t)
+QT_DEBUG_ADD_TYPE(IpTable::IpMapType)
+QT_DEBUG_ADD_TYPE(IpTable::IpType)
+QT_DEBUG_ADD_TYPE(IpTable::IpsType)
 
-ip_table::ip_table() = default;
+IpTable::IpTable() = default;
 
-ip_table::~ip_table() = default;
+IpTable::~IpTable() = default;
 
-void ip_table::load_ip(ip_t *ip, const QString &path)
+void IpTable::loadIp(IpType *ip, const QString &path)
 {
     Q_ASSERT(ip != nullptr);
     Q_ASSERT(!path.isEmpty());
@@ -55,7 +55,7 @@ void ip_table::load_ip(ip_t *ip, const QString &path)
     {
         const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<ip_t>::decode(yaml_data, *ip);
+        YAML::convert<IpType>::decode(yaml_data, *ip);
     }
     catch (std::exception &e)
     {
@@ -66,19 +66,19 @@ void ip_table::load_ip(ip_t *ip, const QString &path)
     }
 }
 
-void ip_table::load_ip(ip_t *ip, const QString &hal, const QString &name, const QString &ip_name)
+void IpTable::loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName)
 {
     Q_ASSERT(ip != nullptr);
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
-    Q_ASSERT(!ip_name.isEmpty());
+    Q_ASSERT(!ipName.isEmpty());
 
     const QString path =
-        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(Config::repoDir(), hal.toLower(), name.toLower(), ip_name.toLower());
-    return load_ip(ip, path);
+        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(Config::repoDir(), hal.toLower(), name.toLower(), ipName.toLower());
+    return loadIp(ip, path);
 }
 
-void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
+void IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
 {
     Q_ASSERT(ips != nullptr);
     Q_ASSERT(!hal.isEmpty());
@@ -87,8 +87,8 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
     const QString path = QString("%1/db/hal/%2/%3/ip").arg(Config::repoDir(), hal.toLower(), name.toLower());
     for (const QString &file : os::files(path, QString("*.yml")))
     {
-        ip_t ip;
-        load_ip(&ip, file);
+        IpType ip;
+        loadIp(&ip, file);
         const QFileInfo info(file);
         auto basename = info.baseName().toLower();
         ips->insert(basename, ip);
@@ -97,13 +97,13 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
     const QStringList list = { "gpio" };
     for (const QString &file : list)
     {
-        ip_t ip;
-        load_ip(&ip, QString(":/lib/repo/db/ip/%1.yml").arg(file));
+        IpType ip;
+        loadIp(&ip, QString(":/lib/repo/db/ip/%1.yml").arg(file));
         const QFileInfo info(file);
         const QString basename = info.baseName().toLower();
         if (ips->contains(basename))
         {
-            ip_t &ref_ip = (*ips)[basename];
+            IpType &ref_ip = (*ips)[basename];
             auto ip_i = ip.constBegin();
             while (ip_i != ip.constEnd())
             {

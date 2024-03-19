@@ -193,7 +193,7 @@ void GraphicsItemPin::setDirection(const int direct)
     direction_ = direct;
 }
 
-void GraphicsItemPin::setPinOutUnit(const pinout_table::pinout_unit_t &unit)
+void GraphicsItemPin::setPinOutUnit(const PinoutTable::PinoutUnitType &unit)
 {
     pinoutUnit_ = unit;
     menu_->clear();

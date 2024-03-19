@@ -49,10 +49,10 @@ class TestCaseIpTable final : public QObject
         Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
-    static void load_ip()
+    static void loadIp()
     {
-        ip_table::ip_t ip;
-        ip_table::load_ip(&ip, ":/lib/repo/db/ip/gpio.yml");
+        IpTable::IpType ip;
+        IpTable::loadIp(&ip, ":/lib/repo/db/ip/gpio.yml");
         QVERIFY(!ip.isEmpty());
     }
 

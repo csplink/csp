@@ -39,42 +39,42 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::mdk_arm_t, device, packs, pack_url, cmsis_core)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::target_project_t, xmake, cmake, mdk_arm)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(chip_summary_table::linker_t, default_minimum_heap_size,
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, url)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, description)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, device, packs, pack_url, cmsis_core)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::TargetProjectType, xmake, cmake, mdk_arm)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::LinkerType, default_minimum_heap_size,
                                             default_minimum_stack_size)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, clocktree, company, company_url, documents, hal,
                                has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
                                target_project, linker)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::document_t, url)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::module_t, description)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::mdk_arm_t, device, packs, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::target_project_t, xmake, cmake, mdk_arm)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::linker_t, default_minimum_heap_size, default_minimum_stack_size)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(chip_summary_table::chip_summary_t, clocktree, company, company_url, documents, hal,
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, url)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, description)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, device, packs, pack_url, cmsis_core)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::TargetProjectType, xmake, cmake, mdk_arm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, default_minimum_heap_size, default_minimum_stack_size)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, clocktree, company, company_url, documents, hal,
                                    has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
                                    target_project, linker)
 } // namespace nlohmann
 
-QT_DEBUG_ADD_TYPE(chip_summary_table::document_t)
-QT_DEBUG_ADD_TYPE(chip_summary_table::module_t)
-QT_DEBUG_ADD_TYPE(chip_summary_table::mdk_arm_t)
-QT_DEBUG_ADD_TYPE(chip_summary_table::target_project_t)
-QT_DEBUG_ADD_TYPE(chip_summary_table::chip_summary_t)
+QT_DEBUG_ADD_TYPE(ChipSummaryTable::DocumentType)
+QT_DEBUG_ADD_TYPE(ChipSummaryTable::ModuleType)
+QT_DEBUG_ADD_TYPE(ChipSummaryTable::MdkArmType)
+QT_DEBUG_ADD_TYPE(ChipSummaryTable::TargetProjectType)
+QT_DEBUG_ADD_TYPE(ChipSummaryTable::ChipSummaryType)
 
-chip_summary_table::chip_summary_table() = default;
+ChipSummaryTable::ChipSummaryTable() = default;
 
-chip_summary_table::~chip_summary_table() = default;
+ChipSummaryTable::~ChipSummaryTable() = default;
 
-void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const QString &path)
+void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &path)
 {
-    Q_ASSERT(chip_summary != nullptr);
+    Q_ASSERT(chipSummary != nullptr);
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
@@ -84,7 +84,7 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
     {
         const std::string buffer = os::readfile(path).toStdString();
         const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<chip_summary_t>::decode(yaml_data, *chip_summary);
+        YAML::convert<ChipSummaryType>::decode(yaml_data, *chipSummary);
     }
     catch (std::exception &e)
     {
@@ -94,35 +94,35 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
         throw;
     }
 
-    if (!chip_summary->linker.default_minimum_heap_size.isEmpty())
+    if (!chipSummary->linker.default_minimum_heap_size.isEmpty())
     {
-        if (!pattern.match(chip_summary->linker.default_minimum_heap_size).hasMatch())
+        if (!pattern.match(chipSummary->linker.default_minimum_heap_size).hasMatch())
         {
             qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
                                       "illegal value %1, and the default value 0x200 is used.")
-                              .arg(chip_summary->linker.default_minimum_heap_size);
-            chip_summary->linker.default_minimum_heap_size = "0x200";
+                              .arg(chipSummary->linker.default_minimum_heap_size);
+            chipSummary->linker.default_minimum_heap_size = "0x200";
         }
     }
 
-    if (!chip_summary->linker.default_minimum_stack_size.isEmpty())
+    if (!chipSummary->linker.default_minimum_stack_size.isEmpty())
     {
-        if (!pattern.match(chip_summary->linker.default_minimum_stack_size).hasMatch())
+        if (!pattern.match(chipSummary->linker.default_minimum_stack_size).hasMatch())
         {
             qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
                                       "illegal value %1, and the default value 0x400 is used.")
-                              .arg(chip_summary->linker.default_minimum_stack_size);
-            chip_summary->linker.default_minimum_stack_size = "0x400";
+                              .arg(chipSummary->linker.default_minimum_stack_size);
+            chipSummary->linker.default_minimum_stack_size = "0x400";
         }
     }
 }
 
-void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const QString &company, const QString &name)
+void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name)
 {
-    Q_ASSERT(chip_summary != nullptr);
+    Q_ASSERT(chipSummary != nullptr);
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
     const QString path = QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower());
-    return load_chip_summary(chip_summary, path);
+    return loadChipSummary(chipSummary, path);
 }

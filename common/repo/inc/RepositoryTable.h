@@ -27,40 +27,40 @@
  *  2023-04-20     xqyjlj       initial version
  */
 
-#ifndef COMMON_REPO_REPOSITORY_TABLE_H
-#define COMMON_REPO_REPOSITORY_TABLE_H
+#ifndef CSP_REPO_REPOSITORY_TABLE_H
+#define CSP_REPO_REPOSITORY_TABLE_H
 
 #include <QMap>
 
-class repository_table final
+class RepositoryTable final
 {
   public:
-    typedef struct current_struct
+    typedef struct
     {
         float lowest;
         float run;
-    } current_t;
+    } CurrentType;
 
-    typedef struct temperature_struct
+    typedef struct
     {
         float max;
         float min;
-    } temperature_t;
+    } TemperatureType;
 
-    typedef struct voltage_struct
+    typedef struct
     {
         float max;
         float min;
-    } voltage_t;
+    } VoltageType;
 
-    typedef struct chip_info_struct
+    typedef struct
     {
         QString core;
         QString company;
         QString line;
         QString series;
         QString name;
-        current_t current;
+        CurrentType current;
         float flash;
         float frequency;
         int io;
@@ -68,29 +68,28 @@ class repository_table final
         QMap<QString, int> peripherals;
         float price;
         float ram;
-        temperature_t temperature;
-        voltage_t voltage;
-    } chip_info_t;
+        TemperatureType temperature;
+        VoltageType voltage;
+    } ChipInfoType;
 
-    typedef QMap<QString, chip_info_t> chip_line_t;
+    typedef QMap<QString, ChipInfoType> ChipLineType;
 
-    typedef QMap<QString, chip_line_t> chip_series_t;
+    typedef QMap<QString, ChipLineType> ChipSeriesType;
 
-    typedef QMap<QString, chip_series_t> chip_company_t;
+    typedef QMap<QString, ChipSeriesType> ChipCompanyType;
 
-    typedef QMap<QString, chip_company_t> chip_t;
+    typedef QMap<QString, ChipCompanyType> ChipType;
 
     typedef struct
     {
-        chip_t chips;
-    } repository_t;
+        ChipType chips;
+    } RepositoryType;
 
-  public:
-    static void load_repository(repository_t *repository, const QString &path);
+    static void loadRepository(RepositoryType *repository, const QString &path);
 
   private:
-    explicit repository_table();
-    ~repository_table();
+    explicit RepositoryTable();
+    ~RepositoryTable();
 };
 
-#endif // COMMON_REPO_REPOSITORY_TABLE_H
+#endif /** CSP_REPO_REPOSITORY_TABLE_H */

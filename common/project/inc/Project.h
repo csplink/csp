@@ -106,16 +106,16 @@ class Project final : public QObject
      * @brief get ip map
      * @return ip map as a modifiable reference
      */
-    ip_table::ips_t &getIps();
+    IpTable::IpsType &getIps();
 
     /**
      * @brief get hal map
      * @return hal map as a modifiable reference
      */
-    map_table::maps_t &getMaps();
+    MapTable::MapsType &getMaps();
 
     void loadChipSummary(const QString &Company, const QString &Name);
-    chip_summary_table::chip_summary_t &getChipSummary();
+    ChipSummaryTable::ChipSummaryType &getChipSummary();
 
     /******************* pin ************************/
     /**
@@ -253,9 +253,9 @@ class Project final : public QObject
     inline static Project *instance_ = nullptr;
     ProjectTable::ProjectType project_; // project table
     QString path_;                      // project file path
-    ip_table::ips_t ips_;               // ip map
-    map_table::maps_t maps_;            // hal map
-    chip_summary_table::chip_summary_t chipSummary_;
+    IpTable::IpsType ips_;               // ip map
+    MapTable::MapsType maps_;            // hal map
+    ChipSummaryTable::ChipSummaryType chipSummary_;
 
   public:
     /**

@@ -111,7 +111,7 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
 
 void ViewConfigure::initProjectSettings() const
 {
-    const chip_summary_table::target_project_t &target_project = projectInstance_->getChipSummary().target_project;
+    const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().target_project;
     ui_->comboBoxBuildScriptIde->clear();
     if (target_project.xmake)
     {
@@ -129,7 +129,7 @@ void ViewConfigure::initProjectSettings() const
 
 void ViewConfigure::initLinkerSettings() const
 {
-    const chip_summary_table::linker_t &linker = projectInstance_->getChipSummary().linker;
+    const ChipSummaryTable::LinkerType &linker = projectInstance_->getChipSummary().linker;
     ui_->lineEditMinimumHeapSize->clear();
     if (!linker.default_minimum_heap_size.isEmpty())
     {
@@ -155,7 +155,7 @@ void ViewConfigure::initLinkerSettings() const
 
 void ViewConfigure::initPackageSettings() const
 {
-    const chip_summary_table::chip_summary_t &chip_summary = projectInstance_->getChipSummary();
+    const ChipSummaryTable::ChipSummaryType &chip_summary = projectInstance_->getChipSummary();
 
     if (!chip_summary.hal.isEmpty())
     {

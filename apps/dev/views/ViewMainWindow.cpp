@@ -213,8 +213,8 @@ void ViewMainWindow::updateModulesTreeView(const QString &company, const QString
 {
     ui_->treeView->header()->hide();
     auto *model = new QStandardItemModel(ui_->treeView);
-    chip_summary_table::chip_summary_t chip_summary;
-    chip_summary_table::load_chip_summary(&chip_summary, company, name);
+    ChipSummaryTable::ChipSummaryType chip_summary;
+    ChipSummaryTable::loadChipSummary(&chip_summary, company, name);
     const auto modules = &chip_summary.modules;
     auto modules_i = modules->constBegin();
     while (modules_i != modules->constEnd())
