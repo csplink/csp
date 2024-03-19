@@ -78,7 +78,7 @@ jobs:
       - name: 🚑️ patch
         shell: bash
         run: |
-          sudo sed -i 's/ThreadEngineStarter<void>(ThreadEngine<void> \*_threadEngine)/ThreadEngineStarter(ThreadEngine<void> \*_threadEngine)/' $(find -name "qtconcurrentthreadengine.h")
+          sudo sed -i 's/ThreadEngineStarter<void>(ThreadEngine<void> \*_threadEngine)/ThreadEngineStarter(ThreadEngine<void> \*_threadEngine)/' $(find .. -name "qtconcurrentthreadengine.h")
 
       - name: 👷 build
         shell: bash
