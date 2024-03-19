@@ -27,8 +27,8 @@
  *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef COMMON_CORE_CSP_CONFIG_H
-#define COMMON_CORE_CSP_CONFIG_H
+#ifndef CSP_CONFIG_H
+#define CSP_CONFIG_H
 
 #include <QSettings>
 
@@ -124,4 +124,4 @@ class Config final
 
     Q_DISABLE_COPY_MOVE(Config)
 };
-#endif //  COMMON_CORE_CSP_CONFIG_H
+#endif /** CSP_CONFIG_H */
