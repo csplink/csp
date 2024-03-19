@@ -39,7 +39,6 @@
 #include <QUrl>
 
 #include "os.h"
-#include "path.h"
 
 void os::show_info(const QString &message, const QString &title, QWidget *parent)
 {
@@ -273,7 +272,8 @@ bool os::writefile(const QString &fp, const QByteArray &data, const bool overwri
 
     QIODevice::OpenMode mode;
 
-    const QString parent_dir = path::directory(fp);
+    const QFileInfo info(fp);
+    const QString parent_dir = info.dir().absolutePath();
     mkdir(parent_dir);
 
     QFile file(fp);

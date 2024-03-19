@@ -30,9 +30,8 @@
         <translation>问题</translation>
     </message>
     <message>
-        <location filename="../../src/config.cpp" line="102"/>
         <source>The workspace &lt;%1&gt; path is not a directory!</source>
-        <translation type="unfinished">工作区 &lt;%1&gt; 路径不是目录！</translation>
+        <translation type="obsolete">工作区 &lt;%1&gt; 路径不是目录！</translation>
     </message>
 </context>
 <context>

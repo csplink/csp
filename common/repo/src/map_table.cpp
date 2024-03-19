@@ -28,11 +28,11 @@
  */
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 
 #include "Config.h"
 #include "map_table.h"
 #include "os.h"
-#include "path.h"
 #include "qtjson.h"
 #include "qtyaml.h"
 
@@ -118,7 +118,8 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
     {
         map_t map;
         load_map(&map, file);
-        auto basename = path::basename(file).toLower();
+        const QFileInfo info(file);
+        auto basename = info.baseName().toLower();
         maps->insert(basename, map);
     }
 
@@ -127,7 +128,8 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
     {
         map_t map;
         load_map(&map, QString(":/lib/repo/db/map/%1.yml").arg(file));
-        const QString basename = path::basename(file).toLower();
+        const QFileInfo info(file);
+        const QString basename = info.baseName().toLower();
         if (maps->contains(basename))
         {
             map_t &ref_map = (*maps)[basename];

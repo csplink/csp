@@ -29,11 +29,11 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 
 #include "Config.h"
 #include "ip_table.h"
 #include "os.h"
-#include "path.h"
 #include "qtjson.h"
 #include "qtyaml.h"
 
@@ -89,7 +89,8 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
     {
         ip_t ip;
         load_ip(&ip, file);
-        auto basename = path::basename(file).toLower();
+        const QFileInfo info(file);
+        auto basename = info.baseName().toLower();
         ips->insert(basename, ip);
     }
 
@@ -98,7 +99,8 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
     {
         ip_t ip;
         load_ip(&ip, QString(":/lib/repo/db/ip/%1.yml").arg(file));
-        const QString basename = path::basename(file).toLower();
+        const QFileInfo info(file);
+        const QString basename = info.baseName().toLower();
         if (ips->contains(basename))
         {
             ip_t &ref_ip = (*ips)[basename];

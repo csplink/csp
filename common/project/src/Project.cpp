@@ -28,14 +28,13 @@
  */
 
 #include <QDebug>
+#include <QDir>
 #include <QProcess>
 
-#include "Project.h"
-#include "os.h"
-#include "path.h"
-
 #include "Config.h"
+#include "Project.h"
 #include "XMake.h"
+#include "os.h"
 
 void Project::init()
 {
@@ -117,7 +116,8 @@ void Project::setPath(const QString &Path)
 {
     Q_ASSERT(!Path.isEmpty());
 
-    path_ = path::absolute(Path);
+    const QDir root(".");
+    path_ = root.absoluteFilePath(Path);
 }
 
 QString Project::getName() const
@@ -320,16 +320,17 @@ void Project::saveProject()
 {
     Q_ASSERT(!path_.isEmpty());
 
-    const auto p = path::directory(path_);
-    if (!os::exists(p))
+    const QFileInfo info(path_);
+    const auto path = info.dir().absolutePath();
+    if (!os::exists(path))
     {
-        os::mkdir(p);
+        os::mkdir(path);
     }
     else
     {
-        if (!os::isdir(p)) /** check if it not is a directory */
+        if (!os::isdir(path)) /** check if it not is a directory */
         {
-            os::show_error_and_exit(tr("The Project <%1> path is not a directory!").arg(p));
+            os::show_error_and_exit(tr("The Project <%1> path is not a directory!").arg(path));
         }
     }
     ProjectTable::save_project(project_, path_);
@@ -395,11 +396,13 @@ int Project::runXmake(const QString &Command, const QStringList &Args, const QSt
 
 void Project::generateCode() const
 {
-    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + path::directory(path_), QString("--repositories=") + Config::repositories_dir() });
+    const QFileInfo info(path_);
+    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + info.dir().absolutePath(), QString("--repositories=") + Config::repositories_dir() });
 }
 
 void Project::build(const QString &Mode) const
 {
-    runXmake("f", { "-y", "-m", Mode }, path::directory(path_));
-    runXmake("", { "-y", "-j8" }, path::directory(path_));
+    const QFileInfo info(path_);
+    runXmake("f", { "-y", "-m", Mode }, info.dir().absolutePath());
+    runXmake("", { "-y", "-j8" }, info.dir().absolutePath());
 }

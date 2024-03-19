@@ -4,7 +4,7 @@
 <context>
     <name>Project</name>
     <message>
-        <location filename="../../src/Project.cpp" line="332"/>
+        <location filename="../../src/Project.cpp" line="333"/>
         <source>The Project &lt;%1&gt; path is not a directory!</source>
         <translation type="unfinished"></translation>
     </message>

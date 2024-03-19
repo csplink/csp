@@ -29,13 +29,13 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QRegularExpression>
 
 #include "Config.h"
 #include "chip_summary_table.h"
 #include "os.h"
 #include "qtjson.h"
 #include "qtyaml.h"
-#include "utils.h"
 
 namespace YAML
 {
@@ -78,6 +78,8 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
     Q_ASSERT(!path.isEmpty());
     Q_ASSERT(os::isfile(path));
 
+    static const QRegularExpression pattern("^0x[0-9a-fA-F]+$");
+
     try
     {
         const std::string buffer = os::readfile(path).toStdString();
@@ -94,7 +96,7 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
 
     if (!chip_summary->linker.default_minimum_heap_size.isEmpty())
     {
-        if (!utils::is_hex(chip_summary->linker.default_minimum_heap_size))
+        if (!pattern.match(chip_summary->linker.default_minimum_heap_size).hasMatch())
         {
             qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
                                       "illegal value %1, and the default value 0x200 is used.")
@@ -105,7 +107,7 @@ void chip_summary_table::load_chip_summary(chip_summary_t *chip_summary, const Q
 
     if (!chip_summary->linker.default_minimum_stack_size.isEmpty())
     {
-        if (!utils::is_hex(chip_summary->linker.default_minimum_stack_size))
+        if (!pattern.match(chip_summary->linker.default_minimum_stack_size).hasMatch())
         {
             qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
                                       "illegal value %1, and the default value 0x400 is used.")
