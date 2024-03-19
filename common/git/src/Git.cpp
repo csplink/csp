@@ -28,18 +28,62 @@
  */
 
 #include <QDebug>
+#include <QFileInfo>
+#include <QProcess>
 #include <QRegularExpression>
 
-#include "git.h"
+#include "Git.h"
 
-QString git::version(const QString &program)
+bool Git::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, const QString &WorkDir)
+{
+    const QString &program = config::tool_git();
+    const QMap<QString, QString> &env = config::env();
+    constexpr int msecs = 30000;
+    QProcess process;
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    bool rtn = false;
+
+    auto envIterator = env.constBegin();
+    while (envIterator != env.constEnd())
+    {
+        environment.insert(envIterator.key(), envIterator.value());
+        ++envIterator;
+    }
+
+    process.setProgram(program);
+    process.setArguments(Argv);
+    process.setProcessEnvironment(environment);
+
+    const QFileInfo fileInfo(WorkDir);
+    if (fileInfo.isDir())
+    {
+        process.setWorkingDirectory(WorkDir);
+    }
+
+    process.start();
+
+    if (process.waitForFinished(msecs))
+    {
+        rtn = true;
+        if (Output != nullptr)
+        {
+            *Output = process.readAllStandardOutput();
+        }
+        if (Error != nullptr)
+        {
+            *Error = process.readAllStandardError();
+        }
+    }
+
+    return rtn;
+}
+
+QString Git::version(void)
 {
     QByteArray output;
     QString version = "";
 
-    Q_ASSERT(!program.isEmpty());
-
-    if (os::execv(program, QStringList() << "--version", {}, 1000, "", &output, nullptr))
+    if (execv({ "--version" }, &output, nullptr))
     {
         const QRegularExpression regex(R"(git version (\d+\.\d+\.\d+))");
         const QRegularExpressionMatch match = regex.match(output);
@@ -52,50 +96,37 @@ QString git::version(const QString &program)
     return version;
 }
 
-QString git::variables(const int type, const QString &program, const QString &workdir)
+QString Git::variables(const int Type, const QString &WorkDir)
 {
     QStringList argv;
     QByteArray output;
     QString var = "";
 
-    Q_ASSERT(!program.isEmpty());
-
-    switch (type)
+    switch (Type)
     {
     case TAG:
-        argv << "describe"
-             << "--tags";
+        argv = QStringList({ "describe", "--tags" });
         break;
     case TAG_LONG:
-        argv << "describe"
-             << "--tags"
-             << "--long";
+        argv = QStringList({ "describe", "--tags", "--long" });
         break;
-    case git::BRANCH:
-        argv << "rev-parse"
-             << "--abbrev-ref"
-             << "HEAD";
+    case BRANCH:
+        argv = QStringList({ "rev-parse", "--abbrev-ref", "HEAD" });
         break;
-    case git::COMMIT:
-        argv << "rev-parse"
-             << "--short"
-             << "HEAD";
+    case COMMIT:
+        argv = QStringList({ "rev-parse", "--short", "HEAD" });
         break;
     case COMMIT_LONG:
-        argv << "rev-parse"
-             << "HEAD";
+        argv = QStringList({ "rev-parse", "HEAD" });
         break;
-    case git::COMMIT_DATE:
-        argv << "log"
-             << "-1"
-             << "--date=format:%Y%m%d%H%M%S"
-             << "--format=%ad";
+    case COMMIT_DATE:
+        argv = QStringList({ "log", "-1", "--date=format:%Y%m%d%H%M%S", "--format=%ad" });
         break;
     default:
         return "";
     }
 
-    if (os::execv(program, argv, {}, 1000, workdir, &output, nullptr))
+    if (execv(argv, &output, nullptr, WorkDir))
     {
         var = output.trimmed();
     }

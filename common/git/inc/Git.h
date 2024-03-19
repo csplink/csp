@@ -27,12 +27,14 @@
  *  2023-08-14     xqyjlj       initial version
  */
 
-#ifndef CSP_COMMON_CORE_GIT_H
-#define CSP_COMMON_CORE_GIT_H
+#ifndef CSP_GIT_H
+#define CSP_GIT_H
 
-#include "os.h"
+#include <QString>
 
-class git final
+#include "config.h"
+
+class Git final
 {
   public:
     typedef enum
@@ -46,26 +48,26 @@ class git final
     } variables_type;
 
   public:
+    static bool execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, const QString &WorkDir = config::default_workdir());
+
     /**
      * @brief get git version
-     * @param program: program path or name
      * @return version; <example: "v2.34.1">
      */
-    static QString version(const QString &program = "git");
+    static QString version(void);
 
     /**
      * @brief get git variables
-     * @param type: type
-     * @param program: program path or name
-     * @param workdir: work dir
+     * @param Type: type
+     * @param WorkDir: work dir
      * @return the variables corresponding to type
      */
-    static QString variables(int type, const QString &program = "git", const QString &workdir = "");
+    static QString variables(int Type, const QString &WorkDir = "");
 
   private:
-    git() = default;
-    ~git() = default;
+    Git() = default;
+    ~Git() = default;
 
-    Q_DISABLE_COPY_MOVE(git)
+    Q_DISABLE_COPY_MOVE(Git)
 };
-#endif //  CSP_COMMON_CORE_GIT_H
+#endif //  CSP_GIT_H

@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_git.cpp
+ *  @file        TestCaseGit.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -30,33 +30,43 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "git.h"
+#include "Git.h"
 
-class testcase_git final : public QObject
+class TestCaseGit final : public QObject
 {
     Q_OBJECT
 
   private slots:
 
+    static void initTestCase()
+    {
+        config::init();
+    }
+
     static void version()
     {
-        const auto result = git::version();
+        const auto result = Git::version();
         QVERIFY(!result.isEmpty());
     }
 
     static void variables()
     {
-        auto result = git::variables(git::BRANCH);
+        auto result = Git::variables(Git::BRANCH);
         QVERIFY(!result.isEmpty());
-        result = git::variables(git::COMMIT);
+        result = Git::variables(Git::COMMIT);
         QVERIFY(!result.isEmpty());
-        result = git::variables(git::COMMIT_LONG);
+        result = Git::variables(Git::COMMIT_LONG);
         QVERIFY(!result.isEmpty());
-        result = git::variables(git::COMMIT_DATE);
+        result = Git::variables(Git::COMMIT_DATE);
         QVERIFY(!result.isEmpty());
+    }
+
+    static void cleanupTestCase()
+    {
+        config::deinit();
     }
 };
 
-QTEST_MAIN(testcase_git)
+QTEST_MAIN(TestCaseGit)
 
-#include "testcase_git.moc"
+#include "TestCaseGit.moc"
