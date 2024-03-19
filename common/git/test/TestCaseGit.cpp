@@ -40,7 +40,7 @@ class TestCaseGit final : public QObject
 
     static void initTestCase()
     {
-        config::init();
+        Config::init();
     }
 
     static void version()
@@ -63,7 +63,7 @@ class TestCaseGit final : public QObject
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
     }
 };
 

@@ -28,15 +28,14 @@
  */
 
 #include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
 
-#include "config.h"
-#include "os.h"
-#include "path.h"
-#include "qtjson.h"
+#include "Config.h"
 #include "XMake.h"
+#include "qtjson.h"
 
 namespace nlohmann
 {
@@ -55,10 +54,10 @@ XMake::~XMake() = default;
 
 bool XMake::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error)
 {
-    const QString &program = config::tool_xmake();
-    const QMap<QString, QString> &env = config::env();
+    const QString &program = Config::tool_xmake();
+    const QMap<QString, QString> &env = Config::env();
     constexpr int msecs = 30000;
-    const QString &workDir = config::default_workdir();
+    const QString &workDir = Config::default_workdir();
     QProcess process;
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
     bool rtn = false;
@@ -137,7 +136,8 @@ QString XMake::lua(const QString &LuaPath, const QStringList &Args)
     QString output = "";
     if (!LuaPath.isEmpty())
     {
-        QStringList list = { "-D", path::absolute(LuaPath) };
+        const QDir root(".");
+        QStringList list = { "-D", root.absoluteFilePath(LuaPath) };
         list << Args;
         output = cmd("lua", list);
     }
@@ -149,7 +149,7 @@ void XMake::loadPackages(PackageType *Packages)
 {
     if (Packages != nullptr)
     {
-        const QString data = cmd("csp-repo", { "--dump=json", QString("--repositories=") + config::repositories_dir() });
+        const QString data = cmd("csp-repo", { "--dump=json", QString("--repositories=") + Config::repositories_dir() });
         try
         {
             const std::string buffer = data.toStdString();
@@ -162,19 +162,6 @@ void XMake::loadPackages(PackageType *Packages)
             qWarning().noquote() << str;
             Packages->clear();
         }
-    }
-    else
-    {
-        // TODO: Invalid parameter
-    }
-}
-
-void XMake::cspCoderLog(const QString &project_file, const QString &output, const QString &repositories)
-{
-    if (!project_file.isEmpty() && !output.isEmpty() && !repositories.isEmpty())
-    {
-        cmd("csp-coder", { QString("--project-file=") + project_file, QString("--output=") + output,
-                           QString("--repositories=") + repositories });
     }
     else
     {

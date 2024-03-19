@@ -28,11 +28,11 @@
  */
 
 #include "repo.h"
-#include "config.h"
+#include "Config.h"
 
 repo::repo()
 {
-    repository_table::load_repository(&_repository, config::repodir() + "/db/repository.yml");
+    repository_table::load_repository(&_repository, Config::repodir() + "/db/repository.yml");
 }
 
 repo::~repo() = default;

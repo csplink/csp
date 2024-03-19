@@ -30,7 +30,7 @@
 #include <QDebug>
 #include <QFile>
 
-#include "config.h"
+#include "Config.h"
 #include "os.h"
 #include "pinout_table.h"
 #include "qtjson.h"
@@ -62,7 +62,7 @@ void pinout_table::load_pinout(pinout_t *pinout, const QString &company, const Q
     Q_ASSERT(!name.isEmpty());
 
     const QString path = QString("%1/db/hal/%2/%3/%4/pinout.yml")
-                             .arg(config::repodir(), company.toLower(), hal.toLower(), name.toLower());
+                             .arg(Config::repodir(), company.toLower(), hal.toLower(), name.toLower());
     load_pinout(pinout, path);
 }
 

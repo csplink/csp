@@ -29,7 +29,7 @@ file(GLOB_RECURSE SOURCES
         resources/*.qrc)
 
 add_library(${name} STATIC ${SOURCES})
-target_link_libraries(${name} PUBLIC core)
+target_link_libraries(${name} PUBLIC CspConfig)
 target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################

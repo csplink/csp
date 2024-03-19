@@ -32,9 +32,9 @@
 
 #include <QObject>
 
+#include "Config.h"
 #include "ProjectTable.h"
 #include "chip_summary_table.h"
-#include "config.h"
 #include "ip_table.h"
 #include "map_table.h"
 
@@ -247,7 +247,7 @@ class Project final : public QObject
      */
     void build(const QString &Mode) const;
 
-    int runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir = config::default_workdir()) const;
+    int runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir = Config::default_workdir()) const;
 
   private:
     inline static Project *instance_ = nullptr;

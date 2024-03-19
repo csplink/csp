@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "config.h"
+#include "Config.h"
 #include <ip_table.h>
 
 #ifndef CSP_EXE_DIR
@@ -45,8 +45,8 @@ class testcase_ip_table final : public QObject
     static void initTestCase()
     {
         Q_INIT_RESOURCE(repo);
-        config::init();
-        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+        Config::init();
+        Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void load_ip()
@@ -58,7 +58,7 @@ class testcase_ip_table final : public QObject
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
         Q_CLEANUP_RESOURCE(repo);
     }
 };

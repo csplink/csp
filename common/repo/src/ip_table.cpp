@@ -30,7 +30,7 @@
 #include <QDebug>
 #include <QFile>
 
-#include "config.h"
+#include "Config.h"
 #include "ip_table.h"
 #include "os.h"
 #include "path.h"
@@ -74,7 +74,7 @@ void ip_table::load_ip(ip_t *ip, const QString &hal, const QString &name, const 
     Q_ASSERT(!ip_name.isEmpty());
 
     const QString path =
-        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(config::repodir(), hal.toLower(), name.toLower(), ip_name.toLower());
+        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(Config::repodir(), hal.toLower(), name.toLower(), ip_name.toLower());
     return load_ip(ip, path);
 }
 
@@ -84,7 +84,7 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    const QString path = QString("%1/db/hal/%2/%3/ip").arg(config::repodir(), hal.toLower(), name.toLower());
+    const QString path = QString("%1/db/hal/%2/%3/ip").arg(Config::repodir(), hal.toLower(), name.toLower());
     for (const QString &file : os::files(path, QString("*.yml")))
     {
         ip_t ip;
@@ -93,7 +93,7 @@ void ip_table::load_ips(ips_t *ips, const QString &hal, const QString &name)
         ips->insert(basename, ip);
     }
 
-    const QStringList list = {"gpio"};
+    const QStringList list = { "gpio" };
     for (const QString &file : list)
     {
         ip_t ip;

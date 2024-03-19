@@ -332,9 +332,9 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selected_indexes)
         companyName_ = company;
 
         ui_->textBrowserReadme->setMarkdown(QString("# %1\n\n").arg(chipName_) +
-                                            chip_summary.illustrate[config::language()]);
-        ui_->pushButtonName->setProperty("user_url", chip_summary.url[config::language()]);
-        ui_->pushButtonCompany->setProperty("user_url", chip_summary.company_url[config::language()]);
+                                            chip_summary.illustrate[Config::language()]);
+        ui_->pushButtonName->setProperty("user_url", chip_summary.url[Config::language()]);
+        ui_->pushButtonCompany->setProperty("user_url", chip_summary.company_url[Config::language()]);
     }
     else
     {

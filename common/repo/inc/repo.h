@@ -33,8 +33,8 @@
 #include <QFile>
 #include <QObject>
 
+#include "Config.h"
 #include "chip_summary_table.h"
-#include "config.h"
 #include "repository_table.h"
 
 class repo final : public QObject
@@ -63,7 +63,7 @@ class repo final : public QObject
     static bool chip_summary_exists(const QString &company, const QString &name)
     {
         return QFile::exists(
-            QString("%1/db/chips/%2/%3.yml").arg(config::repodir(), company.toLower(), name.toLower()));
+            QString("%1/db/chips/%2/%3.yml").arg(Config::repodir(), company.toLower(), name.toLower()));
     }
 
     static repo *get_instance();

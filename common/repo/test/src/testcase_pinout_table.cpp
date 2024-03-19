@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "config.h"
+#include "Config.h"
 #include "os.h"
 #include "pinout_table.h"
 
@@ -46,14 +46,14 @@ class testcase_pinout_table final : public QObject
     static void initTestCase()
     {
         Q_INIT_RESOURCE(repo);
-        config::init();
-        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+        Config::init();
+        Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void load_pinout()
     {
         pinout_table::pinout_t pinout;
-        for (const QString &company_dir : os::dirs(config::repodir() + "/db/hal", "*"))
+        for (const QString &company_dir : os::dirs(Config::repodir() + "/db/hal", "*"))
         {
             for (const QString &hal_dir : os::dirs(company_dir, "*"))
             {
@@ -73,7 +73,7 @@ class testcase_pinout_table final : public QObject
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
         Q_CLEANUP_RESOURCE(repo);
     }
 };

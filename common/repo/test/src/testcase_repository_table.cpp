@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "config.h"
+#include "Config.h"
 #include "repository_table.h"
 
 #ifndef CSP_EXE_DIR
@@ -45,14 +45,14 @@ class testcase_repository_table final : public QObject
     static void initTestCase()
     {
         Q_INIT_RESOURCE(repo);
-        config::init();
-        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+        Config::init();
+        Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void load_repository()
     {
         repository_table::repository_t repository;
-        repository_table::load_repository(&repository, config::repodir() + "/db/repository.yml");
+        repository_table::load_repository(&repository, Config::repodir() + "/db/repository.yml");
         const auto chips = repository.chips;
         auto chips_i = chips.constBegin();
         while (chips_i != chips.constEnd())
@@ -108,7 +108,7 @@ class testcase_repository_table final : public QObject
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
         Q_CLEANUP_RESOURCE(repo);
     }
 };

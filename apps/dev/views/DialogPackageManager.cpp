@@ -32,9 +32,9 @@
 
 #include "DialogPackageManager.h"
 
+#include "Config.h"
 #include "ViewMainWindow.h"
 #include "XMake.h"
-#include "config.h"
 #include "os.h"
 #include "ui_DialogPackageManager.h"
 
@@ -349,7 +349,7 @@ void DialogPackageManager::pushButtonInstallPressedCallback() const
             QFuture<void> future = QtConcurrent::run([infoIterator, this] {
                 const QString &name = infoIterator.key();
                 const QString &version = infoIterator.value().Version;
-                runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + config::repositories_dir() });
+                runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + Config::repositories_dir() });
             });
             while (!future.isFinished())
             {
@@ -370,7 +370,7 @@ void DialogPackageManager::pushButtonUpdatePressedCallback() const
         {
             const QString &name = infoIterator.key();
             QFuture<int> future = QtConcurrent::run([this, name] {
-                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + config::repositories_dir() });
+                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + Config::repositories_dir() });
                 return errorCode;
             });
             QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -407,7 +407,7 @@ void DialogPackageManager::pushButtonUninstallPressedCallback() const
             QFuture<void> future = QtConcurrent::run([infoIterator, this] {
                 const QString &name = infoIterator.key();
                 const QString &version = infoIterator.value().Version;
-                runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + config::repositories_dir() });
+                runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + Config::repositories_dir() });
             });
             while (!future.isFinished())
             {
@@ -421,9 +421,9 @@ void DialogPackageManager::pushButtonUninstallPressedCallback() const
 
 int DialogPackageManager::runXmake(const QString &command, const QStringList &args) const
 {
-    const QString program = config::tool_xmake();
-    const QString workDir = config::default_workdir();
-    const QMap<QString, QString> env = config::env();
+    const QString program = Config::tool_xmake();
+    const QString workDir = Config::default_workdir();
+    const QMap<QString, QString> env = Config::env();
     QStringList list;
     if (!command.isEmpty())
     {

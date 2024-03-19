@@ -34,8 +34,8 @@
 #include "os.h"
 #include "path.h"
 
+#include "Config.h"
 #include "XMake.h"
-#include "config.h"
 
 void Project::init()
 {
@@ -348,8 +348,8 @@ void Project::clearProject()
 
 int Project::runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir) const
 {
-    const QString program = config::tool_xmake();
-    const QMap<QString, QString> env = config::env();
+    const QString program = Config::tool_xmake();
+    const QMap<QString, QString> env = Config::env();
     QStringList list;
     if (!Command.isEmpty())
     {
@@ -395,7 +395,7 @@ int Project::runXmake(const QString &Command, const QStringList &Args, const QSt
 
 void Project::generateCode() const
 {
-    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + path::directory(path_), QString("--repositories=") + config::repositories_dir() });
+    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + path::directory(path_), QString("--repositories=") + Config::repositories_dir() });
 }
 
 void Project::build(const QString &Mode) const

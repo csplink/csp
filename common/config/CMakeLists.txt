@@ -19,27 +19,33 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2023-04-19     xqyjlj       initial version
+# 2024-03-16     xqyjlj       initial version
 #
+set(name CspConfig)
+
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc/Configure.h.in
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc/Configure.h
+)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
         src/*.cpp
         resources/*.qrc)
 
-add_library(repo STATIC ${SOURCES})
-target_link_libraries(repo PUBLIC compat_layer core CspConfig)
-target_include_directories(repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+add_library(${name} STATIC ${SOURCES})
+target_link_libraries(${name} PUBLIC Qt5::Widgets)
+target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
-file(GLOB_RECURSE TESTCASES
+file(GLOB_RECURSE TEST_CASES
         test/*.cpp)
 
-foreach (TESTCASE ${TESTCASES})
-    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
-    target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
-    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test repo)
+foreach (TEST_CASE ${TEST_CASES})
+    get_filename_component(TARGET_NAME ${TEST_CASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TEST_CASE})
+    target_compile_definitions(${TARGET_NAME} PRIVATE)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()

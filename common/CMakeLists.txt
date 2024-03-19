@@ -23,6 +23,7 @@
 #
 
 add_subdirectory(compat_layer)
+add_subdirectory(config)
 add_subdirectory(core)
 add_subdirectory(git)
 add_subdirectory(project)

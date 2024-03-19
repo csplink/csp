@@ -30,9 +30,8 @@
 #include <QDebug>
 #include <QtTest>
 
+#include "Config.h"
 #include "XMake.h"
-#include "config.h"
-#include "os.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
@@ -46,9 +45,8 @@ class TestCaseXMake final : public QObject
 
     static void initTestCase()
     {
-        config::init();
-        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
-        config::set("core/xmake_repodir", QString(CSP_EXE_DIR) + "/xmake");
+        Config::init();
+        Config::set("core/xmakeRepoDir", QString(CSP_EXE_DIR) + "/xmake");
     }
 
     static void version()
@@ -60,10 +58,21 @@ class TestCaseXMake final : public QObject
 
     static void lua()
     {
-        const QByteArray data = os::readfile(":/test.lua");
+        QByteArray data;
+        QFile resFile(":/test.lua");
+        if (resFile.open(QIODevice::ReadOnly))
+        {
+            data = resFile.readAll();
+            resFile.close();
+        }
         QVERIFY(!data.isEmpty());
 
-        os::writefile("./test.lua", data);
+        QFile luaFile("./test.lua");
+        if (luaFile.open(QIODevice::WriteOnly))
+        {
+            luaFile.write(data);
+            luaFile.close();
+        }
 
         const auto result = XMake::lua("./test.lua");
 #ifdef Q_OS_WINDOWS
@@ -72,7 +81,7 @@ class TestCaseXMake final : public QObject
         QVERIFY(result == "hello world\n");
 #endif
 
-        os::rm("./test.lua");
+        QFile::remove("./test.lua");
     }
 
     static void load_packages()
@@ -84,7 +93,7 @@ class TestCaseXMake final : public QObject
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
     }
 };
 

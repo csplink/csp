@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "config.h"
+#include "Config.h"
 #include "os.h"
 #include <chip_summary_table.h>
 
@@ -57,14 +57,14 @@ class testcase_chip_summary_table final : public QObject
     static void initTestCase()
     {
         Q_INIT_RESOURCE(repo);
-        config::init();
-        config::set("core/repodir", QString(CSP_EXE_DIR) + "/repo");
+        Config::init();
+        Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void load_chip_summary()
     {
         chip_summary_table::chip_summary_t chip_summary;
-        for (const QString &dir : os::dirs(config::repodir() + "/db/chips", "*"))
+        for (const QString &dir : os::dirs(Config::repodir() + "/db/chips", "*"))
         {
             for (const QString &file : os::files(dir, QString("*.yml")))
             {
@@ -77,7 +77,7 @@ class testcase_chip_summary_table final : public QObject
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
         Q_CLEANUP_RESOURCE(repo);
     }
 };

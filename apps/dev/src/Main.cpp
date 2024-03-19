@@ -33,11 +33,11 @@
 #include <QFontDatabase>
 #include <QTranslator>
 
-#include "ViewMainWindow.h"
-#include "config.h"
-#include "configure.h"
-#include "os.h"
+#include "Config.h"
+#include "Configure.h"
 #include "Project.h"
+#include "ViewMainWindow.h"
+#include "os.h"
 #include "repo.h"
 
 static void init()
@@ -47,7 +47,7 @@ static void init()
     Q_INIT_RESOURCE(qtpropertybrowser);
     Q_INIT_RESOURCE(repo);
 
-    config::init();
+    Config::init();
     repo::init();
     Project::init();
 }
@@ -56,7 +56,7 @@ static void deinit()
 {
     Project::deinit();
     repo::deinit();
-    config::deinit();
+    Config::deinit();
 
     Q_CLEANUP_RESOURCE(repo);
     Q_CLEANUP_RESOURCE(qtpropertybrowser);
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    for (const QString &file : os::files("./translations", QString("*%1.qm").arg(config::language())))
+    for (const QString &file : os::files("./translations", QString("*%1.qm").arg(Config::language())))
     {
         const auto translator = new QTranslator(&app);
         translator->load(file);

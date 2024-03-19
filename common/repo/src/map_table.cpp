@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QFile>
 
-#include "config.h"
+#include "Config.h"
 #include "map_table.h"
 #include "os.h"
 #include "path.h"
@@ -82,8 +82,8 @@ void map_table::load_map(map_t *map, const QString &path)
             {
                 const QString &name = values_i.key();
                 const value_t &value = values_i.value();
-                map->total.insert(name, value.comment[config::language()]);
-                map->reverse_total.insert(value.comment[config::language()], name);
+                map->total.insert(name, value.comment[Config::language()]);
+                map->reverse_total.insert(value.comment[Config::language()], name);
                 ++values_i;
             }
             ++group_i;
@@ -104,7 +104,7 @@ void map_table::load_map(map_t *map, const QString &hal, const QString &map_name
     Q_ASSERT(!hal.isEmpty());
     Q_ASSERT(!map_name.isEmpty());
 
-    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(config::repodir(), hal.toLower(), map_name.toLower());
+    const QString path = QString("%1/db/hal/%2/map/%3.yml").arg(Config::repodir(), hal.toLower(), map_name.toLower());
     return load_map(map, path);
 }
 
@@ -113,7 +113,7 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
     Q_ASSERT(maps != nullptr);
     Q_ASSERT(!hal.isEmpty());
 
-    const QString p = QString("%1/db/hal/%2/map").arg(config::repodir(), hal.toLower());
+    const QString p = QString("%1/db/hal/%2/map").arg(Config::repodir(), hal.toLower());
     for (const QString &file : os::files(p, QString("*.yml")))
     {
         map_t map;
@@ -122,7 +122,7 @@ void map_table::load_maps(maps_t *maps, const QString &hal)
         maps->insert(basename, map);
     }
 
-    const QStringList list = {"gpio"};
+    const QStringList list = { "gpio" };
     for (const QString &file : list)
     {
         map_t map;

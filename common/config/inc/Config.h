@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        config.h
+ *  @file        Config.h
  *  @brief
  *
  * ****************************************************************************
@@ -32,49 +32,49 @@
 
 #include <QSettings>
 
-class config final
+class Config final
 {
   public:
     /**
-     * @brief check if the key is config
-     * @param key: config key
-     * @return true if the key is config, otherwise false
+     * @brief check if the key is Config
+     * @param key: Config key
+     * @return true if the key is Config, otherwise false
      */
     static bool is_config(const QString &key);
 
     /**
-     * @brief init config
+     * @brief init Config
      */
     static void init();
 
     /**
-     * @brief deinit config
+     * @brief deinit Config
      */
     static void deinit();
 
     /**
      * @brief get value by key
-     * @param key: config key
-     * @return config value
+     * @param key: Config key
+     * @return Config value
      */
     static QString get(const QString &key);
 
     /**
-     * @brief get csp_repo directory; <get("core/repodir")>
+     * @brief get csp_repo directory; <get("core/repoDir")>
      * @return csp_repo directory; <default: "csp_repo">
      */
     static QString repodir();
 
     /**
-     * @brief get csp_repo directory; <get("core/xmake_repodir")>
+     * @brief get csp_repo directory; <get("core/xmakeRepoDir")>
      * @return csp_repo directory; <default: "xmake">
      */
     static QString xmake_repodir();
 
     /**
      * @brief set value by key
-     * @param key: config key
-     * @param value: config value
+     * @param key: Config key
+     * @param value: Config value
      */
     static void set(const QString &key, const QString &value);
 
@@ -119,9 +119,9 @@ class config final
     static QString find_tool_git();
 
   private:
-    config() = default;
-    ~config() = default;
+    Config() = default;
+    ~Config() = default;
 
-    Q_DISABLE_COPY_MOVE(config)
+    Q_DISABLE_COPY_MOVE(Config)
 };
 #endif //  COMMON_CORE_CSP_CONFIG_H

@@ -29,8 +29,8 @@
 
 #include <QDebug>
 
+#include "Config.h"
 #include "PropertyBrowserPin.h"
-#include "config.h"
 #include "os.h"
 #include "pinout_table.h"
 
@@ -43,7 +43,7 @@ PropertyBrowserPin::PropertyBrowserPin(QWidget *parent)
 PropertyBrowserPin::~PropertyBrowserPin() = default;
 
 QtProperty *PropertyBrowserPin::setPinBase(const QString &name, const QString &comment, const int position,
-                                        const bool locked) const
+                                           const bool locked) const
 {
     auto *group_item = variantManager_->addProperty(QtVariantPropertyManager::groupTypeId(), tr("Base"));
 
@@ -108,9 +108,9 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
     {
         auto map = projectInstance_->getMaps()[function_type];                 // such as "map/gpio.yml"
         const auto fps = projectInstance_->getPinConfigFunctionProperty(name); // ping config function properties
-        const auto function_mode = pinout_unit->functions[function].mode; // such as "Input-Std <just string>"
+        const auto function_mode = pinout_unit->functions[function].mode;      // such as "Input-Std <just string>"
         auto ip = projectInstance_->getIps()[function_type];                   // such as "apm32f103zet6/ip/gpio.yml"
-        const auto ip_map = ip[function_mode];                            // such as "Input-Std <just struct>"
+        const auto ip_map = ip[function_mode];                                 // such as "Input-Std <just struct>"
         auto ip_map_i = ip_map.constBegin();
         const auto type = pinout_unit->functions[function].type; // such as "GPIO"
         QtProperty *group_item = variantManager_->addProperty(QtVariantPropertyManager::groupTypeId(), type);
@@ -126,7 +126,7 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
             auto parameter_name = ip_map_i.key();                // such as "chal_gpio_pull_t <just string>"
             auto parameters = ip_map_i.value();                  // such as "CHAL_GPIO_PULL_UP, CHAL_GPIO_PULL_DOWN"
             auto property = map.properties[parameter_name];      // such as "chal_gpio_pull_t <just struct>"
-            auto language = config::language();                  // such as "zh_CN"
+            auto language = Config::language();                  // such as "zh_CN"
             auto display_name = property.display_name[language]; // such as "钳位<zh_CN>, means PULL<en>"
             auto description = property.description[language];   // such as "GPIO-钳位<zh_CN>, means GPIO-PULL<en>"
             const auto id = QtVariantPropertyManager::enumTypeId();
@@ -225,7 +225,7 @@ void PropertyBrowserPin::pinValueChangedCallback(const QtProperty *property, con
 }
 
 void PropertyBrowserPin::pinAttributeChangedCallback(const QtProperty *property, const QString &attribute,
-                                                  const QVariant &value) const
+                                                     const QVariant &value) const
 {
     Q_UNUSED(property)
     Q_UNUSED(attribute)

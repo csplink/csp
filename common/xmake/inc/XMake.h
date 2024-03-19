@@ -84,8 +84,6 @@ class XMake final : public QObject
      */
     static void loadPackages(PackageType *Packages);
 
-    void cspCoderLog(const QString &project_file, const QString &output, const QString &repositories);
-
   private:
     XMake();
     ~XMake() override;

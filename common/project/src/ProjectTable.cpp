@@ -30,9 +30,9 @@
 #include <QDebug>
 #include <QFile>
 
-#include "configure.h"
-#include "os.h"
+#include "Configure.h"
 #include "ProjectTable.h"
+#include "os.h"
 #include "qtjson.h"
 
 namespace nlohmann

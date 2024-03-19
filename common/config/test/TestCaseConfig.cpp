@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_config.cpp
+ *  @file        TestCaseConfig.cpp
  *  @brief
  *
  * ****************************************************************************
@@ -30,9 +30,9 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "config.h"
+#include "Config.h"
 
-class testcase_config final : public QObject
+class TestCaseConfig final : public QObject
 {
     Q_OBJECT
 
@@ -40,20 +40,20 @@ class testcase_config final : public QObject
 
     static void initTestCase()
     {
-        config::init();
+        Config::init();
     }
 
     static void repodir()
     {
-        QVERIFY(!config::repodir().isEmpty());
+        QVERIFY(!Config::repodir().isEmpty());
     }
 
     static void cleanupTestCase()
     {
-        config::deinit();
+        Config::deinit();
     }
 };
 
-QTEST_MAIN(testcase_config)
+QTEST_MAIN(TestCaseConfig)
 
-#include "testcase_config.moc"
+#include "TestCaseConfig.moc"

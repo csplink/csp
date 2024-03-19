@@ -24,10 +24,7 @@
 
 set(name core)
 
-configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h.in
-        ${CMAKE_CURRENT_SOURCE_DIR}/inc/configure.h
-)
+
 
 file(GLOB_RECURSE SOURCES
         inc/*.h

@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_TW">
 <context>
-    <name>project</name>
+    <name>Project</name>
     <message>
-        <location filename="../../src/project.cpp" line="335"/>
-        <source>The project &lt;%1&gt; path is not a directory!</source>
+        <location filename="../../src/Project.cpp" line="332"/>
+        <source>The Project &lt;%1&gt; path is not a directory!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

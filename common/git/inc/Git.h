@@ -32,7 +32,7 @@
 
 #include <QString>
 
-#include "config.h"
+#include "Config.h"
 
 class Git final
 {
@@ -48,7 +48,7 @@ class Git final
     } variables_type;
 
   public:
-    static bool execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, const QString &WorkDir = config::default_workdir());
+    static bool execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error, const QString &WorkDir = Config::default_workdir());
 
     /**
      * @brief get git version

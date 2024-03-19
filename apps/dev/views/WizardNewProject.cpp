@@ -32,8 +32,8 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include "Config.h"
 #include "WizardNewProject.h"
-#include "config.h"
 #include "os.h"
 
 WizardNewProject::WizardNewProject(const QWidget *parent)
@@ -105,7 +105,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     const auto label2 = new QLabel(tr("Project Name"), page);
     label2->setWordWrap(true);
 
-    auto workspace = config::workspace_dir();
+    auto workspace = Config::workspace_dir();
     lineEditProjectPath_ = new QLineEdit(workspace, page);
 
     int index = 0;
