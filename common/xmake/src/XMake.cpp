@@ -52,7 +52,7 @@ XMake::XMake() = default;
 
 XMake::~XMake() = default;
 
-bool XMake::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error)
+bool XMake::execv(const QStringList &argv, QByteArray *output, QByteArray *error)
 {
     const QString &program = Config::tool_xmake();
     const QMap<QString, QString> &env = Config::env();
@@ -70,7 +70,7 @@ bool XMake::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error
     }
 
     process.setProgram(program);
-    process.setArguments(Argv);
+    process.setArguments(argv);
     process.setProcessEnvironment(environment);
 
     const QFileInfo fileInfo(workDir);
@@ -84,26 +84,26 @@ bool XMake::execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error
     if (process.waitForFinished(msecs))
     {
         rtn = true;
-        if (Output != nullptr)
+        if (output != nullptr)
         {
-            *Output = process.readAllStandardOutput();
+            *output = process.readAllStandardOutput();
         }
-        if (Error != nullptr)
+        if (error != nullptr)
         {
-            *Error = process.readAllStandardError();
+            *error = process.readAllStandardError();
         }
     }
 
     return rtn;
 }
 
-QString XMake::cmd(const QString &Command, const QStringList &Args)
+QString XMake::cmd(const QString &command, const QStringList &args)
 {
     QByteArray output = "";
-    if (!Command.isEmpty())
+    if (!command.isEmpty())
     {
-        QStringList list = { Command, "-D" };
-        list << Args;
+        QStringList list = { command, "-D" };
+        list << args;
 
         (void)execv(list, &output, nullptr);
     }
@@ -131,36 +131,36 @@ QString XMake::version()
     return rtn;
 }
 
-QString XMake::lua(const QString &LuaPath, const QStringList &Args)
+QString XMake::lua(const QString &luaPath, const QStringList &args)
 {
     QString output = "";
-    if (!LuaPath.isEmpty())
+    if (!luaPath.isEmpty())
     {
         const QDir root(".");
-        QStringList list = { "-D", root.absoluteFilePath(LuaPath) };
-        list << Args;
+        QStringList list = { "-D", root.absoluteFilePath(luaPath) };
+        list << args;
         output = cmd("lua", list);
     }
 
     return output;
 }
 
-void XMake::loadPackages(PackageType *Packages)
+void XMake::loadPackages(PackageType *packages)
 {
-    if (Packages != nullptr)
+    if (packages != nullptr)
     {
         const QString data = cmd("csp-repo", { "--dump=json", QString("--repositories=") + Config::repositories_dir() });
         try
         {
             const std::string buffer = data.toStdString();
             const nlohmann::json json = nlohmann::json::parse(buffer);
-            (void)json.get_to(*Packages);
+            (void)json.get_to(*packages);
         }
         catch (std::exception &e)
         {
             const QString str = QString("try to parse packages failed. \n\nreason: %1").arg(e.what());
             qWarning().noquote() << str;
-            Packages->clear();
+            packages->clear();
         }
     }
     else

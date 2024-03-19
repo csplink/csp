@@ -65,24 +65,24 @@ class XMake final : public QObject
      */
     static QString version();
 
-    static bool execv(const QStringList &Argv, QByteArray *Output, QByteArray *Error);
+    static bool execv(const QStringList &argv, QByteArray *output, QByteArray *error);
 
-    static QString cmd(const QString &Command, const QStringList &Args = {});
+    static QString cmd(const QString &command, const QStringList &args = {});
 
     /**
      * @brief run the lua script.
-     * @param LuaPath: lua path
-     * @param Args: args
+     * @param luaPath: lua path
+     * @param args: args
      * @return lua output
      */
-    static QString lua(const QString &LuaPath, const QStringList &Args = {});
+    static QString lua(const QString &luaPath, const QStringList &args = {});
 
     /**
      * @brief get package configuration from csp repo
-     * @param Packages: packages ptr
+     * @param packages: packages ptr
      * @return void
      */
-    static void loadPackages(PackageType *Packages);
+    static void loadPackages(PackageType *packages);
 
   private:
     XMake();
