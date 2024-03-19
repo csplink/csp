@@ -36,7 +36,7 @@
 #include <QStandardItemModel>
 
 #include "Project.h"
-#include "repo.h"
+#include "Repo.h"
 
 namespace Ui
 {

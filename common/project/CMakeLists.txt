@@ -43,7 +43,7 @@ qt5_create_translation(QM_FILES ${SOURCES}
         ${TS_FILES})
 
 add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
-target_link_libraries(${name} PUBLIC compat_layer core repo CspXMake CspConfig)
+target_link_libraries(${name} PUBLIC compat_layer core CspRepo CspXMake CspConfig)
 target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################

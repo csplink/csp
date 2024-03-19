@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        repo.cpp
+ *  @file        csp_repo.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,36 +27,56 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#include "repo.h"
+#ifndef CSP_REPO_H
+#define CSP_REPO_H
+
+#include <QFile>
+#include <QObject>
+
 #include "Config.h"
+#include "chip_summary_table.h"
+#include "repository_table.h"
 
-repo::repo()
+class repo final : public QObject
 {
-    repository_table::load_repository(&_repository, Config::repodir() + "/db/repository.yml");
-}
+    Q_OBJECT
 
-repo::~repo() = default;
+  public:
+    /**
+     * @brief init config
+     */
+    static void init();
 
-void repo::init()
-{
-    if (_instance == nullptr)
+    /**
+     * @brief deinit config
+     */
+    static void deinit();
+
+    const repository_table::repository_t *get_repository() const;
+
+    static void load_chip_summary(chip_summary_table::chip_summary_t *chip_summary, const QString &company,
+                                  const QString &name)
     {
-        _instance = new repo();
+        chip_summary_table::load_chip_summary(chip_summary, company, name);
     }
-}
 
-void repo::deinit()
-{
-    delete _instance;
-    _instance = nullptr;
-}
+    static bool chip_summary_exists(const QString &company, const QString &name)
+    {
+        return QFile::exists(
+            QString("%1/db/chips/%2/%3.yml").arg(Config::repodir(), company.toLower(), name.toLower()));
+    }
 
-repo *repo::get_instance()
-{
-    return _instance;
-}
+    static repo *get_instance();
 
-const repository_table::repository_t *repo::get_repository() const
-{
-    return &_repository;
-}
+  private:
+    inline static repo *_instance = nullptr;
+    repository_table::repository_t _repository;
+
+  private:
+    repo();
+    ~repo() override;
+
+    Q_DISABLE_COPY_MOVE(repo)
+};
+
+#endif /** CSP_REPO_H */

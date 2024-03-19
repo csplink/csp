@@ -68,4 +68,4 @@ endif ()
 
 add_dependencies(${name} custom_res custom_tools)
 
-target_link_libraries(${name} PRIVATE Qt5::Widgets Qt5::Concurrent repo core CspProject components qtpropertybrowser CspXMake)
+target_link_libraries(${name} PRIVATE Qt5::Widgets Qt5::Concurrent CspComponents)

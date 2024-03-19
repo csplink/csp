@@ -21,7 +21,7 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-04-21     xqyjlj       initial version
 #
-set(name components)
+set(name CspComponents)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h

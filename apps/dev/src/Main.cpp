@@ -38,7 +38,7 @@
 #include "Project.h"
 #include "ViewMainWindow.h"
 #include "os.h"
-#include "repo.h"
+#include "Repo.h"
 
 static void init()
 {
