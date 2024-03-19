@@ -40,7 +40,7 @@ jobs:
       matrix:
         include:
           - qt_arch: gcc_64
-            qt_ver: 5.15.3
+            qt_ver: 5.15.2
             gcc_arch: x64
             rust_toolchain: stable-x86_64-unknown-linux-gnu
             rust_target: x86_64-unknown-linux-gnu

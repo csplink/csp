@@ -40,14 +40,14 @@ jobs:
       matrix:
         include:
           - qt_arch: win32_mingw81
-            qt_ver: 5.15.3
+            qt_ver: 5.15.2
             qt_tools: "tools_ninja tools_mingw,qt.tools.win32_mingw810"
             qt_tools_mingw_install: mingw810_32
             mingw_arch: x86
             rust_toolchain: stable-i686-pc-windows-gnu
             rust_target: i686-pc-windows-gnu
           - qt_arch: win64_mingw81
-            qt_ver: 5.15.3
+            qt_ver: 5.15.2
             qt_tools: "tools_ninja tools_mingw,qt.tools.win64_mingw810"
             qt_tools_mingw_install: mingw810_64
             mingw_arch: x64
