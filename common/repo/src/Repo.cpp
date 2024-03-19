@@ -32,31 +32,31 @@
 
 repo::repo()
 {
-    RepositoryTable::loadRepository(&_repository, Config::repoDir() + "/db/repository.yml");
+    RepositoryTable::loadRepository(&repository_, Config::repoDir() + "/db/repository.yml");
 }
 
 repo::~repo() = default;
 
 void repo::init()
 {
-    if (_instance == nullptr)
+    if (instance_ == nullptr)
     {
-        _instance = new repo();
+        instance_ = new repo();
     }
 }
 
 void repo::deinit()
 {
-    delete _instance;
-    _instance = nullptr;
+    delete instance_;
+    instance_ = nullptr;
 }
 
-repo *repo::get_instance()
+repo *repo::getInstance()
 {
-    return _instance;
+    return instance_;
 }
 
-const RepositoryTable::RepositoryType *repo::get_repository() const
+const RepositoryTable::RepositoryType *repo::getRepository() const
 {
-    return &_repository;
+    return &repository_;
 }

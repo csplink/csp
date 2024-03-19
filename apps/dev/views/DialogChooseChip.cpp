@@ -39,7 +39,7 @@ DialogChooseChip::DialogChooseChip(QWidget *parent)
 {
     ui_->setupUi(this);
 
-    repoInstance_ = repo::get_instance();
+    repoInstance_ = repo::getInstance();
     projectInstance_ = Project::getInstance();
 
     ui_->splitter_2->setSizes(QList<int>() << 156 << 1102);
@@ -68,7 +68,7 @@ DialogChooseChip::~DialogChooseChip()
 
 void DialogChooseChip::findAllKeys()
 {
-    const auto repository = repoInstance_->get_repository();
+    const auto repository = repoInstance_->getRepository();
     const auto chips = &repository->chips;
     auto chips_i = chips->constBegin();
     while (chips_i != chips->constEnd())
@@ -323,10 +323,10 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selected_indexes)
         image = QPixmap(":/packages/unknown.png");
     ui_->labelPackageImage->setPixmap(image);
 
-    if (repo::chip_summary_exists(company, chipName_))
+    if (repo::chipSummaryExists(company, chipName_))
     {
         ChipSummaryTable::ChipSummaryType chip_summary;
-        repo::load_chip_summary(&chip_summary, company, chipName_);
+        repo::loadChipSummary(&chip_summary, company, chipName_);
         halName_ = chip_summary.hal;
         packageName_ = chip_summary.package;
         companyName_ = company;

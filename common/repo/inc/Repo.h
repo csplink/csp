@@ -52,27 +52,24 @@ class repo final : public QObject
      */
     static void deinit();
 
-    const RepositoryTable::RepositoryType *get_repository() const;
+    const RepositoryTable::RepositoryType *getRepository() const;
 
-    static void load_chip_summary(ChipSummaryTable::ChipSummaryType *chip_summary, const QString &company,
-                                  const QString &name)
+    static void loadChipSummary(ChipSummaryTable::ChipSummaryType *chipSummary, const QString &company, const QString &name)
     {
-        ChipSummaryTable::loadChipSummary(chip_summary, company, name);
+        ChipSummaryTable::loadChipSummary(chipSummary, company, name);
     }
 
-    static bool chip_summary_exists(const QString &company, const QString &name)
+    static bool chipSummaryExists(const QString &company, const QString &name)
     {
-        return QFile::exists(
-            QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower()));
+        return QFile::exists(QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower()));
     }
 
-    static repo *get_instance();
+    static repo *getInstance();
 
   private:
-    inline static repo *_instance = nullptr;
-    RepositoryTable::RepositoryType _repository;
+    inline static repo *instance_ = nullptr;
+    RepositoryTable::RepositoryType repository_;
 
-  private:
     repo();
     ~repo() override;
 
