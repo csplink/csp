@@ -43,6 +43,7 @@ DialogPackageManager::DialogPackageManager(QWidget *parent)
     ui_->setupUi(this);
 
     ui_->progressBar->setHidden(true);
+    fontMetrics_ = new QFontMetrics(ui_->labelStatus->font());
 
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
 
@@ -58,6 +59,7 @@ DialogPackageManager::DialogPackageManager(QWidget *parent)
 
 DialogPackageManager::~DialogPackageManager()
 {
+    delete fontMetrics_;
     delete ui_;
 }
 
@@ -216,10 +218,11 @@ void DialogPackageManager::treeViewModelItemChangedCallback(QStandardItem *item)
                     }
                 }
             }
+
+            updatePushButtonInstallUpdateUninstallStatus();
         }
     }
     connect(dynamic_cast<QStandardItemModel *>(tableViewProxyModel_->sourceModel()), &QStandardItemModel::itemChanged, this, &DialogPackageManager::treeViewModelItemChangedCallback, Qt::UniqueConnection);
-    updatePushButtonInstallUpdateUninstallStatus();
 }
 
 Qt::CheckState DialogPackageManager::treeViewItemSiblingCheckState(const QStandardItem *item) const
@@ -337,19 +340,22 @@ void DialogPackageManager::pushButtonClosePressedCallback()
     close();
 }
 
-void DialogPackageManager::pushButtonInstallPressedCallback() const
+void DialogPackageManager::pushButtonInstallPressedCallback()
 {
     runXmakeCspRepoCommand("install");
+    updatePushButtonInstallUpdateUninstallStatus();
 }
 
-void DialogPackageManager::pushButtonUpdatePressedCallback() const
+void DialogPackageManager::pushButtonUpdatePressedCallback()
 {
     runXmakeCspRepoCommand("update");
+    updatePushButtonInstallUpdateUninstallStatus();
 }
 
-void DialogPackageManager::pushButtonUninstallPressedCallback() const
+void DialogPackageManager::pushButtonUninstallPressedCallback()
 {
     runXmakeCspRepoCommand("uninstall");
+    updatePushButtonInstallUpdateUninstallStatus();
 }
 
 int DialogPackageManager::runXmake(const QString &command, const QStringList &args) const
@@ -404,7 +410,9 @@ int DialogPackageManager::runXmake(const QString &command, const QStringList &ar
                     }
                 }
             }
-            ui_->labelStatus->setText(msg);
+            const QString text = fontMetrics_->elidedText(msg, Qt::ElideRight, ui_->labelStatus->width());
+            ui_->labelStatus->setText(text);
+            ui_->labelStatus->setToolTip(msg);
         }
     });
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [process](const int exitCode, const QProcess::ExitStatus exitStatus) {
@@ -427,11 +435,12 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
         const QString &version = infoIterator.value().Version;
         const QStandardItem *parent = infoIterator.value().Parent;
         const int row = infoIterator.value().Row;
+        const bool installed = infoIterator.value().Installed;
         QFuture<int> future;
-        bool isMatched = false;
+        bool isMatched;
 
         /** install */
-        if ((!infoIterator.value().Installed) && (command == "install"))
+        if (!installed && command == "install")
         {
             isMatched = true;
             future = QtConcurrent::run([this, name, version] {
@@ -440,7 +449,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
             });
         }
         /** update */
-        else if ((infoIterator.value().Installed && infoIterator.value().Version == "latest") && (command == "update"))
+        else if (installed && version == "latest" && command == "update")
         {
             isMatched = true;
             future = QtConcurrent::run([this, name] {
@@ -449,7 +458,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
             });
         }
         /** uninstall */
-        else if ((infoIterator.value().Installed) && (command == "uninstall"))
+        else if (installed && command == "uninstall")
         {
             isMatched = true;
             future = QtConcurrent::run([this, name, version] {
@@ -494,6 +503,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
                 break;
             }
         }
+
         ++infoIterator;
     }
 }

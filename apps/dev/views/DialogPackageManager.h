@@ -75,6 +75,7 @@ class DialogPackageManager final : public QDialog
     int installCount_ = 0;
     int uninstallCount_ = 0;
     int updateCount_ = 0;
+    QFontMetrics *fontMetrics_;
 
     void initTreeView();
     Qt::CheckState treeViewItemSiblingCheckState(const QStandardItem *item) const;
@@ -88,9 +89,9 @@ class DialogPackageManager final : public QDialog
     void toolButtonExpandPressedCallback() const;
 
     void pushButtonClosePressedCallback();
-    void pushButtonInstallPressedCallback() const;
-    void pushButtonUpdatePressedCallback() const;
-    void pushButtonUninstallPressedCallback() const;
+    void pushButtonInstallPressedCallback();
+    void pushButtonUpdatePressedCallback();
+    void pushButtonUninstallPressedCallback();
 };
 
 #endif /** DIALOG_PACKAGE_MANAGER_H */
