@@ -112,7 +112,9 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
 void ViewConfigure::initProjectSettings() const
 {
     const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().target_project;
+
     ui_->comboBoxBuildScriptIde->clear();
+
     if (target_project.xmake)
     {
         ui_->comboBoxBuildScriptIde->addItem("xmake");
@@ -124,6 +126,30 @@ void ViewConfigure::initProjectSettings() const
     if (!target_project.mdk_arm.device.isEmpty())
     {
         ui_->comboBoxBuildScriptIde->addItem("mdk_arm");
+    }
+
+    flushComboBoxPackageVersion();
+}
+
+void ViewConfigure::flushComboBoxPackageVersion() const
+{
+    const QString &hal = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_HAL);
+    XMake::PackageType packages;
+    XMake::loadPackages(&packages, hal);
+
+    const QString text = ui_->comboBoxPackageVersion->currentText();
+    ui_->comboBoxPackageVersion->clear();
+
+    auto &versions = packages["library"][hal].Versions;
+    auto versionsI = versions.constBegin();
+    while (versionsI != versions.constEnd())
+    {
+        ui_->comboBoxPackageVersion->addItem(versionsI.key());
+        if (versionsI.key() == text)
+        {
+            ui_->comboBoxPackageVersion->setCurrentText(text);
+        }
+        ++versionsI;
     }
 }
 
@@ -167,6 +193,7 @@ void ViewConfigure::pushButtonPackageManagerPressedCallback()
 {
     DialogPackageManager dialog(this);
     (void)dialog.exec();
+    flushComboBoxPackageVersion();
 }
 
 void ViewConfigure::pushButtonZoomInPressedCallback() const

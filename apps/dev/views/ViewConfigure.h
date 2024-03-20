@@ -65,6 +65,7 @@ class ViewConfigure final : public QWidget
     void initProjectSettings() const;
     void initLinkerSettings() const;
     void initPackageSettings() const;
+    void flushComboBoxPackageVersion() const;
 
   private slots:
     void pushButtonPackageManagerPressedCallback();
