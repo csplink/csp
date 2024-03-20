@@ -34,14 +34,14 @@
 #include <QRegularExpression>
 
 #include "Config.h"
-#include "XMake.h"
 #include "QtJson.h"
+#include "XMake.h"
 
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(XMake::VersionType, Size, Installed, Sha)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(XMake::InformationType, Versions, Urls, Homepage, Description, License, Company)
-} /** namespace nlohmann*/
+} // namespace nlohmann
 
 QT_DEBUG_ADD_TYPE(XMake::VersionType)
 QT_DEBUG_ADD_TYPE(XMake::InformationType)
@@ -145,11 +145,12 @@ QString XMake::lua(const QString &luaPath, const QStringList &args)
     return output;
 }
 
-void XMake::loadPackages(PackageType *packages)
+void XMake::loadPackages(PackageType *packages, const QString &name)
 {
     if (packages != nullptr)
     {
-        const QString data = cmd("csp-repo", { "--dump=json", QString("--repositories=") + Config::repositoriesDir() });
+        const QString data = cmd("csp-repo", { QString("--dump=%1json").arg(name.isEmpty() ? "" : name + "#"),
+                                               QString("--repositories=") + Config::repositoriesDir() });
         try
         {
             const std::string buffer = data.toStdString();

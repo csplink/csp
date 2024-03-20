@@ -47,6 +47,7 @@ class TestCaseXMake final : public QObject
     {
         Config::init();
         Config::set("core/xmakeRepoDir", QString(CSP_EXE_DIR) + "/xmake");
+        Config::set("core/repositories", QString(CSP_EXE_DIR) + "/repositories");
     }
 
     static void version()
@@ -84,10 +85,16 @@ class TestCaseXMake final : public QObject
         QFile::remove("./test.lua");
     }
 
-    static void load_packages()
+    static void loadPackages()
     {
         XMake::PackageType packages;
         XMake::loadPackages(&packages);
+        qDebug().noquote() << packages;
+        QVERIFY(!packages.isEmpty());
+
+        packages.clear();
+        XMake::loadPackages(&packages, "csp_hal_apm32f1");
+        qDebug().noquote() << packages;
         QVERIFY(!packages.isEmpty());
     }
 

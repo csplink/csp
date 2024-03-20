@@ -80,9 +80,10 @@ class XMake final : public QObject
     /**
      * @brief get package configuration from csp repo
      * @param packages: packages ptr
+     * @param name: packages name
      * @return void
      */
-    static void loadPackages(PackageType *packages);
+    static void loadPackages(PackageType *packages, const QString &name = "");
 
   private:
     XMake();
@@ -90,5 +91,10 @@ class XMake final : public QObject
 
     Q_DISABLE_COPY_MOVE(XMake)
 };
+
+QDebug operator<<(QDebug, const XMake::VersionType &);
+QDebug operator<<(QDebug, const XMake::InformationType &);
+QDebug operator<<(QDebug, const XMake::PackageCellType &);
+QDebug operator<<(QDebug, const XMake::PackageType &);
 
 #endif /** CSP_XMAKE_H */
