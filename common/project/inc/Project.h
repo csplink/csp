@@ -45,11 +45,11 @@ class Project final : public QObject
   public:
     typedef enum
     {
-        CSP_CORE_ATTRIBUTE_TYPE_HAL = 0,
-        CSP_CORE_ATTRIBUTE_TYPE_TARGET,
-        CSP_CORE_ATTRIBUTE_TYPE_PACKAGE,
-        CSP_CORE_ATTRIBUTE_TYPE_COMPANY,
-        CSP_CORE_ATTRIBUTE_TYPE_TYPE,
+        CORE_ATTRIBUTE_TYPE_HAL = 0,
+        CORE_ATTRIBUTE_TYPE_TARGET,
+        CORE_ATTRIBUTE_TYPE_PACKAGE,
+        CORE_ATTRIBUTE_TYPE_COMPANY,
+        CORE_ATTRIBUTE_TYPE_TYPE,
     } CoreAttributeType;
 
     /**
@@ -253,8 +253,8 @@ class Project final : public QObject
     inline static Project *instance_ = nullptr;
     ProjectTable::ProjectType project_; // project table
     QString path_;                      // project file path
-    IpTable::IpsType ips_;               // ip map
-    MapTable::MapsType maps_;            // hal map
+    IpTable::IpsType ips_;              // ip map
+    MapTable::MapsType maps_;           // hal map
     ChipSummaryTable::ChipSummaryType chipSummary_;
 
   public:

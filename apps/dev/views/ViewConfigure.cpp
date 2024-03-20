@@ -69,10 +69,10 @@ void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
 
 void ViewConfigure::initView()
 {
-    const auto package = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
-    const auto hal = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_HAL).toLower();
-    const auto company = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_COMPANY);
-    const auto name = projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TARGET);
+    const auto package = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
+    const auto hal = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_HAL).toLower();
+    const auto company = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_COMPANY);
+    const auto name = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_TARGET);
 
     delete ui_->graphicsView->scene();
     const auto scene = new QGraphicsScene(ui_->graphicsView);

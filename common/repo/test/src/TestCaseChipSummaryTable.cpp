@@ -31,7 +31,6 @@
 
 #include "ChipSummaryTable.h"
 #include "Config.h"
-#include "os.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
@@ -63,12 +62,16 @@ class TestCaseChipSummaryTable final : public QObject
     static void loadChipSummary()
     {
         ChipSummaryTable::ChipSummaryType chip_summary;
-        for (const QString &dir : os::dirs(Config::repoDir() + "/db/chips", "*"))
+        const QDir dir1(Config::repoDir() + "/db/chips");
+        const QFileInfoList dirs = dir1.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+        for (const QFileInfo &dir : dirs)
         {
-            for (const QString &file : os::files(dir, QString("*.yml")))
+            const QDir dir2(dir.absoluteFilePath());
+            const QFileInfoList files = dir2.entryInfoList({ "*.yml" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+            for (const QFileInfo &file : files)
             {
                 qDebug() << "Testing" << file;
-                ChipSummaryTable::loadChipSummary(&chip_summary, file);
+                ChipSummaryTable::loadChipSummary(&chip_summary, file.absoluteFilePath());
                 check(chip_summary);
             }
         }

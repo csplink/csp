@@ -27,8 +27,8 @@
  *  2023-05-27     xqyjlj       initial version
  */
 
-#ifndef COMMON_PROJECT_CSP_PROJECT_TABLE_H
-#define COMMON_PROJECT_CSP_PROJECT_TABLE_H
+#ifndef CSP_PROJECT_PROJECT_TABLE_H
+#define CSP_PROJECT_PROJECT_TABLE_H
 
 #include <QMap>
 
@@ -112,4 +112,4 @@ class ProjectTable
     static void setValue(ProjectType &project);
 };
 
-#endif // COMMON_PROJECT_CSP_PROJECT_TABLE_H
+#endif /** CSP_PROJECT_PROJECT_TABLE_H */

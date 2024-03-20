@@ -35,13 +35,13 @@
 
 #include "Config.h"
 #include "XMake.h"
-#include "qtjson.h"
+#include "QtJson.h"
 
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(XMake::VersionType, Size, Installed, Sha)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(XMake::InformationType, Versions, Urls, Homepage, Description, License, Company)
-} // namespace nlohmann
+} /** namespace nlohmann*/
 
 QT_DEBUG_ADD_TYPE(XMake::VersionType)
 QT_DEBUG_ADD_TYPE(XMake::InformationType)

@@ -21,7 +21,7 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-04-19     xqyjlj       initial version
 #
-set(name compat_layer)
+set(name CspParse)
 
 add_library(${name} INTERFACE)
 target_link_libraries(${name} INTERFACE yaml-cpp Qt5::Core nlohmann-json)
@@ -32,13 +32,12 @@ target_include_directories(${name} INTERFACE
 
 ##########################################################################
 
-file(GLOB_RECURSE TESTCASES
+file(GLOB_RECURSE TEST_CASES
         test/*.cpp)
 
-foreach (TESTCASE ${TESTCASES})
-    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE}
-            test/testcase_qtjson.cpp)
+foreach (TEST_CASE ${TEST_CASES})
+    get_filename_component(TARGET_NAME ${TEST_CASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TEST_CASE})
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()

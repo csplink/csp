@@ -30,10 +30,9 @@
 #include <QDebug>
 #include <QFile>
 
+#include "QtJson.h"
+#include "QtYaml.h"
 #include "RepositoryTable.h"
-#include "os.h"
-#include "qtjson.h"
-#include "qtyaml.h"
 
 namespace YAML
 {
@@ -65,22 +64,34 @@ RepositoryTable::RepositoryTable() = default;
 
 void RepositoryTable::loadRepository(RepositoryType *repository, const QString &path)
 {
-    Q_ASSERT(repository != nullptr);
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(os::isfile(path));
+    if (repository != nullptr)
+    {
+        QFile file(path);
+        if (file.open(QIODevice::ReadOnly))
+        {
+            try
+            {
+                const std::string buffer = file.readAll().toStdString();
+                const YAML::Node yaml_data = YAML::Load(buffer);
+                YAML::convert<RepositoryType>::decode(yaml_data, *repository);
+            }
+            catch (std::exception &e)
+            {
+                const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+                qCritical().noquote() << str;
+                throw;
+            }
 
-    try
-    {
-        const std::string buffer = os::readfile(path).toStdString();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<RepositoryType>::decode(yaml_data, *repository);
+            file.close();
+        }
+        else
+        {
+            /** TODO: failed */
+        }
     }
-    catch (std::exception &e)
+    else
     {
-        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical().noquote() << str;
-        os::show_error_and_exit(str);
-        throw;
+        /** TODO: failed */
     }
 }
 

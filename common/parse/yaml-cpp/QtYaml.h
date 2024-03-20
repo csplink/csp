@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        qtyaml.h
+ *  @file        QtYaml.h
  *  @brief
  *
  * ****************************************************************************
@@ -27,8 +27,8 @@
  *  2023-04-19     xqyjlj       initial version
  */
 
-#ifndef COMMON_COMPAT_LAYER_QTYAML_H
-#define COMMON_COMPAT_LAYER_QTYAML_H
+#ifndef CSP_PARSE_QT_YAML_H
+#define CSP_PARSE_QT_YAML_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -38,8 +38,9 @@
 
 #include <yaml-cpp/yaml.h>
 
-// Macros to simplify conversion from/to types
+/** Macros to simplify conversion from/to types */
 
+/* clang-format off */
 #define YAML_EXPAND( x ) x
 #define YAML_GET_MACRO(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64, NAME,...) NAME
 #define YAML_PASTE(...) YAML_EXPAND(YAML_GET_MACRO(__VA_ARGS__, \
@@ -170,55 +171,59 @@
 #define YAML_PASTE62(func, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61) YAML_PASTE2(func, v1) YAML_PASTE61(func, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61)
 #define YAML_PASTE63(func, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62) YAML_PASTE2(func, v1) YAML_PASTE62(func, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62)
 #define YAML_PASTE64(func, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63) YAML_PASTE2(func, v1) YAML_PASTE63(func, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63)
+/* clang-format on */
 
-#define YAML_TO(v1) node.force_insert(#v1, rhs.v1);
+#define YAML_TO(v1)   node.force_insert(#v1, rhs.v1);
 #define YAML_FROM(v1) rhs.v1 = node[#v1].as<decltype(rhs.v1)>();
-#define YAML_FROM_MAYBE_UNUSED(v1)                                                                                     \
-    if (node[#v1].IsDefined())                                                                                         \
-    {                                                                                                                  \
-        rhs.v1 = node[#v1].as<decltype(rhs.v1)>();                                                                     \
-    }                                                                                                                  \
-    else                                                                                                               \
-    {                                                                                                                  \
-        rhs.v1 = decltype(rhs.v1)();                                                                                   \
+#define YAML_FROM_MAYBE_UNUSED(v1)                 \
+    if (node[#v1].IsDefined())                     \
+    {                                              \
+        rhs.v1 = node[#v1].as<decltype(rhs.v1)>(); \
+    }                                              \
+    else                                           \
+    {                                              \
+        rhs.v1 = decltype(rhs.v1)();               \
     }
 
-#define YAML_DEFINE_TYPE_NON_INTRUSIVE(Type, ...)                                                                      \
-    template <> struct convert<Type>                                                                                   \
-    {                                                                                                                  \
-        static Node encode(const Type &rhs)                                                                            \
-        {                                                                                                              \
-            Node node;                                                                                                 \
-            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                                                              \
-            return node;                                                                                               \
-        }                                                                                                              \
-        static bool decode(const Node &node, Type &rhs)                                                                \
-        {                                                                                                              \
-            YAML_EXPAND(YAML_PASTE(YAML_FROM, __VA_ARGS__))                                                            \
-            return true;                                                                                               \
-        }                                                                                                              \
+#define YAML_DEFINE_TYPE_NON_INTRUSIVE(Type, ...)           \
+    template <>                                             \
+    struct convert<Type>                                    \
+    {                                                       \
+        static Node encode(const Type &rhs)                 \
+        {                                                   \
+            Node node;                                      \
+            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))   \
+            return node;                                    \
+        }                                                   \
+        static bool decode(const Node &node, Type &rhs)     \
+        {                                                   \
+            YAML_EXPAND(YAML_PASTE(YAML_FROM, __VA_ARGS__)) \
+            return true;                                    \
+        }                                                   \
     };
 
-#define YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                         \
-    template <> struct convert<Type>                                                                                   \
-    {                                                                                                                  \
-        static Node encode(const Type &rhs)                                                                            \
-        {                                                                                                              \
-            Node node;                                                                                                 \
-            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                                                              \
-            return node;                                                                                               \
-        }                                                                                                              \
-        static bool decode(const Node &node, Type &rhs)                                                                \
-        {                                                                                                              \
-            YAML_EXPAND(YAML_PASTE(YAML_FROM_MAYBE_UNUSED, __VA_ARGS__))                                               \
-            return true;                                                                                               \
-        }                                                                                                              \
+#define YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)           \
+    template <>                                                          \
+    struct convert<Type>                                                 \
+    {                                                                    \
+        static Node encode(const Type &rhs)                              \
+        {                                                                \
+            Node node;                                                   \
+            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                \
+            return node;                                                 \
+        }                                                                \
+        static bool decode(const Node &node, Type &rhs)                  \
+        {                                                                \
+            YAML_EXPAND(YAML_PASTE(YAML_FROM_MAYBE_UNUSED, __VA_ARGS__)) \
+            return true;                                                 \
+        }                                                                \
     };
 namespace YAML
 {
 
-// QString
-template <> struct convert<QString>
+/** QString */
+template <>
+struct convert<QString>
 {
     static Node encode(const QString &rhs)
     {
@@ -234,8 +239,9 @@ template <> struct convert<QString>
     }
 };
 
-// QMap
-template <typename Key, typename Value> struct convert<QMap<Key, Value>>
+/** QMap */
+template <typename Key, typename Value>
+struct convert<QMap<Key, Value>>
 {
     static Node encode(const QMap<Key, Value> &rhs)
     {
@@ -268,8 +274,9 @@ template <typename Key, typename Value> struct convert<QMap<Key, Value>>
     }
 };
 
-// QVector
-template <typename T> struct convert<QVector<T>>
+/** QVector */
+template <typename T>
+struct convert<QVector<T>>
 {
     static Node encode(const QVector<T> &rhs)
     {
@@ -297,8 +304,9 @@ template <typename T> struct convert<QVector<T>>
     }
 };
 
-// QList
-template <typename T> struct convert<QList<T>>
+/** QList */
+template <typename T>
+struct convert<QList<T>>
 {
     static Node encode(const QList<T> &rhs)
     {
@@ -326,8 +334,9 @@ template <typename T> struct convert<QList<T>>
     }
 };
 
-// QPair
-template <typename T, typename U> struct convert<QPair<T, U>>
+/** QPair */
+template <typename T, typename U>
+struct convert<QPair<T, U>>
 {
     static Node encode(const QPair<T, U> &rhs)
     {
@@ -350,8 +359,9 @@ template <typename T, typename U> struct convert<QPair<T, U>>
     }
 };
 
-// QStringList
-template <> struct convert<QStringList>
+/** QStringList */
+template <>
+struct convert<QStringList>
 {
     static Node encode(const QStringList &rhs)
     {
@@ -379,8 +389,8 @@ template <> struct convert<QStringList>
     }
 };
 
-// TODO: QLinkedList, QStack, QQueue, QSet, QMultiMap, QHash, QMultiHash, ...
+/** TODO: QLinkedList, QStack, QQueue, QSet, QMultiMap, QHash, QMultiHash, ... */
 
-} // end namespace YAML
+} /** end namespace YAML */
 
-#endif // COMMON_COMPAT_LAYER_QTYAML_H
+#endif /** CSP_PARSE_QT_YAML_H */

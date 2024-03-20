@@ -29,13 +29,13 @@
 
 #include <QDateTime>
 #include <QDebug>
+#include <QFileDialog>
 #include <QMutex>
 
 #include "ChipSummaryTable.h"
 #include "DialogPackageManager.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
-#include "os.h"
 #include "ui_ViewMainWindow.h"
 
 static ViewMainWindow *mainWindow = nullptr;
@@ -141,7 +141,7 @@ ViewMainWindow::~ViewMainWindow()
 
 void ViewMainWindow::initMode()
 {
-    if (projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
+    if (projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
     {
         setMode(STACK_INDEX_EMPTY);
         setMode(STACK_INDEX_CHIP_CONFIGURE);
@@ -181,8 +181,8 @@ void ViewMainWindow::setMode(const StackIndexType index)
         (void)connect(ui_->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, this,
                       &ViewMainWindow::updateModulesTreeView, Qt::UniqueConnection);
 
-        updateModulesTreeView(projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_COMPANY),
-                              projectInstance_->getCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TARGET));
+        updateModulesTreeView(projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_COMPANY),
+                              projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_TARGET));
 
         ui_->pageViewConfigure->initView();
         ui_->stackedWidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
@@ -253,7 +253,7 @@ void ViewMainWindow::actionLoadTriggeredCallback(const bool checked)
 {
     Q_UNUSED(checked)
 
-    const auto file = os::getexistfile(tr("CSP project file(*.csp)"));
+    const auto file = QFileDialog::getOpenFileName(nullptr, QString(), QString(), tr("CSP project file(*.csp)"), nullptr);
     if (!file.isEmpty())
     {
         try
@@ -263,7 +263,7 @@ void ViewMainWindow::actionLoadTriggeredCallback(const bool checked)
         }
         catch (const std::exception &e)
         {
-            os::show_error(tr("Project load failed, reason: <%1>.").arg(e.what()));
+            qCritical() << tr("Project load failed, reason: <%1>.").arg(e.what());
         }
     }
 }

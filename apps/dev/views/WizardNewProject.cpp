@@ -28,13 +28,14 @@
  */
 
 #include <QDebug>
+#include <QDir>
+#include <QFileDialog>
 #include <QLabel>
 #include <QToolButton>
 #include <QVBoxLayout>
 
 #include "Config.h"
 #include "WizardNewProject.h"
-#include "os.h"
 
 WizardNewProject::WizardNewProject(const QWidget *parent)
 {
@@ -62,7 +63,7 @@ void WizardNewProject::accept()
 
     if (path.isEmpty() || name.isEmpty())
     {
-        os::show_warning(tr("Please input project path and name"));
+        qWarning().noquote() << tr("Please input project path and name");
         return;
     }
 
@@ -109,9 +110,18 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     lineEditProjectPath_ = new QLineEdit(workspace, page);
 
     int index = 0;
-    while (os::isdir(QString("%1/untitled%2").arg(workspace, index == 0 ? "" : QString::number(index))))
+
+    while (1)
     {
-        index++;
+        const QDir dir(QString("%1/untitled%2").arg(workspace, index == 0 ? "" : QString::number(index)));
+        if (dir.exists())
+        {
+            index++;
+        }
+        else
+        {
+            break;
+        }
     }
     lineEditProjectName_ = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
 
@@ -130,7 +140,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     page->setLayout(gridLayout);
 
     connect(toolButton, &QToolButton::pressed, this, [this]() {
-        const QString path = os::getexistdir();
+        const QString path = QFileDialog::getExistingDirectory();
         if (!path.isEmpty())
         {
             lineEditProjectPath_->setText(path);

@@ -22,10 +22,9 @@
 # 2023-04-19     xqyjlj       initial version
 #
 
-add_subdirectory(compat_layer)
 add_subdirectory(config)
-add_subdirectory(core)
 add_subdirectory(git)
+add_subdirectory(parse)
 add_subdirectory(project)
 add_subdirectory(repo)
 add_subdirectory(xmake)

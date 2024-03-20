@@ -33,9 +33,8 @@
 
 #include "ChipSummaryTable.h"
 #include "Config.h"
-#include "os.h"
-#include "qtjson.h"
-#include "qtyaml.h"
+#include "QtJson.h"
+#include "QtYaml.h"
 
 namespace YAML
 {
@@ -74,55 +73,76 @@ ChipSummaryTable::~ChipSummaryTable() = default;
 
 void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &path)
 {
-    Q_ASSERT(chipSummary != nullptr);
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(os::isfile(path));
-
-    static const QRegularExpression pattern("^0x[0-9a-fA-F]+$");
-
-    try
+    if (chipSummary != nullptr)
     {
-        const std::string buffer = os::readfile(path).toStdString();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<ChipSummaryType>::decode(yaml_data, *chipSummary);
-    }
-    catch (std::exception &e)
-    {
-        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical().noquote() << str;
-        os::show_error_and_exit(str);
-        throw;
-    }
-
-    if (!chipSummary->linker.default_minimum_heap_size.isEmpty())
-    {
-        if (!pattern.match(chipSummary->linker.default_minimum_heap_size).hasMatch())
+        QFile file(path);
+        if (file.open(QIODevice::ReadOnly))
         {
-            qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
-                                      "illegal value %1, and the default value 0x200 is used.")
-                              .arg(chipSummary->linker.default_minimum_heap_size);
-            chipSummary->linker.default_minimum_heap_size = "0x200";
+            static const QRegularExpression pattern("^0x[0-9a-fA-F]+$");
+            try
+            {
+                const std::string buffer = file.readAll().toStdString();
+                const YAML::Node yaml_data = YAML::Load(buffer);
+                YAML::convert<ChipSummaryType>::decode(yaml_data, *chipSummary);
+            }
+            catch (std::exception &e)
+            {
+                const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+                qCritical().noquote() << str;
+                throw;
+            }
+
+            file.close();
+
+            if (!chipSummary->linker.default_minimum_heap_size.isEmpty())
+            {
+                if (!pattern.match(chipSummary->linker.default_minimum_heap_size).hasMatch())
+                {
+                    qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
+                                                        "illegal value %1, and the default value 0x200 is used.")
+                                                .arg(chipSummary->linker.default_minimum_heap_size);
+                    chipSummary->linker.default_minimum_heap_size = "0x200";
+                }
+            }
+
+            if (!chipSummary->linker.default_minimum_stack_size.isEmpty())
+            {
+                if (!pattern.match(chipSummary->linker.default_minimum_stack_size).hasMatch())
+                {
+                    qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
+                                                        "illegal value %1, and the default value 0x400 is used.")
+                                                .arg(chipSummary->linker.default_minimum_stack_size);
+                    chipSummary->linker.default_minimum_stack_size = "0x400";
+                }
+            }
+        }
+        else
+        {
+            /** TODO: failed */
         }
     }
-
-    if (!chipSummary->linker.default_minimum_stack_size.isEmpty())
+    else
     {
-        if (!pattern.match(chipSummary->linker.default_minimum_stack_size).hasMatch())
-        {
-            qWarning() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
-                                      "illegal value %1, and the default value 0x400 is used.")
-                              .arg(chipSummary->linker.default_minimum_stack_size);
-            chipSummary->linker.default_minimum_stack_size = "0x400";
-        }
+        /** TODO: failed */
     }
 }
 
 void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name)
 {
-    Q_ASSERT(chipSummary != nullptr);
-    Q_ASSERT(!company.isEmpty());
-    Q_ASSERT(!name.isEmpty());
-
-    const QString path = QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower());
-    return loadChipSummary(chipSummary, path);
+    if (chipSummary != nullptr)
+    {
+        if (!company.isEmpty() && !name.isEmpty())
+        {
+            const QString path = QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower());
+            loadChipSummary(chipSummary, path);
+        }
+        else
+        {
+            /** TODO: failed */
+        }
+    }
+    else
+    {
+        /** TODO: failed */
+    }
 }

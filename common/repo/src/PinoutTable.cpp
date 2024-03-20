@@ -32,9 +32,8 @@
 
 #include "Config.h"
 #include "PinoutTable.h"
-#include "os.h"
-#include "qtjson.h"
-#include "qtyaml.h"
+#include "QtJson.h"
+#include "QtYaml.h"
 
 namespace YAML
 {
@@ -57,63 +56,99 @@ PinoutTable::~PinoutTable() = default;
 
 void PinoutTable::loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name)
 {
-    Q_ASSERT(pinout != nullptr);
-    Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!name.isEmpty());
-
-    const QString path = QString("%1/db/hal/%2/%3/%4/pinout.yml")
-                             .arg(Config::repoDir(), company.toLower(), hal.toLower(), name.toLower());
-    loadPinout(pinout, path);
+    if (pinout != nullptr)
+    {
+        if (!hal.isEmpty() && !name.isEmpty())
+        {
+            const QString path = QString("%1/db/hal/%2/%3/%4/pinout.yml").arg(Config::repoDir(), company.toLower(), hal.toLower(), name.toLower());
+            loadPinout(pinout, path);
+        }
+        else
+        {
+            /** TODO: failed */
+        }
+    }
+    else
+    {
+        /** TODO: failed */
+    }
 }
 
 void PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
 {
-    Q_ASSERT(pinout != nullptr);
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(os::isfile(path));
-
-    try
+    if (pinout != nullptr)
     {
-        const std::string buffer = os::readfile(path).toStdString();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<PinoutType>::decode(yaml_data, *pinout);
-
-        os_assert(!pinout->isEmpty(), path + ": pinout is empty");
-
-        auto pinou_i = pinout->constBegin();
-        while (pinou_i != pinout->constEnd())
+        QFile file(path);
+        if (file.open(QIODevice::ReadOnly))
         {
-            const QString &key = pinou_i.key();
-            const PinoutUnitType &unit = pinou_i.value();
-            const int &position = unit.position;
-            const QString &type = unit.type;
-            const QMap<QString, FunctionType> &functions = pinou_i.value().functions;
-            os_assert(!key.isEmpty(), path + ": pinout key is empty");
-            os_assert(position > 0, QString("%1: pinout %2`s position<%3> is invalid").arg(path, key).arg(position));
-            os_assert(!type.isEmpty(), QString("%1: pinout %2`s type is empty").arg(path, key));
-
-            if (type.toLower() == "i/o")
+            try
             {
-                os_assert(!functions.isEmpty(), QString("%1: pinout %2`s functions is empty").arg(path, key));
+                const std::string buffer = file.readAll().toStdString();
+                const YAML::Node yaml_data = YAML::Load(buffer);
+                YAML::convert<PinoutType>::decode(yaml_data, *pinout);
             }
-            else if (type.toLower() == "power" || type.toLower() == "nc" || type.toLower() == "boot" ||
-                     type.toLower() == "reset")
+            catch (std::exception &e)
             {
-                /* do nothings */
+                const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+                qCritical().noquote() << str;
+                throw;
+            }
+
+            file.close();
+
+            if (!pinout->isEmpty())
+            {
+                auto pinout_i = pinout->constBegin();
+                while (pinout_i != pinout->constEnd())
+                {
+                    const QString &key = pinout_i.key();
+                    const PinoutUnitType &unit = pinout_i.value();
+                    const int &position = unit.position;
+                    const QString &type = unit.type;
+                    const QMap<QString, FunctionType> &functions = pinout_i.value().functions;
+                    if (position > 0 && !type.isEmpty())
+                    {
+                        if (type.toLower() == "i/o")
+                        {
+                            if (functions.isEmpty())
+                            {
+                                qCritical().noquote() << QString("%1: pinout %2`s functions is empty").arg(path, key);
+                                /** TODO: error */
+                            }
+                        }
+                        else if (type.toLower() == "power" || type.toLower() == "nc" || type.toLower() == "boot" ||
+                                 type.toLower() == "reset")
+                        {
+                            /* do nothings */
+                        }
+                        else
+                        {
+                            qCritical().noquote() << QString("%1: pinout %2`s type<%3> is invalid").arg(path, key, type);
+                            /** TODO: error */
+                        }
+
+                        ++pinout_i;
+                    }
+                    else
+                    {
+                        /** TODO: QString("%1: pinout %2`s position<%3> is invalid").arg(path, key).arg(position);
+                         *        QString("%1: pinout %2`s type is empty").arg(path, key);
+                         */
+                    }
+                }
             }
             else
             {
-                os_assert(0, QString("%1: pinout %2`s type<%3> is invalid").arg(path, key, type));
+                /** TODO: path + ": pinout is empty" */
             }
-
-            ++pinou_i;
+        }
+        else
+        {
+            /** TODO: failed */
         }
     }
-    catch (std::exception &e)
+    else
     {
-        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical().noquote() << str;
-        os::show_error_and_exit(str);
-        throw;
+        /** TODO: failed */
     }
 }

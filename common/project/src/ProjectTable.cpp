@@ -32,8 +32,7 @@
 
 #include "Configure.h"
 #include "ProjectTable.h"
-#include "os.h"
-#include "qtjson.h"
+#include "QtJson.h"
 
 namespace nlohmann
 {
@@ -59,33 +58,49 @@ ProjectTable::~ProjectTable() = default;
 
 void ProjectTable::loadProject(ProjectType *project, const QString &path)
 {
-    Q_ASSERT(project != nullptr);
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(os::isfile(path));
-
-    try
+    if (project != nullptr)
     {
-        const std::string buffer = os::readfile(path).toStdString();
-        const nlohmann::json json = nlohmann::json::parse(buffer);
-        json.get_to(*project);
+        QFile file(path);
+        if (file.open(QIODevice::ReadOnly))
+        {
+            try
+            {
+                const std::string buffer = file.readAll().toStdString();
+                const nlohmann::json json = nlohmann::json::parse(buffer);
+                json.get_to(*project);
+            }
+            catch (std::exception &e)
+            {
+                const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+                qCritical().noquote() << str;
+                throw;
+            }
 
-        setValue(*project);
+            file.close();
+
+            setValue(*project);
+        }
+        else
+        {
+            /** TODO: failed */
+        }
     }
-    catch (std::exception &e)
+    else
     {
-        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical().noquote() << str;
-        os::show_error_and_exit(str);
-        throw;
+        /** TODO: failed */
     }
 }
 
 void ProjectTable::saveProject(ProjectType &project, const QString &path)
 {
-    Q_ASSERT(!path.isEmpty());
-
     const auto json = dumpProject(project);
-    os::writefile(path, json.toUtf8());
+
+    QFile file(path);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        file.write(json.toUtf8());
+        file.close();
+    }
 }
 
 QString ProjectTable::dumpProject(ProjectType &project)

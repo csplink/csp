@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        testcase_qtjson.h
+ *  @file        TestCaseQtJson.h
  *  @brief
  *
  * ****************************************************************************
@@ -30,8 +30,9 @@
 #include <QDebug>
 #include <QtTest>
 
-#include "qtjson.h"
-class testcase_qtjson final : public QObject
+#include "QtJson.h"
+
+class TestCaseQtJson final : public QObject
 {
     Q_OBJECT
 
@@ -87,6 +88,6 @@ class testcase_qtjson final : public QObject
     }
 };
 
-QTEST_MAIN(testcase_qtjson)
+QTEST_MAIN(TestCaseQtJson)
 
-#include "testcase_qtjson.moc"
+#include "TestCaseQtJson.moc"

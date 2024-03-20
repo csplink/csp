@@ -34,7 +34,6 @@
 #include "Config.h"
 #include "Project.h"
 #include "XMake.h"
-#include "os.h"
 
 void Project::init()
 {
@@ -61,19 +60,19 @@ QString Project::getCore(const CoreAttributeType Type) const
 
     switch (Type)
     {
-    case CSP_CORE_ATTRIBUTE_TYPE_HAL:
+    case CORE_ATTRIBUTE_TYPE_HAL:
         value = project_.core.hal;
         break;
-    case CSP_CORE_ATTRIBUTE_TYPE_TARGET:
+    case CORE_ATTRIBUTE_TYPE_TARGET:
         value = project_.core.target;
         break;
-    case CSP_CORE_ATTRIBUTE_TYPE_PACKAGE:
+    case CORE_ATTRIBUTE_TYPE_PACKAGE:
         value = project_.core.package;
         break;
-    case CSP_CORE_ATTRIBUTE_TYPE_COMPANY:
+    case CORE_ATTRIBUTE_TYPE_COMPANY:
         value = project_.core.company;
         break;
-    case CSP_CORE_ATTRIBUTE_TYPE_TYPE:
+    case CORE_ATTRIBUTE_TYPE_TYPE:
         value = project_.core.type;
         break;
     }
@@ -83,28 +82,33 @@ QString Project::getCore(const CoreAttributeType Type) const
 
 void Project::setCore(const CoreAttributeType Type, const QString &Value)
 {
-    Q_ASSERT(!Value.isEmpty());
-
-    switch (Type)
+    if (!Value.isEmpty())
     {
-    case CSP_CORE_ATTRIBUTE_TYPE_HAL:
-        project_.core.hal = Value;
-        break;
-    case CSP_CORE_ATTRIBUTE_TYPE_TARGET:
-        project_.core.target = Value;
-        break;
-    case CSP_CORE_ATTRIBUTE_TYPE_PACKAGE:
-        project_.core.package = Value;
-        break;
-    case CSP_CORE_ATTRIBUTE_TYPE_COMPANY:
-        project_.core.company = Value;
-        break;
-    case CSP_CORE_ATTRIBUTE_TYPE_TYPE:
-        project_.core.type = Value;
-        break;
-    }
+        switch (Type)
+        {
+        case CORE_ATTRIBUTE_TYPE_HAL:
+            project_.core.hal = Value;
+            break;
+        case CORE_ATTRIBUTE_TYPE_TARGET:
+            project_.core.target = Value;
+            break;
+        case CORE_ATTRIBUTE_TYPE_PACKAGE:
+            project_.core.package = Value;
+            break;
+        case CORE_ATTRIBUTE_TYPE_COMPANY:
+            project_.core.company = Value;
+            break;
+        case CORE_ATTRIBUTE_TYPE_TYPE:
+            project_.core.type = Value;
+            break;
+        }
 
-    loadDb();
+        loadDb();
+    }
+    else
+    {
+        /** TODO: failed */
+    }
 }
 
 QString Project::getPath() const
@@ -114,10 +118,15 @@ QString Project::getPath() const
 
 void Project::setPath(const QString &Path)
 {
-    Q_ASSERT(!Path.isEmpty());
-
-    const QDir root(".");
-    path_ = root.absoluteFilePath(Path);
+    if (!Path.isEmpty())
+    {
+        const QDir root(".");
+        path_ = root.absoluteFilePath(Path);
+    }
+    else
+    {
+        /** TODO: failed */
+    }
 }
 
 QString Project::getName() const
@@ -127,19 +136,28 @@ QString Project::getName() const
 
 void Project::setName(const QString &Name)
 {
-    Q_ASSERT(!Name.isEmpty());
-
-    project_.name = Name;
+    if (!Name.isEmpty())
+    {
+        project_.name = Name;
+    }
+    else
+    {
+        /** TODO: failed */
+    }
 }
 
 void Project::loadIps(const QString &Hal, const QString &Name)
 {
-    Q_ASSERT(!Hal.isEmpty());
-    Q_ASSERT(!Name.isEmpty());
-
-    if (ips_.isEmpty())
+    if (!Hal.isEmpty() && !Name.isEmpty())
     {
-        IpTable::loadIps(&ips_, Hal, Name);
+        if (ips_.isEmpty())
+        {
+            IpTable::loadIps(&ips_, Hal, Name);
+        }
+    }
+    else
+    {
+        /** TODO: failed */
     }
 }
 
@@ -168,11 +186,16 @@ IpTable::IpsType &Project::getIps()
 
 void Project::loadMaps(const QString &Hal)
 {
-    Q_ASSERT(!Hal.isEmpty());
-
-    if (maps_.isEmpty())
+    if (!Hal.isEmpty())
     {
-        MapTable::loadMaps(&maps_, Hal);
+        if (maps_.isEmpty())
+        {
+            MapTable::loadMaps(&maps_, Hal);
+        }
+    }
+    else
+    {
+        /** TODO: failed */
     }
 }
 
@@ -183,12 +206,16 @@ MapTable::MapsType &Project::getMaps()
 
 void Project::loadChipSummary(const QString &Company, const QString &Name)
 {
-    Q_ASSERT(!Company.isEmpty());
-    Q_ASSERT(!Name.isEmpty());
-
-    if (chipSummary_.name.isEmpty())
+    if (!Company.isEmpty() && !Name.isEmpty())
     {
-        ChipSummaryTable::loadChipSummary(&chipSummary_, Company, Name);
+        if (chipSummary_.name.isEmpty())
+        {
+            ChipSummaryTable::loadChipSummary(&chipSummary_, Company, Name);
+        }
+    }
+    else
+    {
+        /** TODO: failed */
     }
 }
 
@@ -200,66 +227,50 @@ ChipSummaryTable::ChipSummaryType &Project::getChipSummary()
 /******************* pin ************************/
 ProjectTable::PinConfigType &Project::getPinConfig(const QString &Key)
 {
-    Q_ASSERT(!Key.isEmpty());
     return project_.pin_configs[Key];
 }
 
 void Project::setPinComment(const QString &Key, const QString &Comment)
 {
-    Q_ASSERT(!Key.isEmpty());
     emit signalsPinPropertyChanged("comment", Key, project_.pin_configs[Key].comment, Comment);
     project_.pin_configs[Key].comment = Comment;
 }
 
 QString &Project::getPinComment(const QString &Key)
 {
-    Q_ASSERT(!Key.isEmpty());
     return project_.pin_configs[Key].comment;
 }
 
 void Project::setPinFunction(const QString &Key, const QString &Function)
 {
-    Q_ASSERT(!Key.isEmpty());
     emit signalsPinPropertyChanged("function", Key, project_.pin_configs[Key].function, Function);
     project_.pin_configs[Key].function = Function;
 }
 
 QString &Project::getPinFunction(const QString &Key)
 {
-    Q_ASSERT(!Key.isEmpty());
     return project_.pin_configs[Key].function;
 }
 
 void Project::setPinLocked(const QString &Key, const bool Locked)
 {
-    Q_ASSERT(!Key.isEmpty());
     emit signalsPinPropertyChanged("locked", Key, project_.pin_configs[Key].locked, Locked);
     project_.pin_configs[Key].locked = Locked;
 }
 
 bool Project::getPinLocked(const QString &Key)
 {
-    Q_ASSERT(!Key.isEmpty());
     return project_.pin_configs[Key].locked;
 }
 
 void Project::setPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property, const QString &Value)
 {
-    Q_ASSERT(!Key.isEmpty());
-    Q_ASSERT(!Module.isEmpty());
-    Q_ASSERT(!Property.isEmpty());
-    Q_ASSERT(!Value.isEmpty());
-
     emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.pin_configs[Key].function_property[Module][Property], Value);
     project_.pin_configs[Key].function_property[Module][Property] = Value;
 }
 
 void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
 {
-    Q_ASSERT(!Key.isEmpty());
-    Q_ASSERT(!Module.isEmpty());
-    Q_ASSERT(!Property.isEmpty());
-
     if (project_.pin_configs[Key].function_property.contains(Module))
     {
         if (project_.pin_configs[Key].function_property[Module].contains(Property))
@@ -272,9 +283,6 @@ void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &
 
 void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &Module)
 {
-    Q_ASSERT(!Key.isEmpty());
-    Q_ASSERT(!Module.isEmpty());
-
     if (project_.pin_configs[Key].function_property.contains(Module))
     {
         emit signalsPinFunctionPropertyChanged(Module, "", Key, "", "");
@@ -284,17 +292,11 @@ void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &
 
 ProjectTable::pin_function_properties_t &Project::getPinConfigFunctionProperty(const QString &Key)
 {
-    Q_ASSERT(!Key.isEmpty());
-
     return project_.pin_configs[Key].function_property;
 }
 
 QString &Project::getPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
 {
-    Q_ASSERT(!Key.isEmpty());
-    Q_ASSERT(!Module.isEmpty());
-    Q_ASSERT(!Property.isEmpty());
-
     return project_.pin_configs[Key].function_property[Module][Property];
 }
 
@@ -302,13 +304,18 @@ QString &Project::getPinConfigFunctionProperty(const QString &Key, const QString
 
 void Project::loadProject(const QString &Path)
 {
-    Q_ASSERT(!Path.isEmpty());
-    Q_ASSERT(os::isfile(Path));
+    if (QFile::exists(Path))
+    {
+        ProjectTable::loadProject(&project_, Path);
 
-    ProjectTable::loadProject(&project_, Path);
-    setPath(Path);
+        setPath(Path);
 
-    loadDb();
+        loadDb();
+    }
+    else
+    {
+        /** TODO: failed */
+    }
 }
 
 void Project::saveProject(const QString &Path)
@@ -318,22 +325,21 @@ void Project::saveProject(const QString &Path)
 
 void Project::saveProject()
 {
-    Q_ASSERT(!path_.isEmpty());
-
-    const QFileInfo info(path_);
-    const auto path = info.dir().absolutePath();
-    if (!os::exists(path))
+    if (!path_.isEmpty())
     {
-        os::mkdir(path);
+        const QFileInfo info(path_);
+        const QString path = info.dir().absolutePath();
+        const QDir dir(path);
+        if (!dir.exists())
+        {
+            (void)dir.mkpath(path);
+        }
+        ProjectTable::saveProject(project_, path_);
     }
     else
     {
-        if (!os::isdir(path)) /** check if it not is a directory */
-        {
-            os::show_error_and_exit(tr("The Project <%1> path is not a directory!").arg(path));
-        }
+        /** TODO: failed */
     }
-    ProjectTable::saveProject(project_, path_);
 }
 
 QString Project::dumpProject()
@@ -370,7 +376,8 @@ int Project::runXmake(const QString &Command, const QStringList &Args, const QSt
     process->setArguments(list);
     process->setProcessEnvironment(environment);
 
-    if (os::isdir(WorkDir))
+    const QDir dir(WorkDir);
+    if (dir.exists())
     {
         process->setWorkingDirectory(WorkDir);
     }

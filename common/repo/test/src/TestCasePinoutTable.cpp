@@ -27,11 +27,11 @@
  *  2023-05-28     xqyjlj       initial version
  */
 #include <QDebug>
+#include <QFile>
 #include <QtTest>
 
 #include "Config.h"
 #include "PinoutTable.h"
-#include "os.h"
 
 #ifndef CSP_EXE_DIR
 #error please define CSP_EXE_DIR, which is csp.exe path
@@ -53,14 +53,20 @@ class TestCasePinoutTable final : public QObject
     static void loadPinout()
     {
         PinoutTable::PinoutType pinout;
-        for (const QString &company_dir : os::dirs(Config::repoDir() + "/db/hal", "*"))
+        const QDir dir1(Config::repoDir() + "/db/hal");
+        const QFileInfoList companyDirs = dir1.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+        for (const QFileInfo &companyDir : companyDirs)
         {
-            for (const QString &hal_dir : os::dirs(company_dir, "*"))
+            const QDir dir2(companyDir.absoluteFilePath());
+            const QFileInfoList halDirs = dir2.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+            for (const QFileInfo &halDir : halDirs)
             {
-                for (const QString &chip_dir : os::dirs(hal_dir, "*"))
+                const QDir dir3(halDir.absoluteFilePath());
+                const QFileInfoList chipDirs = dir3.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+                for (const QFileInfo &chipDir : chipDirs)
                 {
-                    const QString file = chip_dir + "/pinout.yml";
-                    QVERIFY(os::isfile(file));
+                    const QString file = chipDir.absoluteFilePath() + "/pinout.yml";
+                    QVERIFY(QFile::exists(file));
 
                     qDebug() << "Testing" << file;
 

@@ -28,10 +28,10 @@
  */
 
 #include <QDebug>
+#include <QDesktopServices>
 
 #include "DialogChooseChip.h"
 #include "WizardNewProject.h"
-#include "os.h"
 #include "ui_DialogChooseChip.h"
 
 DialogChooseChip::DialogChooseChip(QWidget *parent)
@@ -317,10 +317,14 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selected_indexes)
     ui_->pushButtonCompany->setText(company);
 
     QPixmap image;
-    if (os::isfile(package_path))
+    if (QFile::exists(package_path))
+    {
         image = QPixmap(package_path);
+    }
     else
+    {
         image = QPixmap(":/packages/unknown.png");
+    }
     ui_->labelPackageImage->setPixmap(image);
 
     if (repo::chipSummaryExists(company, chipName_))
@@ -358,13 +362,13 @@ void DialogChooseChip::dialogButtonBoxClickedCallback(const QAbstractButton *but
     {
         if (chipName_.isEmpty())
         {
-            os::show_warning(tr("Please choose a chip."));
+            qWarning().noquote() << tr("Please choose a chip.");
             return;
         }
 
         if (halName_.isEmpty() || packageName_.isEmpty() || companyName_.isEmpty())
         {
-            os::show_warning(tr("The chip description file <%1.yml> does not exist").arg(chipName_));
+            qWarning().noquote() << tr("The chip description file <%1.yml> does not exist").arg(chipName_);
             return;
         }
 
@@ -372,11 +376,11 @@ void DialogChooseChip::dialogButtonBoxClickedCallback(const QAbstractButton *but
         connect(&wizard, &WizardNewProject::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
-                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_HAL, halName_);
-                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TARGET, chipName_);
-                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_PACKAGE, packageName_);
-                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_COMPANY, companyName_);
-                projectInstance_->setCore(Project::CSP_CORE_ATTRIBUTE_TYPE_TYPE, "chip");
+                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_HAL, halName_);
+                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_TARGET, chipName_);
+                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_PACKAGE, packageName_);
+                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_COMPANY, companyName_);
+                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_TYPE, "chip");
                 emit signalsCreateProject();
             }
         });
@@ -387,17 +391,17 @@ void DialogChooseChip::dialogButtonBoxClickedCallback(const QAbstractButton *but
 void DialogChooseChip::pushButtonNamePressedCallback() const
 {
     const auto url = ui_->pushButtonName->property("user_url").toString();
-    if (url.isEmpty())
-        return;
-
-    os::open_url(url);
+    if (!url.isEmpty())
+    {
+        QDesktopServices::openUrl(QUrl(url));
+    }
 }
 
 void DialogChooseChip::pushButtonCompanyPressedCallback() const
 {
     const auto url = ui_->pushButtonCompany->property("user_url").toString();
-    if (url.isEmpty())
-        return;
-
-    os::open_url(url);
+    if (!url.isEmpty())
+    {
+        QDesktopServices::openUrl(QUrl(url));
+    }
 }

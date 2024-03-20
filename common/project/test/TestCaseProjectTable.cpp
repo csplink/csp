@@ -30,8 +30,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include <os.h>
-#include <ProjectTable.h>
+#include "ProjectTable.h"
 
 class TestCaseProjectTable final : public QObject
 {
@@ -54,7 +53,7 @@ class TestCaseProjectTable final : public QObject
         pin_config.comment = "PA1-OUT";
         p.pin_configs.insert("PA1", pin_config);
         ProjectTable::saveProject(p, "test.json");
-        QVERIFY(os::isfile("test.json"));
+        QVERIFY(QFile::exists("test.json"));
     }
 
     static void dumpProject()

@@ -28,14 +28,14 @@
  */
 
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 
 #include "Config.h"
 #include "IpTable.h"
-#include "os.h"
-#include "qtjson.h"
-#include "qtyaml.h"
+#include "QtJson.h"
+#include "QtYaml.h"
 
 QT_DEBUG_ADD_TYPE(IpTable::IpMapType)
 QT_DEBUG_ADD_TYPE(IpTable::IpType)
@@ -47,73 +47,97 @@ IpTable::~IpTable() = default;
 
 void IpTable::loadIp(IpType *ip, const QString &path)
 {
-    Q_ASSERT(ip != nullptr);
-    Q_ASSERT(!path.isEmpty());
-    Q_ASSERT(os::isfile(path));
+    if (ip != nullptr)
+    {
+        QFile file(path);
+        if (file.open(QIODevice::ReadOnly))
+        {
+            try
+            {
+                const std::string buffer = file.readAll().toStdString();
+                const YAML::Node yaml_data = YAML::Load(buffer);
+                YAML::convert<IpType>::decode(yaml_data, *ip);
+            }
+            catch (std::exception &e)
+            {
+                const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
+                qCritical().noquote() << str;
+                throw;
+            }
 
-    try
-    {
-        const std::string buffer = os::readfile(path).toStdString();
-        const YAML::Node yaml_data = YAML::Load(buffer);
-        YAML::convert<IpType>::decode(yaml_data, *ip);
+            file.close();
+        }
+        else
+        {
+            /** TODO: failed */
+        }
     }
-    catch (std::exception &e)
+    else
     {
-        const QString str = QString("try to parse file \"%1\" failed. \n\nreason: %2").arg(path, e.what());
-        qCritical().noquote() << str;
-        os::show_error_and_exit(str);
-        throw;
+        /** TODO: failed */
     }
 }
 
 void IpTable::loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName)
 {
-    Q_ASSERT(ip != nullptr);
-    Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!name.isEmpty());
-    Q_ASSERT(!ipName.isEmpty());
-
-    const QString path =
-        QString("%1/db/hal/%2/%3/ip/%4.yml").arg(Config::repoDir(), hal.toLower(), name.toLower(), ipName.toLower());
-    return loadIp(ip, path);
+    if (ip != nullptr)
+    {
+        if (!hal.isEmpty() && !name.isEmpty() && !ipName.isEmpty())
+        {
+            const QString path = QString("%1/db/hal/%2/%3/ip/%4.yml").arg(Config::repoDir(), hal.toLower(), name.toLower(), ipName.toLower());
+            loadIp(ip, path);
+        }
+    }
 }
 
 void IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
 {
-    Q_ASSERT(ips != nullptr);
-    Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!name.isEmpty());
-
-    const QString path = QString("%1/db/hal/%2/%3/ip").arg(Config::repoDir(), hal.toLower(), name.toLower());
-    for (const QString &file : os::files(path, QString("*.yml")))
+    if (ips != nullptr)
     {
-        IpType ip;
-        loadIp(&ip, file);
-        const QFileInfo info(file);
-        auto basename = info.baseName().toLower();
-        ips->insert(basename, ip);
-    }
-
-    const QStringList list = { "gpio" };
-    for (const QString &file : list)
-    {
-        IpType ip;
-        loadIp(&ip, QString(":/lib/repo/db/ip/%1.yml").arg(file));
-        const QFileInfo info(file);
-        const QString basename = info.baseName().toLower();
-        if (ips->contains(basename))
+        if (!hal.isEmpty() && !name.isEmpty())
         {
-            IpType &ref_ip = (*ips)[basename];
-            auto ip_i = ip.constBegin();
-            while (ip_i != ip.constEnd())
+            const QString path = QString("%1/db/hal/%2/%3/ip").arg(Config::repoDir(), hal.toLower(), name.toLower());
+            const QDir dir(path);
+            QFileInfoList files = dir.entryInfoList({ "*.yml" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+            for (const QFileInfo &file : files)
             {
-                ref_ip.insert(ip_i.key(), ip_i.value());
-                ++ip_i;
+                IpType ip;
+                loadIp(&ip, file.absoluteFilePath());
+                const QFileInfo info(file);
+                auto basename = info.baseName().toLower();
+                ips->insert(basename, ip);
+            }
+
+            const QStringList list = { "gpio" };
+            for (const QString &file : list)
+            {
+                IpType ip;
+                loadIp(&ip, QString(":/lib/repo/db/ip/%1.yml").arg(file));
+                const QFileInfo info(file);
+                const QString basename = info.baseName().toLower();
+                if (ips->contains(basename))
+                {
+                    IpType &ref_ip = (*ips)[basename];
+                    auto ipIterator = ip.constBegin();
+                    while (ipIterator != ip.constEnd())
+                    {
+                        ref_ip.insert(ipIterator.key(), ipIterator.value());
+                        ++ipIterator;
+                    }
+                }
+                else
+                {
+                    ips->insert(basename, ip);
+                }
             }
         }
         else
         {
-            ips->insert(basename, ip);
+            /** TODO: failed */
         }
+    }
+    else
+    {
+        /** TODO: failed */
     }
 }

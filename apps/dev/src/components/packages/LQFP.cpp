@@ -31,7 +31,6 @@
 
 #include "GraphicsItemChipBody.h"
 #include "LQFP.h"
-#include "os.h"
 
 static constexpr int LqfpPinWidth = 500;
 static constexpr int LqfpPinHeight = 50;

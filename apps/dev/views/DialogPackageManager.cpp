@@ -35,7 +35,6 @@
 #include "Config.h"
 #include "ViewMainWindow.h"
 #include "XMake.h"
-#include "os.h"
 #include "ui_DialogPackageManager.h"
 
 DialogPackageManager::DialogPackageManager(QWidget *parent)
@@ -443,7 +442,8 @@ int DialogPackageManager::runXmake(const QString &command, const QStringList &ar
     process->setArguments(list);
     process->setProcessEnvironment(environment);
 
-    if (os::isdir(workDir))
+    const QDir dir(workDir);
+    if (dir.exists())
     {
         process->setWorkingDirectory(workDir);
     }

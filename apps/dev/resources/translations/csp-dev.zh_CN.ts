@@ -21,7 +21,7 @@
     </message>
     <message>
         <location filename="../../views/DialogChooseChip.cpp" line="46"/>
-        <location filename="../../views/DialogChooseChip.cpp" line="357"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="361"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
@@ -62,13 +62,13 @@
         <translation>不可用</translation>
     </message>
     <message>
-        <location filename="../../views/DialogChooseChip.cpp" line="346"/>
-        <location filename="../../views/DialogChooseChip.cpp" line="367"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="350"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="371"/>
         <source>The chip description file &lt;%1.yml&gt; does not exist</source>
         <translation>芯片描述文件 &lt;%1.yml&gt; 不存在</translation>
     </message>
     <message>
-        <location filename="../../views/DialogChooseChip.cpp" line="361"/>
+        <location filename="../../views/DialogChooseChip.cpp" line="365"/>
         <source>Please choose a chip.</source>
         <translation>请选择一个芯片。</translation>
     </message>
@@ -107,60 +107,60 @@
         <translation type="obsolete">取消</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="70"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
         <source>Home Page</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="75"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="76"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="75"/>
         <source>License</source>
         <translation>开源协议</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="77"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="76"/>
         <source>Sha</source>
         <translation>Sha值</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="119"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="303"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="315"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="118"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="302"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="314"/>
         <source>Installed</source>
         <translation>已安装</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="119"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="311"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="118"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="310"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="387"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="386"/>
         <source>%1 upgrade successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="391"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="390"/>
         <source>%1 upgrade failure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,22 +176,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/Main.cpp" line="85"/>
+        <location filename="../../src/Main.cpp" line="88"/>
         <source>load font: &lt;%1&gt; failed.</source>
         <translation>加载字体：&lt;%1&gt; 失败。</translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="97"/>
+        <location filename="../../src/Main.cpp" line="102"/>
         <source>Tools for flexible configuration of chips and boards.</source>
         <translation>用于灵活配置芯片与板卡的工具。</translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="100"/>
+        <location filename="../../src/Main.cpp" line="105"/>
         <source>Project file path.</source>
         <translation>工程文件路径。</translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="109"/>
+        <location filename="../../src/Main.cpp" line="114"/>
         <source>file: &lt;%1&gt; is not exist.</source>
         <translation>文件：&lt;%1&gt; 不存在。</translation>
     </message>
@@ -212,57 +212,57 @@
 <context>
     <name>WizardNewProject</name>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="45"/>
+        <location filename="../../views/WizardNewProject.cpp" line="46"/>
         <source>New Project</source>
         <translation>新建工程</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="49"/>
+        <location filename="../../views/WizardNewProject.cpp" line="50"/>
         <source>Next</source>
         <translation>下一步</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="50"/>
+        <location filename="../../views/WizardNewProject.cpp" line="51"/>
         <source>Back</source>
         <translation>上一步</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="51"/>
+        <location filename="../../views/WizardNewProject.cpp" line="52"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="52"/>
+        <location filename="../../views/WizardNewProject.cpp" line="53"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="65"/>
+        <location filename="../../views/WizardNewProject.cpp" line="66"/>
         <source>Please input project path and name</source>
         <translation>请输入工程路径与工程名</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="82"/>
+        <location filename="../../views/WizardNewProject.cpp" line="83"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation>欢迎使用此向导创建新项目</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="84"/>
+        <location filename="../../views/WizardNewProject.cpp" line="85"/>
         <source>this will create a new project in the path you choose.</source>
         <translation>这将在您选择的路径中创建一个新项目。</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="87"/>
+        <location filename="../../views/WizardNewProject.cpp" line="88"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation>单击“下一步”继续，或单击“取消”退出安装。</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="102"/>
+        <location filename="../../views/WizardNewProject.cpp" line="103"/>
         <source>Project Path</source>
         <translation>工程路径</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="105"/>
+        <location filename="../../views/WizardNewProject.cpp" line="106"/>
         <source>Project Name</source>
         <translation>工程名</translation>
     </message>

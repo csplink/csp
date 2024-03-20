@@ -30,8 +30,7 @@
 #include <QDebug>
 #include <QtTest>
 
-#include <os.h>
-#include <Project.h>
+#include "Project.h"
 
 Project *ProjectInstance = nullptr;
 

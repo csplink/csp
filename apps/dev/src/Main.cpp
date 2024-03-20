@@ -30,19 +30,19 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
+#include <QDir>
+#include <QFile>
 #include <QFontDatabase>
 #include <QTranslator>
 
 #include "Config.h"
 #include "Configure.h"
 #include "Project.h"
-#include "ViewMainWindow.h"
-#include "os.h"
 #include "Repo.h"
+#include "ViewMainWindow.h"
 
 static void init()
 {
-    Q_INIT_RESOURCE(core);
     Q_INIT_RESOURCE(project);
     Q_INIT_RESOURCE(qtpropertybrowser);
     Q_INIT_RESOURCE(repo);
@@ -61,7 +61,6 @@ static void deinit()
     Q_CLEANUP_RESOURCE(repo);
     Q_CLEANUP_RESOURCE(qtpropertybrowser);
     Q_CLEANUP_RESOURCE(project);
-    Q_CLEANUP_RESOURCE(core);
 }
 
 int main(int argc, char *argv[])
@@ -76,20 +75,26 @@ int main(int argc, char *argv[])
 
     init();
 
-    for (const QString &dir : os::dirs("./fonts", QString("*")))
+    const QDir fontsDir("./fonts");
+    for (const QFileInfo &dir : fontsDir.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks))
     {
-        for (const QString &file : os::files(dir, QString("*.ttf")))
+        const QDir fontDir(dir.absoluteFilePath());
+
+        for (const QFileInfo &file : fontDir.entryInfoList({ "*.ttf" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks))
         {
-            const auto id = QFontDatabase::addApplicationFont(file);
+            const auto id = QFontDatabase::addApplicationFont(file.absoluteFilePath());
             if (id == -1)
-                qDebug() << QObject::tr("load font: <%1> failed.").arg(file);
+            {
+                qDebug() << QObject::tr("load font: <%1> failed.").arg(file.absoluteFilePath());
+            }
         }
     }
 
-    for (const QString &file : os::files("./translations", QString("*%1.qm").arg(Config::language())))
+    const QDir qmDir("./translations");
+    for (const QFileInfo &file : qmDir.entryInfoList({ QString("*%1.qm").arg(Config::language()) }, QDir::Files | QDir::Hidden | QDir::NoSymLinks))
     {
         const auto translator = new QTranslator(&app);
-        translator->load(file);
+        translator->load(file.absoluteFilePath());
         qApp->installTranslator(translator);
     }
 
@@ -104,7 +109,7 @@ int main(int argc, char *argv[])
     if (!parser.positionalArguments().isEmpty())
     {
         const auto file = parser.positionalArguments().at(0);
-        if (!os::isfile(file))
+        if (!QFile::exists(file))
         {
             qCritical().noquote() << QObject::tr("file: <%1> is not exist.").arg(file);
         }
