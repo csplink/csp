@@ -9,10 +9,6 @@
         <translation>基础</translation>
     </message>
     <message>
-        <source>Lock</source>
-        <translation type="vanished">锁定</translation>
-    </message>
-    <message>
         <location filename="../../src/PropertyBrowserPin.cpp" line="49"/>
         <location filename="../../src/PropertyBrowserPin.cpp" line="194"/>
         <source>Locked</source>

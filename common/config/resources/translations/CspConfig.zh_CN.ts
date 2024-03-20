@@ -6,12 +6,12 @@
     <message>
         <location filename="../../src/Config.cpp" line="98"/>
         <source>Critical</source>
-        <translation type="unfinished"></translation>
+        <translation>致命错误</translation>
     </message>
     <message>
         <location filename="../../src/Config.cpp" line="98"/>
         <source>The workspace &lt;%1&gt; path is not a directory!</source>
-        <translation type="unfinished"></translation>
+        <translation>工作区 &lt;%1&gt; 不是目录！</translation>
     </message>
 </context>
 </TS>
