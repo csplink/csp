@@ -30,9 +30,8 @@
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 
-#include "DialogPackageManager.h"
-
 #include "Config.h"
+#include "DialogPackageManager.h"
 #include "ViewMainWindow.h"
 #include "XMake.h"
 #include "ui_DialogPackageManager.h"
@@ -83,8 +82,8 @@ void DialogPackageManager::initTreeView()
     while (libraryIterator != library->constEnd())
     {
         QList<QStandardItem *> *items = new QList<QStandardItem *>;
-
-        QStandardItem *const item = new QStandardItem(libraryIterator.key()); /** Name */
+        /** Name */
+        QStandardItem *const item = new QStandardItem(libraryIterator.key());
         item->setCheckable(true);
         item->setAutoTristate(true);
         items->append(item);
@@ -340,82 +339,17 @@ void DialogPackageManager::pushButtonClosePressedCallback()
 
 void DialogPackageManager::pushButtonInstallPressedCallback() const
 {
-    auto infoIterator = selectedPackageInfos_.constBegin();
-    while (infoIterator != selectedPackageInfos_.constEnd())
-    {
-        if (!infoIterator.value().Installed)
-        {
-            QFuture<void> future = QtConcurrent::run([infoIterator, this] {
-                const QString &name = infoIterator.key();
-                const QString &version = infoIterator.value().Version;
-                runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
-            });
-            while (!future.isFinished())
-            {
-                QApplication::processEvents();
-            }
-            future.waitForFinished();
-        }
-        ++infoIterator;
-    }
+    runXmakeCspRepoCommand("install");
 }
 
 void DialogPackageManager::pushButtonUpdatePressedCallback() const
 {
-    auto infoIterator = selectedPackageInfos_.constBegin();
-    while (infoIterator != selectedPackageInfos_.constEnd())
-    {
-        if (infoIterator.value().Installed && infoIterator.value().Version == "latest")
-        {
-            const QString &name = infoIterator.key();
-            QFuture<int> future = QtConcurrent::run([this, name] {
-                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + Config::repositoriesDir() });
-                return errorCode;
-            });
-            QApplication::setOverrideCursor(Qt::WaitCursor);
-            ui_->progressBar->setHidden(false);
-            while (!future.isFinished())
-            {
-                QApplication::processEvents();
-            }
-            ui_->progressBar->setHidden(true);
-            future.waitForFinished();
-            QApplication::restoreOverrideCursor();
-            if (future.result() == 0)
-            {
-                ui_->labelStatus->setText(tr("%1 upgrade successful").arg(name));
-            }
-            else
-            {
-                ui_->labelStatus->setText(tr("%1 upgrade failure").arg(name));
-                break;
-            }
-            qDebug() << infoIterator.value().Parent->child(infoIterator.value().Row, 0)->text();
-        }
-        ++infoIterator;
-    }
+    runXmakeCspRepoCommand("update");
 }
 
 void DialogPackageManager::pushButtonUninstallPressedCallback() const
 {
-    auto infoIterator = selectedPackageInfos_.constBegin();
-    while (infoIterator != selectedPackageInfos_.constEnd())
-    {
-        if (infoIterator.value().Installed)
-        {
-            QFuture<void> future = QtConcurrent::run([infoIterator, this] {
-                const QString &name = infoIterator.key();
-                const QString &version = infoIterator.value().Version;
-                runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
-            });
-            while (!future.isFinished())
-            {
-                QApplication::processEvents();
-            }
-            future.waitForFinished();
-        }
-        ++infoIterator;
-    }
+    runXmakeCspRepoCommand("uninstall");
 }
 
 int DialogPackageManager::runXmake(const QString &command, const QStringList &args) const
@@ -482,4 +416,84 @@ int DialogPackageManager::runXmake(const QString &command, const QStringList &ar
     process->start();
     process->waitForFinished(30000);
     return process->exitCode();
+}
+
+void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
+{
+    auto infoIterator = selectedPackageInfos_.constBegin();
+    while (infoIterator != selectedPackageInfos_.constEnd())
+    {
+        const QString &name = infoIterator.key();
+        const QString &version = infoIterator.value().Version;
+        const QStandardItem *parent = infoIterator.value().Parent;
+        const int row = infoIterator.value().Row;
+        QFuture<int> future;
+        bool isMatched = false;
+
+        /** install */
+        if ((!infoIterator.value().Installed) && (command == "install"))
+        {
+            isMatched = true;
+            future = QtConcurrent::run([this, name, version] {
+                const int errorCode = runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
+                return errorCode;
+            });
+        }
+        /** update */
+        else if ((infoIterator.value().Installed && infoIterator.value().Version == "latest") && (command == "update"))
+        {
+            isMatched = true;
+            future = QtConcurrent::run([this, name] {
+                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + Config::repositoriesDir() });
+                return errorCode;
+            });
+        }
+        /** uninstall */
+        else if ((infoIterator.value().Installed) && (command == "uninstall"))
+        {
+            isMatched = true;
+            future = QtConcurrent::run([this, name, version] {
+                const int errorCode = runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
+                return errorCode;
+            });
+        }
+        else
+        {
+            isMatched = false;
+            qWarning().noquote() << QString("Invalid command : \"%1\"").arg(command);
+            future = QtConcurrent::run([] {
+                return 0;
+            });
+        }
+
+        if (isMatched)
+        {
+            QApplication::setOverrideCursor(Qt::WaitCursor);
+            ui_->progressBar->setHidden(false);
+            while (!future.isFinished())
+            {
+                QApplication::processEvents();
+            }
+            ui_->progressBar->setHidden(true);
+            future.waitForFinished();
+            QApplication::restoreOverrideCursor();
+            if (future.result() == 0)
+            {
+                ui_->labelStatus->setText(tr("%1 %2 successful").arg(name, command));
+                XMake::PackageType packages;
+                XMake::loadPackages(&packages, name);
+                const XMake::VersionType &versionInfo = packages["library"][name].Versions[version];
+                parent->child(row, PACKAGE_INFO_ID_SIZE)->setText(QString::number(versionInfo.Size, 'f', 2));
+                parent->child(row, PACKAGE_INFO_ID_STATUS)->setIcon(QApplication::style()->standardIcon(versionInfo.Installed ? QStyle::SP_DialogYesButton : QStyle::SP_DialogNoButton));
+                parent->child(row, PACKAGE_INFO_ID_STATUS)->setText(versionInfo.Installed ? tr("Installed") : tr("Not Installed"));
+                parent->child(row, PACKAGE_INFO_ID_SHA)->setText(versionInfo.Sha);
+            }
+            else
+            {
+                ui_->labelStatus->setText(tr("%1 %2 upgrade failure").arg(name, command));
+                break;
+            }
+        }
+        ++infoIterator;
+    }
 }

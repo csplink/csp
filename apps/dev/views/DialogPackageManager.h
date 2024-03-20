@@ -50,6 +50,17 @@ class DialogPackageManager final : public QDialog
     ~DialogPackageManager() override;
 
   private:
+    typedef enum
+    {
+        PACKAGE_INFO_ID_NAME = 0,
+        PACKAGE_INFO_ID_SIZE = 1,
+        PACKAGE_INFO_ID_HOMEPAGE = 2,
+        PACKAGE_INFO_ID_STATUS = 3,
+        PACKAGE_INFO_ID_DESCRIPTION = 4,
+        PACKAGE_INFO_ID_LICENSE = 5,
+        PACKAGE_INFO_ID_SHA = 6,
+    } PackageInfoIdType;
+
     typedef struct
     {
         QString Version;
@@ -69,6 +80,7 @@ class DialogPackageManager final : public QDialog
     Qt::CheckState treeViewItemSiblingCheckState(const QStandardItem *item) const;
     void updatePushButtonInstallUpdateUninstallStatus();
     int runXmake(const QString &command, const QStringList &args) const;
+    void runXmakeCspRepoCommand(const QString &command) const;
 
   private slots:
     void treeViewModelItemChangedCallback(QStandardItem *item);
