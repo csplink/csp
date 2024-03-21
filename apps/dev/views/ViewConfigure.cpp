@@ -144,10 +144,13 @@ void ViewConfigure::flushComboBoxPackageVersion() const
     auto versionsI = versions.constBegin();
     while (versionsI != versions.constEnd())
     {
-        ui_->comboBoxPackageVersion->addItem(versionsI.key());
-        if (versionsI.key() == text)
+        if (versionsI.value().Installed)
         {
-            ui_->comboBoxPackageVersion->setCurrentText(text);
+            ui_->comboBoxPackageVersion->addItem(versionsI.key());
+            if (versionsI.key() == text)
+            {
+                ui_->comboBoxPackageVersion->setCurrentText(text);
+            }
         }
         ++versionsI;
     }
