@@ -28,8 +28,6 @@ add_subdirectory(qtpropertybrowser)
 
 ###############################################
 
-set(YAML_CPP_BUILD_CONTRIB OFF)
 set(YAML_CPP_BUILD_TESTS OFF)
-set(YAML_CPP_BUILD_TOOLS OFF)
 
 add_subdirectory(yaml-cpp)

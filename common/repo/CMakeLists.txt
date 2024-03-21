@@ -21,25 +21,40 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-04-19     xqyjlj       initial version
 #
+set(name CspRepo)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
         src/*.cpp
         resources/*.qrc)
 
-add_library(repo STATIC ${SOURCES})
-target_link_libraries(repo PUBLIC compat_layer core)
-target_include_directories(repo PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+set(TS_FILES
+        ./resources/translations/${name}.zh_CN.ts
+        ./resources/translations/${name}.zh_TW.ts)
+
+if (DEFINED CSP_EXE_DIR)
+    foreach (TS_FILE ${TS_FILES})
+        set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION ${CSP_EXE_DIR}/translations)
+    endforeach ()
+endif ()
+
+qt5_create_translation(QM_FILES ${SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
+        ${TS_FILES})
+
+add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
+target_link_libraries(${name} PUBLIC CspParse CspConfig)
+target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
-file(GLOB_RECURSE TESTCASES
+file(GLOB_RECURSE TEST_CASES
         test/*.cpp)
 
-foreach (TESTCASE ${TESTCASES})
-    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
+foreach (TEST_CASE ${TEST_CASES})
+    get_filename_component(TARGET_NAME ${TEST_CASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TEST_CASE} test/res/res.qrc)
     target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
-    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test repo)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()

@@ -26,11 +26,6 @@ set(name csp-dev)
 
 set(CSP_EXE_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "csp exe file dir")
 
-file(GLOB_RECURSE DIALOGS
-        dialogs/*.ui
-        dialogs/*.h
-        dialogs/*.cpp)
-
 file(GLOB_RECURSE HEADERS
         inc/*.h)
 
@@ -52,10 +47,9 @@ set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
         ./resources/translations/${name}.zh_TW.ts)
 
-set(PROJECT_SOURCES ${DIALOGS} ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_FILES})
+set(PROJECT_SOURCES ${HEADERS} ${SOURCES} ${RESOURCES} ${VIEWS} ${TS_FILES})
 
 include_directories(
-        dialogs
         inc
         views)
 
@@ -74,4 +68,4 @@ endif ()
 
 add_dependencies(${name} custom_res custom_tools)
 
-target_link_libraries(${name} PRIVATE Qt5::Widgets repo core project components qtpropertybrowser)
+target_link_libraries(${name} PRIVATE Qt5::Widgets Qt5::Concurrent CspComponents)

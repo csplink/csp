@@ -61,7 +61,7 @@ compile_commands.json
 
 #cmake
 build/
-common/core/inc/configure.h
+common/config/inc/Configure.h
 
 #xmake
 .xmake/
@@ -71,6 +71,6 @@ common/core/inc/configure.h
 
 #vs
 .vs
-*.DotSettings
+*.DotSettings*
 out
 CMake*.json

@@ -21,7 +21,7 @@
 # ------------   ----------   -----------------------------------------------
 # 2023-05-26     xqyjlj       initial version
 #
-set(name project)
+set(name CspProject)
 
 file(GLOB_RECURSE SOURCES
         inc/*.h
@@ -43,18 +43,18 @@ qt5_create_translation(QM_FILES ${SOURCES}
         ${TS_FILES})
 
 add_library(${name} STATIC ${SOURCES} ${QM_FILES} ${TS_FILES})
-target_link_libraries(${name} PUBLIC compat_layer core repo)
+target_link_libraries(${name} PUBLIC CspParse CspRepo CspXMake CspConfig)
 target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
 
-file(GLOB_RECURSE TESTCASES
+file(GLOB_RECURSE TEST_CASES
         test/*.cpp)
 
-foreach (TESTCASE ${TESTCASES})
-    get_filename_component(TARGET_NAME ${TESTCASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TESTCASE} test/res/res.qrc)
-    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test project)
+foreach (TEST_CASE ${TEST_CASES})
+    get_filename_component(TARGET_NAME ${TEST_CASE} NAME_WE)
+    add_executable(${TARGET_NAME} ${TEST_CASE} test/res/res.qrc)
+    target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
 endforeach ()
 

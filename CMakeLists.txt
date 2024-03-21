@@ -38,13 +38,13 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -Wpedantic")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -Wpedantic")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>")
 endif ()
 
 add_definitions(-DQT_NO_FOREACH)
 
-find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
-find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
+find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets OpenGL Test Concurrent)
+find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test Concurrent)
 
 find_package(QT NAMES Qt5 REQUIRED COMPONENTS LinguistTools)
 find_package(Qt5 REQUIRED COMPONENTS LinguistTools)

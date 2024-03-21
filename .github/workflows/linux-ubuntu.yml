@@ -72,6 +72,14 @@ jobs:
         with:
           toolchain: ${{ matrix.rust_toolchain }}
 
+      # https://github.com/RPCS3/rpcs3/issues/10291
+      # https://github.com/pineappleEA/Pineapple-Linux/issues/22#issuecomment-1021839166
+      # https://codereview.qt-project.org/c/qt/qtbase/+/339417
+      - name: 🚑️ patch
+        shell: bash
+        run: |
+          sudo sed -i 's/ThreadEngineStarter<void>(ThreadEngine<void> \*_threadEngine)/ThreadEngineStarter(ThreadEngine<void> \*_threadEngine)/' $(find .. -name "qtconcurrentthreadengine.h")
+
       - name: 👷 build
         shell: bash
         run: |

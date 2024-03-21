@@ -25,194 +25,206 @@
 clocktree: APM32F103
 company: Geehy
 company_url:
-  en: nil
+  en:
   zh_CN: https://geehy.com
 documents:
   datasheets:
     APM32F103xDxE数据手册V1.7:
       url:
-        en: nil
+        en:
         zh_CN: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
   errata:
     APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
       url:
-        en: nil
+        en:
         zh_CN: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
   references:
     APM32F103xCxDxE用户手册V1.5:
       url:
-        en: nil
+        en:
         zh_CN: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
 hal: csp_hal_apm32f1
 has_powerpad: false
 illustrate:
-  en: nil
+  en:
   zh_CN: |
     APM32F103xDxE系列MCU，基于32位Arm® Cortex®-M3内核，最高工作主频96MHz，支持FPU浮点运算单元，配置增强型外部存储控制器EMMC，
     支持USB和CAN接口同时使用；集成片上储存器、定时器以及数据转换器等多种外设接口，具有功耗低、容量大、可移植性好、Flash擦除/编程速度快等特点。
     目前已经通过中国IEC61508 SIL2认证和USB-IF测试，符合工业级高可靠性标准。适用于航模飞机、手持云台、扫码枪、报警器、密码锁、电子秤等领域。
 introduction:
-  en: nil
+  en:
   zh_CN: 具有 512KB Flash和 96MHz CPU的主流 Arm Cortex-M3 超值系列 MCU
 line: APM32F103
 modules:
   Analog:
     ADC1:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     ADC2:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     ADC3:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     DAC:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
   Computing:
     CRC:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
   Connectivity:
     CAN:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     FSMC:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     I2C1:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     I2C2:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     SDIO:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     SPI1:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     SPI2:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     SPI3:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     UART4:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     UART5:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     USART1:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     USART2:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     USART3:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     USB:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
   Multimedia:
     I2S2:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     I2S3:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
   System Core:
     DMA:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     GPIO:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     IWDG:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     NVIC:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     RCC:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     SYS:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     WWDG:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
   Timers:
     RTC:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM1:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM2:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM3:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM4:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM5:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM6:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM7:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
     TIM8:
       description:
-        en: nil
-        zh_CN: nil
+        en:
+        zh_CN:
 name: APM32F103ZET6
 package: LQFP144
 series: APM32F1
 url:
-  en: nil
+  en:
   zh_CN: https://geehy.com/apm32?id=17
+target_project:
+  xmake: true
+  cmake: true
+  mdk_arm:
+    device: APM32F103ZE
+    packs:
+      - Geehy.APM32F1xx_DFP@1.1.0
+    pack_url: https://www.geehy.com/uploads/tool/
+    cmsis_core: 5.7.0
+linker:
+  default_minimum_heap_size: 0x200
+  default_minimum_stack_size: 0x400
