@@ -35,51 +35,51 @@
 class ProjectTable
 {
   public:
-    typedef QMap<QString, QString> pin_function_property_t;
-    typedef QMap<QString, pin_function_property_t> pin_function_properties_t;
+    typedef QMap<QString, QString> PinFunctionPropertyType;
+    typedef QMap<QString, PinFunctionPropertyType> PinFunctionPropertiesType;
 
     typedef struct
     {
-        QString function;                            // pin selected function
-        QString comment;                             // pin comment
-        bool locked;                                 // pin locked
-        pin_function_properties_t function_property; // pin function properties
+        QString Function;                           // pin selected function
+        QString Comment;                            // pin comment
+        bool Locked;                                // pin locked
+        PinFunctionPropertiesType FunctionProperty; // pin function properties
     } PinConfigType;
 
     typedef struct
     {
-        QString hal;           // hal
-        QString target;        // target
-        QString package;       // package
-        QString company;       // company
-        QString type;          // type
-        QString toolchains;    // toolchains
-        QStringList modules;   // modules
-        QStringList warnings;  // warnings
-        QStringList languages; // languages
+        QString HAL;           // hal
+        QString Target;        // target
+        QString Package;       // package
+        QString Company;       // company
+        QString Type;          // type
+        QString Toolchains;    // toolchains
+        QStringList Modules;   // modules
+        QStringList Warnings;  // warnings
+        QStringList Languages; // languages
     } CoreType;
 
-    typedef struct mdk_arm_struct
+    typedef struct
     {
-        QString device;     // pack 中的名字
-        QString pack;       // pack
-        QString pack_url;   // cmsis pack更新url
-        QString cmsis_core; // 依赖的cmsis core最低版本
+        QString Device;    // pack 中的名字
+        QString Pack;      // pack
+        QString PackUrl;   // cmsis pack更新url
+        QString CmsisCore; // 依赖的cmsis core最低版本
     } MdkArmType;
 
-    typedef struct target_project_struct
+    typedef struct
     {
-        MdkArmType mdk_arm;
+        MdkArmType MdkArm;
     } TargetProjectType;
 
     typedef struct
     {
-        QString name;                            // project name
-        QString version;                         // csp version
-        QString target;                          // target type: xmake, mdk, cmake
-        QMap<QString, PinConfigType> pin_configs; // pin configs
-        CoreType core;                            // core configs
-        TargetProjectType target_project;
+        QString Name;                            // project name
+        QString Version;                         // csp version
+        QString Target;                          // target type: xmake, mdk, cmake
+        QMap<QString, PinConfigType> PinConfigs; // pin configs
+        CoreType Core;                           // core configs
+        TargetProjectType TargetProject;
     } ProjectType;
 
   public:

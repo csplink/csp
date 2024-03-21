@@ -113,7 +113,7 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
         auto ip_map_i = ip_map.constBegin();
         const auto type = pinout_unit->functions[function].type; // such as "GPIO"
         QtProperty *group_item = variantManager_->addProperty(QtVariantPropertyManager::groupTypeId(), type);
-        ProjectTable::pin_function_property_t fp = {};
+        ProjectTable::PinFunctionPropertyType fp = {};
 
         if (fps.contains(function_type)) // already configured
             fp = fps.value(function_type);

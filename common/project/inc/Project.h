@@ -196,7 +196,7 @@ class Project final : public QObject
      * @param Key: pin name
      * @return pin config function properties as a modifiable reference
      */
-    ProjectTable::pin_function_properties_t &getPinConfigFunctionProperty(const QString &Key);
+    ProjectTable::PinFunctionPropertiesType &getPinConfigFunctionProperty(const QString &Key);
 
     /**
      * @brief get pin config function property

@@ -57,9 +57,9 @@ class TestCaseProject final : public QObject
     static void getPinConfig()
     {
         auto &cfg = ProjectInstance->getPinConfig("PA1");
-        cfg.comment = "PA1-OUT";
+        cfg.Comment = "PA1-OUT";
 
-        QVERIFY(ProjectInstance->getPinConfig("PA1").comment == "PA1-OUT");
+        QVERIFY(ProjectInstance->getPinConfig("PA1").Comment == "PA1-OUT");
     }
 
     static void cleanupTestCase()

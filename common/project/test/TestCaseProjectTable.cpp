@@ -42,16 +42,16 @@ class TestCaseProjectTable final : public QObject
     {
         ProjectTable::ProjectType project;
         ProjectTable::loadProject(&project, ":/project.json");
-        QVERIFY(!project.name.isEmpty());
+        QVERIFY(!project.Name.isEmpty());
     }
 
     static void saveProject()
     {
         auto p = ProjectTable::ProjectType();
-        p.name = "test";
+        p.Name = "test";
         ProjectTable::PinConfigType pin_config;
-        pin_config.comment = "PA1-OUT";
-        p.pin_configs.insert("PA1", pin_config);
+        pin_config.Comment = "PA1-OUT";
+        p.PinConfigs.insert("PA1", pin_config);
         ProjectTable::saveProject(p, "test.json");
         QVERIFY(QFile::exists("test.json"));
     }
@@ -59,8 +59,8 @@ class TestCaseProjectTable final : public QObject
     static void dumpProject()
     {
         auto p = ProjectTable::ProjectType();
-        p.name = "test";
-        p.pin_configs.insert("test", ProjectTable::PinConfigType());
+        p.Name = "test";
+        p.PinConfigs.insert("test", ProjectTable::PinConfigType());
         const auto str = ProjectTable::dumpProject(p);
         QVERIFY(!str.isEmpty());
     }

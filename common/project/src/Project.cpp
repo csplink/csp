@@ -61,19 +61,19 @@ QString Project::getCore(const CoreAttributeType Type) const
     switch (Type)
     {
     case CORE_ATTRIBUTE_TYPE_HAL:
-        value = project_.core.hal;
+        value = project_.Core.HAL;
         break;
     case CORE_ATTRIBUTE_TYPE_TARGET:
-        value = project_.core.target;
+        value = project_.Core.Target;
         break;
     case CORE_ATTRIBUTE_TYPE_PACKAGE:
-        value = project_.core.package;
+        value = project_.Core.Package;
         break;
     case CORE_ATTRIBUTE_TYPE_COMPANY:
-        value = project_.core.company;
+        value = project_.Core.Company;
         break;
     case CORE_ATTRIBUTE_TYPE_TYPE:
-        value = project_.core.type;
+        value = project_.Core.Type;
         break;
     }
 
@@ -87,19 +87,19 @@ void Project::setCore(const CoreAttributeType Type, const QString &Value)
         switch (Type)
         {
         case CORE_ATTRIBUTE_TYPE_HAL:
-            project_.core.hal = Value;
+            project_.Core.HAL = Value;
             break;
         case CORE_ATTRIBUTE_TYPE_TARGET:
-            project_.core.target = Value;
+            project_.Core.Target = Value;
             break;
         case CORE_ATTRIBUTE_TYPE_PACKAGE:
-            project_.core.package = Value;
+            project_.Core.Package = Value;
             break;
         case CORE_ATTRIBUTE_TYPE_COMPANY:
-            project_.core.company = Value;
+            project_.Core.Company = Value;
             break;
         case CORE_ATTRIBUTE_TYPE_TYPE:
-            project_.core.type = Value;
+            project_.Core.Type = Value;
             break;
         }
 
@@ -131,14 +131,14 @@ void Project::setPath(const QString &Path)
 
 QString Project::getName() const
 {
-    return project_.name;
+    return project_.Name;
 }
 
 void Project::setName(const QString &Name)
 {
     if (!Name.isEmpty())
     {
-        project_.name = Name;
+        project_.Name = Name;
     }
     else
     {
@@ -163,19 +163,19 @@ void Project::loadIps(const QString &Hal, const QString &Name)
 
 void Project::loadDb()
 {
-    if (!project_.core.hal.isEmpty())
+    if (!project_.Core.HAL.isEmpty())
     {
-        loadMaps(project_.core.hal);
+        loadMaps(project_.Core.HAL);
     }
 
-    if (!project_.core.target.isEmpty() && !project_.core.hal.isEmpty())
+    if (!project_.Core.Target.isEmpty() && !project_.Core.HAL.isEmpty())
     {
-        loadIps(project_.core.hal, project_.core.target);
+        loadIps(project_.Core.HAL, project_.Core.Target);
     }
 
-    if (!project_.core.company.isEmpty() && !project_.core.hal.isEmpty())
+    if (!project_.Core.Company.isEmpty() && !project_.Core.HAL.isEmpty())
     {
-        loadChipSummary(project_.core.company, project_.core.target);
+        loadChipSummary(project_.Core.Company, project_.Core.Target);
     }
 }
 
@@ -227,77 +227,77 @@ ChipSummaryTable::ChipSummaryType &Project::getChipSummary()
 /******************* pin ************************/
 ProjectTable::PinConfigType &Project::getPinConfig(const QString &Key)
 {
-    return project_.pin_configs[Key];
+    return project_.PinConfigs[Key];
 }
 
 void Project::setPinComment(const QString &Key, const QString &Comment)
 {
-    emit signalsPinPropertyChanged("comment", Key, project_.pin_configs[Key].comment, Comment);
-    project_.pin_configs[Key].comment = Comment;
+    emit signalsPinPropertyChanged("comment", Key, project_.PinConfigs[Key].Comment, Comment);
+    project_.PinConfigs[Key].Comment = Comment;
 }
 
 QString &Project::getPinComment(const QString &Key)
 {
-    return project_.pin_configs[Key].comment;
+    return project_.PinConfigs[Key].Comment;
 }
 
 void Project::setPinFunction(const QString &Key, const QString &Function)
 {
-    emit signalsPinPropertyChanged("function", Key, project_.pin_configs[Key].function, Function);
-    project_.pin_configs[Key].function = Function;
+    emit signalsPinPropertyChanged("function", Key, project_.PinConfigs[Key].Function, Function);
+    project_.PinConfigs[Key].Function = Function;
 }
 
 QString &Project::getPinFunction(const QString &Key)
 {
-    return project_.pin_configs[Key].function;
+    return project_.PinConfigs[Key].Function;
 }
 
 void Project::setPinLocked(const QString &Key, const bool Locked)
 {
-    emit signalsPinPropertyChanged("locked", Key, project_.pin_configs[Key].locked, Locked);
-    project_.pin_configs[Key].locked = Locked;
+    emit signalsPinPropertyChanged("locked", Key, project_.PinConfigs[Key].Locked, Locked);
+    project_.PinConfigs[Key].Locked = Locked;
 }
 
 bool Project::getPinLocked(const QString &Key)
 {
-    return project_.pin_configs[Key].locked;
+    return project_.PinConfigs[Key].Locked;
 }
 
 void Project::setPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property, const QString &Value)
 {
-    emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.pin_configs[Key].function_property[Module][Property], Value);
-    project_.pin_configs[Key].function_property[Module][Property] = Value;
+    emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.PinConfigs[Key].FunctionProperty[Module][Property], Value);
+    project_.PinConfigs[Key].FunctionProperty[Module][Property] = Value;
 }
 
 void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
 {
-    if (project_.pin_configs[Key].function_property.contains(Module))
+    if (project_.PinConfigs[Key].FunctionProperty.contains(Module))
     {
-        if (project_.pin_configs[Key].function_property[Module].contains(Property))
+        if (project_.PinConfigs[Key].FunctionProperty[Module].contains(Property))
         {
-            emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.pin_configs[Key].function_property[Module][Property], "");
-            project_.pin_configs[Key].function_property[Module].remove(Property);
+            emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.PinConfigs[Key].FunctionProperty[Module][Property], "");
+            project_.PinConfigs[Key].FunctionProperty[Module].remove(Property);
         }
     }
 }
 
 void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &Module)
 {
-    if (project_.pin_configs[Key].function_property.contains(Module))
+    if (project_.PinConfigs[Key].FunctionProperty.contains(Module))
     {
         emit signalsPinFunctionPropertyChanged(Module, "", Key, "", "");
-        project_.pin_configs[Key].function_property.remove(Module);
+        project_.PinConfigs[Key].FunctionProperty.remove(Module);
     }
 }
 
-ProjectTable::pin_function_properties_t &Project::getPinConfigFunctionProperty(const QString &Key)
+ProjectTable::PinFunctionPropertiesType &Project::getPinConfigFunctionProperty(const QString &Key)
 {
-    return project_.pin_configs[Key].function_property;
+    return project_.PinConfigs[Key].FunctionProperty;
 }
 
 QString &Project::getPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
 {
-    return project_.pin_configs[Key].function_property[Module][Property];
+    return project_.PinConfigs[Key].FunctionProperty[Module][Property];
 }
 
 /***********************************************/
@@ -349,7 +349,7 @@ QString Project::dumpProject()
 
 void Project::clearProject()
 {
-    project_.pin_configs.clear();
+    project_.PinConfigs.clear();
     emit signalsProjectClear();
 }
 
@@ -410,6 +410,6 @@ void Project::generateCode() const
 void Project::build(const QString &Mode) const
 {
     const QFileInfo info(path_);
-    runXmake("f", { "-y", "-m", Mode }, info.dir().absolutePath());
-    runXmake("", { "-y", "-j8" }, info.dir().absolutePath());
+    (void)runXmake("f", { "-y", "-m", Mode }, info.dir().absolutePath());
+    (void)runXmake("", { "-y", "-j8" }, info.dir().absolutePath());
 }
