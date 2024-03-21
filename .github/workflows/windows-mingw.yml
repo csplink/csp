@@ -109,7 +109,7 @@ jobs:
           & tools/release/windows-lite.ps1 ${{ env.BUILD_LITE_DIR }} csp-dev.exe build
 
       - name: ⬆️ upload lite artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.BUILD_LITE_DIR }}
           path: ${{ env.BUILD_LITE_DIR }}
@@ -120,7 +120,7 @@ jobs:
           & tools/release/windows-full.ps1 ${{ env.BUILD_LITE_DIR }} ${{ env.BUILD_FULL_DIR }} ${{ matrix.mingw_arch }}
 
       - name: ⬆️ upload full artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.BUILD_FULL_DIR }}
           path: ${{ env.BUILD_FULL_DIR }}
