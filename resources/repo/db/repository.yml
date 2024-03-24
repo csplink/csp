@@ -22,20 +22,20 @@
 # 2023-12-17     xqyjlj       initial version
 #
 
-chips:
+Chips:
   Geehy:
     APM32F1:
       APM32F103:
         APM32F103C8T6:
-          core: Arm Cortex-M3
-          current:
-            lowest: 1.9
-            run: 421.0
-          flash: 64
-          frequency: 96
-          io: 37
-          package: LQFP48
-          peripherals:
+          Core: Arm Cortex-M3
+          Current:
+            Lowest: 1.9
+            Run: 421.0
+          Flash: 64
+          Frequency: 96
+          IO: 37
+          Package: LQFP48
+          Peripherals:
             ADC 12-bit: 21
             CAN: 1
             DAC 12-bit: 2
@@ -49,23 +49,23 @@ chips:
             UART: 2
             USART: 3
             USB Device: 1
-          ram: 20
-          temperature:
-            max: 105.0
-            min: -40.0
-          voltage:
-            max: 3.6
-            min: 2.0
+          Ram: 20
+          Temperature:
+            Max: 105.0
+            Min: -40.0
+          Voltage:
+            Max: 3.6
+            Min: 2.0
         APM32F103ZET6:
-          core: Arm Cortex-M3
-          current:
-            lowest: 1.9
-            run: 421.0
-          flash: 512
-          frequency: 96
-          io: 112
-          package: LQFP144
-          peripherals:
+          Core: Arm Cortex-M3
+          Current:
+            Lowest: 1.9
+            Run: 421.0
+          Flash: 512
+          Frequency: 96
+          IO: 112
+          Package: LQFP144
+          Peripherals:
             ADC 12-bit: 21
             CAN: 1
             DAC 12-bit: 2
@@ -79,10 +79,10 @@ chips:
             UART: 2
             USART: 3
             USB Device: 1
-          ram: 128
-          temperature:
-            max: 105.0
-            min: -40.0
-          voltage:
-            max: 3.6
-            min: 2.0
+          Ram: 128
+          Temperature:
+            Max: 105.0
+            Min: -40.0
+          Voltage:
+            Max: 3.6
+            Min: 2.0

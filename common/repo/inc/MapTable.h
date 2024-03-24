@@ -37,29 +37,29 @@ class MapTable final
   public:
     typedef struct
     {
-        QMap<QString, QString> comment;
+        QMap<QString, QString> Comment;
     } ValueType;
 
-    typedef struct group_struct
+    typedef struct
     {
-        QMap<QString, QString> comment;
-        QMap<QString, ValueType> values;
+        QMap<QString, QString> Comment;
+        QMap<QString, ValueType> Values;
     } GroupType;
 
-    typedef struct property_struct
+    typedef struct
     {
-        QMap<QString, QString> display_name;
-        QMap<QString, QString> description;
-        QString category;
-        bool readonly;
+        QMap<QString, QString> DisplayName;
+        QMap<QString, QString> Description;
+        QString Category;
+        bool Readonly;
     } PropertyType;
 
     typedef struct
     {
-        QMap<QString, GroupType> groups;
-        QMap<QString, PropertyType> properties;
-        QMap<QString, QString> total;
-        QMap<QString, QString> reverse_total;
+        QMap<QString, GroupType> Groups;
+        QMap<QString, PropertyType> Properties;
+        QMap<QString, QString> Total;
+        QMap<QString, QString> ReverseTotal;
     } MapType;
 
     typedef QMap<QString, MapType> MapsType;

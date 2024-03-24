@@ -69,10 +69,10 @@ void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
 
 void ViewConfigure::initView()
 {
-    const auto package = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_PACKAGE).toLower();
-    const auto hal = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_HAL).toLower();
-    const auto company = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_COMPANY);
-    const auto name = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_TARGET);
+    const auto package = projectInstance_->getProjectPackage().toLower();
+    const auto hal = projectInstance_->getProjectHal().toLower();
+    const auto company = projectInstance_->getProjectCompany();
+    const auto name = projectInstance_->getProjectTargetChip();
 
     delete ui_->graphicsView->scene();
     const auto scene = new QGraphicsScene(ui_->graphicsView);
@@ -111,19 +111,19 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
 
 void ViewConfigure::initProjectSettings() const
 {
-    const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().target_project;
+    const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().TargetProject;
 
     ui_->comboBoxBuildScriptIde->clear();
 
-    if (target_project.xmake)
+    if (target_project.XMake)
     {
         ui_->comboBoxBuildScriptIde->addItem("xmake");
     }
-    if (target_project.cmake)
+    if (target_project.CMake)
     {
         ui_->comboBoxBuildScriptIde->addItem("cmake");
     }
-    if (!target_project.mdk_arm.device.isEmpty())
+    if (!target_project.MdkArm.Device.isEmpty())
     {
         ui_->comboBoxBuildScriptIde->addItem("mdk_arm");
     }
@@ -133,7 +133,7 @@ void ViewConfigure::initProjectSettings() const
 
 void ViewConfigure::flushComboBoxPackageVersion() const
 {
-    const QString &hal = projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_HAL);
+    const QString &hal = projectInstance_->getProjectHal();
     XMake::PackageType packages;
     XMake::loadPackages(&packages, hal);
 
@@ -158,11 +158,11 @@ void ViewConfigure::flushComboBoxPackageVersion() const
 
 void ViewConfigure::initLinkerSettings() const
 {
-    const ChipSummaryTable::LinkerType &linker = projectInstance_->getChipSummary().linker;
+    const ChipSummaryTable::LinkerType &linker = projectInstance_->getChipSummary().Linker;
     ui_->lineEditMinimumHeapSize->clear();
-    if (!linker.default_minimum_heap_size.isEmpty())
+    if (!linker.DefaultMinimumHeapSize.isEmpty())
     {
-        ui_->lineEditMinimumHeapSize->setText(linker.default_minimum_heap_size);
+        ui_->lineEditMinimumHeapSize->setText(linker.DefaultMinimumHeapSize);
     }
     else
     {
@@ -171,9 +171,9 @@ void ViewConfigure::initLinkerSettings() const
     }
 
     ui_->lineEditMinimumStackSize->clear();
-    if (!linker.default_minimum_stack_size.isEmpty())
+    if (!linker.DefaultMinimumStackSize.isEmpty())
     {
-        ui_->lineEditMinimumStackSize->setText(linker.default_minimum_stack_size);
+        ui_->lineEditMinimumStackSize->setText(linker.DefaultMinimumStackSize);
     }
     else
     {
@@ -186,9 +186,9 @@ void ViewConfigure::initPackageSettings() const
 {
     const ChipSummaryTable::ChipSummaryType &chip_summary = projectInstance_->getChipSummary();
 
-    if (!chip_summary.hal.isEmpty())
+    if (!chip_summary.Hal.isEmpty())
     {
-        ui_->lineEditPackageName->setText(chip_summary.hal);
+        ui_->lineEditPackageName->setText(chip_summary.Hal);
     }
 }
 

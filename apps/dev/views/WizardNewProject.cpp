@@ -28,7 +28,6 @@
  */
 
 #include <QDebug>
-#include <QDir>
 #include <QFileDialog>
 #include <QLabel>
 #include <QToolButton>
@@ -68,7 +67,7 @@ void WizardNewProject::accept()
     }
 
     projectInstance_->setPath(QString("%1/%2/%2.csp").arg(path, name));
-    projectInstance_->setName(name);
+    projectInstance_->setProjectName(name);
 
     QDialog::accept();
 }
@@ -111,7 +110,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
 
     int index = 0;
 
-    while (1)
+    while (true)
     {
         const QDir dir(QString("%1/untitled%2").arg(workspace, index == 0 ? "" : QString::number(index)));
         if (dir.exists())

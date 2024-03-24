@@ -28,7 +28,6 @@
  */
 
 #include <QDateTime>
-#include <QDebug>
 #include <QFileDialog>
 #include <QMutex>
 
@@ -141,7 +140,7 @@ ViewMainWindow::~ViewMainWindow()
 
 void ViewMainWindow::initMode()
 {
-    if (projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_TYPE) == "chip")
+    if (projectInstance_->getProjectType() == "chip")
     {
         setMode(STACK_INDEX_EMPTY);
         setMode(STACK_INDEX_CHIP_CONFIGURE);
@@ -181,8 +180,7 @@ void ViewMainWindow::setMode(const StackIndexType index)
         (void)connect(ui_->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, this,
                       &ViewMainWindow::updateModulesTreeView, Qt::UniqueConnection);
 
-        updateModulesTreeView(projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_COMPANY),
-                              projectInstance_->getCore(Project::CORE_ATTRIBUTE_TYPE_TARGET));
+        updateModulesTreeView(projectInstance_->getProjectCompany(), projectInstance_->getProjectTargetChip());
 
         ui_->pageViewConfigure->initView();
         ui_->stackedWidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
@@ -215,7 +213,7 @@ void ViewMainWindow::updateModulesTreeView(const QString &company, const QString
     auto *model = new QStandardItemModel(ui_->treeView);
     ChipSummaryTable::ChipSummaryType chip_summary;
     ChipSummaryTable::loadChipSummary(&chip_summary, company, name);
-    const auto modules = &chip_summary.modules;
+    const auto modules = &chip_summary.Modules;
     auto modules_i = modules->constBegin();
     while (modules_i != modules->constEnd())
     {

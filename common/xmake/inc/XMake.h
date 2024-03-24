@@ -30,6 +30,7 @@
 #ifndef CSP_XMAKE_H
 #define CSP_XMAKE_H
 
+#include <QDebug>
 #include <QMap>
 #include <QObject>
 #include <QString>

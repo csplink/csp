@@ -37,14 +37,14 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(PinoutTable::FunctionType, mode, type)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(PinoutTable::PinoutUnitType, position, type, functions)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(PinoutTable::FunctionType, Mode, Type)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(PinoutTable::PinoutUnitType, Position, Type, Functions)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PinoutTable::FunctionType, mode, type)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PinoutTable::PinoutUnitType, position, type, functions)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PinoutTable::FunctionType, Mode, Type)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PinoutTable::PinoutUnitType, Position, Type, Functions)
 } // namespace nlohmann
 
 QT_DEBUG_ADD_TYPE(PinoutTable::FunctionType)
@@ -103,9 +103,9 @@ void PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
                 {
                     const QString &key = pinout_i.key();
                     const PinoutUnitType &unit = pinout_i.value();
-                    const int &position = unit.position;
-                    const QString &type = unit.type;
-                    const QMap<QString, FunctionType> &functions = pinout_i.value().functions;
+                    const int &position = unit.Position;
+                    const QString &type = unit.Type;
+                    const QMap<QString, FunctionType> &functions = pinout_i.value().Functions;
                     if (position > 0 && !type.isEmpty())
                     {
                         if (type.toLower() == "i/o")
@@ -118,8 +118,7 @@ void PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
                         }
                         else if (type.toLower() == "power" || type.toLower() == "nc" || type.toLower() == "boot" ||
                                  type.toLower() == "reset")
-                        {
-                            /* do nothings */
+                        { /* do nothings */
                         }
                         else
                         {

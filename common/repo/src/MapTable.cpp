@@ -38,18 +38,18 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, comment)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, comment, values)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, display_name, description, category, readonly)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, groups, properties)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, Comment)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, Comment, Values)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, DisplayName, Description, Category, Readonly)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, Groups, Properties)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, comment)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, comment, values)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, display_name, description, category, readonly)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, groups, properties, total, reverse_total)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, Comment)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, Comment, Values)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, DisplayName, Description, Category, Readonly)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, Groups, Properties, Total, ReverseTotal)
 } // namespace nlohmann
 
 QT_DEBUG_ADD_TYPE(MapTable::ValueType)
@@ -83,17 +83,17 @@ void MapTable::loadMap(MapType *map, const QString &path)
 
             file.close();
 
-            auto group_i = map->groups.constBegin();
-            while (group_i != map->groups.constEnd())
+            auto group_i = map->Groups.constBegin();
+            while (group_i != map->Groups.constEnd())
             {
-                auto values = group_i.value().values;
+                auto values = group_i.value().Values;
                 auto values_i = values.constBegin();
                 while (values_i != values.constEnd())
                 {
                     const QString &name = values_i.key();
                     const ValueType &value = values_i.value();
-                    map->total.insert(name, value.comment[Config::language()]);
-                    map->reverse_total.insert(value.comment[Config::language()], name);
+                    map->Total.insert(name, value.Comment[Config::language()]);
+                    map->ReverseTotal.insert(value.Comment[Config::language()], name);
                     ++values_i;
                 }
                 ++group_i;
@@ -158,28 +158,28 @@ void MapTable::loadMaps(MapsType *maps, const QString &hal)
                 if (maps->contains(basename))
                 {
                     MapType &ref_map = (*maps)[basename];
-                    auto group_i = map.groups.constBegin();
-                    while (group_i != map.groups.constEnd())
+                    auto group_i = map.Groups.constBegin();
+                    while (group_i != map.Groups.constEnd())
                     {
-                        ref_map.groups.insert(group_i.key(), group_i.value());
+                        ref_map.Groups.insert(group_i.key(), group_i.value());
                         ++group_i;
                     }
-                    auto properties_i = map.properties.constBegin();
-                    while (properties_i != map.properties.constEnd())
+                    auto properties_i = map.Properties.constBegin();
+                    while (properties_i != map.Properties.constEnd())
                     {
-                        ref_map.properties.insert(properties_i.key(), properties_i.value());
+                        ref_map.Properties.insert(properties_i.key(), properties_i.value());
                         ++properties_i;
                     }
-                    auto total_i = map.total.constBegin();
-                    while (total_i != map.total.constEnd())
+                    auto total_i = map.Total.constBegin();
+                    while (total_i != map.Total.constEnd())
                     {
-                        ref_map.total.insert(total_i.key(), total_i.value());
+                        ref_map.Total.insert(total_i.key(), total_i.value());
                         ++total_i;
                     }
-                    auto reverse_total_i = map.reverse_total.constBegin();
-                    while (reverse_total_i != map.reverse_total.constEnd())
+                    auto reverse_total_i = map.ReverseTotal.constBegin();
+                    while (reverse_total_i != map.ReverseTotal.constEnd())
                     {
-                        ref_map.reverse_total.insert(reverse_total_i.key(), reverse_total_i.value());
+                        ref_map.ReverseTotal.insert(reverse_total_i.key(), reverse_total_i.value());
                         ++reverse_total_i;
                     }
                 }

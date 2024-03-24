@@ -37,39 +37,39 @@ class RepositoryTable final
   public:
     typedef struct
     {
-        float lowest;
-        float run;
+        float Lowest;
+        float Run;
     } CurrentType;
 
     typedef struct
     {
-        float max;
-        float min;
+        float Max;
+        float Min;
     } TemperatureType;
 
     typedef struct
     {
-        float max;
-        float min;
+        float Max;
+        float Min;
     } VoltageType;
 
     typedef struct
     {
-        QString core;
-        QString company;
-        QString line;
-        QString series;
-        QString name;
-        CurrentType current;
-        float flash;
-        float frequency;
-        int io;
-        QString package;
-        QMap<QString, int> peripherals;
-        float price;
-        float ram;
-        TemperatureType temperature;
-        VoltageType voltage;
+        QString Core;
+        QString Company;
+        QString Line;
+        QString Series;
+        QString Name;
+        CurrentType Current;
+        float Flash;
+        float Frequency;
+        int IO;
+        QString Package;
+        QMap<QString, int> Peripherals;
+        float Price;
+        float Ram;
+        TemperatureType Temperature;
+        VoltageType Voltage;
     } ChipInfoType;
 
     typedef QMap<QString, ChipInfoType> ChipLineType;
@@ -82,7 +82,7 @@ class RepositoryTable final
 
     typedef struct
     {
-        ChipType chips;
+        ChipType Chips;
     } RepositoryType;
 
     static void loadRepository(RepositoryType *repository, const QString &path);

@@ -54,63 +54,6 @@ Project *Project::getInstance()
     return instance_;
 }
 
-QString Project::getCore(const CoreAttributeType Type) const
-{
-    QString value;
-
-    switch (Type)
-    {
-    case CORE_ATTRIBUTE_TYPE_HAL:
-        value = project_.Core.HAL;
-        break;
-    case CORE_ATTRIBUTE_TYPE_TARGET:
-        value = project_.Core.Target;
-        break;
-    case CORE_ATTRIBUTE_TYPE_PACKAGE:
-        value = project_.Core.Package;
-        break;
-    case CORE_ATTRIBUTE_TYPE_COMPANY:
-        value = project_.Core.Company;
-        break;
-    case CORE_ATTRIBUTE_TYPE_TYPE:
-        value = project_.Core.Type;
-        break;
-    }
-
-    return value;
-}
-
-void Project::setCore(const CoreAttributeType Type, const QString &Value)
-{
-    if (!Value.isEmpty())
-    {
-        switch (Type)
-        {
-        case CORE_ATTRIBUTE_TYPE_HAL:
-            project_.Core.HAL = Value;
-            break;
-        case CORE_ATTRIBUTE_TYPE_TARGET:
-            project_.Core.Target = Value;
-            break;
-        case CORE_ATTRIBUTE_TYPE_PACKAGE:
-            project_.Core.Package = Value;
-            break;
-        case CORE_ATTRIBUTE_TYPE_COMPANY:
-            project_.Core.Company = Value;
-            break;
-        case CORE_ATTRIBUTE_TYPE_TYPE:
-            project_.Core.Type = Value;
-            break;
-        }
-
-        loadDb();
-    }
-    else
-    {
-        /** TODO: failed */
-    }
-}
-
 QString Project::getPath() const
 {
     return path_;
@@ -134,18 +77,6 @@ QString Project::getName() const
     return project_.Name;
 }
 
-void Project::setName(const QString &Name)
-{
-    if (!Name.isEmpty())
-    {
-        project_.Name = Name;
-    }
-    else
-    {
-        /** TODO: failed */
-    }
-}
-
 void Project::loadIps(const QString &Hal, const QString &Name)
 {
     if (!Hal.isEmpty() && !Name.isEmpty())
@@ -163,19 +94,19 @@ void Project::loadIps(const QString &Hal, const QString &Name)
 
 void Project::loadDb()
 {
-    if (!project_.Core.HAL.isEmpty())
+    if (!project_.Hal.isEmpty())
     {
-        loadMaps(project_.Core.HAL);
+        loadMaps(project_.Hal);
     }
 
-    if (!project_.Core.Target.isEmpty() && !project_.Core.HAL.isEmpty())
+    if (!project_.Hal.isEmpty() && !project_.TargetChip.isEmpty())
     {
-        loadIps(project_.Core.HAL, project_.Core.Target);
+        loadIps(project_.Hal, project_.TargetChip);
     }
 
-    if (!project_.Core.Company.isEmpty() && !project_.Core.HAL.isEmpty())
+    if (!project_.Company.isEmpty() && !project_.TargetChip.isEmpty())
     {
-        loadChipSummary(project_.Core.Company, project_.Core.Target);
+        loadChipSummary(project_.Company, project_.TargetChip);
     }
 }
 
@@ -208,7 +139,7 @@ void Project::loadChipSummary(const QString &Company, const QString &Name)
 {
     if (!Company.isEmpty() && !Name.isEmpty())
     {
-        if (chipSummary_.name.isEmpty())
+        if (chipSummary_.Name.isEmpty())
         {
             ChipSummaryTable::loadChipSummary(&chipSummary_, Company, Name);
         }
@@ -412,4 +343,9 @@ void Project::build(const QString &Mode) const
     const QFileInfo info(path_);
     (void)runXmake("f", { "-y", "-m", Mode }, info.dir().absolutePath());
     (void)runXmake("", { "-y", "-j8" }, info.dir().absolutePath());
+}
+
+const ProjectTable::ProjectType &Project::getProjectTable()
+{
+    return project_;
 }

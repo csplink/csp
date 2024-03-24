@@ -37,17 +37,16 @@
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, Function, Comment, Locked, FunctionProperty)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::CoreType, HAL, Target, Package, Company, Type, Toolchains, Modules)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::MdkArmType, Device, Pack, PackUrl, CmsisCore)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::TargetProjectType, MdkArm)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Name, Version, Target, Core, PinConfigs,
-                                                TargetProject)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package,
+                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs, TargetProject,
+                                                TargetProjectConfig, Version)
 } // namespace nlohmann
 
 #include <QDebug>
 
 QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
-QT_DEBUG_ADD_TYPE(ProjectTable::CoreType)
 QT_DEBUG_ADD_TYPE(ProjectTable::MdkArmType)
 QT_DEBUG_ADD_TYPE(ProjectTable::TargetProjectType)
 QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)
@@ -112,18 +111,18 @@ QString ProjectTable::dumpProject(ProjectType &project)
 
 void ProjectTable::setValue(ProjectType &project)
 {
-    if (project.Target.isEmpty())
+    if (project.TargetProject.isEmpty())
     {
-        project.Target = "xmake";
+        project.TargetProject = "xmake";
     }
-    if (project.Core.Toolchains.isEmpty())
+    if (project.Toolchains.isEmpty())
     {
-        project.Core.Toolchains = "arm-none-eabi";
+        project.Toolchains = "arm-none-eabi";
     }
     project.Version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
     /* 填充 modules */
     {
-        project.Core.Modules.clear();
+        project.Modules.clear();
         auto pin_configs_i = project.PinConfigs.constBegin();
         while (pin_configs_i != project.PinConfigs.constEnd())
         {
@@ -132,12 +131,12 @@ void ProjectTable::setValue(ProjectType &project)
             if (config.Locked)
             {
                 const QStringList list = config.Function.split("-");
-                project.Core.Modules << list[0];
+                project.Modules << list[0];
             }
 
             ++pin_configs_i;
         }
 
-        project.Core.Modules.removeDuplicates();
+        project.Modules.removeDuplicates();
     }
 }

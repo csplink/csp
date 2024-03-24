@@ -53,7 +53,7 @@ class TestCaseRepositoryTable final : public QObject
     {
         RepositoryTable::RepositoryType repository;
         RepositoryTable::loadRepository(&repository, Config::repoDir() + "/db/repository.yml");
-        const auto chips = repository.chips;
+        const auto chips = repository.Chips;
         auto chips_i = chips.constBegin();
         while (chips_i != chips.constEnd())
         {
@@ -81,20 +81,20 @@ class TestCaseRepositoryTable final : public QObject
                         QVERIFY(!line_i.key().isEmpty());
 
                         auto mcu = line_i.value();
-                        QVERIFY(!mcu.core.isEmpty());
-                        QVERIFY(!mcu.package.isEmpty());
+                        QVERIFY(!mcu.Core.isEmpty());
+                        QVERIFY(!mcu.Package.isEmpty());
 
-                        QVERIFY(!mcu.peripherals.isEmpty());
+                        QVERIFY(!mcu.Peripherals.isEmpty());
 
-                        QVERIFY(mcu.flash > 0);
-                        QVERIFY(mcu.frequency > 0);
-                        QVERIFY(mcu.io > 0);
-                        QVERIFY(mcu.ram > 0);
+                        QVERIFY(mcu.Flash > 0);
+                        QVERIFY(mcu.Frequency > 0);
+                        QVERIFY(mcu.IO > 0);
+                        QVERIFY(mcu.Ram > 0);
 
-                        QVERIFY(mcu.current.lowest > 0);
-                        QVERIFY(mcu.current.run > 0);
-                        QVERIFY(mcu.temperature.max > 0);
-                        QVERIFY(mcu.voltage.max > 0);
+                        QVERIFY(mcu.Current.Lowest > 0);
+                        QVERIFY(mcu.Current.Run > 0);
+                        QVERIFY(mcu.Temperature.Max > 0);
+                        QVERIFY(mcu.Voltage.Max > 0);
 
                         ++line_i;
                     }

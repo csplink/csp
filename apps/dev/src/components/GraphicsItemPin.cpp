@@ -27,8 +27,6 @@
  *  2023-06-07     xqyjlj       initial version
  */
 
-#include <QDebug>
-
 #include "GraphicsItemPin.h"
 
 GraphicsItemPin::GraphicsItemPin(const qreal width, const qreal height)
@@ -86,7 +84,7 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     int width, height;
     const auto b = painter->brush();
     /******************** draw background **************************/
-    if (pinoutUnit_.type.toUpper() == "I/O")
+    if (pinoutUnit_.Type.toUpper() == "I/O")
     {
         if (locked_)
         {
@@ -97,7 +95,7 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
             painter->setBrush(defaultColor);
         }
     }
-    else if (pinoutUnit_.type.toUpper() == "POWER")
+    else if (pinoutUnit_.Type.toUpper() == "POWER")
     {
         painter->setBrush(powerColor);
     }
@@ -200,8 +198,8 @@ void GraphicsItemPin::setPinOutUnit(const PinoutTable::PinoutUnitType &unit)
     menu_->addAction(tr("Reset State"));
     menu_->addSeparator();
 
-    auto function_i = pinoutUnit_.functions.constBegin();
-    while (function_i != pinoutUnit_.functions.constEnd())
+    auto function_i = pinoutUnit_.Functions.constBegin();
+    while (function_i != pinoutUnit_.Functions.constEnd())
     {
         auto *action = new QAction(menu_);
         action->setText(function_i.key());

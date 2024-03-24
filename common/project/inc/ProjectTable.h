@@ -30,6 +30,7 @@
 #ifndef CSP_PROJECT_PROJECT_TABLE_H
 #define CSP_PROJECT_PROJECT_TABLE_H
 
+#include <QDebug>
 #include <QMap>
 
 class ProjectTable
@@ -48,19 +49,6 @@ class ProjectTable
 
     typedef struct
     {
-        QString HAL;           // hal
-        QString Target;        // target
-        QString Package;       // package
-        QString Company;       // company
-        QString Type;          // type
-        QString Toolchains;    // toolchains
-        QStringList Modules;   // modules
-        QStringList Warnings;  // warnings
-        QStringList Languages; // languages
-    } CoreType;
-
-    typedef struct
-    {
         QString Device;    // pack 中的名字
         QString Pack;      // pack
         QString PackUrl;   // cmsis pack更新url
@@ -74,12 +62,20 @@ class ProjectTable
 
     typedef struct
     {
+        QString Company;                         // company
+        QString Hal;                             // hal
+        QString HalVersion;                      // hal version
+        QStringList Modules;                     // modules
+        QString Package;                         // package
+        QString TargetChip;                      // target
+        QString Toolchains;                      // toolchains
+        QString ToolchainsVersion;               // toolchains version
+        QString Type;                            // type
         QString Name;                            // project name
-        QString Version;                         // csp version
-        QString Target;                          // target type: xmake, mdk, cmake
         QMap<QString, PinConfigType> PinConfigs; // pin configs
-        CoreType Core;                           // core configs
-        TargetProjectType TargetProject;
+        QString TargetProject;                   // target project type: xmake, mdk, cmake
+        TargetProjectType TargetProjectConfig;   // target Project config
+        QString Version;                         // csp version
     } ProjectType;
 
   public:
@@ -111,5 +107,10 @@ class ProjectTable
 
     static void setValue(ProjectType &project);
 };
+
+QDebug operator<<(QDebug, const ProjectTable::PinConfigType &);
+QDebug operator<<(QDebug, const ProjectTable::MdkArmType &);
+QDebug operator<<(QDebug, const ProjectTable::TargetProjectType &);
+QDebug operator<<(QDebug, const ProjectTable::ProjectType &);
 
 #endif /** CSP_PROJECT_PROJECT_TABLE_H */

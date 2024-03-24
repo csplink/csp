@@ -90,16 +90,16 @@ public:
      * @param key: user property key
      * @return user property value
      */
-    QVariant get_user_property(int key) const;
+    QVariant getUserProperty(int key) const;
 
     /**
      * @brief set user property
      * @param key: user property key
      * @param value: user property value
      */
-    void set_user_property(int key, const QVariant &value);
+    void setUserProperty(int key, const QVariant &value);
 
-protected:
+  protected:
     explicit QtProperty(QtAbstractPropertyManager *manager);
     void propertyChanged();
 
@@ -107,7 +107,7 @@ private:
     friend class QtAbstractPropertyManager;
     QScopedPointer<QtPropertyPrivate> d_ptr;
 
-    QMap<int, QVariant> _user_property;
+    QMap<int, QVariant> userProperty_;
 };
 
 class QtAbstractPropertyManagerPrivate;

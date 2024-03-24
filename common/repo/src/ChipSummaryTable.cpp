@@ -38,27 +38,27 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, url)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, description)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, device, packs, pack_url, cmsis_core)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::TargetProjectType, xmake, cmake, mdk_arm)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::LinkerType, default_minimum_heap_size,
-                                            default_minimum_stack_size)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, clocktree, company, company_url, documents, hal,
-                               has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
-                               target_project, linker)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, Url)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, Description)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Device, Packs, PackUrl, CmsisCore)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm)
+YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize,
+                                            DefaultMinimumStackSize)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal,
+                               HasPowerPad, Illustrate, Introduction, Line, Modules, Name, Package, Series, Url,
+                               TargetProject, Linker)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, url)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, description)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, device, packs, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::TargetProjectType, xmake, cmake, mdk_arm)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, default_minimum_heap_size, default_minimum_stack_size)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, clocktree, company, company_url, documents, hal,
-                                   has_powerpad, illustrate, introduction, line, modules, name, package, series, url,
-                                   target_project, linker)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, Url)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, Description)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Device, Packs, PackUrl, CmsisCore)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize, DefaultMinimumStackSize)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal,
+                                   HasPowerPad, Illustrate, Introduction, Line, Modules, Name, Package, Series, Url,
+                                   TargetProject, Linker)
 } // namespace nlohmann
 
 QT_DEBUG_ADD_TYPE(ChipSummaryTable::DocumentType)
@@ -94,25 +94,25 @@ void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
 
             file.close();
 
-            if (!chipSummary->linker.default_minimum_heap_size.isEmpty())
+            if (!chipSummary->Linker.DefaultMinimumHeapSize.isEmpty())
             {
-                if (!pattern.match(chipSummary->linker.default_minimum_heap_size).hasMatch())
+                if (!pattern.match(chipSummary->Linker.DefaultMinimumHeapSize).hasMatch())
                 {
                     qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
                                                         "illegal value %1, and the default value 0x200 is used.")
-                                                .arg(chipSummary->linker.default_minimum_heap_size);
-                    chipSummary->linker.default_minimum_heap_size = "0x200";
+                                                .arg(chipSummary->Linker.DefaultMinimumHeapSize);
+                    chipSummary->Linker.DefaultMinimumHeapSize = "0x200";
                 }
             }
 
-            if (!chipSummary->linker.default_minimum_stack_size.isEmpty())
+            if (!chipSummary->Linker.DefaultMinimumStackSize.isEmpty())
             {
-                if (!pattern.match(chipSummary->linker.default_minimum_stack_size).hasMatch())
+                if (!pattern.match(chipSummary->Linker.DefaultMinimumStackSize).hasMatch())
                 {
                     qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
                                                         "illegal value %1, and the default value 0x400 is used.")
-                                                .arg(chipSummary->linker.default_minimum_stack_size);
-                    chipSummary->linker.default_minimum_stack_size = "0x400";
+                                                .arg(chipSummary->Linker.DefaultMinimumStackSize);
+                    chipSummary->Linker.DefaultMinimumStackSize = "0x400";
                 }
             }
         }
