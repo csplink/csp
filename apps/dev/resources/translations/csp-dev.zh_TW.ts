@@ -197,12 +197,12 @@
 <context>
     <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="254"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="249"/>
         <source>CSP project file(*.csp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="264"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="259"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -537,67 +537,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="223"/>
-        <source>Xmake Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="242"/>
+        <location filename="../../views/ViewMainWindow.ui" line="220"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="255"/>
+        <location filename="../../views/ViewMainWindow.ui" line="233"/>
         <source>Load Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="258"/>
+        <location filename="../../views/ViewMainWindow.ui" line="236"/>
         <source>Ctrl+L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="263"/>
+        <location filename="../../views/ViewMainWindow.ui" line="241"/>
         <source>Import Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="268"/>
+        <location filename="../../views/ViewMainWindow.ui" line="246"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="271"/>
+        <location filename="../../views/ViewMainWindow.ui" line="249"/>
         <source>Ctrl+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="276"/>
+        <location filename="../../views/ViewMainWindow.ui" line="254"/>
         <source>Save Project As ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="281"/>
+        <location filename="../../views/ViewMainWindow.ui" line="259"/>
         <source>Close Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="286"/>
+        <location filename="../../views/ViewMainWindow.ui" line="264"/>
         <source>Generate Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="291"/>
+        <location filename="../../views/ViewMainWindow.ui" line="269"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="300"/>
+        <location filename="../../views/ViewMainWindow.ui" line="278"/>
         <source>Generate code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="309"/>
+        <location filename="../../views/ViewMainWindow.ui" line="287"/>
         <source>Package Manager</source>
         <translation type="unfinished"></translation>
     </message>

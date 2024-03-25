@@ -393,7 +393,7 @@ int DialogPackageManager::runXmake(const QString &command, const QStringList &ar
         if (!output.isEmpty())
         {
             const QString msg = output.trimmed();
-            ViewMainWindow::xmakeMessageLogHandler(msg);
+            ViewMainWindow::messageLogHandler(msg);
             if (msg.endsWith("successful") || msg.endsWith("failed"))
             {
                 const QStringList li = msg.split(" ");

@@ -318,7 +318,7 @@ int Project::runXmake(const QString &Command, const QStringList &Args, const QSt
         if (!output.isEmpty())
         {
             const QString msg = output.trimmed();
-            emit signalsXMakeLog(msg);
+            emit signalsLog(msg);
         }
     });
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [process](const int ExitCode, const QProcess::ExitStatus ExitStatus) {

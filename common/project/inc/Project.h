@@ -288,7 +288,7 @@ class Project final : public QObject
     void signalsPinPropertyChanged(const QString &Property, const QString &Name, const QVariant &OldValue, const QVariant &NewValue);
     void signalsPinFunctionPropertyChanged(const QString &Module, const QString &Property, const QString &Name, const QVariant &OldValue, const QVariant &NewValue);
     void signalsProjectClear();
-    void signalsXMakeLog(const QString &Msg) const;
+    void signalsLog(const QString &Msg) const;
 
   private:
     Project() = default;

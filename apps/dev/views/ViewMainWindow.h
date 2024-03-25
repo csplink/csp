@@ -49,11 +49,10 @@ class ViewMainWindow final : public QMainWindow
     explicit ViewMainWindow(QWidget *parent = nullptr);
     ~ViewMainWindow() override;
 
-    static void xmakeMessageLogHandler(const QString &msg);
+    static void messageLogHandler(const QString &msg);
 
   signals:
-    void signalAddSysLog(const QString &string);
-    void signalAddXmakeLog(const QString &string);
+    void signalAddLog(const QString &string);
 
   public slots:
     void updateModulesTreeView(const QString &company, const QString &name) const;

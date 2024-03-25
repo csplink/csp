@@ -197,12 +197,12 @@
 <context>
     <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="254"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="249"/>
         <source>CSP project file(*.csp)</source>
         <translation>CSP工程文件(*.csp)</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="264"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="259"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
@@ -537,67 +537,62 @@
         <translation>配置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="223"/>
-        <source>Xmake Output</source>
-        <translation>Xmake输出</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="242"/>
+        <location filename="../../views/ViewMainWindow.ui" line="220"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="255"/>
+        <location filename="../../views/ViewMainWindow.ui" line="233"/>
         <source>Load Project</source>
         <translation>加载工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="258"/>
+        <location filename="../../views/ViewMainWindow.ui" line="236"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="263"/>
+        <location filename="../../views/ViewMainWindow.ui" line="241"/>
         <source>Import Project</source>
         <translation>导入工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="268"/>
+        <location filename="../../views/ViewMainWindow.ui" line="246"/>
         <source>Save Project</source>
         <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="271"/>
+        <location filename="../../views/ViewMainWindow.ui" line="249"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="276"/>
+        <location filename="../../views/ViewMainWindow.ui" line="254"/>
         <source>Save Project As ...</source>
         <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="281"/>
+        <location filename="../../views/ViewMainWindow.ui" line="259"/>
         <source>Close Project</source>
         <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="286"/>
+        <location filename="../../views/ViewMainWindow.ui" line="264"/>
         <source>Generate Report</source>
         <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="291"/>
+        <location filename="../../views/ViewMainWindow.ui" line="269"/>
         <source>New Chip Project</source>
         <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="300"/>
+        <location filename="../../views/ViewMainWindow.ui" line="278"/>
         <source>Generate code</source>
         <translation>生成代码</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="309"/>
+        <location filename="../../views/ViewMainWindow.ui" line="287"/>
         <source>Package Manager</source>
         <translation>包管理器</translation>
     </message>
