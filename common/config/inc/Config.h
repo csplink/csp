@@ -112,11 +112,14 @@ class Config final
 
     static QString toolGit();
 
+    static QString toolPython();
+
   private:
     inline static QSettings *settings_ = nullptr;
 
     static QString findToolXmake();
     static QString findToolGit();
+    static QString findToolPython();
 
     Config() = default;
     ~Config() = default;

@@ -60,6 +60,9 @@ static constexpr const char *ConfigValueDefaultToolXmake = "xmake";
 static constexpr const char *ConfigKeyToolGit = "tool/git";
 static constexpr const char *ConfigValueDefaultToolGit = "git";
 
+static constexpr const char *ConfigKeyToolPython = "tool/python";
+static constexpr const char *ConfigValueDefaultToolPython = "python";
+
 bool Config::isConfig(const QString &key)
 {
     return settings_->value(key, ConfigDefaultValue).toString() != ConfigDefaultValue;
@@ -226,6 +229,12 @@ QString Config::toolGit()
     return settings_->value(ConfigKeyToolGit, ConfigValueDefaultToolGit).toString();
 }
 
+QString Config::toolPython()
+{
+    Q_ASSERT(settings_ != nullptr);
+    return settings_->value(ConfigKeyToolPython, ConfigValueDefaultToolPython).toString();
+}
+
 QString Config::findToolXmake()
 {
     const QString toolDir = QString("%1/tools").arg(QCoreApplication::applicationDirPath());
@@ -252,4 +261,17 @@ QString Config::findToolGit()
 #endif
 
     return ConfigValueDefaultToolGit;
+}
+
+QString Config::findToolPython()
+{
+    const QString toolDir = QString("%1/tools").arg(QCoreApplication::applicationDirPath());
+#ifdef Q_OS_WINDOWS
+    QString pythonPath = QString("%1/python/python.exe").arg(toolDir);
+    if (QFile::exists(pythonPath))
+    {
+        return pythonPath;
+    }
+#endif
+    return ConfigValueDefaultToolPython;
 }
