@@ -66,6 +66,6 @@ else ()
     add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
 endif ()
 
-add_dependencies(${name} custom_res custom_tools)
+add_dependencies(${name} custom_res)
 
 target_link_libraries(${name} PRIVATE Qt5::Widgets Qt5::Concurrent CspComponents)
