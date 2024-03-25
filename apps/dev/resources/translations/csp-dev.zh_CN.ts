@@ -166,7 +166,7 @@
 <context>
     <name>GraphicsItemPin</name>
     <message>
-        <location filename="../../src/components/GraphicsItemPin.cpp" line="200"/>
+        <location filename="../../src/components/GraphicsItemPin.cpp" line="198"/>
         <source>Reset State</source>
         <translation>复位状态</translation>
     </message>
@@ -197,12 +197,12 @@
 <context>
     <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="256"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="254"/>
         <source>CSP project file(*.csp)</source>
         <translation>CSP工程文件(*.csp)</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="266"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="264"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
@@ -210,57 +210,57 @@
 <context>
     <name>WizardNewProject</name>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="46"/>
+        <location filename="../../views/WizardNewProject.cpp" line="45"/>
         <source>New Project</source>
         <translation>新建工程</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="50"/>
+        <location filename="../../views/WizardNewProject.cpp" line="49"/>
         <source>Next</source>
         <translation>下一步</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="51"/>
+        <location filename="../../views/WizardNewProject.cpp" line="50"/>
         <source>Back</source>
         <translation>上一步</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="52"/>
+        <location filename="../../views/WizardNewProject.cpp" line="51"/>
         <source>Finish</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="53"/>
+        <location filename="../../views/WizardNewProject.cpp" line="52"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="66"/>
+        <location filename="../../views/WizardNewProject.cpp" line="65"/>
         <source>Please input project path and name</source>
         <translation>请输入工程路径与工程名</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="83"/>
+        <location filename="../../views/WizardNewProject.cpp" line="82"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation>欢迎使用此向导创建新项目</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="85"/>
+        <location filename="../../views/WizardNewProject.cpp" line="84"/>
         <source>this will create a new project in the path you choose.</source>
         <translation>这将在您选择的路径中创建一个新项目。</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="88"/>
+        <location filename="../../views/WizardNewProject.cpp" line="87"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation>单击“下一步”继续，或单击“取消”退出安装。</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="103"/>
+        <location filename="../../views/WizardNewProject.cpp" line="102"/>
         <source>Project Path</source>
         <translation>工程路径</translation>
     </message>
     <message>
-        <location filename="../../views/WizardNewProject.cpp" line="106"/>
+        <location filename="../../views/WizardNewProject.cpp" line="105"/>
         <source>Project Name</source>
         <translation>工程名</translation>
     </message>

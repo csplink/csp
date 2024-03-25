@@ -69,7 +69,7 @@ DialogChooseChip::~DialogChooseChip()
 void DialogChooseChip::findAllKeys()
 {
     const auto repository = repoInstance_->getRepository();
-    const auto chips = &repository->chips;
+    const auto chips = &repository->Chips;
     auto chips_i = chips->constBegin();
     while (chips_i != chips->constEnd())
     {
@@ -98,15 +98,15 @@ void DialogChooseChip::findAllKeys()
                 while (line_i != line->constEnd())
                 {
                     auto mcu = const_cast<RepositoryTable::ChipInfoType *>(&line_i.value());
-                    if (!coreKeys_.contains(mcu->core))
-                        coreKeys_ << mcu->core;
-                    if (!packageKeys_.contains(mcu->package))
-                        packageKeys_ << mcu->package;
+                    if (!coreKeys_.contains(mcu->Core))
+                        coreKeys_ << mcu->Core;
+                    if (!packageKeys_.contains(mcu->Package))
+                        packageKeys_ << mcu->Package;
 
-                    mcu->name = line_i.key();
-                    mcu->company = company_name;
-                    mcu->series = series_name;
-                    mcu->line = line_name;
+                    mcu->Name = line_i.key();
+                    mcu->Company = company_name;
+                    mcu->Series = series_name;
+                    mcu->Line = line_name;
                     chips_.append(mcu);
 
                     ++line_i;
@@ -259,16 +259,16 @@ void DialogChooseChip::initTableViewChipInfos()
          ++iter)
     {
         auto chips_item = new QList<QStandardItem *>();
-        chips_item->append(new QStandardItem((*iter)->name));
+        chips_item->append(new QStandardItem((*iter)->Name));
         chips_item->append(new QStandardItem(tr("Unavailable")));
         chips_item->append(new QStandardItem(tr("Unavailable")));
-        chips_item->append(new QStandardItem((*iter)->package));
-        chips_item->append(new QStandardItem(QString::number((*iter)->flash, 'f', 2)));
-        chips_item->append(new QStandardItem(QString::number((*iter)->ram, 'f', 2)));
-        chips_item->append(new QStandardItem(QString::number((*iter)->io, 10)));
-        chips_item->append(new QStandardItem(QString::number((*iter)->frequency, 'f', 2)));
-        chips_item->append(new QStandardItem((*iter)->company));
-        chips_item->append(new QStandardItem((*iter)->core));
+        chips_item->append(new QStandardItem((*iter)->Package));
+        chips_item->append(new QStandardItem(QString::number((*iter)->Flash, 'f', 2)));
+        chips_item->append(new QStandardItem(QString::number((*iter)->Ram, 'f', 2)));
+        chips_item->append(new QStandardItem(QString::number((*iter)->IO, 10)));
+        chips_item->append(new QStandardItem(QString::number((*iter)->Frequency, 'f', 2)));
+        chips_item->append(new QStandardItem((*iter)->Company));
+        chips_item->append(new QStandardItem((*iter)->Core));
         chipsItems_.append(chips_item);
 
         for (const auto &item : *chips_item)
@@ -331,14 +331,14 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selected_indexes)
     {
         ChipSummaryTable::ChipSummaryType chip_summary;
         repo::loadChipSummary(&chip_summary, company, chipName_);
-        halName_ = chip_summary.hal;
-        packageName_ = chip_summary.package;
+        halName_ = chip_summary.Hal;
+        packageName_ = chip_summary.Package;
         companyName_ = company;
 
         ui_->textBrowserReadme->setMarkdown(QString("# %1\n\n").arg(chipName_) +
-                                            chip_summary.illustrate[Config::language()]);
-        ui_->pushButtonName->setProperty("user_url", chip_summary.url[Config::language()]);
-        ui_->pushButtonCompany->setProperty("user_url", chip_summary.company_url[Config::language()]);
+                                            chip_summary.Illustrate[Config::language()]);
+        ui_->pushButtonName->setProperty("user_url", chip_summary.Url[Config::language()]);
+        ui_->pushButtonCompany->setProperty("user_url", chip_summary.CompanyUrl[Config::language()]);
     }
     else
     {
@@ -376,11 +376,11 @@ void DialogChooseChip::dialogButtonBoxClickedCallback(const QAbstractButton *but
         connect(&wizard, &WizardNewProject::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
-                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_HAL, halName_);
-                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_TARGET, chipName_);
-                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_PACKAGE, packageName_);
-                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_COMPANY, companyName_);
-                projectInstance_->setCore(Project::CORE_ATTRIBUTE_TYPE_TYPE, "chip");
+                projectInstance_->setProjectHal(halName_);
+                projectInstance_->setProjectTargetChip(chipName_);
+                projectInstance_->setProjectPackage(packageName_);
+                projectInstance_->setProjectCompany(companyName_);
+                projectInstance_->setProjectType("chip");
                 emit signalsCreateProject();
             }
         });

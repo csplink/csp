@@ -36,22 +36,22 @@
 
 namespace YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, lowest, run)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, max, min)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, max, min)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, core, current, flash, frequency, io, package, peripherals,
-                               ram, temperature, voltage)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, chips)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, Lowest, Run)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, Max, Min)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, Max, Min)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, Core, Current, Flash, Frequency, IO, Package, Peripherals,
+                               Ram, Temperature, Voltage)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, Chips)
 } // namespace YAML
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, lowest, run)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, max, min)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, max, min)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, core, current, flash, frequency, io, package,
-                                   peripherals, ram, temperature, voltage)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, chips)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, Lowest, Run)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, Max, Min)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, Max, Min)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, Core, Current, Flash, Frequency, IO, Package,
+                                   Peripherals, Ram, Temperature, Voltage)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, Chips)
 } // namespace nlohmann
 
 QT_DEBUG_ADD_TYPE(RepositoryTable::CurrentType)

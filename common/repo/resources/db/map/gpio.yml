@@ -22,135 +22,135 @@
 # 2023-04-19     xqyjlj       initial version
 #
 
-groups:
+Groups:
   std.gpio_level_t:
-    comment:
+    Comment:
       zh_CN: GPIO电平类型
       en:
-    values:
+    Values:
       std.gpio_level_low:
-        comment:
+        Comment:
           zh_CN: 低电平
           en:
       std.gpio_level_high:
-        comment:
+        Comment:
           zh_CN: 高电平
           en:
   std.gpio_mode_t:
-    comment:
+    Comment:
       zh_CN: GPIO模式类型
       en:
-    values:
+    Values:
       std.gpio_mode_analog:
-        comment:
+        Comment:
           zh_CN: 模拟模式
           en:
       std.gpio_mode_input:
-        comment:
+        Comment:
           zh_CN: 输入模式
           en:
       std.gpio_mode_output:
-        comment:
+        Comment:
           zh_CN: 输出模式
           en:
       std.gpio_mode_alternate:
-        comment:
+        Comment:
           zh_CN: 复用模式
           en:
   std.gpio_output_type_t:
-    comment:
+    Comment:
       zh_CN: GPIO输出类型
       en:
-    values:
+    Values:
       std.gpio_output_pp:
-        comment:
+        Comment:
           zh_CN: 推挽输出
           en:
       std.gpio_output_od:
-        comment:
+        Comment:
           zh_CN: 开漏输出
           en:
   std.gpio_pull_t:
-    comment:
+    Comment:
       zh_CN: GPIO钳位类型
       en:
-    values:
+    Values:
       std.gpio_pull_down:
-        comment:
+        Comment:
           zh_CN: 下拉
           en:
       std.gpio_pull_up:
-        comment:
+        Comment:
           zh_CN: 上拉
           en:
       std.gpio_pull_no:
-        comment:
+        Comment:
           zh_CN: 浮空
           en:
   std.gpio_speed_t:
-    comment:
+    Comment:
       zh_CN: GPIO速度类型
       en:
-    values:
+    Values:
       std.gpio_speed_low:
-        comment:
+        Comment:
           zh_CN: 慢速
           en:
       std.gpio_speed_medium:
-        comment:
+        Comment:
           zh_CN: 中速
           en:
       std.gpio_speed_high:
-        comment:
+        Comment:
           zh_CN: 高速
           en:
       std.gpio_speed_very_high:
-        comment:
+        Comment:
           zh_CN: 超高速
           en:
-properties:
+Properties:
   std.gpio_level_t:
-    display_name:
+    DisplayName:
       zh_CN: 电平
       en:
-    description:
+    Description:
       zh_CN: GPIO-电平
       en:
-    category: GPIO
-    readonly: false
+    Category: GPIO
+    Readonly: false
   std.gpio_mode_t:
-    display_name:
+    DisplayName:
       zh_CN: 模式
       en:
-    description:
+    Description:
       zh_CN: GPIO-模式
       en:
-    category: GPIO
-    readonly: false
+    Category: GPIO
+    Readonly: false
   std.gpio_output_type_t:
-    display_name:
+    DisplayName:
       zh_CN: 输出类型
       en:
-    description:
+    Description:
       zh_CN: GPIO-输出类型
       en:
-    category: GPIO
-    readonly: false
+    Category: GPIO
+    Readonly: false
   std.gpio_pull_t:
-    display_name:
+    DisplayName:
       zh_CN: 钳位
       en:
-    description:
+    Description:
       zh_CN: GPIO-钳位
       en:
-    category: GPIO
-    readonly: false
+    Category: GPIO
+    Readonly: false
   std.gpio_speed_t:
-    display_name:
+    DisplayName:
       zh_CN: 速度
       en:
-    description:
+    Description:
       zh_CN: GPIO-速度
       en:
-    category: GPIO
-    readonly: false
+    Category: GPIO
+    Readonly: false

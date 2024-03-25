@@ -36,18 +36,17 @@
 
 namespace nlohmann
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, function, comment, locked, function_property)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::CoreType, hal, target, package, company, type, toolchains, modules)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::MdkArmType, device, pack, pack_url, cmsis_core)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::TargetProjectType, mdk_arm)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, name, version, target, core, pin_configs,
-                                                target_project)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, Function, Comment, Locked, FunctionProperty)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::MdkArmType, Device, Pack, PackUrl, CmsisCore)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::TargetProjectType, MdkArm)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package,
+                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs, TargetProject,
+                                                TargetProjectConfig, Version)
 } // namespace nlohmann
 
 #include <QDebug>
 
 QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
-QT_DEBUG_ADD_TYPE(ProjectTable::CoreType)
 QT_DEBUG_ADD_TYPE(ProjectTable::MdkArmType)
 QT_DEBUG_ADD_TYPE(ProjectTable::TargetProjectType)
 QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)
@@ -112,32 +111,32 @@ QString ProjectTable::dumpProject(ProjectType &project)
 
 void ProjectTable::setValue(ProjectType &project)
 {
-    if (project.target.isEmpty())
+    if (project.TargetProject.isEmpty())
     {
-        project.target = "xmake";
+        project.TargetProject = "xmake";
     }
-    if (project.core.toolchains.isEmpty())
+    if (project.Toolchains.isEmpty())
     {
-        project.core.toolchains = "arm-none-eabi";
+        project.Toolchains = "arm-none-eabi";
     }
-    project.version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
+    project.Version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
     /* 填充 modules */
     {
-        project.core.modules.clear();
-        auto pin_configs_i = project.pin_configs.constBegin();
-        while (pin_configs_i != project.pin_configs.constEnd())
+        project.Modules.clear();
+        auto pin_configs_i = project.PinConfigs.constBegin();
+        while (pin_configs_i != project.PinConfigs.constEnd())
         {
             const PinConfigType &config = pin_configs_i.value();
 
-            if (config.locked)
+            if (config.Locked)
             {
-                const QStringList list = config.function.split("-");
-                project.core.modules << list[0];
+                const QStringList list = config.Function.split("-");
+                project.Modules << list[0];
             }
 
             ++pin_configs_i;
         }
 
-        project.core.modules.removeDuplicates();
+        project.Modules.removeDuplicates();
     }
 }

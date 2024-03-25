@@ -38,20 +38,24 @@
 #include "MapTable.h"
 #include "ProjectTable.h"
 
+#define CSP_PRIVATE_PROJECT_SETTER_HELPER(NAME, VALUE, FUNCTION) \
+    void set##NAME(const decltype(VALUE) &v)                     \
+    {                                                            \
+        (VALUE) = v;                                             \
+        FUNCTION();                                              \
+    }
+
+#define CSP_PRIVATE_PROJECT_GETTER_HELPER(NAME, VALUE) \
+    const decltype(VALUE) &get##NAME()                 \
+    {                                                  \
+        return VALUE;                                  \
+    }
+
 class Project final : public QObject
 {
     Q_OBJECT
 
   public:
-    typedef enum
-    {
-        CORE_ATTRIBUTE_TYPE_HAL = 0,
-        CORE_ATTRIBUTE_TYPE_TARGET,
-        CORE_ATTRIBUTE_TYPE_PACKAGE,
-        CORE_ATTRIBUTE_TYPE_COMPANY,
-        CORE_ATTRIBUTE_TYPE_TYPE,
-    } CoreAttributeType;
-
     /**
      * @brief init config
      */
@@ -61,22 +65,6 @@ class Project final : public QObject
      * @brief deinit config
      */
     static void deinit();
-
-    /******************* core ***********************/
-    /**
-     * @brief get core config value by core name
-     * @param Type: core attribute type
-     * @return core config value
-     */
-    QString getCore(CoreAttributeType Type) const;
-
-    /**
-     * @brief set core config value by core name
-     * @param Type: core attribute type
-     * @param Value: core config value
-     */
-    void setCore(CoreAttributeType Type, const QString &Value);
-    /***********************************************/
 
     /**
      * @brief get project file path
@@ -97,12 +85,6 @@ class Project final : public QObject
     QString getName() const;
 
     /**
-     * @brief set project name
-     * @param Name: project name
-     */
-    void setName(const QString &Name);
-
-    /**
      * @brief get ip map
      * @return ip map as a modifiable reference
      */
@@ -115,7 +97,10 @@ class Project final : public QObject
     MapTable::MapsType &getMaps();
 
     void loadChipSummary(const QString &Company, const QString &Name);
+
     ChipSummaryTable::ChipSummaryType &getChipSummary();
+
+    const ProjectTable::ProjectType &getProjectTable();
 
     /******************* pin ************************/
     /**
@@ -196,7 +181,7 @@ class Project final : public QObject
      * @param Key: pin name
      * @return pin config function properties as a modifiable reference
      */
-    ProjectTable::pin_function_properties_t &getPinConfigFunctionProperty(const QString &Key);
+    ProjectTable::PinFunctionPropertiesType &getPinConfigFunctionProperty(const QString &Key);
 
     /**
      * @brief get pin config function property
@@ -263,6 +248,34 @@ class Project final : public QObject
      * @return project instance
      */
     static Project *getInstance();
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectCompany, project_.Company, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectCompany, project_.Company)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectHal, project_.Hal, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectHal, project_.Hal)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectHalVersion, project_.HalVersion, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectHalVersion, project_.HalVersion)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectModules, project_.Modules, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectModules, project_.Modules)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectPackage, project_.Package, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectPackage, project_.Package)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectTargetChip, project_.TargetChip, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectTargetChip, project_.TargetChip)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectToolchains, project_.Toolchains, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectToolchains, project_.Toolchains)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectType, project_.Type, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectType, project_.Type)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectName, project_.Name, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectName, project_.Name)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectPinConfigs, project_.PinConfigs, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectTargetProject, project_.TargetProject, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectTargetProject, project_.TargetProject)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectTargetProjectConfig, project_.TargetProjectConfig, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectTargetProjectConfig, project_.TargetProjectConfig)
+    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectVersion, project_.Version, void)
+    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectVersion, project_.Version)
 
   signals:
     /**

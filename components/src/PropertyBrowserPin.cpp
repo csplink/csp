@@ -95,10 +95,10 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
     const auto function = projectInstance_->getPinFunction(name);               // such as "GPIO-Input"
     const auto comment = projectInstance_->getPinComment(name);                 // such as "LED0"
     const auto locked = projectInstance_->getPinLocked(name);                   // such as "true"
-    const auto function_type = pinout_unit->functions[function].type.toLower(); // such as "gpio"
+    const auto function_type = pinout_unit->Functions[function].Type.toLower(); // such as "gpio"
     const auto maps = projectInstance_->getMaps();
 
-    const auto base_group_item = setPinBase(name, comment, pinout_unit->position, locked);
+    const auto base_group_item = setPinBase(name, comment, pinout_unit->Position, locked);
     this->addProperty(base_group_item);
     const auto function_group_item = setPinSystem(function);
     this->addProperty(function_group_item);
@@ -107,13 +107,13 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
     {
         auto map = projectInstance_->getMaps()[function_type];                 // such as "map/gpio.yml"
         const auto fps = projectInstance_->getPinConfigFunctionProperty(name); // ping config function properties
-        const auto function_mode = pinout_unit->functions[function].mode;      // such as "Input-Std <just string>"
+        const auto function_mode = pinout_unit->Functions[function].Mode;      // such as "Input-Std <just string>"
         auto ip = projectInstance_->getIps()[function_type];                   // such as "apm32f103zet6/ip/gpio.yml"
         const auto ip_map = ip[function_mode];                                 // such as "Input-Std <just struct>"
         auto ip_map_i = ip_map.constBegin();
-        const auto type = pinout_unit->functions[function].type; // such as "GPIO"
+        const auto type = pinout_unit->Functions[function].Type; // such as "GPIO"
         QtProperty *group_item = variantManager_->addProperty(QtVariantPropertyManager::groupTypeId(), type);
-        ProjectTable::pin_function_property_t fp = {};
+        ProjectTable::PinFunctionPropertyType fp = {};
 
         if (fps.contains(function_type)) // already configured
             fp = fps.value(function_type);
@@ -122,24 +122,24 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
 
         while (ip_map_i != ip_map.constEnd())
         {
-            auto parameter_name = ip_map_i.key();                // such as "chal_gpio_pull_t <just string>"
-            auto parameters = ip_map_i.value();                  // such as "CHAL_GPIO_PULL_UP, CHAL_GPIO_PULL_DOWN"
-            auto property = map.properties[parameter_name];      // such as "chal_gpio_pull_t <just struct>"
-            auto language = Config::language();                  // such as "zh_CN"
-            auto display_name = property.display_name[language]; // such as "钳位<zh_CN>, means PULL<en>"
-            auto description = property.description[language];   // such as "GPIO-钳位<zh_CN>, means GPIO-PULL<en>"
+            auto parameter_name = ip_map_i.key();               // such as "chal_gpio_pull_t <just string>"
+            auto parameters = ip_map_i.value();                 // such as "CHAL_GPIO_PULL_UP, CHAL_GPIO_PULL_DOWN"
+            auto property = map.Properties[parameter_name];     // such as "chal_gpio_pull_t <just struct>"
+            auto language = Config::language();                 // such as "zh_CN"
+            auto display_name = property.DisplayName[language]; // such as "钳位<zh_CN>, means PULL<en>"
+            auto description = property.Description[language];  // such as "GPIO-钳位<zh_CN>, means GPIO-PULL<en>"
             const auto id = QtVariantPropertyManager::enumTypeId();
             auto *variant_item = variantManager_->addProperty(id, display_name);
             QStringList values;
             for (const auto &parameter : parameters)
             {
-                values.append(map.total[parameter]); // such as "上拉, 下拉"
+                values.append(map.Total[parameter]); // such as "上拉, 下拉"
             }
             variant_item->setAttribute("enumNames", values);
 
             if (!fp.isEmpty()) // already configured
             {
-                auto value = map.total.value(fp.value(parameter_name));
+                auto value = map.Total.value(fp.value(parameter_name));
                 if (!value.isEmpty() && values.contains(value))
                 {
                     variant_item->setValue(values.indexOf(value)); // just read
@@ -158,8 +158,8 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
             }
 
             variant_item->setDescriptionToolTip(description);
-            variant_item->set_user_property(PROPERTY_ID_FUNCTION_TYPE, function_type);
-            variant_item->set_user_property(PROPERTY_ID_PARAMETER_NAME, parameter_name);
+            variant_item->setUserProperty(PROPERTY_ID_FUNCTION_TYPE, function_type);
+            variant_item->setUserProperty(PROPERTY_ID_PARAMETER_NAME, parameter_name);
             group_item->addSubProperty(variant_item);
 
             ++ip_map_i;
@@ -203,10 +203,10 @@ void PropertyBrowserPin::pinValueChangedCallback(const QtProperty *property, con
         if (type == QtVariantPropertyManager::enumTypeId())
         {
             const auto property_name = property->propertyName();
-            const auto function_type = property->get_user_property(PROPERTY_ID_FUNCTION_TYPE).toString();
-            const auto parameter_name = property->get_user_property(PROPERTY_ID_PARAMETER_NAME).toString();
+            const auto function_type = property->getUserProperty(PROPERTY_ID_FUNCTION_TYPE).toString();
+            const auto parameter_name = property->getUserProperty(PROPERTY_ID_PARAMETER_NAME).toString();
             const auto parameter_value_translations = property->valueText();
-            auto total = projectInstance_->getMaps()[function_type].reverse_total;
+            auto total = projectInstance_->getMaps()[function_type].ReverseTotal;
             const auto parameter_value = total[property->valueText()];
 
             Q_UNUSED(property_name)

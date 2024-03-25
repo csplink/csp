@@ -1,22 +1,904 @@
 {
-  "name": "untitled",
-  "target": "xmake",
-  "version": "v0.0.0.1",
-  "core": {
-    "hal": "csp_hal_apm32f1",
-    "target": "APM32F103ZET6",
-    "package": "LQFP144",
-    "company": "Geehy",
-    "type": "chip",
-    "modules": [],
-    "toolchains": "arm-none-eabi"
-  },
-  "pin_configs": {
-    "pa1": {
-      "function": "",
-      "comment": "",
-      "locked": false,
-      "function_property": {}
+  "Company": "Geehy",
+  "Hal": "csp_hal_apm32f1",
+  "HalVersion": "",
+  "Modules": [
+    "GPIO"
+  ],
+  "Name": "untitled",
+  "Package": "LQFP144",
+  "PinConfigs": {
+    "BOOT0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "NC": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "NRST": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PA9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PB9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PC9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PD9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE5": {
+      "Comment": "LED3",
+      "Function": "GPIO-Output",
+      "FunctionProperty": {
+        "gpio": {
+          "std.gpio_level_t": "std.gpio_level_low",
+          "std.gpio_mode_t": "std.gpio_mode_output",
+          "std.gpio_output_type_t": "std.gpio_output_pp",
+          "std.gpio_speed_t": "std.gpio_speed_low"
+        }
+      },
+      "Locked": true
+    },
+    "PE6": {
+      "Comment": "LED2",
+      "Function": "GPIO-Output",
+      "FunctionProperty": {
+        "gpio": {
+          "std.gpio_level_t": "std.gpio_level_low",
+          "std.gpio_mode_t": "std.gpio_mode_output",
+          "std.gpio_output_type_t": "std.gpio_output_pp",
+          "std.gpio_speed_t": "std.gpio_speed_low"
+        }
+      },
+      "Locked": true
+    },
+    "PE7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PE9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PF9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG0": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG12": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG13": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG14": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG15": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "PG9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "RCM-OSC-IN": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "RCM-OSC-OUT": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VBAT": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDD-9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VDDA": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VREF+": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VREF-": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-1": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-10": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-11": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-2": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-3": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-4": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-5": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-6": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-7": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-8": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSS-9": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
+    },
+    "VSSA": {
+      "Comment": "",
+      "Function": "",
+      "FunctionProperty": {},
+      "Locked": false
     }
-  }
+  },
+  "TargetChip": "APM32F103ZET6",
+  "TargetProject": "xmake",
+  "TargetProjectConfig": {
+    "MdkArm": {
+      "CmsisCore": "",
+      "Device": "",
+      "Pack": "",
+      "PackUrl": ""
+    }
+  },
+  "Toolchains": "arm-none-eabi",
+  "ToolchainsVersion": "",
+  "Type": "chip",
+  "Version": "v0.0.0.1"
 }

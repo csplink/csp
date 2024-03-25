@@ -37,12 +37,12 @@ class ChipSummaryTable final
   public:
     typedef struct
     {
-        QMap<QString, QString> url;
+        QMap<QString, QString> Url;
     } DocumentType;
 
     typedef struct
     {
-        QMap<QString, QString> description;
+        QMap<QString, QString> Description;
     } ModuleType;
 
     typedef QMap<QString, QMap<QString, DocumentType>> DocumentsType;
@@ -50,43 +50,43 @@ class ChipSummaryTable final
 
     typedef struct
     {
-        QString device;     // pack 中的名字
-        QStringList packs;  // pack 列表
-        QString pack_url;   // cmsis pack更新url
-        QString cmsis_core; // 依赖的cmsis core最低版本
+        QString Device;    // device name in package
+        QStringList Packs; // package list
+        QString PackUrl;   // cmsis package url
+        QString CmsisCore; // deps cmsis core min version
     } MdkArmType;
 
     typedef struct
     {
-        bool xmake;
-        bool cmake;
-        MdkArmType mdk_arm;
+        bool XMake;
+        bool CMake;
+        MdkArmType MdkArm;
     } TargetProjectType;
 
     typedef struct
     {
-        QString default_minimum_heap_size;
-        QString default_minimum_stack_size;
+        QString DefaultMinimumHeapSize;
+        QString DefaultMinimumStackSize;
     } LinkerType;
 
     typedef struct
     {
-        QString clocktree;
-        QString company;
-        QMap<QString, QString> company_url;
-        DocumentsType documents;
-        QString hal;
-        bool has_powerpad;
-        QMap<QString, QString> illustrate;
-        QMap<QString, QString> introduction;
-        QString line;
-        ModulesType modules;
-        QString name;
-        QString package;
-        QString series;
-        QMap<QString, QString> url;
-        TargetProjectType target_project;
-        LinkerType linker;
+        QString ClockTree;
+        QString Company;
+        QMap<QString, QString> CompanyUrl;
+        DocumentsType Documents;
+        QString Hal;
+        bool HasPowerPad;
+        QMap<QString, QString> Illustrate;
+        QMap<QString, QString> Introduction;
+        QString Line;
+        ModulesType Modules;
+        QString Name;
+        QString Package;
+        QString Series;
+        QMap<QString, QString> Url;
+        TargetProjectType TargetProject;
+        LinkerType Linker;
     } ChipSummaryType;
 
     static void loadChipSummary(ChipSummaryType *chipSummary, const QString &path);

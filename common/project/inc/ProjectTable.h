@@ -30,56 +30,52 @@
 #ifndef CSP_PROJECT_PROJECT_TABLE_H
 #define CSP_PROJECT_PROJECT_TABLE_H
 
+#include <QDebug>
 #include <QMap>
 
 class ProjectTable
 {
   public:
-    typedef QMap<QString, QString> pin_function_property_t;
-    typedef QMap<QString, pin_function_property_t> pin_function_properties_t;
+    typedef QMap<QString, QString> PinFunctionPropertyType;
+    typedef QMap<QString, PinFunctionPropertyType> PinFunctionPropertiesType;
 
     typedef struct
     {
-        QString function;                            // pin selected function
-        QString comment;                             // pin comment
-        bool locked;                                 // pin locked
-        pin_function_properties_t function_property; // pin function properties
+        QString Function;                           // pin selected function
+        QString Comment;                            // pin comment
+        bool Locked;                                // pin locked
+        PinFunctionPropertiesType FunctionProperty; // pin function properties
     } PinConfigType;
 
     typedef struct
     {
-        QString hal;           // hal
-        QString target;        // target
-        QString package;       // package
-        QString company;       // company
-        QString type;          // type
-        QString toolchains;    // toolchains
-        QStringList modules;   // modules
-        QStringList warnings;  // warnings
-        QStringList languages; // languages
-    } CoreType;
-
-    typedef struct mdk_arm_struct
-    {
-        QString device;     // pack 中的名字
-        QString pack;       // pack
-        QString pack_url;   // cmsis pack更新url
-        QString cmsis_core; // 依赖的cmsis core最低版本
+        QString Device;    // pack 中的名字
+        QString Pack;      // pack
+        QString PackUrl;   // cmsis pack更新url
+        QString CmsisCore; // 依赖的cmsis core最低版本
     } MdkArmType;
 
-    typedef struct target_project_struct
+    typedef struct
     {
-        MdkArmType mdk_arm;
+        MdkArmType MdkArm;
     } TargetProjectType;
 
     typedef struct
     {
-        QString name;                            // project name
-        QString version;                         // csp version
-        QString target;                          // target type: xmake, mdk, cmake
-        QMap<QString, PinConfigType> pin_configs; // pin configs
-        CoreType core;                            // core configs
-        TargetProjectType target_project;
+        QString Company;                         // company
+        QString Hal;                             // hal
+        QString HalVersion;                      // hal version
+        QStringList Modules;                     // modules
+        QString Package;                         // package
+        QString TargetChip;                      // target
+        QString Toolchains;                      // toolchains
+        QString ToolchainsVersion;               // toolchains version
+        QString Type;                            // type
+        QString Name;                            // project name
+        QMap<QString, PinConfigType> PinConfigs; // pin configs
+        QString TargetProject;                   // target project type: xmake, mdk, cmake
+        TargetProjectType TargetProjectConfig;   // target Project config
+        QString Version;                         // csp version
     } ProjectType;
 
   public:
@@ -111,5 +107,10 @@ class ProjectTable
 
     static void setValue(ProjectType &project);
 };
+
+QDebug operator<<(QDebug, const ProjectTable::PinConfigType &);
+QDebug operator<<(QDebug, const ProjectTable::MdkArmType &);
+QDebug operator<<(QDebug, const ProjectTable::TargetProjectType &);
+QDebug operator<<(QDebug, const ProjectTable::ProjectType &);
 
 #endif /** CSP_PROJECT_PROJECT_TABLE_H */

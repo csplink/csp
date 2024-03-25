@@ -53,9 +53,9 @@ class TestCaseMapTable final : public QObject
     {
         MapTable::MapType map;
         MapTable::loadMap(&map, ":/lib/repo/db/map/gpio.yml");
-        QVERIFY(!map.groups.isEmpty());
-        QVERIFY(!map.properties.isEmpty());
-        QVERIFY(!map.total.isEmpty());
+        QVERIFY(!map.Groups.isEmpty());
+        QVERIFY(!map.Properties.isEmpty());
+        QVERIFY(!map.Total.isEmpty());
     }
 
     static void cleanupTestCase()

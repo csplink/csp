@@ -37,15 +37,15 @@ class PinoutTable final
   public:
     typedef struct
     {
-        QString mode;
-        QString type;
+        QString Mode;
+        QString Type;
     } FunctionType;
 
     typedef struct
     {
-        int position;
-        QString type;
-        QMap<QString, FunctionType> functions;
+        int Position;
+        QString Type;
+        QMap<QString, FunctionType> Functions;
     } PinoutUnitType;
 
     typedef QMap<QString, PinoutUnitType> PinoutType;

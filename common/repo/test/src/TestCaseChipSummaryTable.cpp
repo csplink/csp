@@ -42,13 +42,13 @@ class TestCaseChipSummaryTable final : public QObject
 
     static void check(const ChipSummaryTable::ChipSummaryType &chip_summary)
     {
-        QVERIFY(!chip_summary.clocktree.isEmpty());
-        QVERIFY(!chip_summary.company.isEmpty());
-        QVERIFY(!chip_summary.hal.isEmpty());
-        QVERIFY(!chip_summary.line.isEmpty());
-        QVERIFY(!chip_summary.name.isEmpty());
-        QVERIFY(!chip_summary.package.isEmpty());
-        QVERIFY(!chip_summary.series.isEmpty());
+        QVERIFY(!chip_summary.ClockTree.isEmpty());
+        QVERIFY(!chip_summary.Company.isEmpty());
+        QVERIFY(!chip_summary.Hal.isEmpty());
+        QVERIFY(!chip_summary.Line.isEmpty());
+        QVERIFY(!chip_summary.Name.isEmpty());
+        QVERIFY(!chip_summary.Package.isEmpty());
+        QVERIFY(!chip_summary.Series.isEmpty());
     }
 
   private slots:
