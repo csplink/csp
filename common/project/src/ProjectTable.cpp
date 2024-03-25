@@ -113,7 +113,7 @@ void ProjectTable::setValue(ProjectType &project)
 {
     if (project.TargetProject.isEmpty())
     {
-        project.TargetProject = "xmake";
+        project.TargetProject = "XMake";
     }
     if (project.Toolchains.isEmpty())
     {

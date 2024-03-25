@@ -117,15 +117,15 @@ void ViewConfigure::initProjectSettings() const
 
     if (target_project.XMake)
     {
-        ui_->comboBoxBuildScriptIde->addItem("xmake");
+        ui_->comboBoxBuildScriptIde->addItem("XMake");
     }
     if (target_project.CMake)
     {
-        ui_->comboBoxBuildScriptIde->addItem("cmake");
+        ui_->comboBoxBuildScriptIde->addItem("CMake");
     }
     if (!target_project.MdkArm.Device.isEmpty())
     {
-        ui_->comboBoxBuildScriptIde->addItem("mdk_arm");
+        ui_->comboBoxBuildScriptIde->addItem("MDK-Arm");
     }
 
     flushComboBoxPackageVersion();
