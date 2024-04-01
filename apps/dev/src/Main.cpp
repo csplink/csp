@@ -29,7 +29,6 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFontDatabase>
@@ -40,6 +39,7 @@
 #include "Project.h"
 #include "Repo.h"
 #include "ViewMainWindow.h"
+#include "XMake.h"
 
 static void init()
 {
@@ -48,14 +48,16 @@ static void init()
     Q_INIT_RESOURCE(repo);
 
     Config::init();
-    repo::init();
+    Repo::init();
     Project::init();
+    XMake::init();
 }
 
 static void deinit()
 {
+    XMake::deinit();
     Project::deinit();
-    repo::deinit();
+    Repo::deinit();
     Config::deinit();
 
     Q_CLEANUP_RESOURCE(repo);

@@ -27,9 +27,11 @@
  *  2023-05-26     xqyjlj       initial version
  */
 
+#include <QApplication>
 #include <QDebug>
 #include <QDir>
 #include <QProcess>
+#include <QtConcurrent/QtConcurrent>
 
 #include "Config.h"
 #include "Project.h"
@@ -284,65 +286,22 @@ void Project::clearProject()
     emit signalsProjectClear();
 }
 
-int Project::runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir) const
-{
-    const QString program = Config::toolXmake();
-    const QMap<QString, QString> env = Config::env();
-    QStringList list;
-    if (!Command.isEmpty())
-    {
-        list = QStringList{ Command, "-D" };
-    }
-    list << Args;
-
-    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    auto env_i = env.constBegin();
-    while (env_i != env.constEnd())
-    {
-        environment.insert(env_i.key(), env_i.value());
-        ++env_i;
-    }
-    QProcess *process = new QProcess();
-    process->setProgram(program);
-    process->setArguments(list);
-    process->setProcessEnvironment(environment);
-
-    const QDir dir(WorkDir);
-    if (dir.exists())
-    {
-        process->setWorkingDirectory(WorkDir);
-    }
-
-    connect(process, &QProcess::readyReadStandardOutput, this, [this, process]() {
-        const QByteArray output = process->readAllStandardOutput();
-        if (!output.isEmpty())
-        {
-            const QString msg = output.trimmed();
-            emit signalsLog(msg);
-        }
-    });
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [process](const int ExitCode, const QProcess::ExitStatus ExitStatus) {
-        Q_UNUSED(ExitCode);
-        Q_UNUSED(ExitStatus);
-        process->deleteLater();
-    });
-
-    process->start();
-    process->waitForFinished(30000);
-    return process->exitCode();
-}
-
 void Project::generateCode() const
 {
     const QFileInfo info(path_);
-    runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + info.dir().absolutePath(), QString("--repositories=") + Config::repositoriesDir() });
+    // runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + info.dir().absolutePath(), QString("--repositories=") + Config::repositoriesDir() });
 }
 
-void Project::build(const QString &Mode) const
+void Project::build(const QString &mode) const
 {
-    const QFileInfo info(path_);
-    (void)runXmake("f", { "-y", "-m", Mode }, info.dir().absolutePath());
-    (void)runXmake("", { "-y", "-j8" }, info.dir().absolutePath());
+    QFuture<int> future = QtConcurrent::run([this, mode] {
+        const int errorCode = XMake::build(path_, mode);
+        return errorCode;
+    });
+    while (!future.isFinished())
+    {
+        QApplication::processEvents();
+    }
 }
 
 const ProjectTable::ProjectType &Project::getProjectTable()

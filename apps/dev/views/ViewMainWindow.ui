@@ -81,7 +81,6 @@
      <string>Project</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionGenerate"/>
     <addaction name="actionPackageManager"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -89,8 +88,19 @@
      <string>Help</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuBuild">
+    <property name="title">
+     <string>Build</string>
+    </property>
+    <addaction name="actionGenerate"/>
+    <addaction name="separator"/>
+    <addaction name="actionBuildRelease"/>
+    <addaction name="actionBuildDebug"/>
+    <addaction name="separator"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menuProject"/>
+   <addaction name="menuBuild"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -227,6 +237,8 @@
    </attribute>
    <addaction name="actionGenerate"/>
    <addaction name="actionPackageManager"/>
+   <addaction name="separator"/>
+   <addaction name="actionBuildRelease"/>
   </widget>
   <action name="actionLoad">
    <property name="text">
@@ -285,6 +297,24 @@
    </property>
    <property name="text">
     <string>Package Manager</string>
+   </property>
+  </action>
+  <action name="actionBuildRelease">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icon/hammer-fill.svg</normaloff>:/icon/hammer-fill.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Build Release</string>
+   </property>
+  </action>
+  <action name="actionBuildDebug">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icon/hammer-fill.svg</normaloff>:/icon/hammer-fill.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Build Debug</string>
    </property>
   </action>
  </widget>

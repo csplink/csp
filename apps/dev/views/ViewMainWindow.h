@@ -31,6 +31,7 @@
 #define VIEW_MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include <QProcess>
 
 #include "Project.h"
 
@@ -67,6 +68,9 @@ class ViewMainWindow final : public QMainWindow
     void actionReportTriggeredCallback(bool checked) const;
     void actionGenerateTriggeredCallback(bool checked) const;
     void actionPackageManagerTriggeredCallback(bool checked);
+    void actionBuildDebugTriggeredCallback(bool checked) const;
+    void actionBuildReleaseTriggeredCallback(bool checked) const;
+    void xmakeReadyReadStandardOutputCallback(const QProcess *process, const QString &msg);
 
   private:
     Ui::viewMainWindow *ui_;

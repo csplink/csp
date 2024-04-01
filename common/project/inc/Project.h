@@ -38,17 +38,15 @@
 #include "MapTable.h"
 #include "ProjectTable.h"
 
-#define CSP_PRIVATE_PROJECT_SETTER_HELPER(NAME, VALUE, FUNCTION) \
-    void set##NAME(const decltype(VALUE) &v)                     \
-    {                                                            \
-        (VALUE) = v;                                             \
-        FUNCTION();                                              \
-    }
-
-#define CSP_PRIVATE_PROJECT_GETTER_HELPER(NAME, VALUE) \
-    const decltype(VALUE) &get##NAME()                 \
-    {                                                  \
-        return VALUE;                                  \
+#define CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(NAME, VALUE, FUNCTION) \
+    void set##NAME(const decltype(VALUE) &v)                            \
+    {                                                                   \
+        (VALUE) = v;                                                    \
+        FUNCTION();                                                     \
+    }                                                                   \
+    const decltype(VALUE) &get##NAME()                                  \
+    {                                                                   \
+        return VALUE;                                                   \
     }
 
 class Project final : public QObject
@@ -230,9 +228,7 @@ class Project final : public QObject
     /**
      * @brief 构建工程
      */
-    void build(const QString &Mode) const;
-
-    int runXmake(const QString &Command, const QStringList &Args, const QString &WorkDir = Config::defaultWorkDir()) const;
+    void build(const QString &mode) const;
 
   private:
     inline static Project *instance_ = nullptr;
@@ -248,34 +244,20 @@ class Project final : public QObject
      * @return project instance
      */
     static Project *getInstance();
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectCompany, project_.Company, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectCompany, project_.Company)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectHal, project_.Hal, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectHal, project_.Hal)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectHalVersion, project_.HalVersion, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectHalVersion, project_.HalVersion)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectModules, project_.Modules, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectModules, project_.Modules)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectPackage, project_.Package, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectPackage, project_.Package)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectTargetChip, project_.TargetChip, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectTargetChip, project_.TargetChip)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectToolchains, project_.Toolchains, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectToolchains, project_.Toolchains)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectType, project_.Type, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectType, project_.Type)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectName, project_.Name, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectName, project_.Name)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectPinConfigs, project_.PinConfigs, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectTargetProject, project_.TargetProject, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectTargetProject, project_.TargetProject)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectTargetProjectConfig, project_.TargetProjectConfig, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectTargetProjectConfig, project_.TargetProjectConfig)
-    CSP_PRIVATE_PROJECT_SETTER_HELPER(ProjectVersion, project_.Version, void)
-    CSP_PRIVATE_PROJECT_GETTER_HELPER(ProjectVersion, project_.Version)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectCompany, project_.Company, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHal, project_.Hal, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHalVersion, project_.HalVersion, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectModules, project_.Modules, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPackage, project_.Package, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetChip, project_.TargetChip, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchains, project_.Toolchains, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectType, project_.Type, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectName, project_.Name, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProject, project_.TargetProject, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProjectConfig, project_.TargetProjectConfig, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectVersion, project_.Version, void)
 
   signals:
     /**

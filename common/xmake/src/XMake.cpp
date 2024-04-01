@@ -36,6 +36,7 @@
 #include "Config.h"
 #include "QtJson.h"
 #include "XMake.h"
+#include "XMakeAsync.h"
 
 namespace nlohmann
 {
@@ -51,6 +52,16 @@ QT_DEBUG_ADD_TYPE(XMake::PackageType)
 XMake::XMake() = default;
 
 XMake::~XMake() = default;
+
+void XMake::init()
+{
+    XMakeAsync::init();
+}
+
+void XMake::deinit()
+{
+    XMakeAsync::deinit();
+}
 
 bool XMake::execv(const QStringList &argv, QByteArray *output, QByteArray *error)
 {
@@ -168,4 +179,10 @@ void XMake::loadPackages(PackageType *packages, const QString &name)
     {
         // TODO: Invalid parameter
     }
+}
+
+int XMake::build(const QString &path, const QString &mode)
+{
+    XMakeAsync *xmake = XMakeAsync::getInstance();
+    return xmake->build(path, mode);
 }

@@ -30,33 +30,33 @@
 #include "Repo.h"
 #include "Config.h"
 
-repo::repo()
+Repo::Repo()
 {
     RepositoryTable::loadRepository(&repository_, Config::repoDir() + "/db/repository.yml");
 }
 
-repo::~repo() = default;
+Repo::~Repo() = default;
 
-void repo::init()
+void Repo::init()
 {
     if (instance_ == nullptr)
     {
-        instance_ = new repo();
+        instance_ = new Repo();
     }
 }
 
-void repo::deinit()
+void Repo::deinit()
 {
     delete instance_;
     instance_ = nullptr;
 }
 
-repo *repo::getInstance()
+Repo *Repo::getInstance()
 {
     return instance_;
 }
 
-const RepositoryTable::RepositoryType *repo::getRepository() const
+const RepositoryTable::RepositoryType *Repo::getRepository() const
 {
     return &repository_;
 }

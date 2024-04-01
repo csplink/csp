@@ -35,6 +35,8 @@
 #include <QObject>
 #include <QString>
 
+#include "XMakeAsync.h"
+
 class XMake final : public QObject
 {
     Q_OBJECT
@@ -59,6 +61,9 @@ class XMake final : public QObject
 
     typedef QMap<QString, InformationType> PackageCellType;
     typedef QMap<QString, PackageCellType> PackageType;
+
+    static void init();
+    static void deinit();
 
     /**
      * @brief get xmake version
@@ -85,6 +90,8 @@ class XMake final : public QObject
      * @return void
      */
     static void loadPackages(PackageType *packages, const QString &name = "");
+
+    static int build(const QString &path, const QString &mode = "release");
 
   private:
     XMake();
