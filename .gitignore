@@ -74,3 +74,6 @@ common/config/inc/Configure.h
 *.DotSettings*
 out
 CMake*.json
+
+# python
+__pycache__

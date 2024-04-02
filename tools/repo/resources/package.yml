@@ -1,0 +1,72 @@
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        package.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-04-01     xqyjlj     initial version
+#
+Toolchains:
+  arm-none-eabi:
+    Company: Arm
+    Homepage: https://developer.arm.com/downloads/-/gnu-rm
+    Description: The GNU Arm Embedded Toolchain.
+    License: unknown
+    Versions:
+      Windows:
+        v10.2.1:
+          Size: 190.53
+          Urls:
+            - https://github.com/csplink/toolchains/releases/download/arm-none-eabi/gcc-arm-none-eabi-10-2020-q4-major-win32.zip
+          Sha: 90057b8737b888c53ca5aee332f1f73c401d6d3873124d2c2906df4347ebef9e
+        v10.3.1:
+          Size: 191.29
+          Urls:
+            - https://github.com/csplink/toolchains/releases/download/arm-none-eabi/gcc-arm-none-eabi-10.3-2021.10-win32.zip
+          Sha: d287439b3090843f3f4e29c7c41f81d958a5323aecefcf705c203bfd8ae3f2e7
+      Linux:
+        v10.2.1:
+          Size: 149.61
+          Urls:
+            - https://github.com/csplink/toolchains/releases/download/arm-none-eabi/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+          Sha: 21134caa478bbf5352e239fbc6e2da3038f8d2207e089efc96c3b55f1edcd618
+        v10.3.1:
+          Size: 149.81
+          Urls:
+            - https://github.com/csplink/toolchains/releases/download/arm-none-eabi/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+          Sha: 97dbb4f019ad1650b732faffcc881689cedc14e2b7ee863d390e0a41ef16c9a3
+
+Library:
+  csp_hal_apm32f1:
+    Company: Geehy
+    Homepage: https://github.com/csplink/csp_hal_apm32f1
+    Description: APM32F1 SDK.
+    License: Apache-2.0
+    Versions:
+      latest:
+        Size: 0
+        Urls:
+          - https://github.com/csplink/csp_hal_apm32f1.git
+          - https://gitlab.com/csplink/csp_hal_apm32f1.git
+          - https://gitee.com/csplink/csp_hal_apm32f1.git
+          - https://e.coding.net/csplink/csplink/csp_hal_apm32f1.git
+        Sha: unknown
+      v0.0.1:
+        Size: 9.0
+        Urls:
+          - https://github.com/csplink/csp_hal_apm32f1/archive/v0.0.1.tar.gz
+        Sha: ea1f9967d8b35a184dafe39783d574046a2e65407f825f56c6c42727f8d5660f
