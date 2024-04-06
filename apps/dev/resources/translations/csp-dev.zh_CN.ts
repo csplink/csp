@@ -159,8 +159,8 @@
     </message>
     <message>
         <location filename="../../views/DialogPackageManager.cpp" line="432"/>
-        <source>%1 %2 upgrade failure</source>
-        <translation></translation>
+        <source>%1 %2 failure</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

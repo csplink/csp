@@ -342,6 +342,7 @@ def install_package(package: dict, package_name: str, package_version: str, repo
             os.remove(pkg_tmp_file)
 
         if not os.path.exists(pkg_file):
+            print(f"Download file from {url}")
             response = requests.get(url, stream=True)
             block_size = 1024  # 1Kb
             if os.getenv(verbose_key, "false") == "true":
@@ -362,7 +363,8 @@ def install_package(package: dict, package_name: str, package_version: str, repo
             hash_value = sha256_hash.hexdigest()
             if map["Versions"][package_version]["Sha"] == hash_value:
                 os.rename(pkg_tmp_file, pkg_file)
-                print("Download file successful")
+                if os.getenv(verbose_key, "false") == "true":
+                    print(f"Download file {pkg_file} successful")
             else:
                 raise Exception(f"Download file {os.path.basename(pkg_tmp_file)} failed. Sha256 value does not match.")
 
@@ -370,8 +372,8 @@ def install_package(package: dict, package_name: str, package_version: str, repo
             tmp = f"{output_path}.tmp"
             if not os.path.exists(tmp):
                 os.makedirs(tmp)
-
-            print(f"extract file {pkg_file} to {tmp}")
+            if os.getenv(verbose_key, "false") == "true":
+                print(f"extract file {pkg_file} to {tmp}")
             if pkg_file.endswith(".zip"):
                 with zipfile.ZipFile(pkg_file, 'r') as zip_ref:
                     zip_ref.extractall(tmp)
