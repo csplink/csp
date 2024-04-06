@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        XMakeAsync.cpp
+ * @file        PythonAsync.cpp
  * @brief
  *
  *****************************************************************************
@@ -24,40 +24,40 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-03-26     xqyjlj       initial version
+ * 2024-04-06     xqyjlj       initial version
  */
 
 #include <QDir>
 #include <QMutex>
 #include <QProcess>
 
-#include "XMakeAsync.h"
+#include "PythonAsync.h"
 
-void XMakeAsync::init()
+void PythonAsync::init()
 {
     if (instance_ == nullptr)
     {
-        instance_ = new XMakeAsync();
+        instance_ = new PythonAsync();
     }
 }
 
-void XMakeAsync::deinit()
+void PythonAsync::deinit()
 {
     delete instance_;
     instance_ = nullptr;
 }
 
-XMakeAsync *XMakeAsync::getInstance()
+PythonAsync *PythonAsync::getInstance()
 {
     return instance_;
 }
 
-int XMakeAsync::execv(const QStringList &argv, const QString &workDir)
+int PythonAsync::execv(const QStringList &argv, const QString &workDir)
 {
     static QMutex mutex;
     QMutexLocker locker(&mutex);
 
-    const QString program = Config::toolXmake();
+    const QString program = Config::toolPython();
     const QMap<QString, QString> env = Config::env();
 
     QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
@@ -92,18 +92,4 @@ int XMakeAsync::execv(const QStringList &argv, const QString &workDir)
     process->start();
     process->waitForFinished(30000);
     return process->exitCode();
-}
-
-int XMakeAsync::build(const QString &path, const QString &mode)
-{
-    int rtn;
-    const QFileInfo info(path);
-    rtn = execv({ "f", "-y", "-m", mode }, info.dir().absolutePath());
-
-    if (rtn == 0)
-    {
-        rtn = execv({ "-y", "-j8" }, info.dir().absolutePath());
-    }
-
-    return rtn;
 }

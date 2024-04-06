@@ -33,8 +33,10 @@
 
 #include "ChipSummaryTable.h"
 #include "DialogPackageManager.h"
+#include "PythonAsync.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
+#include "XMakeAsync.h"
 #include "ui_ViewMainWindow.h"
 
 static ViewMainWindow *mainWindow = nullptr;
@@ -110,7 +112,8 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     ui_->dockWidgetBottomOutput->raise();
 
     projectInstance_ = Project::getInstance();
-    XMakeAsync *xmake = XMakeAsync::getInstance();
+    const XMakeAsync *xmake = XMakeAsync::getInstance();
+    const PythonAsync *python = PythonAsync::getInstance();
     ui_->pageViewConfigure->setPropertyBrowser(ui_->treePropertyBrowser);
 
     (void)connect(ui_->actionNewChip, &QAction::triggered, this, &ViewMainWindow::actionNewChipTriggeredCallback, Qt::UniqueConnection);
@@ -125,6 +128,7 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(ui_->actionBuildRelease, &QAction::triggered, this, &ViewMainWindow::actionBuildReleaseTriggeredCallback, Qt::UniqueConnection);
 
     (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputCallback, Qt::UniqueConnection);
+    (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputCallback, Qt::UniqueConnection);
 
     (void)connect(ui_->pageViewHome, &ViewHome::signalCreateProject, this, &ViewMainWindow::createProject, Qt::UniqueConnection);
     (void)connect(this, &ViewMainWindow::signalAddLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
@@ -333,6 +337,12 @@ void ViewMainWindow::actionBuildReleaseTriggeredCallback(bool checked) const
 }
 
 void ViewMainWindow::xmakeReadyReadStandardOutputCallback(const QProcess *process, const QString &msg)
+{
+    Q_UNUSED(process);
+    ui_->LogBoxOutput->append(msg);
+}
+
+void ViewMainWindow::pythonReadyReadStandardOutputCallback(const QProcess *process, const QString &msg)
 {
     Q_UNUSED(process);
     ui_->LogBoxOutput->append(msg);

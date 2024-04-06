@@ -34,20 +34,8 @@
 #include <QRegularExpression>
 
 #include "Config.h"
-#include "QtJson.h"
 #include "XMake.h"
 #include "XMakeAsync.h"
-
-namespace nlohmann
-{
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(XMake::VersionType, Size, Installed, Sha)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(XMake::InformationType, Versions, Urls, Homepage, Description, License, Company)
-} // namespace nlohmann
-
-QT_DEBUG_ADD_TYPE(XMake::VersionType)
-QT_DEBUG_ADD_TYPE(XMake::InformationType)
-QT_DEBUG_ADD_TYPE(XMake::PackageCellType)
-QT_DEBUG_ADD_TYPE(XMake::PackageType)
 
 XMake::XMake() = default;
 
@@ -140,45 +128,6 @@ QString XMake::version()
     }
 
     return rtn;
-}
-
-QString XMake::lua(const QString &luaPath, const QStringList &args)
-{
-    QString output = "";
-    if (!luaPath.isEmpty())
-    {
-        const QDir root(".");
-        QStringList list = { "-D", root.absoluteFilePath(luaPath) };
-        list << args;
-        output = cmd("lua", list);
-    }
-
-    return output;
-}
-
-void XMake::loadPackages(PackageType *packages, const QString &name)
-{
-    if (packages != nullptr)
-    {
-        const QString data = cmd("csp-repo", { QString("--dump=%1json").arg(name.isEmpty() ? "" : name + "#"),
-                                               QString("--repositories=") + Config::repositoriesDir() });
-        try
-        {
-            const std::string buffer = data.toStdString();
-            const nlohmann::json json = nlohmann::json::parse(buffer);
-            (void)json.get_to(*packages);
-        }
-        catch (std::exception &e)
-        {
-            const QString str = QString("try to parse packages failed. \n\nreason: %1").arg(e.what());
-            qWarning().noquote() << str;
-            packages->clear();
-        }
-    }
-    else
-    {
-        // TODO: Invalid parameter
-    }
 }
 
 int XMake::build(const QString &path, const QString &mode)

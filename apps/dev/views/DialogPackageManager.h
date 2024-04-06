@@ -34,8 +34,6 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItem>
 
-#include "XMake.h"
-
 namespace Ui
 {
 class dialogPackageManager;
@@ -80,7 +78,6 @@ class DialogPackageManager final : public QDialog
     void initTreeView();
     Qt::CheckState treeViewItemSiblingCheckState(const QStandardItem *item) const;
     void updatePushButtonInstallUpdateUninstallStatus();
-    int runXmake(const QString &command, const QStringList &args) const;
     void runXmakeCspRepoCommand(const QString &command) const;
 
   private slots:

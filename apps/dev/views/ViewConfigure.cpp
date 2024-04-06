@@ -30,7 +30,9 @@
 #include <QtCore>
 
 #include "DialogPackageManager.h"
+#include "GraphicsItemPin.h"
 #include "LQFP.h"
+#include "ToolCspRepo.h"
 #include "ViewConfigure.h"
 #include "ui_ViewConfigure.h"
 
@@ -134,13 +136,13 @@ void ViewConfigure::initProjectSettings() const
 void ViewConfigure::flushComboBoxPackageVersion() const
 {
     const QString &hal = projectInstance_->getProjectHal();
-    XMake::PackageType packages;
-    XMake::loadPackages(&packages, hal);
+    ToolCspRepo::PackageType packages;
+    ToolCspRepo::loadPackages(&packages, hal);
 
     const QString text = ui_->comboBoxPackageVersion->currentText();
     ui_->comboBoxPackageVersion->clear();
 
-    auto &versions = packages["library"][hal].Versions;
+    auto &versions = packages["Library"][hal].Versions;
     auto versionsI = versions.constBegin();
     while (versionsI != versions.constEnd())
     {

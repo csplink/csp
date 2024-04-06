@@ -46,8 +46,7 @@ class TestCaseXMake final : public QObject
     static void initTestCase()
     {
         Config::init();
-        Config::set("core/xmakeRepoDir", QString(CSP_EXE_DIR) + "/xmake");
-        Config::set("core/repositories", QString(CSP_EXE_DIR) + "/repositories");
+        XMake::init();
     }
 
     static void version()
@@ -57,49 +56,9 @@ class TestCaseXMake final : public QObject
         QVERIFY(!result.isEmpty());
     }
 
-    static void lua()
-    {
-        QByteArray data;
-        QFile resFile(":/test.lua");
-        if (resFile.open(QIODevice::ReadOnly))
-        {
-            data = resFile.readAll();
-            resFile.close();
-        }
-        QVERIFY(!data.isEmpty());
-
-        QFile luaFile("./test.lua");
-        if (luaFile.open(QIODevice::WriteOnly))
-        {
-            luaFile.write(data);
-            luaFile.close();
-        }
-
-        const auto result = XMake::lua("./test.lua");
-#ifdef Q_OS_WINDOWS
-        QVERIFY(result == "hello world\r\n");
-#elif defined(Q_OS_LINUX)
-        QVERIFY(result == "hello world\n");
-#endif
-
-        QFile::remove("./test.lua");
-    }
-
-    static void loadPackages()
-    {
-        XMake::PackageType packages;
-        XMake::loadPackages(&packages);
-        qDebug().noquote() << packages;
-        QVERIFY(!packages.isEmpty());
-
-        packages.clear();
-        XMake::loadPackages(&packages, "csp_hal_apm32f1");
-        qDebug().noquote() << packages;
-        QVERIFY(!packages.isEmpty());
-    }
-
     static void cleanupTestCase()
     {
+        XMake::deinit();
         Config::deinit();
     }
 };

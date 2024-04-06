@@ -29,7 +29,7 @@ file(GLOB_RECURSE SOURCES
         resources/*.qrc)
 
 add_library(${name} STATIC ${SOURCES})
-target_link_libraries(${name} PUBLIC CspParse CspConfig)
+target_link_libraries(${name} PUBLIC CspConfig)
 target_include_directories(${name} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
 ##########################################################################
@@ -39,7 +39,7 @@ file(GLOB_RECURSE TEST_CASES
 
 foreach (TEST_CASE ${TEST_CASES})
     get_filename_component(TARGET_NAME ${TEST_CASE} NAME_WE)
-    add_executable(${TARGET_NAME} ${TEST_CASE} test/res/res.qrc)
+    add_executable(${TARGET_NAME} ${TEST_CASE})
     target_compile_definitions(${TARGET_NAME} PRIVATE -DCSP_EXE_DIR=\"${CSP_EXE_DIR}\")
     target_link_libraries(${TARGET_NAME} PRIVATE Qt5::Test ${name})
     add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})

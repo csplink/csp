@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        XMakeAsync.h
+ * @file        TestCasePython.cpp
  * @brief
  *
  *****************************************************************************
@@ -24,46 +24,44 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-03-26     xqyjlj       initial version
+ * 2024-04-05     xqyjlj       initial version
  */
-
-#ifndef CSP_XMAKE_ASYNC_H
-#define CSP_XMAKE_ASYNC_H
-
-#include <QObject>
-#include <QProcess>
-#include <QString>
+#include <QDebug>
+#include <QtTest>
 
 #include "Config.h"
+#include "Python.h"
 
-class XMakeAsync final : public QObject
+#ifndef CSP_EXE_DIR
+#error please define CSP_EXE_DIR, which is csp.exe path
+#endif
+
+class TestCasePython final : public QObject
 {
     Q_OBJECT
 
-  public:
-    static void init();
-    static void deinit();
+  private slots:
 
-    int execv(const QStringList &argv, const QString &workDir = Config::defaultWorkDir());
+    static void initTestCase()
+    {
+        Config::init();
+        Python::init();
+    }
 
-    /**
-     * @brief get project instance
-     * @return project instance
-     */
-    static XMakeAsync *getInstance();
+    static void version()
+    {
+        const auto result = Python::version();
+        qDebug().noquote() << QString("python version :%1").arg(result);
+        QVERIFY(!result.isEmpty());
+    }
 
-    int build(const QString &path, const QString &mode = "release");
-
-  signals:
-    void signalReadyReadStandardOutput(const QProcess *process, const QString &msg);
-    void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
-
-  private:
-    inline static XMakeAsync *instance_ = nullptr;
-    XMakeAsync() = default;
-    ~XMakeAsync() override = default;
-
-    Q_DISABLE_COPY_MOVE(XMakeAsync)
+    static void cleanupTestCase()
+    {
+        Python::deinit();
+        Config::deinit();
+    }
 };
 
-#endif /** CSP_XMAKE_ASYNC_H */
+QTEST_MAIN(TestCasePython)
+
+#include "TestCasePython.moc"

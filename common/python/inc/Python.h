@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        XMakeAsync.h
+ * @file        Python.h
  * @brief
  *
  *****************************************************************************
@@ -24,46 +24,33 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-03-26     xqyjlj       initial version
+ * 2024-04-05     xqyjlj       initial version
  */
+#ifndef CSP_PYTHON_H
+#define CSP_PYTHON_H
 
-#ifndef CSP_XMAKE_ASYNC_H
-#define CSP_XMAKE_ASYNC_H
-
+#include <QDebug>
 #include <QObject>
-#include <QProcess>
 #include <QString>
 
-#include "Config.h"
+#include "PythonAsync.h"
 
-class XMakeAsync final : public QObject
+class Python final : public QObject
 {
     Q_OBJECT
 
   public:
     static void init();
     static void deinit();
-
-    int execv(const QStringList &argv, const QString &workDir = Config::defaultWorkDir());
-
-    /**
-     * @brief get project instance
-     * @return project instance
-     */
-    static XMakeAsync *getInstance();
-
-    int build(const QString &path, const QString &mode = "release");
-
-  signals:
-    void signalReadyReadStandardOutput(const QProcess *process, const QString &msg);
-    void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
+    static QString version();
+    static bool execv(const QStringList &argv, QByteArray *output, QByteArray *error);
+    static QString cmd(const QString &command, const QStringList &args = {});
 
   private:
-    inline static XMakeAsync *instance_ = nullptr;
-    XMakeAsync() = default;
-    ~XMakeAsync() override = default;
+    Python();
+    ~Python() override;
 
-    Q_DISABLE_COPY_MOVE(XMakeAsync)
+    Q_DISABLE_COPY_MOVE(Python)
 };
 
-#endif /** CSP_XMAKE_ASYNC_H */
+#endif /** CSP_PYTHON_H */

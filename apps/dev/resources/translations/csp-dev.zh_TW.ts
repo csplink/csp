@@ -103,62 +103,62 @@
 <context>
     <name>DialogPackageManager</name>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="69"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="70"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
         <source>Home Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="75"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="76"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
         <source>License</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="77"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="75"/>
         <source>Sha</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="119"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="304"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="316"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="497"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="117"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="302"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="314"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="427"/>
         <source>Installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="119"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="312"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="497"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="117"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="310"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="427"/>
         <source>Not Installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="491"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="421"/>
         <source>%1 %2 successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="502"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="432"/>
         <source>%1 %2 upgrade failure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -174,22 +174,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/Main.cpp" line="90"/>
+        <location filename="../../src/Main.cpp" line="94"/>
         <source>load font: &lt;%1&gt; failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="104"/>
+        <location filename="../../src/Main.cpp" line="109"/>
         <source>Tools for flexible configuration of chips and boards.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="107"/>
+        <location filename="../../src/Main.cpp" line="112"/>
         <source>Project file path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="116"/>
+        <location filename="../../src/Main.cpp" line="121"/>
         <source>file: &lt;%1&gt; is not exist.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -197,12 +197,12 @@
 <context>
     <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="254"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="258"/>
         <source>CSP project file(*.csp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="264"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="268"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>

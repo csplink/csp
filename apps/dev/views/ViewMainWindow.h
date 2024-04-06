@@ -71,6 +71,7 @@ class ViewMainWindow final : public QMainWindow
     void actionBuildDebugTriggeredCallback(bool checked) const;
     void actionBuildReleaseTriggeredCallback(bool checked) const;
     void xmakeReadyReadStandardOutputCallback(const QProcess *process, const QString &msg);
+    void pythonReadyReadStandardOutputCallback(const QProcess *process, const QString &msg);
 
   private:
     Ui::viewMainWindow *ui_;

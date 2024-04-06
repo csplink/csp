@@ -44,6 +44,8 @@ from urllib.parse import urlparse
 script_dir = os.path.dirname(__file__)
 version = "v0.0.0.1"
 
+verbose_key = "CSP_VERBOSE"
+
 
 def is_installed(type: str, name: str, version: str, repositories: str) -> bool:
     """
@@ -202,36 +204,37 @@ def git_read_output(url: str, stream):
         desc = "git pull"
     else:
         desc = f"git clone {url}"
-    progress_bar = tqdm.tqdm(total=100, desc=desc, unit='', unit_scale=False)
-    progress_last = 0
+    if os.getenv(verbose_key, "false") == "true":
+        progress_bar = tqdm.tqdm(total=100, desc=desc, unit='', unit_scale=False)
+        progress_last = 0
     while True:
         line = stream.readline().strip()
         if not line:
             break
+        if os.getenv(verbose_key, "false") == "true":
+            progress = 0
+            match1 = re.search(r"remote: Counting objects: \s*(\d+)%", line)
+            match2 = re.search(r"remote: Compressing objects: \s*(\d+)%", line)
+            match3 = re.search(r"Receiving objects: \s*(\d+)%", line)
+            match4 = re.search(r"Resolving deltas: \s*(\d+)%", line)
 
-        progress = 0
-        match1 = re.search(r"remote: Counting objects: \s*(\d+)%", line)
-        match2 = re.search(r"remote: Compressing objects: \s*(\d+)%", line)
-        match3 = re.search(r"Receiving objects: \s*(\d+)%", line)
-        match4 = re.search(r"Resolving deltas: \s*(\d+)%", line)
+            if match1:
+                progress = (float(match1.group(1)) / 4) + 0
+            elif match2:
+                progress = (float(match2.group(1)) / 4) + 25
+            elif match3:
+                progress = (float(match3.group(1)) / 4) + 50
+            elif match4:
+                progress = (float(match4.group(1)) / 4) + 75
+            elif line == "Already up to date.":
+                progress = 100
 
-        if match1:
-            progress = (float(match1.group(1)) / 4) + 0
-        elif match2:
-            progress = (float(match2.group(1)) / 4) + 25
-        elif match3:
-            progress = (float(match3.group(1)) / 4) + 50
-        elif match4:
-            progress = (float(match4.group(1)) / 4) + 75
-        elif line == "Already up to date.":
-            progress = 100
-
-        if progress != 0:
-            progress_bar.update(progress - progress_last)
-            progress_bar.refresh()
-            progress_last = progress
-        else:
-            print(line)
+            if progress != 0:
+                progress_bar.update(progress - progress_last)
+                progress_bar.refresh()
+                progress_last = progress
+            else:
+                print(line)
 
 
 def find_package(package: dict, package_name: str, package_version: str, repositories: str):
@@ -340,19 +343,22 @@ def install_package(package: dict, package_name: str, package_version: str, repo
 
         if not os.path.exists(pkg_file):
             response = requests.get(url, stream=True)
-            total_size_in_bytes = int(response.headers.get('content-length', 0))
             block_size = 1024  # 1Kb
-            progress_bar = tqdm.tqdm(total=total_size_in_bytes,
-                                     desc=f"Downloading file {os.path.basename(pkg_tmp_file)}",
-                                     unit='iB',
-                                     unit_scale=True)
+            if os.getenv(verbose_key, "false") == "true":
+                total_size_in_bytes = int(response.headers.get('content-length', 0))
+                progress_bar = tqdm.tqdm(total=total_size_in_bytes,
+                                         desc=f"Downloading file {os.path.basename(pkg_tmp_file)}",
+                                         unit='iB',
+                                         unit_scale=True)
             sha256_hash = hashlib.sha256()
             with open(pkg_tmp_file, 'wb') as file:
                 for data in response.iter_content(block_size):
                     file.write(data)
                     sha256_hash.update(data)
-                    progress_bar.update(len(data))
-            progress_bar.close()
+                    if os.getenv(verbose_key, "false") == "true":
+                        progress_bar.update(len(data))
+            if os.getenv(verbose_key, "false") == "true":
+                progress_bar.close()
             hash_value = sha256_hash.hexdigest()
             if map["Versions"][package_version]["Sha"] == hash_value:
                 os.rename(pkg_tmp_file, pkg_file)
@@ -447,7 +453,7 @@ def uninstall_package(package: dict, package_name: str, package_version: str, re
         print(f"package {package_name}@{package_version} has been installed.")
         return
 
-    output_path = os.path.join(repositories, type.lower(), package_name,package_version)
+    output_path = os.path.join(repositories, type.lower(), package_name, package_version)
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
 
@@ -466,6 +472,7 @@ def help():
     print("usage: " + os.path.basename(__file__) + " [<options>] ")
     print("")
     print("    -h, --help               print this help.")
+    print("        --verbose            print lots of verbose information for users.")
     print("    -d, --dump               dump packages.\n"
           "                             e.g.\n"
           f"                                - {os.path.basename(__file__)} --dump=csp_hal_apm32f1 -r <dir>\n"
@@ -517,7 +524,7 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(
             sys.argv[1:], "hd:r:",
-            ["help", "dump=", "install=", "update=", "uninstall=", "package-version=", "repositories="])
+            ["help", "verbose", "dump=", "install=", "update=", "uninstall=", "package-version=", "repositories="])
     except getopt.GetoptError:
         help()
         sys.exit(2)
@@ -532,6 +539,8 @@ if __name__ == '__main__':
         if opt in ("-h", "--help"):
             help()
             sys.exit()
+        elif opt in ("verbose"):
+            os.environ[verbose_key] = "true"
         elif opt in ("-d", "--dump"):
             dump = arg
         elif opt in ("--install"):

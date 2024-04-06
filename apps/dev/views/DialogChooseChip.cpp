@@ -271,7 +271,7 @@ void DialogChooseChip::initTableViewChipInfos()
         chips_item->append(new QStandardItem((*iter)->Core));
         chipsItems_.append(chips_item);
 
-        for (const auto &item : *chips_item)
+        for (const auto &item : qAsConst(*chips_item))
             item->setEditable(false);
 
         model->appendRow(*chips_item);

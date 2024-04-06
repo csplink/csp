@@ -37,6 +37,7 @@
 #include "Config.h"
 #include "Configure.h"
 #include "Project.h"
+#include "Python.h"
 #include "Repo.h"
 #include "ViewMainWindow.h"
 #include "XMake.h"
@@ -51,10 +52,12 @@ static void init()
     Repo::init();
     Project::init();
     XMake::init();
+    Python::init();
 }
 
 static void deinit()
 {
+    Python::deinit();
     XMake::deinit();
     Project::deinit();
     Repo::deinit();
@@ -78,11 +81,12 @@ int main(int argc, char *argv[])
     init();
 
     const QDir fontsDir("./fonts");
-    for (const QFileInfo &dir : fontsDir.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks))
+    const QFileInfoList fontsDirList = fontsDir.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    for (const QFileInfo &dir : fontsDirList)
     {
         const QDir fontDir(dir.absoluteFilePath());
-
-        for (const QFileInfo &file : fontDir.entryInfoList({ "*.ttf" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks))
+        const QFileInfoList fontDirList = fontDir.entryInfoList({ "*.ttf" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        for (const QFileInfo &file : fontDirList)
         {
             const auto id = QFontDatabase::addApplicationFont(file.absoluteFilePath());
             if (id == -1)
@@ -93,7 +97,8 @@ int main(int argc, char *argv[])
     }
 
     const QDir qmDir("./translations");
-    for (const QFileInfo &file : qmDir.entryInfoList({ QString("*%1.qm").arg(Config::language()) }, QDir::Files | QDir::Hidden | QDir::NoSymLinks))
+    const QFileInfoList qmDirList = qmDir.entryInfoList({ QString("*%1.qm").arg(Config::language()) }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    for (const QFileInfo &file : qmDirList)
     {
         const auto translator = new QTranslator(&app);
         translator->load(file.absoluteFilePath());
