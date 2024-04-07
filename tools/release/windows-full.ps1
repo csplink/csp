@@ -72,7 +72,7 @@ function Main() {
     ./python --version
     ./python ./get-pip.py
     Remove-Item ./get-pip.py
-    ./Scripts/pip3 install -r ${CI_PROJECT_DIR}/tools/release/requirements.txt
+    ./Scripts/pip3 install -r $Env:CI_PROJECT_DIR/tools/release/requirements.txt
     Pop-Location
 
     # install xmake
