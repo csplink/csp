@@ -48,6 +48,7 @@ jobs:
       XMAKE_ROOT: "y"
       BUILD_LITE_DIR: csp-linux-ubuntu-lite-${{ matrix.gcc_arch }}-${{ github.run_number }}
       BUILD_FULL_DIR: csp-linux-ubuntu-full-${{ matrix.gcc_arch }}-${{ github.run_number }}
+      CI_PROJECT_DIR: ${{ github.workspace }}
     steps:
       - name: ⬇️ install Qt
         uses: jurplel/install-qt-action@v3

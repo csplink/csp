@@ -21,8 +21,6 @@
 # 2024-01-06     xqyjlj       initial version
 #
 
-${script_dir} = Split-Path -Parent $MyInvocation.MyCommand.Definition
-
 [CmdletBinding()]
 param (
     [string] ${lite_dir} = "litedir", [string] ${full_dir} = "fulldir", [string] ${arch} = "x86"
@@ -70,11 +68,11 @@ function Main() {
     ${new_content} = ${content} -replace '#import site', 'import site'
     Set-Content python310._pth -Value ${new_content}
     Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile "get-pip.py"
-    $Env:PATH = "${script_dir}/Scripts;$Env:PATH"
+    $Env:PATH = $PWD.Path + "/Scripts;$Env:PATH"
     ./python3 --version
     ./python3 ./get-pip.py
     Remove-Item ./get-pip.py
-    ./Scripts/pip3 -r ${script_dir}/requirements.txt
+    ./Scripts/pip3 -r ${CI_PROJECT_DIR}/tools/release/requirements.txt
     Pop-Location
 
     # install xmake
