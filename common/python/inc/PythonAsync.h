@@ -48,7 +48,8 @@ class PythonAsync final : public QObject
     static PythonAsync *getInstance();
 
   signals:
-    void signalReadyReadStandardOutput(const QProcess *process, const QString &msg);
+    void signalReadyReadStandardOutput(const QProcess *process, QString msg);
+    void signalReadyReadStandardError(const QProcess *process, QString msg);
     void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
 
   private:

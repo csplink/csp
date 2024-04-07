@@ -61,8 +61,8 @@ def match_cfile_user(file_path: str) -> dict:
     if os.path.isfile(file_path):
         with open(file_path, "r", encoding='utf-8') as file:
             data = file.read()
-            for s in re.findall("/\*\*< add user code begin (.*) \*/", data):
-                matcher = f"/\*\*< add user code begin {s} \*/\n(.*)/\*\*> add user code end {s} \*/"
+            for s in re.findall(r"/\*\*< add user code begin (.*) \*/", data):
+                matcher = rf"/\*\*< add user code begin {s} \*/\n(.*)/\*\*> add user code end {s} \*/"
                 result = str.rstrip(re.findall(matcher, data, re.S)[0])
                 if result:
                     user_code[s] = str.rstrip(result)
@@ -182,7 +182,7 @@ def main(project_file: str, output_dir: str, repositories_dir: str):
 
     hal = project_json["Hal"]
     modules = project_json["Modules"]
-    package_dir = f'{repositories_dir}/{hal}/{project_json["HalVersion"]}'
+    package_dir = f'{repositories_dir}/library/{hal}/{project_json["HalVersion"]}'
 
     if not os.path.isdir(package_dir):
         print(f"error: {package_dir} is not directory! maybe package({hal}) not yet installed.")

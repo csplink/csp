@@ -128,7 +128,8 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(ui_->actionBuildRelease, &QAction::triggered, this, &ViewMainWindow::actionBuildReleaseTriggeredCallback, Qt::UniqueConnection);
 
     (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputCallback, Qt::UniqueConnection);
-    (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputCallback, Qt::UniqueConnection);
+    (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
+    (void)connect(python, &PythonAsync::signalReadyReadStandardError, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
 
     (void)connect(ui_->pageViewHome, &ViewHome::signalCreateProject, this, &ViewMainWindow::createProject, Qt::UniqueConnection);
     (void)connect(this, &ViewMainWindow::signalAddLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
@@ -342,7 +343,7 @@ void ViewMainWindow::xmakeReadyReadStandardOutputCallback(const QProcess *proces
     ui_->LogBoxOutput->append(msg);
 }
 
-void ViewMainWindow::pythonReadyReadStandardOutputCallback(const QProcess *process, const QString &msg)
+void ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, QString msg)
 {
     Q_UNUSED(process);
     ui_->LogBoxOutput->append(msg);

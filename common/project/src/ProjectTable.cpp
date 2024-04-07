@@ -119,6 +119,10 @@ void ProjectTable::setValue(ProjectType &project)
     {
         project.Toolchains = "arm-none-eabi";
     }
+    if (project.HalVersion.isEmpty())
+    {
+        project.HalVersion = "latest";
+    }
     project.Version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
     /* 填充 modules */
     {

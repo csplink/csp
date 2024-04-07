@@ -31,7 +31,7 @@
 #include <QFileInfo>
 
 #include "Config.h"
-#include "Python.h"
+#include "PythonAsync.h"
 #include "ToolCspCoder.h"
 
 ToolCspCoder::ToolCspCoder() = default;
