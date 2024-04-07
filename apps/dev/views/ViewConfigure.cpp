@@ -46,6 +46,7 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     (void)connect(ui_->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomInPressedCallback, Qt::UniqueConnection);
     (void)connect(ui_->pushButtonZoomReset, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomResetPressedCallback, Qt::UniqueConnection);
     (void)connect(ui_->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback, Qt::UniqueConnection);
+    (void)connect(ui_->comboBoxPackageVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
 
     initProjectSettings();
     initLinkerSettings();
@@ -214,4 +215,9 @@ void ViewConfigure::pushButtonZoomResetPressedCallback() const
 void ViewConfigure::pushButtonZoomOutPressedCallback() const
 {
     ui_->graphicsView->zoomOut(6);
+}
+
+void ViewConfigure::comboBoxPackageVersionCurrentTextChanged(const QString &text)
+{
+    projectInstance_->setProjectHalVersion(text);
 }

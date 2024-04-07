@@ -111,17 +111,9 @@ QString ProjectTable::dumpProject(ProjectType &project)
 
 void ProjectTable::setValue(ProjectType &project)
 {
-    if (project.TargetProject.isEmpty())
-    {
-        project.TargetProject = "XMake";
-    }
     if (project.Toolchains.isEmpty())
     {
         project.Toolchains = "arm-none-eabi";
-    }
-    if (project.HalVersion.isEmpty())
-    {
-        project.HalVersion = "latest";
     }
     project.Version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
     /* 填充 modules */

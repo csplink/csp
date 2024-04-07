@@ -30,6 +30,7 @@
 #ifndef CSP_PYTHON_ASYNC_H
 #define CSP_PYTHON_ASYNC_H
 
+#include <QByteArray>
 #include <QObject>
 #include <QProcess>
 #include <QString>
@@ -48,8 +49,8 @@ class PythonAsync final : public QObject
     static PythonAsync *getInstance();
 
   signals:
-    void signalReadyReadStandardOutput(const QProcess *process, QString msg);
-    void signalReadyReadStandardError(const QProcess *process, QString msg);
+    void signalReadyReadStandardOutput(const QProcess *process, const QByteArray &msg);
+    void signalReadyReadStandardError(const QProcess *process, const QByteArray &msg);
     void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
 
   private:

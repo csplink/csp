@@ -72,6 +72,7 @@ class ViewConfigure final : public QWidget
     void pushButtonZoomInPressedCallback() const;
     void pushButtonZoomResetPressedCallback() const;
     void pushButtonZoomOutPressedCallback() const;
+    void comboBoxPackageVersionCurrentTextChanged(const QString &text);
 };
 
 #endif /** VIEW_CONFIGURE_H */

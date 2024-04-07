@@ -343,7 +343,7 @@ void ViewMainWindow::xmakeReadyReadStandardOutputCallback(const QProcess *proces
     ui_->LogBoxOutput->append(msg);
 }
 
-void ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, QString msg)
+void ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
 {
     Q_UNUSED(process);
     ui_->LogBoxOutput->append(msg);
