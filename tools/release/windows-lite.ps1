@@ -37,7 +37,6 @@ function Main() {
     Copy-Item ${buildir}/apps/dev/fonts ${dir}/ -Recurse
     Copy-Item ${buildir}/apps/dev/repo ${dir}/ -Recurse
     Copy-Item ${buildir}/apps/dev/translations/*.qm ${dir}/translations -Recurse
-    Copy-Item ${buildir}/apps/dev/xmake ${dir}/ -Recurse
 }
 
 Main
