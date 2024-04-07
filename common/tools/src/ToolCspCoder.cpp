@@ -26,9 +26,33 @@
  * ------------   ----------   -----------------------------------------------
  * 2024-04-05     xqyjlj       initial version
  */
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 
+#include "Config.h"
+#include "Python.h"
 #include "ToolCspCoder.h"
 
 ToolCspCoder::ToolCspCoder() = default;
 
 ToolCspCoder::~ToolCspCoder() = default;
+
+int ToolCspCoder::generate(const QString &file)
+{
+    int err = -1;
+    if (QFile::exists(file))
+    {
+        const QFileInfo info(file);
+        PythonAsync *python = PythonAsync::getInstance();
+        const QString scriptFile = QString("%1/csp-coder/csp-coder.py").arg(Config::toolsDir());
+        err = python->execv({ scriptFile, QString("--file=%1").arg(file),
+                              QString("--output=%1").arg(info.dir().absolutePath()),
+                              QString("--repositories=%1").arg(Config::repositoriesDir()) });
+    }
+    else
+    {
+        /** TODO: error */
+    }
+    return err;
+}

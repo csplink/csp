@@ -30,13 +30,16 @@
 #ifndef CSP_TOOL_CSP_CODER_H
 #define CSP_TOOL_CSP_CODER_H
 
-#include "Python.h"
+#include <QObject>
+#include <QString>
 
 class ToolCspCoder final : public QObject
 {
     Q_OBJECT
 
   public:
+    static int generate(const QString &file);
+
   private:
     ToolCspCoder();
     ~ToolCspCoder() override;

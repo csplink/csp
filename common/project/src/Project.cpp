@@ -35,6 +35,7 @@
 
 #include "Config.h"
 #include "Project.h"
+#include "ToolCspCoder.h"
 #include "XMake.h"
 
 void Project::init()
@@ -288,8 +289,7 @@ void Project::clearProject()
 
 void Project::generateCode() const
 {
-    const QFileInfo info(path_);
-    // runXmake("csp-coder", { QString("--project-file=") + path_, QString("--output=") + info.dir().absolutePath(), QString("--repositories=") + Config::repositoriesDir() });
+    ToolCspCoder::generate(path_);
 }
 
 void Project::build(const QString &mode) const
