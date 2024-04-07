@@ -32,10 +32,6 @@ full_dir=${2}
 cp -rf ${lite_dir} ${full_dir}
 
 pushd ${full_dir}
-pushd xmake
-. ./tools/env.sh
-xmake csp-repo --install=csp_hal_apm32f1@latest -r ../repositories
-popd
 popd
 
 set +v

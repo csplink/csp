@@ -48,12 +48,6 @@ function Main() {
     copy-Item ${lite_dir} ${full_dir} -Recurse
     Push-Location ${full_dir}
 
-    # install repository
-    Push-Location xmake
-    & ./tools/env.ps1
-    xmake csp-repo --install=csp_hal_apm32f1@latest -r ../repositories
-    Pop-Location
-
     New-Item -ItemType Directory tools -Force
 
     Push-Location tools
