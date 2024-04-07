@@ -69,8 +69,8 @@ function Main() {
     Set-Content python310._pth -Value ${new_content}
     Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile "get-pip.py"
     $Env:PATH = $PWD.Path + "/Scripts;$Env:PATH"
-    ./python3 --version
-    ./python3 ./get-pip.py
+    ./python --version
+    ./python ./get-pip.py
     Remove-Item ./get-pip.py
     ./Scripts/pip3 -r ${CI_PROJECT_DIR}/tools/release/requirements.txt
     Pop-Location
