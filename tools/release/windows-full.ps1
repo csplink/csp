@@ -57,8 +57,6 @@ function Main() {
     copy-Item ${lite_dir} ${full_dir} -Recurse
     Push-Location ${full_dir}
 
-    New-Item -ItemType Directory tools -Force
-
     Push-Location tools
     # install python
     Invoke-WebRequest -Uri ${python_url} -OutFile "python.zip"
