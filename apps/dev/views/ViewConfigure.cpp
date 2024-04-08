@@ -47,6 +47,7 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     (void)connect(ui_->pushButtonZoomReset, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomResetPressedCallback, Qt::UniqueConnection);
     (void)connect(ui_->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback, Qt::UniqueConnection);
     (void)connect(ui_->comboBoxPackageVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui_->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
 
     initProjectSettings();
     initLinkerSettings();
@@ -103,9 +104,9 @@ void ViewConfigure::resizeEvent(QResizeEvent *event)
         ui_->graphicsView->resize();
 
         /**
-         * 0: 视图初始化
-         * 1: 布局初始化
-         * 2: 全局最大化
+         * 0: View initialization
+         * 1: Layout initialization
+         * 2: Global maximization
          */
         resizeCounter_++;
     }
@@ -220,4 +221,9 @@ void ViewConfigure::pushButtonZoomOutPressedCallback() const
 void ViewConfigure::comboBoxPackageVersionCurrentTextChanged(const QString &text)
 {
     projectInstance_->setProjectHalVersion(text);
+}
+
+void ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged(const QString &text)
+{
+    projectInstance_->setProjectTargetProject(text);
 }

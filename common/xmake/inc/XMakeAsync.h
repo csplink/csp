@@ -30,6 +30,7 @@
 #ifndef CSP_XMAKE_ASYNC_H
 #define CSP_XMAKE_ASYNC_H
 
+#include <QByteArray>
 #include <QObject>
 #include <QProcess>
 #include <QString>
@@ -55,7 +56,8 @@ class XMakeAsync final : public QObject
     int build(const QString &path, const QString &mode = "release");
 
   signals:
-    void signalReadyReadStandardOutput(const QProcess *process, const QString &msg);
+    void signalReadyReadStandardOutput(const QProcess *process, const QByteArray &msg);
+    void signalReadyReadStandardError(const QProcess *process, const QByteArray &msg);
     void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
 
   private:

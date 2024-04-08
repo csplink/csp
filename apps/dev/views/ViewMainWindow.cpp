@@ -127,7 +127,7 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(ui_->actionBuildDebug, &QAction::triggered, this, &ViewMainWindow::actionBuildDebugTriggeredCallback, Qt::UniqueConnection);
     (void)connect(ui_->actionBuildRelease, &QAction::triggered, this, &ViewMainWindow::actionBuildReleaseTriggeredCallback, Qt::UniqueConnection);
 
-    (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputCallback, Qt::UniqueConnection);
+    (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
     (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
     (void)connect(python, &PythonAsync::signalReadyReadStandardError, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
 
@@ -337,7 +337,7 @@ void ViewMainWindow::actionBuildReleaseTriggeredCallback(bool checked) const
     projectInstance_->build("release");
 }
 
-void ViewMainWindow::xmakeReadyReadStandardOutputCallback(const QProcess *process, const QString &msg)
+void ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
 {
     Q_UNUSED(process);
     ui_->LogBoxOutput->append(msg);

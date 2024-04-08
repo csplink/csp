@@ -30,6 +30,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QProcess>
 #include <QSysInfo>
@@ -54,13 +55,13 @@ static constexpr const char *ConfigValueDefaultRepositories = "repositories";
 static constexpr const char *ConfigKeyTools = "core/tools";
 static constexpr const char *ConfigValueDefaultTools = "tools";
 
-static constexpr const char *ConfigKeyToolXmake = "tool/xmake";
+static constexpr const char *ConfigKeyToolXmake = "tools/xmake";
 static constexpr const char *ConfigValueDefaultToolXmake = "xmake";
 
-static constexpr const char *ConfigKeyToolGit = "tool/git";
+static constexpr const char *ConfigKeyToolGit = "tools/git";
 static constexpr const char *ConfigValueDefaultToolGit = "git";
 
-static constexpr const char *ConfigKeyToolPython = "tool/python";
+static constexpr const char *ConfigKeyToolPython = "tools/python";
 static constexpr const char *ConfigValueDefaultToolPython = "python";
 
 bool Config::isConfig(const QString &key)
@@ -227,22 +228,32 @@ QMap<QString, QString> Config::env()
     const QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
     QString envPath = environment.value("Path");
     const QString arch = QSysInfo::currentCpuArchitecture();
-    const QString toolDir = QString("%1/tools").arg(QCoreApplication::applicationDirPath());
-    const QString gitPath = QString("%1/git/cmd/git.exe").arg(toolDir);
+    const QString gitPath = toolGit();
     if (QFile::exists(gitPath))
     {
-        envPath = QString("%1/git/cmd;%2").arg(toolDir, envPath);
+        const QFileInfo info(gitPath);
+        const QString toolDir = QString("%1/..").arg(info.dir().absolutePath());
+        envPath = QString("%1/cmd;%2").arg(toolDir, envPath);
         if ("x86_64" == arch)
         {
-            envPath = QString("%1;%2/git/mingw64/bin").arg(envPath, toolDir);
+            envPath = QString("%1;%2/mingw64/bin").arg(envPath, toolDir);
         }
         else if ("i386" == arch)
         {
-            envPath = QString("%1;%2/git/mingw32/bin").arg(envPath, toolDir);
+            envPath = QString("%1;%2/mingw32/bin").arg(envPath, toolDir);
         }
-        map.insert("Path", envPath);
     }
+    const QString pythonPath = toolPython();
+    if (QFile::exists(pythonPath))
+    {
+        const QFileInfo info(pythonPath);
+        const QString toolDir = info.dir().absolutePath();
+        envPath = QString("%1;%2").arg(toolDir, envPath);
+        envPath = QString("%1/Scripts;%2").arg(toolDir, envPath);
+    }
+    map.insert("Path", envPath);
 #endif
+    map.insert("XMAKE_THEME", "plain");
 
     return map;
 }

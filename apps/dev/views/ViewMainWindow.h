@@ -70,7 +70,7 @@ class ViewMainWindow final : public QMainWindow
     void actionPackageManagerTriggeredCallback(bool checked);
     void actionBuildDebugTriggeredCallback(bool checked) const;
     void actionBuildReleaseTriggeredCallback(bool checked) const;
-    void xmakeReadyReadStandardOutputCallback(const QProcess *process, const QString &msg);
+    void xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
     void pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
 
   private:

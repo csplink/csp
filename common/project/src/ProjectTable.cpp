@@ -111,12 +111,8 @@ QString ProjectTable::dumpProject(ProjectType &project)
 
 void ProjectTable::setValue(ProjectType &project)
 {
-    if (project.Toolchains.isEmpty())
-    {
-        project.Toolchains = "arm-none-eabi";
-    }
     project.Version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
-    /* 填充 modules */
+    /* init modules */
     {
         project.Modules.clear();
         auto pin_configs_i = project.PinConfigs.constBegin();

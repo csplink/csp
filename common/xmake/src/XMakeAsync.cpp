@@ -80,8 +80,13 @@ int XMakeAsync::execv(const QStringList &argv, const QString &workDir)
 
     connect(process, &QProcess::readyReadStandardOutput, this,
             [process, this]() {
-                const QByteArray output = process->readAllStandardOutput();
-                emit signalReadyReadStandardOutput(process, output);
+                const QByteArray stdOutput = process->readAllStandardOutput();
+                emit signalReadyReadStandardOutput(process, stdOutput);
+            });
+    connect(process, &QProcess::readyReadStandardError, this,
+            [process, this]() {
+                const QByteArray stdError = process->readAllStandardError();
+                emit signalReadyReadStandardError(process, stdError);
             });
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), process,
             [process, this](const int exitCode, const QProcess::ExitStatus exitStatus) {

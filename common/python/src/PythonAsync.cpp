@@ -82,18 +82,12 @@ int PythonAsync::execv(const QStringList &argv, const QString &workDir)
     connect(process, &QProcess::readyReadStandardOutput, this,
             [process, this]() {
                 const QByteArray stdOutput = process->readAllStandardOutput();
-                if (!stdOutput.isEmpty())
-                {
-                    emit signalReadyReadStandardOutput(process, stdOutput);
-                }
+                emit signalReadyReadStandardOutput(process, stdOutput);
             });
     connect(process, &QProcess::readyReadStandardError, this,
             [process, this]() {
                 const QByteArray stdError = process->readAllStandardError();
-                if (!stdError.isEmpty())
-                {
-                    emit signalReadyReadStandardError(process, stdError);
-                }
+                emit signalReadyReadStandardError(process, stdError);
             });
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), process,
             [process, this](const int exitCode, const QProcess::ExitStatus exitStatus) {
