@@ -48,6 +48,7 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     (void)connect(ui_->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback, Qt::UniqueConnection);
     (void)connect(ui_->comboBoxPackageVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui_->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui_->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
 
     initProjectSettings();
     initLinkerSettings();
@@ -119,17 +120,31 @@ void ViewConfigure::initProjectSettings() const
 
     ui_->comboBoxBuildScriptIde->clear();
 
+    const QString target = projectInstance_->getProjectTargetProject();
+
     if (target_project.XMake)
     {
         ui_->comboBoxBuildScriptIde->addItem("XMake");
+        if (target == "XMake")
+        {
+            ui_->comboBoxBuildScriptIde->setCurrentText(target);
+        }
     }
     if (target_project.CMake)
     {
         ui_->comboBoxBuildScriptIde->addItem("CMake");
+        if (target == "CMake")
+        {
+            ui_->comboBoxBuildScriptIde->setCurrentText(target);
+        }
     }
-    if (!target_project.MdkArm.Device.isEmpty())
+    if (!target_project.MdkArm.Versions.isEmpty())
     {
         ui_->comboBoxBuildScriptIde->addItem("MDK-Arm");
+        if (target == "MDK-Arm")
+        {
+            ui_->comboBoxBuildScriptIde->setCurrentText(target);
+        }
     }
 
     flushComboBoxPackageVersion();
@@ -226,4 +241,32 @@ void ViewConfigure::comboBoxPackageVersionCurrentTextChanged(const QString &text
 void ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged(const QString &text)
 {
     projectInstance_->setProjectTargetProject(text);
+    if (text == "XMake")
+    {
+        ui_->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
+    }
+    else if (text == "CMake")
+    {
+        ui_->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
+    }
+    else if (text == "MDK-Arm")
+    {
+        const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().TargetProject;
+        const QString minVersion = projectInstance_->getProjectTargetProjectMinVersion();
+        ui_->comboBoxBuildScriptIdeMinVersion->clear();
+        for (const QString &version : qAsConst(target_project.MdkArm.Versions))
+        {
+            ui_->comboBoxBuildScriptIdeMinVersion->addItem(version);
+            if (version == minVersion)
+            {
+                ui_->comboBoxBuildScriptIdeMinVersion->setCurrentText(version);
+            }
+        }
+        ui_->widgetBoxBuildScriptIdeMinVersion->setVisible(true);
+    }
+}
+
+void ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text)
+{
+    projectInstance_->setProjectTargetProjectMinVersion(text);
 }

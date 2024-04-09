@@ -40,10 +40,10 @@ namespace YAML
 {
 YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, Url)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, Description)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Device, Packs, PackUrl, CmsisCore)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Versions)
 YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize,
-                                            DefaultMinimumStackSize)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize,
+                               DefaultMinimumStackSize)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal,
                                HasPowerPad, Illustrate, Introduction, Line, Modules, Name, Package, Series, Url,
                                TargetProject, Linker)
@@ -53,7 +53,7 @@ namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, Url)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, Description)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Device, Packs, PackUrl, CmsisCore)
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Versions)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize, DefaultMinimumStackSize)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal,

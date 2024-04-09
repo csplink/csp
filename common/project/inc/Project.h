@@ -256,7 +256,7 @@ class Project final : public QObject
     CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectName, project_.Name, void)
     CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs, void)
     CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProject, project_.TargetProject, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProjectConfig, project_.TargetProjectConfig, void)
+    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProjectMinVersion, project_.TargetProjectMinVersion, void)
     CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectVersion, project_.Version, void)
 
   signals:

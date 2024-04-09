@@ -418,7 +418,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
             QApplication::restoreOverrideCursor();
             if (future.result() == 0)
             {
-                ui_->labelStatus->setText(tr("%1 %2 successful").arg(name, command));
+                ui_->labelStatus->setText(QString("%1 %2 successful").arg(name, command));
                 ToolCspRepo::PackageType packages;
                 ToolCspRepo::loadPackages(&packages, name);
                 const ToolCspRepo::VersionType &versionInfo = packages["Library"][name].Versions[version];
@@ -429,7 +429,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
             }
             else
             {
-                ui_->labelStatus->setText(tr("%1 %2 failure").arg(name, command));
+                ui_->labelStatus->setText(QString("%1 %2 failure").arg(name, command));
                 break;
             }
         }

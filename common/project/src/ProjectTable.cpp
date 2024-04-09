@@ -37,18 +37,14 @@
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, Function, Comment, Locked, FunctionProperty)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::MdkArmType, Device, Pack, PackUrl, CmsisCore)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::TargetProjectType, MdkArm)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package,
-                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs, TargetProject,
-                                                TargetProjectConfig, Version)
+                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs,
+                                                TargetProject, TargetProjectMinVersion, Version)
 } // namespace nlohmann
 
 #include <QDebug>
 
 QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
-QT_DEBUG_ADD_TYPE(ProjectTable::MdkArmType)
-QT_DEBUG_ADD_TYPE(ProjectTable::TargetProjectType)
 QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)
 
 ProjectTable::ProjectTable() = default;

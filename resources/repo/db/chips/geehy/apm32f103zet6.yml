@@ -220,11 +220,9 @@ TargetProject:
   XMake: true
   CMake: true
   MdkArm:
-    Device: APM32F103ZE
-    Packs:
-      - Geehy.APM32F1xx_DFP@1.1.0
-    PackUrl: https://www.geehy.com/uploads/tool/
-    CmsisCore: 5.7.0
+    Versions:
+      - v5.32
+      - v5.27
 Linker:
   DefaultMinimumHeapSize: 0x200
   DefaultMinimumStackSize: 0x400

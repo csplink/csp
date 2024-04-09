@@ -889,16 +889,8 @@
   },
   "TargetChip": "APM32F103ZET6",
   "TargetProject": "XMake",
-  "TargetProjectConfig": {
-    "MdkArm": {
-      "CmsisCore": "",
-      "Device": "",
-      "Pack": "",
-      "PackUrl": ""
-    }
-  },
   "Toolchains": "arm-none-eabi",
-  "ToolchainsVersion": "",
+  "ToolchainsVersion": "v10.3.1",
   "Type": "chip",
   "Version": "v0.0.0.1"
 }

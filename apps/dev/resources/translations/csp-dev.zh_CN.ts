@@ -152,16 +152,6 @@
         <source>Not Installed</source>
         <translation>未安装</translation>
     </message>
-    <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="421"/>
-        <source>%1 %2 successful</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="432"/>
-        <source>%1 %2 failure</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>GraphicsItemPin</name>
@@ -425,32 +415,37 @@
         <translation>构建脚本/IDE</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="292"/>
+        <location filename="../../views/ViewConfigure.ui" line="302"/>
+        <source>Min Version</source>
+        <translation>最小版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="328"/>
         <source>Linker Settings</source>
         <translation>链接设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="298"/>
+        <location filename="../../views/ViewConfigure.ui" line="334"/>
         <source>Minimum Stack Size</source>
         <translation>最小栈大小</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="334"/>
+        <location filename="../../views/ViewConfigure.ui" line="376"/>
         <source>Minimum Heap Size</source>
         <translation>最小堆大小</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="373"/>
+        <location filename="../../views/ViewConfigure.ui" line="421"/>
         <source>Package Settings</source>
         <translation>包设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="414"/>
+        <location filename="../../views/ViewConfigure.ui" line="468"/>
         <source>Name</source>
-        <translation></translation>
+        <translation>名称</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="421"/>
+        <location filename="../../views/ViewConfigure.ui" line="475"/>
         <source>Package Version</source>
         <translation>包版本</translation>
     </message>
