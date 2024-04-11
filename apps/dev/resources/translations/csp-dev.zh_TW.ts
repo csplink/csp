@@ -103,52 +103,52 @@
 <context>
     <name>DialogPackageManager</name>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="69"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="135"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="70"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="136"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="137"/>
         <source>Home Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="138"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="139"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="140"/>
         <source>License</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="75"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="141"/>
         <source>Sha</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="117"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="302"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="314"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="427"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="102"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="319"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="331"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="447"/>
         <source>Installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="117"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="310"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="427"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="102"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="327"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="447"/>
         <source>Not Installed</source>
         <translation type="unfinished"></translation>
     </message>

@@ -61,44 +61,29 @@ DialogPackageManager::~DialogPackageManager()
     delete ui_;
 }
 
-void DialogPackageManager::initTreeView()
+QList<QStandardItem *> *DialogPackageManager::createPackageInfoItems(const QMap<QString, ToolCspRepo::InformationType> *Packages)
 {
-    tableViewProxyModel_ = new QSortFilterProxyModel(this);
-    QStandardItemModel *model = new QStandardItemModel(ui_->treeView);
-    model->setColumnCount(7);
-    model->setHeaderData(0, Qt::Horizontal, tr("Name"));
-    model->setHeaderData(1, Qt::Horizontal, tr("Size"));
-    model->setHeaderData(2, Qt::Horizontal, tr("Home Page"));
-    model->setHeaderData(3, Qt::Horizontal, tr("Status"));
-    model->setHeaderData(4, Qt::Horizontal, tr("Description"));
-    model->setHeaderData(5, Qt::Horizontal, tr("License"));
-    model->setHeaderData(6, Qt::Horizontal, tr("Sha"));
-
-    ToolCspRepo::PackageType packages;
-    ToolCspRepo::loadPackages(&packages);
-
-    const QMap<QString, ToolCspRepo::InformationType> *library = &packages["Library"];
-    QMap<QString, ToolCspRepo::InformationType>::const_iterator libraryIterator = library->constBegin();
-    while (libraryIterator != library->constEnd())
+    QList<QStandardItem *> *items = new QList<QStandardItem *>;
+    QMap<QString, ToolCspRepo::InformationType>::const_iterator iterator = Packages->constBegin();
+    while (iterator != Packages->constEnd())
     {
-        QList<QStandardItem *> *items = new QList<QStandardItem *>;
         /** Name */
-        QStandardItem *const item = new QStandardItem(libraryIterator.key());
+        QStandardItem *const item = new QStandardItem(iterator.key());
         item->setCheckable(true);
         item->setAutoTristate(true);
         items->append(item);
         /** Size */
         items->append(new QStandardItem());
         /** Home Page */
-        items->append(new QStandardItem(libraryIterator.value().Homepage));
+        items->append(new QStandardItem(iterator.value().Homepage));
         /** Status */
         items->append(new QStandardItem());
         /** Description */
-        items->append(new QStandardItem(libraryIterator.value().Description));
+        items->append(new QStandardItem(iterator.value().Description));
         /** License */
-        items->append(new QStandardItem(libraryIterator.value().License));
+        items->append(new QStandardItem(iterator.value().License));
 
-        const QMap<QString, ToolCspRepo::VersionType> *versions = &libraryIterator.value().Versions;
+        const QMap<QString, ToolCspRepo::VersionType> *versions = &iterator.value().Versions;
         QMap<QString, ToolCspRepo::VersionType>::const_iterator versionsIterator = versions->constBegin();
         while (versionsIterator != versions->constEnd())
         {
@@ -131,15 +116,45 @@ void DialogPackageManager::initTreeView()
             ++versionsIterator;
         }
 
-        model->appendRow(*items);
-
         for (const auto &i : qAsConst(*items))
         {
             i->setEditable(false);
         }
 
-        ++libraryIterator;
+        ++iterator;
     }
+
+    return items;
+}
+
+void DialogPackageManager::initTreeView()
+{
+    tableViewProxyModel_ = new QSortFilterProxyModel(this);
+    QStandardItemModel *model = new QStandardItemModel(ui_->treeView);
+    model->setColumnCount(PACKAGE_INFO_ID_COUNT);
+    model->setHeaderData(PACKAGE_INFO_ID_NAME, Qt::Horizontal, tr("Name"));
+    model->setHeaderData(PACKAGE_INFO_ID_SIZE, Qt::Horizontal, tr("Size"));
+    model->setHeaderData(PACKAGE_INFO_ID_HOMEPAGE, Qt::Horizontal, tr("Home Page"));
+    model->setHeaderData(PACKAGE_INFO_ID_STATUS, Qt::Horizontal, tr("Status"));
+    model->setHeaderData(PACKAGE_INFO_ID_DESCRIPTION, Qt::Horizontal, tr("Description"));
+    model->setHeaderData(PACKAGE_INFO_ID_LICENSE, Qt::Horizontal, tr("License"));
+    model->setHeaderData(PACKAGE_INFO_ID_SHA, Qt::Horizontal, tr("Sha"));
+
+    ToolCspRepo::PackageType packages;
+    ToolCspRepo::loadPackages(&packages);
+
+    const QMap<QString, ToolCspRepo::InformationType> *library = &packages["Library"];
+    const QMap<QString, ToolCspRepo::InformationType> *toolchains = &packages["Toolchains"];
+
+    QStandardItem *const libraryItem = new QStandardItem("Library");
+    QStandardItem *const toolchainsItem = new QStandardItem("Toolchains");
+
+    libraryItem->appendRow(*createPackageInfoItems(library));
+    toolchainsItem->appendRow(*createPackageInfoItems(toolchains));
+
+    model->appendRow(libraryItem);
+    model->appendRow(toolchainsItem);
+
     connect(model, &QStandardItemModel::itemChanged, this, &DialogPackageManager::treeViewModelItemChangedCallback, Qt::UniqueConnection);
     tableViewProxyModel_->setSourceModel(model);
 
@@ -294,24 +309,27 @@ void DialogPackageManager::updatePushButtonInstallUpdateUninstallStatus()
                     const QStandardItem *parent = item->parent();
                     if (parent != nullptr)
                     {
-                        const QString name = parent->text();
-                        const QStandardItem *child_item = parent->child(item->row(), 0);
-                        const QString version = child_item->text();
-                        child_item = parent->child(item->row(), 3);
-                        const QString status = child_item->text();
-                        if (status == tr("Installed"))
+                        if (parent->isCheckable())
                         {
-                            if (version == "latest")
+                            const QString name = parent->text();
+                            const QStandardItem *child_item = parent->child(item->row(), 0);
+                            const QString version = child_item->text();
+                            child_item = parent->child(item->row(), 3);
+                            const QString status = child_item->text();
+                            if (status == tr("Installed"))
                             {
-                                updateCount_++;
+                                if (version == "latest")
+                                {
+                                    updateCount_++;
+                                }
+                                installCount_++;
                             }
-                            installCount_++;
+                            else if (status == tr("Not Installed"))
+                            {
+                                uninstallCount_++;
+                            }
+                            selectedPackageInfos_.insert(name, { parent->parent()->text(), version, status == tr("Installed"), item->row(), parent });
                         }
-                        else if (status == tr("Not Installed"))
-                        {
-                            uninstallCount_++;
-                        }
-                        selectedPackageInfos_.insert(name, { version, status == tr("Installed"), item->row(), parent });
                     }
                 }
             }
@@ -340,32 +358,34 @@ void DialogPackageManager::pushButtonClosePressedCallback()
 
 void DialogPackageManager::pushButtonInstallPressedCallback()
 {
-    runXmakeCspRepoCommand("install");
+    runCspRepoCommand("install");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
 void DialogPackageManager::pushButtonUpdatePressedCallback()
 {
-    runXmakeCspRepoCommand("update");
+    runCspRepoCommand("update");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
 void DialogPackageManager::pushButtonUninstallPressedCallback()
 {
-    runXmakeCspRepoCommand("uninstall");
+    runCspRepoCommand("uninstall");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
-void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
+void DialogPackageManager::runCspRepoCommand(const QString &command) const
 {
     auto infoIterator = selectedPackageInfos_.constBegin();
     while (infoIterator != selectedPackageInfos_.constEnd())
     {
         const QString &name = infoIterator.key();
+        const QString &type = infoIterator.value().Type;
         const QString &version = infoIterator.value().Version;
         const QStandardItem *parent = infoIterator.value().Parent;
         const int row = infoIterator.value().Row;
         const bool installed = infoIterator.value().Installed;
+
         QFuture<int> future;
         bool isMatched;
 
@@ -421,7 +441,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
                 ui_->labelStatus->setText(QString("%1 %2 successful").arg(name, command));
                 ToolCspRepo::PackageType packages;
                 ToolCspRepo::loadPackages(&packages, name);
-                const ToolCspRepo::VersionType &versionInfo = packages["Library"][name].Versions[version];
+                const ToolCspRepo::VersionType &versionInfo = packages[type][name].Versions[version];
                 parent->child(row, PACKAGE_INFO_ID_SIZE)->setText(QString::number(versionInfo.Size, 'f', 2));
                 parent->child(row, PACKAGE_INFO_ID_STATUS)->setIcon(QApplication::style()->standardIcon(versionInfo.Installed ? QStyle::SP_DialogYesButton : QStyle::SP_DialogNoButton));
                 parent->child(row, PACKAGE_INFO_ID_STATUS)->setText(versionInfo.Installed ? tr("Installed") : tr("Not Installed"));
