@@ -441,12 +441,28 @@
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="468"/>
+        <location filename="../../views/ViewConfigure.ui" line="590"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="475"/>
         <source>Package Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="531"/>
+        <source>Toolchains Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="537"/>
+        <source>Toolchains Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="638"/>
+        <source>Enable Toolchains</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

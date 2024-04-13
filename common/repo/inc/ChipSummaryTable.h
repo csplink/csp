@@ -83,6 +83,7 @@ class ChipSummaryTable final
         QString Series;
         QMap<QString, QString> Url;
         TargetProjectType TargetProject;
+        QString Toolchains;
         LinkerType Linker;
     } ChipSummaryType;
 

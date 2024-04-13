@@ -223,6 +223,7 @@ TargetProject:
     Versions:
       - v5.32
       - v5.27
+Toolchains: arm-none-eabi
 Linker:
   DefaultMinimumHeapSize: 0x200
   DefaultMinimumStackSize: 0x400

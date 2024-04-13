@@ -42,11 +42,10 @@ YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::DocumentType, Url)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ModuleType, Description)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::MdkArmType, Versions)
 YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize,
-                               DefaultMinimumStackSize)
+YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::LinkerType, DefaultMinimumHeapSize, DefaultMinimumStackSize)
 YAML_DEFINE_TYPE_NON_INTRUSIVE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal,
                                HasPowerPad, Illustrate, Introduction, Line, Modules, Name, Package, Series, Url,
-                               TargetProject, Linker)
+                               TargetProject, Toolchains, Linker)
 } // namespace YAML
 
 namespace nlohmann

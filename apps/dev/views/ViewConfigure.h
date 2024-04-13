@@ -65,7 +65,9 @@ class ViewConfigure final : public QWidget
     void initProjectSettings() const;
     void initLinkerSettings() const;
     void initPackageSettings() const;
+    void initToolchainsSettings() const;
     void flushComboBoxPackageVersion() const;
+    void flushComboBoxToolchainsVersionVersion() const;
 
   private slots:
     void pushButtonPackageManagerPressedCallback();
@@ -75,6 +77,9 @@ class ViewConfigure final : public QWidget
     void comboBoxPackageVersionCurrentTextChanged(const QString &text);
     void comboBoxBuildScriptIdeCurrentTextChanged(const QString &text);
     void comboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text);
+    void checkBoxEnableToolchainsStateChanged(int State);
+    void pushButtonToolchainsManagerPressedCallback();
+    void comboBoxToolchainsVersionCurrentTextChanged(const QString &text);
 };
 
 #endif /** VIEW_CONFIGURE_H */

@@ -49,10 +49,13 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     (void)connect(ui_->comboBoxPackageVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui_->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui_->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui_->checkBoxEnableToolchains, &QCheckBox::stateChanged, this, &ViewConfigure::checkBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
+    (void)connect(ui_->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
 
     initProjectSettings();
     initLinkerSettings();
     initPackageSettings();
+    initToolchainsSettings();
 }
 
 ViewConfigure::~ViewConfigure()
@@ -146,8 +149,6 @@ void ViewConfigure::initProjectSettings() const
             ui_->comboBoxBuildScriptIde->setCurrentText(target);
         }
     }
-
-    flushComboBoxPackageVersion();
 }
 
 void ViewConfigure::flushComboBoxPackageVersion() const
@@ -156,7 +157,7 @@ void ViewConfigure::flushComboBoxPackageVersion() const
     ToolCspRepo::PackageType packages;
     ToolCspRepo::loadPackages(&packages, hal);
 
-    const QString text = ui_->comboBoxPackageVersion->currentText();
+    const QString text = projectInstance_->getProjectHalVersion();
     ui_->comboBoxPackageVersion->clear();
 
     auto &versions = packages["Library"][hal].Versions;
@@ -169,6 +170,40 @@ void ViewConfigure::flushComboBoxPackageVersion() const
             if (versionsI.key() == text)
             {
                 ui_->comboBoxPackageVersion->setCurrentText(text);
+            }
+        }
+        ++versionsI;
+    }
+}
+
+void ViewConfigure::flushComboBoxToolchainsVersionVersion() const
+{
+    const QString &toolchainsVersion = ui_->lineEditToolchainsName->text();
+    ToolCspRepo::PackageType packages;
+    ToolCspRepo::loadPackages(&packages, toolchainsVersion);
+
+    const QString text = projectInstance_->getProjectToolchainsVersion();
+    auto &versions = packages["Toolchains"][toolchainsVersion].Versions;
+
+    if (versions.keys().contains(text))
+    {
+        ui_->checkBoxEnableToolchains->setCheckState(Qt::Checked);
+    }
+    else
+    {
+        ui_->checkBoxEnableToolchains->setCheckState(Qt::Unchecked);
+    }
+
+    ui_->comboBoxToolchainsVersion->clear();
+    auto versionsI = versions.constBegin();
+    while (versionsI != versions.constEnd())
+    {
+        if (versionsI.value().Installed)
+        {
+            ui_->comboBoxToolchainsVersion->addItem(versionsI.key());
+            if (versionsI.key() == text)
+            {
+                ui_->comboBoxToolchainsVersion->setCurrentText(text);
             }
         }
         ++versionsI;
@@ -209,6 +244,20 @@ void ViewConfigure::initPackageSettings() const
     {
         ui_->lineEditPackageName->setText(chip_summary.Hal);
     }
+
+    flushComboBoxPackageVersion();
+}
+
+void ViewConfigure::initToolchainsSettings() const
+{
+    const ChipSummaryTable::ChipSummaryType &chip_summary = projectInstance_->getChipSummary();
+
+    if (!chip_summary.Toolchains.isEmpty())
+    {
+        ui_->lineEditToolchainsName->setText(chip_summary.Toolchains);
+    }
+
+    flushComboBoxToolchainsVersionVersion();
 }
 
 void ViewConfigure::pushButtonPackageManagerPressedCallback()
@@ -269,4 +318,34 @@ void ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged(const QString &text
 void ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text)
 {
     projectInstance_->setProjectTargetProjectMinVersion(text);
+}
+
+void ViewConfigure::checkBoxEnableToolchainsStateChanged(int State)
+{
+    if (Qt::Unchecked == State)
+    {
+        ui_->comboBoxToolchainsVersion->setEnabled(false);
+        ui_->pushButtonToolchainsManager->setEnabled(false);
+        projectInstance_->setProjectToolchainsVersion("");
+    }
+    else
+    {
+        ui_->comboBoxToolchainsVersion->setEnabled(true);
+        ui_->pushButtonToolchainsManager->setEnabled(true);
+    }
+}
+
+void ViewConfigure::pushButtonToolchainsManagerPressedCallback()
+{
+    DialogPackageManager dialog(this);
+    (void)dialog.exec();
+    flushComboBoxToolchainsVersionVersion();
+}
+
+void ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged(const QString &text)
+{
+    if (ui_->checkBoxEnableToolchains->checkState() == Qt::Checked)
+    {
+        projectInstance_->setProjectToolchainsVersion(text);
+    }
 }

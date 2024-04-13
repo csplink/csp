@@ -441,6 +441,7 @@
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="468"/>
+        <location filename="../../views/ViewConfigure.ui" line="590"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
@@ -448,6 +449,21 @@
         <location filename="../../views/ViewConfigure.ui" line="475"/>
         <source>Package Version</source>
         <translation>包版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="531"/>
+        <source>Toolchains Settings</source>
+        <translation>工具链设置</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="537"/>
+        <source>Toolchains Version</source>
+        <translation>工具链版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="638"/>
+        <source>Enable Toolchains</source>
+        <translation type="unfinished">使能工具链</translation>
     </message>
 </context>
 <context>
