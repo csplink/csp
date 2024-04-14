@@ -94,8 +94,6 @@
     </property>
     <addaction name="actionGenerate"/>
     <addaction name="separator"/>
-    <addaction name="actionBuildRelease"/>
-    <addaction name="actionBuildDebug"/>
     <addaction name="separator"/>
    </widget>
    <addaction name="menu"/>
@@ -238,7 +236,6 @@
    <addaction name="actionGenerate"/>
    <addaction name="actionPackageManager"/>
    <addaction name="separator"/>
-   <addaction name="actionBuildRelease"/>
   </widget>
   <action name="actionLoad">
    <property name="text">
@@ -297,24 +294,6 @@
    </property>
    <property name="text">
     <string>Package Manager</string>
-   </property>
-  </action>
-  <action name="actionBuildRelease">
-   <property name="icon">
-    <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icon/hammer-fill.svg</normaloff>:/icon/hammer-fill.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Build Release</string>
-   </property>
-  </action>
-  <action name="actionBuildDebug">
-   <property name="icon">
-    <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icon/hammer-fill.svg</normaloff>:/icon/hammer-fill.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Build Debug</string>
    </property>
   </action>
  </widget>

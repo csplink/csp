@@ -68,8 +68,6 @@ class ViewMainWindow final : public QMainWindow
     void actionReportTriggeredCallback(bool checked) const;
     void actionGenerateTriggeredCallback(bool checked) const;
     void actionPackageManagerTriggeredCallback(bool checked);
-    void actionBuildDebugTriggeredCallback(bool checked) const;
-    void actionBuildReleaseTriggeredCallback(bool checked) const;
     void xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
     void pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
 

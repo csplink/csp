@@ -124,8 +124,6 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(ui_->actionReport, &QAction::triggered, this, &ViewMainWindow::actionReportTriggeredCallback, Qt::UniqueConnection);
     (void)connect(ui_->actionGenerate, &QAction::triggered, this, &ViewMainWindow::actionGenerateTriggeredCallback, Qt::UniqueConnection);
     (void)connect(ui_->actionPackageManager, &QAction::triggered, this, &ViewMainWindow::actionPackageManagerTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionBuildDebug, &QAction::triggered, this, &ViewMainWindow::actionBuildDebugTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionBuildRelease, &QAction::triggered, this, &ViewMainWindow::actionBuildReleaseTriggeredCallback, Qt::UniqueConnection);
 
     (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
     (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
@@ -321,20 +319,6 @@ void ViewMainWindow::actionPackageManagerTriggeredCallback(const bool checked)
 
     DialogPackageManager dialog(this);
     (void)dialog.exec();
-}
-
-void ViewMainWindow::actionBuildDebugTriggeredCallback(bool checked) const
-{
-    Q_UNUSED(checked)
-
-    projectInstance_->build("debug");
-}
-
-void ViewMainWindow::actionBuildReleaseTriggeredCallback(bool checked) const
-{
-    Q_UNUSED(checked)
-
-    projectInstance_->build("release");
 }
 
 void ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
