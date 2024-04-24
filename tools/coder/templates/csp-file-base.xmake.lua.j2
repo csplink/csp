@@ -117,6 +117,16 @@ do
 {{UserCode["target files"]}}
     ----> add user code end target files
 
+    ------------------------------- target script ------------------------------
+    ----< add user code begin target script
+{%- if UserCode["target script"] %}
+{{UserCode["target script"]}}
+{%- else %}
+    {%- block target_script %}
+    {%- endblock %}
+{%- endif %}
+    ----> add user code end target script
+
     ----< add user code begin 1
 {{UserCode["1"]}}
     ----> add user code end 1

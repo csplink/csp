@@ -76,29 +76,34 @@ def add_group(parent: etree.Element, name: str, files: list, prefix=""):
         return
 
     existing_files_name = []
+    group = None
 
-    for group in parent.findall('Group'):
-        # group_name = group.find('GroupName').text
-        group_files = group.find('Files')
-        if group_files is not None:
-            for file in group_files.findall('File'):
-                file_name = file.find('FileName').text
-                # file_path = file.find('FilePath').text
-                existing_files_name.append(file_name)
+    for tmp_group in parent.findall('Group'):
+        group_name = tmp_group.find('GroupName').text
+        if group_name == name:
+            group = tmp_group
+            group_files = tmp_group.find('Files')
+            if group_files is not None:
+                for file in group_files.findall('File'):
+                    file_name = file.find('FileName').text
+                    # file_path = file.find('FilePath').text
+                    existing_files_name.append(file_name)
+            break
 
-    group = etree.SubElement(parent, 'Group')
-    group_name = etree.SubElement(group, 'GroupName')
-    group_name.text = name
-    group_files = etree.SubElement(group, 'Files')
+    if group is None:
+        group = etree.SubElement(parent, 'Group')
+        group_name = etree.SubElement(group, 'GroupName')
+        group_name.text = name
+        group_files = etree.SubElement(group, 'Files')
 
     for f in files:
         name = os.path.basename(f)
+        if name not in existing_files_name:
+            group_file = etree.SubElement(group_files, 'File')
+            group_file_name = etree.SubElement(group_file, 'FileName')
 
-        group_file = etree.SubElement(group_files, 'File')
-        group_file_name = etree.SubElement(group_file, 'FileName')
-
-        group_file_name.text = name
-        group_file_type = etree.SubElement(group_file, 'FileType')
-        group_file_type.text = str(get_filetype(name))
-        group_file_path = etree.SubElement(group_file, 'FilePath')
-        group_file_path.text = f"{prefix}{f}".replace('/', '\\')
+            group_file_name.text = name
+            group_file_type = etree.SubElement(group_file, 'FileType')
+            group_file_type.text = str(get_filetype(name))
+            group_file_path = etree.SubElement(group_file, 'FilePath')
+            group_file_path.text = f"{prefix}{f}".replace('/', '\\')

@@ -48,8 +48,8 @@
 {%- endif %}
 /**> add user code end header */
 {% set header_guard = File.upper() | replace(".", "_") | replace(" ", "_") | replace("-", "_") %}
-#ifndef __CSPLINK_{{ header_guard }}_
-#define __CSPLINK_{{ header_guard }}_
+#ifndef __CSPLINK_{{ header_guard }}__
+#define __CSPLINK_{{ header_guard }}__
 
 /********************************** includes **********************************/
 {%- block includes %}
