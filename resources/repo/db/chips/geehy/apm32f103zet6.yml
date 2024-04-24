@@ -221,8 +221,7 @@ TargetProject:
   CMake: true
   MdkArm:
     Versions:
-      - v5.32
-      - v5.27
+      - V5
 Toolchains: arm-none-eabi
 Linker:
   DefaultMinimumHeapSize: 0x200
