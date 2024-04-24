@@ -38,7 +38,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabPinoutConfigure">
       <attribute name="title">
@@ -252,22 +252,7 @@ background-color:transparent;
                   <item row="0" column="1">
                    <widget class="QWidget" name="widget_2" native="true">
                     <layout class="QGridLayout" name="gridLayout_3">
-                     <item row="0" column="0">
-                      <widget class="QComboBox" name="comboBoxBuildScriptIde">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="font">
-                        <font>
-                         <pointsize>10</pointsize>
-                        </font>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="0" column="1">
+                     <item row="0" column="2">
                       <spacer name="horizontalSpacer">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
@@ -279,6 +264,57 @@ background-color:transparent;
                         </size>
                        </property>
                       </spacer>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QComboBox" name="comboBoxBuildScriptIde">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QWidget" name="widgetBoxBuildScriptIdeMinVersion" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_2">
+                        <property name="leftMargin">
+                         <number>35</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_6">
+                          <property name="text">
+                           <string>Min Version</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QComboBox" name="comboBoxBuildScriptIdeMinVersion">
+                          <property name="font">
+                           <font>
+                            <family>JetBrains Mono</family>
+                            <pointsize>9</pointsize>
+                           </font>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
                      </item>
                     </layout>
                    </widget>
@@ -309,6 +345,12 @@ background-color:transparent;
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
+                        </font>
                        </property>
                       </widget>
                      </item>
@@ -345,6 +387,12 @@ background-color:transparent;
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
+                        </font>
                        </property>
                       </widget>
                      </item>
@@ -386,6 +434,12 @@ background-color:transparent;
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
+                        </font>
                        </property>
                        <property name="readOnly">
                         <bool>true</bool>
@@ -448,7 +502,8 @@ background-color:transparent;
                        </property>
                        <property name="font">
                         <font>
-                         <pointsize>10</pointsize>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
                         </font>
                        </property>
                       </widget>
@@ -465,6 +520,126 @@ background-color:transparent;
                       </widget>
                      </item>
                     </layout>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_4">
+                 <property name="title">
+                  <string>Toolchains Settings</string>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_13" columnstretch="1,10">
+                  <item row="2" column="0">
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Toolchains Version</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QWidget" name="widget_8" native="true">
+                    <layout class="QGridLayout" name="gridLayout_15">
+                     <item row="0" column="2">
+                      <spacer name="horizontalSpacer_9">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QComboBox" name="comboBoxToolchainsVersion">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QPushButton" name="pushButtonToolchainsManager">
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../resources/resources.qrc">
+                         <normaloff>:/icon/more-fill.svg</normaloff>:/icon/more-fill.svg</iconset>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>Name</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QWidget" name="widget_7" native="true">
+                    <layout class="QGridLayout" name="gridLayout_14">
+                     <item row="0" column="0">
+                      <widget class="QLineEdit" name="lineEditToolchainsName">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>JetBrains Mono</family>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <spacer name="horizontalSpacer_8">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QCheckBox" name="checkBoxEnableToolchains">
+                    <property name="text">
+                     <string>Enable Toolchains</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
                    </widget>
                   </item>
                  </layout>

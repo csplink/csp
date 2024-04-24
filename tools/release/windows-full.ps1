@@ -26,6 +26,15 @@ param (
     [string] ${lite_dir} = "litedir", [string] ${full_dir} = "fulldir", [string] ${arch} = "x86"
 )
 
+${python_version} = "3.10.11"
+${python_url} = ""
+if (${arch}.Equals("x64")) {
+    ${python_url} = "https://www.python.org/ftp/python/" + ${python_version} + "/python-" + ${python_version} + "-embed-amd64.zip"
+}
+else {
+    ${python_url} = "https://www.python.org/ftp/python/" + ${python_version} + "/python-" + ${python_version} + "-embed-win32.zip"
+}
+
 ${xmake_version} = "v2.8.6"
 ${xmake_url} = ""
 if (${arch}.Equals("x64")) {
@@ -48,22 +57,32 @@ function Main() {
     copy-Item ${lite_dir} ${full_dir} -Recurse
     Push-Location ${full_dir}
 
-    # install repository
-    Push-Location xmake
-    & ./tools/env.ps1
-    xmake csp-repo --install=csp_hal_apm32f1@latest -r ../repositories
+    Push-Location tools
+    # install python
+    Invoke-WebRequest -Uri ${python_url} -OutFile "python.zip"
+    Expand-Archive -Path "python.zip" -DestinationPath "python" -Force
+    Push-Location python
+    ${content} = Get-Content python310._pth
+    ${new_content} = ${content} -replace '#import site', 'import site'
+    Set-Content python310._pth -Value ${new_content}
+    Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile "get-pip.py"
+    $Env:PATH = $PWD.Path + "/Scripts;$Env:PATH"
+    ./python --version
+    ./python ./get-pip.py
+    Remove-Item ./get-pip.py
+    ./Scripts/pip3 install -r $Env:CI_PROJECT_DIR/tools/release/requirements.txt
     Pop-Location
 
-    New-Item -ItemType Directory tools -Force
-
-    Push-Location tools
     # install xmake
     Invoke-WebRequest -Uri ${xmake_url} -OutFile "xmake.zip"
     Expand-Archive -Path "xmake.zip" -DestinationPath "." -Force
+
     # install git
     Invoke-WebRequest -Uri ${git_url} -OutFile "git.zip"
     Expand-Archive -Path "git.zip" -DestinationPath "git" -Force
+
     Remove-Item ./*.zip
+
     Pop-Location
 
     Pop-Location

@@ -42,6 +42,6 @@ cp -rfv ${buildir}/apps/dev/fonts ${dir}/
 cp -rfv ${buildir}/apps/dev/repo ${dir}/
 mkdir -pv ${dir}/translations
 cp -rfv ${buildir}/apps/dev/translations/*.qm ${dir}/translations
-cp -rfv ${buildir}/apps/dev/xmake ${dir}/
+cp -rfv ${buildir}/apps/dev/tools ${dir}/
 
 set +v

@@ -39,7 +39,7 @@ DialogChooseChip::DialogChooseChip(QWidget *parent)
 {
     ui_->setupUi(this);
 
-    repoInstance_ = repo::getInstance();
+    repoInstance_ = Repo::getInstance();
     projectInstance_ = Project::getInstance();
 
     ui_->splitter_2->setSizes(QList<int>() << 156 << 1102);
@@ -271,7 +271,7 @@ void DialogChooseChip::initTableViewChipInfos()
         chips_item->append(new QStandardItem((*iter)->Core));
         chipsItems_.append(chips_item);
 
-        for (const auto &item : *chips_item)
+        for (const auto &item : qAsConst(*chips_item))
             item->setEditable(false);
 
         model->appendRow(*chips_item);
@@ -327,10 +327,10 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selected_indexes)
     }
     ui_->labelPackageImage->setPixmap(image);
 
-    if (repo::chipSummaryExists(company, chipName_))
+    if (Repo::chipSummaryExists(company, chipName_))
     {
         ChipSummaryTable::ChipSummaryType chip_summary;
-        repo::loadChipSummary(&chip_summary, company, chipName_);
+        Repo::loadChipSummary(&chip_summary, company, chipName_);
         halName_ = chip_summary.Hal;
         packageName_ = chip_summary.Package;
         companyName_ = company;

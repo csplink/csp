@@ -50,10 +50,7 @@ class ChipSummaryTable final
 
     typedef struct
     {
-        QString Device;    // device name in package
-        QStringList Packs; // package list
-        QString PackUrl;   // cmsis package url
-        QString CmsisCore; // deps cmsis core min version
+        QStringList Versions;
     } MdkArmType;
 
     typedef struct
@@ -86,6 +83,7 @@ class ChipSummaryTable final
         QString Series;
         QMap<QString, QString> Url;
         TargetProjectType TargetProject;
+        QString Toolchains;
         LinkerType Linker;
     } ChipSummaryType;
 

@@ -30,6 +30,7 @@
 #include <QDebug>
 
 #include "GraphicsItemChipBody.h"
+#include "GraphicsItemPin.h"
 #include "LQFP.h"
 
 static constexpr int LqfpPinWidth = 500;

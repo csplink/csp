@@ -42,14 +42,13 @@ jobs:
           - qt_arch: gcc_64
             qt_ver: 5.15.2
             gcc_arch: x64
-            rust_toolchain: stable-x86_64-unknown-linux-gnu
-            rust_target: x86_64-unknown-linux-gnu
     env:
       QT_ASSUME_STDERR_HAS_CONSOLE: 1
       QT_QPA_PLATFORM: "offscreen"
       XMAKE_ROOT: "y"
       BUILD_LITE_DIR: csp-linux-ubuntu-lite-${{ matrix.gcc_arch }}-${{ github.run_number }}
       BUILD_FULL_DIR: csp-linux-ubuntu-full-${{ matrix.gcc_arch }}-${{ github.run_number }}
+      CI_PROJECT_DIR: ${{ github.workspace }}
     steps:
       - name: ⬇️ install Qt
         uses: jurplel/install-qt-action@v3
@@ -67,10 +66,10 @@ jobs:
       - name: ⬇️ install xmake
         uses: xmake-io/github-action-setup-xmake@v1
 
-      - name: ⬇️ install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: ${{ matrix.rust_toolchain }}
+      - name: ⬇️ install python
+        shell: bash
+        run: |
+          pip3 install -r tools/release/requirements.txt
 
       # https://github.com/RPCS3/rpcs3/issues/10291
       # https://github.com/pineappleEA/Pineapple-Linux/issues/22#issuecomment-1021839166
@@ -87,9 +86,7 @@ jobs:
           pushd build
             cmake .. -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_CXX_COMPILER=g++ \
-              -DCMAKE_C_COMPILER=gcc \
-              -DRust_TOOLCHAIN=${{ matrix.rust_toolchain }} \
-              -DRust_CARGO_TARGET=${{ matrix.rust_target }}
+              -DCMAKE_C_COMPILER=gcc
             make -j$(nproc) VERBOSE=1
           popd
 

@@ -28,7 +28,7 @@ CompanyUrl:
   en:
   zh_CN: https://geehy.com
 Documents:
-  Datasheets:
+  DataSheets:
     APM32F103xDxE数据手册V1.7:
       Url:
         en:
@@ -220,11 +220,9 @@ TargetProject:
   XMake: true
   CMake: true
   MdkArm:
-    Device: APM32F103ZE
-    Packs:
-      - Geehy.APM32F1xx_DFP@1.1.0
-    PackUrl: https://www.geehy.com/uploads/tool/
-    CmsisCore: 5.7.0
+    Versions:
+      - v5.27
+Toolchains: arm-none-eabi
 Linker:
   DefaultMinimumHeapSize: 0x200
   DefaultMinimumStackSize: 0x400

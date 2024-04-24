@@ -37,7 +37,7 @@
 #include "Config.h"
 #include "RepositoryTable.h"
 
-class repo final : public QObject
+class Repo final : public QObject
 {
     Q_OBJECT
 
@@ -64,16 +64,16 @@ class repo final : public QObject
         return QFile::exists(QString("%1/db/chips/%2/%3.yml").arg(Config::repoDir(), company.toLower(), name.toLower()));
     }
 
-    static repo *getInstance();
+    static Repo *getInstance();
 
   private:
-    inline static repo *instance_ = nullptr;
+    inline static Repo *instance_ = nullptr;
     RepositoryTable::RepositoryType repository_;
 
-    repo();
-    ~repo() override;
+    Repo();
+    ~Repo() override;
 
-    Q_DISABLE_COPY_MOVE(repo)
+    Q_DISABLE_COPY_MOVE(Repo)
 };
 
 #endif /** CSP_REPO_H */

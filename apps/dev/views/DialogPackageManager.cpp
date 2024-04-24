@@ -30,10 +30,8 @@
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 
-#include "Config.h"
 #include "DialogPackageManager.h"
-#include "ViewMainWindow.h"
-#include "XMake.h"
+#include "ToolCspRepo.h"
 #include "ui_DialogPackageManager.h"
 
 DialogPackageManager::DialogPackageManager(QWidget *parent)
@@ -63,45 +61,30 @@ DialogPackageManager::~DialogPackageManager()
     delete ui_;
 }
 
-void DialogPackageManager::initTreeView()
+QList<QStandardItem *> *DialogPackageManager::createPackageInfoItems(const QMap<QString, ToolCspRepo::InformationType> *Packages)
 {
-    tableViewProxyModel_ = new QSortFilterProxyModel(this);
-    QStandardItemModel *model = new QStandardItemModel(ui_->treeView);
-    model->setColumnCount(7);
-    model->setHeaderData(0, Qt::Horizontal, tr("Name"));
-    model->setHeaderData(1, Qt::Horizontal, tr("Size"));
-    model->setHeaderData(2, Qt::Horizontal, tr("Home Page"));
-    model->setHeaderData(3, Qt::Horizontal, tr("Status"));
-    model->setHeaderData(4, Qt::Horizontal, tr("Description"));
-    model->setHeaderData(5, Qt::Horizontal, tr("License"));
-    model->setHeaderData(6, Qt::Horizontal, tr("Sha"));
-
-    XMake::PackageType packages;
-    XMake::loadPackages(&packages);
-
-    const QMap<QString, XMake::InformationType> *library = &packages["library"];
-    QMap<QString, XMake::InformationType>::const_iterator libraryIterator = library->constBegin();
-    while (libraryIterator != library->constEnd())
+    QList<QStandardItem *> *items = new QList<QStandardItem *>;
+    QMap<QString, ToolCspRepo::InformationType>::const_iterator iterator = Packages->constBegin();
+    while (iterator != Packages->constEnd())
     {
-        QList<QStandardItem *> *items = new QList<QStandardItem *>;
         /** Name */
-        QStandardItem *const item = new QStandardItem(libraryIterator.key());
+        QStandardItem *const item = new QStandardItem(iterator.key());
         item->setCheckable(true);
         item->setAutoTristate(true);
         items->append(item);
         /** Size */
         items->append(new QStandardItem());
         /** Home Page */
-        items->append(new QStandardItem(libraryIterator.value().Homepage));
+        items->append(new QStandardItem(iterator.value().Homepage));
         /** Status */
         items->append(new QStandardItem());
         /** Description */
-        items->append(new QStandardItem(libraryIterator.value().Description));
+        items->append(new QStandardItem(iterator.value().Description));
         /** License */
-        items->append(new QStandardItem(libraryIterator.value().License));
+        items->append(new QStandardItem(iterator.value().License));
 
-        const QMap<QString, XMake::VersionType> *versions = &libraryIterator.value().Versions;
-        QMap<QString, XMake::VersionType>::const_iterator versionsIterator = versions->constBegin();
+        const QMap<QString, ToolCspRepo::VersionType> *versions = &iterator.value().Versions;
+        QMap<QString, ToolCspRepo::VersionType>::const_iterator versionsIterator = versions->constBegin();
         while (versionsIterator != versions->constEnd())
         {
             QList<QStandardItem *> *child_items = new QList<QStandardItem *>;
@@ -124,7 +107,7 @@ void DialogPackageManager::initTreeView()
             /** Sha */
             child_items->append(new QStandardItem(versionsIterator.value().Sha));
 
-            for (const auto &i : *child_items)
+            for (const auto &i : qAsConst(*child_items))
             {
                 i->setEditable(false);
             }
@@ -133,15 +116,45 @@ void DialogPackageManager::initTreeView()
             ++versionsIterator;
         }
 
-        model->appendRow(*items);
-
-        for (const auto &i : *items)
+        for (const auto &i : qAsConst(*items))
         {
             i->setEditable(false);
         }
 
-        ++libraryIterator;
+        ++iterator;
     }
+
+    return items;
+}
+
+void DialogPackageManager::initTreeView()
+{
+    tableViewProxyModel_ = new QSortFilterProxyModel(this);
+    QStandardItemModel *model = new QStandardItemModel(ui_->treeView);
+    model->setColumnCount(PACKAGE_INFO_ID_COUNT);
+    model->setHeaderData(PACKAGE_INFO_ID_NAME, Qt::Horizontal, tr("Name"));
+    model->setHeaderData(PACKAGE_INFO_ID_SIZE, Qt::Horizontal, tr("Size"));
+    model->setHeaderData(PACKAGE_INFO_ID_HOMEPAGE, Qt::Horizontal, tr("Home Page"));
+    model->setHeaderData(PACKAGE_INFO_ID_STATUS, Qt::Horizontal, tr("Status"));
+    model->setHeaderData(PACKAGE_INFO_ID_DESCRIPTION, Qt::Horizontal, tr("Description"));
+    model->setHeaderData(PACKAGE_INFO_ID_LICENSE, Qt::Horizontal, tr("License"));
+    model->setHeaderData(PACKAGE_INFO_ID_SHA, Qt::Horizontal, tr("Sha"));
+
+    ToolCspRepo::PackageType packages;
+    ToolCspRepo::loadPackages(&packages);
+
+    const QMap<QString, ToolCspRepo::InformationType> *library = &packages["Library"];
+    const QMap<QString, ToolCspRepo::InformationType> *toolchains = &packages["Toolchains"];
+
+    QStandardItem *const libraryItem = new QStandardItem("Library");
+    QStandardItem *const toolchainsItem = new QStandardItem("Toolchains");
+
+    libraryItem->appendRow(*createPackageInfoItems(library));
+    toolchainsItem->appendRow(*createPackageInfoItems(toolchains));
+
+    model->appendRow(libraryItem);
+    model->appendRow(toolchainsItem);
+
     connect(model, &QStandardItemModel::itemChanged, this, &DialogPackageManager::treeViewModelItemChangedCallback, Qt::UniqueConnection);
     tableViewProxyModel_->setSourceModel(model);
 
@@ -296,24 +309,27 @@ void DialogPackageManager::updatePushButtonInstallUpdateUninstallStatus()
                     const QStandardItem *parent = item->parent();
                     if (parent != nullptr)
                     {
-                        const QString name = parent->text();
-                        const QStandardItem *child_item = parent->child(item->row(), 0);
-                        const QString version = child_item->text();
-                        child_item = parent->child(item->row(), 3);
-                        const QString status = child_item->text();
-                        if (status == tr("Installed"))
+                        if (parent->isCheckable())
                         {
-                            if (version == "latest")
+                            const QString name = parent->text();
+                            const QStandardItem *child_item = parent->child(item->row(), 0);
+                            const QString version = child_item->text();
+                            child_item = parent->child(item->row(), 3);
+                            const QString status = child_item->text();
+                            if (status == tr("Installed"))
                             {
-                                updateCount_++;
+                                if (version == "latest")
+                                {
+                                    updateCount_++;
+                                }
+                                installCount_++;
                             }
-                            installCount_++;
+                            else if (status == tr("Not Installed"))
+                            {
+                                uninstallCount_++;
+                            }
+                            selectedPackageInfos_.insert(name, { parent->parent()->text(), version, status == tr("Installed"), item->row(), parent });
                         }
-                        else if (status == tr("Not Installed"))
-                        {
-                            uninstallCount_++;
-                        }
-                        selectedPackageInfos_.insert(name, { version, status == tr("Installed"), item->row(), parent });
                     }
                 }
             }
@@ -342,100 +358,34 @@ void DialogPackageManager::pushButtonClosePressedCallback()
 
 void DialogPackageManager::pushButtonInstallPressedCallback()
 {
-    runXmakeCspRepoCommand("install");
+    runCspRepoCommand("install");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
 void DialogPackageManager::pushButtonUpdatePressedCallback()
 {
-    runXmakeCspRepoCommand("update");
+    runCspRepoCommand("update");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
 void DialogPackageManager::pushButtonUninstallPressedCallback()
 {
-    runXmakeCspRepoCommand("uninstall");
+    runCspRepoCommand("uninstall");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
-int DialogPackageManager::runXmake(const QString &command, const QStringList &args) const
-{
-    const QString program = Config::toolXmake();
-    const QString workDir = Config::defaultWorkDir();
-    const QMap<QString, QString> env = Config::env();
-    QStringList list;
-    if (!command.isEmpty())
-    {
-        list = QStringList{ command, "-D" };
-    }
-    list << args;
-
-    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
-    auto envIterator = env.constBegin();
-    while (envIterator != env.constEnd())
-    {
-        environment.insert(envIterator.key(), envIterator.value());
-        ++envIterator;
-    }
-    QProcess *process = new QProcess();
-    process->setProgram(program);
-    process->setArguments(list);
-    process->setProcessEnvironment(environment);
-
-    const QDir dir(workDir);
-    if (dir.exists())
-    {
-        process->setWorkingDirectory(workDir);
-    }
-
-    connect(process, &QProcess::readyReadStandardOutput, this, [process, this]() {
-        const QByteArray output = process->readAllStandardOutput();
-        if (!output.isEmpty())
-        {
-            const QString msg = output.trimmed();
-            ViewMainWindow::xmakeMessageLogHandler(msg);
-            if (msg.endsWith("successful") || msg.endsWith("failed"))
-            {
-                const QStringList li = msg.split(" ");
-                if (li.length() == 3 && li[0].contains("@"))
-                {
-                    const QStringList infoList = li[0].split("@");
-                    if (infoList.length() == 2)
-                    {
-                        const QString &name = infoList[0];
-                        const QString &version = infoList[1];
-                        const QString &cmd = li[1];
-                        const QString &status = li[2];
-                        qDebug() << name << version << cmd << status;
-                    }
-                }
-            }
-            const QString text = fontMetrics_->elidedText(msg, Qt::ElideRight, ui_->labelStatus->width());
-            ui_->labelStatus->setText(text);
-            ui_->labelStatus->setToolTip(msg);
-        }
-    });
-    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [process](const int exitCode, const QProcess::ExitStatus exitStatus) {
-        Q_UNUSED(exitCode);
-        Q_UNUSED(exitStatus);
-        process->deleteLater();
-    });
-
-    process->start();
-    process->waitForFinished(30000);
-    return process->exitCode();
-}
-
-void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
+void DialogPackageManager::runCspRepoCommand(const QString &command) const
 {
     auto infoIterator = selectedPackageInfos_.constBegin();
     while (infoIterator != selectedPackageInfos_.constEnd())
     {
         const QString &name = infoIterator.key();
+        const QString &type = infoIterator.value().Type;
         const QString &version = infoIterator.value().Version;
         const QStandardItem *parent = infoIterator.value().Parent;
         const int row = infoIterator.value().Row;
         const bool installed = infoIterator.value().Installed;
+
         QFuture<int> future;
         bool isMatched;
 
@@ -443,8 +393,8 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
         if (!installed && command == "install")
         {
             isMatched = true;
-            future = QtConcurrent::run([this, name, version] {
-                const int errorCode = runXmake("csp-repo", { QString("--install=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
+            future = QtConcurrent::run([name, version] {
+                const int errorCode = ToolCspRepo::installPackage(name, version);
                 return errorCode;
             });
         }
@@ -452,8 +402,8 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
         else if (installed && version == "latest" && command == "update")
         {
             isMatched = true;
-            future = QtConcurrent::run([this, name] {
-                const int errorCode = runXmake("csp-repo", { QString("--update=%1").arg(name), QString("--repositories=") + Config::repositoriesDir() });
+            future = QtConcurrent::run([name] {
+                const int errorCode = ToolCspRepo::updatePackage(name);
                 return errorCode;
             });
         }
@@ -461,8 +411,8 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
         else if (installed && command == "uninstall")
         {
             isMatched = true;
-            future = QtConcurrent::run([this, name, version] {
-                const int errorCode = runXmake("csp-repo", { QString("--uninstall=%1@%2").arg(name, version), QString("--repositories=") + Config::repositoriesDir() });
+            future = QtConcurrent::run([name, version] {
+                const int errorCode = ToolCspRepo::uninstallPackage(name, version);
                 return errorCode;
             });
         }
@@ -488,10 +438,10 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
             QApplication::restoreOverrideCursor();
             if (future.result() == 0)
             {
-                ui_->labelStatus->setText(tr("%1 %2 successful").arg(name, command));
-                XMake::PackageType packages;
-                XMake::loadPackages(&packages, name);
-                const XMake::VersionType &versionInfo = packages["library"][name].Versions[version];
+                ui_->labelStatus->setText(QString("%1 %2 successful").arg(name, command));
+                ToolCspRepo::PackageType packages;
+                ToolCspRepo::loadPackages(&packages, name);
+                const ToolCspRepo::VersionType &versionInfo = packages[type][name].Versions[version];
                 parent->child(row, PACKAGE_INFO_ID_SIZE)->setText(QString::number(versionInfo.Size, 'f', 2));
                 parent->child(row, PACKAGE_INFO_ID_STATUS)->setIcon(QApplication::style()->standardIcon(versionInfo.Installed ? QStyle::SP_DialogYesButton : QStyle::SP_DialogNoButton));
                 parent->child(row, PACKAGE_INFO_ID_STATUS)->setText(versionInfo.Installed ? tr("Installed") : tr("Not Installed"));
@@ -499,7 +449,7 @@ void DialogPackageManager::runXmakeCspRepoCommand(const QString &command) const
             }
             else
             {
-                ui_->labelStatus->setText(tr("%1 %2 upgrade failure").arg(name, command));
+                ui_->labelStatus->setText(QString("%1 %2 failure").arg(name, command));
                 break;
             }
         }

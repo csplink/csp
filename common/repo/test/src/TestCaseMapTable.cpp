@@ -46,7 +46,7 @@ class TestCaseMapTable final : public QObject
     {
         Q_INIT_RESOURCE(repo);
         Config::init();
-        Config::set("core/repoDir", QString(CSP_EXE_DIR) + "/repo");
+        Config::set("core/repo", QString(CSP_EXE_DIR) + "/repo");
     }
 
     static void loadMap()

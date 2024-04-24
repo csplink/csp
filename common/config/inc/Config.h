@@ -60,16 +60,10 @@ class Config final
     static QString get(const QString &key);
 
     /**
-     * @brief get csp_repo directory; <get("core/repoDir")>
+     * @brief get csp_repo directory; <get("core/repo")>
      * @return csp_repo directory; <default: "csp_repo">
      */
     static QString repoDir();
-
-    /**
-     * @brief get csp_repo directory; <get("core/xmakeRepoDir")>
-     * @return csp_repo directory; <default: "xmake">
-     */
-    static QString xmakeRepoDir();
 
     /**
      * @brief set value by key
@@ -108,15 +102,20 @@ class Config final
      */
     static QString repositoriesDir();
 
+    static QString toolsDir();
+
     static QString toolXmake();
 
     static QString toolGit();
+
+    static QString toolPython();
 
   private:
     inline static QSettings *settings_ = nullptr;
 
     static QString findToolXmake();
     static QString findToolGit();
+    static QString findToolPython();
 
     Config() = default;
     ~Config() = default;

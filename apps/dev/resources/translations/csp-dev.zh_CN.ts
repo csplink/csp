@@ -103,64 +103,54 @@
 <context>
     <name>DialogPackageManager</name>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="71"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="135"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="72"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="136"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="73"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="137"/>
         <source>Home Page</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="74"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="138"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="75"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="139"/>
         <source>Description</source>
         <translation>描述</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="76"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="140"/>
         <source>License</source>
         <translation>开源协议</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="77"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="141"/>
         <source>Sha</source>
         <translation>Sha值</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="119"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="304"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="316"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="497"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="102"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="319"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="331"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="447"/>
         <source>Installed</source>
         <translation>已安装</translation>
     </message>
     <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="119"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="312"/>
-        <location filename="../../views/DialogPackageManager.cpp" line="497"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="102"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="327"/>
+        <location filename="../../views/DialogPackageManager.cpp" line="447"/>
         <source>Not Installed</source>
         <translation>未安装</translation>
-    </message>
-    <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="491"/>
-        <source>%1 %2 successful</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../views/DialogPackageManager.cpp" line="502"/>
-        <source>%1 %2 upgrade failure</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -174,22 +164,22 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../src/Main.cpp" line="88"/>
+        <location filename="../../src/Main.cpp" line="94"/>
         <source>load font: &lt;%1&gt; failed.</source>
         <translation>加载字体：&lt;%1&gt; 失败。</translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="102"/>
+        <location filename="../../src/Main.cpp" line="109"/>
         <source>Tools for flexible configuration of chips and boards.</source>
         <translation>用于灵活配置芯片与板卡的工具。</translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="105"/>
+        <location filename="../../src/Main.cpp" line="112"/>
         <source>Project file path.</source>
         <translation>工程文件路径。</translation>
     </message>
     <message>
-        <location filename="../../src/Main.cpp" line="114"/>
+        <location filename="../../src/Main.cpp" line="121"/>
         <source>file: &lt;%1&gt; is not exist.</source>
         <translation>文件：&lt;%1&gt; 不存在。</translation>
     </message>
@@ -197,12 +187,12 @@
 <context>
     <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="254"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="257"/>
         <source>CSP project file(*.csp)</source>
         <translation>CSP工程文件(*.csp)</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="264"/>
+        <location filename="../../views/ViewMainWindow.cpp" line="267"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
@@ -425,34 +415,55 @@
         <translation>构建脚本/IDE</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="292"/>
+        <location filename="../../views/ViewConfigure.ui" line="302"/>
+        <source>Min Version</source>
+        <translation>最小版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="328"/>
         <source>Linker Settings</source>
         <translation>链接设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="298"/>
+        <location filename="../../views/ViewConfigure.ui" line="334"/>
         <source>Minimum Stack Size</source>
         <translation>最小栈大小</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="334"/>
+        <location filename="../../views/ViewConfigure.ui" line="376"/>
         <source>Minimum Heap Size</source>
         <translation>最小堆大小</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="373"/>
+        <location filename="../../views/ViewConfigure.ui" line="421"/>
         <source>Package Settings</source>
         <translation>包设置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="414"/>
+        <location filename="../../views/ViewConfigure.ui" line="468"/>
+        <location filename="../../views/ViewConfigure.ui" line="590"/>
         <source>Name</source>
-        <translation></translation>
+        <translation>名称</translation>
     </message>
     <message>
-        <location filename="../../views/ViewConfigure.ui" line="421"/>
+        <location filename="../../views/ViewConfigure.ui" line="475"/>
         <source>Package Version</source>
         <translation>包版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="531"/>
+        <source>Toolchains Settings</source>
+        <translation>工具链设置</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="537"/>
+        <source>Toolchains Version</source>
+        <translation>工具链版本</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewConfigure.ui" line="638"/>
+        <source>Enable Toolchains</source>
+        <translation type="unfinished">使能工具链</translation>
     </message>
 </context>
 <context>
@@ -512,92 +523,92 @@
     </message>
     <message>
         <location filename="../../views/ViewMainWindow.ui" line="81"/>
-        <location filename="../../views/ViewMainWindow.ui" line="108"/>
+        <location filename="../../views/ViewMainWindow.ui" line="116"/>
         <source>Project</source>
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="89"/>
+        <location filename="../../views/ViewMainWindow.ui" line="88"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="147"/>
+        <location filename="../../views/ViewMainWindow.ui" line="93"/>
+        <source>Build</source>
+        <translation>构建</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="155"/>
         <source>Property</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="189"/>
+        <location filename="../../views/ViewMainWindow.ui" line="197"/>
         <source>Output</source>
         <translation>输出</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="211"/>
+        <location filename="../../views/ViewMainWindow.ui" line="219"/>
         <source>Configurations</source>
         <translation>配置</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="223"/>
-        <source>Xmake Output</source>
-        <translation>Xmake输出</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="242"/>
+        <location filename="../../views/ViewMainWindow.ui" line="228"/>
         <source>toolBar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="255"/>
+        <location filename="../../views/ViewMainWindow.ui" line="242"/>
         <source>Load Project</source>
         <translation>加载工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="258"/>
+        <location filename="../../views/ViewMainWindow.ui" line="245"/>
         <source>Ctrl+L</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="263"/>
+        <location filename="../../views/ViewMainWindow.ui" line="250"/>
         <source>Import Project</source>
         <translation>导入工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="268"/>
+        <location filename="../../views/ViewMainWindow.ui" line="255"/>
         <source>Save Project</source>
         <translation>保存工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="271"/>
+        <location filename="../../views/ViewMainWindow.ui" line="258"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="276"/>
+        <location filename="../../views/ViewMainWindow.ui" line="263"/>
         <source>Save Project As ...</source>
         <translation>另存工程为...</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="281"/>
+        <location filename="../../views/ViewMainWindow.ui" line="268"/>
         <source>Close Project</source>
         <translation>关闭工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="286"/>
+        <location filename="../../views/ViewMainWindow.ui" line="273"/>
         <source>Generate Report</source>
         <translation>生成报告</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="291"/>
+        <location filename="../../views/ViewMainWindow.ui" line="278"/>
         <source>New Chip Project</source>
         <translation>新建芯片工程</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="300"/>
+        <location filename="../../views/ViewMainWindow.ui" line="287"/>
         <source>Generate code</source>
         <translation>生成代码</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.ui" line="309"/>
+        <location filename="../../views/ViewMainWindow.ui" line="296"/>
         <source>Package Manager</source>
         <translation>包管理器</translation>
     </message>

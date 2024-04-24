@@ -1,7 +1,7 @@
 {
   "Company": "Geehy",
   "Hal": "csp_hal_apm32f1",
-  "HalVersion": "",
+  "HalVersion": "latest",
   "Modules": [
     "GPIO"
   ],
@@ -888,17 +888,9 @@
     }
   },
   "TargetChip": "APM32F103ZET6",
-  "TargetProject": "xmake",
-  "TargetProjectConfig": {
-    "MdkArm": {
-      "CmsisCore": "",
-      "Device": "",
-      "Pack": "",
-      "PackUrl": ""
-    }
-  },
+  "TargetProject": "XMake",
   "Toolchains": "arm-none-eabi",
-  "ToolchainsVersion": "",
+  "ToolchainsVersion": "v10.3.1",
   "Type": "chip",
   "Version": "v0.0.0.1"
 }

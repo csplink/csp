@@ -1,0 +1,108 @@
+{#
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        csp-file-base.h.j2
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-03-22     xqyjlj       initial version
+#
+#}
+/**< add user code begin header */
+{%- if UserCode["header"] %}
+{{UserCode["header"]}}
+{%- else %}
+/**
+ * *****************************************************************************
+ *  @author:            {{Base.Author}}
+ *  @file:              {{File}}
+ *  @brief:             {{Brief}}
+ *  @coder_version:     {{Base.Version}} x {{CoderData.Version|default("unknown", boolean=True)}}
+ *  @hal:               {{Project.Company}}.{{Project.Hal}}
+ *  @hal_version:       {{Project.HalVersion}}
+ *  @project:           {{Project.Name}}
+ *  @time:              {{Time}}
+ *
+ * *****************************************************************************
+ *  @attention
+ *
+ *  Copyright (C) {{Year}} csplink software.
+ *  All rights reserved.
+ *
+ * *****************************************************************************
+ */
+{%- endif %}
+/**> add user code end header */
+{% set header_guard = File.upper() | replace(".", "_") | replace(" ", "_") | replace("-", "_") %}
+#ifndef __CSPLINK_{{ header_guard }}__
+#define __CSPLINK_{{ header_guard }}__
+
+/********************************** includes **********************************/
+{%- block includes %}
+{%- endblock %}
+/**< add user code begin includes */
+{{UserCode["includes"]}}
+/**> add user code end includes */
+
+/*********************************** typedef **********************************/
+{%- block typedef %}
+{%- endblock %}
+/**< add user code begin typedef */
+{{UserCode["typedef"]}}
+/**> add user code end typedef */
+
+/*********************************** define ***********************************/
+{%- block define %}
+{%- endblock %}
+/**< add user code begin define */
+{{UserCode["define"]}}
+/**> add user code end define */
+
+/************************************ macro ***********************************/
+{%- block macro %}
+{%- endblock %}
+/**< add user code begin macro */
+{{UserCode["macro"]}}
+/**> add user code end macro */
+
+/****************************** extern variables ******************************/
+{%- block extern_variables %}
+{%- endblock %}
+/**< add user code begin extern variables */
+{{UserCode["extern variables"]}}
+/**> add user code end extern variables */
+
+/**************************** functions prototypes ****************************/
+{%- block functions_prototypes %}
+{%- endblock %}
+/**< add user code begin functions prototypes */
+{{UserCode["functions prototypes"]}}
+/**> add user code end functions prototypes */
+
+/**< add user code begin 0 */
+{{UserCode["0"]}}
+/**> add user code end 0 */
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#endif /** __CSPLINK_{{ header_guard }}_ */

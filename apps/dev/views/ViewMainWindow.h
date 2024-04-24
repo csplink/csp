@@ -31,6 +31,7 @@
 #define VIEW_MAIN_WINDOW_H
 
 #include <QMainWindow>
+#include <QProcess>
 
 #include "Project.h"
 
@@ -49,11 +50,10 @@ class ViewMainWindow final : public QMainWindow
     explicit ViewMainWindow(QWidget *parent = nullptr);
     ~ViewMainWindow() override;
 
-    static void xmakeMessageLogHandler(const QString &msg);
+    static void messageLogHandler(const QString &msg);
 
   signals:
-    void signalAddSysLog(const QString &string);
-    void signalAddXmakeLog(const QString &string);
+    void signalAddLog(const QString &string);
 
   public slots:
     void updateModulesTreeView(const QString &company, const QString &name) const;
@@ -68,6 +68,8 @@ class ViewMainWindow final : public QMainWindow
     void actionReportTriggeredCallback(bool checked) const;
     void actionGenerateTriggeredCallback(bool checked) const;
     void actionPackageManagerTriggeredCallback(bool checked);
+    void xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
+    void pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
 
   private:
     Ui::viewMainWindow *ui_;

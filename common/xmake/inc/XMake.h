@@ -40,25 +40,8 @@ class XMake final : public QObject
     Q_OBJECT
 
   public:
-    typedef struct
-    {
-        float Size;
-        bool Installed;
-        QString Sha;
-    } VersionType;
-
-    typedef struct
-    {
-        QMap<QString, VersionType> Versions;
-        QStringList Urls;
-        QString Homepage;
-        QString Description;
-        QString License;
-        QString Company;
-    } InformationType;
-
-    typedef QMap<QString, InformationType> PackageCellType;
-    typedef QMap<QString, PackageCellType> PackageType;
+    static void init();
+    static void deinit();
 
     /**
      * @brief get xmake version
@@ -70,21 +53,7 @@ class XMake final : public QObject
 
     static QString cmd(const QString &command, const QStringList &args = {});
 
-    /**
-     * @brief run the lua script.
-     * @param luaPath: lua path
-     * @param args: args
-     * @return lua output
-     */
-    static QString lua(const QString &luaPath, const QStringList &args = {});
-
-    /**
-     * @brief get package configuration from csp repo
-     * @param packages: packages ptr
-     * @param name: packages name
-     * @return void
-     */
-    static void loadPackages(PackageType *packages, const QString &name = "");
+    static int build(const QString &path, const QString &mode = "release");
 
   private:
     XMake();
@@ -92,10 +61,5 @@ class XMake final : public QObject
 
     Q_DISABLE_COPY_MOVE(XMake)
 };
-
-QDebug operator<<(QDebug, const XMake::VersionType &);
-QDebug operator<<(QDebug, const XMake::InformationType &);
-QDebug operator<<(QDebug, const XMake::PackageCellType &);
-QDebug operator<<(QDebug, const XMake::PackageType &);
 
 #endif /** CSP_XMAKE_H */

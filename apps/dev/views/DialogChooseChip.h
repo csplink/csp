@@ -64,7 +64,7 @@ class DialogChooseChip final : public QDialog
 
   private:
     Ui::dialogChooseChip *ui_;
-    repo *repoInstance_;
+    Repo *repoInstance_;
     Project *projectInstance_ = nullptr;
 
     QString chipName_;

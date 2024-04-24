@@ -33,8 +33,10 @@
 
 #include "ChipSummaryTable.h"
 #include "DialogPackageManager.h"
+#include "PythonAsync.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
+#include "XMakeAsync.h"
 #include "ui_ViewMainWindow.h"
 
 static ViewMainWindow *mainWindow = nullptr;
@@ -76,7 +78,7 @@ void ViewMainWindow::sysMessageLogHandler(const QtMsgType type, const QMessageLo
 
     if (mainWindow != nullptr)
     {
-        emit mainWindow->signalAddSysLog(str_message);
+        emit mainWindow->signalAddLog(str_message);
     }
     else
     {
@@ -84,14 +86,14 @@ void ViewMainWindow::sysMessageLogHandler(const QtMsgType type, const QMessageLo
     }
 }
 
-void ViewMainWindow::xmakeMessageLogHandler(const QString &msg)
+void ViewMainWindow::messageLogHandler(const QString &msg)
 {
     static QMutex mutex;
     QMutexLocker locker(&mutex);
 
     if (mainWindow != nullptr)
     {
-        emit mainWindow->signalAddXmakeLog(msg);
+        emit mainWindow->signalAddLog(msg);
     }
     else
     {
@@ -106,11 +108,12 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     mainWindow = this;
     (void)qInstallMessageHandler(ViewMainWindow::sysMessageLogHandler);
 
-    tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomXmakeOutput);
     tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomConfigurations);
     ui_->dockWidgetBottomOutput->raise();
 
     projectInstance_ = Project::getInstance();
+    const XMakeAsync *xmake = XMakeAsync::getInstance();
+    const PythonAsync *python = PythonAsync::getInstance();
     ui_->pageViewConfigure->setPropertyBrowser(ui_->treePropertyBrowser);
 
     (void)connect(ui_->actionNewChip, &QAction::triggered, this, &ViewMainWindow::actionNewChipTriggeredCallback, Qt::UniqueConnection);
@@ -122,12 +125,15 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(ui_->actionGenerate, &QAction::triggered, this, &ViewMainWindow::actionGenerateTriggeredCallback, Qt::UniqueConnection);
     (void)connect(ui_->actionPackageManager, &QAction::triggered, this, &ViewMainWindow::actionPackageManagerTriggeredCallback, Qt::UniqueConnection);
 
+    (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
+    (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
+    (void)connect(python, &PythonAsync::signalReadyReadStandardError, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
+
     (void)connect(ui_->pageViewHome, &ViewHome::signalCreateProject, this, &ViewMainWindow::createProject, Qt::UniqueConnection);
-    (void)connect(this, &ViewMainWindow::signalAddSysLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
-    (void)connect(this, &ViewMainWindow::signalAddXmakeLog, ui_->LogBoxXmakeOutput, &LogBox::append, Qt::UniqueConnection);
+    (void)connect(this, &ViewMainWindow::signalAddLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
 
     (void)connect(ui_->pageViewHome, &ViewHome::signalOpenExistingProject, this, &ViewMainWindow::actionLoadTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(projectInstance_, &Project::signalsXMakeLog, ui_->LogBoxXmakeOutput, &LogBox::append, Qt::UniqueConnection);
+    (void)connect(projectInstance_, &Project::signalsLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
 
     initMode();
 }
@@ -159,7 +165,6 @@ void ViewMainWindow::setMode(const StackIndexType index)
         ui_->dockWidgetLeft->hide();
         ui_->dockWidgetRight->hide();
         ui_->dockWidgetBottomOutput->hide();
-        ui_->dockWidgetBottomXmakeOutput->hide();
         ui_->dockWidgetBottomConfigurations->hide();
         ui_->stackedWidget->setCurrentIndex(STACK_INDEX_HOME);
         ui_->menuBar->hide();
@@ -174,7 +179,6 @@ void ViewMainWindow::setMode(const StackIndexType index)
         ui_->dockWidgetLeft->show();
         ui_->dockWidgetRight->show();
         ui_->dockWidgetBottomOutput->show();
-        ui_->dockWidgetBottomXmakeOutput->show();
         ui_->dockWidgetBottomConfigurations->show();
 
         (void)connect(ui_->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, this,
@@ -196,7 +200,6 @@ void ViewMainWindow::setMode(const StackIndexType index)
         ui_->dockWidgetLeft->show();
         ui_->dockWidgetRight->show();
         ui_->dockWidgetBottomOutput->show();
-        ui_->dockWidgetBottomXmakeOutput->show();
         ui_->dockWidgetBottomConfigurations->show();
         this->setWindowState(Qt::WindowMaximized);
         break;
@@ -305,7 +308,7 @@ void ViewMainWindow::actionReportTriggeredCallback(const bool checked) const
 void ViewMainWindow::actionGenerateTriggeredCallback(const bool checked) const
 {
     Q_UNUSED(checked)
-    ui_->dockWidgetBottomXmakeOutput->raise();
+    ui_->dockWidgetBottomOutput->raise();
     projectInstance_->saveProject();
     projectInstance_->generateCode();
 }
@@ -316,4 +319,16 @@ void ViewMainWindow::actionPackageManagerTriggeredCallback(const bool checked)
 
     DialogPackageManager dialog(this);
     (void)dialog.exec();
+}
+
+void ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
+{
+    Q_UNUSED(process);
+    ui_->LogBoxOutput->append(msg);
+}
+
+void ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
+{
+    Q_UNUSED(process);
+    ui_->LogBoxOutput->append(msg);
 }

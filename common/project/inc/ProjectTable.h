@@ -49,19 +49,6 @@ class ProjectTable
 
     typedef struct
     {
-        QString Device;    // pack 中的名字
-        QString Pack;      // pack
-        QString PackUrl;   // cmsis pack更新url
-        QString CmsisCore; // 依赖的cmsis core最低版本
-    } MdkArmType;
-
-    typedef struct
-    {
-        MdkArmType MdkArm;
-    } TargetProjectType;
-
-    typedef struct
-    {
         QString Company;                         // company
         QString Hal;                             // hal
         QString HalVersion;                      // hal version
@@ -73,8 +60,8 @@ class ProjectTable
         QString Type;                            // type
         QString Name;                            // project name
         QMap<QString, PinConfigType> PinConfigs; // pin configs
-        QString TargetProject;                   // target project type: xmake, mdk, cmake
-        TargetProjectType TargetProjectConfig;   // target Project config
+        QString TargetProject;                   // target project type: XMake, MDK-Arm, CMake ...
+        QString TargetProjectMinVersion;         // target project min version, for MDK-Arm,
         QString Version;                         // csp version
     } ProjectType;
 
@@ -109,8 +96,6 @@ class ProjectTable
 };
 
 QDebug operator<<(QDebug, const ProjectTable::PinConfigType &);
-QDebug operator<<(QDebug, const ProjectTable::MdkArmType &);
-QDebug operator<<(QDebug, const ProjectTable::TargetProjectType &);
 QDebug operator<<(QDebug, const ProjectTable::ProjectType &);
 
 #endif /** CSP_PROJECT_PROJECT_TABLE_H */

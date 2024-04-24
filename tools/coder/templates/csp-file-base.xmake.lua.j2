@@ -1,0 +1,138 @@
+{#
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        csp-file-base.xmake.lua.j2
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-03-25     xqyjlj       initial version
+#
+#}
+----< add user code begin header
+{%- if UserCode["header"] %}
+{{UserCode["header"]}}
+{%- else %}
+--
+-- -----------------------------------------------------------------------------
+--  @author:            {{Base.Author}}
+--  @file:              {{File}}
+--  @brief:             {{Brief}}
+--  @coder_version:     {{Base.Version}} x {{CoderData.Version|default("unknown", boolean=True)}}
+--  @hal:               {{Project.Company}}.{{Project.Hal}}
+--  @hal_version:       {{Project.HalVersion}}
+--  @project:           {{Project.Name}}
+--  @time:              {{Time}}
+--
+-- -----------------------------------------------------------------------------
+--  @attention
+--
+--  Copyright (C) {{Year}} csplink software.
+--  All rights reserved.
+--
+-- -----------------------------------------------------------------------------
+--
+{%- endif %}
+----> add user code end header
+-------------------------------- project rules ---------------------------------
+{%- block project_rules %}
+{%- endblock %}
+----< add user code begin project rules
+{%- if UserCode["project rules"] %}
+{{UserCode["project rules"]}}
+{%- else %}
+add_rules("mode.debug", "mode.release")
+add_rules("plugin.compile_commands.autoupdate", {outputdir = ".vscode"})
+{%- endif %}
+----> add user code end project rules
+
+-------------------------------- project config --------------------------------
+----< add user code begin project config
+{%- if UserCode["project config"] %}
+{{UserCode["project config"]}}
+{%- else %}
+    {%- block project_config %}
+    {%- endblock %}
+{%- endif %}
+----> add user code end project config
+
+----------------------------------- includes -----------------------------------
+{%- block includes %}
+{%- endblock %}
+----< add user code begin includes
+{{UserCode["includes"]}}
+----> add user code end includes
+
+---------------------------------- toolchains ----------------------------------
+----< add user code begin toolchains
+{%- if UserCode["toolchains"] %}
+{{UserCode["toolchains"]}}
+{%- else %}
+    {%- block toolchains %}
+    {%- endblock %}
+{%- endif %}
+----> add user code end toolchains
+
+------------------------------------- flags ------------------------------------
+{%- block flags %}
+{%- endblock %}
+----< add user code begin flags
+{{UserCode["flags"]}}
+----> add user code end flags
+
+----< add user code begin 0
+{{UserCode["0"]}}
+----> add user code end 0
+
+target("{{Project.Name}}")
+do
+    set_kind("binary")
+    ------------------------------ target configs ------------------------------
+    ----< add user code begin target configs
+{%- if UserCode["toolchains"] %}
+{{UserCode["target configs"]}}
+{%- else %}
+{%- block target_configs %}
+{%- endblock %}
+{%- endif %}
+    ----> add user code end target configs
+
+    ------------------------------- target files -------------------------------
+{%- block target_files %}
+{%- endblock %}
+    ----< add user code begin target files
+{{UserCode["target files"]}}
+    ----> add user code end target files
+
+    ------------------------------- target script ------------------------------
+    ----< add user code begin target script
+{%- if UserCode["target script"] %}
+{{UserCode["target script"]}}
+{%- else %}
+    {%- block target_script %}
+    {%- endblock %}
+{%- endif %}
+    ----> add user code end target script
+
+    ----< add user code begin 1
+{{UserCode["1"]}}
+    ----> add user code end 1
+end
+target_end()
+
+----< add user code begin 2
+{{UserCode["2"]}}
+----> add user code end 2

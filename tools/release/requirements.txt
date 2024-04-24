@@ -1,0 +1,5 @@
+Jinja2
+tqdm
+ping3
+PyYAML
+requests

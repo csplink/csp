@@ -37,18 +37,14 @@
 namespace nlohmann
 {
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, Function, Comment, Locked, FunctionProperty)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::MdkArmType, Device, Pack, PackUrl, CmsisCore)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::TargetProjectType, MdkArm)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package,
-                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs, TargetProject,
-                                                TargetProjectConfig, Version)
+                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs,
+                                                TargetProject, TargetProjectMinVersion, Version)
 } // namespace nlohmann
 
 #include <QDebug>
 
 QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
-QT_DEBUG_ADD_TYPE(ProjectTable::MdkArmType)
-QT_DEBUG_ADD_TYPE(ProjectTable::TargetProjectType)
 QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)
 
 ProjectTable::ProjectTable() = default;
@@ -111,16 +107,8 @@ QString ProjectTable::dumpProject(ProjectType &project)
 
 void ProjectTable::setValue(ProjectType &project)
 {
-    if (project.TargetProject.isEmpty())
-    {
-        project.TargetProject = "xmake";
-    }
-    if (project.Toolchains.isEmpty())
-    {
-        project.Toolchains = "arm-none-eabi";
-    }
     project.Version = QString("v%1").arg(CONFIGURE_PROJECT_VERSION);
-    /* 填充 modules */
+    /* init modules */
     {
         project.Modules.clear();
         auto pin_configs_i = project.PinConfigs.constBegin();
