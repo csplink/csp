@@ -42,7 +42,6 @@ import requests
 from urllib.parse import urlparse
 
 script_dir = os.path.dirname(__file__)
-version = "v0.0.0.1"
 
 verbose_key = "CSP_VERBOSE"
 
