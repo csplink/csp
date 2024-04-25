@@ -31,10 +31,12 @@ import time
 import os, sys, getopt
 import json
 import jinja2
-import helper_keil as keil
 
 script_dir = os.path.dirname(__file__)
 version = "v0.0.0.2"
+
+sys.path.append(script_dir)
+import helper_keil as keil
 
 
 def match_xmake_user(file_path: str) -> dict:
