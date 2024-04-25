@@ -25,7 +25,7 @@ set(name custom_tools_repo)
 set(depends_list)
 
 file(GLOB_RECURSE SOURCES
-        csp-repo.py
+        *.py
         resources/*.yml
 )
 

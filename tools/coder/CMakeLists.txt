@@ -25,7 +25,7 @@ set(name custom_tools_coder)
 set(depends_list)
 
 file(GLOB_RECURSE SOURCES
-        csp-coder.py
+        *.py
         templates/*.j2
 )
 
