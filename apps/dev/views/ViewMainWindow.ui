@@ -281,7 +281,7 @@
   <action name="actionGenerate">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icon/code-s-slash-line.svg</normaloff>:/icon/code-s-slash-line.svg</iconset>
+     <normaloff>:/icons/32x32/code-s-slash-line.svg</normaloff>:/icons/32x32/code-s-slash-line.svg</iconset>
    </property>
    <property name="text">
     <string>Generate code</string>
@@ -290,7 +290,7 @@
   <action name="actionPackageManager">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icon/dropbox-line.svg</normaloff>:/icon/dropbox-line.svg</iconset>
+     <normaloff>:/icons/32x32/dropbox-line.svg</normaloff>:/icons/32x32/dropbox-line.svg</iconset>
    </property>
    <property name="text">
     <string>Package Manager</string>

@@ -27,8 +27,8 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef VIEW_MAIN_WINDOW_H
-#define VIEW_MAIN_WINDOW_H
+#ifndef __VIEW_MAIN_WINDOW_H__
+#define __VIEW_MAIN_WINDOW_H__
 
 #include <QMainWindow>
 #include <QProcess>
@@ -86,4 +86,5 @@ class ViewMainWindow final : public QMainWindow
     void setMode(StackIndexType index);
     static void sysMessageLogHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 };
-#endif /** VIEW_MAIN_WINDOW_H */
+
+#endif /** __VIEW_MAIN_WINDOW_H__ */

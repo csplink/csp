@@ -66,8 +66,6 @@ endif ()
 enable_testing()
 
 add_subdirectory(apps)
-add_subdirectory(common)
-add_subdirectory(components)
 add_subdirectory(resources)
 add_subdirectory(thirdparty)
 add_subdirectory(tools)

@@ -215,7 +215,7 @@ def deploy(project: dict, output_dir: str) -> dict:
     return data
 
 
-def main(project_file: str, output_dir: str, repositories_dir: str):
+def main(project_file: str, output_dir: str, repository_dir: str):
     """
     main
     """
@@ -225,7 +225,7 @@ def main(project_file: str, output_dir: str, repositories_dir: str):
 
     hal = project_json["Hal"]
     modules = project_json["Modules"]
-    package_dir = f'{repositories_dir}/library/{hal}/{project_json["HalVersion"]}'
+    package_dir = f'{repository_dir}/library/{hal}/{project_json["HalVersion"]}'
 
     if not os.path.isdir(package_dir):
         print(f"error: {package_dir} is not directory! maybe package({hal}) not yet installed.")
@@ -235,7 +235,7 @@ def main(project_file: str, output_dir: str, repositories_dir: str):
 
     coder_data = parse(project_json)  # get coder data from hal coder.py
     if project_json["ToolchainsVersion"] != "":
-        toolchains_path = f"{repositories_dir}/toolchains/{project_json['Toolchains']}/{project_json['ToolchainsVersion']}"
+        toolchains_path = f"{repository_dir}/toolchains/{project_json['Toolchains']}/{project_json['ToolchainsVersion']}"
     else:
         toolchains_path = ""
 
@@ -279,19 +279,19 @@ def help():
     print("    -h, --help               print this help.")
     print("    -f, --file               csp project file path.")
     print("    -o, --output             set the output directory.")
-    print("    -r, --repositories       repositories dir.")
+    print("    -r, --repository         repository dir.")
 
 
 if __name__ == '__main__':
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hf:o:r:", ["help", "file=", "output=", "repositories="])
+        opts, args = getopt.getopt(sys.argv[1:], "hf:o:r:", ["help", "file=", "output=", "repository="])
     except getopt.GetoptError:
         help()
         sys.exit(2)
 
     file = ""
     output = ""
-    repositories = ""
+    repository = ""
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             help()
@@ -300,10 +300,10 @@ if __name__ == '__main__':
             file = arg
         elif opt in ("-o", "--output"):
             output = arg
-        elif opt in ("-r", "--repositories"):
-            repositories = arg
+        elif opt in ("-r", "--repository"):
+            repository = arg
 
-    if file == "" or repositories == "":
+    if file == "" or repository == "":
         help()
         sys.exit(2)
 
@@ -311,11 +311,11 @@ if __name__ == '__main__':
         print(f"error: {file} is not file!")
         sys.exit(2)
 
-    if not os.path.isdir(repositories):
-        print(f"error: {repositories} is not directory!")
+    if not os.path.isdir(repository):
+        print(f"error: {repository} is not directory!")
         sys.exit(2)
 
     if output == "":
         output = os.path.dirname(file)
 
-    main(file, output, repositories)
+    main(file, output, repository)

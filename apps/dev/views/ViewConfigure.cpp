@@ -51,11 +51,6 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     (void)connect(ui_->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui_->checkBoxEnableToolchains, &QCheckBox::stateChanged, this, &ViewConfigure::checkBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
     (void)connect(ui_->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
-
-    initProjectSettings();
-    initLinkerSettings();
-    initPackageSettings();
-    initToolchainsSettings();
 }
 
 ViewConfigure::~ViewConfigure()
@@ -66,6 +61,14 @@ ViewConfigure::~ViewConfigure()
 void ViewConfigure::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
+
+    if (!isInitUi)
+    {
+        initProjectSettings();
+        initLinkerSettings();
+        initPackageSettings();
+        initToolchainsSettings();
+    }
 }
 
 void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)

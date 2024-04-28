@@ -27,8 +27,8 @@
  *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef VIEW_CONFIGURE_H
-#define VIEW_CONFIGURE_H
+#ifndef __VIEW_CONFIGURE_H__
+#define __VIEW_CONFIGURE_H__
 
 #include "Project.h"
 #include "PropertyBrowserPin.h"
@@ -61,6 +61,7 @@ class ViewConfigure final : public QWidget
     PropertyBrowserPin *propertyBrowserInstance_ = nullptr;
     Project *projectInstance_ = nullptr;
     int resizeCounter_ = 0;
+    bool isInitUi = false;
 
     void initProjectSettings() const;
     void initLinkerSettings() const;
@@ -82,4 +83,4 @@ class ViewConfigure final : public QWidget
     void comboBoxToolchainsVersionCurrentTextChanged(const QString &text);
 };
 
-#endif /** VIEW_CONFIGURE_H */
+#endif /** __VIEW_CONFIGURE_H__ */

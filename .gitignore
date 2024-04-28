@@ -61,7 +61,7 @@ compile_commands.json
 
 #cmake
 build/
-common/config/inc/Configure.h
+Configure.h
 
 #xmake
 .xmake/

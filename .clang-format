@@ -1,8 +1,9 @@
 BasedOnStyle: Microsoft
 ---
 Language: Cpp
-ColumnLimit: 0
+ColumnLimit: 160
 AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 BraceWrapping:
   AfterExternBlock: false
 Cpp11BracedListStyle: false
+PackConstructorInitializers: Never

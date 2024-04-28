@@ -24,11 +24,11 @@
 set(name custom_res)
 
 add_subdirectory(fonts)
-add_subdirectory(repo)
+add_subdirectory(database)
 
 add_custom_target(${name})
 
 add_dependencies(${name}
         custom_res_fonts
-        custom_res_repo
+        custom_res_database
 )

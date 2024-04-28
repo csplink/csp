@@ -27,8 +27,8 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef VIEW_HOME_H
-#define VIEW_HOME_H
+#ifndef __VIEW_HOME_H__
+#define __VIEW_HOME_H__
 
 #include <QWidget>
 
@@ -65,4 +65,4 @@ class ViewHome final : public QWidget
     Project *projectInstance_;
 };
 
-#endif /** VIEW_HOME_H */
+#endif /** __VIEW_HOME_H__ */

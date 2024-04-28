@@ -46,22 +46,22 @@ script_dir = os.path.dirname(__file__)
 verbose_key = "CSP_VERBOSE"
 
 
-def is_installed(type: str, name: str, version: str, repositories: str) -> bool:
+def is_installed(type: str, name: str, version: str, repository: str) -> bool:
     """
     Check if the package is installed.
     :param type: The type of the package.
     :param name: The name of the package.
     :param version: The version of the package.
-    :param repositories: The path of the repositories.
+    :param repository: The path of the repository.
     :return: True if the package is installed, False otherwise.
     """
     installed = False
-    output_dir = os.path.join(repositories, type.lower(), name, version)
+    output_dir = os.path.join(repository, type.lower(), name, version)
 
     if os.path.isdir(os.path.join(output_dir, ".csplink")):
         installed = True
 
-    manifest_file = os.path.join(repositories, "manifest.json")
+    manifest_file = os.path.join(repository, "manifest.json")
     manifest = {}
     if not os.path.isfile(manifest_file):
         with open(manifest_file, "w+", encoding='utf-8') as _:
@@ -85,7 +85,7 @@ def is_installed(type: str, name: str, version: str, repositories: str) -> bool:
     manifest[type][name][version]["Installed"] = installed
 
     if is_changed:
-        with open(f"{repositories}/manifest.json", "w", encoding='utf-8') as file:
+        with open(f"{repository}/manifest.json", "w", encoding='utf-8') as file:
             file.write(json.dumps(manifest, indent=2, sort_keys=True))
 
     return installed
@@ -113,22 +113,22 @@ def get_git_head(path: str) -> str:
         return ""
 
 
-def show_package_list(package: dict, package_name: str, repositories: str):
+def show_package_list(package: dict, package_name: str, repository: str):
     """
     Show the package list.
     :param package: The package list.
     :param package_name: The name of the package.
-    :param repositories: The path of the repositories.
+    :param repository: The path of the repository.
     :return: None
     """
     if package_name == "all":
         for name in package["Library"].keys():
             for version in package["Library"][name]["Versions"].keys():
-                installed = is_installed("Library", name, version, repositories)
+                installed = is_installed("Library", name, version, repository)
                 package["Library"][name]["Versions"][version]["Installed"] = installed
                 if version == "latest" and installed:
                     package["Library"][name]["Versions"][version]["Sha"] = get_git_head(
-                        os.path.join(repositories, "library", name, version))
+                        os.path.join(repository, "library", name, version))
         for name in package["Toolchains"].keys():
             system = platform.system()
             if system == "Linux":
@@ -139,7 +139,7 @@ def show_package_list(package: dict, package_name: str, repositories: str):
                 raise Exception(f'Temporarily unsupported operating systems ("{system}")')
 
             for version in package["Toolchains"][name]["Versions"][system].keys():
-                installed = is_installed("Toolchains", name, version, repositories)
+                installed = is_installed("Toolchains", name, version, repository)
                 package["Toolchains"][name]["Versions"][system][version]["Installed"] = installed
             package["Toolchains"][name]["Versions"] = package["Toolchains"][name]["Versions"][system]
 
@@ -149,11 +149,11 @@ def show_package_list(package: dict, package_name: str, repositories: str):
         for name in package["Library"].keys():
             if name == package_name:
                 for version in package["Library"][name]["Versions"].keys():
-                    installed = is_installed("Library", name, version, repositories)
+                    installed = is_installed("Library", name, version, repository)
                     package["Library"][name]["Versions"][version]["Installed"] = installed
                     if version == "latest" and installed:
                         package["Library"][name]["Versions"][version]["Sha"] = get_git_head(
-                            os.path.join(repositories, "library", name, version))
+                            os.path.join(repository, "library", name, version))
                     map["Library"] = {}
                     map["Library"][name] = package["Library"][name]
                 break
@@ -170,7 +170,7 @@ def show_package_list(package: dict, package_name: str, repositories: str):
                         raise Exception(f'Temporarily unsupported operating systems ("{system}")')
 
                     for version in package["Toolchains"][name]["Versions"][system].keys():
-                        installed = is_installed("Toolchains", name, version, repositories)
+                        installed = is_installed("Toolchains", name, version, repository)
                         package["Toolchains"][name]["Versions"][system][version]["Installed"] = installed
                     package["Toolchains"][name]["Versions"] = package["Toolchains"][name]["Versions"][system]
                     map["Toolchains"] = {}
@@ -236,13 +236,13 @@ def git_read_output(url: str, stream):
                 print(line)
 
 
-def find_package(package: dict, package_name: str, package_version: str, repositories: str):
+def find_package(package: dict, package_name: str, package_version: str, repository: str):
     """
     Find the package.
     :param package: The package list.
     :param package_name: The name of the package.
     :param package_version: The version of the package.
-    :param repositories: The path of the repositories.
+    :param repository: The path of the repository.
     """
 
     type = ""
@@ -251,7 +251,7 @@ def find_package(package: dict, package_name: str, package_version: str, reposit
         if name == package_name:
             for version in package["Library"][name]["Versions"].keys():
                 if version == package_version:
-                    installed = is_installed("Library", name, version, repositories)
+                    installed = is_installed("Library", name, version, repository)
                     package["Library"][name]["Versions"][version]["Installed"] = installed
                     map = package["Library"][name]
                     type = "Library"
@@ -271,7 +271,7 @@ def find_package(package: dict, package_name: str, package_version: str, reposit
 
                 for version in package["Toolchains"][name]["Versions"][system].keys():
                     if version == package_version:
-                        installed = is_installed("Toolchains", name, version, repositories)
+                        installed = is_installed("Toolchains", name, version, repository)
                         package["Toolchains"][name]["Versions"][system][version]["Installed"] = installed
                         package["Toolchains"][name]["Versions"] = package["Toolchains"][name]["Versions"][system]
                         map = package["Toolchains"][name]
@@ -285,16 +285,16 @@ def find_package(package: dict, package_name: str, package_version: str, reposit
     return type, map
 
 
-def install_package(package: dict, package_name: str, package_version: str, repositories: str):
+def install_package(package: dict, package_name: str, package_version: str, repository: str):
     """
     Install the package.
     :param package: The package list.
     :param package_name: The name of the package.
     :param package_version: The version of the package.
-    :param repositories: The path of the repositories.
+    :param repository: The path of the repository.
     """
 
-    type, map = find_package(package, package_name, package_version, repositories)
+    type, map = find_package(package, package_name, package_version, repository)
 
     if map["Versions"][package_version]["Installed"]:
         print(f"package {package_name}@{package_version} has been installed.")
@@ -305,11 +305,11 @@ def install_package(package: dict, package_name: str, package_version: str, repo
 
     ############################# download package #############################
 
-    package_dir = os.path.join(repositories, type.lower(), package_name)
+    package_dir = os.path.join(repository, type.lower(), package_name)
     if not os.path.isdir(package_dir):
         os.makedirs(package_dir)
 
-    output_path = os.path.join(repositories, type.lower(), package_name, package_version)
+    output_path = os.path.join(repository, type.lower(), package_name, package_version)
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
 
@@ -335,7 +335,7 @@ def install_package(package: dict, package_name: str, package_version: str, repo
         if proc.returncode != 0:
             raise Exception(f"git clone failed with exit code {proc.returncode}.")
     else:  # http download
-        pkg_file = os.path.join(repositories, type.lower(), package_name, os.path.basename(url))
+        pkg_file = os.path.join(repository, type.lower(), package_name, os.path.basename(url))
         pkg_tmp_file = f"{pkg_file}.tmp"
         if os.path.exists(pkg_tmp_file):
             os.remove(pkg_tmp_file)
@@ -391,7 +391,7 @@ def install_package(package: dict, package_name: str, package_version: str, repo
 
     if not os.path.isdir(os.path.join(output_path, ".csplink")):
         os.makedirs(os.path.join(output_path, ".csplink"))
-        if is_installed(type, package_name, package_version, repositories):
+        if is_installed(type, package_name, package_version, repository):
             print(f"package {package_name}@{package_version} install successful.")
         else:
             raise Exception(f"package {package_name}@{package_version} install failed.")
@@ -399,21 +399,21 @@ def install_package(package: dict, package_name: str, package_version: str, repo
         raise Exception(f"package {package_name}@{package_version} has been installed.")
 
 
-def update_package(package: dict, package_name: str, repositories: str):
+def update_package(package: dict, package_name: str, repository: str):
     """
     Update the package.
     :param package: The package.
     :param package_name: The name of the package.
-    :param repositories: The path of the repositories.
+    :param repository: The path of the repository.
     """
 
-    type, map = find_package(package, package_name, "latest", repositories)
+    type, map = find_package(package, package_name, "latest", repository)
 
     if not map["Versions"]["latest"]["Installed"]:
         print(f"package {package_name}@latest not yet installed.")
         return
 
-    output_path = os.path.join(repositories, type.lower(), package_name, "latest")
+    output_path = os.path.join(repository, type.lower(), package_name, "latest")
     if os.path.exists(output_path):
         env = os.environ.copy()
         env['LANG'] = 'en'
@@ -439,26 +439,26 @@ def update_package(package: dict, package_name: str, repositories: str):
         raise Exception(f"package {package_name}@latest not found.")
 
 
-def uninstall_package(package: dict, package_name: str, package_version: str, repositories: str):
+def uninstall_package(package: dict, package_name: str, package_version: str, repository: str):
     """
     Uninstall the package.
     :param package: The package.
     :param package_name: The name of the package.
     :param package_version: The version of the package.
-    :param repositories: The path of the repositories.
+    :param repository: The path of the repository.
     """
 
-    type, map = find_package(package, package_name, package_version, repositories)
+    type, map = find_package(package, package_name, package_version, repository)
 
     if not map["Versions"][package_version]["Installed"]:
         print(f"package {package_name}@{package_version} has been installed.")
         return
 
-    output_path = os.path.join(repositories, type.lower(), package_name, package_version)
+    output_path = os.path.join(repository, type.lower(), package_name, package_version)
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
 
-        if not is_installed(type, package_name, package_version, repositories):
+        if not is_installed(type, package_name, package_version, repository):
             print(f"package {package_name}@{package_version} uninstall successful.")
         else:
             raise Exception(f"package {package_name}@{package_version} uninstall failed.")
@@ -493,29 +493,29 @@ def help():
         f"                                - {os.path.basename(__file__)} --install=csp_hal_apm32f1 --package-version=latest -r <dir>\n"
         f"                                - {os.path.basename(__file__)} --uninstall=csp_hal_apm32f1 --package-version=latest -r <dir>"
     )
-    print("    -r, --repositories       repositories dir.")
+    print("    -r, --repository         repository dir.")
 
 
-def main(dump: str, package_name: str, command: str, version: str, repositories: str):
+def main(dump: str, package_name: str, command: str, version: str, repository: str):
     """
     Main function.
     """
 
-    if not os.path.isdir(repositories):
-        os.makedirs(repositories)
+    if not os.path.isdir(repository):
+        os.makedirs(repository)
 
     package_yaml = {}
     with open(f"{script_dir}/resources/package.yml", "r", encoding='utf-8') as file:
         package_yaml = yaml.load(file, Loader=yaml.FullLoader)
 
     if dump != "":
-        show_package_list(package_yaml, dump, repositories)
+        show_package_list(package_yaml, dump, repository)
     elif command == "install" and version != "":
-        install_package(package_yaml, package_name, version, repositories)
+        install_package(package_yaml, package_name, version, repository)
     elif command == "update":
-        update_package(package_yaml, package_name, repositories)
+        update_package(package_yaml, package_name, repository)
     elif command == "uninstall" and version != "":
-        uninstall_package(package_yaml, package_name, version, repositories)
+        uninstall_package(package_yaml, package_name, version, repository)
     else:
         help()
         sys.exit(2)
@@ -525,7 +525,7 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(
             sys.argv[1:], "hd:r:",
-            ["help", "verbose", "dump=", "install=", "update=", "uninstall=", "package-version=", "repositories="])
+            ["help", "verbose", "dump=", "install=", "update=", "uninstall=", "package-version=", "repository="])
     except getopt.GetoptError:
         help()
         sys.exit(2)
@@ -534,7 +534,7 @@ if __name__ == '__main__':
     package_name = ""
     command = ""
     version = ""
-    repositories = ""
+    repository = ""
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
@@ -555,11 +555,11 @@ if __name__ == '__main__':
             command = "uninstall"
         elif opt in ("--package-version"):
             version = arg
-        elif opt in ("--repositories"):
-            repositories = arg
+        elif opt in ("--repository"):
+            repository = arg
 
-    if repositories == "" or (command == "" and dump == ""):
+    if repository == "" or (command == "" and dump == ""):
         help()
         sys.exit(2)
 
-    main(dump, package_name, command, version, repositories)
+    main(dump, package_name, command, version, repository)

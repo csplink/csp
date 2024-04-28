@@ -102,7 +102,7 @@
             </property>
             <property name="icon">
              <iconset resource="../resources/resources.qrc">
-              <normaloff>:/icon/zoom-in-line.svg</normaloff>:/icon/zoom-in-line.svg</iconset>
+              <normaloff>:/icons/32x32/zoom-in-line.svg</normaloff>:/icons/32x32/zoom-in-line.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -122,7 +122,7 @@
             </property>
             <property name="icon">
              <iconset resource="../resources/resources.qrc">
-              <normaloff>:/icon/refresh-line.svg</normaloff>:/icon/refresh-line.svg</iconset>
+              <normaloff>:/icons/32x32/refresh-line.svg</normaloff>:/icons/32x32/refresh-line.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -142,7 +142,7 @@
             </property>
             <property name="icon">
              <iconset resource="../resources/resources.qrc">
-              <normaloff>:/icon/zoom-out-line.svg</normaloff>:/icon/zoom-out-line.svg</iconset>
+              <normaloff>:/icons/32x32/zoom-out-line.svg</normaloff>:/icons/32x32/zoom-out-line.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -515,7 +515,7 @@ background-color:transparent;
                        </property>
                        <property name="icon">
                         <iconset resource="../resources/resources.qrc">
-                         <normaloff>:/icon/more-fill.svg</normaloff>:/icon/more-fill.svg</iconset>
+                         <normaloff>:/icons/32x32/more-line.svg</normaloff>:/icons/32x32/more-line.svg</iconset>
                        </property>
                       </widget>
                      </item>
@@ -577,7 +577,7 @@ background-color:transparent;
                        </property>
                        <property name="icon">
                         <iconset resource="../resources/resources.qrc">
-                         <normaloff>:/icon/more-fill.svg</normaloff>:/icon/more-fill.svg</iconset>
+                         <normaloff>:/icons/32x32/more-line.svg</normaloff>:/icons/32x32/more-line.svg</iconset>
                        </property>
                       </widget>
                      </item>

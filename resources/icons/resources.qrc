@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>32x32/code-s-slash-line.svg</file>
+        <file>32x32/collapse-diagonal-line.svg</file>
+        <file>32x32/dropbox-line.svg</file>
+        <file>32x32/expand-diagonal-line.svg</file>
+        <file>32x32/hammer-line.svg</file>
+        <file>32x32/more-line.svg</file>
+        <file>32x32/refresh-line.svg</file>
+        <file>32x32/zoom-in-line.svg</file>
+        <file>32x32/zoom-out-line.svg</file>
+    </qresource>
+</RCC>

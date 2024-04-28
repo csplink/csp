@@ -12,14 +12,7 @@
         <file>packages/LQFP48.png</file>
         <file>packages/LQFP64.png</file>
         <file>packages/LQFP144.png</file>
-        <file>icon/code-s-slash-line.svg</file>
-        <file>icon/collapse-diagonal-line.svg</file>
-        <file>icon/dropbox-line.svg</file>
-        <file>icon/expand-diagonal-line.svg</file>
-        <file>icon/hammer-fill.svg</file>
-        <file>icon/more-fill.svg</file>
-        <file>icon/refresh-line.svg</file>
-        <file>icon/zoom-in-line.svg</file>
-        <file>icon/zoom-out-line.svg</file>
+        <file>database/ip/gpio.yml</file>
+        <file>database/map/gpio.yml</file>
     </qresource>
 </RCC>
