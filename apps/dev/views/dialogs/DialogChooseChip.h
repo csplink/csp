@@ -35,8 +35,7 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 
-#include "Project.h"
-#include "Repo.h"
+#include "RepositoryTable.h"
 
 namespace Ui
 {
@@ -52,52 +51,50 @@ class DialogChooseChip final : public QDialog
     ~DialogChooseChip() override;
 
   signals:
-    void signalsCreateProject();
+    void signalCreateProject();
 
   private slots:
-    void treeViewChipFilterModelItemChangedCallback(const QStandardItem *item) const;
-    void tableViewChipInfosSelectionModelSelectionChangedCallback(const QItemSelection &selected,
-                                                                  const QItemSelection &deselected);
-    void dialogButtonBoxClickedCallback(const QAbstractButton *button);
-    void pushButtonNamePressedCallback() const;
-    void pushButtonCompanyPressedCallback() const;
+    void slotTreeViewChipFilterModelItemChanged(const QStandardItem *item) const;
+    void slotTableViewChipInfosSelectionModelSelectionChanged(const QItemSelection &selected,
+                                                              const QItemSelection &deselected);
+    void slotDialogButtonBoxClicked(const QAbstractButton *button);
+    void slotPushButtonNamePressed() const;
+    void slotPushButtonCompanyPressed() const;
 
   private:
-    Ui::dialogChooseChip *ui_;
-    Repo *repoInstance_;
-    Project *projectInstance_ = nullptr;
+    Ui::dialogChooseChip *ui;
 
-    QString chipName_;
-    QString halName_;
-    QString packageName_;
-    QString companyName_;
+    QString m_chipName;
+    QString m_halName;
+    QString m_packageName;
+    QString m_companyName;
 
-    QStringList companyKeys_;
-    QStringList seriesKeys_;
-    QStringList lineKeys_;
-    QStringList coreKeys_;
-    QStringList packageKeys_;
+    QStringList m_companyKeys;
+    QStringList m_seriesKeys;
+    QStringList m_lineKeys;
+    QStringList m_coreKeys;
+    QStringList m_packageKeys;
 
-    QStandardItem *companyRoot_ = nullptr;
-    QStandardItem *seriesRoot_ = nullptr;
-    QStandardItem *lineRoot_ = nullptr;
-    QStandardItem *coreRoot_ = nullptr;
-    QStandardItem *packageRoot_ = nullptr;
+    QStandardItem *m_companyRoot = nullptr;
+    QStandardItem *m_seriesRoot = nullptr;
+    QStandardItem *m_lineRoot = nullptr;
+    QStandardItem *m_coreRoot = nullptr;
+    QStandardItem *m_packageRoot = nullptr;
 
-    QList<QStandardItem *> companyItems_;
-    QList<QStandardItem *> seriesItems_;
-    QList<QStandardItem *> lineItems_;
-    QList<QStandardItem *> coreItems_;
-    QList<QStandardItem *> packageItems_;
+    QList<QStandardItem *> m_companyItems;
+    QList<QStandardItem *> m_seriesItems;
+    QList<QStandardItem *> m_lineItems;
+    QList<QStandardItem *> m_coreItems;
+    QList<QStandardItem *> m_packageItems;
 
-    QList<QList<QStandardItem *> *> chipsItems_;
-    QSortFilterProxyModel *tableViewChipInfosProxyModel_ = nullptr;
-    QList<RepositoryTable::ChipInfoType *> chips_;
+    QList<QList<QStandardItem *> *> m_chipsItems;
+    QSortFilterProxyModel *m_tableViewChipInfosProxyModel = nullptr;
+    QList<RepositoryTable::ChipInfoType> m_chips;
 
     void findAllKeys();
     void initTreeViewChipFilter();
     void initTableViewChipInfos();
-    void setChipsInfoUi(const QModelIndexList &selected_indexes);
+    void setChipsInfoUi(const QModelIndexList &selectedIndex);
 };
 
 #endif /** __DIALOG_CHOOSE_CHIP_H__ */

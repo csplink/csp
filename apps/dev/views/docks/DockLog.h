@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        ToolCspCoder.h
+ * @file        DockLog.h
  * @brief
  *
  *****************************************************************************
@@ -24,27 +24,29 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-05     xqyjlj       initial version
+ * 2024-04-30     xqyjlj       initial version
  */
 
-#ifndef __TOOL_CSP_CODER_H__
-#define __TOOL_CSP_CODER_H__
+#ifndef __LOG_DOCK_H__
+#define __LOG_DOCK_H__
 
-#include <QObject>
-#include <QString>
+#include <QDockWidget>
 
-class ToolCspCoder final : public QObject
+namespace Ui
+{
+class DockLog;
+}
+
+class DockLog : public QDockWidget
 {
     Q_OBJECT
 
   public:
-    static int generate(const QString &file);
+    explicit DockLog(QWidget *parent = nullptr);
+    ~DockLog() override;
 
   private:
-    ToolCspCoder();
-    ~ToolCspCoder() override;
-
-    Q_DISABLE_COPY_MOVE(ToolCspCoder)
+    Ui::DockLog *ui;
 };
 
-#endif /** __TOOL_CSP_CODER_H__ */
+#endif /** __LOG_DOCK_H__ */

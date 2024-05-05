@@ -41,9 +41,7 @@ class TestCaseProject final : public QObject
     static void initTestCase();
 
     static void path();
-
-    static void getPinConfig();
-
+    
     static void cleanupTestCase();
 };
 

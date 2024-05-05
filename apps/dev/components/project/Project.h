@@ -38,262 +38,106 @@
 #include "ProjectTable.h"
 #include "Settings.h"
 
-#define CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(NAME, VALUE, FUNCTION) \
-    void set##NAME(const decltype(VALUE) &v)                            \
-    {                                                                   \
-        (VALUE) = v;                                                    \
-        FUNCTION();                                                     \
-    }                                                                   \
-    const decltype(VALUE) &get##NAME()                                  \
-    {                                                                   \
-        return VALUE;                                                   \
-    }
-
-class Project final : public QObject
+class CspProject final : public QObject
 {
     Q_OBJECT
 
   public:
-    /**
-     * @brief init config
-     */
-    static void init();
+    CspProject();
+    ~CspProject() override;
 
-    /**
-     * @brief deinit config
-     */
-    static void deinit();
+    static CspProject &singleton();
 
-    /**
-     * @brief get project file path
-     * @return project file path
-     */
-    QString getPath() const;
+    QString path() const;
+    void setPath(const QString &path);
 
-    /**
-     * @brief set project file path
-     * @param Path: project file path
-     */
-    void setPath(const QString &Path);
+    QString halVersion() const;
+    void setHalVersion(const QString &version);
 
-    /**
-     * @brief get project name
-     * @return project name
-     */
-    QString getName() const;
+    QString toolchainsVersion() const;
+    void setToolchainsVersion(const QString &version);
 
-    /**
-     * @brief get ip map
-     * @return ip map as a modifiable reference
-     */
-    IpTable::IpsType &getIps();
+    QString targetProjectMinVersion() const;
+    void setTargetProjectMinVersion(const QString &version);
 
-    /**
-     * @brief get hal map
-     * @return hal map as a modifiable reference
-     */
-    MapTable::MapsType &getMaps();
+    QString targetProject() const;
+    void setTargetProject(const QString &version);
 
-    void loadChipSummary(const QString &Company, const QString &Name);
+    QString type() const;
+    void setType(const QString &type);
 
-    ChipSummaryTable::ChipSummaryType &getChipSummary();
+    QString name() const;
+    void setName(const QString &name);
 
-    const ProjectTable::ProjectType &getProjectTable();
+    QString package() const;
+    void setPackage(const QString &package);
 
-    /******************* pin ************************/
-    /**
-     * @brief get pin config by pin name
-     * @param Key: pin name
-     * @return pin config as a modifiable reference
-     */
-    ProjectTable::PinConfigType &getPinConfig(const QString &Key);
+    QString hal() const;
+    void setHal(const QString &hal);
 
-    /**
-     * @brief set pin comment by pin name
-     * @param Key: pin name
-     * @param Comment: pin comment
-     */
-    void setPinComment(const QString &Key, const QString &Comment);
+    QString company() const;
+    void setCompany(const QString &company);
 
-    /**
-     * @brief get pin comment by pin name
-     * @param Key: pin name
-     * @return pin comment as a modifiable reference
-     */
-    QString &getPinComment(const QString &Key);
+    QString targetChip() const;
+    void setTargetChip(const QString &targetChip);
 
-    /**
-     * @brief set pin function by pin name
-     * @param Key: pin name
-     * @param Function: pin function
-     */
-    void setPinFunction(const QString &Key, const QString &Function);
+    QString pinComment(const QString &key);
+    void setPinComment(const QString &key, const QString &comment);
 
-    /**
-     * @brief get pin function by pin name
-     * @param Key: pin name
-     * @return pin function as a modifiable reference
-     */
-    QString &getPinFunction(const QString &Key);
+    QString pinFunction(const QString &key);
+    void setPinFunction(const QString &key, const QString &function);
 
-    /**
-     * @brief set pin locked by pin name
-     * @param Key: pin name
-     * @param Locked: pin locked
-     */
-    void setPinLocked(const QString &Key, bool Locked);
+    bool pinLocked(const QString &key);
+    void setPinLocked(const QString &key, bool locked);
 
-    /**
-     * @brief get pin locked by pin name
-     * @param Key: pin name
-     * @return pin locked
-     */
-    bool getPinLocked(const QString &Key);
-
-    /**
-     * @brief set pin config function property
-     * @param Key: pin name
-     * @param Module: module name
-     * @param Property: property name
-     * @param Value: property value
-     */
-    void setPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property, const QString &Value);
-
-    /**
-     * @brief clear pin config function property
-     * @param Key: pin name
-     * @param Module: module name
-     * @param Property: property name
-     */
+    void setPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property,
+                                      const QString &Value);
     void clearPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property);
-
-    /**
-     * @brief clear pin config function module properties
-     * @param Key: pin name
-     * @param Module: module name
-     */
     void clearPinConfigFunctionProperty(const QString &Key, const QString &Module);
-
-    /**
-     * @brief get pin config function properties
-     * @param Key: pin name
-     * @return pin config function properties as a modifiable reference
-     */
-    ProjectTable::PinFunctionPropertiesType &getPinConfigFunctionProperty(const QString &Key);
-
-    /**
-     * @brief get pin config function property
-     * @param Key: pin name
-     * @param Module: module name
-     * @param Property: property name
-     * @return pin config function property as a modifiable reference
-     */
-    QString &getPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property);
-
-    /***********************************************/
-
-    /**
-     * @brief load project from file
-     * @param Path: project file path
-     */
-    void loadProject(const QString &Path);
-
-    /**
-     * @brief save project to file
-     * @param Path: project file path
-     */
-    void saveProject(const QString &Path);
-
-    /**
-     * @brief save project to file
-     */
+    ProjectTable::PinFunctionPropertiesType &pinConfigFunctionProperty(const QString &Key);
+    QString &pinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property);
+    void loadProject(const QString &path);
+    void saveProject(const QString &path);
     void saveProject();
-
-    /**
-     * @brief dump project
-     * @return project string
-     */
     QString dumpProject();
-
-    /**
-     * @brief clear project
-     */
     void clearProject();
-
-    /**
-     * @brief 生成代码
-     */
     void generateCode() const;
 
-    /**
-     * @brief 构建工程
-     */
-    void build(const QString &mode) const;
-
   private:
-    inline static Project *instance_ = nullptr;
-    ProjectTable::ProjectType project_; // project table
-    QString path_;                      // project file path
-    IpTable::IpsType ips_;              // ip map
-    MapTable::MapsType maps_;           // hal map
-    ChipSummaryTable::ChipSummaryType chipSummary_;
+    ProjectTable::ProjectType m_project; // project table
+    QString m_path;                      // project file path
 
   public:
-    /**
-     * @brief get project instance
-     * @return project instance
-     */
-    static Project *getInstance();
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectCompany, project_.Company, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHal, project_.Hal, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHalVersion, project_.HalVersion, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectModules, project_.Modules, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPackage, project_.Package, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetChip, project_.TargetChip, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchains, project_.Toolchains, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectType, project_.Type, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectName, project_.Name, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProject, project_.TargetProject, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProjectMinVersion, project_.TargetProjectMinVersion, void)
-    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectVersion, project_.Version, void)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectCompany, project_.Company)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHal, project_.Hal)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHalVersion, project_.HalVersion)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectModules, project_.Modules)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPackage, project_.Package)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetChip, project_.TargetChip)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchains, project_.Toolchains)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectType, project_.Type)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectName, project_.Name)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProject, project_.TargetProject)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProjectMinVersion, project_.TargetProjectMinVersion)
+    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectVersion, project_.Version)
 
   signals:
-    /**
-     * @brief project property changed signal
-     * @param Property: property name
-     * @param Name: pin name
-     * @param OldValue: old value
-     * @param NewValue: new value
-     */
-    void signalsPinPropertyChanged(const QString &Property, const QString &Name, const QVariant &OldValue, const QVariant &NewValue);
-    void signalsPinFunctionPropertyChanged(const QString &Module, const QString &Property, const QString &Name, const QVariant &OldValue, const QVariant &NewValue);
-    void signalsProjectClear();
-    void signalsLog(const QString &Msg) const;
+    void signalReload();
+    void signalPinCommentChanged(const QString &name, const QString &oldValue, const QString &newValue);
+    void signalPinFunctionChanged(const QString &name, const QString &oldValue, const QString &newValue);
+    void signalPinLockedChanged(const QString &name, bool oldValue, bool newValue);
+    //    void signalPinPropertyChanged(const QString &property, const QString &name, const QVariant &oldValue,
+    //                                  const QVariant &newValue);
+    void signalPinFunctionPropertyChanged(const QString &Module, const QString &Property, const QString &Name,
+                                          const QVariant &OldValue, const QVariant &NewValue);
+    void signalProjectClear();
 
   private:
-    Project() = default;
-    ~Project() override = default;
-
-    Q_DISABLE_COPY_MOVE(Project)
-
-    /**
-     * @brief load hal map from db
-     * @param Hal: hal name
-     * @return hal map as a modifiable reference
-     */
-    void loadMaps(const QString &Hal);
-
-    /**
-     * @brief load ip map from db
-     * @param Hal: hal name
-     * @param Name: chip name
-     * @return ip map as a modifiable reference
-     */
-    void loadIps(const QString &Hal, const QString &Name);
-
-    void loadDb();
+    Q_DISABLE_COPY_MOVE(CspProject)
 };
+
+#define Project CspProject::singleton()
 
 #endif // __PROJECT_H__

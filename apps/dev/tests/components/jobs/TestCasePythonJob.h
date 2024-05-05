@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        PythonAsync.h
+ * @file        TestCasePythonJob.h
  * @brief
  *
  *****************************************************************************
@@ -24,40 +24,21 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-06     xqyjlj       initial version
+ * 2024-04-29     xqyjlj       initial version
  */
 
-#ifndef __PYTHON_PYTHON_ASYNC_H__
-#define __PYTHON_PYTHON_ASYNC_H__
+#ifndef __TEST_CASE_PYTHON_JOB_H__
+#define __TEST_CASE_PYTHON_JOB_H__
 
-#include <QByteArray>
 #include <QObject>
-#include <QProcess>
-#include <QString>
 
-class PythonAsync final : public QObject
+class TestCasePythonJob final : public QObject
 {
     Q_OBJECT
-
-  public:
-    static void init();
-    static void deinit();
-
-    int execv(const QStringList &argv, const QString &workDir = "");
-    static PythonAsync *getInstance();
-
-  signals:
-    void signalStarted(const QProcess *process);
-    void signalReadyReadStandardOutput(const QProcess *process, const QByteArray &msg);
-    void signalReadyReadStandardError(const QProcess *process, const QByteArray &msg);
-    void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
-
-  private:
-    inline static PythonAsync *instance_ = nullptr;
-    PythonAsync() = default;
-    ~PythonAsync() override = default;
-
-    Q_DISABLE_COPY_MOVE(PythonAsync)
+  private slots:
+    static void initTestCase();
+    static void version();
+    static void cleanupTestCase();
 };
 
-#endif /** __PYTHON_PYTHON_ASYNC_H__ */
+#endif /** __TEST_CASE_PYTHON_JOB_H__ */

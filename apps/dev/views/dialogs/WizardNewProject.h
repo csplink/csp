@@ -33,20 +33,17 @@
 #include <QLineEdit>
 #include <QWizard>
 
-#include "Project.h"
-
 class WizardNewProject final : public QWizard
 {
     Q_OBJECT
 
   public:
-    explicit WizardNewProject(const QWidget *parent);
+    explicit WizardNewProject(QWidget *parent);
     void accept() override;
 
   private:
-    QLineEdit *lineEditProjectPath_ = nullptr;
-    QLineEdit *lineEditProjectName_ = nullptr;
-    Project *projectInstance_ = nullptr;
+    QLineEdit *m_lineEditProjectPath;
+    QLineEdit *m_lineEditProjectName;
 
     QWizardPage *createPageIntroduce();
     QWizardPage *createPageChoosePath();

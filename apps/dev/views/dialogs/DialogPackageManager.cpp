@@ -30,8 +30,8 @@
 #include <QDebug>
 #include <QtConcurrent/QtConcurrent>
 
+#include "CspRepoJob.h"
 #include "DialogPackageManager.h"
-#include "ToolCspRepo.h"
 #include "ui_DialogPackageManager.h"
 
 DialogPackageManager::DialogPackageManager(QWidget *parent)
@@ -43,14 +43,21 @@ DialogPackageManager::DialogPackageManager(QWidget *parent)
     ui_->progressBar->setHidden(true);
     fontMetrics_ = new QFontMetrics(ui_->labelStatus->font());
 
-    setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint | Qt::WindowMaximizeButtonHint);
+    setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint |
+                   Qt::WindowMaximizeButtonHint);
 
-    connect(ui_->toolButtonCollapse, &QPushButton::pressed, this, &DialogPackageManager::toolButtonCollapsePressedCallback, Qt::UniqueConnection);
-    connect(ui_->toolButtonExpand, &QPushButton::pressed, this, &DialogPackageManager::toolButtonExpandPressedCallback, Qt::UniqueConnection);
-    connect(ui_->pushButtonClose, &QPushButton::pressed, this, &DialogPackageManager::pushButtonClosePressedCallback, Qt::UniqueConnection);
-    connect(ui_->pushButtonInstall, &QPushButton::pressed, this, &DialogPackageManager::pushButtonInstallPressedCallback, Qt::UniqueConnection);
-    connect(ui_->pushButtonUpdate, &QPushButton::pressed, this, &DialogPackageManager::pushButtonUpdatePressedCallback, Qt::UniqueConnection);
-    connect(ui_->pushButtonUninstall, &QPushButton::pressed, this, &DialogPackageManager::pushButtonUninstallPressedCallback, Qt::UniqueConnection);
+    connect(ui_->toolButtonCollapse, &QPushButton::pressed, this, &DialogPackageManager::slotToolButtonCollapsePressed,
+            Qt::UniqueConnection);
+    connect(ui_->toolButtonExpand, &QPushButton::pressed, this, &DialogPackageManager::slotToolButtonExpandPressed,
+            Qt::UniqueConnection);
+    connect(ui_->pushButtonClose, &QPushButton::pressed, this, &DialogPackageManager::slotPushButtonClosePressed,
+            Qt::UniqueConnection);
+    connect(ui_->pushButtonInstall, &QPushButton::pressed, this, &DialogPackageManager::slotPushButtonInstallPressed,
+            Qt::UniqueConnection);
+    connect(ui_->pushButtonUpdate, &QPushButton::pressed, this, &DialogPackageManager::slotPushButtonUpdatePressed,
+            Qt::UniqueConnection);
+    connect(ui_->pushButtonUninstall, &QPushButton::pressed, this,
+            &DialogPackageManager::slotPushButtonUninstallPressed, Qt::UniqueConnection);
 
     initTreeView();
 }
@@ -61,11 +68,12 @@ DialogPackageManager::~DialogPackageManager()
     delete ui_;
 }
 
-QList<QStandardItem *> *DialogPackageManager::createPackageInfoItems(const QMap<QString, ToolCspRepo::InformationType> *Packages)
+QList<QStandardItem *> *DialogPackageManager::createPackageInfoItems(
+    const QMap<QString, CspRepoJob::InformationType> *packages)
 {
     QList<QStandardItem *> *items = new QList<QStandardItem *>;
-    QMap<QString, ToolCspRepo::InformationType>::const_iterator iterator = Packages->constBegin();
-    while (iterator != Packages->constEnd())
+    QMap<QString, CspRepoJob::InformationType>::const_iterator iterator = packages->constBegin();
+    while (iterator != packages->constEnd())
     {
         /** Name */
         QStandardItem *const item = new QStandardItem(iterator.key());
@@ -83,8 +91,8 @@ QList<QStandardItem *> *DialogPackageManager::createPackageInfoItems(const QMap<
         /** License */
         items->append(new QStandardItem(iterator.value().License));
 
-        const QMap<QString, ToolCspRepo::VersionType> *versions = &iterator.value().Versions;
-        QMap<QString, ToolCspRepo::VersionType>::const_iterator versionsIterator = versions->constBegin();
+        const QMap<QString, CspRepoJob::VersionType> *versions = &iterator.value().Versions;
+        QMap<QString, CspRepoJob::VersionType>::const_iterator versionsIterator = versions->constBegin();
         while (versionsIterator != versions->constEnd())
         {
             QList<QStandardItem *> *child_items = new QList<QStandardItem *>;
@@ -98,8 +106,10 @@ QList<QStandardItem *> *DialogPackageManager::createPackageInfoItems(const QMap<
             /** Home Page */
             child_items->append(new QStandardItem());
             /** Status */
-            child_items->append(new QStandardItem(QApplication::style()->standardIcon(versionsIterator.value().Installed ? QStyle::SP_DialogYesButton : QStyle::SP_DialogNoButton),
-                                                  versionsIterator.value().Installed ? tr("Installed") : tr("Not Installed")));
+            child_items->append(new QStandardItem(
+                QApplication::style()->standardIcon(versionsIterator.value().Installed ? QStyle::SP_DialogYesButton
+                                                                                       : QStyle::SP_DialogNoButton),
+                versionsIterator.value().Installed ? tr("Installed") : tr("Not Installed")));
             /** Description */
             child_items->append(new QStandardItem());
             /** License */
@@ -140,11 +150,12 @@ void DialogPackageManager::initTreeView()
     model->setHeaderData(PACKAGE_INFO_ID_LICENSE, Qt::Horizontal, tr("License"));
     model->setHeaderData(PACKAGE_INFO_ID_SHA, Qt::Horizontal, tr("Sha"));
 
-    ToolCspRepo::PackageType packages;
-    ToolCspRepo::loadPackages(&packages);
+    CspRepoJob::PackageType packages;
+    CspRepoJob job("repo");
+    job.loadPackages(&packages);
 
-    const QMap<QString, ToolCspRepo::InformationType> *library = &packages["Library"];
-    const QMap<QString, ToolCspRepo::InformationType> *toolchains = &packages["Toolchains"];
+    const QMap<QString, CspRepoJob::InformationType> *library = &packages["Library"];
+    const QMap<QString, CspRepoJob::InformationType> *toolchains = &packages["Toolchains"];
 
     QStandardItem *const libraryItem = new QStandardItem("Library");
     QStandardItem *const toolchainsItem = new QStandardItem("Toolchains");
@@ -155,7 +166,8 @@ void DialogPackageManager::initTreeView()
     model->appendRow(libraryItem);
     model->appendRow(toolchainsItem);
 
-    connect(model, &QStandardItemModel::itemChanged, this, &DialogPackageManager::treeViewModelItemChangedCallback, Qt::UniqueConnection);
+    connect(model, &QStandardItemModel::itemChanged, this, &DialogPackageManager::slotTreeViewModelItemChanged,
+            Qt::UniqueConnection);
     tableViewProxyModel_->setSourceModel(model);
 
     delete ui_->treeView->model();
@@ -166,9 +178,10 @@ void DialogPackageManager::initTreeView()
     ui_->treeView->header()->setSectionsMovable(false);
 }
 
-void DialogPackageManager::treeViewModelItemChangedCallback(QStandardItem *item)
+void DialogPackageManager::slotTreeViewModelItemChanged(QStandardItem *item)
 {
-    disconnect(dynamic_cast<QStandardItemModel *>(tableViewProxyModel_->sourceModel()), &QStandardItemModel::itemChanged, this, &DialogPackageManager::treeViewModelItemChangedCallback);
+    disconnect(dynamic_cast<QStandardItemModel *>(tableViewProxyModel_->sourceModel()),
+               &QStandardItemModel::itemChanged, this, &DialogPackageManager::slotTreeViewModelItemChanged);
     if (item != nullptr)
     {
         if (item->isCheckable())
@@ -235,7 +248,8 @@ void DialogPackageManager::treeViewModelItemChangedCallback(QStandardItem *item)
             updatePushButtonInstallUpdateUninstallStatus();
         }
     }
-    connect(dynamic_cast<QStandardItemModel *>(tableViewProxyModel_->sourceModel()), &QStandardItemModel::itemChanged, this, &DialogPackageManager::treeViewModelItemChangedCallback, Qt::UniqueConnection);
+    connect(dynamic_cast<QStandardItemModel *>(tableViewProxyModel_->sourceModel()), &QStandardItemModel::itemChanged,
+            this, &DialogPackageManager::slotTreeViewModelItemChanged, Qt::UniqueConnection);
 }
 
 Qt::CheckState DialogPackageManager::treeViewItemSiblingCheckState(const QStandardItem *item) const
@@ -328,7 +342,8 @@ void DialogPackageManager::updatePushButtonInstallUpdateUninstallStatus()
                             {
                                 uninstallCount_++;
                             }
-                            selectedPackageInfos_.insert(name, { parent->parent()->text(), version, status == tr("Installed"), item->row(), parent });
+                            selectedPackageInfos_.insert(name, {parent->parent()->text(), version,
+                                                                status == tr("Installed"), item->row(), parent});
                         }
                     }
                 }
@@ -341,34 +356,34 @@ void DialogPackageManager::updatePushButtonInstallUpdateUninstallStatus()
     ui_->pushButtonUpdate->setEnabled(updateCount_ > 0);
 }
 
-void DialogPackageManager::toolButtonCollapsePressedCallback() const
+void DialogPackageManager::slotToolButtonCollapsePressed() const
 {
     ui_->treeView->collapseAll();
 }
 
-void DialogPackageManager::toolButtonExpandPressedCallback() const
+void DialogPackageManager::slotToolButtonExpandPressed() const
 {
     ui_->treeView->expandAll();
 }
 
-void DialogPackageManager::pushButtonClosePressedCallback()
+void DialogPackageManager::slotPushButtonClosePressed()
 {
     close();
 }
 
-void DialogPackageManager::pushButtonInstallPressedCallback()
+void DialogPackageManager::slotPushButtonInstallPressed()
 {
     runCspRepoCommand("install");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
-void DialogPackageManager::pushButtonUpdatePressedCallback()
+void DialogPackageManager::slotPushButtonUpdatePressed()
 {
     runCspRepoCommand("update");
     updatePushButtonInstallUpdateUninstallStatus();
 }
 
-void DialogPackageManager::pushButtonUninstallPressedCallback()
+void DialogPackageManager::slotPushButtonUninstallPressed()
 {
     runCspRepoCommand("uninstall");
     updatePushButtonInstallUpdateUninstallStatus();
@@ -394,8 +409,9 @@ void DialogPackageManager::runCspRepoCommand(const QString &command) const
         {
             isMatched = true;
             future = QtConcurrent::run([name, version] {
-                const int errorCode = ToolCspRepo::installPackage(name, version);
-                return errorCode;
+                //                const int errorCode = ToolCspRepo::installPackage(name, version);
+                //                return errorCode;
+                return -1;
             });
         }
         /** update */
@@ -403,8 +419,9 @@ void DialogPackageManager::runCspRepoCommand(const QString &command) const
         {
             isMatched = true;
             future = QtConcurrent::run([name] {
-                const int errorCode = ToolCspRepo::updatePackage(name);
-                return errorCode;
+                //                const int errorCode = ToolCspRepo::updatePackage(name);
+                //                return errorCode;
+                return -1;
             });
         }
         /** uninstall */
@@ -412,17 +429,16 @@ void DialogPackageManager::runCspRepoCommand(const QString &command) const
         {
             isMatched = true;
             future = QtConcurrent::run([name, version] {
-                const int errorCode = ToolCspRepo::uninstallPackage(name, version);
-                return errorCode;
+                //                const int errorCode = ToolCspRepo::uninstallPackage(name, version);
+                //                return errorCode;
+                return -1;
             });
         }
         else
         {
             isMatched = false;
             qWarning().noquote() << QString("Invalid command : \"%1\"").arg(command);
-            future = QtConcurrent::run([] {
-                return 0;
-            });
+            future = QtConcurrent::run([] { return 0; });
         }
 
         if (isMatched)
@@ -439,12 +455,16 @@ void DialogPackageManager::runCspRepoCommand(const QString &command) const
             if (future.result() == 0)
             {
                 ui_->labelStatus->setText(QString("%1 %2 successful").arg(name, command));
-                ToolCspRepo::PackageType packages;
-                ToolCspRepo::loadPackages(&packages, name);
-                const ToolCspRepo::VersionType &versionInfo = packages[type][name].Versions[version];
+                CspRepoJob::PackageType packages;
+                CspRepoJob job("repo");
+                job.loadPackages(&packages, name);
+                const CspRepoJob::VersionType &versionInfo = packages[type][name].Versions[version];
                 parent->child(row, PACKAGE_INFO_ID_SIZE)->setText(QString::number(versionInfo.Size, 'f', 2));
-                parent->child(row, PACKAGE_INFO_ID_STATUS)->setIcon(QApplication::style()->standardIcon(versionInfo.Installed ? QStyle::SP_DialogYesButton : QStyle::SP_DialogNoButton));
-                parent->child(row, PACKAGE_INFO_ID_STATUS)->setText(versionInfo.Installed ? tr("Installed") : tr("Not Installed"));
+                parent->child(row, PACKAGE_INFO_ID_STATUS)
+                    ->setIcon(QApplication::style()->standardIcon(versionInfo.Installed ? QStyle::SP_DialogYesButton
+                                                                                        : QStyle::SP_DialogNoButton));
+                parent->child(row, PACKAGE_INFO_ID_STATUS)
+                    ->setText(versionInfo.Installed ? tr("Installed") : tr("Not Installed"));
                 parent->child(row, PACKAGE_INFO_ID_SHA)->setText(versionInfo.Sha);
             }
             else

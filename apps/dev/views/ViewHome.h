@@ -32,8 +32,6 @@
 
 #include <QWidget>
 
-#include "Project.h"
-
 namespace Ui
 {
 class viewHome;
@@ -49,7 +47,7 @@ class ViewHome final : public QWidget
 
   signals:
     void signalCreateProject();
-    void signalOpenExistingProject(bool checked);
+    void signalOpenExistingProject();
 
   public slots:
     void pushButtonCreateChipProjectClickedCallback(bool checked);
@@ -61,8 +59,7 @@ class ViewHome final : public QWidget
     void pushButtonOpenExistingProjectClickedCallback(bool checked);
 
   private:
-    Ui::viewHome *ui_;
-    Project *projectInstance_;
+    Ui::viewHome *ui;
 };
 
 #endif /** __VIEW_HOME_H__ */

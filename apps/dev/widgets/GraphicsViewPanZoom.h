@@ -81,8 +81,8 @@ class GraphicsViewPanZoom final : public QGraphicsView
     void contextMenuEvent(QContextMenuEvent *event) override;
 
   private:
-    qreal scale_;
-    bool isPressed_ = false;
+    qreal m_scale;
+    bool m_isPressed = false;
 };
 
 #endif /** __GRAPHICS_VIEW_PAN_ZOOM_H__ */

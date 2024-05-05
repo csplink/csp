@@ -35,7 +35,7 @@
 #include <QSortFilterProxyModel>
 #include <QStandardItem>
 
-#include "ToolCspRepo.h"
+#include "CspRepoJob.h"
 
 namespace Ui
 {
@@ -85,17 +85,17 @@ class DialogPackageManager final : public QDialog
     void updatePushButtonInstallUpdateUninstallStatus();
     void runCspRepoCommand(const QString &command) const;
 
-    QList<QStandardItem *> *createPackageInfoItems(const QMap<QString, ToolCspRepo::InformationType> *Packages);
+    QList<QStandardItem *> *createPackageInfoItems(const QMap<QString, CspRepoJob::InformationType> *packages);
 
   private slots:
-    void treeViewModelItemChangedCallback(QStandardItem *item);
-    void toolButtonCollapsePressedCallback() const;
-    void toolButtonExpandPressedCallback() const;
+    void slotTreeViewModelItemChanged(QStandardItem *item);
+    void slotToolButtonCollapsePressed() const;
+    void slotToolButtonExpandPressed() const;
 
-    void pushButtonClosePressedCallback();
-    void pushButtonInstallPressedCallback();
-    void pushButtonUpdatePressedCallback();
-    void pushButtonUninstallPressedCallback();
+    void slotPushButtonClosePressed();
+    void slotPushButtonInstallPressed();
+    void slotPushButtonUpdatePressed();
+    void slotPushButtonUninstallPressed();
 };
 
 #endif /** __DIALOG_PACKAGE_MANAGER_H__ */

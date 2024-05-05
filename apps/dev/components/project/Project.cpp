@@ -28,46 +28,46 @@
  */
 
 #include <QApplication>
-#include <QDebug>
 #include <QDir>
-#include <QProcess>
-#include <QtConcurrent/QtConcurrent>
+#include <QGlobalStatic>
 
-#include "Settings.h"
+#include "CspCoderJob.h"
 #include "Project.h"
-#include "ToolCspCoder.h"
-#include "XMake.h"
+#include "Settings.h"
 
-void Project::init()
+Q_GLOBAL_STATIC(QScopedPointer<CspProject>, instance)
+
+CspProject::CspProject()
+    : QObject(),
+      m_project(),
+      m_path()
 {
-    if (instance_ == nullptr)
+}
+
+CspProject::~CspProject()
+{
+}
+
+CspProject &CspProject::singleton()
+{
+    if (!*instance)
     {
-        instance_ = new Project();
+        instance->reset(new CspProject());
     }
+    return **instance;
 }
 
-void Project::deinit()
+QString CspProject::path() const
 {
-    delete instance_;
-    instance_ = nullptr;
+    return m_path;
 }
 
-Project *Project::getInstance()
+void CspProject::setPath(const QString &path)
 {
-    return instance_;
-}
-
-QString Project::getPath() const
-{
-    return path_;
-}
-
-void Project::setPath(const QString &Path)
-{
-    if (!Path.isEmpty())
+    if (!path.isEmpty())
     {
         const QDir root(".");
-        path_ = root.absoluteFilePath(Path);
+        m_path = root.absoluteFilePath(path);
     }
     else
     {
@@ -75,176 +75,190 @@ void Project::setPath(const QString &Path)
     }
 }
 
-QString Project::getName() const
+QString CspProject::halVersion() const
 {
-    return project_.Name;
+    return m_project.HalVersion;
 }
 
-void Project::loadIps(const QString &Hal, const QString &Name)
+void CspProject::setHalVersion(const QString &version)
 {
-    if (!Hal.isEmpty() && !Name.isEmpty())
+    m_project.HalVersion = version;
+}
+
+QString CspProject::toolchainsVersion() const
+{
+    return m_project.ToolchainsVersion;
+}
+
+void CspProject::setToolchainsVersion(const QString &version)
+{
+    m_project.ToolchainsVersion = version;
+}
+
+QString CspProject::targetProjectMinVersion() const
+{
+    return m_project.TargetProjectMinVersion;
+}
+
+void CspProject::setTargetProjectMinVersion(const QString &version)
+{
+    m_project.TargetProjectMinVersion = version;
+}
+
+QString CspProject::targetProject() const
+{
+    return m_project.TargetProject;
+}
+
+void CspProject::setTargetProject(const QString &version)
+{
+    m_project.TargetProject = version;
+}
+
+QString CspProject::type() const
+{
+    return m_project.Type;
+}
+
+void CspProject::setType(const QString &type)
+{
+    m_project.Type = type;
+}
+
+QString CspProject::name() const
+{
+    return m_project.Name;
+}
+
+void CspProject::setName(const QString &name)
+{
+    m_project.Name = name;
+}
+
+QString CspProject::package() const
+{
+    return m_project.Package;
+}
+
+void CspProject::setPackage(const QString &package)
+{
+    m_project.Package = package;
+}
+
+QString CspProject::hal() const
+{
+    return m_project.Hal;
+}
+
+void CspProject::setHal(const QString &hal)
+{
+    m_project.Hal = hal;
+}
+
+QString CspProject::company() const
+{
+    return m_project.Company;
+}
+
+void CspProject::setCompany(const QString &company)
+{
+    m_project.Company = company;
+}
+
+QString CspProject::targetChip() const
+{
+    return m_project.TargetChip;
+}
+
+void CspProject::setTargetChip(const QString &targetChip)
+{
+    m_project.TargetChip = targetChip;
+}
+
+QString CspProject::pinComment(const QString &key)
+{
+    return m_project.PinConfigs[key].Comment;
+}
+
+void CspProject::setPinComment(const QString &key, const QString &comment)
+{
+    emit signalPinCommentChanged(key, m_project.PinConfigs[key].Comment, comment);
+    m_project.PinConfigs[key].Comment = comment;
+}
+
+QString CspProject::pinFunction(const QString &key)
+{
+    return m_project.PinConfigs[key].Function;
+}
+
+void CspProject::setPinFunction(const QString &key, const QString &function)
+{
+    emit signalPinFunctionChanged(key, m_project.PinConfigs[key].Function, function);
+    m_project.PinConfigs[key].Function = function;
+}
+
+bool CspProject::pinLocked(const QString &key)
+{
+    return m_project.PinConfigs[key].Locked;
+}
+
+void CspProject::setPinLocked(const QString &key, const bool locked)
+{
+    emit signalPinLockedChanged(key, m_project.PinConfigs[key].Locked, locked);
+    m_project.PinConfigs[key].Locked = locked;
+}
+
+void CspProject::setPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property,
+                                              const QString &Value)
+{
+    emit signalPinFunctionPropertyChanged(Module, Property, Key,
+                                          m_project.PinConfigs[Key].FunctionProperty[Module][Property], Value);
+    m_project.PinConfigs[Key].FunctionProperty[Module][Property] = Value;
+}
+
+void CspProject::clearPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
+{
+    if (m_project.PinConfigs[Key].FunctionProperty.contains(Module))
     {
-        if (ips_.isEmpty())
+        if (m_project.PinConfigs[Key].FunctionProperty[Module].contains(Property))
         {
-            IpTable::loadIps(&ips_, Hal, Name);
+            emit signalPinFunctionPropertyChanged(Module, Property, Key,
+                                                  m_project.PinConfigs[Key].FunctionProperty[Module][Property], "");
+            m_project.PinConfigs[Key].FunctionProperty[Module].remove(Property);
         }
     }
-    else
+}
+
+void CspProject::clearPinConfigFunctionProperty(const QString &Key, const QString &Module)
+{
+    if (m_project.PinConfigs[Key].FunctionProperty.contains(Module))
     {
-        /** TODO: failed */
+        emit signalPinFunctionPropertyChanged(Module, "", Key, "", "");
+        m_project.PinConfigs[Key].FunctionProperty.remove(Module);
     }
 }
 
-void Project::loadDb()
+ProjectTable::PinFunctionPropertiesType &CspProject::pinConfigFunctionProperty(const QString &Key)
 {
-    if (!project_.Hal.isEmpty())
-    {
-        loadMaps(project_.Hal);
-    }
-
-    if (!project_.Hal.isEmpty() && !project_.TargetChip.isEmpty())
-    {
-        loadIps(project_.Hal, project_.TargetChip);
-    }
-
-    if (!project_.Company.isEmpty() && !project_.TargetChip.isEmpty())
-    {
-        loadChipSummary(project_.Company, project_.TargetChip);
-    }
+    return m_project.PinConfigs[Key].FunctionProperty;
 }
 
-IpTable::IpsType &Project::getIps()
+QString &CspProject::pinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
 {
-    return ips_;
-}
-
-void Project::loadMaps(const QString &Hal)
-{
-    if (!Hal.isEmpty())
-    {
-        if (maps_.isEmpty())
-        {
-            MapTable::loadMaps(&maps_, Hal);
-        }
-    }
-    else
-    {
-        /** TODO: failed */
-    }
-}
-
-MapTable::MapsType &Project::getMaps()
-{
-    return maps_;
-}
-
-void Project::loadChipSummary(const QString &Company, const QString &Name)
-{
-    if (!Company.isEmpty() && !Name.isEmpty())
-    {
-        if (chipSummary_.Name.isEmpty())
-        {
-            ChipSummaryTable::loadChipSummary(&chipSummary_, Company, Name);
-        }
-    }
-    else
-    {
-        /** TODO: failed */
-    }
-}
-
-ChipSummaryTable::ChipSummaryType &Project::getChipSummary()
-{
-    return chipSummary_;
-}
-
-/******************* pin ************************/
-ProjectTable::PinConfigType &Project::getPinConfig(const QString &Key)
-{
-    return project_.PinConfigs[Key];
-}
-
-void Project::setPinComment(const QString &Key, const QString &Comment)
-{
-    emit signalsPinPropertyChanged("comment", Key, project_.PinConfigs[Key].Comment, Comment);
-    project_.PinConfigs[Key].Comment = Comment;
-}
-
-QString &Project::getPinComment(const QString &Key)
-{
-    return project_.PinConfigs[Key].Comment;
-}
-
-void Project::setPinFunction(const QString &Key, const QString &Function)
-{
-    emit signalsPinPropertyChanged("function", Key, project_.PinConfigs[Key].Function, Function);
-    project_.PinConfigs[Key].Function = Function;
-}
-
-QString &Project::getPinFunction(const QString &Key)
-{
-    return project_.PinConfigs[Key].Function;
-}
-
-void Project::setPinLocked(const QString &Key, const bool Locked)
-{
-    emit signalsPinPropertyChanged("locked", Key, project_.PinConfigs[Key].Locked, Locked);
-    project_.PinConfigs[Key].Locked = Locked;
-}
-
-bool Project::getPinLocked(const QString &Key)
-{
-    return project_.PinConfigs[Key].Locked;
-}
-
-void Project::setPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property, const QString &Value)
-{
-    emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.PinConfigs[Key].FunctionProperty[Module][Property], Value);
-    project_.PinConfigs[Key].FunctionProperty[Module][Property] = Value;
-}
-
-void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
-{
-    if (project_.PinConfigs[Key].FunctionProperty.contains(Module))
-    {
-        if (project_.PinConfigs[Key].FunctionProperty[Module].contains(Property))
-        {
-            emit signalsPinFunctionPropertyChanged(Module, Property, Key, project_.PinConfigs[Key].FunctionProperty[Module][Property], "");
-            project_.PinConfigs[Key].FunctionProperty[Module].remove(Property);
-        }
-    }
-}
-
-void Project::clearPinConfigFunctionProperty(const QString &Key, const QString &Module)
-{
-    if (project_.PinConfigs[Key].FunctionProperty.contains(Module))
-    {
-        emit signalsPinFunctionPropertyChanged(Module, "", Key, "", "");
-        project_.PinConfigs[Key].FunctionProperty.remove(Module);
-    }
-}
-
-ProjectTable::PinFunctionPropertiesType &Project::getPinConfigFunctionProperty(const QString &Key)
-{
-    return project_.PinConfigs[Key].FunctionProperty;
-}
-
-QString &Project::getPinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property)
-{
-    return project_.PinConfigs[Key].FunctionProperty[Module][Property];
+    return m_project.PinConfigs[Key].FunctionProperty[Module][Property];
 }
 
 /***********************************************/
 
-void Project::loadProject(const QString &Path)
+void CspProject::loadProject(const QString &path)
 {
-    if (QFile::exists(Path))
+    if (QFile::exists(path))
     {
-        ProjectTable::loadProject(&project_, Path);
-
-        setPath(Path);
-
-        loadDb();
+        if (ProjectTable::loadProject(&m_project, path))
+        {
+            setPath(path);
+            emit signalReload();
+        }
     }
     else
     {
@@ -252,23 +266,24 @@ void Project::loadProject(const QString &Path)
     }
 }
 
-void Project::saveProject(const QString &Path)
+void CspProject::saveProject(const QString &path)
 {
-    ProjectTable::saveProject(project_, Path);
+    setPath(path);
+    saveProject();
 }
 
-void Project::saveProject()
+void CspProject::saveProject()
 {
-    if (!path_.isEmpty())
+    if (!m_path.isEmpty())
     {
-        const QFileInfo info(path_);
+        const QFileInfo info(m_path);
         const QString path = info.dir().absolutePath();
         const QDir dir(path);
         if (!dir.exists())
         {
             (void)dir.mkpath(path);
         }
-        ProjectTable::saveProject(project_, path_);
+        ProjectTable::saveProject(m_project, m_path);
     }
     else
     {
@@ -276,35 +291,20 @@ void Project::saveProject()
     }
 }
 
-QString Project::dumpProject()
+QString CspProject::dumpProject()
 {
-    return ProjectTable::dumpProject(project_);
+    return ProjectTable::dumpProject(m_project);
 }
 
-void Project::clearProject()
+void CspProject::clearProject()
 {
-    project_.PinConfigs.clear();
-    emit signalsProjectClear();
+    m_project.PinConfigs.clear();
+    emit signalProjectClear();
 }
 
-void Project::generateCode() const
+void CspProject::generateCode() const
 {
-    ToolCspCoder::generate(path_);
-}
-
-void Project::build(const QString &mode) const
-{
-    QFuture<int> future = QtConcurrent::run([this, mode] {
-        const int errorCode = XMake::build(path_, mode);
-        return errorCode;
-    });
-    while (!future.isFinished())
-    {
-        QApplication::processEvents();
-    }
-}
-
-const ProjectTable::ProjectType &Project::getProjectTable()
-{
-    return project_;
+    CspCoderJob job("coder");
+    job.generate(m_path);
+    /** TODO */
 }

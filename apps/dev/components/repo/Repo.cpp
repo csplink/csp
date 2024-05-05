@@ -27,36 +27,82 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
+#include <QGlobalStatic>
+
 #include "Repo.h"
 #include "Settings.h"
 
-Repo::Repo()
+Q_GLOBAL_STATIC(QScopedPointer<CspRepo>, instance)
+
+CspRepo::CspRepo()
+    : QObject(),
+      m_repository(),
+      m_isLoadedRepository(false),
+      m_ips(),
+      m_isLoadedIps(false),
+      m_maps(),
+      m_isLoadedMaps(false),
+      m_chipSummary(),
+      m_isLoadedChipSummary(false),
+      m_hal(),
+      m_company(),
+      m_targetChip()
 {
-    RepositoryTable::loadRepository(&repository_, Settings.database() + "/repository.yml");
+    RepositoryTable::loadRepository(&m_repository, Settings.database() + "/repository.yml");
 }
 
-Repo::~Repo() = default;
+CspRepo::~CspRepo() = default;
 
-void Repo::init()
+CspRepo &CspRepo::singleton()
 {
-    if (instance_ == nullptr)
+    if (!*instance)
     {
-        instance_ = new Repo();
+        instance->reset(new CspRepo());
     }
+    return **instance;
 }
 
-void Repo::deinit()
+const RepositoryTable::RepositoryType &CspRepo::getRepository()
 {
-    delete instance_;
-    instance_ = nullptr;
+    if (!m_isLoadedRepository)
+    {
+        RepositoryTable::loadRepository(&m_repository, Settings.database() + "/repository.yml");
+        m_isLoadedRepository = true;
+    }
+    return m_repository;
 }
 
-Repo *Repo::getInstance()
+const MapTable::MapsType &CspRepo::getMaps(const QString &hal)
 {
-    return instance_;
+    if (hal != m_hal || !m_isLoadedMaps)
+    {
+        MapTable::loadMaps(&m_maps, hal);
+        m_hal = hal;
+        m_isLoadedMaps = true;
+    }
+    return m_maps;
 }
 
-const RepositoryTable::RepositoryType *Repo::getRepository() const
+const IpTable::IpsType &CspRepo::getIps(const QString &hal, const QString &targetChip)
 {
-    return &repository_;
+    if (hal != m_hal || targetChip != m_targetChip || !m_isLoadedIps)
+    {
+        IpTable::loadIps(&m_ips, hal, targetChip);
+        m_hal = hal;
+        m_targetChip = targetChip;
+        m_isLoadedIps = true;
+    }
+    return m_ips;
+}
+
+const ChipSummaryTable::ChipSummaryType &CspRepo::getChipSummary(const QString &company, const QString &targetChip)
+{
+    if (company != m_company || targetChip != m_targetChip || !m_isLoadedChipSummary)
+    {
+        ChipSummaryTable::loadChipSummary(&m_chipSummary, company, targetChip);
+        m_company = company;
+        m_targetChip = targetChip;
+        m_isLoadedChipSummary = true;
+    }
+    return m_chipSummary;
 }

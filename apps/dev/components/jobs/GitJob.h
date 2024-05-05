@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        XMakeAsync.h
+ * @file        GitJob.h
  * @brief
  *
  *****************************************************************************
@@ -24,48 +24,42 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-03-26     xqyjlj       initial version
+ * 2024-04-29     xqyjlj       initial version
  */
 
-#ifndef __XMAKE_XMAKE_ASYNC_H__
-#define __XMAKE_XMAKE_ASYNC_H__
+#ifndef __GIT_JOB_H__
+#define __GIT_JOB_H__
 
-#include <QByteArray>
-#include <QObject>
-#include <QProcess>
 #include <QString>
+#include <QStringList>
 
+#include "AbstractJob.h"
 
-
-class XMakeAsync final : public QObject
+class GitJob : public AbstractJob
 {
     Q_OBJECT
-
   public:
-    static void init();
-    static void deinit();
+    explicit GitJob(const QString &name, const QStringList &args, bool isOpenLog = false);
+    void start();
 
-    int execv(const QStringList &argv, const QString &workDir = "");
+    QString version();
+    QString tag(const QString &pwd);
+    QString tagLong(const QString &pwd);
+    QString branch(const QString &pwd);
+    QString commit(const QString &pwd);
+    QString commitLong(const QString &pwd);
+    QString commitDate(const QString &pwd);
 
-    /**
-     * @brief get project instance
-     * @return project instance
-     */
-    static XMakeAsync *getInstance();
+  protected:
+    QString cmd(const QStringList &args, const QString &pwd);
 
-    int build(const QString &path, const QString &mode = "release");
-
-  signals:
-    void signalReadyReadStandardOutput(const QProcess *process, const QByteArray &msg);
-    void signalReadyReadStandardError(const QProcess *process, const QByteArray &msg);
-    void signalFinished(const QProcess *process, int exitCode, QProcess::ExitStatus exitStatus);
+  private slots:
+    void slotSelfReadyReadStandardOutput();
+    void slotSelfReadyReadStandardError();
+    void slotActionOpenTriggered();
 
   private:
-    inline static XMakeAsync *instance_ = nullptr;
-    XMakeAsync() = default;
-    ~XMakeAsync() override = default;
-
-    Q_DISABLE_COPY_MOVE(XMakeAsync)
+    QStringList m_args;
 };
 
-#endif /** __XMAKE_XMAKE_ASYNC_H__ */
+#endif /** __GIT_JOB_H__ */

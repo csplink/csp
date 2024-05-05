@@ -32,7 +32,6 @@
 
 #include "InterfaceGraphicsItemPin.h"
 #include "PinoutTable.h"
-#include "Project.h"
 
 class GraphicsItemPin final : public InterfaceGraphicsItemPin
 {
@@ -73,21 +72,10 @@ class GraphicsItemPin final : public InterfaceGraphicsItemPin
     void signalPropertyChanged(QGraphicsItem *item);
 
   private slots:
-    /**
-     * @brief menu triggered callback
-     * @param action: triggered action
-     */
-    void menuTriggeredCallback(QAction *action);
-
-    /**
-     * @brief pin property changed callback
-     * @param property: property name
-     * @param name: pin name
-     * @param old_value: old value
-     * @param new_value: new value
-     */
-    void pinPropertyChangedCallback(const QString &property, const QString &name, const QVariant &old_value,
-                                    const QVariant &new_value);
+    void slotMenuTriggeredCallback(QAction *action);
+    void slotProjectPinCommentChanged(const QString &name, const QString &oldValue, const QString &newValue);
+    void slotProjectPinFunctionChanged(const QString &name, const QString &oldValue, const QString &newValue);
+    void slotProjectPinLockedChanged(const QString &name, bool oldValue, bool newValue);
 
   private:
     static constexpr QColor defaultColor = QColor(185, 196, 202);
@@ -95,21 +83,20 @@ class GraphicsItemPin final : public InterfaceGraphicsItemPin
     static constexpr QColor otherColor = QColor(187, 204, 0);
     static constexpr QColor selectedColor = QColor(0, 204, 68);
 
-    qreal width_;
-    qreal height_;
-    int direction_ = LEFT;
-    PinoutTable::PinoutUnitType pinoutUnit_;
-    bool locked_ = false;
-    QString name_;
-    QFont *font_;
-    QFontMetrics *fontMetrics_;
-    QString comment_;
-    QString function_;
-    Project *projectInstance_;
+    qreal m_width;
+    qreal m_height;
+    int m_direction = LEFT;
+    PinoutTable::PinoutUnitType m_pinoutUnit;
+    bool m_locked = false;
+    QString m_name;
+    QFont *m_font;
+    QFontMetrics *m_fontMetrics;
+    QString m_comment;
+    QString m_function;
 
-    QMenu *menu_ = nullptr;
-    QAction *previousCheckedAction_ = nullptr;
-    QAction *currentCheckedAction_ = nullptr;
+    QMenu *m_menu = nullptr;
+    QAction *m_previousCheckedAction = nullptr;
+    QAction *m_currentCheckedAction = nullptr;
 
   protected:
     /**

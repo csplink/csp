@@ -39,9 +39,8 @@ class TestCaseIpTable final : public QObject
   private slots:
 
     static void initTestCase();
-
     static void loadIp();
-
+    static void loadIps();
     static void cleanupTestCase();
 };
 

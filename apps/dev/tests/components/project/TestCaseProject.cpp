@@ -27,37 +27,23 @@
  *  2024-04-27     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QtTest>
 
 #include "Project.h"
 #include "TestCaseProject.h"
 
-static Project *ProjectInstance = nullptr;
-
 void TestCaseProject::initTestCase()
 {
-    Project::init();
-    ProjectInstance = Project::getInstance();
 }
 
 void TestCaseProject::path()
 {
-    ProjectInstance->setPath("test");
-    const auto path = ProjectInstance->getPath();
+    Project.setPath("test");
+    const QString path = Project.path();
     qDebug() << path;
     QVERIFY(path.endsWith("test"));
 }
 
-void TestCaseProject::getPinConfig()
-{
-    auto &cfg = ProjectInstance->getPinConfig("PA1");
-    cfg.Comment = "PA1-OUT";
-
-    QVERIFY(ProjectInstance->getPinConfig("PA1").Comment == "PA1-OUT");
-}
-
 void TestCaseProject::cleanupTestCase()
 {
-    Project::deinit();
 }

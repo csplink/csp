@@ -34,46 +34,42 @@
 #include <QObject>
 
 #include "ChipSummaryTable.h"
+#include "IpTable.h"
+#include "MapTable.h"
 #include "RepositoryTable.h"
 #include "Settings.h"
 
-class Repo final : public QObject
+class CspRepo final : public QObject
 {
     Q_OBJECT
 
   public:
-    /**
-     * @brief init config
-     */
-    static void init();
+    CspRepo();
+    ~CspRepo() override;
 
-    /**
-     * @brief deinit config
-     */
-    static void deinit();
+    static CspRepo &singleton();
 
-    const RepositoryTable::RepositoryType *getRepository() const;
-
-    static void loadChipSummary(ChipSummaryTable::ChipSummaryType *chipSummary, const QString &company, const QString &name)
-    {
-        ChipSummaryTable::loadChipSummary(chipSummary, company, name);
-    }
-
-    static bool chipSummaryExists(const QString &company, const QString &name)
-    {
-        return QFile::exists(QString("%1/chips/%2/%3.yml").arg(Settings.database(), company.toLower(), name.toLower()));
-    }
-
-    static Repo *getInstance();
+    const RepositoryTable::RepositoryType &getRepository();
+    const MapTable::MapsType &getMaps(const QString &hal);
+    const IpTable::IpsType &getIps(const QString &hal, const QString &targetChip);
+    const ChipSummaryTable::ChipSummaryType &getChipSummary(const QString &company, const QString &targetChip);
 
   private:
-    inline static Repo *instance_ = nullptr;
-    RepositoryTable::RepositoryType repository_;
+    RepositoryTable::RepositoryType m_repository;
+    bool m_isLoadedRepository;
+    IpTable::IpsType m_ips;
+    bool m_isLoadedIps;
+    MapTable::MapsType m_maps;
+    bool m_isLoadedMaps;
+    ChipSummaryTable::ChipSummaryType m_chipSummary;
+    bool m_isLoadedChipSummary;
+    QString m_hal;
+    QString m_company;
+    QString m_targetChip;
 
-    Repo();
-    ~Repo() override;
-
-    Q_DISABLE_COPY_MOVE(Repo)
+    Q_DISABLE_COPY_MOVE(CspRepo)
 };
+
+#define Repo CspRepo::singleton()
 
 #endif /** __REPO_H__ */

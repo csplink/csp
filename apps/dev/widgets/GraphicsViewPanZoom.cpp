@@ -39,7 +39,7 @@ static constexpr qreal Resolution = 50;
 GraphicsViewPanZoom::GraphicsViewPanZoom(QWidget *parent)
     : QGraphicsView(parent)
 {
-    scale_ = (MinScale + MaxScale) / 2;
+    m_scale = (MinScale + MaxScale) / 2;
 
     this->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     this->setDragMode(QGraphicsView::ScrollHandDrag);
@@ -59,7 +59,7 @@ GraphicsViewPanZoom::~GraphicsViewPanZoom() = default;
 
 void GraphicsViewPanZoom::setupMatrix()
 {
-    const qreal scale = qPow(2, (scale_ - (MinScale + MaxScale) / 2) / Resolution);
+    const qreal scale = qPow(2, (m_scale - (MinScale + MaxScale) / 2) / Resolution);
     QTransform matrix;
     matrix.scale(scale, scale);
     //    matrix.rotate(90);
@@ -70,7 +70,7 @@ void GraphicsViewPanZoom::setupMatrix()
 void GraphicsViewPanZoom::mousePressEvent(QMouseEvent *event)
 {
     QGraphicsView::mousePressEvent(event);
-    isPressed_ = true;
+    m_isPressed = true;
     viewport()->setCursor(Qt::ArrowCursor);
 
     auto *item = this->itemAt(event->pos());
@@ -87,7 +87,7 @@ void GraphicsViewPanZoom::mouseMoveEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseMoveEvent(event);
 
-    if (isPressed_)
+    if (m_isPressed)
     {
         viewport()->setCursor(Qt::ClosedHandCursor);
     }
@@ -96,7 +96,7 @@ void GraphicsViewPanZoom::mouseMoveEvent(QMouseEvent *event)
 void GraphicsViewPanZoom::mouseReleaseEvent(QMouseEvent *event)
 {
     QGraphicsView::mouseReleaseEvent(event);
-    isPressed_ = false;
+    m_isPressed = false;
     viewport()->setCursor(Qt::ArrowCursor);
 }
 
@@ -115,45 +115,45 @@ void GraphicsViewPanZoom::wheelEvent(QWheelEvent *event)
 
 void GraphicsViewPanZoom::zoomIn(const int value)
 {
-    scale_ += value;
-    if (scale_ >= MaxScale)
+    m_scale += value;
+    if (m_scale >= MaxScale)
     {
-        scale_ = MaxScale;
+        m_scale = MaxScale;
     }
     setupMatrix();
 }
 
 void GraphicsViewPanZoom::zoomOut(const int value)
 {
-    scale_ -= value;
-    if (scale_ <= MinScale)
+    m_scale -= value;
+    if (m_scale <= MinScale)
     {
-        scale_ = MinScale;
+        m_scale = MinScale;
     }
     setupMatrix();
 }
 
 void GraphicsViewPanZoom::zoom(const qreal value)
 {
-    scale_ = qLn(value) / qLn(2) * Resolution + (MinScale + MaxScale / 2);
-    if (scale_ >= MaxScale)
+    m_scale = qLn(value) / qLn(2) * Resolution + (MinScale + MaxScale / 2);
+    if (m_scale >= MaxScale)
     {
-        scale_ = MaxScale;
+        m_scale = MaxScale;
     }
-    if (scale_ <= MinScale)
+    if (m_scale <= MinScale)
     {
-        scale_ = MinScale;
+        m_scale = MinScale;
     }
     setupMatrix();
 }
 
 void GraphicsViewPanZoom::resize()
 {
-    const QGraphicsScene *gaphicsScene = scene();
-    if (gaphicsScene != nullptr)
+    const QGraphicsScene *graphicsScene = scene();
+    if (graphicsScene != nullptr)
     {
-        const qreal graphicsSceneWidth = gaphicsScene->itemsBoundingRect().width();
-        const qreal graphicsSceneHeight = gaphicsScene->itemsBoundingRect().height();
+        const qreal graphicsSceneWidth = graphicsScene->itemsBoundingRect().width();
+        const qreal graphicsSceneHeight = graphicsScene->itemsBoundingRect().height();
         const qreal viewWidth = width();
         const qreal viewHeight = height();
         const qreal sceneMax = graphicsSceneWidth > graphicsSceneHeight ? graphicsSceneWidth : graphicsSceneHeight;

@@ -40,8 +40,19 @@ void TestCaseIpTable::initTestCase()
 void TestCaseIpTable::loadIp()
 {
     IpTable::IpType ip;
-    IpTable::loadIp(&ip, ":/database/ip/gpio.yml");
+    bool rtn;
+    rtn = IpTable::loadIp(&ip, ":/database/ip/gpio.yml");
+    QVERIFY(rtn);
     QVERIFY(!ip.isEmpty());
+}
+
+void TestCaseIpTable::loadIps()
+{
+    IpTable::IpsType ips;
+    bool rtn;
+    rtn = IpTable::loadIps(&ips, "csp_hal_apm32f1", "apm32f103zet6");
+    QVERIFY(rtn);
+    QVERIFY(!ips.isEmpty());
 }
 
 void TestCaseIpTable::cleanupTestCase()

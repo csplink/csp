@@ -27,14 +27,13 @@
  *  2023-05-21     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QFile>
 #include <QRegularExpression>
 
 #include "ChipSummaryTable.h"
-#include "Settings.h"
 #include "QtJson.h"
 #include "QtYaml.h"
+#include "Settings.h"
 
 namespace YAML
 {
@@ -70,8 +69,9 @@ ChipSummaryTable::ChipSummaryTable() = default;
 
 ChipSummaryTable::~ChipSummaryTable() = default;
 
-void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &path)
+bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &path)
 {
+    bool rtn = false;
     if (chipSummary != nullptr)
     {
         QFile file(path);
@@ -83,6 +83,7 @@ void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
                 const std::string buffer = file.readAll().toStdString();
                 const YAML::Node yaml_data = YAML::Load(buffer);
                 YAML::convert<ChipSummaryType>::decode(yaml_data, *chipSummary);
+                rtn = true;
             }
             catch (std::exception &e)
             {
@@ -97,8 +98,9 @@ void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
             {
                 if (!pattern.match(chipSummary->Linker.DefaultMinimumHeapSize).hasMatch())
                 {
-                    qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
-                                                        "illegal value %1, and the default value 0x200 is used.")
+                    qWarning().noquote() << QObject::tr(
+                                                "The field chip_summary_t::linker_t::default_minimum_heap_size is an "
+                                                "illegal value %1, and the default value 0x200 is used.")
                                                 .arg(chipSummary->Linker.DefaultMinimumHeapSize);
                     chipSummary->Linker.DefaultMinimumHeapSize = "0x200";
                 }
@@ -108,8 +110,9 @@ void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
             {
                 if (!pattern.match(chipSummary->Linker.DefaultMinimumStackSize).hasMatch())
                 {
-                    qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
-                                                        "illegal value %1, and the default value 0x400 is used.")
+                    qWarning().noquote() << QObject::tr(
+                                                "The field chip_summary_t::linker_t::default_minimum_stack_size is an "
+                                                "illegal value %1, and the default value 0x400 is used.")
                                                 .arg(chipSummary->Linker.DefaultMinimumStackSize);
                     chipSummary->Linker.DefaultMinimumStackSize = "0x400";
                 }
@@ -124,16 +127,19 @@ void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
-void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name)
+bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name)
 {
+    bool rtn = false;
     if (chipSummary != nullptr)
     {
         if (!company.isEmpty() && !name.isEmpty())
         {
-            const QString path = QString("%1/chips/%2/%3.yml").arg(Settings.database(), company.toLower(), name.toLower());
-            loadChipSummary(chipSummary, path);
+            const QString path =
+                QString("%1/chips/%2/%3.yml").arg(Settings.database(), company.toLower(), name.toLower());
+            rtn = loadChipSummary(chipSummary, path);
         }
         else
         {
@@ -144,4 +150,10 @@ void ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
     {
         /** TODO: failed */
     }
+    return rtn;
+}
+
+bool ChipSummaryTable::fileExists(const QString &company, const QString &name)
+{
+    return QFile::exists(QString("%1/chips/%2/%3.yml").arg(Settings.database(), company.toLower(), name.toLower()));
 }

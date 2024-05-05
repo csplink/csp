@@ -27,6 +27,7 @@
  *  2024-04-28     xqyjlj       initial version
  */
 
+#include <QDebug>
 #include <QTimer>
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -37,31 +38,39 @@
 #include "AbstractJob.h"
 
 AbstractJob::AbstractJob(const QString &name)
-    : QProcess(0),
-      m_item(0),
-      m_isDone(false),
+    : QProcess(nullptr),
+      m_item(nullptr),
+      m_isStarted(false),
       m_isKilled(false),
       m_title(name),
+      m_isNeedFree(true),
       m_startingPercent(0)
 {
     setObjectName(name);
 
-    connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &AbstractJob::selfFinishedCallback, Qt::UniqueConnection);
-    connect(this, &QProcess::readyRead, this, &AbstractJob::selfReadyReadCallback, Qt::UniqueConnection);
-    connect(this, &QProcess::started, this, &AbstractJob::selfStartedCallback, Qt::UniqueConnection);
-    connect(this, &AbstractJob::signalProgressUpdated, this, &AbstractJob::selfProgressUpdatedCallback, Qt::UniqueConnection);
+    (void)connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+                  &AbstractJob::slotSelfFinished);
+    (void)connect(this, &AbstractJob::signalProgressUpdated, this, &AbstractJob::slotSelfProgressUpdated);
+
     m_actionPause = new QAction(tr("Pause This Job"), this);
     m_actions << m_actionPause;
     m_actionResume = new QAction(tr("Resume This Job"), this);
     m_actionResume->setEnabled(false);
     m_actions << m_actionResume;
 
-    connect(m_actionPause, &QAction::triggered, this, &AbstractJob::pause);
-    connect(m_actionResume, &QAction::triggered, this, &AbstractJob::resume);
+    (void)connect(m_actionPause, SIGNAL(triggered()), this, SLOT(pause()));
+    (void)connect(m_actionResume, SIGNAL(triggered()), this, SLOT(resume()));
 }
 
 AbstractJob::~AbstractJob()
 {
+    if (m_isNeedFree)
+    {
+        for (QAction *action : qAsConst(m_actions))
+        {
+            action->deleteLater();
+        }
+    }
 }
 
 void AbstractJob::setStandardItem(QStandardItem *item)
@@ -69,14 +78,14 @@ void AbstractJob::setStandardItem(QStandardItem *item)
     m_item = item;
 }
 
-QStandardItem *AbstractJob::standardItem(void)
+QStandardItem *AbstractJob::standardItem()
 {
     return m_item;
 }
 
-bool AbstractJob::isDone() const
+bool AbstractJob::isStarted() const
 {
-    return m_isDone;
+    return m_isStarted;
 }
 
 bool AbstractJob::isStopped() const
@@ -112,15 +121,17 @@ bool AbstractJob::paused() const
     return !m_actionPause->isEnabled();
 }
 
-QList<QAction *> AbstractJob::actions() const
+QList<QAction *> AbstractJob::actions()
 {
+    m_isNeedFree = false;
     return m_actions;
 }
 
 void AbstractJob::start(const QString &program, const QStringList &arguments)
 {
-    QString prog = program;
-    QStringList args = arguments;
+    const QString &prog = program;
+    const QStringList &args = arguments;
+    qDebug().noquote() << prog + " " + arguments.join(" ");
     QProcess::start(prog, args);
     AbstractJob::run();
     m_actionPause->setEnabled(true);
@@ -130,7 +141,7 @@ void AbstractJob::start(const QString &program, const QStringList &arguments)
 void AbstractJob::run()
 {
     m_isKilled = false;
-    m_isDone = true;
+    m_isStarted = true;
     m_estimateTime.start();
     m_totalTime.start();
     emit signalProgressUpdated(m_item, 0);
@@ -185,28 +196,48 @@ void AbstractJob::resume()
 //     QTime result;
 //     if (percent)
 //     {
-//         int averageMs = m_estimateTime.elapsed() / qMax(1, percent - qMax(0, m_startingPercent));
-//         result = QTime::fromMSecsSinceStartOfDay(averageMs * (100 - percent));
+//         int averageMs = m_estimateTime.elapsed() / qMax(1, percent - qMax(0,
+//         m_startingPercent)); result =
+//         QTime::fromMSecsSinceStartOfDay(averageMs * (100 - percent));
 //     }
 //     return result;
 // }
 
-void AbstractJob::selfFinishedCallback(int exitCode, QProcess::ExitStatus exitStatus)
+void AbstractJob::slotSelfFinished(const int exitCode, const QProcess::ExitStatus exitStatus)
 {
-    Q_UNUSED(exitCode);
-    Q_UNUSED(exitStatus);
+    const QTime &time = QTime::fromMSecsSinceStartOfDay(static_cast<int>(m_totalTime.elapsed()));
+    if (isOpen())
+    {
+        m_log.append(readAllStandardOutput());
+        m_log.append(readAllStandardError());
+    }
+    if (exitStatus == QProcess::NormalExit && exitCode == 0 && !m_isKilled)
+    {
+        qDebug().noquote() << "job successes";
+        m_log.append(QString("Completed successfully in %1\n").arg(time.toString()));
+        emit signalProgressUpdated(m_item, 100);
+        emit signalFinished(this, true);
+    }
+    else if (m_isKilled)
+    {
+        qDebug().noquote() << "job stopped";
+        m_log.append(QString("Stopped by user at %1\n").arg(time.toString()));
+        emit signalFinished(this, false);
+    }
+    else
+    {
+        qDebug().noquote() << "job failed with" << exitCode;
+        m_log.append(QString("Failed with exit code %1\n").arg(exitCode));
+        emit signalFinished(this, false);
+    }
 }
 
-void AbstractJob::selfReadyReadCallback()
-{
-}
-
-void AbstractJob::selfStartedCallback()
-{
-}
-
-void AbstractJob::selfProgressUpdatedCallback(QStandardItem *item, int percent)
+void AbstractJob::slotSelfProgressUpdated(QStandardItem *item, int percent)
 {
     Q_UNUSED(item);
-    Q_UNUSED(percent);
+    if (percent > 0 && (percent == 1 || m_startingPercent < 0))
+    {
+        m_estimateTime.restart();
+        m_startingPercent = percent;
+    }
 }

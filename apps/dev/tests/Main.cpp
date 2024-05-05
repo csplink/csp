@@ -31,24 +31,28 @@
 #include <QtTest>
 
 #include "TestCaseChipSummaryTable.h"
-#include "TestCaseGit.h"
+#include "TestCaseCspRepoJob.h"
+#include "TestCaseGitJob.h"
 #include "TestCaseIpTable.h"
 #include "TestCaseMapTable.h"
 #include "TestCasePinoutTable.h"
 #include "TestCaseProject.h"
 #include "TestCaseProjectTable.h"
-#include "TestCasePython.h"
+#include "TestCasePythonJob.h"
 #include "TestCaseQtJson.h"
 #include "TestCaseRepositoryTable.h"
 #include "TestCaseSettings.h"
-#include "TestCaseToolCspRepo.h"
-#include "TestCaseXMake.h"
 
-#define TEST_EXEC(MODULE)                \
-    do                                   \
-    {                                    \
-        MODULE test;                     \
-        QTest::qExec(&test, argc, argv); \
+#define TEST_EXEC(MODULE)                                                                                              \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        MODULE test;                                                                                                   \
+        int error;                                                                                                     \
+        error = QTest::qExec(&test, argc, argv);                                                                       \
+        if (error != 0)                                                                                                \
+        {                                                                                                              \
+            return error;                                                                                              \
+        }                                                                                                              \
     } while (0);
 
 int main(int argc, char *argv[])
@@ -57,9 +61,11 @@ int main(int argc, char *argv[])
 
     /** test components */
     {
-        /** test components/git */
+        /** test components/jobs */
         {
-            TEST_EXEC(TestCaseGit);
+            TEST_EXEC(TestCaseCspRepoJob);
+            TEST_EXEC(TestCaseGitJob);
+            TEST_EXEC(TestCasePythonJob);
         }
 
         /** test components/parse */
@@ -71,11 +77,6 @@ int main(int argc, char *argv[])
         {
             TEST_EXEC(TestCaseProject);
             TEST_EXEC(TestCaseProjectTable);
-        }
-
-        /** test components/python */
-        {
-            TEST_EXEC(TestCasePython);
         }
 
         /** test components/repo */
@@ -90,16 +91,6 @@ int main(int argc, char *argv[])
         /** test components/config */
         {
             TEST_EXEC(TestCaseSettings);
-        }
-
-        /** test components/tools */
-        {
-            TEST_EXEC(TestCaseToolCspRepo);
-        }
-
-        /** test components/xmake */
-        {
-            TEST_EXEC(TestCaseXMake);
         }
     }
 }

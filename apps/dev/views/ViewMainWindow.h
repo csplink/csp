@@ -33,7 +33,9 @@
 #include <QMainWindow>
 #include <QProcess>
 
-#include "Project.h"
+#include "DockLog.h"
+#include "DockModuleTree.h"
+#include "DockPropertyBrowserPin.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -50,30 +52,24 @@ class ViewMainWindow final : public QMainWindow
     explicit ViewMainWindow(QWidget *parent = nullptr);
     ~ViewMainWindow() override;
 
-    static void messageLogHandler(const QString &msg);
-
-  signals:
-    void signalAddLog(const QString &string);
-
   public slots:
-    void updateModulesTreeView(const QString &company, const QString &name) const;
     void createProject();
 
   private slots:
-    void actionNewChipTriggeredCallback(bool checked) const;
-    void actionLoadTriggeredCallback(bool checked);
-    void actionSaveTriggeredCallback(bool checked);
-    void actionSaveAsTriggeredCallback(bool checked) const;
-    void actionCloseTriggeredCallback(bool checked) const;
-    void actionReportTriggeredCallback(bool checked) const;
-    void actionGenerateTriggeredCallback(bool checked) const;
-    void actionPackageManagerTriggeredCallback(bool checked);
-    void xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
-    void pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg);
+    void slotActionNewChipTriggered() const;
+    void slotActionLoadTriggered();
+    void slotActionSaveTriggered();
+    void slotActionSaveAsTriggered() const;
+    void slotActionCloseTriggered() const;
+    void slotActionReportTriggered() const;
+    void slotActionGenerateTriggered() const;
+    void slotActionPackageManagerTriggered();
 
   private:
-    Ui::viewMainWindow *ui_;
-    Project *projectInstance_;
+    Ui::viewMainWindow *ui;
+    DockLog *m_dockLog;
+    DockPropertyBrowserPin *m_dockPropertyBrowserPin;
+    DockModuleTree *m_dockModuleTree;
 
     typedef enum
     {
@@ -84,7 +80,6 @@ class ViewMainWindow final : public QMainWindow
 
     void initMode();
     void setMode(StackIndexType index);
-    static void sysMessageLogHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 };
 
 #endif /** __VIEW_MAIN_WINDOW_H__ */

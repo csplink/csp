@@ -39,7 +39,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="ViewHome" name="pageViewHome"/>
       <widget class="ViewConfigure" name="pageViewConfigure"/>
@@ -87,6 +87,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuBuild">
     <property name="title">
@@ -102,127 +103,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="dockWidgetLeft">
-   <property name="minimumSize">
-    <size>
-     <width>250</width>
-     <height>156</height>
-    </size>
-   </property>
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-   </property>
-   <property name="windowTitle">
-    <string>Project</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetLeftContents">
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="leftMargin">
-      <number>9</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QTreeView" name="treeView"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="dockWidgetRight">
-   <property name="minimumSize">
-    <size>
-     <width>250</width>
-     <height>58</height>
-    </size>
-   </property>
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-   </property>
-   <property name="windowTitle">
-    <string>Property</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetRightContents">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>9</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="PropertyBrowserPin" name="treePropertyBrowser" native="true"/>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="dockWidgetBottomOutput">
-   <property name="minimumSize">
-    <size>
-     <width>88</width>
-     <height>107</height>
-    </size>
-   </property>
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-   </property>
-   <property name="allowedAreas">
-    <set>Qt::AllDockWidgetAreas</set>
-   </property>
-   <property name="windowTitle">
-    <string>Output</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetBottomOutputContents">
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <widget class="LogBox" name="LogBoxOutput">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="dockWidgetBottomConfigurations">
-   <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-   </property>
-   <property name="windowTitle">
-    <string>Configurations</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetBottomConfigurationsContents"/>
-  </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
@@ -280,7 +160,7 @@
   </action>
   <action name="actionGenerate">
    <property name="icon">
-    <iconset resource="../resources/resources.qrc">
+    <iconset resource="../../../resources/icons/resources.qrc">
      <normaloff>:/icons/32x32/code-s-slash-line.svg</normaloff>:/icons/32x32/code-s-slash-line.svg</iconset>
    </property>
    <property name="text">
@@ -289,21 +169,20 @@
   </action>
   <action name="actionPackageManager">
    <property name="icon">
-    <iconset resource="../resources/resources.qrc">
+    <iconset resource="../../../resources/icons/resources.qrc">
      <normaloff>:/icons/32x32/dropbox-line.svg</normaloff>:/icons/32x32/dropbox-line.svg</iconset>
    </property>
    <property name="text">
     <string>Package Manager</string>
    </property>
   </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>PropertyBrowserPin</class>
-   <extends>QWidget</extends>
-   <header>PropertyBrowserPin.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>ViewConfigure</class>
    <extends>QWidget</extends>
@@ -316,14 +195,10 @@
    <header location="global">ViewHome.h</header>
    <container>1</container>
   </customwidget>
-  <customwidget>
-   <class>LogBox</class>
-   <extends>QTextEdit</extends>
-   <header>LogBox.h</header>
-  </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/resources.qrc"/>
+  <include location="../../../resources/icons/resources.qrc"/>
+  <include location="../../../resources/icons/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

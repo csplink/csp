@@ -28,43 +28,45 @@
  */
 
 #include "GraphicsItemPin.h"
+#include "Project.h"
 
 GraphicsItemPin::GraphicsItemPin(const qreal width, const qreal height)
 {
     Q_ASSERT(width > 0 && height > 0);
     Q_ASSERT(width > 100 || height > 100);
 
-    width_ = width;
-    height_ = height;
+    m_width = width;
+    m_height = height;
 
-    font_ = new QFont("JetBrains Mono", 14, QFont::Bold);
-    font_->setStyleStrategy(QFont::PreferAntialias);
-    fontMetrics_ = new QFontMetrics(*font_);
+    m_font = new QFont("JetBrains Mono", 14, QFont::Bold);
+    m_font->setStyleStrategy(QFont::PreferAntialias);
+    m_fontMetrics = new QFontMetrics(*m_font);
 
-    menu_ = new QMenu();
-    menu_->setFont(QFont("JetBrains Mono", 12));
-
-    projectInstance_ = Project::getInstance();
+    m_menu = new QMenu();
+    m_menu->setFont(QFont("JetBrains Mono", 12));
 
     this->setFlags(ItemIsFocusable);
     this->setAcceptHoverEvents(true);
     this->setAcceptedMouseButtons(Qt::RightButton);
 
-    connect(menu_, &QMenu::triggered, this, &GraphicsItemPin::menuTriggeredCallback, Qt::UniqueConnection);
-    connect(projectInstance_, &Project::signalsPinPropertyChanged, this, &GraphicsItemPin::pinPropertyChangedCallback, Qt::UniqueConnection);
+    (void)connect(m_menu, &QMenu::triggered, this, &GraphicsItemPin::slotMenuTriggeredCallback);
+    (void)connect(&Project, &CspProject::signalPinCommentChanged, this, &GraphicsItemPin::slotProjectPinCommentChanged);
+    (void)connect(&Project, &CspProject::signalPinFunctionChanged, this,
+                  &GraphicsItemPin::slotProjectPinFunctionChanged);
+    (void)connect(&Project, &CspProject::signalPinLockedChanged, this, &GraphicsItemPin::slotProjectPinLockedChanged);
 }
 
 GraphicsItemPin::~GraphicsItemPin()
 {
-    delete fontMetrics_;
-    delete font_;
-    delete menu_;
+    delete m_fontMetrics;
+    delete m_font;
+    delete m_menu;
     this->setProperty(property_name_pinout_unit_ptr, QVariant::fromValue(nullptr));
 }
 
 QRectF GraphicsItemPin::boundingRect() const
 {
-    return { 0, 0, width_, height_ };
+    return {0, 0, m_width, m_height};
 }
 
 QPainterPath GraphicsItemPin::shape() const
@@ -84,9 +86,9 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     int width, height;
     const auto b = painter->brush();
     /******************** draw background **************************/
-    if (pinoutUnit_.Type.toUpper() == "I/O")
+    if (m_pinoutUnit.Type.toUpper() == "I/O")
     {
-        if (locked_)
+        if (m_locked)
         {
             painter->setBrush(selectedColor);
         }
@@ -95,7 +97,7 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
             painter->setBrush(defaultColor);
         }
     }
-    else if (pinoutUnit_.Type.toUpper() == "POWER")
+    else if (m_pinoutUnit.Type.toUpper() == "POWER")
     {
         painter->setBrush(powerColor);
     }
@@ -104,32 +106,32 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         painter->setBrush(otherColor);
     }
 
-    if (direction_ == LEFT)
+    if (m_direction == LEFT)
     {
-        x = static_cast<int>(width_) - 100;
+        x = static_cast<int>(m_width) - 100;
         y = 0;
         width = pinLength;
-        height = static_cast<int>(height_);
+        height = static_cast<int>(m_height);
     }
-    else if (direction_ == BOTTOM)
+    else if (m_direction == BOTTOM)
     {
         x = 0;
         y = 0;
-        width = static_cast<int>(width_);
+        width = static_cast<int>(m_width);
         height = pinLength;
     }
-    else if (direction_ == RIGHT)
+    else if (m_direction == RIGHT)
     {
         x = 0;
         y = 0;
         width = pinLength;
-        height = static_cast<int>(height_);
+        height = static_cast<int>(m_height);
     }
     else
     {
         x = 0;
-        y = static_cast<int>(height_) - pinLength;
-        width = static_cast<int>(width_);
+        y = static_cast<int>(m_height) - pinLength;
+        width = static_cast<int>(m_width);
         height = pinLength;
     }
     painter->drawRect(x, y, width, height);
@@ -137,49 +139,49 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
     /******************** draw text **************************/
     QString text;
-    if (direction_ == LEFT || direction_ == RIGHT)
+    if (m_direction == LEFT || m_direction == RIGHT)
     {
-        text = fontMetrics_->elidedText(name_, Qt::ElideRight, pinLength - 20);
-        painter->translate(10 + x, (height_ / 2) + 8);
+        text = m_fontMetrics->elidedText(m_name, Qt::ElideRight, pinLength - 20);
+        painter->translate(10 + x, (m_height / 2) + 8);
     }
     else
     {
-        text = fontMetrics_->elidedText(name_, Qt::ElideRight, pinLength - 20);
-        painter->translate((width_ / 2) + 8, pinLength - 10 + y);
+        text = m_fontMetrics->elidedText(m_name, Qt::ElideRight, pinLength - 20);
+        painter->translate((m_width / 2) + 8, pinLength - 10 + y);
         painter->rotate(-90);
     }
-    painter->setFont(*font_);
+    painter->setFont(*m_font);
     painter->drawText(0, 0, text);
 
     /******************** draw comment **************************/
-    if (comment_.isEmpty())
+    if (m_comment.isEmpty())
     {
-        text = function_;
+        text = m_function;
     }
     else
     {
-        text = QString("%1(%2)").arg(comment_, function_);
+        text = QString("%1(%2)").arg(m_comment, m_function);
     }
-    if (direction_ == LEFT)
+    if (m_direction == LEFT)
     {
-        text = fontMetrics_->elidedText(text, Qt::ElideRight, static_cast<int>(width_ - pinLength - 20));
-        const int pixels = fontMetrics_->horizontalAdvance(text);
+        text = m_fontMetrics->elidedText(text, Qt::ElideRight, static_cast<int>(m_width - pinLength - 20));
+        const int pixels = m_fontMetrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
-    else if (direction_ == BOTTOM)
+    else if (m_direction == BOTTOM)
     {
-        text = fontMetrics_->elidedText(text, Qt::ElideRight, static_cast<int>(height_ - pinLength - 20));
-        const int pixels = fontMetrics_->horizontalAdvance(text);
+        text = m_fontMetrics->elidedText(text, Qt::ElideRight, static_cast<int>(m_height - pinLength - 20));
+        const int pixels = m_fontMetrics->horizontalAdvance(text);
         painter->translate(-pixels - 20, 0);
     }
-    else if (direction_ == RIGHT)
+    else if (m_direction == RIGHT)
     {
-        text = fontMetrics_->elidedText(text, Qt::ElideRight, static_cast<int>(width_ - pinLength - 20));
+        text = m_fontMetrics->elidedText(text, Qt::ElideRight, static_cast<int>(m_width - pinLength - 20));
         painter->translate(pinLength, 0);
     }
     else
     {
-        text = fontMetrics_->elidedText(text, Qt::ElideRight, static_cast<int>(height_ - pinLength - 20));
+        text = m_fontMetrics->elidedText(text, Qt::ElideRight, static_cast<int>(m_height - pinLength - 20));
         painter->translate(pinLength, 0);
     }
     painter->drawText(0, 0, text);
@@ -188,95 +190,102 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
 void GraphicsItemPin::setDirection(const int direct)
 {
-    direction_ = direct;
+    m_direction = direct;
 }
 
 void GraphicsItemPin::setPinOutUnit(const PinoutTable::PinoutUnitType &unit)
 {
-    pinoutUnit_ = unit;
-    menu_->clear();
-    menu_->addAction(tr("Reset State"));
-    menu_->addSeparator();
+    m_pinoutUnit = unit;
+    m_menu->clear();
+    m_menu->addAction(tr("Reset State"));
+    m_menu->addSeparator();
 
-    auto function_i = pinoutUnit_.Functions.constBegin();
-    while (function_i != pinoutUnit_.Functions.constEnd())
+    auto function_i = m_pinoutUnit.Functions.constBegin();
+    while (function_i != m_pinoutUnit.Functions.constEnd())
     {
-        auto *action = new QAction(menu_);
+        auto *action = new QAction(m_menu);
         action->setText(function_i.key());
         action->setCheckable(true);
-        menu_->addAction(action);
+        m_menu->addAction(action);
         ++function_i;
     }
-    this->setProperty(property_name_menu_ptr, QVariant::fromValue(menu_));
-    this->setProperty(property_name_pinout_unit_ptr, QVariant::fromValue(&pinoutUnit_));
+    this->setProperty(property_name_menu_ptr, QVariant::fromValue(m_menu));
+    this->setProperty(property_name_pinout_unit_ptr, QVariant::fromValue(&m_pinoutUnit));
 
-    comment_ = projectInstance_->getPinComment(name_);
-    function_ = projectInstance_->getPinFunction(name_);
-    locked_ = projectInstance_->getPinLocked(name_);
+    m_comment = Project.pinComment(m_name);
+    m_function = Project.pinFunction(m_name);
+    m_locked = Project.pinLocked(m_name);
 }
 
 void GraphicsItemPin::setName(const QString &name)
 {
-    name_ = name;
-    this->setToolTip(name_);
-    this->setObjectName(name_);
+    m_name = name;
+    this->setToolTip(m_name);
+    this->setObjectName(m_name);
 
-    comment_ = projectInstance_->getPinComment(name_);
+    m_comment = Project.pinComment(m_name);
 }
 
-void GraphicsItemPin::menuTriggeredCallback(QAction *action)
+void GraphicsItemPin::slotMenuTriggeredCallback(QAction *action)
 {
-    currentCheckedAction_ = action;
+    m_currentCheckedAction = action;
     if (action->isCheckable())
     {
-        if (previousCheckedAction_ != nullptr && previousCheckedAction_ != action)
+        if (m_previousCheckedAction != nullptr && m_previousCheckedAction != action)
         {
-            previousCheckedAction_->setChecked(false);
+            m_previousCheckedAction->setChecked(false);
         }
         if (action->isChecked())
         {
-            projectInstance_->setPinLocked(name_, true);
-            projectInstance_->setPinFunction(name_, action->text());
+            Project.setPinLocked(m_name, true);
+            Project.setPinFunction(m_name, action->text());
         }
     }
     else // Reset State
     {
-        if (previousCheckedAction_ != nullptr)
+        if (m_previousCheckedAction != nullptr)
         {
-            previousCheckedAction_->setChecked(false);
+            m_previousCheckedAction->setChecked(false);
         }
-        previousCheckedAction_ = nullptr;
-        projectInstance_->setPinLocked(name_, false);
-        projectInstance_->setPinFunction(name_, "");
+        m_previousCheckedAction = nullptr;
+        Project.setPinLocked(m_name, false);
+        Project.setPinFunction(m_name, "");
     }
-    if (previousCheckedAction_ != action)
+    if (m_previousCheckedAction != action)
     {
         emit signalPropertyChanged(this);
-        previousCheckedAction_ = action;
+        m_previousCheckedAction = action;
     }
 }
 
-void GraphicsItemPin::pinPropertyChangedCallback(const QString &property, const QString &name, const QVariant &old_value, const QVariant &new_value)
+void GraphicsItemPin::slotProjectPinCommentChanged(const QString &name, const QString &oldValue,
+                                                   const QString &newValue)
 {
-    Q_UNUSED(old_value)
+    Q_UNUSED(oldValue)
+    if (name == m_name)
+    {
+        m_comment = newValue;
+        this->update();
+    }
+}
 
-    if (name != name_)
+void GraphicsItemPin::slotProjectPinFunctionChanged(const QString &name, const QString &oldValue,
+                                                    const QString &newValue)
+{
+    Q_UNUSED(oldValue)
+    if (name == m_name)
     {
-        return;
+        m_function = newValue;
+        this->update();
     }
+}
 
-    if (property == "comment")
+void GraphicsItemPin::slotProjectPinLockedChanged(const QString &name, bool oldValue, bool newValue)
+{
+    Q_UNUSED(oldValue)
+    if (name == m_name)
     {
-        comment_ = new_value.toString();
+        m_locked = newValue;
+        this->update();
     }
-    else if (property == "function")
-    {
-        function_ = new_value.toString();
-    }
-    else if (property == "locked")
-    {
-        locked_ = new_value.toBool();
-    }
-
-    this->update();
 }

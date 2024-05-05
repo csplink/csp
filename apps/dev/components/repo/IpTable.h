@@ -30,6 +30,7 @@
 #ifndef __IP_TABLE_H__
 #define __IP_TABLE_H__
 
+#include <QDebug>
 #include <QMap>
 
 class IpTable final
@@ -39,13 +40,17 @@ class IpTable final
     typedef QMap<QString, IpMapType> IpType;
     typedef QMap<QString, IpType> IpsType;
 
-    static void loadIp(IpType *ip, const QString &path);
-    static void loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName);
-    static void loadIps(IpsType *ips, const QString &hal, const QString &name);
+    static bool loadIp(IpType *ip, const QString &path);
+    static bool loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName);
+    static bool loadIps(IpsType *ips, const QString &hal, const QString &name);
 
   private:
     explicit IpTable();
     ~IpTable();
 };
+
+QDebug operator<<(QDebug, const IpTable::IpMapType &);
+QDebug operator<<(QDebug, const IpTable::IpType &);
+QDebug operator<<(QDebug, const IpTable::IpsType &);
 
 #endif /** __IP_TABLE_H__ */

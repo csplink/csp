@@ -72,7 +72,7 @@ class ProjectTable
      * @param path: project file path
      * @return void
      */
-    static void loadProject(ProjectType *project, const QString &path);
+    static bool loadProject(ProjectType *project, const QString &path);
 
     /**
      * @brief save project to json file

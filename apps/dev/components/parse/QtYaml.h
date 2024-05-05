@@ -42,7 +42,9 @@
 
 /* clang-format off */
 #define YAML_EXPAND( x ) x
+
 #define YAML_GET_MACRO(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64, NAME,...) NAME
+
 #define YAML_PASTE(...) YAML_EXPAND(YAML_GET_MACRO(__VA_ARGS__, \
         YAML_PASTE64, \
         YAML_PASTE63, \
@@ -174,56 +176,56 @@
 /* clang-format on */
 
 #define YAML_TO(v1)   node.force_insert(#v1, rhs.v1);
+
 #define YAML_FROM(v1) rhs.v1 = node[#v1].as<decltype(rhs.v1)>();
-#define YAML_FROM_MAYBE_UNUSED(v1)                 \
-    if (node[#v1].IsDefined())                     \
-    {                                              \
-        rhs.v1 = node[#v1].as<decltype(rhs.v1)>(); \
-    }                                              \
-    else                                           \
-    {                                              \
-        rhs.v1 = decltype(rhs.v1)();               \
+
+#define YAML_FROM_MAYBE_UNUSED(v1)                                                                                     \
+    if (node[#v1].IsDefined())                                                                                         \
+    {                                                                                                                  \
+        rhs.v1 = node[#v1].as<decltype(rhs.v1)>();                                                                     \
+    }                                                                                                                  \
+    else                                                                                                               \
+    {                                                                                                                  \
+        rhs.v1 = decltype(rhs.v1)();                                                                                   \
     }
 
-#define YAML_DEFINE_TYPE_NON_INTRUSIVE(Type, ...)           \
-    template <>                                             \
-    struct convert<Type>                                    \
-    {                                                       \
-        static Node encode(const Type &rhs)                 \
-        {                                                   \
-            Node node;                                      \
-            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))   \
-            return node;                                    \
-        }                                                   \
-        static bool decode(const Node &node, Type &rhs)     \
-        {                                                   \
-            YAML_EXPAND(YAML_PASTE(YAML_FROM, __VA_ARGS__)) \
-            return true;                                    \
-        }                                                   \
+#define YAML_DEFINE_TYPE_NON_INTRUSIVE(Type, ...)                                                                      \
+    template <> struct convert<Type>                                                                                   \
+    {                                                                                                                  \
+        static Node encode(const Type &rhs)                                                                            \
+        {                                                                                                              \
+            Node node;                                                                                                 \
+            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                                                              \
+            return node;                                                                                               \
+        }                                                                                                              \
+        static bool decode(const Node &node, Type &rhs)                                                                \
+        {                                                                                                              \
+            YAML_EXPAND(YAML_PASTE(YAML_FROM, __VA_ARGS__))                                                            \
+            return true;                                                                                               \
+        }                                                                                                              \
     };
 
-#define YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)           \
-    template <>                                                          \
-    struct convert<Type>                                                 \
-    {                                                                    \
-        static Node encode(const Type &rhs)                              \
-        {                                                                \
-            Node node;                                                   \
-            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                \
-            return node;                                                 \
-        }                                                                \
-        static bool decode(const Node &node, Type &rhs)                  \
-        {                                                                \
-            YAML_EXPAND(YAML_PASTE(YAML_FROM_MAYBE_UNUSED, __VA_ARGS__)) \
-            return true;                                                 \
-        }                                                                \
+#define YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                         \
+    template <> struct convert<Type>                                                                                   \
+    {                                                                                                                  \
+        static Node encode(const Type &rhs)                                                                            \
+        {                                                                                                              \
+            Node node;                                                                                                 \
+            YAML_EXPAND(YAML_PASTE(YAML_TO, __VA_ARGS__))                                                              \
+            return node;                                                                                               \
+        }                                                                                                              \
+        static bool decode(const Node &node, Type &rhs)                                                                \
+        {                                                                                                              \
+            YAML_EXPAND(YAML_PASTE(YAML_FROM_MAYBE_UNUSED, __VA_ARGS__))                                               \
+            return true;                                                                                               \
+        }                                                                                                              \
     };
+
 namespace YAML
 {
 
 /** QString */
-template <>
-struct convert<QString>
+template <> struct convert<QString>
 {
     static Node encode(const QString &rhs)
     {
@@ -232,16 +234,22 @@ struct convert<QString>
 
     static bool decode(const Node &node, QString &rhs)
     {
+        bool rtn;
         if (!node.IsScalar())
-            return false;
-        rhs = QString::fromStdString(node.Scalar());
-        return true;
+        {
+            rtn = false;
+        }
+        else
+        {
+            rhs = QString::fromStdString(node.Scalar());
+            rtn = true;
+        }
+        return rtn;
     }
 };
 
 /** QMap */
-template <typename Key, typename Value>
-struct convert<QMap<Key, Value>>
+template <typename Key, typename Value> struct convert<QMap<Key, Value>>
 {
     static Node encode(const QMap<Key, Value> &rhs)
     {
@@ -257,26 +265,35 @@ struct convert<QMap<Key, Value>>
 
     static bool decode(const Node &node, QMap<Key, Value> &rhs)
     {
+        bool rtn;
         if (!node.IsMap())
-            return false;
-
-        rhs.clear();
-        auto it = node.begin();
-        while (it != node.end())
         {
-            if (it->second.IsNull())
-                rhs[it->first.as<Key>()] = Value();
-            else
-                rhs[it->first.as<Key>()] = it->second.as<Value>();
-            ++it;
+            rtn = false;
         }
-        return true;
+        else
+        {
+            rhs.clear();
+            auto it = node.begin();
+            while (it != node.end())
+            {
+                if (it->second.IsNull())
+                {
+                    rhs[it->first.as<Key>()] = Value();
+                }
+                else
+                {
+                    rhs[it->first.as<Key>()] = it->second.as<Value>();
+                }
+                ++it;
+            }
+            rtn = true;
+        }
+        return rtn;
     }
 };
 
 /** QVector */
-template <typename T>
-struct convert<QVector<T>>
+template <typename T> struct convert<QVector<T>>
 {
     static Node encode(const QVector<T> &rhs)
     {
@@ -290,23 +307,28 @@ struct convert<QVector<T>>
 
     static bool decode(const Node &node, QVector<T> &rhs)
     {
+        bool rtn;
         if (!node.IsSequence())
-            return false;
-
-        rhs.clear();
-        auto it = node.begin();
-        while (it != node.end())
         {
-            rhs.push_back(it->as<T>());
-            ++it;
+            rtn = false;
         }
-        return true;
+        else
+        {
+            rhs.clear();
+            auto it = node.begin();
+            while (it != node.end())
+            {
+                rhs.push_back(it->as<T>());
+                ++it;
+            }
+            rtn = true;
+        }
+        return rtn;
     }
 };
 
 /** QList */
-template <typename T>
-struct convert<QList<T>>
+template <typename T> struct convert<QList<T>>
 {
     static Node encode(const QList<T> &rhs)
     {
@@ -320,23 +342,28 @@ struct convert<QList<T>>
 
     static bool decode(const Node &node, QList<T> &rhs)
     {
+        bool rtn;
         if (!node.IsSequence())
-            return false;
-
-        rhs.clear();
-        auto it = node.begin();
-        while (it != node.end())
         {
-            rhs.push_back(it->as<T>());
-            ++it;
+            return false;
         }
-        return true;
+        else
+        {
+            rhs.clear();
+            auto it = node.begin();
+            while (it != node.end())
+            {
+                rhs.push_back(it->as<T>());
+                ++it;
+            }
+            rtn = true;
+        }
+        return rtn;
     }
 };
 
 /** QPair */
-template <typename T, typename U>
-struct convert<QPair<T, U>>
+template <typename T, typename U> struct convert<QPair<T, U>>
 {
     static Node encode(const QPair<T, U> &rhs)
     {
@@ -348,20 +375,23 @@ struct convert<QPair<T, U>>
 
     static bool decode(const Node &node, QPair<T, U> &rhs)
     {
-        if (!node.IsSequence())
-            return false;
-        if (node.size() != 2)
-            return false;
-
-        rhs.first = node[0].as<T>();
-        rhs.second = node[1].as<U>();
-        return true;
+        bool rtn;
+        if (!node.IsSequence() || node.size() != 2)
+        {
+            rtn = false;
+        }
+        else
+        {
+            rhs.first = node[0].as<T>();
+            rhs.second = node[1].as<U>();
+            rtn = true;
+        }
+        return rtn;
     }
 };
 
 /** QStringList */
-template <>
-struct convert<QStringList>
+template <> struct convert<QStringList>
 {
     static Node encode(const QStringList &rhs)
     {
@@ -375,22 +405,28 @@ struct convert<QStringList>
 
     static bool decode(const Node &node, QStringList &rhs)
     {
+        bool rtn;
         if (!node.IsSequence())
-            return false;
-
-        rhs.clear();
-        auto it = node.begin();
-        while (it != node.end())
         {
-            rhs.push_back(it->as<QString>());
-            ++it;
+            rtn = false;
         }
-        return true;
+        else
+        {
+            rhs.clear();
+            auto it = node.begin();
+            while (it != node.end())
+            {
+                rhs.push_back(it->as<QString>());
+                ++it;
+            }
+            rtn = true;
+        }
+        return rtn;
     }
 };
 
 /** TODO: QLinkedList, QStack, QQueue, QSet, QMultiMap, QHash, QMultiHash, ... */
 
-} /** end namespace YAML */
+} // namespace YAML
 
 #endif /** __QT_YAML_H__ */

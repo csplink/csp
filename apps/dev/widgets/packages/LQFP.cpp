@@ -55,14 +55,14 @@ QList<QGraphicsItem *> LQFP::getLqfp(const QString &hal, const QString &company,
     Q_ASSERT(!company.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    PinoutTable::loadPinout(&pinout_, company, hal, name);
-    pinCount_ = pinout_.count();
+    PinoutTable::loadPinout(&m_pinout, company, hal, name);
+    m_pinCount = m_pinout.count();
     QList<QGraphicsItem *> items;
-    QVector<QString> vector(pinCount_); // sort pinout
+    QVector<QString> vector(m_pinCount); // sort pinout
 
-    const auto num = pinCount_ / 4;
-    auto pinout_i = pinout_.constBegin();
-    while (pinout_i != pinout_.constEnd())
+    const auto num = m_pinCount / 4;
+    auto pinout_i = m_pinout.constBegin();
+    while (pinout_i != m_pinout.constEnd())
     {
         const auto index = pinout_i.value().Position - 1;
         vector[index] = pinout_i.key();
@@ -74,7 +74,7 @@ QList<QGraphicsItem *> LQFP::getLqfp(const QString &hal, const QString &company,
     int w;
     int h;
     GraphicsItemPin::DirectionType direction;
-    for (int i = 0; i < pinCount_; i++)
+    for (int i = 0; i < m_pinCount; i++)
     {
         if (i < num)
         {
@@ -115,13 +115,13 @@ QList<QGraphicsItem *> LQFP::getLqfp(const QString &hal, const QString &company,
         auto *item = new GraphicsItemPin(w, h);
         item->setName(vector.at(i)); // it must be called first
         item->setDirection(direction);
-        item->setPinOutUnit(pinout_[vector.at(i)]);
+        item->setPinOutUnit(m_pinout[vector.at(i)]);
         item->setPos(QPointF(x, y));
         items << item;
     }
 
     auto *item = new GraphicsItemChipBody(GetBodyLength(num), GetBodyLength(num), name, company,
-                                          "LQFP" + QString::number(pinCount_));
+                                          "LQFP" + QString::number(m_pinCount));
     item->setPos(QPointF(LqfpPinWidth, LqfpPinWidth));
     items << item;
 

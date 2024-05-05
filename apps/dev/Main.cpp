@@ -35,30 +35,17 @@
 #include <QTranslator>
 
 #include "Configure.h"
-#include "Project.h"
-#include "Python.h"
 #include "Repo.h"
 #include "Settings.h"
 #include "ViewMainWindow.h"
-#include "XMake.h"
 
 static void init()
 {
     Q_INIT_RESOURCE(qtpropertybrowser);
-
-    Repo::init();
-    Project::init();
-    XMake::init();
-    Python::init();
 }
 
 static void deinit()
 {
-    Python::deinit();
-    XMake::deinit();
-    Project::deinit();
-    Repo::deinit();
-
     Q_CLEANUP_RESOURCE(qtpropertybrowser);
 }
 
@@ -75,11 +62,13 @@ int main(int argc, char *argv[])
     init();
 
     const QDir fontsDir("./fonts");
-    const QFileInfoList fontsDirList = fontsDir.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    const QFileInfoList fontsDirList =
+        fontsDir.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     for (const QFileInfo &dir : fontsDirList)
     {
         const QDir fontDir(dir.absoluteFilePath());
-        const QFileInfoList fontDirList = fontDir.entryInfoList({ "*.ttf" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        const QFileInfoList fontDirList =
+            fontDir.entryInfoList({"*.ttf"}, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
         for (const QFileInfo &file : fontDirList)
         {
             const auto id = QFontDatabase::addApplicationFont(file.absoluteFilePath());
@@ -91,7 +80,8 @@ int main(int argc, char *argv[])
     }
 
     const QDir qmDir("./translations");
-    const QFileInfoList qmDirList = qmDir.entryInfoList({ QString("*%1.qm").arg(Settings.language()) }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    const QFileInfoList qmDirList = qmDir.entryInfoList({QString("*%1.qm").arg(Settings.language())},
+                                                        QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     for (const QFileInfo &file : qmDirList)
     {
         const auto translator = new QTranslator(&app);
@@ -118,7 +108,7 @@ int main(int argc, char *argv[])
         {
             try
             {
-                Project::getInstance()->loadProject(file);
+                Project.loadProject(file);
             }
             catch (const std::exception &e)
             {

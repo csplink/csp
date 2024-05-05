@@ -30,24 +30,26 @@
 #include <QDebug>
 
 #include "DialogChooseChip.h"
-
+#include "Project.h"
 #include "ViewHome.h"
 #include "ui_ViewHome.h"
 
 ViewHome::ViewHome(QWidget *parent)
-    : QWidget(parent), ui_(new Ui::viewHome)
+    : QWidget(parent),
+      ui(new Ui::viewHome)
 {
-    ui_->setupUi(this);
-    (void)connect(ui_->commandLinkButtonCreateChipProject, &QPushButton::clicked, this, &ViewHome::pushButtonCreateChipProjectClickedCallback, Qt::UniqueConnection);
-    (void)connect(ui_->commandLinkButtonCreateBoardProject, &QPushButton::clicked, this, &ViewHome::pushButtonCreateBoardProjectClickedCallback, Qt::UniqueConnection);
-    (void)connect(ui_->commandLinkButtonOpenExistingProject, &QPushButton::clicked, this, &ViewHome::pushButtonOpenExistingProjectClickedCallback, Qt::UniqueConnection);
-
-    projectInstance_ = Project::getInstance();
+    ui->setupUi(this);
+    (void)connect(ui->commandLinkButtonCreateChipProject, &QPushButton::clicked, this,
+                  &ViewHome::pushButtonCreateChipProjectClickedCallback, Qt::UniqueConnection);
+    (void)connect(ui->commandLinkButtonCreateBoardProject, &QPushButton::clicked, this,
+                  &ViewHome::pushButtonCreateBoardProjectClickedCallback, Qt::UniqueConnection);
+    (void)connect(ui->commandLinkButtonOpenExistingProject, &QPushButton::clicked, this,
+                  &ViewHome::pushButtonOpenExistingProjectClickedCallback, Qt::UniqueConnection);
 }
 
 ViewHome::~ViewHome()
 {
-    delete ui_;
+    delete ui;
 }
 
 void ViewHome::pushButtonCreateChipProjectClickedCallback(const bool checked)
@@ -56,7 +58,7 @@ void ViewHome::pushButtonCreateChipProjectClickedCallback(const bool checked)
     DialogChooseChip dialog(this);
     (void)connect(&dialog, &DialogChooseChip::finished, this, &ViewHome::dialogChooseChipFinishedCallback,
                   Qt::UniqueConnection);
-    (void)connect(&dialog, &DialogChooseChip::signalsCreateProject, this, &ViewHome::createChipProject,
+    (void)connect(&dialog, &DialogChooseChip::signalCreateProject, this, &ViewHome::createChipProject,
                   Qt::UniqueConnection);
     (void)dialog.exec();
 }
@@ -74,12 +76,12 @@ void ViewHome::dialogChooseChipFinishedCallback(const int result) const
 void ViewHome::pushButtonOpenExistingProjectClickedCallback(const bool checked)
 {
     Q_UNUSED(checked)
-    emit signalOpenExistingProject(true);
+    emit signalOpenExistingProject();
 }
 
 void ViewHome::createChipProject()
 {
-    projectInstance_->clearProject();
-    projectInstance_->saveProject();
+    Project.clearProject();
+    Project.saveProject();
     emit signalCreateProject();
 }

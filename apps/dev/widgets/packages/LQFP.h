@@ -45,8 +45,8 @@ class LQFP final : public QObject
     QList<QGraphicsItem *> getLqfp(const QString &hal, const QString &company, const QString &name);
 
   private:
-    int pinCount_ = 0;
-    PinoutTable::PinoutType pinout_;
+    int m_pinCount = 0;
+    PinoutTable::PinoutType m_pinout;
 };
 
 #endif /** __LQFP_H__ */

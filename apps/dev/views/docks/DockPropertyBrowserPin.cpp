@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        ToolCspCoder.cpp
+ * @file        DockPropertyBrowserPin.cpp
  * @brief
  *
  *****************************************************************************
@@ -24,35 +24,25 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-05     xqyjlj       initial version
+ * 2024-05-01     xqyjlj       initial version
  */
-#include <QDir>
-#include <QFile>
-#include <QFileInfo>
 
-#include "Settings.h"
-#include "PythonAsync.h"
-#include "ToolCspCoder.h"
+#include "DockPropertyBrowserPin.h"
+#include "ui_DockPropertyBrowserPin.h"
 
-ToolCspCoder::ToolCspCoder() = default;
-
-ToolCspCoder::~ToolCspCoder() = default;
-
-int ToolCspCoder::generate(const QString &file)
+DockPropertyBrowserPin::DockPropertyBrowserPin(QWidget *parent)
+    : QDockWidget(parent),
+      ui(new Ui::DockPropertyBrowserPin)
 {
-    int err = -1;
-    if (QFile::exists(file))
-    {
-        const QFileInfo info(file);
-        PythonAsync *python = PythonAsync::getInstance();
-        const QString scriptFile = QString("%1/csp-coder/csp-coder.py").arg(Settings.tools());
-        err = python->execv({ scriptFile, QString("--file=%1").arg(file),
-                              QString("--output=%1").arg(info.dir().absolutePath()),
-                              QString("--repository=%1").arg(Settings.repository()) });
-    }
-    else
-    {
-        /** TODO: error */
-    }
-    return err;
+    ui->setupUi(this);
+}
+
+DockPropertyBrowserPin::~DockPropertyBrowserPin()
+{
+    delete ui;
+}
+
+PropertyBrowserPin *DockPropertyBrowserPin::propertyBrowser()
+{
+    return ui->propertyBrowser;
 }

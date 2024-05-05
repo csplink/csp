@@ -41,12 +41,12 @@ class GraphicsItemChipBody final : public QGraphicsItem
     ~GraphicsItemChipBody() override;
 
   private:
-    qreal width_;
-    qreal height_;
-    QString name_;
-    QString company_;
-    QString package_;
-    QFont *font_;
+    qreal m_width;
+    qreal m_height;
+    QString m_name;
+    QString m_company;
+    QString m_package;
+    QFont *m_font;
 
   protected:
     QRectF boundingRect() const override;

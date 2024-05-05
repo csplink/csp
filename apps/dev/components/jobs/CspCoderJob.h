@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        Python.h
+ * @file        CspCoderJob.h
  * @brief
  *
  *****************************************************************************
@@ -24,33 +24,24 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-05     xqyjlj       initial version
+ * 2024-04-30     xqyjlj       initial version
  */
-#ifndef __PYTHON_PYTHON_H__
-#define __PYTHON_PYTHON_H__
 
-#include <QDebug>
-#include <QObject>
-#include <QString>
+#ifndef __CSP_CODER_JOB_H__
+#define __CSP_CODER_JOB_H__
 
-#include "PythonAsync.h"
+#include "PythonJob.h"
 
-class Python final : public QObject
+class CspCoderJob final : public PythonJob
 {
     Q_OBJECT
-
   public:
-    static void init();
-    static void deinit();
-    static QString version();
-    static bool execv(const QStringList &argv, QByteArray *output, QByteArray *error);
-    static QString cmd(const QString &command, const QStringList &args = {});
+    explicit CspCoderJob(const QString &name);
+    void generate(const QString &file);
 
   private:
-    Python();
-    ~Python() override;
-
-    Q_DISABLE_COPY_MOVE(Python)
+    QString m_scriptFile;
+    void start() override;
 };
 
-#endif /** __PYTHON_PYTHON_H__ */
+#endif /** __CSP_CODER_JOB_H__ */

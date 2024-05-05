@@ -38,7 +38,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabPinoutConfigure">
       <attribute name="title">
@@ -101,7 +101,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../resources/resources.qrc">
+             <iconset>
               <normaloff>:/icons/32x32/zoom-in-line.svg</normaloff>:/icons/32x32/zoom-in-line.svg</iconset>
             </property>
             <property name="iconSize">
@@ -121,7 +121,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../resources/resources.qrc">
+             <iconset>
               <normaloff>:/icons/32x32/refresh-line.svg</normaloff>:/icons/32x32/refresh-line.svg</iconset>
             </property>
             <property name="iconSize">
@@ -141,7 +141,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../resources/resources.qrc">
+             <iconset>
               <normaloff>:/icons/32x32/zoom-out-line.svg</normaloff>:/icons/32x32/zoom-out-line.svg</iconset>
             </property>
             <property name="iconSize">
@@ -514,7 +514,7 @@ background-color:transparent;
                         <string/>
                        </property>
                        <property name="icon">
-                        <iconset resource="../resources/resources.qrc">
+                        <iconset>
                          <normaloff>:/icons/32x32/more-line.svg</normaloff>:/icons/32x32/more-line.svg</iconset>
                        </property>
                       </widget>
@@ -576,7 +576,7 @@ background-color:transparent;
                         <string/>
                        </property>
                        <property name="icon">
-                        <iconset resource="../resources/resources.qrc">
+                        <iconset>
                          <normaloff>:/icons/32x32/more-line.svg</normaloff>:/icons/32x32/more-line.svg</iconset>
                        </property>
                       </widget>
@@ -679,8 +679,6 @@ background-color:transparent;
    <header>GraphicsViewPanZoom.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

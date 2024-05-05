@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        LogBox.h
+ * @file        PlainTextEditLineNumber.h
  * @brief
  *
  *****************************************************************************
@@ -27,17 +27,16 @@
  * 2023-12-24     xqyjlj       initial version
  */
 
-#ifndef __LOG_BOX_H__
-#define __LOG_BOX_H__
+#ifndef __PLAIN_TEXT_EDIT_LINE_NUMBER_H__
+#define __PLAIN_TEXT_EDIT_LINE_NUMBER_H__
 
 #include <QPlainTextEdit>
 
-class LogBox final : public QPlainTextEdit
+class PlainTextEditLineNumber final : public QPlainTextEdit
 {
     Q_OBJECT
   public:
-    explicit LogBox(QWidget *parent = nullptr);
-    ~LogBox() override;
+    explicit PlainTextEditLineNumber(QWidget *parent = nullptr);
 
     void lineNumberAreaPaintEvent(const QPaintEvent *event) const;
     int lineNumberAreaWidth() const;
@@ -52,24 +51,25 @@ class LogBox final : public QPlainTextEdit
     class LineNumberArea final : public QWidget
     {
       public:
-        explicit LineNumberArea(LogBox *editor)
-            : QWidget(editor), codeEditor(editor)
+        explicit LineNumberArea(PlainTextEditLineNumber *editor)
+            : QWidget(editor),
+              m_codeEditor(editor)
         {
         }
 
         QSize sizeHint() const override
         {
-            return { codeEditor->lineNumberAreaWidth(), 0 };
+            return {m_codeEditor->lineNumberAreaWidth(), 0};
         }
 
       protected:
         void paintEvent(QPaintEvent *event) override
         {
-            codeEditor->lineNumberAreaPaintEvent(event);
+            m_codeEditor->lineNumberAreaPaintEvent(event);
         }
 
       private:
-        LogBox *codeEditor;
+        PlainTextEditLineNumber *m_codeEditor;
     };
 
   private slots:
@@ -77,7 +77,7 @@ class LogBox final : public QPlainTextEdit
     void updateLineNumberArea(const QRect &rect, int dy);
 
   private:
-    QWidget *lineNumberArea_;
+    QWidget *m_lineNumberArea;
 };
 
-#endif /** __LOG_BOX_H__ */
+#endif /** __PLAIN_TEXT_EDIT_LINE_NUMBER_H__ */

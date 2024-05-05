@@ -27,15 +27,14 @@
  *  2023-06-16     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 
-#include "Settings.h"
 #include "IpTable.h"
 #include "QtJson.h"
 #include "QtYaml.h"
+#include "Settings.h"
 
 QT_DEBUG_ADD_TYPE(IpTable::IpMapType)
 QT_DEBUG_ADD_TYPE(IpTable::IpType)
@@ -45,8 +44,9 @@ IpTable::IpTable() = default;
 
 IpTable::~IpTable() = default;
 
-void IpTable::loadIp(IpType *ip, const QString &path)
+bool IpTable::loadIp(IpType *ip, const QString &path)
 {
+    bool rtn = false;
     if (ip != nullptr)
     {
         QFile file(path);
@@ -57,6 +57,7 @@ void IpTable::loadIp(IpType *ip, const QString &path)
                 const std::string buffer = file.readAll().toStdString();
                 const YAML::Node yaml_data = YAML::Load(buffer);
                 YAML::convert<IpType>::decode(yaml_data, *ip);
+                rtn = true;
             }
             catch (std::exception &e)
             {
@@ -76,58 +77,81 @@ void IpTable::loadIp(IpType *ip, const QString &path)
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
-void IpTable::loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName)
+bool IpTable::loadIp(IpType *ip, const QString &hal, const QString &name, const QString &ipName)
 {
+    bool rtn = false;
     if (ip != nullptr)
     {
         if (!hal.isEmpty() && !name.isEmpty() && !ipName.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/%3/ip/%4.yml").arg(Settings.database(), hal.toLower(), name.toLower(), ipName.toLower());
-            loadIp(ip, path);
+            const QString path = QString("%1/hal/%2/%3/ip/%4.yml")
+                                     .arg(Settings.database(), hal.toLower(), name.toLower(), ipName.toLower());
+            rtn = loadIp(ip, path);
         }
     }
+    return rtn;
 }
 
-void IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
+bool IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
 {
+    bool rtn = false;
     if (ips != nullptr)
     {
         if (!hal.isEmpty() && !name.isEmpty())
         {
             const QString path = QString("%1/hal/%2/%3/ip").arg(Settings.database(), hal.toLower(), name.toLower());
             const QDir dir(path);
-            QFileInfoList files = dir.entryInfoList({ "*.yml" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-            for (const QFileInfo &file : files)
+            QFileInfoList files = dir.entryInfoList({"*.yml"}, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+            if (!files.isEmpty())
             {
-                IpType ip;
-                loadIp(&ip, file.absoluteFilePath());
-                const QFileInfo info(file);
-                auto basename = info.baseName().toLower();
-                ips->insert(basename, ip);
+                for (const QFileInfo &file : files)
+                {
+                    IpType ip;
+                    rtn = loadIp(&ip, file.absoluteFilePath());
+                    if (!rtn)
+                    {
+                        break;
+                    }
+                    const QFileInfo info(file);
+                    auto basename = info.baseName().toLower();
+                    ips->insert(basename, ip);
+                }
+            }
+            else
+            {
+                rtn = true;
             }
 
-            const QStringList list = { "gpio" };
-            for (const QString &file : list)
+            static const QStringList list = {"gpio"};
+            if (rtn)
             {
-                IpType ip;
-                loadIp(&ip, QString(":/database/ip/%1.yml").arg(file));
-                const QFileInfo info(file);
-                const QString basename = info.baseName().toLower();
-                if (ips->contains(basename))
+                for (const QString &file : list)
                 {
-                    IpType &ref_ip = (*ips)[basename];
-                    auto ipIterator = ip.constBegin();
-                    while (ipIterator != ip.constEnd())
+                    IpType ip;
+                    rtn = loadIp(&ip, QString(":/database/ip/%1.yml").arg(file));
+                    if (!rtn)
                     {
-                        ref_ip.insert(ipIterator.key(), ipIterator.value());
-                        ++ipIterator;
+                        break;
                     }
-                }
-                else
-                {
-                    ips->insert(basename, ip);
+                    const QFileInfo info(file);
+                    const QString basename = info.baseName().toLower();
+                    if (ips->contains(basename))
+                    {
+                        IpType &ref_ip = (*ips)[basename];
+                        auto ipIterator = ip.constBegin();
+                        while (ipIterator != ip.constEnd())
+                        {
+                            ref_ip.insert(ipIterator.key(), ipIterator.value());
+                            ++ipIterator;
+                        }
+                    }
+                    else
+                    {
+                        ips->insert(basename, ip);
+                    }
                 }
             }
         }
@@ -140,4 +164,5 @@ void IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
     {
         /** TODO: failed */
     }
+    return rtn;
 }

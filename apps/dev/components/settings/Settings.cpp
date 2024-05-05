@@ -32,10 +32,10 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QGlobalStatic>
 #include <QMessageBox>
 #include <QProcess>
 #include <QStandardPaths>
-#include <QSysInfo>
 
 #include "Settings.h"
 
@@ -49,24 +49,26 @@ static constexpr const char *SettingsKeyTools = "tools";
 static constexpr const char *SettingsKeyXmake = "xmake";
 static constexpr const char *SettingsKeyGit = "git";
 static constexpr const char *SettingsKeyPython = "python";
+static constexpr const char *SettingsKeyOpenPath = "openPath";
 
-static QScopedPointer<CspSettings> instance;
+Q_GLOBAL_STATIC(QScopedPointer<CspSettings>, instance)
+
+CspSettings::CspSettings()
+    : QObject(),
+      m_settings(QCoreApplication::applicationDirPath() + SettingsIniFilePath, QSettings::IniFormat)
+{
+}
 
 CspSettings &CspSettings::singleton()
 {
-    if (!instance)
+    if (!*instance)
     {
-        instance.reset(new CspSettings());
+        instance->reset(new CspSettings());
     }
-    return *instance;
+    return **instance;
 }
 
-CspSettings::CspSettings()
-    : QObject()
-{
-}
-
-void CspSettings::checkDirValid(const char *key, const QString &dir, const bool create) const
+void CspSettings::checkDirValid(const char *key, const QString &dir, const bool create)
 {
     bool isValid = true;
     const QDir dirInfo(dir);
@@ -85,7 +87,8 @@ void CspSettings::checkDirValid(const char *key, const QString &dir, const bool 
 
     if (!isValid)
     {
-        QMessageBox::critical(nullptr, QObject::tr("Critical"), QObject::tr("The '%1' <%2> path is not a directory!").arg(key, dir), QMessageBox::Ok);
+        QMessageBox::critical(nullptr, tr("Critical"), tr("The '%1' <%2> path is not a directory!").arg(key, dir),
+                              QMessageBox::Ok);
         QApplication::exit(-1);
     }
 }
@@ -129,7 +132,8 @@ QString CspSettings::workspace() const
 {
     QString workspace;
 
-    workspace = m_settings.value(SettingsKeyWorkspace, QCoreApplication::applicationDirPath() + "/workspace").toString();
+    workspace =
+        m_settings.value(SettingsKeyWorkspace, QCoreApplication::applicationDirPath() + "/workspace").toString();
 
     checkDirValid(SettingsKeyWorkspace, workspace, true);
 
@@ -145,7 +149,8 @@ QString CspSettings::repository() const
 {
     QString repository;
 
-    repository = m_settings.value(SettingsKeyRepository, QCoreApplication::applicationDirPath() + "/repository").toString();
+    repository =
+        m_settings.value(SettingsKeyRepository, QCoreApplication::applicationDirPath() + "/repository").toString();
 
     checkDirValid(SettingsKeyRepository, repository, true);
 
@@ -242,7 +247,21 @@ void CspSettings::setPython(const QString &python)
     m_settings.setValue(SettingsKeyPython, python);
 }
 
-////////////////////////////////////////////////////////////////////////////////
+QString CspSettings::openPath() const
+{
+    const QStringList locations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+    QString defaultValue = "";
+    if (!locations.isEmpty())
+    {
+        defaultValue = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation)[0];
+    }
+    return m_settings.value(SettingsKeyOpenPath, defaultValue).toString();
+}
+
+void CspSettings::setOpenPath(const QString &path)
+{
+    m_settings.setValue(SettingsKeyOpenPath, path);
+}
 
 QMap<QString, QString> CspSettings::env() const
 {

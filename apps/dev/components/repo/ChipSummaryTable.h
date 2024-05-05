@@ -30,6 +30,7 @@
 #ifndef __CHIP_SUMMARY_TABLE_H__
 #define __CHIP_SUMMARY_TABLE_H__
 
+#include <QDebug>
 #include <QMap>
 
 class ChipSummaryTable final
@@ -87,12 +88,19 @@ class ChipSummaryTable final
         LinkerType Linker;
     } ChipSummaryType;
 
-    static void loadChipSummary(ChipSummaryType *chipSummary, const QString &path);
-    static void loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name);
+    static bool loadChipSummary(ChipSummaryType *chipSummary, const QString &path);
+    static bool loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name);
+    static bool fileExists(const QString &company, const QString &name);
 
   private:
     explicit ChipSummaryTable();
     ~ChipSummaryTable();
 };
+
+QDebug operator<<(QDebug, const ChipSummaryTable::DocumentType &);
+QDebug operator<<(QDebug, const ChipSummaryTable::ModuleType &);
+QDebug operator<<(QDebug, const ChipSummaryTable::MdkArmType &);
+QDebug operator<<(QDebug, const ChipSummaryTable::TargetProjectType &);
+QDebug operator<<(QDebug, const ChipSummaryTable::ChipSummaryType &);
 
 #endif /** __CHIP_SUMMARY_TABLE_H__ */

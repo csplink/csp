@@ -43,18 +43,18 @@ class AbstractJob : public QProcess
     Q_OBJECT
   public:
     explicit AbstractJob(const QString &name);
-    virtual ~AbstractJob();
+    ~AbstractJob() override;
 
     void setStandardItem(QStandardItem *item);
-    QStandardItem *standardItem(void);
-    bool isDone() const;
+    QStandardItem *standardItem();
+    bool isStarted() const;
     bool isStopped() const;
     void appendLog(const QString &msg);
     QString log() const;
     void setTitle(const QString &title);
     QString title() const;
     bool paused() const;
-    QList<QAction *> actions() const;
+    QList<QAction *> actions();
 
   public slots:
     void start(const QString &program, const QStringList &arguments);
@@ -62,32 +62,28 @@ class AbstractJob : public QProcess
     virtual void stop();
     void pause();
     void resume();
+    void slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
   signals:
     void signalProgressUpdated(QStandardItem *item, int percent);
-    void finished(AbstractJob *job, bool isSuccess, QString failureTime = QString());
+    void signalFinished(AbstractJob *job, bool isSuccess, QString failureTime = QString());
 
   protected:
     QList<QAction *> m_actions;
     QStandardItem *m_item;
 
-  protected slots:
-    virtual void selfFinishedCallback(int exitCode, QProcess::ExitStatus exitStatus);
-    virtual void selfReadyReadCallback();
-    virtual void selfStartedCallback();
-
   private slots:
-    void selfProgressUpdatedCallback(QStandardItem *item, int percent);
+    void slotSelfProgressUpdated(QStandardItem *item, int percent);
 
   private:
-    bool m_isDone;
+    bool m_isStarted;
     bool m_isKilled;
     QString m_log;
     QString m_title;
+    bool m_isNeedFree;
     QElapsedTimer m_estimateTime;
     int m_startingPercent;
     QElapsedTimer m_totalTime;
-    // QScopedPointer<PostJobAction> m_postJobAction;
     QAction *m_actionPause;
     QAction *m_actionResume;
 };

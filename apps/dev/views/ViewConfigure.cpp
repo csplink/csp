@@ -29,139 +29,157 @@
 
 #include <QtCore>
 
+#include "CspRepoJob.h"
 #include "DialogPackageManager.h"
 #include "GraphicsItemPin.h"
 #include "LQFP.h"
-#include "ToolCspRepo.h"
+#include "Repo.h"
 #include "ViewConfigure.h"
 #include "ui_ViewConfigure.h"
 
 ViewConfigure::ViewConfigure(QWidget *parent)
-    : QWidget(parent), ui_(new Ui::viewConfigure)
+    : QWidget(parent),
+      ui(new Ui::viewConfigure)
 {
-    ui_->setupUi(this);
-    projectInstance_ = Project::getInstance();
+    ui->setupUi(this);
 
-    (void)connect(ui_->pushButtonPackageManager, &QPushButton::pressed, this, &ViewConfigure::pushButtonPackageManagerPressedCallback, Qt::UniqueConnection);
-    (void)connect(ui_->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomInPressedCallback, Qt::UniqueConnection);
-    (void)connect(ui_->pushButtonZoomReset, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomResetPressedCallback, Qt::UniqueConnection);
-    (void)connect(ui_->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback, Qt::UniqueConnection);
-    (void)connect(ui_->comboBoxPackageVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
-    (void)connect(ui_->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
-    (void)connect(ui_->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
-    (void)connect(ui_->checkBoxEnableToolchains, &QCheckBox::stateChanged, this, &ViewConfigure::checkBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
-    (void)connect(ui_->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this, &ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui->pushButtonPackageManager, &QPushButton::pressed, this,
+                  &ViewConfigure::pushButtonPackageManagerPressedCallback, Qt::UniqueConnection);
+    (void)connect(ui->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomInPressedCallback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->pushButtonZoomReset, &QPushButton::pressed, this,
+                  &ViewConfigure::pushButtonZoomResetPressedCallback, Qt::UniqueConnection);
+    (void)connect(ui->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback,
+                  Qt::UniqueConnection);
+    (void)connect(ui->comboBoxPackageVersion, &QComboBox::currentTextChanged, this,
+                  &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this,
+                  &ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this,
+                  &ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(ui->checkBoxEnableToolchains, &QCheckBox::stateChanged, this,
+                  &ViewConfigure::checkBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
+    (void)connect(ui->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this,
+                  &ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
 }
 
 ViewConfigure::~ViewConfigure()
 {
-    delete ui_;
+    delete ui;
 }
 
 void ViewConfigure::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
 
-    if (!isInitUi)
+    if (!m_isInitUi)
     {
+        m_isInitUi = true;
+        initView();
         initProjectSettings();
         initLinkerSettings();
         initPackageSettings();
         initToolchainsSettings();
     }
+
+    QWidget::showEvent(event);
 }
 
 void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
 {
-    propertyBrowserInstance_ = instance;
+    m_propertyBrowserInstance = instance;
 
-    (void)connect(ui_->graphicsView, &GraphicsViewPanZoom::signalsSelectedItemClicked, propertyBrowserInstance_, &PropertyBrowserPin::updatePropertyByPin);
+    (void)connect(ui->graphicsView, &GraphicsViewPanZoom::signalsSelectedItemClicked, m_propertyBrowserInstance,
+                  &PropertyBrowserPin::updatePropertyByPin);
 }
 
 void ViewConfigure::initView()
 {
-    const auto package = projectInstance_->getProjectPackage().toLower();
-    const auto hal = projectInstance_->getProjectHal().toLower();
-    const auto company = projectInstance_->getProjectCompany();
-    const auto name = projectInstance_->getProjectTargetChip();
+    const QString package = Project.package().toLower();
+    const QString hal = Project.hal().toLower();
+    const QString company = Project.company();
+    const QString targetChip = Project.targetChip();
 
-    delete ui_->graphicsView->scene();
-    const auto scene = new QGraphicsScene(ui_->graphicsView);
+    delete ui->graphicsView->scene();
+    const auto scene = new QGraphicsScene(ui->graphicsView);
     if (package.startsWith("lqfp"))
     {
         LQFP lqfp(nullptr);
-        auto items = lqfp.getLqfp(hal, company, name);
+        auto items = lqfp.getLqfp(hal, company, targetChip);
         for (const auto &item : items)
         {
             scene->addItem(item);
             if ((item->flags() & QGraphicsItem::ItemIsFocusable) == QGraphicsItem::ItemIsFocusable)
             {
-                (void)connect(dynamic_cast<const GraphicsItemPin *>(item), &GraphicsItemPin::signalPropertyChanged, ui_->graphicsView,
-                              &GraphicsViewPanZoom::propertyChangedCallback, Qt::UniqueConnection);
+                (void)connect(dynamic_cast<const GraphicsItemPin *>(item), &GraphicsItemPin::signalPropertyChanged,
+                              ui->graphicsView, &GraphicsViewPanZoom::propertyChangedCallback, Qt::UniqueConnection);
             }
         }
     }
-    ui_->graphicsView->setScene(scene);
+    ui->graphicsView->setScene(scene);
+    ui->graphicsView->resize();
 }
 
 void ViewConfigure::resizeEvent(QResizeEvent *event)
 {
-    if (resizeCounter_ <= 2)
+    if (m_resizeCounter <= 2)
     {
-        ui_->graphicsView->resize();
+        ui->graphicsView->resize();
 
         /**
          * 0: View initialization
          * 1: Layout initialization
          * 2: Global maximization
          */
-        resizeCounter_++;
+        m_resizeCounter++;
     }
     QWidget::resizeEvent(event);
 }
 
 void ViewConfigure::initProjectSettings() const
 {
-    const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().TargetProject;
+    const ChipSummaryTable::TargetProjectType &targetProject =
+        Repo.getChipSummary(Project.company(), Project.targetChip()).TargetProject;
 
-    ui_->comboBoxBuildScriptIde->clear();
+    ui->comboBoxBuildScriptIde->clear();
 
-    const QString target = projectInstance_->getProjectTargetProject();
+    const QString target = Project.targetProject();
 
-    if (target_project.XMake)
+    if (targetProject.XMake)
     {
-        ui_->comboBoxBuildScriptIde->addItem("XMake");
+        ui->comboBoxBuildScriptIde->addItem("XMake");
         if (target == "XMake")
         {
-            ui_->comboBoxBuildScriptIde->setCurrentText(target);
+            ui->comboBoxBuildScriptIde->setCurrentText(target);
         }
     }
-    if (target_project.CMake)
+    if (targetProject.CMake)
     {
-        ui_->comboBoxBuildScriptIde->addItem("CMake");
+        ui->comboBoxBuildScriptIde->addItem("CMake");
         if (target == "CMake")
         {
-            ui_->comboBoxBuildScriptIde->setCurrentText(target);
+            ui->comboBoxBuildScriptIde->setCurrentText(target);
         }
     }
-    if (!target_project.MdkArm.Versions.isEmpty())
+    if (!targetProject.MdkArm.Versions.isEmpty())
     {
-        ui_->comboBoxBuildScriptIde->addItem("MDK-Arm");
+        ui->comboBoxBuildScriptIde->addItem("MDK-Arm");
         if (target == "MDK-Arm")
         {
-            ui_->comboBoxBuildScriptIde->setCurrentText(target);
+            ui->comboBoxBuildScriptIde->setCurrentText(target);
         }
     }
 }
 
 void ViewConfigure::flushComboBoxPackageVersion() const
 {
-    const QString &hal = projectInstance_->getProjectHal();
-    ToolCspRepo::PackageType packages;
-    ToolCspRepo::loadPackages(&packages, hal);
+    const QString hal = Project.hal();
+    CspRepoJob::PackageType packages;
+    CspRepoJob job("repo");
+    job.loadPackages(&packages, hal);
 
-    const QString text = projectInstance_->getProjectHalVersion();
-    ui_->comboBoxPackageVersion->clear();
+    const QString text = Project.halVersion();
+    ui->comboBoxPackageVersion->clear();
 
     auto &versions = packages["Library"][hal].Versions;
     auto versionsI = versions.constBegin();
@@ -169,10 +187,10 @@ void ViewConfigure::flushComboBoxPackageVersion() const
     {
         if (versionsI.value().Installed)
         {
-            ui_->comboBoxPackageVersion->addItem(versionsI.key());
+            ui->comboBoxPackageVersion->addItem(versionsI.key());
             if (versionsI.key() == text)
             {
-                ui_->comboBoxPackageVersion->setCurrentText(text);
+                ui->comboBoxPackageVersion->setCurrentText(text);
             }
         }
         ++versionsI;
@@ -181,32 +199,33 @@ void ViewConfigure::flushComboBoxPackageVersion() const
 
 void ViewConfigure::flushComboBoxToolchainsVersionVersion() const
 {
-    const QString &toolchainsVersion = ui_->lineEditToolchainsName->text();
-    ToolCspRepo::PackageType packages;
-    ToolCspRepo::loadPackages(&packages, toolchainsVersion);
+    const QString &toolchainsVersion = ui->lineEditToolchainsName->text();
+    CspRepoJob::PackageType packages;
+    CspRepoJob job("repo");
+    job.loadPackages(&packages, toolchainsVersion);
 
-    const QString text = projectInstance_->getProjectToolchainsVersion();
+    const QString text = Project.toolchainsVersion();
     auto &versions = packages["Toolchains"][toolchainsVersion].Versions;
 
     if (versions.keys().contains(text))
     {
-        ui_->checkBoxEnableToolchains->setCheckState(Qt::Checked);
+        ui->checkBoxEnableToolchains->setCheckState(Qt::Checked);
     }
     else
     {
-        ui_->checkBoxEnableToolchains->setCheckState(Qt::Unchecked);
+        ui->checkBoxEnableToolchains->setCheckState(Qt::Unchecked);
     }
 
-    ui_->comboBoxToolchainsVersion->clear();
+    ui->comboBoxToolchainsVersion->clear();
     auto versionsI = versions.constBegin();
     while (versionsI != versions.constEnd())
     {
         if (versionsI.value().Installed)
         {
-            ui_->comboBoxToolchainsVersion->addItem(versionsI.key());
+            ui->comboBoxToolchainsVersion->addItem(versionsI.key());
             if (versionsI.key() == text)
             {
-                ui_->comboBoxToolchainsVersion->setCurrentText(text);
+                ui->comboBoxToolchainsVersion->setCurrentText(text);
             }
         }
         ++versionsI;
@@ -215,37 +234,38 @@ void ViewConfigure::flushComboBoxToolchainsVersionVersion() const
 
 void ViewConfigure::initLinkerSettings() const
 {
-    const ChipSummaryTable::LinkerType &linker = projectInstance_->getChipSummary().Linker;
-    ui_->lineEditMinimumHeapSize->clear();
+    const ChipSummaryTable::LinkerType &linker = Repo.getChipSummary(Project.company(), Project.targetChip()).Linker;
+    ui->lineEditMinimumHeapSize->clear();
     if (!linker.DefaultMinimumHeapSize.isEmpty())
     {
-        ui_->lineEditMinimumHeapSize->setText(linker.DefaultMinimumHeapSize);
+        ui->lineEditMinimumHeapSize->setText(linker.DefaultMinimumHeapSize);
     }
     else
     {
-        ui_->lineEditMinimumHeapSize->setReadOnly(true);
-        ui_->lineEditMinimumHeapSize->setDisabled(true);
+        ui->lineEditMinimumHeapSize->setReadOnly(true);
+        ui->lineEditMinimumHeapSize->setDisabled(true);
     }
 
-    ui_->lineEditMinimumStackSize->clear();
+    ui->lineEditMinimumStackSize->clear();
     if (!linker.DefaultMinimumStackSize.isEmpty())
     {
-        ui_->lineEditMinimumStackSize->setText(linker.DefaultMinimumStackSize);
+        ui->lineEditMinimumStackSize->setText(linker.DefaultMinimumStackSize);
     }
     else
     {
-        ui_->lineEditMinimumStackSize->setReadOnly(true);
-        ui_->lineEditMinimumStackSize->setDisabled(true);
+        ui->lineEditMinimumStackSize->setReadOnly(true);
+        ui->lineEditMinimumStackSize->setDisabled(true);
     }
 }
 
 void ViewConfigure::initPackageSettings() const
 {
-    const ChipSummaryTable::ChipSummaryType &chip_summary = projectInstance_->getChipSummary();
+    const ChipSummaryTable::ChipSummaryType &chip_summary =
+        Repo.getChipSummary(Project.company(), Project.targetChip());
 
     if (!chip_summary.Hal.isEmpty())
     {
-        ui_->lineEditPackageName->setText(chip_summary.Hal);
+        ui->lineEditPackageName->setText(chip_summary.Hal);
     }
 
     flushComboBoxPackageVersion();
@@ -253,11 +273,12 @@ void ViewConfigure::initPackageSettings() const
 
 void ViewConfigure::initToolchainsSettings() const
 {
-    const ChipSummaryTable::ChipSummaryType &chip_summary = projectInstance_->getChipSummary();
+    const ChipSummaryTable::ChipSummaryType &chip_summary =
+        Repo.getChipSummary(Project.company(), Project.targetChip());
 
     if (!chip_summary.Toolchains.isEmpty())
     {
-        ui_->lineEditToolchainsName->setText(chip_summary.Toolchains);
+        ui->lineEditToolchainsName->setText(chip_summary.Toolchains);
     }
 
     flushComboBoxToolchainsVersionVersion();
@@ -272,69 +293,67 @@ void ViewConfigure::pushButtonPackageManagerPressedCallback()
 
 void ViewConfigure::pushButtonZoomInPressedCallback() const
 {
-    ui_->graphicsView->zoomIn(6);
+    ui->graphicsView->zoomIn(6);
 }
 
 void ViewConfigure::pushButtonZoomResetPressedCallback() const
 {
-    ui_->graphicsView->resize();
+    ui->graphicsView->resize();
 }
 
 void ViewConfigure::pushButtonZoomOutPressedCallback() const
 {
-    ui_->graphicsView->zoomOut(6);
+    ui->graphicsView->zoomOut(6);
 }
 
 void ViewConfigure::comboBoxPackageVersionCurrentTextChanged(const QString &text)
 {
-    projectInstance_->setProjectHalVersion(text);
+    Project.setHalVersion(text);
 }
 
 void ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged(const QString &text)
 {
-    projectInstance_->setProjectTargetProject(text);
-    if (text == "XMake")
+    Project.setTargetProject(text);
+
+    if (text == "MDK-Arm")
     {
-        ui_->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
-    }
-    else if (text == "CMake")
-    {
-        ui_->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
-    }
-    else if (text == "MDK-Arm")
-    {
-        const ChipSummaryTable::TargetProjectType &target_project = projectInstance_->getChipSummary().TargetProject;
-        const QString minVersion = projectInstance_->getProjectTargetProjectMinVersion();
-        ui_->comboBoxBuildScriptIdeMinVersion->clear();
+        const ChipSummaryTable::TargetProjectType &target_project =
+            Repo.getChipSummary(Project.company(), Project.targetChip()).TargetProject;
+        const QString minVersion = Project.targetProjectMinVersion();
+        ui->comboBoxBuildScriptIdeMinVersion->clear();
         for (const QString &version : qAsConst(target_project.MdkArm.Versions))
         {
-            ui_->comboBoxBuildScriptIdeMinVersion->addItem(version);
+            ui->comboBoxBuildScriptIdeMinVersion->addItem(version);
             if (version == minVersion)
             {
-                ui_->comboBoxBuildScriptIdeMinVersion->setCurrentText(version);
+                ui->comboBoxBuildScriptIdeMinVersion->setCurrentText(version);
             }
         }
-        ui_->widgetBoxBuildScriptIdeMinVersion->setVisible(true);
+        ui->widgetBoxBuildScriptIdeMinVersion->setVisible(true);
+    }
+    else
+    {
+        ui->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
     }
 }
 
 void ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text)
 {
-    projectInstance_->setProjectTargetProjectMinVersion(text);
+    Project.setTargetProjectMinVersion(text);
 }
 
 void ViewConfigure::checkBoxEnableToolchainsStateChanged(int State)
 {
     if (Qt::Unchecked == State)
     {
-        ui_->comboBoxToolchainsVersion->setEnabled(false);
-        ui_->pushButtonToolchainsManager->setEnabled(false);
-        projectInstance_->setProjectToolchainsVersion("");
+        ui->comboBoxToolchainsVersion->setEnabled(false);
+        ui->pushButtonToolchainsManager->setEnabled(false);
+        Project.setToolchainsVersion("");
     }
     else
     {
-        ui_->comboBoxToolchainsVersion->setEnabled(true);
-        ui_->pushButtonToolchainsManager->setEnabled(true);
+        ui->comboBoxToolchainsVersion->setEnabled(true);
+        ui->pushButtonToolchainsManager->setEnabled(true);
     }
 }
 
@@ -347,8 +366,8 @@ void ViewConfigure::pushButtonToolchainsManagerPressedCallback()
 
 void ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged(const QString &text)
 {
-    if (ui_->checkBoxEnableToolchains->checkState() == Qt::Checked)
+    if (ui->checkBoxEnableToolchains->checkState() == Qt::Checked)
     {
-        projectInstance_->setProjectToolchainsVersion(text);
+        Project.setToolchainsVersion(text);
     }
 }

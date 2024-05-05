@@ -27,7 +27,6 @@
  *  2023-05-27     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QFile>
 
 #include "Configure.h"
@@ -42,8 +41,6 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Compa
                                                 TargetProject, TargetProjectMinVersion, Version)
 } // namespace nlohmann
 
-#include <QDebug>
-
 QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
 QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)
 
@@ -51,8 +48,9 @@ ProjectTable::ProjectTable() = default;
 
 ProjectTable::~ProjectTable() = default;
 
-void ProjectTable::loadProject(ProjectType *project, const QString &path)
+bool ProjectTable::loadProject(ProjectType *project, const QString &path)
 {
+    bool result = false;
     if (project != nullptr)
     {
         QFile file(path);
@@ -63,6 +61,7 @@ void ProjectTable::loadProject(ProjectType *project, const QString &path)
                 const std::string buffer = file.readAll().toStdString();
                 const nlohmann::json json = nlohmann::json::parse(buffer);
                 json.get_to(*project);
+                result = true;
             }
             catch (std::exception &e)
             {
@@ -84,6 +83,8 @@ void ProjectTable::loadProject(ProjectType *project, const QString &path)
     {
         /** TODO: failed */
     }
+
+    return result;
 }
 
 void ProjectTable::saveProject(ProjectType &project, const QString &path)

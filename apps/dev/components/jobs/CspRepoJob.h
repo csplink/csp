@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        ToolCspRepo.h
+ * @file        CspRepoJob.h
  * @brief
  *
  *****************************************************************************
@@ -24,21 +24,19 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-05     xqyjlj       initial version
+ * 2024-04-29     xqyjlj       initial version
  */
 
-#ifndef __TOOL_CSP_REPO_H__
-#define __TOOL_CSP_REPO_H__
+#ifndef __CSP_REPO_JOB_H__
+#define __CSP_REPO_JOB_H__
 
 #include <QDebug>
-#include <QObject>
-#include <QString>
-#include <QStringList>
 
-class ToolCspRepo final : public QObject
+#include "PythonJob.h"
+
+class CspRepoJob final : public PythonJob
 {
     Q_OBJECT
-
   public:
     typedef struct
     {
@@ -60,22 +58,21 @@ class ToolCspRepo final : public QObject
     typedef QMap<QString, InformationType> PackageCellType;
     typedef QMap<QString, PackageCellType> PackageType;
 
-    static inline QString dumpPackages(const QString &name = "all");
-    static void loadPackages(PackageType *packages, const QString &name = "all");
-    static int installPackage(const QString &name, const QString &version);
-    static int updatePackage(const QString &name);
-    static int uninstallPackage(const QString &name, const QString &version);
+    explicit CspRepoJob(const QString &name);
+    QString dumpPackages(const QString &name = "all");
+    void loadPackages(PackageType *packages, const QString &name = "all");
+    void installPackage(const QString &name, const QString &version);
+    void updatePackage(const QString &name);
+    void uninstallPackage(const QString &name, const QString &version);
 
   private:
-    ToolCspRepo();
-    ~ToolCspRepo() override;
-
-    Q_DISABLE_COPY_MOVE(ToolCspRepo)
+    QString m_scriptFile;
+    void start() override;
 };
 
-QDebug operator<<(QDebug, const ToolCspRepo::VersionType &);
-QDebug operator<<(QDebug, const ToolCspRepo::InformationType &);
-QDebug operator<<(QDebug, const ToolCspRepo::PackageCellType &);
-QDebug operator<<(QDebug, const ToolCspRepo::PackageType &);
+QDebug operator<<(QDebug, const CspRepoJob::VersionType &);
+QDebug operator<<(QDebug, const CspRepoJob::InformationType &);
+QDebug operator<<(QDebug, const CspRepoJob::PackageCellType &);
+QDebug operator<<(QDebug, const CspRepoJob::PackageType &);
 
-#endif /** __TOOL_CSP_REPO_H__ */
+#endif /** __CSP_REPO_JOB_H__ */

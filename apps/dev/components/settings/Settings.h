@@ -37,6 +37,7 @@ class CspSettings final : public QObject
 {
     Q_OBJECT
   public:
+    explicit CspSettings();
     static CspSettings &singleton();
 
     /**
@@ -105,19 +106,16 @@ class CspSettings final : public QObject
     QString python() const;
     void setPython(const QString &python);
 
+    QString openPath() const;
+    void setOpenPath(const QString &path);
+
     QMap<QString, QString> env() const;
 
   private:
     QSettings m_settings;
     QSettings m_recent;
 
-    static QString findToolXmake();
-    static QString findToolGit();
-    static QString findToolPython();
-
-    void checkDirValid(const char *key, const QString &dir, bool create) const;
-
-    explicit CspSettings();
+    static void checkDirValid(const char *key, const QString &dir, bool create);
 
     Q_DISABLE_COPY_MOVE(CspSettings)
 };

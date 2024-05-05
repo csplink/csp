@@ -30,7 +30,6 @@
 #ifndef __VIEW_CONFIGURE_H__
 #define __VIEW_CONFIGURE_H__
 
-#include "Project.h"
 #include "PropertyBrowserPin.h"
 
 namespace Ui
@@ -57,11 +56,10 @@ class ViewConfigure final : public QWidget
     void resizeEvent(QResizeEvent *event) override;
 
   private:
-    Ui::viewConfigure *ui_;
-    PropertyBrowserPin *propertyBrowserInstance_ = nullptr;
-    Project *projectInstance_ = nullptr;
-    int resizeCounter_ = 0;
-    bool isInitUi = false;
+    Ui::viewConfigure *ui;
+    PropertyBrowserPin *m_propertyBrowserInstance = nullptr;
+    int m_resizeCounter = 0;
+    bool m_isInitUi = false;
 
     void initProjectSettings() const;
     void initLinkerSettings() const;

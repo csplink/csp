@@ -32,15 +32,12 @@ configure_file(
 )
 
 file(GLOB COMPONENTS
-        components/git/*.cpp components/git/*.h
         components/jobs/*.cpp components/jobs/*.h
         components/parse/*.cpp components/parse/*.h
         components/project/*.cpp components/project/*.h
-        components/python/*.cpp components/python/*.h
         components/repo/*.cpp components/repo/*.h
         components/settings/*.cpp components/settings/*.h
-        components/tools/*.cpp components/tools/*.h
-        components/xmake/*.cpp components/xmake/*.h)
+        components/tools/*.cpp components/tools/*.h)
 
 file(GLOB SOURCES
         *.cpp)
@@ -56,7 +53,8 @@ file(GLOB RESOURCES
 
 file(GLOB VIEWS
         views/*.ui views/*.h views/*.cpp
-        views/dialogs/*.ui views/dialogs/*.h views/dialogs/*.cpp)
+        views/dialogs/*.ui views/dialogs/*.h views/dialogs/*.cpp
+        views/docks/*.ui views/docks/*.h views/docks/*.cpp)
 
 set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
@@ -66,11 +64,10 @@ set(PROJECT_SOURCES ${COMPONENTS} ${SOURCES} ${WIDGETS} ${RESOURCES} ${VIEWS} ${
 
 include_directories(
         .
-        views views/dialogs
+        views views/dialogs views/docks
         widgets widgets/packages widgets/interface
-        components/git components/jobs components/parse components/project
-        components/python components/repo components/settings
-        components/tools components/xmake)
+        components/jobs components/parse components/project
+        components/repo components/settings components/tools)
 
 foreach (TS_FILE ${TS_FILES})
     set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION
@@ -101,25 +98,19 @@ file(GLOB SOURCES
 set(RESOURCES ${RESOURCES} tests/resources/resources.qrc)
 
 file(GLOB TEST_CASES
-        tests/components/git/*.cpp tests/components/git/*.h
+        tests/components/jobs/*.cpp tests/components/jobs/*.h
         tests/components/parse/*.cpp tests/components/parse/*.h
         tests/components/project/*.cpp tests/components/project/*.h
-        tests/components/python/*.cpp tests/components/python/*.h
         tests/components/repo/*.cpp tests/components/repo/*.h
-        tests/components/settings/*.cpp tests/components/settings/*.h
-        tests/components/tools/*.cpp tests/components/tools/*.h
-        tests/components/xmake/*.cpp tests/components/xmake/*.h)
+        tests/components/settings/*.cpp tests/components/settings/*.h)
 
 add_executable(${name_test} ${COMPONENTS} ${SOURCES} ${WIDGETS} ${RESOURCES} ${TEST_CASES} ${VIEWS})
 target_include_directories(${name_test} PRIVATE
-        tests/components/git
+        tests/components/jobs
         tests/components/parse
         tests/components/project
-        tests/components/python
         tests/components/repo
         tests/components/settings
-        tests/components/tools
-        tests/components/xmake
 )
 target_link_libraries(${name_test} PRIVATE
         Qt5::Widgets Qt5::Concurrent Qt5::OpenGL Qt5::Test

@@ -60,10 +60,9 @@ class PropertyBrowserPin final : public QtTreePropertyBrowser
     void pinAttributeChangedCallback(const QtProperty *property, const QString &attribute, const QVariant &value) const;
 
   private:
-    Project *projectInstance_;
-    QtVariantPropertyManager *variantManager_ = new QtVariantPropertyManager(this);
-    QtVariantEditorFactory *variantFactory_ = new QtVariantEditorFactory(this);
-    QString pinName_ = QString();
+    QtVariantPropertyManager *m_variantManager = new QtVariantPropertyManager(this);
+    QtVariantEditorFactory *m_variantFactory = new QtVariantEditorFactory(this);
+    QString m_pinName = QString();
 
     QtProperty *setPinBase(const QString &name, const QString &comment, int position, bool locked) const;
     QtProperty *setPinSystem(const QString &function) const;

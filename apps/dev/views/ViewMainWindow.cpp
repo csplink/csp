@@ -29,124 +29,80 @@
 
 #include <QDateTime>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QMutex>
 
-#include "ChipSummaryTable.h"
 #include "DialogPackageManager.h"
-#include "PythonAsync.h"
+#include "Settings.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
-#include "XMakeAsync.h"
 #include "ui_ViewMainWindow.h"
 
-static ViewMainWindow *mainWindow = nullptr;
-
-void ViewMainWindow::sysMessageLogHandler(const QtMsgType type, const QMessageLogContext &context,
-                                          const QString &msg)
-{
-    Q_UNUSED(context);
-
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
-    const QByteArray local_msg = msg.toLocal8Bit();
-
-    QString strMsg("");
-    switch (type)
-    {
-    case QtDebugMsg:
-        strMsg = QString("Debug:");
-        break;
-    case QtInfoMsg:
-        strMsg = QString("Info:");
-        break;
-    case QtWarningMsg:
-        strMsg = QString("Warning:");
-        break;
-    case QtCriticalMsg:
-        strMsg = QString("Critical:");
-        break;
-    case QtFatalMsg:
-        strMsg = QString("Fatal:");
-        break;
-
-    default:
-        break;
-    }
-
-    const QString str_date_time = QDateTime::currentDateTime().toString("hh:mm:ss");
-    const QString str_message = QString("%1 %2:%3").arg(str_date_time, strMsg, local_msg.constData());
-
-    if (mainWindow != nullptr)
-    {
-        emit mainWindow->signalAddLog(str_message);
-    }
-    else
-    {
-        // do nothing
-    }
-}
-
-void ViewMainWindow::messageLogHandler(const QString &msg)
-{
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
-
-    if (mainWindow != nullptr)
-    {
-        emit mainWindow->signalAddLog(msg);
-    }
-    else
-    {
-        // do nothing
-    }
-}
-
 ViewMainWindow::ViewMainWindow(QWidget *parent)
-    : QMainWindow(parent), ui_(new Ui::viewMainWindow)
+    : QMainWindow(parent),
+      ui(new Ui::viewMainWindow),
+      m_dockLog(nullptr),
+      m_dockPropertyBrowserPin(nullptr),
+      m_dockModuleTree(nullptr)
 {
-    ui_->setupUi(this);
-    mainWindow = this;
-    (void)qInstallMessageHandler(ViewMainWindow::sysMessageLogHandler);
+    ui->setupUi(this);
+    {
+        m_dockLog = new DockLog(this);
+        m_dockLog->hide();
+        addDockWidget(Qt::BottomDockWidgetArea, m_dockLog);
+        m_dockLog->setVisible(true);
 
-    tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomConfigurations);
-    ui_->dockWidgetBottomOutput->raise();
+        m_dockPropertyBrowserPin = new DockPropertyBrowserPin(this);
+        m_dockPropertyBrowserPin->hide();
+        addDockWidget(Qt::RightDockWidgetArea, m_dockPropertyBrowserPin);
+        m_dockPropertyBrowserPin->setVisible(true);
 
-    projectInstance_ = Project::getInstance();
-    const XMakeAsync *xmake = XMakeAsync::getInstance();
-    const PythonAsync *python = PythonAsync::getInstance();
-    ui_->pageViewConfigure->setPropertyBrowser(ui_->treePropertyBrowser);
+        m_dockModuleTree = new DockModuleTree(this);
+        m_dockModuleTree->hide();
+        addDockWidget(Qt::LeftDockWidgetArea, m_dockModuleTree);
+        m_dockModuleTree->setVisible(true);
+    }
+    //    tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomConfigurations);
+    //    ui_->dockWidgetBottomOutput->raise();
 
-    (void)connect(ui_->actionNewChip, &QAction::triggered, this, &ViewMainWindow::actionNewChipTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionLoad, &QAction::triggered, this, &ViewMainWindow::actionLoadTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionSave, &QAction::triggered, this, &ViewMainWindow::actionSaveTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionSaveAs, &QAction::triggered, this, &ViewMainWindow::actionSaveAsTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionClose, &QAction::triggered, this, &ViewMainWindow::actionCloseTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionReport, &QAction::triggered, this, &ViewMainWindow::actionReportTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionGenerate, &QAction::triggered, this, &ViewMainWindow::actionGenerateTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(ui_->actionPackageManager, &QAction::triggered, this, &ViewMainWindow::actionPackageManagerTriggeredCallback, Qt::UniqueConnection);
+    ui->pageViewConfigure->setPropertyBrowser(m_dockPropertyBrowserPin->propertyBrowser());
 
-    (void)connect(xmake, &XMakeAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
-    (void)connect(python, &PythonAsync::signalReadyReadStandardOutput, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
-    (void)connect(python, &PythonAsync::signalReadyReadStandardError, this, &ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback, Qt::UniqueConnection);
+    {
+        (void)connect(ui->actionNewChip, &QAction::triggered, this, &ViewMainWindow::slotActionNewChipTriggered);
+        (void)connect(ui->actionLoad, &QAction::triggered, this, &ViewMainWindow::slotActionLoadTriggered);
+        (void)connect(ui->actionSave, &QAction::triggered, this, &ViewMainWindow::slotActionSaveTriggered);
+        (void)connect(ui->actionSaveAs, &QAction::triggered, this, &ViewMainWindow::slotActionSaveAsTriggered);
+        (void)connect(ui->actionClose, &QAction::triggered, this, &ViewMainWindow::slotActionCloseTriggered);
+        (void)connect(ui->actionReport, &QAction::triggered, this, &ViewMainWindow::slotActionReportTriggered);
+        (void)connect(ui->actionGenerate, &QAction::triggered, this, &ViewMainWindow::slotActionGenerateTriggered);
+        (void)connect(ui->actionPackageManager, &QAction::triggered, this,
+                      &ViewMainWindow::slotActionPackageManagerTriggered);
+        (void)connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
+    }
 
-    (void)connect(ui_->pageViewHome, &ViewHome::signalCreateProject, this, &ViewMainWindow::createProject, Qt::UniqueConnection);
-    (void)connect(this, &ViewMainWindow::signalAddLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
+    (void)connect(ui->pageViewHome, &ViewHome::signalCreateProject, this, &ViewMainWindow::createProject);
+    //    (void)connect(this, &ViewMainWindow::signalAddLog, ui_->LogBoxOutput, &LogBox::append);
 
-    (void)connect(ui_->pageViewHome, &ViewHome::signalOpenExistingProject, this, &ViewMainWindow::actionLoadTriggeredCallback, Qt::UniqueConnection);
-    (void)connect(projectInstance_, &Project::signalsLog, ui_->LogBoxOutput, &LogBox::append, Qt::UniqueConnection);
+    (void)connect(ui->pageViewHome, &ViewHome::signalOpenExistingProject, this,
+                  &ViewMainWindow::slotActionLoadTriggered);
+    //    (void)connect(projectInstance_, &Project::signalsLog, ui_->LogBoxOutput, &LogBox::append);
+
+    (void)connect(ui->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, m_dockModuleTree,
+                  QOverload<const QString &, const QString &>::of(&DockModuleTree::setModule));
 
     initMode();
+
+    this->setWindowState(Qt::WindowMaximized);
 }
 
 ViewMainWindow::~ViewMainWindow()
 {
-    mainWindow = nullptr;
-    delete ui_;
+    delete ui;
 }
 
 void ViewMainWindow::initMode()
 {
-    if (projectInstance_->getProjectType() == "chip")
+    if (Project.type() == "chip")
     {
         setMode(STACK_INDEX_EMPTY);
         setMode(STACK_INDEX_CHIP_CONFIGURE);
@@ -162,46 +118,16 @@ void ViewMainWindow::setMode(const StackIndexType index)
     switch (index)
     {
     case STACK_INDEX_HOME: {
-        ui_->dockWidgetLeft->hide();
-        ui_->dockWidgetRight->hide();
-        ui_->dockWidgetBottomOutput->hide();
-        ui_->dockWidgetBottomConfigurations->hide();
-        ui_->stackedWidget->setCurrentIndex(STACK_INDEX_HOME);
-        ui_->menuBar->hide();
-        ui_->toolBar->hide();
-        ui_->statusBar->hide();
+        ui->stackedWidget->setCurrentIndex(STACK_INDEX_HOME);
         break;
     }
     case STACK_INDEX_CHIP_CONFIGURE: {
-        ui_->menuBar->show();
-        ui_->toolBar->show();
-        ui_->statusBar->show();
-        ui_->dockWidgetLeft->show();
-        ui_->dockWidgetRight->show();
-        ui_->dockWidgetBottomOutput->show();
-        ui_->dockWidgetBottomConfigurations->show();
-
-        (void)connect(ui_->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, this,
-                      &ViewMainWindow::updateModulesTreeView, Qt::UniqueConnection);
-
-        updateModulesTreeView(projectInstance_->getProjectCompany(), projectInstance_->getProjectTargetChip());
-
-        ui_->pageViewConfigure->initView();
-        ui_->stackedWidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
-
-        this->setWindowState(Qt::WindowMaximized);
+        ui->stackedWidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
+        m_dockModuleTree->setModule(Project.company(), Project.targetChip());
         break;
     }
     case STACK_INDEX_EMPTY: {
-        ui_->stackedWidget->setCurrentIndex(STACK_INDEX_EMPTY);
-        ui_->menuBar->show();
-        ui_->toolBar->show();
-        ui_->statusBar->show();
-        ui_->dockWidgetLeft->show();
-        ui_->dockWidgetRight->show();
-        ui_->dockWidgetBottomOutput->show();
-        ui_->dockWidgetBottomConfigurations->show();
-        this->setWindowState(Qt::WindowMaximized);
+        ui->stackedWidget->setCurrentIndex(STACK_INDEX_EMPTY);
         break;
     }
     default: {
@@ -210,56 +136,25 @@ void ViewMainWindow::setMode(const StackIndexType index)
     }
 }
 
-void ViewMainWindow::updateModulesTreeView(const QString &company, const QString &name) const
-{
-    ui_->treeView->header()->hide();
-    auto *model = new QStandardItemModel(ui_->treeView);
-    ChipSummaryTable::ChipSummaryType chip_summary;
-    ChipSummaryTable::loadChipSummary(&chip_summary, company, name);
-    const auto modules = &chip_summary.Modules;
-    auto modules_i = modules->constBegin();
-    while (modules_i != modules->constEnd())
-    {
-        const auto item = new QStandardItem(modules_i.key());
-        item->setEditable(false);
-        model->appendRow(item);
-
-        const auto module = &modules_i.value();
-        auto module_i = module->constBegin();
-        while (module_i != module->constEnd())
-        {
-            const auto item_child = new QStandardItem(module_i.key());
-            item_child->setEditable(false);
-            item->appendRow(item_child);
-            ++module_i;
-        }
-        ++modules_i;
-    }
-    delete ui_->treeView->model();
-    ui_->treeView->setModel(model);
-    ui_->treeView->expandAll();
-}
-
 void ViewMainWindow::createProject()
 {
     initMode();
 }
 
-void ViewMainWindow::actionNewChipTriggeredCallback(const bool checked) const
+void ViewMainWindow::slotActionNewChipTriggered() const
 {
-    ui_->pageViewHome->pushButtonCreateChipProjectClickedCallback(checked);
+    ui->pageViewHome->pushButtonCreateChipProjectClickedCallback(true);
 }
 
-void ViewMainWindow::actionLoadTriggeredCallback(const bool checked)
+void ViewMainWindow::slotActionLoadTriggered()
 {
-    Q_UNUSED(checked)
-
-    const auto file = QFileDialog::getOpenFileName(nullptr, QString(), QString(), tr("CSP project file(*.csp)"), nullptr);
+    const auto file = QFileDialog::getOpenFileName(this, QString(), Settings.openPath(), tr("CSP project file(*.csp)"));
     if (!file.isEmpty())
     {
+        Settings.setOpenPath(QFileInfo(file).path());
         try
         {
-            projectInstance_->loadProject(file);
+            Project.loadProject(file);
             initMode();
         }
         catch (const std::exception &e)
@@ -269,66 +164,46 @@ void ViewMainWindow::actionLoadTriggeredCallback(const bool checked)
     }
 }
 
-void ViewMainWindow::actionSaveTriggeredCallback(const bool checked)
+void ViewMainWindow::slotActionSaveTriggered()
 {
-    Q_UNUSED(checked)
-
-    if (projectInstance_->getPath().isEmpty())
+    if (Project.path().isEmpty())
     {
         WizardNewProject wizard(this);
-        (void)connect(&wizard, &WizardNewProject::finished, this, [this](const int result) {
+        (void)connect(&wizard, &WizardNewProject::finished, this, [](const int result) {
             if (result == QDialog::Accepted)
             {
-                projectInstance_->saveProject();
+                Project.saveProject();
             }
         });
         (void)wizard.exec();
     }
     else
     {
-        projectInstance_->saveProject();
+        Project.saveProject();
     }
 }
 
-void ViewMainWindow::actionSaveAsTriggeredCallback(const bool checked) const
+void ViewMainWindow::slotActionSaveAsTriggered() const
 {
-    Q_UNUSED(checked)
 }
 
-void ViewMainWindow::actionCloseTriggeredCallback(const bool checked) const
+void ViewMainWindow::slotActionCloseTriggered() const
 {
-    Q_UNUSED(checked)
 }
 
-void ViewMainWindow::actionReportTriggeredCallback(const bool checked) const
+void ViewMainWindow::slotActionReportTriggered() const
 {
-    Q_UNUSED(checked)
 }
 
-void ViewMainWindow::actionGenerateTriggeredCallback(const bool checked) const
+void ViewMainWindow::slotActionGenerateTriggered() const
 {
-    Q_UNUSED(checked)
-    ui_->dockWidgetBottomOutput->raise();
-    projectInstance_->saveProject();
-    projectInstance_->generateCode();
+    //    ui_->dockWidgetBottomOutput->raise();
+    Project.saveProject();
+    Project.generateCode();
 }
 
-void ViewMainWindow::actionPackageManagerTriggeredCallback(const bool checked)
+void ViewMainWindow::slotActionPackageManagerTriggered()
 {
-    Q_UNUSED(checked)
-
     DialogPackageManager dialog(this);
     (void)dialog.exec();
-}
-
-void ViewMainWindow::xmakeReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
-{
-    Q_UNUSED(process);
-    ui_->LogBoxOutput->append(msg);
-}
-
-void ViewMainWindow::pythonReadyReadStandardOutputOrErrorCallback(const QProcess *process, const QByteArray &msg)
-{
-    Q_UNUSED(process);
-    ui_->LogBoxOutput->append(msg);
 }

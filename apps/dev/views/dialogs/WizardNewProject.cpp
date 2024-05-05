@@ -27,21 +27,20 @@
  *  2023-05-29     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QFileDialog>
 #include <QLabel>
 #include <QToolButton>
 #include <QVBoxLayout>
 
+#include "Project.h"
 #include "Settings.h"
 #include "WizardNewProject.h"
 
-WizardNewProject::WizardNewProject(const QWidget *parent)
+WizardNewProject::WizardNewProject(QWidget *parent)
+    : QWizard(parent),
+      m_lineEditProjectPath(nullptr),
+      m_lineEditProjectName(nullptr)
 {
-    Q_UNUSED(parent)
-
-    projectInstance_ = Project::getInstance();
-
     setWindowTitle(tr("New Project"));
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint |
                    Qt::WindowMaximizeButtonHint);
@@ -57,8 +56,8 @@ WizardNewProject::WizardNewProject(const QWidget *parent)
 
 void WizardNewProject::accept()
 {
-    auto path = lineEditProjectPath_->text();
-    auto name = lineEditProjectName_->text();
+    auto path = m_lineEditProjectPath->text();
+    auto name = m_lineEditProjectName->text();
 
     if (path.isEmpty() || name.isEmpty())
     {
@@ -66,8 +65,8 @@ void WizardNewProject::accept()
         return;
     }
 
-    projectInstance_->setPath(QString("%1/%2/%2.csp").arg(path, name));
-    projectInstance_->setProjectName(name);
+    Project.setPath(QString("%1/%2/%2.csp").arg(path, name));
+    Project.setName(name);
 
     QDialog::accept();
 }
@@ -106,7 +105,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     label2->setWordWrap(true);
 
     auto workspace = Settings.workspace();
-    lineEditProjectPath_ = new QLineEdit(workspace, page);
+    m_lineEditProjectPath = new QLineEdit(workspace, page);
 
     int index = 0;
 
@@ -122,7 +121,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
             break;
         }
     }
-    lineEditProjectName_ = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
+    m_lineEditProjectName = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
 
     const auto toolButton = new QToolButton(page);
     toolButton->setMaximumSize(30, 30);
@@ -131,10 +130,10 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     const auto gridLayout = new QGridLayout(page);
 
     gridLayout->addWidget(label1, 0, 0, 1, 1);
-    gridLayout->addWidget(lineEditProjectPath_, 0, 1, 1, 1);
+    gridLayout->addWidget(m_lineEditProjectPath, 0, 1, 1, 1);
     gridLayout->addWidget(toolButton, 0, 2, 1, 1);
     gridLayout->addWidget(label2, 1, 0, 1, 1);
-    gridLayout->addWidget(lineEditProjectName_, 1, 1, 1, 1);
+    gridLayout->addWidget(m_lineEditProjectName, 1, 1, 1, 1);
 
     page->setLayout(gridLayout);
 
@@ -142,7 +141,7 @@ QWizardPage *WizardNewProject::createPageChoosePath()
         const QString path = QFileDialog::getExistingDirectory();
         if (!path.isEmpty())
         {
-            lineEditProjectPath_->setText(path);
+            m_lineEditProjectPath->setText(path);
         }
     });
 
