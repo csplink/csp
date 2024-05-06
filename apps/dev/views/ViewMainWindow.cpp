@@ -34,7 +34,6 @@
 
 #include "DialogChooseChip.h"
 #include "DialogPackageManager.h"
-#include "Settings.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
 #include "ui_ViewMainWindow.h"
@@ -81,9 +80,11 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
         (void)connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
     }
 
-    initMode();
+    (void)connect(&Project, &CspProject::signalReloaded, this, &ViewMainWindow::slotProjectReloaded);
 
     this->setWindowState(Qt::WindowMaximized);
+    
+    setupPage();
 }
 
 ViewMainWindow::~ViewMainWindow()
@@ -91,20 +92,19 @@ ViewMainWindow::~ViewMainWindow()
     delete ui;
 }
 
-void ViewMainWindow::initMode()
+void ViewMainWindow::setupPage()
 {
     if (Project.type() == "chip")
     {
-        setMode(STACK_INDEX_EMPTY);
-        setMode(STACK_INDEX_CHIP_CONFIGURE);
+        setPage(STACK_INDEX_CHIP_CONFIGURE);
     }
     else
     {
-        setMode(STACK_INDEX_HOME);
+        setPage(STACK_INDEX_HOME);
     }
 }
 
-void ViewMainWindow::setMode(const StackIndexType index)
+void ViewMainWindow::setPage(const StackIndexType index)
 {
     switch (index)
     {
@@ -180,4 +180,9 @@ void ViewMainWindow::slotActionPackageManagerTriggered()
 {
     DialogPackageManager dialog(this);
     (void)dialog.exec();
+}
+
+void ViewMainWindow::slotProjectReloaded()
+{
+    setupPage();
 }

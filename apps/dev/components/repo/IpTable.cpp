@@ -92,6 +92,10 @@ bool IpTable::loadIp(IpType *ip, const QString &hal, const QString &name, const 
             rtn = loadIp(ip, path);
         }
     }
+    else
+    {
+        /** TODO: failed */
+    }
     return rtn;
 }
 

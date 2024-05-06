@@ -27,7 +27,6 @@
  *  2023-05-28     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QFile>
 
 #include "Settings.h"
@@ -54,14 +53,15 @@ PinoutTable::PinoutTable() = default;
 
 PinoutTable::~PinoutTable() = default;
 
-void PinoutTable::loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name)
+bool PinoutTable::loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name)
 {
+    bool rtn = false;
     if (pinout != nullptr)
     {
         if (!hal.isEmpty() && !name.isEmpty())
         {
             const QString path = QString("%1/hal/%2/%3/%4/pinout.yml").arg(Settings.database(), company.toLower(), hal.toLower(), name.toLower());
-            loadPinout(pinout, path);
+            rtn = loadPinout(pinout, path);
         }
         else
         {
@@ -72,10 +72,12 @@ void PinoutTable::loadPinout(PinoutType *pinout, const QString &company, const Q
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
-void PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
+bool PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
 {
+    bool rtn = false;
     if (pinout != nullptr)
     {
         QFile file(path);
@@ -86,6 +88,7 @@ void PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
                 const std::string buffer = file.readAll().toStdString();
                 const YAML::Node yaml_data = YAML::Load(buffer);
                 YAML::convert<PinoutType>::decode(yaml_data, *pinout);
+                rtn = true;
             }
             catch (std::exception &e)
             {
@@ -150,4 +153,5 @@ void PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
     {
         /** TODO: failed */
     }
+    return rtn;
 }

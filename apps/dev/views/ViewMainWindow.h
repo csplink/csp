@@ -61,6 +61,7 @@ class ViewMainWindow final : public QMainWindow
     void slotActionReportTriggered() const;
     void slotActionGenerateTriggered() const;
     void slotActionPackageManagerTriggered();
+    void slotProjectReloaded();
 
   private:
     Ui::viewMainWindow *ui;
@@ -75,8 +76,8 @@ class ViewMainWindow final : public QMainWindow
         STACK_INDEX_EMPTY,
     } StackIndexType;
 
-    void initMode();
-    void setMode(StackIndexType index);
+    void setupPage();
+    void setPage(StackIndexType index);
 };
 
 #endif /** __VIEW_MAIN_WINDOW_H__ */

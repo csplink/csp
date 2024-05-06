@@ -40,10 +40,21 @@ void TestCaseMapTable::initTestCase()
 void TestCaseMapTable::loadMap()
 {
     MapTable::MapType map;
-    MapTable::loadMap(&map, ":/database/map/gpio.yml");
+    bool rtn;
+    rtn = MapTable::loadMap(&map, ":/database/map/gpio.yml");
+    QVERIFY(rtn);
     QVERIFY(!map.Groups.isEmpty());
     QVERIFY(!map.Properties.isEmpty());
     QVERIFY(!map.Total.isEmpty());
+}
+
+void TestCaseMapTable::loadMaps()
+{
+    MapTable::MapsType maps;
+    bool rtn;
+    rtn = MapTable::loadMaps(&maps, "csp_hal_apm32f1");
+    QVERIFY(rtn);
+    QVERIFY(!maps.isEmpty());
 }
 
 void TestCaseMapTable::cleanupTestCase()

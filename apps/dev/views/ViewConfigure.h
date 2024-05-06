@@ -46,18 +46,17 @@ class ViewConfigure final : public QWidget
     ~ViewConfigure() override;
 
     void setPropertyBrowser(PropertyBrowserPin *instance);
-    void initView();
 
   protected:
-    void showEvent(QShowEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
   private:
     Ui::viewConfigure *ui;
-    PropertyBrowserPin *m_propertyBrowserInstance = nullptr;
-    int m_resizeCounter = 0;
-    bool m_isInitUi = false;
+    PropertyBrowserPin *m_propertyBrowserInstance;
+    int m_resizeCounter;
 
+    void initView();
+    void initMainView();
     void initProjectSettings() const;
     void initLinkerSettings() const;
     void initPackageSettings() const;
@@ -76,6 +75,8 @@ class ViewConfigure final : public QWidget
     void slotCheckBoxEnableToolchainsStateChanged(int State);
     void slotPushButtonToolchainsManagerPressed();
     void slotComboBoxToolchainsVersionCurrentTextChanged(const QString &text);
+
+    void slotProjectReloaded();
 };
 
 #endif /** __VIEW_CONFIGURE_H__ */

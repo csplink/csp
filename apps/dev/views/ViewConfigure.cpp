@@ -39,28 +39,35 @@
 
 ViewConfigure::ViewConfigure(QWidget *parent)
     : QWidget(parent),
-      ui(new Ui::viewConfigure)
+      ui(new Ui::viewConfigure),
+      m_propertyBrowserInstance(nullptr),
+      m_resizeCounter(0)
 {
     ui->setupUi(this);
+    {
+        (void)connect(ui->pushButtonPackageManager, &QPushButton::pressed, this,
+                      &ViewConfigure::slotPushButtonPackageManagerPressed, Qt::UniqueConnection);
+        (void)connect(ui->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomInPressed,
+                      Qt::UniqueConnection);
+        (void)connect(ui->pushButtonZoomReset, &QPushButton::pressed, this,
+                      &ViewConfigure::slotPushButtonZoomResetPressed, Qt::UniqueConnection);
+        (void)connect(ui->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomOutPressed,
+                      Qt::UniqueConnection);
+        (void)connect(ui->comboBoxPackageVersion, &QComboBox::currentTextChanged, this,
+                      &ViewConfigure::slotComboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
+        (void)connect(ui->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this,
+                      &ViewConfigure::slotComboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
+        (void)connect(ui->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this,
+                      &ViewConfigure::slotComboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
+        (void)connect(ui->checkBoxEnableToolchains, &QCheckBox::stateChanged, this,
+                      &ViewConfigure::slotCheckBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
+        (void)connect(ui->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this,
+                      &ViewConfigure::slotComboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
+    }
 
-    (void)connect(ui->pushButtonPackageManager, &QPushButton::pressed, this,
-                  &ViewConfigure::slotPushButtonPackageManagerPressed, Qt::UniqueConnection);
-    (void)connect(ui->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomInPressed,
-                  Qt::UniqueConnection);
-    (void)connect(ui->pushButtonZoomReset, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomResetPressed,
-                  Qt::UniqueConnection);
-    (void)connect(ui->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomOutPressed,
-                  Qt::UniqueConnection);
-    (void)connect(ui->comboBoxPackageVersion, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::slotComboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
-    (void)connect(ui->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::slotComboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
-    (void)connect(ui->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::slotComboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
-    (void)connect(ui->checkBoxEnableToolchains, &QCheckBox::stateChanged, this,
-                  &ViewConfigure::slotCheckBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
-    (void)connect(ui->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::slotComboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
+    (void)connect(&Project, &CspProject::signalReloaded, this, &ViewConfigure::slotProjectReloaded);
+
+    initView();
 }
 
 ViewConfigure::~ViewConfigure()
@@ -68,21 +75,20 @@ ViewConfigure::~ViewConfigure()
     delete ui;
 }
 
-void ViewConfigure::showEvent(QShowEvent *event)
+void ViewConfigure::resizeEvent(QResizeEvent *event)
 {
-    Q_UNUSED(event);
-
-    if (!m_isInitUi)
+    if (m_resizeCounter <= 2)
     {
-        m_isInitUi = true;
-        initView();
-        initProjectSettings();
-        initLinkerSettings();
-        initPackageSettings();
-        initToolchainsSettings();
-    }
+        ui->graphicsView->resize();
 
-    QWidget::showEvent(event);
+        /**
+         * 0: View initialization
+         * 1: Layout initialization
+         * 2: Global maximization
+         */
+        m_resizeCounter++;
+    }
+    QWidget::resizeEvent(event);
 }
 
 void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
@@ -94,6 +100,15 @@ void ViewConfigure::setPropertyBrowser(PropertyBrowserPin *instance)
 }
 
 void ViewConfigure::initView()
+{
+    initMainView();
+    initProjectSettings();
+    initLinkerSettings();
+    initPackageSettings();
+    initToolchainsSettings();
+}
+
+void ViewConfigure::initMainView()
 {
     const QString package = Project.package().toLower();
     const QString hal = Project.hal().toLower();
@@ -118,22 +133,6 @@ void ViewConfigure::initView()
     }
     ui->graphicsView->setScene(scene);
     ui->graphicsView->resize();
-}
-
-void ViewConfigure::resizeEvent(QResizeEvent *event)
-{
-    if (m_resizeCounter <= 2)
-    {
-        ui->graphicsView->resize();
-
-        /**
-         * 0: View initialization
-         * 1: Layout initialization
-         * 2: Global maximization
-         */
-        m_resizeCounter++;
-    }
-    QWidget::resizeEvent(event);
 }
 
 void ViewConfigure::initProjectSettings() const
@@ -313,27 +312,30 @@ void ViewConfigure::slotComboBoxPackageVersionCurrentTextChanged(const QString &
 
 void ViewConfigure::slotComboBoxBuildScriptIdeCurrentTextChanged(const QString &text)
 {
-    Project.setTargetProject(text);
+    if (!text.isEmpty())
+    {
+        Project.setTargetProject(text);
 
-    if (text == "MDK-Arm")
-    {
-        const ChipSummaryTable::TargetProjectType &target_project =
-            Repo.getChipSummary(Project.company(), Project.targetChip()).TargetProject;
-        const QString minVersion = Project.targetProjectMinVersion();
-        ui->comboBoxBuildScriptIdeMinVersion->clear();
-        for (const QString &version : qAsConst(target_project.MdkArm.Versions))
+        if (text == "MDK-Arm")
         {
-            ui->comboBoxBuildScriptIdeMinVersion->addItem(version);
-            if (version == minVersion)
+            const ChipSummaryTable::TargetProjectType &targetProject =
+                Repo.getChipSummary(Project.company(), Project.targetChip()).TargetProject;
+            const QString minVersion = Project.targetProjectMinVersion();
+            ui->comboBoxBuildScriptIdeMinVersion->clear();
+            for (const QString &version : qAsConst(targetProject.MdkArm.Versions))
             {
-                ui->comboBoxBuildScriptIdeMinVersion->setCurrentText(version);
+                ui->comboBoxBuildScriptIdeMinVersion->addItem(version);
+                if (version == minVersion)
+                {
+                    ui->comboBoxBuildScriptIdeMinVersion->setCurrentText(version);
+                }
             }
+            ui->widgetBoxBuildScriptIdeMinVersion->setVisible(true);
         }
-        ui->widgetBoxBuildScriptIdeMinVersion->setVisible(true);
-    }
-    else
-    {
-        ui->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
+        else
+        {
+            ui->widgetBoxBuildScriptIdeMinVersion->setVisible(false);
+        }
     }
 }
 
@@ -370,4 +372,9 @@ void ViewConfigure::slotComboBoxToolchainsVersionCurrentTextChanged(const QStrin
     {
         Project.setToolchainsVersion(text);
     }
+}
+
+void ViewConfigure::slotProjectReloaded()
+{
+    initView();
 }

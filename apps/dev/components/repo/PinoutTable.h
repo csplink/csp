@@ -30,6 +30,7 @@
 #ifndef __PINOUT_TABLE_H__
 #define __PINOUT_TABLE_H__
 
+#include <QDebug>
 #include <QMap>
 
 class PinoutTable final
@@ -50,8 +51,8 @@ class PinoutTable final
 
     typedef QMap<QString, PinoutUnitType> PinoutType;
 
-    static void loadPinout(PinoutType *pinout, const QString &path);
-    static void loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name);
+    static bool loadPinout(PinoutType *pinout, const QString &path);
+    static bool loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name);
 
   private:
     explicit PinoutTable();
@@ -60,5 +61,8 @@ class PinoutTable final
 
 Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType)
 Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType *)
+
+QDebug operator<<(QDebug, const PinoutTable::FunctionType &);
+QDebug operator<<(QDebug, const PinoutTable::PinoutUnitType &);
 
 #endif /** __PINOUT_TABLE_H__ */

@@ -41,57 +41,59 @@ void TestCaseRepositoryTable::initTestCase()
 void TestCaseRepositoryTable::loadRepository()
 {
     RepositoryTable::RepositoryType repository;
-    RepositoryTable::loadRepository(&repository, Settings.database() + "/repository.yml");
-    const auto chips = repository.Chips;
-    auto chips_i = chips.constBegin();
-    while (chips_i != chips.constEnd())
+    bool rtn;
+    rtn = RepositoryTable::loadRepository(&repository, Settings.database() + "/repository.yml");
+    QVERIFY(rtn);
+    const RepositoryTable::ChipType &chips = repository.Chips;
+    QMap<QString, RepositoryTable::ChipCompanyType>::const_iterator chipsI = chips.constBegin();
+    while (chipsI != chips.constEnd())
     {
-        QVERIFY(!chips_i.key().isEmpty());
-        QVERIFY(!chips_i.value().isEmpty());
+        QVERIFY(!chipsI.key().isEmpty());
+        QVERIFY(!chipsI.value().isEmpty());
 
-        auto company = chips_i.value();
-        auto company_i = company.constBegin();
-        while (company_i != company.constEnd())
+        const RepositoryTable::ChipCompanyType &company = chipsI.value();
+        QMap<QString, RepositoryTable::ChipSeriesType>::const_iterator companyI = company.constBegin();
+        while (companyI != company.constEnd())
         {
-            QVERIFY(!company_i.key().isEmpty());
-            QVERIFY(!company_i.value().isEmpty());
+            QVERIFY(!companyI.key().isEmpty());
+            QVERIFY(!companyI.value().isEmpty());
 
-            auto series = company_i.value();
-            auto series_i = series.constBegin();
-            while (series_i != series.constEnd())
+            const RepositoryTable::ChipSeriesType &series = companyI.value();
+            QMap<QString, RepositoryTable::ChipLineType>::const_iterator seriesI = series.constBegin();
+            while (seriesI != series.constEnd())
             {
-                QVERIFY(!series_i.key().isEmpty());
-                QVERIFY(!series_i.value().isEmpty());
+                QVERIFY(!seriesI.key().isEmpty());
+                QVERIFY(!seriesI.value().isEmpty());
 
-                auto line = series_i.value();
-                auto line_i = line.constBegin();
-                while (line_i != line.constEnd())
+                const RepositoryTable::ChipLineType &line = seriesI.value();
+                QMap<QString, RepositoryTable::ChipInfoType>::const_iterator lineI = line.constBegin();
+                while (lineI != line.constEnd())
                 {
-                    QVERIFY(!line_i.key().isEmpty());
+                    QVERIFY(!lineI.key().isEmpty());
 
-                    auto mcu = line_i.value();
-                    QVERIFY(!mcu.Core.isEmpty());
-                    QVERIFY(!mcu.Package.isEmpty());
+                    const RepositoryTable::ChipInfoType &chip = lineI.value();
+                    QVERIFY(!chip.Core.isEmpty());
+                    QVERIFY(!chip.Package.isEmpty());
 
-                    QVERIFY(!mcu.Peripherals.isEmpty());
+                    QVERIFY(!chip.Peripherals.isEmpty());
 
-                    QVERIFY(mcu.Flash > 0);
-                    QVERIFY(mcu.Frequency > 0);
-                    QVERIFY(mcu.IO > 0);
-                    QVERIFY(mcu.Ram > 0);
+                    QVERIFY(chip.Flash > 0);
+                    QVERIFY(chip.Frequency > 0);
+                    QVERIFY(chip.IO > 0);
+                    QVERIFY(chip.Ram > 0);
 
-                    QVERIFY(mcu.Current.Lowest > 0);
-                    QVERIFY(mcu.Current.Run > 0);
-                    QVERIFY(mcu.Temperature.Max > 0);
-                    QVERIFY(mcu.Voltage.Max > 0);
+                    QVERIFY(chip.Current.Lowest > 0);
+                    QVERIFY(chip.Current.Run > 0);
+                    QVERIFY(chip.Temperature.Max > 0);
+                    QVERIFY(chip.Voltage.Max > 0);
 
-                    ++line_i;
+                    ++lineI;
                 }
-                ++series_i;
+                ++seriesI;
             }
-            ++company_i;
+            ++companyI;
         }
-        ++chips_i;
+        ++chipsI;
     }
 }
 

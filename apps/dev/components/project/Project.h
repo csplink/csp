@@ -61,7 +61,7 @@ class CspProject final : public QObject
     void setTargetProjectMinVersion(const QString &version);
 
     QString targetProject() const;
-    void setTargetProject(const QString &version);
+    void setTargetProject(const QString &targetProject);
 
     QString type() const;
     void setType(const QString &type);
@@ -107,7 +107,7 @@ class CspProject final : public QObject
     void generateCode() const;
 
   signals:
-    void signalReload();
+    void signalReloaded();
     void signalPinCommentChanged(const QString &name, const QString &oldValue, const QString &newValue);
     void signalPinFunctionChanged(const QString &name, const QString &oldValue, const QString &newValue);
     void signalPinLockedChanged(const QString &name, bool oldValue, bool newValue);

@@ -30,6 +30,7 @@
 #ifndef __REPOSITORY_TABLE_H__
 #define __REPOSITORY_TABLE_H__
 
+#include <QDebug>
 #include <QMap>
 
 class RepositoryTable final
@@ -85,11 +86,17 @@ class RepositoryTable final
         ChipType Chips;
     } RepositoryType;
 
-    static void loadRepository(RepositoryType *repository, const QString &path);
+    static bool loadRepository(RepositoryType *repository, const QString &path);
 
   private:
     explicit RepositoryTable();
     ~RepositoryTable();
 };
+
+QDebug operator<<(QDebug, const RepositoryTable::CurrentType &);
+QDebug operator<<(QDebug, const RepositoryTable::TemperatureType &);
+QDebug operator<<(QDebug, const RepositoryTable::VoltageType &);
+QDebug operator<<(QDebug, const RepositoryTable::ChipInfoType &);
+QDebug operator<<(QDebug, const RepositoryTable::RepositoryType &);
 
 #endif /** __REPOSITORY_TABLE_H__ */

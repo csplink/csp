@@ -39,9 +39,8 @@ class TestCaseMapTable final : public QObject
   private slots:
 
     static void initTestCase();
-
     static void loadMap();
-
+    static void loadMaps();
     static void cleanupTestCase();
 };
 

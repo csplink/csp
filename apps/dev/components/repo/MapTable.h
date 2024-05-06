@@ -30,6 +30,7 @@
 #ifndef __MAP_TABLE_H__
 #define __MAP_TABLE_H__
 
+#include <QDebug>
 #include <QMap>
 
 class MapTable final
@@ -64,13 +65,18 @@ class MapTable final
 
     typedef QMap<QString, MapType> MapsType;
 
-    static void loadMap(MapType *map, const QString &path);
-    static void loadMap(MapType *map, const QString &hal, const QString &mapName);
-    static void loadMaps(MapsType *maps, const QString &hal);
+    static bool loadMap(MapType *map, const QString &path);
+    static bool loadMap(MapType *map, const QString &hal, const QString &mapName);
+    static bool loadMaps(MapsType *maps, const QString &hal);
 
   private:
     explicit MapTable();
     ~MapTable();
 };
+
+QDebug operator<<(QDebug, const MapTable::ValueType &);
+QDebug operator<<(QDebug, const MapTable::GroupType &);
+QDebug operator<<(QDebug, const MapTable::PropertyType &);
+QDebug operator<<(QDebug, const MapTable::MapType &);
 
 #endif /** __MAP_TABLE_H__ */

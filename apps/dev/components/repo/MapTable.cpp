@@ -26,15 +26,14 @@
  *  ------------   ----------   -----------------------------------------------
  *  2023-06-17     xqyjlj       initial version
  */
-#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 
-#include "Settings.h"
 #include "MapTable.h"
 #include "QtJson.h"
 #include "QtYaml.h"
+#include "Settings.h"
 
 namespace YAML
 {
@@ -61,8 +60,9 @@ MapTable::MapTable() = default;
 
 MapTable::~MapTable() = default;
 
-void MapTable::loadMap(MapType *map, const QString &path)
+bool MapTable::loadMap(MapType *map, const QString &path)
 {
+    bool rtn = false;
     if (map != nullptr)
     {
         QFile file(path);
@@ -73,6 +73,7 @@ void MapTable::loadMap(MapType *map, const QString &path)
                 const std::string buffer = file.readAll().toStdString();
                 const YAML::Node yaml_data = YAML::Load(buffer);
                 YAML::convert<MapType>::decode(yaml_data, *map);
+                rtn = true;
             }
             catch (std::exception &e)
             {
@@ -108,16 +109,19 @@ void MapTable::loadMap(MapType *map, const QString &path)
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
-void MapTable::loadMap(MapType *map, const QString &hal, const QString &mapName)
+bool MapTable::loadMap(MapType *map, const QString &hal, const QString &mapName)
 {
+    bool rtn = false;
     if (map != nullptr)
     {
         if (!hal.isEmpty() && !mapName.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/map/%3.yml").arg(Settings.database(), hal.toLower(), mapName.toLower());
-            loadMap(map, path);
+            const QString path =
+                QString("%1/hal/%2/map/%3.yml").arg(Settings.database(), hal.toLower(), mapName.toLower());
+            rtn = loadMap(map, path);
         }
         else
         {
@@ -128,64 +132,80 @@ void MapTable::loadMap(MapType *map, const QString &hal, const QString &mapName)
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
-void MapTable::loadMaps(MapsType *maps, const QString &hal)
+bool MapTable::loadMaps(MapsType *maps, const QString &hal)
 {
+    bool rtn = false;
     if (maps != nullptr)
     {
         if (!hal.isEmpty())
         {
             const QString path = QString("%1/hal/%2/map").arg(Settings.database(), hal.toLower());
             const QDir dir(path);
-            QFileInfoList files = dir.entryInfoList({ "*.yml" }, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-            for (const QFileInfo &file : files)
+            QFileInfoList files = dir.entryInfoList({"*.yml"}, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+            if (!files.isEmpty())
             {
-                MapType map;
-                loadMap(&map, file.absoluteFilePath());
-                const QFileInfo info(file);
-                auto basename = info.baseName().toLower();
-                maps->insert(basename, map);
+                for (const QFileInfo &file : files)
+                {
+                    MapType map;
+                    rtn = loadMap(&map, file.absoluteFilePath());
+                    if (!rtn)
+                    {
+                        break;
+                    }
+                    const QFileInfo info(file);
+                    auto basename = info.baseName().toLower();
+                    maps->insert(basename, map);
+                }
+            }
+            else
+            {
+                rtn = true;
             }
 
-            const QStringList list = { "gpio" };
-            for (const QString &file : list)
+            static const QStringList list = {"gpio"};
+            if (rtn)
             {
-                MapType map;
-                loadMap(&map, QString(":/database/map/%1.yml").arg(file));
-                const QFileInfo info(file);
-                const QString basename = info.baseName().toLower();
-                if (maps->contains(basename))
+                for (const QString &file : list)
                 {
-                    MapType &ref_map = (*maps)[basename];
-                    auto group_i = map.Groups.constBegin();
-                    while (group_i != map.Groups.constEnd())
+                    MapType map;
+                    loadMap(&map, QString(":/database/map/%1.yml").arg(file));
+                    const QFileInfo info(file);
+                    const QString basename = info.baseName().toLower();
+                    if (maps->contains(basename))
                     {
-                        ref_map.Groups.insert(group_i.key(), group_i.value());
-                        ++group_i;
+                        MapType &ref_map = (*maps)[basename];
+                        auto group_i = map.Groups.constBegin();
+                        while (group_i != map.Groups.constEnd())
+                        {
+                            ref_map.Groups.insert(group_i.key(), group_i.value());
+                            ++group_i;
+                        }
+                        auto properties_i = map.Properties.constBegin();
+                        while (properties_i != map.Properties.constEnd())
+                        {
+                            ref_map.Properties.insert(properties_i.key(), properties_i.value());
+                            ++properties_i;
+                        }
+                        auto total_i = map.Total.constBegin();
+                        while (total_i != map.Total.constEnd())
+                        {
+                            ref_map.Total.insert(total_i.key(), total_i.value());
+                            ++total_i;
+                        }
+                        auto reverse_total_i = map.ReverseTotal.constBegin();
+                        while (reverse_total_i != map.ReverseTotal.constEnd())
+                        {
+                            ref_map.ReverseTotal.insert(reverse_total_i.key(), reverse_total_i.value());
+                            ++reverse_total_i;
+                        }
                     }
-                    auto properties_i = map.Properties.constBegin();
-                    while (properties_i != map.Properties.constEnd())
+                    else
                     {
-                        ref_map.Properties.insert(properties_i.key(), properties_i.value());
-                        ++properties_i;
+                        maps->insert(basename, map);
                     }
-                    auto total_i = map.Total.constBegin();
-                    while (total_i != map.Total.constEnd())
-                    {
-                        ref_map.Total.insert(total_i.key(), total_i.value());
-                        ++total_i;
-                    }
-                    auto reverse_total_i = map.ReverseTotal.constBegin();
-                    while (reverse_total_i != map.ReverseTotal.constEnd())
-                    {
-                        ref_map.ReverseTotal.insert(reverse_total_i.key(), reverse_total_i.value());
-                        ++reverse_total_i;
-                    }
-                }
-                else
-                {
-                    maps->insert(basename, map);
                 }
             }
         }
@@ -198,4 +218,5 @@ void MapTable::loadMaps(MapsType *maps, const QString &hal)
     {
         /** TODO: failed */
     }
+    return rtn;
 }

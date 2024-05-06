@@ -27,7 +27,6 @@
  *  2023-04-20     xqyjlj       initial version
  */
 
-#include <QDebug>
 #include <QFile>
 
 #include "QtJson.h"
@@ -62,8 +61,9 @@ QT_DEBUG_ADD_TYPE(RepositoryTable::RepositoryType)
 
 RepositoryTable::RepositoryTable() = default;
 
-void RepositoryTable::loadRepository(RepositoryType *repository, const QString &path)
+bool RepositoryTable::loadRepository(RepositoryType *repository, const QString &path)
 {
+    bool rtn = false;
     if (repository != nullptr)
     {
         QFile file(path);
@@ -74,6 +74,7 @@ void RepositoryTable::loadRepository(RepositoryType *repository, const QString &
                 const std::string buffer = file.readAll().toStdString();
                 const YAML::Node yaml_data = YAML::Load(buffer);
                 YAML::convert<RepositoryType>::decode(yaml_data, *repository);
+                rtn = true;
             }
             catch (std::exception &e)
             {
@@ -93,6 +94,7 @@ void RepositoryTable::loadRepository(RepositoryType *repository, const QString &
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
 RepositoryTable::~RepositoryTable() = default;

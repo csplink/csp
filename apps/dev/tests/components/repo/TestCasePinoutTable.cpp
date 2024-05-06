@@ -43,23 +43,25 @@ void TestCasePinoutTable::loadPinout()
 {
     PinoutTable::PinoutType pinout;
     const QDir dir1(Settings.database() + "/hal");
-    const QFileInfoList companyDirs = dir1.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    const QFileInfoList companyDirs = dir1.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     for (const QFileInfo &companyDir : companyDirs)
     {
         const QDir dir2(companyDir.absoluteFilePath());
-        const QFileInfoList halDirs = dir2.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+        const QFileInfoList halDirs = dir2.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
         for (const QFileInfo &halDir : halDirs)
         {
             const QDir dir3(halDir.absoluteFilePath());
-            const QFileInfoList chipDirs = dir3.entryInfoList({ "*" }, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+            const QFileInfoList chipDirs =
+                dir3.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
             for (const QFileInfo &chipDir : chipDirs)
             {
                 const QString file = chipDir.absoluteFilePath() + "/pinout.yml";
                 QVERIFY(QFile::exists(file));
 
                 qDebug() << "Testing" << file;
-
-                PinoutTable::loadPinout(&pinout, file);
+                bool rtn;
+                rtn = PinoutTable::loadPinout(&pinout, file);
+                QVERIFY(rtn);
                 QVERIFY(!pinout.isEmpty());
             }
         }

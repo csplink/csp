@@ -111,9 +111,9 @@ QString CspProject::targetProject() const
     return m_project.TargetProject;
 }
 
-void CspProject::setTargetProject(const QString &version)
+void CspProject::setTargetProject(const QString &targetProject)
 {
-    m_project.TargetProject = version;
+    m_project.TargetProject = targetProject;
 }
 
 QString CspProject::type() const
@@ -258,7 +258,7 @@ void CspProject::loadProject(const QString &path)
         if (ProjectTable::loadProject(&m_project, path))
         {
             setPath(path);
-            emit signalReload();
+            emit signalReloaded();
         }
     }
     else
@@ -295,7 +295,7 @@ void CspProject::createProject()
 {
     if (saveProject())
     {
-        emit signalReload();
+        emit signalReloaded();
     }
 }
 
@@ -338,7 +338,7 @@ void CspProject::clearProject()
     m_project.PinConfigs.clear();
     if (saveProject())
     {
-        emit signalReload();
+        emit signalReloaded();
     }
 }
 
