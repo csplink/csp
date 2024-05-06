@@ -96,45 +96,29 @@ class CspProject final : public QObject
     void clearPinConfigFunctionProperty(const QString &Key, const QString &Module);
     ProjectTable::PinFunctionPropertiesType &pinConfigFunctionProperty(const QString &Key);
     QString &pinConfigFunctionProperty(const QString &Key, const QString &Module, const QString &Property);
+
     void loadProject(const QString &path);
+    void loadProjectWithDialog(QWidget *parent);
     void saveProject(const QString &path);
-    void saveProject();
+    bool saveProject();
+    void createProject();
     QString dumpProject();
     void clearProject();
     void generateCode() const;
-
-  private:
-    ProjectTable::ProjectType m_project; // project table
-    QString m_path;                      // project file path
-
-  public:
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectCompany, project_.Company)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHal, project_.Hal)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectHalVersion, project_.HalVersion)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectModules, project_.Modules)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPackage, project_.Package)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetChip, project_.TargetChip)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchains, project_.Toolchains)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectToolchainsVersion, project_.ToolchainsVersion)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectType, project_.Type)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectName, project_.Name)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectPinConfigs, project_.PinConfigs)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProject, project_.TargetProject)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectTargetProjectMinVersion, project_.TargetProjectMinVersion)
-    //    CSP_PRIVATE_PROJECT_SETTER_GETTER_HELPER(ProjectVersion, project_.Version)
 
   signals:
     void signalReload();
     void signalPinCommentChanged(const QString &name, const QString &oldValue, const QString &newValue);
     void signalPinFunctionChanged(const QString &name, const QString &oldValue, const QString &newValue);
     void signalPinLockedChanged(const QString &name, bool oldValue, bool newValue);
-    //    void signalPinPropertyChanged(const QString &property, const QString &name, const QVariant &oldValue,
-    //                                  const QVariant &newValue);
-    void signalPinFunctionPropertyChanged(const QString &Module, const QString &Property, const QString &Name,
-                                          const QVariant &OldValue, const QVariant &NewValue);
+    void signalPinFunctionPropertyChanged(const QString &module, const QString &property, const QString &name,
+                                          const QVariant &oldValue, const QVariant &newValue);
     void signalProjectClear();
 
   private:
+    ProjectTable::ProjectType m_project;
+    QString m_path;
+
     Q_DISABLE_COPY_MOVE(CspProject)
 };
 

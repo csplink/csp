@@ -29,6 +29,7 @@
 
 #include <QApplication>
 #include <QDir>
+#include <QFileDialog>
 #include <QGlobalStatic>
 
 #include "CspCoderJob.h"
@@ -266,14 +267,41 @@ void CspProject::loadProject(const QString &path)
     }
 }
 
+void CspProject::loadProjectWithDialog(QWidget *parent)
+{
+    const QString file =
+        QFileDialog::getOpenFileName(parent, QString(), Settings.openPath(), tr("CSP project file(*.csp)"));
+    if (!file.isEmpty())
+    {
+        Settings.setOpenPath(QFileInfo(file).path());
+        try
+        {
+            Project.loadProject(file);
+        }
+        catch (const std::exception &e)
+        {
+            qCritical() << tr("Project load failed, reason: <%1>.").arg(e.what());
+        }
+    }
+}
+
 void CspProject::saveProject(const QString &path)
 {
     setPath(path);
-    saveProject();
+    (void)saveProject();
 }
 
-void CspProject::saveProject()
+void CspProject::createProject()
 {
+    if (saveProject())
+    {
+        emit signalReload();
+    }
+}
+
+bool CspProject::saveProject()
+{
+    bool rtn = false;
     if (!m_path.isEmpty())
     {
         const QFileInfo info(m_path);
@@ -283,12 +311,21 @@ void CspProject::saveProject()
         {
             (void)dir.mkpath(path);
         }
-        ProjectTable::saveProject(m_project, m_path);
+        if (dir.exists())
+        {
+            ProjectTable::saveProject(m_project, m_path);
+            rtn = true;
+        }
+        else
+        {
+            /** TODO: failed */
+        }
     }
     else
     {
         /** TODO: failed */
     }
+    return rtn;
 }
 
 QString CspProject::dumpProject()
@@ -299,7 +336,10 @@ QString CspProject::dumpProject()
 void CspProject::clearProject()
 {
     m_project.PinConfigs.clear();
-    emit signalProjectClear();
+    if (saveProject())
+    {
+        emit signalReload();
+    }
 }
 
 void CspProject::generateCode() const

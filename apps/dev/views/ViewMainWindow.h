@@ -52,11 +52,8 @@ class ViewMainWindow final : public QMainWindow
     explicit ViewMainWindow(QWidget *parent = nullptr);
     ~ViewMainWindow() override;
 
-  public slots:
-    void createProject();
-
   private slots:
-    void slotActionNewChipTriggered() const;
+    void slotActionNewChipTriggered();
     void slotActionLoadTriggered();
     void slotActionSaveTriggered();
     void slotActionSaveAsTriggered() const;

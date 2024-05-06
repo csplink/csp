@@ -48,9 +48,6 @@ class ViewConfigure final : public QWidget
     void setPropertyBrowser(PropertyBrowserPin *instance);
     void initView();
 
-  signals:
-    void signalUpdateModulesTreeView(const QString &company, const QString &name);
-
   protected:
     void showEvent(QShowEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
@@ -69,16 +66,16 @@ class ViewConfigure final : public QWidget
     void flushComboBoxToolchainsVersionVersion() const;
 
   private slots:
-    void pushButtonPackageManagerPressedCallback();
-    void pushButtonZoomInPressedCallback() const;
-    void pushButtonZoomResetPressedCallback() const;
-    void pushButtonZoomOutPressedCallback() const;
-    void comboBoxPackageVersionCurrentTextChanged(const QString &text);
-    void comboBoxBuildScriptIdeCurrentTextChanged(const QString &text);
-    void comboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text);
-    void checkBoxEnableToolchainsStateChanged(int State);
-    void pushButtonToolchainsManagerPressedCallback();
-    void comboBoxToolchainsVersionCurrentTextChanged(const QString &text);
+    void slotPushButtonPackageManagerPressed();
+    void slotPushButtonZoomInPressed() const;
+    void slotPushButtonZoomResetPressed() const;
+    void slotPushButtonZoomOutPressed() const;
+    void slotComboBoxPackageVersionCurrentTextChanged(const QString &text);
+    void slotComboBoxBuildScriptIdeCurrentTextChanged(const QString &text);
+    void slotComboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text);
+    void slotCheckBoxEnableToolchainsStateChanged(int State);
+    void slotPushButtonToolchainsManagerPressed();
+    void slotComboBoxToolchainsVersionCurrentTextChanged(const QString &text);
 };
 
 #endif /** __VIEW_CONFIGURE_H__ */

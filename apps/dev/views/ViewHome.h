@@ -45,18 +45,10 @@ class ViewHome final : public QWidget
     explicit ViewHome(QWidget *parent = nullptr);
     ~ViewHome() override;
 
-  signals:
-    void signalCreateProject();
-    void signalOpenExistingProject();
-
-  public slots:
-    void pushButtonCreateChipProjectClickedCallback(bool checked);
-    void createChipProject();
-
   private slots:
-    void pushButtonCreateBoardProjectClickedCallback(bool checked) const;
-    void dialogChooseChipFinishedCallback(int result) const;
-    void pushButtonOpenExistingProjectClickedCallback(bool checked);
+    void slotPushButtonCreateChipProjectPressed();
+    void slotPushButtonCreateBoardProjectPressed() const;
+    void slotPushButtonOpenExistingProjectPressed();
 
   private:
     Ui::viewHome *ui;

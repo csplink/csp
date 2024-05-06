@@ -32,6 +32,7 @@
 #include <QMessageBox>
 #include <QMutex>
 
+#include "DialogChooseChip.h"
 #include "DialogPackageManager.h"
 #include "Settings.h"
 #include "ViewMainWindow.h"
@@ -80,16 +81,6 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
         (void)connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
     }
 
-    (void)connect(ui->pageViewHome, &ViewHome::signalCreateProject, this, &ViewMainWindow::createProject);
-    //    (void)connect(this, &ViewMainWindow::signalAddLog, ui_->LogBoxOutput, &LogBox::append);
-
-    (void)connect(ui->pageViewHome, &ViewHome::signalOpenExistingProject, this,
-                  &ViewMainWindow::slotActionLoadTriggered);
-    //    (void)connect(projectInstance_, &Project::signalsLog, ui_->LogBoxOutput, &LogBox::append);
-
-    (void)connect(ui->pageViewConfigure, &ViewConfigure::signalUpdateModulesTreeView, m_dockModuleTree,
-                  QOverload<const QString &, const QString &>::of(&DockModuleTree::setModule));
-
     initMode();
 
     this->setWindowState(Qt::WindowMaximized);
@@ -136,32 +127,15 @@ void ViewMainWindow::setMode(const StackIndexType index)
     }
 }
 
-void ViewMainWindow::createProject()
+void ViewMainWindow::slotActionNewChipTriggered()
 {
-    initMode();
-}
-
-void ViewMainWindow::slotActionNewChipTriggered() const
-{
-    ui->pageViewHome->pushButtonCreateChipProjectClickedCallback(true);
+    DialogChooseChip dialog(this);
+    (void)dialog.exec();
 }
 
 void ViewMainWindow::slotActionLoadTriggered()
 {
-    const auto file = QFileDialog::getOpenFileName(this, QString(), Settings.openPath(), tr("CSP project file(*.csp)"));
-    if (!file.isEmpty())
-    {
-        Settings.setOpenPath(QFileInfo(file).path());
-        try
-        {
-            Project.loadProject(file);
-            initMode();
-        }
-        catch (const std::exception &e)
-        {
-            qCritical() << tr("Project load failed, reason: <%1>.").arg(e.what());
-        }
-    }
+    Project.loadProjectWithDialog(this);
 }
 
 void ViewMainWindow::slotActionSaveTriggered()

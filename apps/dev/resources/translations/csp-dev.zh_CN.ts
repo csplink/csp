@@ -15,6 +15,19 @@
     </message>
 </context>
 <context>
+    <name>CspProject</name>
+    <message>
+        <location filename="../../components/project/Project.cpp" line="273"/>
+        <source>CSP project file(*.csp)</source>
+        <translation type="unfinished">CSP工程文件(*.csp)</translation>
+    </message>
+    <message>
+        <location filename="../../components/project/Project.cpp" line="283"/>
+        <source>Project load failed, reason: &lt;%1&gt;.</source>
+        <translation type="unfinished">项目加载失败，原因: &lt;%1&gt;。</translation>
+    </message>
+</context>
+<context>
     <name>CspSettings</name>
     <message>
         <location filename="../../components/settings/Settings.cpp" line="90"/>
@@ -290,12 +303,12 @@
         <translation>文件：&lt;%1&gt; 不存在。</translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="100"/>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="101"/>
         <source>The field chip_summary_t::linker_t::default_minimum_heap_size is an illegal value %1, and the default value 0x200 is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="112"/>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="113"/>
         <source>The field chip_summary_t::linker_t::default_minimum_stack_size is an illegal value %1, and the default value 0x400 is used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -303,14 +316,12 @@
 <context>
     <name>ViewMainWindow</name>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="151"/>
         <source>CSP project file(*.csp)</source>
-        <translation>CSP工程文件(*.csp)</translation>
+        <translation type="vanished">CSP工程文件(*.csp)</translation>
     </message>
     <message>
-        <location filename="../../views/ViewMainWindow.cpp" line="162"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
-        <translation>项目加载失败，原因: &lt;%1&gt;。</translation>
+        <translation type="vanished">项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
 </context>
 <context>

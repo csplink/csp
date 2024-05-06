@@ -44,23 +44,23 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     ui->setupUi(this);
 
     (void)connect(ui->pushButtonPackageManager, &QPushButton::pressed, this,
-                  &ViewConfigure::pushButtonPackageManagerPressedCallback, Qt::UniqueConnection);
-    (void)connect(ui->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomInPressedCallback,
+                  &ViewConfigure::slotPushButtonPackageManagerPressed, Qt::UniqueConnection);
+    (void)connect(ui->pushButtonZoomIn, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomInPressed,
                   Qt::UniqueConnection);
-    (void)connect(ui->pushButtonZoomReset, &QPushButton::pressed, this,
-                  &ViewConfigure::pushButtonZoomResetPressedCallback, Qt::UniqueConnection);
-    (void)connect(ui->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::pushButtonZoomOutPressedCallback,
+    (void)connect(ui->pushButtonZoomReset, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomResetPressed,
+                  Qt::UniqueConnection);
+    (void)connect(ui->pushButtonZoomOut, &QPushButton::pressed, this, &ViewConfigure::slotPushButtonZoomOutPressed,
                   Qt::UniqueConnection);
     (void)connect(ui->comboBoxPackageVersion, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::comboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
+                  &ViewConfigure::slotComboBoxPackageVersionCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui->comboBoxBuildScriptIde, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
+                  &ViewConfigure::slotComboBoxBuildScriptIdeCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui->comboBoxBuildScriptIdeMinVersion, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
+                  &ViewConfigure::slotComboBoxBuildScriptIdeMinVersionCurrentTextChanged, Qt::UniqueConnection);
     (void)connect(ui->checkBoxEnableToolchains, &QCheckBox::stateChanged, this,
-                  &ViewConfigure::checkBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
+                  &ViewConfigure::slotCheckBoxEnableToolchainsStateChanged, Qt::UniqueConnection);
     (void)connect(ui->comboBoxToolchainsVersion, &QComboBox::currentTextChanged, this,
-                  &ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
+                  &ViewConfigure::slotComboBoxToolchainsVersionCurrentTextChanged, Qt::UniqueConnection);
 }
 
 ViewConfigure::~ViewConfigure()
@@ -284,34 +284,34 @@ void ViewConfigure::initToolchainsSettings() const
     flushComboBoxToolchainsVersionVersion();
 }
 
-void ViewConfigure::pushButtonPackageManagerPressedCallback()
+void ViewConfigure::slotPushButtonPackageManagerPressed()
 {
     DialogPackageManager dialog(this);
     (void)dialog.exec();
     flushComboBoxPackageVersion();
 }
 
-void ViewConfigure::pushButtonZoomInPressedCallback() const
+void ViewConfigure::slotPushButtonZoomInPressed() const
 {
     ui->graphicsView->zoomIn(6);
 }
 
-void ViewConfigure::pushButtonZoomResetPressedCallback() const
+void ViewConfigure::slotPushButtonZoomResetPressed() const
 {
     ui->graphicsView->resize();
 }
 
-void ViewConfigure::pushButtonZoomOutPressedCallback() const
+void ViewConfigure::slotPushButtonZoomOutPressed() const
 {
     ui->graphicsView->zoomOut(6);
 }
 
-void ViewConfigure::comboBoxPackageVersionCurrentTextChanged(const QString &text)
+void ViewConfigure::slotComboBoxPackageVersionCurrentTextChanged(const QString &text)
 {
     Project.setHalVersion(text);
 }
 
-void ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged(const QString &text)
+void ViewConfigure::slotComboBoxBuildScriptIdeCurrentTextChanged(const QString &text)
 {
     Project.setTargetProject(text);
 
@@ -337,12 +337,12 @@ void ViewConfigure::comboBoxBuildScriptIdeCurrentTextChanged(const QString &text
     }
 }
 
-void ViewConfigure::comboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text)
+void ViewConfigure::slotComboBoxBuildScriptIdeMinVersionCurrentTextChanged(const QString &text)
 {
     Project.setTargetProjectMinVersion(text);
 }
 
-void ViewConfigure::checkBoxEnableToolchainsStateChanged(int State)
+void ViewConfigure::slotCheckBoxEnableToolchainsStateChanged(int State)
 {
     if (Qt::Unchecked == State)
     {
@@ -357,14 +357,14 @@ void ViewConfigure::checkBoxEnableToolchainsStateChanged(int State)
     }
 }
 
-void ViewConfigure::pushButtonToolchainsManagerPressedCallback()
+void ViewConfigure::slotPushButtonToolchainsManagerPressed()
 {
     DialogPackageManager dialog(this);
     (void)dialog.exec();
     flushComboBoxToolchainsVersionVersion();
 }
 
-void ViewConfigure::comboBoxToolchainsVersionCurrentTextChanged(const QString &text)
+void ViewConfigure::slotComboBoxToolchainsVersionCurrentTextChanged(const QString &text)
 {
     if (ui->checkBoxEnableToolchains->checkState() == Qt::Checked)
     {

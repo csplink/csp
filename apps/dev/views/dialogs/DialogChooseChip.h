@@ -50,9 +50,6 @@ class DialogChooseChip final : public QDialog
     explicit DialogChooseChip(QWidget *parent = nullptr);
     ~DialogChooseChip() override;
 
-  signals:
-    void signalCreateProject();
-
   private slots:
     void slotTreeViewChipFilterModelItemChanged(const QStandardItem *item) const;
     void slotTableViewChipInfosSelectionModelSelectionChanged(const QItemSelection &selected,

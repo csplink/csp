@@ -384,12 +384,13 @@ void DialogChooseChip::slotDialogButtonBoxClicked(const QAbstractButton *button)
         connect(&wizard, &WizardNewProject::finished, this, [this](const int result) {
             if (result == QDialog::Accepted)
             {
+                Project.clearProject();
                 Project.setHal(m_halName);
                 Project.setTargetChip(m_chipName);
                 Project.setPackage(m_packageName);
                 Project.setCompany(m_companyName);
                 Project.setType("chip");
-                emit signalCreateProject();
+                Project.createProject();
             }
         });
         wizard.exec();

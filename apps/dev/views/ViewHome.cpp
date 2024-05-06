@@ -39,12 +39,12 @@ ViewHome::ViewHome(QWidget *parent)
       ui(new Ui::viewHome)
 {
     ui->setupUi(this);
-    (void)connect(ui->commandLinkButtonCreateChipProject, &QPushButton::clicked, this,
-                  &ViewHome::pushButtonCreateChipProjectClickedCallback, Qt::UniqueConnection);
-    (void)connect(ui->commandLinkButtonCreateBoardProject, &QPushButton::clicked, this,
-                  &ViewHome::pushButtonCreateBoardProjectClickedCallback, Qt::UniqueConnection);
-    (void)connect(ui->commandLinkButtonOpenExistingProject, &QPushButton::clicked, this,
-                  &ViewHome::pushButtonOpenExistingProjectClickedCallback, Qt::UniqueConnection);
+    (void)connect(ui->commandLinkButtonCreateChipProject, &QPushButton::pressed, this,
+                  &ViewHome::slotPushButtonCreateChipProjectPressed);
+    (void)connect(ui->commandLinkButtonCreateBoardProject, &QPushButton::pressed, this,
+                  &ViewHome::slotPushButtonCreateBoardProjectPressed);
+    (void)connect(ui->commandLinkButtonOpenExistingProject, &QPushButton::pressed, this,
+                  &ViewHome::slotPushButtonOpenExistingProjectPressed);
 }
 
 ViewHome::~ViewHome()
@@ -52,36 +52,17 @@ ViewHome::~ViewHome()
     delete ui;
 }
 
-void ViewHome::pushButtonCreateChipProjectClickedCallback(const bool checked)
+void ViewHome::slotPushButtonCreateChipProjectPressed()
 {
-    Q_UNUSED(checked)
     DialogChooseChip dialog(this);
-    (void)connect(&dialog, &DialogChooseChip::finished, this, &ViewHome::dialogChooseChipFinishedCallback,
-                  Qt::UniqueConnection);
-    (void)connect(&dialog, &DialogChooseChip::signalCreateProject, this, &ViewHome::createChipProject,
-                  Qt::UniqueConnection);
     (void)dialog.exec();
 }
 
-void ViewHome::pushButtonCreateBoardProjectClickedCallback(const bool checked) const
+void ViewHome::slotPushButtonCreateBoardProjectPressed() const
 {
-    Q_UNUSED(checked)
 }
 
-void ViewHome::dialogChooseChipFinishedCallback(const int result) const
+void ViewHome::slotPushButtonOpenExistingProjectPressed()
 {
-    Q_UNUSED(result)
-}
-
-void ViewHome::pushButtonOpenExistingProjectClickedCallback(const bool checked)
-{
-    Q_UNUSED(checked)
-    emit signalOpenExistingProject();
-}
-
-void ViewHome::createChipProject()
-{
-    Project.clearProject();
-    Project.saveProject();
-    emit signalCreateProject();
+    Project.loadProjectWithDialog(this);
 }

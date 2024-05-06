@@ -58,8 +58,8 @@ AbstractJob::AbstractJob(const QString &name)
     m_actionResume->setEnabled(false);
     m_actions << m_actionResume;
 
-    (void)connect(m_actionPause, SIGNAL(triggered()), this, SLOT(pause()));
-    (void)connect(m_actionResume, SIGNAL(triggered()), this, SLOT(resume()));
+    (void)connect(m_actionPause, &QAction::triggered, this, &AbstractJob::pause);
+    (void)connect(m_actionResume, &QAction::triggered, this, &AbstractJob::resume);
 }
 
 AbstractJob::~AbstractJob()
