@@ -198,6 +198,26 @@ void CspProject::setPinFunction(const QString &key, const QString &function)
     m_project.PinConfigs[key].Function = function;
 }
 
+QString CspProject::linkerStackSize() const
+{
+    return m_project.Linker.StackSize;
+}
+
+void CspProject::setLinkerStackSize(const QString &size)
+{
+    m_project.Linker.StackSize = size;
+}
+
+QString CspProject::linkerHeapSize() const
+{
+    return m_project.Linker.HeapSize;
+}
+
+void CspProject::setLinkerHeapSize(const QString &size)
+{
+    m_project.Linker.HeapSize = size;
+}
+
 bool CspProject::pinLocked(const QString &key)
 {
     return m_project.PinConfigs[key].Locked;

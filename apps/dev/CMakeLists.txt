@@ -33,6 +33,7 @@ configure_file(
 
 file(GLOB COMPONENTS
         components/jobs/*.cpp components/jobs/*.h
+        components/misc/*.cpp components/misc/*.h
         components/parse/*.cpp components/parse/*.h
         components/project/*.cpp components/project/*.h
         components/repo/*.cpp components/repo/*.h
@@ -66,8 +67,9 @@ include_directories(
         .
         views views/dialogs views/docks
         widgets widgets/packages widgets/interface
-        components/jobs components/parse components/project
-        components/repo components/settings components/tools)
+        components/jobs components/misc components/parse
+        components/project components/repo components/settings
+        components/tools)
 
 foreach (TS_FILE ${TS_FILES})
     set_source_files_properties(${TS_FILE} PROPERTIES OUTPUT_LOCATION
@@ -112,6 +114,9 @@ target_include_directories(${name_test} PRIVATE
         tests/components/repo
         tests/components/settings
 )
+
+add_dependencies(${name_test} custom_res custom_tools)
+
 target_link_libraries(${name_test} PRIVATE
         Qt5::Widgets Qt5::Concurrent Qt5::OpenGL Qt5::Test
         qtpropertybrowser nlohmann-json yaml-cpp)

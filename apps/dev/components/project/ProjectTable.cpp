@@ -32,6 +32,8 @@
 #include "Configure.h"
 #include "ProjectTable.h"
 #include "QtJson.h"
+#include "Repo.h"
+#include "Utils.h"
 
 namespace QT_JSON
 {
@@ -133,5 +135,32 @@ void ProjectTable::setValue(ProjectType &project)
         }
 
         project.Modules.removeDuplicates();
+    }
+
+    {
+        const ChipSummaryTable::ChipSummaryType &chipSummary = Repo.getChipSummary(project.Company, project.TargetChip);
+        if (!project.Linker.HeapSize.isEmpty() && !Utils::isHex(project.Linker.HeapSize))
+        {
+            qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
+                                                "illegal value %1, and the default value 0x200 is used.")
+                                        .arg(project.Linker.HeapSize);
+            project.Linker.HeapSize = chipSummary.Linker.DefaultHeapSize;
+        }
+        else if (project.Linker.HeapSize.isEmpty() && !chipSummary.Linker.DefaultHeapSize.isEmpty())
+        {
+            project.Linker.HeapSize = chipSummary.Linker.DefaultHeapSize;
+        }
+
+        if (!project.Linker.StackSize.isEmpty() && !Utils::isHex(project.Linker.StackSize))
+        {
+            qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
+                                                "illegal value %1, and the default value 0x400 is used.")
+                                        .arg(project.Linker.StackSize);
+            project.Linker.StackSize = chipSummary.Linker.DefaultStackSize;
+        }
+        else if (project.Linker.StackSize.isEmpty() && !chipSummary.Linker.DefaultStackSize.isEmpty())
+        {
+            project.Linker.StackSize = chipSummary.Linker.DefaultStackSize;
+        }
     }
 }

@@ -34,6 +34,7 @@
 #include "QtJson.h"
 #include "QtYaml.h"
 #include "Settings.h"
+#include "Utils.h"
 
 namespace QT_YAML
 {
@@ -60,8 +61,13 @@ QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::ModuleType, Description)
 QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::MdkArmType, Versions)
 QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm)
 QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::LinkerType, DefaultHeapSize, DefaultStackSize)
+
+#undef QT_YAML_MAYBE_UNUSED_LIST
+#define QT_YAML_MAYBE_UNUSED_LIST {"Linker"};
 QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal, HasPowerPad,
                        Illustrate, Introduction, Line, Modules, Name, Package, Series, Url, TargetProject, Linker)
+#undef QT_YAML_MAYBE_UNUSED_LIST
+#define QT_YAML_MAYBE_UNUSED_LIST {};
 } // namespace QT_JSON
 
 QT_DEBUG_ADD_TYPE(ChipSummaryTable::DocumentType)
@@ -82,7 +88,6 @@ bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
         QFile file(path);
         if (file.open(QIODevice::ReadOnly))
         {
-            static const QRegularExpression pattern("^0x[0-9a-fA-F]+$");
             try
             {
                 const std::string buffer = file.readAll().toStdString();
@@ -99,28 +104,20 @@ bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
 
             file.close();
 
-            if (!chipSummary->Linker.DefaultHeapSize.isEmpty())
+            if (!chipSummary->Linker.DefaultHeapSize.isEmpty() && !Utils::isHex(chipSummary->Linker.DefaultHeapSize))
             {
-                if (!pattern.match(chipSummary->Linker.DefaultHeapSize).hasMatch())
-                {
-                    qWarning().noquote() << QObject::tr(
-                                                "The field chip_summary_t::linker_t::default_minimum_heap_size is an "
-                                                "illegal value %1, and the default value 0x200 is used.")
-                                                .arg(chipSummary->Linker.DefaultHeapSize);
-                    chipSummary->Linker.DefaultHeapSize = "0x200";
-                }
+                qWarning().noquote() << QObject::tr("The field ChipSummaryTable::LinkerType::DefaultHeapSize is an "
+                                                    "illegal value %1, and the default value 0x200 is used.")
+                                            .arg(chipSummary->Linker.DefaultHeapSize);
+                chipSummary->Linker.DefaultHeapSize = "0x200";
             }
 
-            if (!chipSummary->Linker.DefaultStackSize.isEmpty())
+            if (!chipSummary->Linker.DefaultStackSize.isEmpty() && !Utils::isHex(chipSummary->Linker.DefaultStackSize))
             {
-                if (!pattern.match(chipSummary->Linker.DefaultStackSize).hasMatch())
-                {
-                    qWarning().noquote() << QObject::tr(
-                                                "The field chip_summary_t::linker_t::default_minimum_stack_size is an "
-                                                "illegal value %1, and the default value 0x400 is used.")
-                                                .arg(chipSummary->Linker.DefaultStackSize);
-                    chipSummary->Linker.DefaultStackSize = "0x400";
-                }
+                qWarning().noquote() << QObject::tr("The field ChipSummaryTable::LinkerType::DefaultStackSize is an "
+                                                    "illegal value %1, and the default value 0x400 is used.")
+                                            .arg(chipSummary->Linker.DefaultStackSize);
+                chipSummary->Linker.DefaultStackSize = "0x400";
             }
         }
         else

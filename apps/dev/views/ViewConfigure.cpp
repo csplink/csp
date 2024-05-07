@@ -44,6 +44,10 @@ ViewConfigure::ViewConfigure(QWidget *parent)
       m_resizeCounter(0)
 {
     ui->setupUi(this);
+
+    ui->lineEditHeapSize->setValidator(new QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")));
+    ui->lineEditStackSize->setValidator(new QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")));
+
     {
         (void)connect(ui->pushButtonPackageManager, &QPushButton::pressed, this,
                       &ViewConfigure::slotPushButtonPackageManagerPressed, Qt::UniqueConnection);
@@ -233,25 +237,32 @@ void ViewConfigure::flushComboBoxToolchainsVersionVersion() const
 
 void ViewConfigure::initLinkerSettings() const
 {
-    const ChipSummaryTable::LinkerType &linker = Repo.getChipSummary(Project.company(), Project.targetChip()).Linker;
     ui->lineEditHeapSize->clear();
-    if (!linker.DefaultHeapSize.isEmpty())
+    if (!Project.linkerHeapSize().isEmpty())
     {
-        ui->lineEditHeapSize->setText(linker.DefaultHeapSize);
+        ui->lineEditHeapSize->setText(Project.linkerHeapSize());
+        (void)connect(ui->lineEditHeapSize, &QLineEdit::textChanged, this,
+                      &ViewConfigure::slotLineEditHeapSizeTextChanged);
     }
     else
     {
+        (void)disconnect(ui->lineEditHeapSize, &QLineEdit::textChanged, this,
+                         &ViewConfigure::slotLineEditHeapSizeTextChanged);
         ui->lineEditHeapSize->setReadOnly(true);
         ui->lineEditHeapSize->setDisabled(true);
     }
 
     ui->lineEditStackSize->clear();
-    if (!linker.DefaultStackSize.isEmpty())
+    if (!Project.linkerStackSize().isEmpty())
     {
-        ui->lineEditStackSize->setText(linker.DefaultStackSize);
+        ui->lineEditStackSize->setText(Project.linkerStackSize());
+        (void)connect(ui->lineEditStackSize, &QLineEdit::textChanged, this,
+                      &ViewConfigure::slotLineEditStackSizeTextChanged);
     }
     else
     {
+        (void)disconnect(ui->lineEditStackSize, &QLineEdit::textChanged, this,
+                         &ViewConfigure::slotLineEditStackSizeTextChanged);
         ui->lineEditStackSize->setReadOnly(true);
         ui->lineEditStackSize->setDisabled(true);
     }
@@ -377,4 +388,28 @@ void ViewConfigure::slotComboBoxToolchainsVersionCurrentTextChanged(const QStrin
 void ViewConfigure::slotProjectReloaded()
 {
     initView();
+}
+
+void ViewConfigure::slotLineEditHeapSizeTextChanged(const QString &text)
+{
+    if (!text.isEmpty())
+    {
+        Project.setLinkerHeapSize(text);
+    }
+    else
+    {
+        ui->lineEditHeapSize->setText(Project.linkerHeapSize());
+    }
+}
+
+void ViewConfigure::slotLineEditStackSizeTextChanged(const QString &text)
+{
+    if (!text.isEmpty())
+    {
+        Project.setLinkerStackSize(text);
+    }
+    else
+    {
+        ui->lineEditStackSize->setText(Project.linkerStackSize());
+    }
 }

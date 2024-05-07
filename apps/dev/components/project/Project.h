@@ -87,6 +87,12 @@ class CspProject final : public QObject
     QString pinFunction(const QString &key);
     void setPinFunction(const QString &key, const QString &function);
 
+    QString linkerStackSize() const;
+    void setLinkerStackSize(const QString &size);
+
+    QString linkerHeapSize() const;
+    void setLinkerHeapSize(const QString &size);
+
     bool pinLocked(const QString &key);
     void setPinLocked(const QString &key, bool locked);
 

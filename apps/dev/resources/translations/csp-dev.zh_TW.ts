@@ -17,12 +17,12 @@
 <context>
     <name>CspProject</name>
     <message>
-        <location filename="../../components/project/Project.cpp" line="273"/>
+        <location filename="../../components/project/Project.cpp" line="293"/>
         <source>CSP project file(*.csp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/project/Project.cpp" line="283"/>
+        <location filename="../../components/project/Project.cpp" line="303"/>
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -303,13 +303,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="106"/>
+        <location filename="../../components/project/ProjectTable.cpp" line="144"/>
         <source>The field chip_summary_t::linker_t::default_minimum_heap_size is an illegal value %1, and the default value 0x200 is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="118"/>
+        <location filename="../../components/project/ProjectTable.cpp" line="156"/>
         <source>The field chip_summary_t::linker_t::default_minimum_stack_size is an illegal value %1, and the default value 0x400 is used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="109"/>
+        <source>The field ChipSummaryTable::LinkerType::DefaultHeapSize is an illegal value %1, and the default value 0x200 is used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="117"/>
+        <source>The field ChipSummaryTable::LinkerType::DefaultStackSize is an illegal value %1, and the default value 0x400 is used.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

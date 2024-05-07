@@ -75,6 +75,8 @@ class ViewConfigure final : public QWidget
     void slotCheckBoxEnableToolchainsStateChanged(int State);
     void slotPushButtonToolchainsManagerPressed();
     void slotComboBoxToolchainsVersionCurrentTextChanged(const QString &text);
+    void slotLineEditHeapSizeTextChanged(const QString &text);
+    void slotLineEditStackSizeTextChanged(const QString &text);
 
     void slotProjectReloaded();
 };
