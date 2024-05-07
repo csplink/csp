@@ -30,35 +30,50 @@
 #ifndef __QT_JSON_H__
 #define __QT_JSON_H__
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QPair>
-#include <QtCore/QString>
-#include <QtCore/QVector>
+#include <QList>
+#include <QMap>
+#include <QPair>
+#include <QString>
+#include <QVector>
 
 #include <nlohmann/json.hpp>
 
-#define NLOHMANN_JSON_FROM_MAYBE_UNUSED(v1)                                                                            \
-    if (nlohmann_json_j.contains(#v1))                                                                                 \
+#define QT_JSON_EXPAND NLOHMANN_JSON_EXPAND
+
+#define QT_JSON_PASTE  NLOHMANN_JSON_PASTE
+
+#define QT_JSON_TO     NLOHMANN_JSON_TO
+
+#define QT_JSON_FROM   NLOHMANN_JSON_FROM
+
+#define QT_JSON        nlohmann
+
+#ifndef QT_JSON_MAYBE_UNUSED_LIST
+# define QT_JSON_MAYBE_UNUSED_LIST {};
+#endif /** QT_JSON_MAYBE_UNUSED_LIST */
+
+#define QT_JSON_FROM_MAYBE_UNUSED(v1)                                                                                  \
+    if (JsonMaybeUnusedList.contains(#v1) && !nlohmann_json_j.contains(#v1))                                           \
     {                                                                                                                  \
-        nlohmann_json_j.at(#v1).get_to(nlohmann_json_t.v1);                                                            \
+        nlohmann_json_t.v1 = decltype(nlohmann_json_t.v1)();                                                           \
     }                                                                                                                  \
     else                                                                                                               \
     {                                                                                                                  \
-        nlohmann_json_t.v1 = decltype(nlohmann_json_t.v1)();                                                           \
+        QT_JSON_FROM(v1);                                                                                              \
     }
 
-#define NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(Type, ...)                                                     \
+#define QT_JSON_GEN_PARSE_CODE(Type, ...)                                                                              \
     inline void to_json(nlohmann::json &nlohmann_json_j, const Type &nlohmann_json_t)                                  \
     {                                                                                                                  \
-        NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_TO, __VA_ARGS__))                                       \
+        QT_JSON_EXPAND(QT_JSON_PASTE(QT_JSON_TO, __VA_ARGS__))                                                         \
     }                                                                                                                  \
     inline void from_json(const nlohmann::json &nlohmann_json_j, Type &nlohmann_json_t)                                \
     {                                                                                                                  \
-        NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(NLOHMANN_JSON_FROM_MAYBE_UNUSED, __VA_ARGS__))                        \
+        static QStringList JsonMaybeUnusedList = QT_JSON_MAYBE_UNUSED_LIST;                                            \
+        QT_JSON_EXPAND(QT_JSON_PASTE(QT_JSON_FROM_MAYBE_UNUSED, __VA_ARGS__))                                          \
     }
 
-namespace nlohmann
+namespace QT_JSON
 {
 template <> struct adl_serializer<QString>
 {
@@ -209,7 +224,7 @@ template <> struct adl_serializer<QStringList>
     }
 };
 
-} // namespace nlohmann
+} // namespace QT_JSON
 
 #define QT_DEBUG_ADD_TYPE(Type)                                                                                        \
     QDebug operator<<(QDebug debug, const Type &rhs)                                                                   \

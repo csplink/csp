@@ -303,12 +303,12 @@
         <translation>文件：&lt;%1&gt; 不存在。</translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="101"/>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="106"/>
         <source>The field chip_summary_t::linker_t::default_minimum_heap_size is an illegal value %1, and the default value 0x200 is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="113"/>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="118"/>
         <source>The field chip_summary_t::linker_t::default_minimum_stack_size is an illegal value %1, and the default value 0x400 is used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -553,13 +553,13 @@
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="334"/>
-        <source>Minimum Stack Size</source>
-        <translation>最小栈大小</translation>
+        <source>Stack Size</source>
+        <translation>栈大小</translation>
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="376"/>
-        <source>Minimum Heap Size</source>
-        <translation>最小堆大小</translation>
+        <source>Heap Size</source>
+        <translation>堆大小</translation>
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="421"/>

@@ -40,10 +40,10 @@ extern "C" {
 #define CONFIGURE_PROJECT_VERSION_PATCH "@CMAKE_PROJECT_VERSION_PATCH@"
 #define CONFIGURE_PROJECT_VERSION_TWEAK "@CMAKE_PROJECT_VERSION_TWEAK@"
 
-#define CONFIGURE_PROJECT_VERSION_NUM_CHECK(major, minor, patch, tweak) \
+#define CONFIGURE_PROJECT_VERSION_NUM_CHECK(major, minor, patch, tweak)                                                \
     ((major * 1000000) + (minor * 10000) + (patch * 100) + tweak)
-#define CONFIGURE_PROJECT_VERSION_NUM                                                                     \
-    CONFIGURE_PROJECT_VERSION_NUM_CHECK(CONFIGURE_PROJECT_VERSION_MAJOR, CONFIGURE_PROJECT_VERSION_MINOR, \
+#define CONFIGURE_PROJECT_VERSION_NUM                                                                                  \
+    CONFIGURE_PROJECT_VERSION_NUM_CHECK(CONFIGURE_PROJECT_VERSION_MAJOR, CONFIGURE_PROJECT_VERSION_MINOR,              \
                                         CONFIGURE_PROJECT_VERSION_PATCH, CONFIGURE_PROJECT_VERSION_TWEAK)
 
 #define CONFIGURE_BUILD_TIMESTAMP "@BUILD_TIMESTAMP@"

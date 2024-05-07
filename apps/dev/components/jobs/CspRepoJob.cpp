@@ -33,11 +33,11 @@
 #include "QtJson.h"
 #include "Settings.h"
 
-namespace nlohmann
+namespace QT_JSON
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CspRepoJob::VersionType, Size, Installed, Sha, Urls)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CspRepoJob::InformationType, Company, Description, Homepage, License, Versions)
-} // namespace nlohmann
+QT_JSON_GEN_PARSE_CODE(CspRepoJob::VersionType, Size, Installed, Sha, Urls)
+QT_JSON_GEN_PARSE_CODE(CspRepoJob::InformationType, Company, Description, Homepage, License, Versions)
+} // namespace QT_JSON
 
 QT_DEBUG_ADD_TYPE(CspRepoJob::VersionType)
 QT_DEBUG_ADD_TYPE(CspRepoJob::InformationType)

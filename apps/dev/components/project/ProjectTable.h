@@ -49,20 +49,27 @@ class ProjectTable
 
     typedef struct
     {
-        QString Company;                         // company
-        QString Hal;                             // hal
-        QString HalVersion;                      // hal version
-        QStringList Modules;                     // modules
-        QString Package;                         // package
-        QString TargetChip;                      // target
-        QString Toolchains;                      // toolchains
-        QString ToolchainsVersion;               // toolchains version
-        QString Type;                            // type
-        QString Name;                            // project name
-        QMap<QString, PinConfigType> PinConfigs; // pin configs
-        QString TargetProject;                   // target project type: XMake, MDK-Arm, CMake ...
-        QString TargetProjectMinVersion;         // target project min version, for MDK-Arm,
-        QString Version;                         // csp version
+        QString HeapSize;
+        QString StackSize;
+    } LinkerType;
+
+    typedef struct
+    {
+        QString Company;
+        QString Hal;
+        QString HalVersion;
+        QStringList Modules;
+        QString Package;
+        QString TargetChip;
+        QString Toolchains;
+        QString ToolchainsVersion;
+        QString Type;
+        QString Name;
+        QMap<QString, PinConfigType> PinConfigs;
+        QString TargetProject;           /** target project type: XMake, MDK-Arm, CMake ... */
+        QString TargetProjectMinVersion; /** target project min version, for MDK-Arm, */
+        LinkerType Linker;
+        QString Version; /** csp version */
     } ProjectType;
 
   public:

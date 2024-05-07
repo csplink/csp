@@ -234,26 +234,26 @@ void ViewConfigure::flushComboBoxToolchainsVersionVersion() const
 void ViewConfigure::initLinkerSettings() const
 {
     const ChipSummaryTable::LinkerType &linker = Repo.getChipSummary(Project.company(), Project.targetChip()).Linker;
-    ui->lineEditMinimumHeapSize->clear();
-    if (!linker.DefaultMinimumHeapSize.isEmpty())
+    ui->lineEditHeapSize->clear();
+    if (!linker.DefaultHeapSize.isEmpty())
     {
-        ui->lineEditMinimumHeapSize->setText(linker.DefaultMinimumHeapSize);
+        ui->lineEditHeapSize->setText(linker.DefaultHeapSize);
     }
     else
     {
-        ui->lineEditMinimumHeapSize->setReadOnly(true);
-        ui->lineEditMinimumHeapSize->setDisabled(true);
+        ui->lineEditHeapSize->setReadOnly(true);
+        ui->lineEditHeapSize->setDisabled(true);
     }
 
-    ui->lineEditMinimumStackSize->clear();
-    if (!linker.DefaultMinimumStackSize.isEmpty())
+    ui->lineEditStackSize->clear();
+    if (!linker.DefaultStackSize.isEmpty())
     {
-        ui->lineEditMinimumStackSize->setText(linker.DefaultMinimumStackSize);
+        ui->lineEditStackSize->setText(linker.DefaultStackSize);
     }
     else
     {
-        ui->lineEditMinimumStackSize->setReadOnly(true);
-        ui->lineEditMinimumStackSize->setDisabled(true);
+        ui->lineEditStackSize->setReadOnly(true);
+        ui->lineEditStackSize->setDisabled(true);
     }
 }
 

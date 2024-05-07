@@ -33,13 +33,19 @@
 #include "ProjectTable.h"
 #include "QtJson.h"
 
-namespace nlohmann
+namespace QT_JSON
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ProjectTable::PinConfigType, Function, Comment, Locked, FunctionProperty)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package,
-                                                TargetChip, Toolchains, ToolchainsVersion, Type, Name, PinConfigs,
-                                                TargetProject, TargetProjectMinVersion, Version)
-} // namespace nlohmann
+QT_JSON_GEN_PARSE_CODE(ProjectTable::PinConfigType, Function, Comment, Locked, FunctionProperty)
+QT_JSON_GEN_PARSE_CODE(ProjectTable::LinkerType, HeapSize, StackSize)
+#undef QT_JSON_MAYBE_UNUSED_LIST
+#define QT_JSON_MAYBE_UNUSED_LIST                                                                                      \
+    {"Modules", "Toolchains", "ToolchainsVersion", "TargetProject", "TargetProjectMinVersion", "Linker", "Version"};
+QT_JSON_GEN_PARSE_CODE(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package, TargetChip, Toolchains,
+                       ToolchainsVersion, Type, Name, PinConfigs, TargetProject, TargetProjectMinVersion, Linker,
+                       Version)
+#undef QT_JSON_MAYBE_UNUSED_LIST
+#define QT_JSON_MAYBE_UNUSED_LIST {};
+} // namespace QT_JSON
 
 QT_DEBUG_ADD_TYPE(ProjectTable::PinConfigType)
 QT_DEBUG_ADD_TYPE(ProjectTable::ProjectType)

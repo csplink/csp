@@ -331,7 +331,7 @@ background-color:transparent;
                   <item row="1" column="0">
                    <widget class="QLabel" name="label_3">
                     <property name="text">
-                     <string>Minimum Stack Size</string>
+                     <string>Stack Size</string>
                     </property>
                    </widget>
                   </item>
@@ -339,7 +339,7 @@ background-color:transparent;
                    <widget class="QWidget" name="widget_3" native="true">
                     <layout class="QGridLayout" name="gridLayout_9">
                      <item row="0" column="0">
-                      <widget class="QLineEdit" name="lineEditMinimumStackSize">
+                      <widget class="QLineEdit" name="lineEditStackSize">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -373,7 +373,7 @@ background-color:transparent;
                   <item row="0" column="0">
                    <widget class="QLabel" name="label_2">
                     <property name="text">
-                     <string>Minimum Heap Size</string>
+                     <string>Heap Size</string>
                     </property>
                    </widget>
                   </item>
@@ -381,7 +381,7 @@ background-color:transparent;
                    <widget class="QWidget" name="widget_4" native="true">
                     <layout class="QGridLayout" name="gridLayout_7">
                      <item row="0" column="0">
-                      <widget class="QLineEdit" name="lineEditMinimumHeapSize">
+                      <widget class="QLineEdit" name="lineEditHeapSize">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                          <horstretch>0</horstretch>

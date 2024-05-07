@@ -63,8 +63,8 @@ class ChipSummaryTable final
 
     typedef struct
     {
-        QString DefaultMinimumHeapSize;
-        QString DefaultMinimumStackSize;
+        QString DefaultHeapSize;
+        QString DefaultStackSize;
     } LinkerType;
 
     typedef struct

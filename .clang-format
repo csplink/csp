@@ -6,3 +6,5 @@ AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 BraceWrapping:
   AfterExternBlock: false
 PackConstructorInitializers: Never
+IndentPPDirectives: AfterHash
+PPIndentWidth: 1

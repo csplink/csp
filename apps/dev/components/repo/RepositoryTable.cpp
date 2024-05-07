@@ -33,25 +33,25 @@
 #include "QtYaml.h"
 #include "RepositoryTable.h"
 
-namespace YAML
+namespace QT_YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, Lowest, Run)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, Max, Min)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, Max, Min)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, Core, Current, Flash, Frequency, IO, Package, Peripherals,
-                               Ram, Temperature, Voltage)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, Chips)
-} // namespace YAML
+QT_YAML_GEN_PARSE_CODE(RepositoryTable::CurrentType, Lowest, Run)
+QT_YAML_GEN_PARSE_CODE(RepositoryTable::TemperatureType, Max, Min)
+QT_YAML_GEN_PARSE_CODE(RepositoryTable::VoltageType, Max, Min)
+QT_YAML_GEN_PARSE_CODE(RepositoryTable::ChipInfoType, Core, Current, Flash, Frequency, IO, Package, Peripherals, Ram,
+                       Temperature, Voltage)
+QT_YAML_GEN_PARSE_CODE(RepositoryTable::RepositoryType, Chips)
+} // namespace QT_YAML
 
-namespace nlohmann
+namespace QT_JSON
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::CurrentType, Lowest, Run)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::TemperatureType, Max, Min)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::VoltageType, Max, Min)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::ChipInfoType, Core, Current, Flash, Frequency, IO, Package,
-                                   Peripherals, Ram, Temperature, Voltage)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RepositoryTable::RepositoryType, Chips)
-} // namespace nlohmann
+QT_JSON_GEN_PARSE_CODE(RepositoryTable::CurrentType, Lowest, Run)
+QT_JSON_GEN_PARSE_CODE(RepositoryTable::TemperatureType, Max, Min)
+QT_JSON_GEN_PARSE_CODE(RepositoryTable::VoltageType, Max, Min)
+QT_JSON_GEN_PARSE_CODE(RepositoryTable::ChipInfoType, Core, Current, Flash, Frequency, IO, Package, Peripherals, Ram,
+                       Temperature, Voltage)
+QT_JSON_GEN_PARSE_CODE(RepositoryTable::RepositoryType, Chips)
+} // namespace QT_JSON
 
 QT_DEBUG_ADD_TYPE(RepositoryTable::CurrentType)
 QT_DEBUG_ADD_TYPE(RepositoryTable::TemperatureType)

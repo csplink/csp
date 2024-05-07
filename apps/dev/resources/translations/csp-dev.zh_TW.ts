@@ -303,12 +303,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="101"/>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="106"/>
         <source>The field chip_summary_t::linker_t::default_minimum_heap_size is an illegal value %1, and the default value 0x200 is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/repo/ChipSummaryTable.cpp" line="113"/>
+        <location filename="../../components/repo/ChipSummaryTable.cpp" line="118"/>
         <source>The field chip_summary_t::linker_t::default_minimum_stack_size is an illegal value %1, and the default value 0x400 is used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -542,12 +542,12 @@
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="334"/>
-        <source>Minimum Stack Size</source>
+        <source>Stack Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../views/ViewConfigure.ui" line="376"/>
-        <source>Minimum Heap Size</source>
+        <source>Heap Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

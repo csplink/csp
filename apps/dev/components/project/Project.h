@@ -113,7 +113,6 @@ class CspProject final : public QObject
     void signalPinLockedChanged(const QString &name, bool oldValue, bool newValue);
     void signalPinFunctionPropertyChanged(const QString &module, const QString &property, const QString &name,
                                           const QVariant &oldValue, const QVariant &newValue);
-    void signalProjectClear();
 
   private:
     ProjectTable::ProjectType m_project;

@@ -29,22 +29,29 @@
 
 #include <QFile>
 
-#include "Settings.h"
 #include "PinoutTable.h"
 #include "QtJson.h"
 #include "QtYaml.h"
+#include "Settings.h"
 
-namespace YAML
+namespace QT_YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(PinoutTable::FunctionType, Mode, Type)
-YAML_DEFINE_TYPE_NON_INTRUSIVE_MAYBE_UNUSED(PinoutTable::PinoutUnitType, Position, Type, Functions)
-} // namespace YAML
+#undef QT_YAML_MAYBE_UNUSED_LIST
+#define QT_YAML_MAYBE_UNUSED_LIST {"Mode", "Type"};
+QT_YAML_GEN_PARSE_CODE(PinoutTable::FunctionType, Mode, Type)
 
-namespace nlohmann
+#undef QT_YAML_MAYBE_UNUSED_LIST
+#define QT_YAML_MAYBE_UNUSED_LIST {"Functions"};
+QT_YAML_GEN_PARSE_CODE(PinoutTable::PinoutUnitType, Position, Type, Functions)
+#undef QT_YAML_MAYBE_UNUSED_LIST
+#define QT_YAML_MAYBE_UNUSED_LIST {};
+} // namespace QT_YAML
+
+namespace QT_JSON
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PinoutTable::FunctionType, Mode, Type)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PinoutTable::PinoutUnitType, Position, Type, Functions)
-} // namespace nlohmann
+QT_JSON_GEN_PARSE_CODE(PinoutTable::FunctionType, Mode, Type)
+QT_JSON_GEN_PARSE_CODE(PinoutTable::PinoutUnitType, Position, Type, Functions)
+} // namespace QT_JSON
 
 QT_DEBUG_ADD_TYPE(PinoutTable::FunctionType)
 QT_DEBUG_ADD_TYPE(PinoutTable::PinoutUnitType)
@@ -60,7 +67,8 @@ bool PinoutTable::loadPinout(PinoutType *pinout, const QString &company, const Q
     {
         if (!hal.isEmpty() && !name.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/%3/%4/pinout.yml").arg(Settings.database(), company.toLower(), hal.toLower(), name.toLower());
+            const QString path = QString("%1/hal/%2/%3/%4/pinout.yml")
+                                     .arg(Settings.database(), company.toLower(), hal.toLower(), name.toLower());
             rtn = loadPinout(pinout, path);
         }
         else
@@ -125,7 +133,8 @@ bool PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
                         }
                         else
                         {
-                            qCritical().noquote() << QString("%1: pinout %2`s type<%3> is invalid").arg(path, key, type);
+                            qCritical().noquote()
+                                << QString("%1: pinout %2`s type<%3> is invalid").arg(path, key, type);
                             /** TODO: error */
                         }
 

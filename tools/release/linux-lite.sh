@@ -39,7 +39,7 @@ cp -rfv ${deps} libs/
 popd
 
 cp -rfv ${buildir}/apps/dev/fonts ${dir}/
-cp -rfv ${buildir}/apps/dev/repo ${dir}/
+cp -rfv ${buildir}/apps/dev/database ${dir}/
 mkdir -pv ${dir}/translations
 cp -rfv ${buildir}/apps/dev/translations/*.qm ${dir}/translations
 cp -rfv ${buildir}/apps/dev/tools ${dir}/

@@ -35,21 +35,21 @@
 #include "QtYaml.h"
 #include "Settings.h"
 
-namespace YAML
+namespace QT_YAML
 {
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, Comment)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, Comment, Values)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, DisplayName, Description, Category, Readonly)
-YAML_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, Groups, Properties)
-} // namespace YAML
+QT_YAML_GEN_PARSE_CODE(MapTable::ValueType, Comment)
+QT_YAML_GEN_PARSE_CODE(MapTable::GroupType, Comment, Values)
+QT_YAML_GEN_PARSE_CODE(MapTable::PropertyType, DisplayName, Description, Category, Readonly)
+QT_YAML_GEN_PARSE_CODE(MapTable::MapType, Groups, Properties)
+} // namespace QT_YAML
 
-namespace nlohmann
+namespace QT_JSON
 {
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::ValueType, Comment)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::GroupType, Comment, Values)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::PropertyType, DisplayName, Description, Category, Readonly)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(MapTable::MapType, Groups, Properties, Total, ReverseTotal)
-} // namespace nlohmann
+QT_JSON_GEN_PARSE_CODE(MapTable::ValueType, Comment)
+QT_JSON_GEN_PARSE_CODE(MapTable::GroupType, Comment, Values)
+QT_JSON_GEN_PARSE_CODE(MapTable::PropertyType, DisplayName, Description, Category, Readonly)
+QT_JSON_GEN_PARSE_CODE(MapTable::MapType, Groups, Properties, Total, ReverseTotal)
+} // namespace QT_JSON
 
 QT_DEBUG_ADD_TYPE(MapTable::ValueType)
 QT_DEBUG_ADD_TYPE(MapTable::GroupType)
