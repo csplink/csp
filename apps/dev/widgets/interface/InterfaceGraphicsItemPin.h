@@ -27,8 +27,8 @@
  *  2023-06-11     xqyjlj       initial version
  */
 
-#ifndef __INTERFACE_GRAPHICS_ITEM_PIN_H__
-#define __INTERFACE_GRAPHICS_ITEM_PIN_H__
+#ifndef INTERFACE_GRAPHICS_ITEM_PIN_H
+#define INTERFACE_GRAPHICS_ITEM_PIN_H
 
 #include <QGraphicsItem>
 #include <QMenu>
@@ -44,4 +44,4 @@ class InterfaceGraphicsItemPin : public QObject, public QGraphicsItem
     static constexpr const char *property_name_pinout_unit_ptr = "user.pinout_unit.ptr";
 };
 
-#endif /** __INTERFACE_GRAPHICS_ITEM_PIN_H__ */
+#endif /** INTERFACE_GRAPHICS_ITEM_PIN_H */

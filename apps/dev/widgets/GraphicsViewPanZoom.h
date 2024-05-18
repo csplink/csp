@@ -27,8 +27,8 @@
  *  2023-06-09     xqyjlj       initial version
  */
 
-#ifndef __GRAPHICS_VIEW_PAN_ZOOM_H__
-#define __GRAPHICS_VIEW_PAN_ZOOM_H__
+#ifndef GRAPHICS_VIEW_PAN_ZOOM_H
+#define GRAPHICS_VIEW_PAN_ZOOM_H
 
 #include <QGraphicsView>
 #include <QKeyEvent>
@@ -85,4 +85,4 @@ class GraphicsViewPanZoom final : public QGraphicsView
     bool m_isPressed = false;
 };
 
-#endif /** __GRAPHICS_VIEW_PAN_ZOOM_H__ */
+#endif /** GRAPHICS_VIEW_PAN_ZOOM_H */

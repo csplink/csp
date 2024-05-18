@@ -358,13 +358,13 @@ void CspProject::clearProject()
     m_project.PinConfigs.clear();
     if (saveProject())
     {
-        emit signalReloaded();
+        emit signalCleared();
     }
 }
 
 void CspProject::generateCode() const
 {
-    CspCoderJob job("coder");
+    CspCoderJob job;
     job.generate(m_path);
     /** TODO */
 }

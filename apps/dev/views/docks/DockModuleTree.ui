@@ -16,8 +16,12 @@
     <height>107</height>
    </size>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../../../resources/icons/resources.qrc">
+    <normaloff>:/icons/32x32/node-tree.svg</normaloff>:/icons/32x32/node-tree.svg</iconset>
+  </property>
   <property name="features">
-   <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
   </property>
   <property name="windowTitle">
    <string>Module</string>
@@ -30,6 +34,9 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../resources/icons/resources.qrc"/>
+  <include location="../../../../resources/icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

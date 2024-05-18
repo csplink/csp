@@ -27,8 +27,8 @@
  * 2024-05-01     xqyjlj       initial version
  */
 
-#ifndef __DOCK_MODULE_TREE_H__
-#define __DOCK_MODULE_TREE_H__
+#ifndef DOCK_MODULE_TREE_H
+#define DOCK_MODULE_TREE_H
 
 #include <QDockWidget>
 
@@ -56,4 +56,4 @@ class DockModuleTree : public QDockWidget
     Ui::DockModuleTree *ui;
 };
 
-#endif /** __DOCK_MODULE_TREE_H__ */
+#endif /** DOCK_MODULE_TREE_H */

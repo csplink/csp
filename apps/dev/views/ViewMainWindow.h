@@ -27,12 +27,13 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef __VIEW_MAIN_WINDOW_H__
-#define __VIEW_MAIN_WINDOW_H__
+#ifndef VIEW_MAIN_WINDOW_H
+#define VIEW_MAIN_WINDOW_H
 
 #include <QMainWindow>
 #include <QProcess>
 
+#include "DockJobs.h"
 #include "DockLog.h"
 #include "DockModuleTree.h"
 #include "DockPropertyBrowserPin.h"
@@ -52,6 +53,9 @@ class ViewMainWindow final : public QMainWindow
     explicit ViewMainWindow(QWidget *parent = nullptr);
     ~ViewMainWindow() override;
 
+  protected:
+    void closeEvent(QCloseEvent *event) override;
+
   private slots:
     void slotActionNewChipTriggered();
     void slotActionLoadTriggered();
@@ -68,6 +72,7 @@ class ViewMainWindow final : public QMainWindow
     DockLog *m_dockLog;
     DockPropertyBrowserPin *m_dockPropertyBrowserPin;
     DockModuleTree *m_dockModuleTree;
+    DockJobs *m_dockJobs;
 
     typedef enum
     {
@@ -80,4 +85,4 @@ class ViewMainWindow final : public QMainWindow
     void setPage(StackIndexType index);
 };
 
-#endif /** __VIEW_MAIN_WINDOW_H__ */
+#endif /** VIEW_MAIN_WINDOW_H */

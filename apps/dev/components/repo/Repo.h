@@ -27,8 +27,8 @@
  *  2023-05-11     xqyjlj       initial version
  */
 
-#ifndef __REPO_H__
-#define __REPO_H__
+#ifndef REPO_H
+#define REPO_H
 
 #include <QFile>
 #include <QObject>
@@ -72,4 +72,4 @@ class CspRepo final : public QObject
 
 #define Repo CspRepo::singleton()
 
-#endif /** __REPO_H__ */
+#endif /** REPO_H */

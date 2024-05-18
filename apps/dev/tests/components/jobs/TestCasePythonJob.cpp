@@ -38,7 +38,7 @@ void TestCasePythonJob::initTestCase()
 
 void TestCasePythonJob::version()
 {
-    PythonJob job("version", {});
+    PythonJob job;
     const auto result = job.version();
     qDebug().noquote() << QString("python version :%1").arg(result);
     QVERIFY(result != "not found");

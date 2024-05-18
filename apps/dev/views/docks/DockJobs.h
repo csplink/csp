@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        TestCaseCspRepoJob.h
+ * @file        DockJobs.h
  * @brief
  *
  *****************************************************************************
@@ -24,24 +24,29 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-29     xqyjlj       initial version
+ * 2024-05-12     xqyjlj       initial version
  */
 
-#ifndef __TEST_CASE_CSP_REPO_JOB_H__
-#define __TEST_CASE_CSP_REPO_JOB_H__
+#ifndef DOCK_JOBS_H
+#define DOCK_JOBS_H
 
-#include <QObject>
+#include <QDockWidget>
 
-class TestCaseCspRepoJob final : public QObject
+namespace Ui
+{
+class DockJobs;
+}
+
+class DockJobs final : public QDockWidget
 {
     Q_OBJECT
-  private slots:
-    static void initTestCase();
-    static void loadPackages();
-    static void installPackage();
-    static void updatePackage();
-    static void uninstallPackage();
-    static void cleanupTestCase();
+
+  public:
+    explicit DockJobs(QWidget *parent = nullptr);
+    ~DockJobs() override;
+
+  private:
+    Ui::DockJobs *ui;
 };
 
-#endif /** __TEST_CASE_CSP_REPO_JOB_H__ */
+#endif /** DOCK_JOBS_H */

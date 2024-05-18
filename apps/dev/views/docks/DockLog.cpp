@@ -26,6 +26,7 @@
  * ------------   ----------   -----------------------------------------------
  * 2024-04-30     xqyjlj       initial version
  */
+#include <QAction>
 
 #include "DockLog.h"
 #include "ui_DockLog.h"
@@ -35,6 +36,7 @@ DockLog::DockLog(QWidget *parent)
       ui(new Ui::DockLog)
 {
     ui->setupUi(this);
+    toggleViewAction()->setIcon(windowIcon());
 }
 
 DockLog::~DockLog()

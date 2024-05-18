@@ -31,33 +31,23 @@
 #include <QDebug>
 #include <QDir>
 #include <QRegularExpression>
+#include <QTime>
 
 #include "GitJob.h"
 #include "Settings.h"
 
-GitJob::GitJob(const QString &name, const QStringList &args, bool isOpenLog)
-    : AbstractJob(name)
+GitJob::GitJob(QObject *parent)
+    : QProcess(parent)
 {
-    if (isOpenLog)
-    {
-        QAction *action = new QAction(tr("Open Log"), this);
-        m_actions << action;
-        (void)connect(action, &QAction::triggered, this, &GitJob::slotActionOpenTriggered);
-        (void)connect(this, &QProcess::readyReadStandardOutput, this, &GitJob::slotSelfReadyReadStandardOutput);
-        (void)connect(this, &QProcess::readyReadStandardError, this, &GitJob::slotSelfReadyReadStandardError);
-    }
-    m_args.append(args);
-}
-
-void GitJob::start()
-{
-    AbstractJob::start(Settings.python(), m_args);
+    (void)connect(this, &QProcess::started, this, &GitJob::slotSelfStarted);
+    (void)connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &GitJob::slotSelfFinished);
 }
 
 QString GitJob::version()
 {
-    QString version = "not found";
+    QString version = "";
 
+    setReadChannel(QProcess::StandardOutput);
     const QString msg = cmd({"--version"}, QCoreApplication::applicationDirPath());
     static const QRegularExpression regex(R"(git version (\d+\.\d+\.\d+))");
     const QRegularExpressionMatch match = regex.match(msg);
@@ -72,31 +62,37 @@ QString GitJob::version()
 
 QString GitJob::tag(const QString &pwd)
 {
+    setReadChannel(QProcess::StandardOutput);
     return cmd({"describe", "--tags"}, pwd);
 }
 
 QString GitJob::tagLong(const QString &pwd)
 {
+    setReadChannel(QProcess::StandardOutput);
     return cmd({"describe", "--tags", "--long"}, pwd);
 }
 
 QString GitJob::branch(const QString &pwd)
 {
+    setReadChannel(QProcess::StandardOutput);
     return cmd({"rev-parse", "--abbrev-ref", "HEAD"}, pwd);
 }
 
 QString GitJob::commit(const QString &pwd)
 {
+    setReadChannel(QProcess::StandardOutput);
     return cmd({"rev-parse", "--short", "HEAD"}, pwd);
 }
 
 QString GitJob::commitLong(const QString &pwd)
 {
+    setReadChannel(QProcess::StandardOutput);
     return cmd({"rev-parse", "HEAD"}, pwd);
 }
 
 QString GitJob::commitDate(const QString &pwd)
 {
+    setReadChannel(QProcess::StandardOutput);
     return cmd({"log", "-1", "--date=format:%Y%m%d%H%M%S", "--format=%ad"}, pwd);
 }
 
@@ -107,46 +103,44 @@ QString GitJob::cmd(const QStringList &args, const QString &pwd)
     QDir dir(pwd);
     if (dir.exists())
     {
-        (void)disconnect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
-                         &AbstractJob::slotSelfFinished);
-        (void)disconnect(this, &QProcess::readyReadStandardOutput, this, &GitJob::slotSelfReadyReadStandardOutput);
-        (void)disconnect(this, &QProcess::readyReadStandardError, this, &GitJob::slotSelfReadyReadStandardError);
-
+        const QString &prog = Settings.git();
         setWorkingDirectory(pwd);
-        AbstractJob::start(Settings.git(), args);
+        qDebug().noquote() << prog + " " + args.join(" ");
+
+        (void)disconnect(this, &QProcess::started, this, &GitJob::slotSelfStarted);
+        (void)disconnect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+                         &GitJob::slotSelfFinished);
+
+        QProcess::start(prog, args);
         waitForFinished();
 
-        value = readAll().trimmed();
-
+        (void)connect(this, &QProcess::started, this, &GitJob::slotSelfStarted);
         (void)connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
-                      &AbstractJob::slotSelfFinished);
-        (void)connect(this, &QProcess::readyReadStandardOutput, this, &GitJob::slotSelfReadyReadStandardOutput);
-        (void)connect(this, &QProcess::readyReadStandardError, this, &GitJob::slotSelfReadyReadStandardError);
+                      &GitJob::slotSelfFinished);
+
+        value = readAll().trimmed();
+        qDebug().noquote() << value;
     }
 
     return value;
 }
 
-void GitJob::slotSelfReadyReadStandardOutput()
+void GitJob::slotSelfStarted()
 {
-    QString msg;
-    do
-    {
-        msg = readLine();
-        appendLog(msg);
-    } while (!msg.isEmpty());
+    m_totalTime.restart();
 }
 
-void GitJob::slotSelfReadyReadStandardError()
+void GitJob::slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    QString msg;
-    do
-    {
-        msg = readLine();
-        appendLog(msg);
-    } while (!msg.isEmpty());
-}
+    const QTime &time = QTime::fromMSecsSinceStartOfDay(static_cast<int>(m_totalTime.elapsed()));
 
-void GitJob::slotActionOpenTriggered()
-{
+    if (exitStatus == QProcess::NormalExit && exitCode == 0)
+    {
+        qDebug().noquote() << "job successes";
+        qDebug().noquote() << QString("Completed successfully in %1\n").arg(time.toString());
+    }
+    else
+    {
+        qDebug().noquote() << "job failed with" << exitCode;
+    }
 }

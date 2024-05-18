@@ -27,8 +27,8 @@
  *  2023-06-16     xqyjlj       initial version
  */
 
-#ifndef __IP_TABLE_H__
-#define __IP_TABLE_H__
+#ifndef IP_TABLE_H
+#define IP_TABLE_H
 
 #include <QDebug>
 #include <QMap>
@@ -53,4 +53,4 @@ QDebug operator<<(QDebug, const IpTable::IpMapType &);
 QDebug operator<<(QDebug, const IpTable::IpType &);
 QDebug operator<<(QDebug, const IpTable::IpsType &);
 
-#endif /** __IP_TABLE_H__ */
+#endif /** IP_TABLE_H */

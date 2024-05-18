@@ -27,8 +27,8 @@
  *  2023-06-17     xqyjlj       initial version
  */
 
-#ifndef __PROPERTY_BROWSER_PIN_H__
-#define __PROPERTY_BROWSER_PIN_H__
+#ifndef PROPERTY_BROWSER_PIN_H
+#define PROPERTY_BROWSER_PIN_H
 
 #include <qttreepropertybrowser.h>
 #include <qtvariantproperty.h>
@@ -68,4 +68,4 @@ class PropertyBrowserPin final : public QtTreePropertyBrowser
     QtProperty *setPinSystem(const QString &function) const;
 };
 
-#endif /** __PROPERTY_BROWSER_PIN_H__ */
+#endif /** PROPERTY_BROWSER_PIN_H */

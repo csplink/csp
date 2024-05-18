@@ -27,8 +27,8 @@
  *  2023-05-14     xqyjlj       initial version
  */
 
-#ifndef __VIEW_CONFIGURE_H__
-#define __VIEW_CONFIGURE_H__
+#ifndef VIEW_CONFIGURE_H
+#define VIEW_CONFIGURE_H
 
 #include "PropertyBrowserPin.h"
 
@@ -48,6 +48,7 @@ class ViewConfigure final : public QWidget
     void setPropertyBrowser(PropertyBrowserPin *instance);
 
   protected:
+    void showEvent(QShowEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
   private:
@@ -81,4 +82,4 @@ class ViewConfigure final : public QWidget
     void slotProjectReloaded();
 };
 
-#endif /** __VIEW_CONFIGURE_H__ */
+#endif /** VIEW_CONFIGURE_H */

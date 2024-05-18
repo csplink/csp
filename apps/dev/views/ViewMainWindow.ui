@@ -17,7 +17,7 @@
    <bool>true</bool>
   </property>
   <property name="dockOptions">
-   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::VerticalTabs</set>
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -88,6 +88,7 @@
      <string>Help</string>
     </property>
     <addaction name="actionAboutQt"/>
+    <addaction name="actionAbout_Csp"/>
    </widget>
    <widget class="QMenu" name="menuBuild">
     <property name="title">
@@ -97,8 +98,14 @@
     <addaction name="separator"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menuProject"/>
+   <addaction name="menuView"/>
    <addaction name="menuBuild"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -177,8 +184,21 @@
    </property>
   </action>
   <action name="actionAboutQt">
+   <property name="icon">
+    <iconset resource="../../../resources/icons/resources.qrc">
+     <normaloff>:/icons/32x32/question-line.svg</normaloff>:/icons/32x32/question-line.svg</iconset>
+   </property>
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionAbout_Csp">
+   <property name="icon">
+    <iconset resource="../../../resources/icons/resources.qrc">
+     <normaloff>:/icons/32x32/question-fill.svg</normaloff>:/icons/32x32/question-fill.svg</iconset>
+   </property>
+   <property name="text">
+    <string>About CSP</string>
    </property>
   </action>
  </widget>

@@ -253,7 +253,7 @@ QString CspSettings::openPath() const
     QString defaultValue = "";
     if (!locations.isEmpty())
     {
-        defaultValue = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation)[0];
+        defaultValue = locations[0];
     }
     return m_settings.value(SettingsKeyOpenPath, defaultValue).toString();
 }

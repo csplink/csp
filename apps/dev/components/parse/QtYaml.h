@@ -27,8 +27,8 @@
  *  2023-04-19     xqyjlj       initial version
  */
 
-#ifndef __QT_YAML_H__
-#define __QT_YAML_H__
+#ifndef QT_YAML_H
+#define QT_YAML_H
 
 #include <QList>
 #include <QMap>
@@ -420,4 +420,4 @@ template <> struct convert<QStringList>
 
 } // namespace QT_YAML
 
-#endif /** __QT_YAML_H__ */
+#endif /** QT_YAML_H */

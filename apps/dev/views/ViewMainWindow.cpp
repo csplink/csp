@@ -31,9 +31,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMutex>
+#include <QThreadPool>
 
 #include "DialogChooseChip.h"
-#include "DialogPackageManager.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
 #include "ui_ViewMainWindow.h"
@@ -43,27 +43,48 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
       ui(new Ui::viewMainWindow),
       m_dockLog(nullptr),
       m_dockPropertyBrowserPin(nullptr),
-      m_dockModuleTree(nullptr)
+      m_dockModuleTree(nullptr),
+      m_dockJobs(nullptr)
 {
     ui->setupUi(this);
+
     {
-        m_dockLog = new DockLog(this);
-        m_dockLog->hide();
-        addDockWidget(Qt::BottomDockWidgetArea, m_dockLog);
-        m_dockLog->setVisible(true);
-
-        m_dockPropertyBrowserPin = new DockPropertyBrowserPin(this);
-        m_dockPropertyBrowserPin->hide();
-        addDockWidget(Qt::RightDockWidgetArea, m_dockPropertyBrowserPin);
-        m_dockPropertyBrowserPin->setVisible(true);
-
-        m_dockModuleTree = new DockModuleTree(this);
-        m_dockModuleTree->hide();
-        addDockWidget(Qt::LeftDockWidgetArea, m_dockModuleTree);
-        m_dockModuleTree->setVisible(true);
+        QThreadPool::globalInstance()->setMaxThreadCount(qMin(4, QThreadPool::globalInstance()->maxThreadCount()));
     }
-    //    tabifyDockWidget(ui_->dockWidgetBottomOutput, ui_->dockWidgetBottomConfigurations);
-    //    ui_->dockWidgetBottomOutput->raise();
+
+    {
+        {
+            m_dockLog = new DockLog(this);
+            m_dockLog->hide();
+            addDockWidget(Qt::BottomDockWidgetArea, m_dockLog);
+            m_dockLog->setVisible(true);
+            ui->menuView->addAction(m_dockLog->toggleViewAction());
+        }
+
+        {
+            m_dockPropertyBrowserPin = new DockPropertyBrowserPin(this);
+            m_dockPropertyBrowserPin->hide();
+            addDockWidget(Qt::RightDockWidgetArea, m_dockPropertyBrowserPin);
+            m_dockPropertyBrowserPin->setVisible(true);
+            ui->menuView->addAction(m_dockPropertyBrowserPin->toggleViewAction());
+
+            m_dockJobs = new DockJobs(this);
+            m_dockJobs->hide();
+            addDockWidget(Qt::RightDockWidgetArea, m_dockJobs);
+            m_dockJobs->setVisible(true);
+            ui->menuView->addAction(m_dockJobs->toggleViewAction());
+        }
+
+        {
+            m_dockModuleTree = new DockModuleTree(this);
+            m_dockModuleTree->hide();
+            addDockWidget(Qt::LeftDockWidgetArea, m_dockModuleTree);
+            m_dockModuleTree->setVisible(true);
+            ui->menuView->addAction(m_dockModuleTree->toggleViewAction());
+        }
+    }
+    tabifyDockWidget(m_dockPropertyBrowserPin, m_dockJobs);
+    m_dockPropertyBrowserPin->raise();
 
     ui->pageViewConfigure->setPropertyBrowser(m_dockPropertyBrowserPin->propertyBrowser());
 
@@ -83,13 +104,20 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
     (void)connect(&Project, &CspProject::signalReloaded, this, &ViewMainWindow::slotProjectReloaded);
 
     this->setWindowState(Qt::WindowMaximized);
-    
+
     setupPage();
 }
 
 ViewMainWindow::~ViewMainWindow()
 {
     delete ui;
+}
+
+void ViewMainWindow::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+
+    QThreadPool::globalInstance()->clear();
 }
 
 void ViewMainWindow::setupPage()
@@ -178,8 +206,8 @@ void ViewMainWindow::slotActionGenerateTriggered() const
 
 void ViewMainWindow::slotActionPackageManagerTriggered()
 {
-    DialogPackageManager dialog(this);
-    (void)dialog.exec();
+    //    DialogPackageManager dialog(this);
+    //    (void)dialog.exec();
 }
 
 void ViewMainWindow::slotProjectReloaded()

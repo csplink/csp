@@ -33,6 +33,6 @@
 
 bool Utils::isHex(const QString &str)
 {
-    QRegularExpression pattern(R"(^0x[0-9A-Fa-f]+$)");
+    static QRegularExpression pattern(R"(^0x[0-9A-Fa-f]+$)");
     return pattern.match(str).hasMatch();
 }

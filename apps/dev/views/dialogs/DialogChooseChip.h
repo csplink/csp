@@ -27,8 +27,8 @@
  *  2023-05-13     xqyjlj       initial version
  */
 
-#ifndef __DIALOG_CHOOSE_CHIP_H__
-#define __DIALOG_CHOOSE_CHIP_H__
+#ifndef DIALOG_CHOOSE_CHIP_H
+#define DIALOG_CHOOSE_CHIP_H
 
 #include <QAbstractButton>
 #include <QDialog>
@@ -94,4 +94,4 @@ class DialogChooseChip final : public QDialog
     void setChipsInfoUi(const QModelIndexList &selectedIndex);
 };
 
-#endif /** __DIALOG_CHOOSE_CHIP_H__ */
+#endif /** DIALOG_CHOOSE_CHIP_H */

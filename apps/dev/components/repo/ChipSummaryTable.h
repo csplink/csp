@@ -27,8 +27,8 @@
  *  2023-05-21     xqyjlj       initial version
  */
 
-#ifndef __CHIP_SUMMARY_TABLE_H__
-#define __CHIP_SUMMARY_TABLE_H__
+#ifndef CHIP_SUMMARY_TABLE_H
+#define CHIP_SUMMARY_TABLE_H
 
 #include <QDebug>
 #include <QMap>
@@ -103,4 +103,4 @@ QDebug operator<<(QDebug, const ChipSummaryTable::MdkArmType &);
 QDebug operator<<(QDebug, const ChipSummaryTable::TargetProjectType &);
 QDebug operator<<(QDebug, const ChipSummaryTable::ChipSummaryType &);
 
-#endif /** __CHIP_SUMMARY_TABLE_H__ */
+#endif /** CHIP_SUMMARY_TABLE_H */

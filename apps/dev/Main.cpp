@@ -35,7 +35,6 @@
 #include <QTranslator>
 
 #include "Configure.h"
-#include "Repo.h"
 #include "Settings.h"
 #include "ViewMainWindow.h"
 

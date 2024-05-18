@@ -27,8 +27,8 @@
  *  2024-04-27     xqyjlj       initial version
  */
 
-#ifndef __PYTHON_TEST_CASE_PYTHON_H__
-#define __PYTHON_TEST_CASE_PYTHON_H__
+#ifndef PYTHON_TEST_CASE_PYTHON_H
+#define PYTHON_TEST_CASE_PYTHON_H
 
 #include <QObject>
 
@@ -45,4 +45,4 @@ class TestCasePython final : public QObject
     static void cleanupTestCase();
 };
 
-#endif /** __PYTHON_TEST_CASE_PYTHON_H__ */
+#endif /** PYTHON_TEST_CASE_PYTHON_H */

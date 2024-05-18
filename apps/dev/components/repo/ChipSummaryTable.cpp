@@ -106,7 +106,7 @@ bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
 
             if (!chipSummary->Linker.DefaultHeapSize.isEmpty() && !Utils::isHex(chipSummary->Linker.DefaultHeapSize))
             {
-                qWarning().noquote() << QObject::tr("The field ChipSummaryTable::LinkerType::DefaultHeapSize is an "
+                qWarning().noquote() << QObject::tr("The field ChipSummaryType::LinkerType::DefaultHeapSize is an "
                                                     "illegal value %1, and the default value 0x200 is used.")
                                             .arg(chipSummary->Linker.DefaultHeapSize);
                 chipSummary->Linker.DefaultHeapSize = "0x200";
@@ -114,7 +114,7 @@ bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
 
             if (!chipSummary->Linker.DefaultStackSize.isEmpty() && !Utils::isHex(chipSummary->Linker.DefaultStackSize))
             {
-                qWarning().noquote() << QObject::tr("The field ChipSummaryTable::LinkerType::DefaultStackSize is an "
+                qWarning().noquote() << QObject::tr("The field ChipSummaryType::LinkerType::DefaultStackSize is an "
                                                     "illegal value %1, and the default value 0x400 is used.")
                                             .arg(chipSummary->Linker.DefaultStackSize);
                 chipSummary->Linker.DefaultStackSize = "0x400";

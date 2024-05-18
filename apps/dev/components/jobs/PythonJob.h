@@ -27,32 +27,30 @@
  * 2024-04-29     xqyjlj       initial version
  */
 
-#ifndef __PYTHON_JOB_H__
-#define __PYTHON_JOB_H__
+#ifndef PYTHON_JOB_H
+#define PYTHON_JOB_H
 
+#include <QElapsedTimer>
+#include <QProcess>
 #include <QString>
 #include <QStringList>
 
-#include "AbstractJob.h"
-
-class PythonJob : public AbstractJob
+class PythonJob : public QProcess
 {
     Q_OBJECT
   public:
-    explicit PythonJob(const QString &name, const QStringList &args, bool isOpenLog = false);
-    virtual void start();
+    explicit PythonJob(QObject *parent = nullptr);
     QString version();
 
   protected:
     QString cmd(const QStringList &args, const QString &pwd);
 
-  private slots:
-    void slotSelfReadyReadStandardOutput();
-    void slotSelfReadyReadStandardError();
-    void slotActionOpenTriggered();
+  public slots:
+    void slotSelfStarted();
+    void slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
   private:
-    QStringList m_args;
+    QElapsedTimer m_totalTime;
 };
 
-#endif /** __PYTHON_JOB_H__ */
+#endif /** PYTHON_JOB_H */

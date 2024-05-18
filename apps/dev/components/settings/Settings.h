@@ -27,8 +27,8 @@
  * 2024-04-27     xqyjlj       initial version
  */
 
-#ifndef __SETTINGS_H__
-#define __SETTINGS_H__
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include <QObject>
 #include <QSettings>
@@ -122,4 +122,4 @@ class CspSettings final : public QObject
 
 #define Settings CspSettings::singleton()
 
-#endif /** __SETTINGS_H__ */
+#endif /** SETTINGS_H */

@@ -27,8 +27,8 @@
  *  2023-05-27     xqyjlj       initial version
  */
 
-#ifndef __PROJECT_TABLE_H__
-#define __PROJECT_TABLE_H__
+#ifndef PROJECT_TABLE_H
+#define PROJECT_TABLE_H
 
 #include <QDebug>
 #include <QMap>
@@ -105,4 +105,4 @@ class ProjectTable
 QDebug operator<<(QDebug, const ProjectTable::PinConfigType &);
 QDebug operator<<(QDebug, const ProjectTable::ProjectType &);
 
-#endif /** __PROJECT_TABLE_H__ */
+#endif /** PROJECT_TABLE_H */

@@ -30,33 +30,24 @@
 #include <QDebug>
 #include <QDir>
 #include <QRegularExpression>
+#include <QTime>
 
 #include "PythonJob.h"
 #include "Settings.h"
 
-PythonJob::PythonJob(const QString &name, const QStringList &args, bool isOpenLog)
-    : AbstractJob(name)
+PythonJob::PythonJob(QObject *parent)
+    : QProcess(parent)
 {
-    if (isOpenLog)
-    {
-        QAction *action = new QAction(tr("Open Log"), this);
-        m_actions << action;
-        (void)connect(action, &QAction::triggered, this, &PythonJob::slotActionOpenTriggered);
-        (void)connect(this, &QProcess::readyReadStandardOutput, this, &PythonJob::slotSelfReadyReadStandardOutput);
-        (void)connect(this, &QProcess::readyReadStandardError, this, &PythonJob::slotSelfReadyReadStandardError);
-    }
-    m_args.append(args);
-}
-
-void PythonJob::start()
-{
-    AbstractJob::start(Settings.python(), m_args);
+    (void)connect(this, &QProcess::started, this, &PythonJob::slotSelfStarted);
+    (void)connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+                  &PythonJob::slotSelfFinished);
 }
 
 QString PythonJob::version()
 {
-    QString version = "not found";
+    QString version = "";
 
+    setReadChannel(QProcess::StandardOutput);
     const QString msg = cmd({"--version"}, QCoreApplication::applicationDirPath());
     static const QRegularExpression regex(R"(Python (\d+\.\d+\.\d+))");
     const QRegularExpressionMatch match = regex.match(msg);
@@ -76,46 +67,44 @@ QString PythonJob::cmd(const QStringList &args, const QString &pwd)
     QDir dir(pwd);
     if (dir.exists())
     {
-        (void)disconnect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
-                         &AbstractJob::slotSelfFinished);
-        (void)disconnect(this, &QProcess::readyReadStandardOutput, this, &PythonJob::slotSelfReadyReadStandardOutput);
-        (void)disconnect(this, &QProcess::readyReadStandardError, this, &PythonJob::slotSelfReadyReadStandardError);
-
+        const QString &prog = Settings.python();
         setWorkingDirectory(pwd);
-        AbstractJob::start(Settings.python(), args);
+        qDebug().noquote() << prog + " " + args.join(" ");
+
+        (void)disconnect(this, &QProcess::started, this, &PythonJob::slotSelfStarted);
+        (void)disconnect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+                         &PythonJob::slotSelfFinished);
+
+        QProcess::start(prog, args);
         waitForFinished();
 
-        value = readAll().trimmed();
-
+        (void)connect(this, &QProcess::started, this, &PythonJob::slotSelfStarted);
         (void)connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
-                      &AbstractJob::slotSelfFinished);
-        (void)connect(this, &QProcess::readyReadStandardOutput, this, &PythonJob::slotSelfReadyReadStandardOutput);
-        (void)connect(this, &QProcess::readyReadStandardError, this, &PythonJob::slotSelfReadyReadStandardError);
+                      &PythonJob::slotSelfFinished);
+
+        value = readAll().trimmed();
+        qDebug().noquote() << value;
     }
 
     return value;
 }
 
-void PythonJob::slotSelfReadyReadStandardOutput()
+void PythonJob::slotSelfStarted()
 {
-    QString msg;
-    do
-    {
-        msg = readLine();
-        appendLog(msg);
-    } while (!msg.isEmpty());
+    m_totalTime.restart();
 }
 
-void PythonJob::slotSelfReadyReadStandardError()
+void PythonJob::slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    QString msg;
-    do
-    {
-        msg = readLine();
-        appendLog(msg);
-    } while (!msg.isEmpty());
-}
+    const QTime &time = QTime::fromMSecsSinceStartOfDay(static_cast<int>(m_totalTime.elapsed()));
 
-void PythonJob::slotActionOpenTriggered()
-{
+    if (exitStatus == QProcess::NormalExit && exitCode == 0)
+    {
+        qDebug().noquote() << "job successes";
+        qDebug().noquote() << QString("Completed successfully in %1\n").arg(time.toString());
+    }
+    else
+    {
+        qDebug().noquote() << "job failed with" << exitCode;
+    }
 }

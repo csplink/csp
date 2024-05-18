@@ -26,6 +26,7 @@
  * ------------   ----------   -----------------------------------------------
  * 2024-05-01     xqyjlj       initial version
  */
+#include <QAction>
 #include <QStandardItemModel>
 
 #include "DockModuleTree.h"
@@ -36,6 +37,7 @@ DockModuleTree::DockModuleTree(QWidget *parent)
       ui(new Ui::DockModuleTree)
 {
     ui->setupUi(this);
+    toggleViewAction()->setIcon(windowIcon());
 }
 
 DockModuleTree::~DockModuleTree()

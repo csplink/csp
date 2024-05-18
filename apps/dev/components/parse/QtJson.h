@@ -27,8 +27,8 @@
  *  2023-12-03     xqyjlj       initial version
  */
 
-#ifndef __QT_JSON_H__
-#define __QT_JSON_H__
+#ifndef QT_JSON_H
+#define QT_JSON_H
 
 #include <QList>
 #include <QMap>
@@ -234,4 +234,4 @@ template <> struct adl_serializer<QStringList>
         return debug;                                                                                                  \
     }
 
-#endif /** __QT_JSON_H__ */
+#endif /** QT_JSON_H */

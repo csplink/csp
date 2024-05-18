@@ -27,8 +27,8 @@
  * 2024-04-29     xqyjlj       initial version
  */
 
-#ifndef __TEST_CASE_PYTHON_JOB_H__
-#define __TEST_CASE_PYTHON_JOB_H__
+#ifndef TEST_CASE_PYTHON_JOB_H
+#define TEST_CASE_PYTHON_JOB_H
 
 #include <QObject>
 
@@ -41,4 +41,4 @@ class TestCasePythonJob final : public QObject
     static void cleanupTestCase();
 };
 
-#endif /** __TEST_CASE_PYTHON_JOB_H__ */
+#endif /** TEST_CASE_PYTHON_JOB_H */

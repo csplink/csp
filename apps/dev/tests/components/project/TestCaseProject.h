@@ -27,8 +27,8 @@
  *  2024-04-27     xqyjlj       initial version
  */
 
-#ifndef __TEST_CASE_PROJECT_H__
-#define __TEST_CASE_PROJECT_H__
+#ifndef TEST_CASE_PROJECT_H
+#define TEST_CASE_PROJECT_H
 
 #include <QObject>
 
@@ -41,8 +41,8 @@ class TestCaseProject final : public QObject
     static void initTestCase();
 
     static void path();
-    
+
     static void cleanupTestCase();
 };
 
-#endif /** __TEST_CASE_PROJECT_H__ */
+#endif /** TEST_CASE_PROJECT_H */

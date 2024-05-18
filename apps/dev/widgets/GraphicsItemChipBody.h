@@ -27,8 +27,8 @@
  *  2023-06-05     xqyjlj       initial version
  */
 
-#ifndef __GRAPHICS_ITEM_CHIP_BODY_H__
-#define __GRAPHICS_ITEM_CHIP_BODY_H__
+#ifndef GRAPHICS_ITEM_CHIP_BODY_H
+#define GRAPHICS_ITEM_CHIP_BODY_H
 
 #include <QGraphicsItem>
 #include <QPainter>
@@ -54,4 +54,4 @@ class GraphicsItemChipBody final : public QGraphicsItem
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 
-#endif /** __GRAPHICS_ITEM_CHIP_BODY_H__ */
+#endif /** GRAPHICS_ITEM_CHIP_BODY_H */

@@ -27,23 +27,30 @@
  * 2024-04-30     xqyjlj       initial version
  */
 
+#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QTime>
 
 #include "CspCoderJob.h"
 #include "Settings.h"
 
-CspCoderJob::CspCoderJob(const QString &name)
-    : PythonJob(name, {}, true)
+CspCoderJob::CspCoderJob(QObject *parent)
+    : QProcess(parent)
 {
     m_scriptFile = QString("%1/csp-coder/csp-coder.py").arg(Settings.tools());
+
+    (void)connect(this, &QProcess::started, this, &CspCoderJob::slotSelfStarted);
+    (void)connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+                  &CspCoderJob::slotSelfFinished);
 }
 
 void CspCoderJob::generate(const QString &file)
 {
     if (QFile::exists(file))
     {
+        const QString &prog = Settings.python();
         const QFileInfo info(file);
         const QStringList args = {
             m_scriptFile,
@@ -52,7 +59,8 @@ void CspCoderJob::generate(const QString &file)
             QString("--repository=%1").arg(Settings.repository()),
         };
         setReadChannel(QProcess::StandardOutput);
-        AbstractJob::start(Settings.python(), args);
+        qDebug().noquote() << prog + " " + args.join(" ");
+        QProcess::start(prog, args);
     }
     else
     {
@@ -60,6 +68,22 @@ void CspCoderJob::generate(const QString &file)
     }
 }
 
-void CspCoderJob::start()
+void CspCoderJob::slotSelfStarted()
 {
+    m_totalTime.restart();
+}
+
+void CspCoderJob::slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    const QTime &time = QTime::fromMSecsSinceStartOfDay(static_cast<int>(m_totalTime.elapsed()));
+
+    if (exitStatus == QProcess::NormalExit && exitCode == 0)
+    {
+        qDebug().noquote() << "job successes";
+        qDebug().noquote() << QString("Completed successfully in %1\n").arg(time.toString());
+    }
+    else
+    {
+        qDebug().noquote() << "job failed with" << exitCode;
+    }
 }

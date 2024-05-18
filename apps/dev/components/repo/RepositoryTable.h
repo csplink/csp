@@ -27,8 +27,8 @@
  *  2023-04-20     xqyjlj       initial version
  */
 
-#ifndef __REPOSITORY_TABLE_H__
-#define __REPOSITORY_TABLE_H__
+#ifndef REPOSITORY_TABLE_H
+#define REPOSITORY_TABLE_H
 
 #include <QDebug>
 #include <QMap>
@@ -99,4 +99,4 @@ QDebug operator<<(QDebug, const RepositoryTable::VoltageType &);
 QDebug operator<<(QDebug, const RepositoryTable::ChipInfoType &);
 QDebug operator<<(QDebug, const RepositoryTable::RepositoryType &);
 
-#endif /** __REPOSITORY_TABLE_H__ */
+#endif /** REPOSITORY_TABLE_H */

@@ -27,8 +27,8 @@
  *  2024-04-27     xqyjlj       initial version
  */
 
-#ifndef __TEST_CASE_QT_JSON_H__
-#define __TEST_CASE_QT_JSON_H__
+#ifndef TEST_CASE_QT_JSON_H
+#define TEST_CASE_QT_JSON_H
 
 #include <QObject>
 
@@ -46,4 +46,4 @@ class TestCaseQtJson final : public QObject
     static void qlist();
 };
 
-#endif /** __TEST_CASE_QT_JSON_H__ */
+#endif /** TEST_CASE_QT_JSON_H */

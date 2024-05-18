@@ -27,8 +27,8 @@
  *  2023-06-23     xqyjlj       initial version
  */
 
-#ifndef __CONFIGURE_H__
-#define __CONFIGURE_H__
+#ifndef CONFIGURE_H
+#define CONFIGURE_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,4 +59,4 @@ extern "C" {
 }
 #endif /** __cplusplus */
 
-#endif /** __CONFIGURE_H__ */
+#endif /** CONFIGURE_H */

@@ -27,8 +27,8 @@
  *  2024-04-27     xqyjlj       initial version
  */
 
-#ifndef __TEST_CASE_REPOSITORY_TABLE_H__
-#define __TEST_CASE_REPOSITORY_TABLE_H__
+#ifndef TEST_CASE_REPOSITORY_TABLE_H
+#define TEST_CASE_REPOSITORY_TABLE_H
 
 #include <QObject>
 
@@ -45,4 +45,4 @@ class TestCaseRepositoryTable final : public QObject
     static void cleanupTestCase();
 };
 
-#endif /** __TEST_CASE_REPOSITORY_TABLE_H__ */
+#endif /** TEST_CASE_REPOSITORY_TABLE_H */

@@ -27,8 +27,8 @@
  *  2023-05-26     xqyjlj       initial version
  */
 
-#ifndef __PROJECT_H__
-#define __PROJECT_H__
+#ifndef PROJECT_H
+#define PROJECT_H
 
 #include <QObject>
 
@@ -114,6 +114,7 @@ class CspProject final : public QObject
 
   signals:
     void signalReloaded();
+    void signalCleared();
     void signalPinCommentChanged(const QString &name, const QString &oldValue, const QString &newValue);
     void signalPinFunctionChanged(const QString &name, const QString &oldValue, const QString &newValue);
     void signalPinLockedChanged(const QString &name, bool oldValue, bool newValue);
@@ -129,4 +130,4 @@ class CspProject final : public QObject
 
 #define Project CspProject::singleton()
 
-#endif // __PROJECT_H__
+#endif /** PROJECT_H */

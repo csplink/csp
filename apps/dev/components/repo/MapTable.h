@@ -27,8 +27,8 @@
  *  2023-06-17     xqyjlj       initial version
  */
 
-#ifndef __MAP_TABLE_H__
-#define __MAP_TABLE_H__
+#ifndef MAP_TABLE_H
+#define MAP_TABLE_H
 
 #include <QDebug>
 #include <QMap>
@@ -79,4 +79,4 @@ QDebug operator<<(QDebug, const MapTable::GroupType &);
 QDebug operator<<(QDebug, const MapTable::PropertyType &);
 QDebug operator<<(QDebug, const MapTable::MapType &);
 
-#endif /** __MAP_TABLE_H__ */
+#endif /** MAP_TABLE_H */

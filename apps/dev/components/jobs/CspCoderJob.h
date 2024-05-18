@@ -27,21 +27,26 @@
  * 2024-04-30     xqyjlj       initial version
  */
 
-#ifndef __CSP_CODER_JOB_H__
-#define __CSP_CODER_JOB_H__
+#ifndef CSP_CODER_JOB_H
+#define CSP_CODER_JOB_H
 
-#include "PythonJob.h"
+#include <QElapsedTimer>
+#include <QProcess>
 
-class CspCoderJob final : public PythonJob
+class CspCoderJob final : public QProcess
 {
     Q_OBJECT
   public:
-    explicit CspCoderJob(const QString &name);
+    explicit CspCoderJob(QObject *parent = nullptr);
     void generate(const QString &file);
+
+  public slots:
+    void slotSelfStarted();
+    void slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
   private:
     QString m_scriptFile;
-    void start() override;
+    QElapsedTimer m_totalTime;
 };
 
-#endif /** __CSP_CODER_JOB_H__ */
+#endif /** CSP_CODER_JOB_H */

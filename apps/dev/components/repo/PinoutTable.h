@@ -27,8 +27,8 @@
  *  2023-05-28     xqyjlj       initial version
  */
 
-#ifndef __PINOUT_TABLE_H__
-#define __PINOUT_TABLE_H__
+#ifndef PINOUT_TABLE_H
+#define PINOUT_TABLE_H
 
 #include <QDebug>
 #include <QMap>
@@ -65,4 +65,4 @@ Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType *)
 QDebug operator<<(QDebug, const PinoutTable::FunctionType &);
 QDebug operator<<(QDebug, const PinoutTable::PinoutUnitType &);
 
-#endif /** __PINOUT_TABLE_H__ */
+#endif /** PINOUT_TABLE_H */

@@ -27,8 +27,8 @@
  *  2023-06-07     xqyjlj       initial version
  */
 
-#ifndef __GRAPHICS_ITEM_PIN_H__
-#define __GRAPHICS_ITEM_PIN_H__
+#ifndef GRAPHICS_ITEM_PIN_H
+#define GRAPHICS_ITEM_PIN_H
 
 #include "InterfaceGraphicsItemPin.h"
 #include "PinoutTable.h"
@@ -120,4 +120,4 @@ class GraphicsItemPin final : public InterfaceGraphicsItemPin
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };
 
-#endif /** __GRAPHICS_ITEM_PIN_H__ */
+#endif /** GRAPHICS_ITEM_PIN_H */

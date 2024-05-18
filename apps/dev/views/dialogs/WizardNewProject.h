@@ -27,8 +27,8 @@
  *  2023-05-29     xqyjlj       initial version
  */
 
-#ifndef __WIZARD_NEW_PROJECT_H__
-#define __WIZARD_NEW_PROJECT_H__
+#ifndef WIZARD_NEW_PROJECT_H
+#define WIZARD_NEW_PROJECT_H
 
 #include <QLineEdit>
 #include <QWizard>
@@ -49,4 +49,4 @@ class WizardNewProject final : public QWizard
     QWizardPage *createPageChoosePath();
 };
 
-#endif /** __WIZARD_NEW_PROJECT_H__ */
+#endif /** WIZARD_NEW_PROJECT_H */

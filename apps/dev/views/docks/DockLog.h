@@ -27,8 +27,8 @@
  * 2024-04-30     xqyjlj       initial version
  */
 
-#ifndef __LOG_DOCK_H__
-#define __LOG_DOCK_H__
+#ifndef LOG_DOCK_H
+#define LOG_DOCK_H
 
 #include <QDockWidget>
 
@@ -49,4 +49,4 @@ class DockLog : public QDockWidget
     Ui::DockLog *ui;
 };
 
-#endif /** __LOG_DOCK_H__ */
+#endif /** LOG_DOCK_H */

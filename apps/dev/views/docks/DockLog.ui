@@ -10,6 +10,10 @@
     <height>107</height>
    </rect>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../../../resources/icons/resources.qrc">
+    <normaloff>:/icons/32x32/file-text-line.svg</normaloff>:/icons/32x32/file-text-line.svg</iconset>
+  </property>
   <property name="windowTitle">
    <string>Log</string>
   </property>
@@ -32,6 +36,9 @@
    <header>PlainTextEditLineNumber.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../resources/icons/resources.qrc"/>
+  <include location="../../../../resources/icons/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

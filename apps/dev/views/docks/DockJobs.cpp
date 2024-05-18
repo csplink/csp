@@ -1,7 +1,7 @@
 /**
  *****************************************************************************
  * @author      xqyjlj
- * @file        TestCaseCspRepoJob.cpp
+ * @file        DockJobs.cpp
  * @brief
  *
  *****************************************************************************
@@ -24,41 +24,22 @@
  * Change Logs:
  * Date           Author       Notes
  * ------------   ----------   -----------------------------------------------
- * 2024-04-29     xqyjlj       initial version
+ * 2024-05-12     xqyjlj       initial version
  */
+#include <QAction>
 
-#include <QtTest>
+#include "DockJobs.h"
+#include "ui_DockJobs.h"
 
-#include "CspRepoJob.h"
-#include "TestCaseCspRepoJob.h"
-
-void TestCaseCspRepoJob::initTestCase()
+DockJobs::DockJobs(QWidget *parent)
+    : QDockWidget(parent),
+      ui(new Ui::DockJobs)
 {
+    ui->setupUi(this);
+    toggleViewAction()->setIcon(windowIcon());
 }
 
-void TestCaseCspRepoJob::loadPackages()
+DockJobs::~DockJobs()
 {
-    CspRepoJob::PackageType packages;
-
-    CspRepoJob job("version");
-    job.loadPackages(&packages);
-    QVERIFY(!packages.isEmpty());
-
-    packages.clear();
-    job.loadPackages(&packages, "csp_hal_apm32f1");
-    QVERIFY(!packages.isEmpty());
-}
-
-void TestCaseCspRepoJob::installPackage()
-{
-}
-void TestCaseCspRepoJob::updatePackage()
-{
-}
-void TestCaseCspRepoJob::uninstallPackage()
-{
-}
-
-void TestCaseCspRepoJob::cleanupTestCase()
-{
+    delete ui;
 }

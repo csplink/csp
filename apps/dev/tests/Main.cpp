@@ -31,7 +31,6 @@
 #include <QtTest>
 
 #include "TestCaseChipSummaryTable.h"
-#include "TestCaseCspRepoJob.h"
 #include "TestCaseGitJob.h"
 #include "TestCaseIpTable.h"
 #include "TestCaseMapTable.h"
@@ -63,7 +62,6 @@ int main(int argc, char *argv[])
     {
         /** test components/jobs */
         {
-            TEST_EXEC(TestCaseCspRepoJob);
             TEST_EXEC(TestCaseGitJob);
             TEST_EXEC(TestCasePythonJob);
         }

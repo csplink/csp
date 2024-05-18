@@ -29,8 +29,6 @@
 
 #include <QtCore>
 
-#include "CspRepoJob.h"
-#include "DialogPackageManager.h"
 #include "GraphicsItemPin.h"
 #include "LQFP.h"
 #include "Repo.h"
@@ -70,13 +68,18 @@ ViewConfigure::ViewConfigure(QWidget *parent)
     }
 
     (void)connect(&Project, &CspProject::signalReloaded, this, &ViewConfigure::slotProjectReloaded);
-
-    initView();
 }
 
 ViewConfigure::~ViewConfigure()
 {
     delete ui;
+}
+
+void ViewConfigure::showEvent(QShowEvent *event)
+{
+    initView();
+
+    QWidget::showEvent(event);
 }
 
 void ViewConfigure::resizeEvent(QResizeEvent *event)
@@ -176,63 +179,63 @@ void ViewConfigure::initProjectSettings() const
 
 void ViewConfigure::flushComboBoxPackageVersion() const
 {
-    const QString hal = Project.hal();
-    CspRepoJob::PackageType packages;
-    CspRepoJob job("repo");
-    job.loadPackages(&packages, hal);
-
-    const QString text = Project.halVersion();
-    ui->comboBoxPackageVersion->clear();
-
-    auto &versions = packages["Library"][hal].Versions;
-    auto versionsI = versions.constBegin();
-    while (versionsI != versions.constEnd())
-    {
-        if (versionsI.value().Installed)
-        {
-            ui->comboBoxPackageVersion->addItem(versionsI.key());
-            if (versionsI.key() == text)
-            {
-                ui->comboBoxPackageVersion->setCurrentText(text);
-            }
-        }
-        ++versionsI;
-    }
+    //    const QString hal = Project.hal();
+    //    CspRepoJob::PackageType packages;
+    //    CspRepoJob job("repo");
+    //    job.loadPackages(&packages, hal);
+    //
+    //    const QString text = Project.halVersion();
+    //    ui->comboBoxPackageVersion->clear();
+    //
+    //    auto &versions = packages["Library"][hal].Versions;
+    //    auto versionsI = versions.constBegin();
+    //    while (versionsI != versions.constEnd())
+    //    {
+    //        if (versionsI.value().Installed)
+    //        {
+    //            ui->comboBoxPackageVersion->addItem(versionsI.key());
+    //            if (versionsI.key() == text)
+    //            {
+    //                ui->comboBoxPackageVersion->setCurrentText(text);
+    //            }
+    //        }
+    //        ++versionsI;
+    //    }
 }
 
 void ViewConfigure::flushComboBoxToolchainsVersionVersion() const
 {
-    const QString &toolchainsVersion = ui->lineEditToolchainsName->text();
-    CspRepoJob::PackageType packages;
-    CspRepoJob job("repo");
-    job.loadPackages(&packages, toolchainsVersion);
-
-    const QString text = Project.toolchainsVersion();
-    auto &versions = packages["Toolchains"][toolchainsVersion].Versions;
-
-    if (versions.keys().contains(text))
-    {
-        ui->checkBoxEnableToolchains->setCheckState(Qt::Checked);
-    }
-    else
-    {
-        ui->checkBoxEnableToolchains->setCheckState(Qt::Unchecked);
-    }
-
-    ui->comboBoxToolchainsVersion->clear();
-    auto versionsI = versions.constBegin();
-    while (versionsI != versions.constEnd())
-    {
-        if (versionsI.value().Installed)
-        {
-            ui->comboBoxToolchainsVersion->addItem(versionsI.key());
-            if (versionsI.key() == text)
-            {
-                ui->comboBoxToolchainsVersion->setCurrentText(text);
-            }
-        }
-        ++versionsI;
-    }
+    //    const QString &toolchainsVersion = ui->lineEditToolchainsName->text();
+    //    CspRepoJob::PackageType packages;
+    //    CspRepoJob job("repo");
+    //    job.loadPackages(&packages, toolchainsVersion);
+    //
+    //    const QString text = Project.toolchainsVersion();
+    //    auto &versions = packages["Toolchains"][toolchainsVersion].Versions;
+    //
+    //    if (versions.contains(text))
+    //    {
+    //        ui->checkBoxEnableToolchains->setCheckState(Qt::Checked);
+    //    }
+    //    else
+    //    {
+    //        ui->checkBoxEnableToolchains->setCheckState(Qt::Unchecked);
+    //    }
+    //
+    //    ui->comboBoxToolchainsVersion->clear();
+    //    auto versionsI = versions.constBegin();
+    //    while (versionsI != versions.constEnd())
+    //    {
+    //        if (versionsI.value().Installed)
+    //        {
+    //            ui->comboBoxToolchainsVersion->addItem(versionsI.key());
+    //            if (versionsI.key() == text)
+    //            {
+    //                ui->comboBoxToolchainsVersion->setCurrentText(text);
+    //            }
+    //        }
+    //        ++versionsI;
+    //    }
 }
 
 void ViewConfigure::initLinkerSettings() const
@@ -296,8 +299,8 @@ void ViewConfigure::initToolchainsSettings() const
 
 void ViewConfigure::slotPushButtonPackageManagerPressed()
 {
-    DialogPackageManager dialog(this);
-    (void)dialog.exec();
+    //    DialogPackageManager dialog(this);
+    //    (void)dialog.exec();
     flushComboBoxPackageVersion();
 }
 
@@ -372,8 +375,8 @@ void ViewConfigure::slotCheckBoxEnableToolchainsStateChanged(int State)
 
 void ViewConfigure::slotPushButtonToolchainsManagerPressed()
 {
-    DialogPackageManager dialog(this);
-    (void)dialog.exec();
+    //    DialogPackageManager dialog(this);
+    //    (void)dialog.exec();
     flushComboBoxToolchainsVersionVersion();
 }
 

@@ -26,6 +26,7 @@
  * ------------   ----------   -----------------------------------------------
  * 2024-05-01     xqyjlj       initial version
  */
+#include <QAction>
 
 #include "DockPropertyBrowserPin.h"
 #include "ui_DockPropertyBrowserPin.h"
@@ -35,6 +36,7 @@ DockPropertyBrowserPin::DockPropertyBrowserPin(QWidget *parent)
       ui(new Ui::DockPropertyBrowserPin)
 {
     ui->setupUi(this);
+    toggleViewAction()->setIcon(windowIcon());
 }
 
 DockPropertyBrowserPin::~DockPropertyBrowserPin()

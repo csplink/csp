@@ -27,8 +27,8 @@
  * 2024-05-01     xqyjlj       initial version
  */
 
-#ifndef __DOCK_PROPERTY_BROWSER_PIN_H__
-#define __DOCK_PROPERTY_BROWSER_PIN_H__
+#ifndef DOCK_PROPERTY_BROWSER_PIN_H
+#define DOCK_PROPERTY_BROWSER_PIN_H
 
 #include <QDockWidget>
 
@@ -53,4 +53,4 @@ class DockPropertyBrowserPin : public QDockWidget
     Ui::DockPropertyBrowserPin *ui;
 };
 
-#endif /** __DOCK_PROPERTY_BROWSER_PIN_H__ */
+#endif /** DOCK_PROPERTY_BROWSER_PIN_H */

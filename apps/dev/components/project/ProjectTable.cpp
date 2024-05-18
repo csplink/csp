@@ -141,7 +141,7 @@ void ProjectTable::setValue(ProjectType &project)
         const ChipSummaryTable::ChipSummaryType &chipSummary = Repo.getChipSummary(project.Company, project.TargetChip);
         if (!project.Linker.HeapSize.isEmpty() && !Utils::isHex(project.Linker.HeapSize))
         {
-            qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_heap_size is an "
+            qWarning().noquote() << QObject::tr("The field ChipSummaryType::LinkerType::DefaultHeapSize is an "
                                                 "illegal value %1, and the default value 0x200 is used.")
                                         .arg(project.Linker.HeapSize);
             project.Linker.HeapSize = chipSummary.Linker.DefaultHeapSize;
@@ -153,7 +153,7 @@ void ProjectTable::setValue(ProjectType &project)
 
         if (!project.Linker.StackSize.isEmpty() && !Utils::isHex(project.Linker.StackSize))
         {
-            qWarning().noquote() << QObject::tr("The field chip_summary_t::linker_t::default_minimum_stack_size is an "
+            qWarning().noquote() << QObject::tr("The field ChipSummaryType::LinkerType::DefaultStackSize is an "
                                                 "illegal value %1, and the default value 0x400 is used.")
                                         .arg(project.Linker.StackSize);
             project.Linker.StackSize = chipSummary.Linker.DefaultStackSize;

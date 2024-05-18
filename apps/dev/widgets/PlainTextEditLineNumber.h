@@ -27,8 +27,8 @@
  * 2023-12-24     xqyjlj       initial version
  */
 
-#ifndef __PLAIN_TEXT_EDIT_LINE_NUMBER_H__
-#define __PLAIN_TEXT_EDIT_LINE_NUMBER_H__
+#ifndef PLAIN_TEXT_EDIT_LINE_NUMBER_H
+#define PLAIN_TEXT_EDIT_LINE_NUMBER_H
 
 #include <QPlainTextEdit>
 
@@ -80,4 +80,4 @@ class PlainTextEditLineNumber final : public QPlainTextEdit
     QWidget *m_lineNumberArea;
 };
 
-#endif /** __PLAIN_TEXT_EDIT_LINE_NUMBER_H__ */
+#endif /** PLAIN_TEXT_EDIT_LINE_NUMBER_H */

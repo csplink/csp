@@ -27,20 +27,19 @@
  * 2024-04-29     xqyjlj       initial version
  */
 
-#ifndef __GIT_JOB_H__
-#define __GIT_JOB_H__
+#ifndef GIT_JOB_H
+#define GIT_JOB_H
 
+#include <QElapsedTimer>
+#include <QProcess>
 #include <QString>
 #include <QStringList>
 
-#include "AbstractJob.h"
-
-class GitJob : public AbstractJob
+class GitJob : public QProcess
 {
     Q_OBJECT
   public:
-    explicit GitJob(const QString &name, const QStringList &args, bool isOpenLog = false);
-    void start();
+    explicit GitJob(QObject *parent = nullptr);
 
     QString version();
     QString tag(const QString &pwd);
@@ -53,13 +52,12 @@ class GitJob : public AbstractJob
   protected:
     QString cmd(const QStringList &args, const QString &pwd);
 
-  private slots:
-    void slotSelfReadyReadStandardOutput();
-    void slotSelfReadyReadStandardError();
-    void slotActionOpenTriggered();
+  public slots:
+    void slotSelfStarted();
+    void slotSelfFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
   private:
-    QStringList m_args;
+    QElapsedTimer m_totalTime;
 };
 
-#endif /** __GIT_JOB_H__ */
+#endif /** GIT_JOB_H */

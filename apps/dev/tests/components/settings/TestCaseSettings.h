@@ -27,8 +27,8 @@
  *  2024-04-27     xqyjlj       initial version
  */
 
-#ifndef __TEST_CASE_SETTINGS_H__
-#define __TEST_CASE_SETTINGS_H__
+#ifndef TEST_CASE_SETTINGS_H
+#define TEST_CASE_SETTINGS_H
 
 #include <QObject>
 
@@ -45,4 +45,4 @@ class TestCaseSettings final : public QObject
     static void cleanupTestCase();
 };
 
-#endif /** __TEST_CASE_SETTINGS_H__ */
+#endif /** TEST_CASE_SETTINGS_H */

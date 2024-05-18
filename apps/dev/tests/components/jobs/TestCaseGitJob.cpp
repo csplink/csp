@@ -28,7 +28,6 @@
  */
 
 #include <QCoreApplication>
-#include <QDebug>
 #include <QtTest>
 
 #include "GitJob.h"
@@ -40,25 +39,25 @@ void TestCaseGitJob::initTestCase()
 
 void TestCaseGitJob::version()
 {
-    GitJob job("version", {});
+    GitJob job;
     const auto result = job.version();
-    qDebug().noquote() << QString("git version :%1").arg(result);
+    qDebug().noquote() << QString("git version: %1").arg(result);
     QVERIFY(result != "not found");
 }
 
 void TestCaseGitJob::branch()
 {
-    GitJob job("branch", {});
+    GitJob job;
     const auto result = job.branch(QCoreApplication::applicationDirPath());
-    qDebug().noquote() << QString("git branch :%1").arg(result);
+    qDebug().noquote() << QString("git branch: %1").arg(result);
     QVERIFY(!result.contains(" "));
 }
 
 void TestCaseGitJob::commit()
 {
-    GitJob job("branch", {});
+    GitJob job;
     const auto result = job.commit(QCoreApplication::applicationDirPath());
-    qDebug().noquote() << QString("git commit :%1").arg(result);
+    qDebug().noquote() << QString("git commit: %1").arg(result);
     static QRegularExpression pattern("^[0-9a-fA-F]+$");
     QVERIFY(pattern.match(result).hasMatch());
     QVERIFY(result.length() == 7);
@@ -66,9 +65,9 @@ void TestCaseGitJob::commit()
 
 void TestCaseGitJob::commitLong()
 {
-    GitJob job("branch", {});
+    GitJob job;
     const auto result = job.commitLong(QCoreApplication::applicationDirPath());
-    qDebug().noquote() << QString("git commit long :%1").arg(result);
+    qDebug().noquote() << QString("git commit long: %1").arg(result);
     static QRegularExpression pattern("^[0-9a-fA-F]+$");
     QVERIFY(pattern.match(result).hasMatch());
     QVERIFY(result.length() == 40);
@@ -76,9 +75,9 @@ void TestCaseGitJob::commitLong()
 
 void TestCaseGitJob::commitDate()
 {
-    GitJob job("branch", {});
+    GitJob job;
     const auto result = job.commitDate(QCoreApplication::applicationDirPath());
-    qDebug().noquote() << QString("git commit date :%1").arg(result);
+    qDebug().noquote() << QString("git commit date: %1").arg(result);
     static QRegularExpression pattern("^\\d+$");
     QVERIFY(pattern.match(result).hasMatch());
 }

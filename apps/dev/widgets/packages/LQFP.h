@@ -27,8 +27,8 @@
  *  2023-06-03     xqyjlj       initial version
  */
 
-#ifndef __LQFP_H__
-#define __LQFP_H__
+#ifndef LQFP_H
+#define LQFP_H
 
 #include <QGraphicsItem>
 #include <QObject>
@@ -49,4 +49,4 @@ class LQFP final : public QObject
     PinoutTable::PinoutType m_pinout;
 };
 
-#endif /** __LQFP_H__ */
+#endif /** LQFP_H */
