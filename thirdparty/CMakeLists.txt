@@ -24,7 +24,7 @@
 
 add_subdirectory(nlohmann-json)
 add_subdirectory(qtpropertybrowser)
-
-###############################################
-
+set(QUAZIP_USE_QT_ZLIB ON)
+set(QUAZIP_BZIP2 OFF)
+add_subdirectory(quazip)
 add_subdirectory(yaml-cpp)

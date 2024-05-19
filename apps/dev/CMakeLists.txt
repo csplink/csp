@@ -88,7 +88,8 @@ add_dependencies(${name} custom_res custom_tools)
 
 target_link_libraries(${name} PRIVATE
         Qt5::Widgets Qt5::Concurrent Qt5::OpenGL
-        qtpropertybrowser nlohmann-json yaml-cpp)
+        qtpropertybrowser nlohmann-json yaml-cpp
+        QuaZip)
 
 ##########################################################################
 
