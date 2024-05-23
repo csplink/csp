@@ -24,7 +24,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(csp VERSION 0.0.0.1 LANGUAGES CXX)
+project(csp VERSION 0.0.0.1 LANGUAGES CXX C)
 
 set(CMAKE_AUTOUIC ON) # Qt about
 set(CMAKE_AUTOMOC ON) # Qt Meta-Object Compiler
@@ -44,8 +44,8 @@ endif ()
 
 add_definitions(-DQT_NO_FOREACH)
 
-find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets OpenGL Test Concurrent)
-find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test Concurrent)
+find_package(QT NAMES Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
+find_package(Qt5 REQUIRED COMPONENTS Widgets OpenGL Test)
 
 find_package(QT NAMES Qt5 REQUIRED COMPONENTS LinguistTools)
 find_package(Qt5 REQUIRED COMPONENTS LinguistTools)

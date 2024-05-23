@@ -84,12 +84,12 @@ else ()
     add_executable(${name} ${PROJECT_SOURCES} ${QM_FILES})
 endif ()
 
-add_dependencies(${name} custom_res custom_tools)
+set(DEPS custom_res custom_tools)
+set(LIBS Qt5::Widgets Qt5::OpenGL qtpropertybrowser nlohmann-json yaml-cpp QuaZip)
 
-target_link_libraries(${name} PRIVATE
-        Qt5::Widgets Qt5::Concurrent Qt5::OpenGL
-        qtpropertybrowser nlohmann-json yaml-cpp
-        QuaZip)
+add_dependencies(${name} ${DEPS})
+
+target_link_libraries(${name} PRIVATE ${LIBS})
 
 ##########################################################################
 
@@ -116,10 +116,8 @@ target_include_directories(${name_test} PRIVATE
         tests/components/settings
 )
 
-add_dependencies(${name_test} custom_res custom_tools)
+add_dependencies(${name_test} ${DEPS})
 
-target_link_libraries(${name_test} PRIVATE
-        Qt5::Widgets Qt5::Concurrent Qt5::OpenGL Qt5::Test
-        qtpropertybrowser nlohmann-json yaml-cpp)
+target_link_libraries(${name_test} PRIVATE Qt5::Test ${LIBS})
 
 add_test(NAME ${name_test} COMMAND ${name_test})
