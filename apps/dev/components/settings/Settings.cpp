@@ -50,6 +50,7 @@ static constexpr const char *SettingsKeyXmake = "xmake";
 static constexpr const char *SettingsKeyGit = "git";
 static constexpr const char *SettingsKeyPython = "python";
 static constexpr const char *SettingsKeyOpenPath = "openPath";
+static constexpr const char *SettingsKeyPackagePath = "packagePath";
 
 Q_GLOBAL_STATIC(QScopedPointer<CspSettings>, instance)
 
@@ -261,6 +262,22 @@ QString CspSettings::openPath() const
 void CspSettings::setOpenPath(const QString &path)
 {
     m_settings.setValue(SettingsKeyOpenPath, path);
+}
+
+QString CspSettings::packagePath() const
+{
+    const QStringList locations = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+    QString defaultValue = "";
+    if (!locations.isEmpty())
+    {
+        defaultValue = locations[0];
+    }
+    return m_settings.value(SettingsKeyPackagePath, defaultValue).toString();
+}
+
+void CspSettings::setPackagePath(const QString &path)
+{
+    m_settings.setValue(SettingsKeyPackagePath, path);
 }
 
 QMap<QString, QString> CspSettings::env() const

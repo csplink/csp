@@ -36,11 +36,12 @@
 #include "DialogChooseChip.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
+#include "WizardPackageInstaller.h"
 #include "ui_ViewMainWindow.h"
 
 ViewMainWindow::ViewMainWindow(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::viewMainWindow),
+      ui(new Ui::ViewMainWindow),
       m_dockLog(nullptr),
       m_dockPropertyBrowserPin(nullptr),
       m_dockModuleTree(nullptr),
@@ -96,8 +97,8 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
         (void)connect(ui->actionClose, &QAction::triggered, this, &ViewMainWindow::slotActionCloseTriggered);
         (void)connect(ui->actionReport, &QAction::triggered, this, &ViewMainWindow::slotActionReportTriggered);
         (void)connect(ui->actionGenerate, &QAction::triggered, this, &ViewMainWindow::slotActionGenerateTriggered);
-        (void)connect(ui->actionPackageManager, &QAction::triggered, this,
-                      &ViewMainWindow::slotActionPackageManagerTriggered);
+        (void)connect(ui->actionPackageInstaller, &QAction::triggered, this,
+                      &ViewMainWindow::slotActionPackageInstallerTriggered);
         (void)connect(ui->actionAboutQt, &QAction::triggered, qApp, &QApplication::aboutQt);
     }
 
@@ -204,10 +205,10 @@ void ViewMainWindow::slotActionGenerateTriggered() const
     Project.generateCode();
 }
 
-void ViewMainWindow::slotActionPackageManagerTriggered()
+void ViewMainWindow::slotActionPackageInstallerTriggered()
 {
-    //    DialogPackageManager dialog(this);
-    //    (void)dialog.exec();
+    WizardPackageInstaller wizard(this);
+    (void)wizard.exec();
 }
 
 void ViewMainWindow::slotProjectReloaded()

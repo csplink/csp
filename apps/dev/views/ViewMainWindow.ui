@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>viewMainWindow</class>
- <widget class="QMainWindow" name="viewMainWindow">
+ <class>ViewMainWindow</class>
+ <widget class="QMainWindow" name="ViewMainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -81,7 +81,7 @@
      <string>Project</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="actionPackageManager"/>
+    <addaction name="actionPackageInstaller"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -121,7 +121,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionGenerate"/>
-   <addaction name="actionPackageManager"/>
+   <addaction name="actionPackageInstaller"/>
    <addaction name="separator"/>
   </widget>
   <action name="actionLoad">
@@ -174,13 +174,13 @@
     <string>Generate code</string>
    </property>
   </action>
-  <action name="actionPackageManager">
+  <action name="actionPackageInstaller">
    <property name="icon">
     <iconset resource="../../../resources/icons/resources.qrc">
      <normaloff>:/icons/32x32/dropbox-line.svg</normaloff>:/icons/32x32/dropbox-line.svg</iconset>
    </property>
    <property name="text">
-    <string>Package Manager</string>
+    <string>Package Installer</string>
    </property>
   </action>
   <action name="actionAboutQt">

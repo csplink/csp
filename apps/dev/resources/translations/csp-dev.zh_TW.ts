@@ -17,12 +17,12 @@
 <context>
     <name>CspSettings</name>
     <message>
-        <location filename="../../components/settings/Settings.cpp" line="90"/>
+        <location filename="../../components/settings/Settings.cpp" line="91"/>
         <source>Critical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/settings/Settings.cpp" line="90"/>
+        <location filename="../../components/settings/Settings.cpp" line="91"/>
         <source>The &apos;%1&apos; &lt;%2&gt; path is not a directory!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -252,6 +252,109 @@
     </message>
 </context>
 <context>
+    <name>ViewMainWindow</name>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="62"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="66"/>
+        <source>New Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="81"/>
+        <source>Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="88"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="95"/>
+        <source>Build</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="103"/>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="115"/>
+        <source>toolBar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="129"/>
+        <source>Load Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="132"/>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="137"/>
+        <source>Import Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="142"/>
+        <source>Save Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="145"/>
+        <source>Ctrl+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="150"/>
+        <source>Save Project As ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="155"/>
+        <source>Close Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="160"/>
+        <source>Generate Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="165"/>
+        <source>New Chip Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="174"/>
+        <source>Generate code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="183"/>
+        <source>Package Installer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="192"/>
+        <source>About Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="201"/>
+        <source>About CSP</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>WizardNewProject</name>
     <message>
         <location filename="../../views/dialogs/WizardNewProject.cpp" line="44"/>
@@ -284,28 +387,112 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="81"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="77"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="83"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="79"/>
         <source>this will create a new project in the path you choose.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="86"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="82"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="101"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="97"/>
         <source>Project Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="104"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="100"/>
         <source>Project Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstaller</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="45"/>
+        <source>Package installer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="52"/>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="53"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="54"/>
+        <source>Finish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="55"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstallerIntroPage</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="74"/>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="75"/>
+        <source>This wizard will help install a package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="81"/>
+        <source>This program installs the Package:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="92"/>
+        <source>Choose Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="93"/>
+        <source>CSP Package File(*.csppkg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="119"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="132"/>
+        <source>Click Next to continue, or Cancel to exit Setup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstallerStatusPage</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="150"/>
+        <source>Install Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="151"/>
+        <source>install package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="157"/>
+        <source>install package ...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -532,109 +719,6 @@
     <message>
         <location filename="../../views/ViewHome.ui" line="193"/>
         <source>Other Tools</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>viewMainWindow</name>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="62"/>
-        <source>File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="66"/>
-        <source>New Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="81"/>
-        <source>Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="88"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="95"/>
-        <source>Build</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="103"/>
-        <source>View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="115"/>
-        <source>toolBar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="129"/>
-        <source>Load Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="132"/>
-        <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="137"/>
-        <source>Import Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="142"/>
-        <source>Save Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="145"/>
-        <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="150"/>
-        <source>Save Project As ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="155"/>
-        <source>Close Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="160"/>
-        <source>Generate Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="165"/>
-        <source>New Chip Project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="174"/>
-        <source>Generate code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="183"/>
-        <source>Package Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="192"/>
-        <source>About Qt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="201"/>
-        <source>About CSP</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

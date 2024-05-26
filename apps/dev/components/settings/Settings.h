@@ -109,6 +109,9 @@ class CspSettings final : public QObject
     QString openPath() const;
     void setOpenPath(const QString &path);
 
+    QString packagePath() const;
+    void setPackagePath(const QString &path);
+
     QMap<QString, QString> env() const;
 
   private:

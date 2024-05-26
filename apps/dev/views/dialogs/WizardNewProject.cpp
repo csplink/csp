@@ -73,20 +73,16 @@ void WizardNewProject::accept()
 
 QWizardPage *WizardNewProject::createPageIntroduce()
 {
-    QFont font;
-    font.setBold(true);
-    font.setPointSize(12);
-
-    auto *page = new QWizardPage(this);
+    QWizardPage *page = new QWizardPage(this);
     page->setTitle(tr("Welcome to use this wizard to create a new project"));
 
-    auto *label1 = new QLabel(tr("this will create a new project in the path you choose."), this);
+    QLabel *label1 = new QLabel(tr("this will create a new project in the path you choose."), this);
     label1->setWordWrap(true);
 
-    auto *label2 = new QLabel(tr("Click Next to continue, or Cancel to exit Setup."), this);
+    QLabel *label2 = new QLabel(tr("Click Next to continue, or Cancel to exit Setup."), this);
     label2->setWordWrap(true);
 
-    auto *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(label1);
     layout->addWidget(label2);
     page->setLayout(layout);
@@ -96,15 +92,15 @@ QWizardPage *WizardNewProject::createPageIntroduce()
 
 QWizardPage *WizardNewProject::createPageChoosePath()
 {
-    auto *page = new QWizardPage(this);
+    QWizardPage *page = new QWizardPage(this);
 
-    const auto label1 = new QLabel(tr("Project Path"), page);
+    QLabel *label1 = new QLabel(tr("Project Path"), page);
     label1->setWordWrap(true);
 
-    const auto label2 = new QLabel(tr("Project Name"), page);
+    QLabel *label2 = new QLabel(tr("Project Name"), page);
     label2->setWordWrap(true);
 
-    auto workspace = Settings.workspace();
+    QString workspace = Settings.workspace();
     m_lineEditProjectPath = new QLineEdit(workspace, page);
 
     int index = 0;
@@ -123,11 +119,11 @@ QWizardPage *WizardNewProject::createPageChoosePath()
     }
     m_lineEditProjectName = new QLineEdit(QString("untitled%1").arg(index == 0 ? "" : QString::number(index)), page);
 
-    const auto toolButton = new QToolButton(page);
+    QToolButton *toolButton = new QToolButton(page);
     toolButton->setMaximumSize(30, 30);
     toolButton->setText("...");
 
-    const auto gridLayout = new QGridLayout(page);
+    QGridLayout *gridLayout = new QGridLayout(page);
 
     gridLayout->addWidget(label1, 0, 0, 1, 1);
     gridLayout->addWidget(m_lineEditProjectPath, 0, 1, 1, 1);

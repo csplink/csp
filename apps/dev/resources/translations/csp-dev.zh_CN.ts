@@ -28,12 +28,12 @@
 <context>
     <name>CspSettings</name>
     <message>
-        <location filename="../../components/settings/Settings.cpp" line="90"/>
+        <location filename="../../components/settings/Settings.cpp" line="91"/>
         <source>Critical</source>
         <translation>致命错误</translation>
     </message>
     <message>
-        <location filename="../../components/settings/Settings.cpp" line="90"/>
+        <location filename="../../components/settings/Settings.cpp" line="91"/>
         <source>The &apos;%1&apos; &lt;%2&gt; path is not a directory!</source>
         <translation>&apos;%1&apos; &lt;%2&gt; 路径不是一个目录！</translation>
     </message>
@@ -325,6 +325,122 @@
         <source>Project load failed, reason: &lt;%1&gt;.</source>
         <translation type="vanished">项目加载失败，原因: &lt;%1&gt;。</translation>
     </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="62"/>
+        <source>File</source>
+        <translation>文件</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="66"/>
+        <source>New Project</source>
+        <translation>新建工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="81"/>
+        <source>Project</source>
+        <translation>项目</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="88"/>
+        <source>Help</source>
+        <translation>帮助</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="95"/>
+        <source>Build</source>
+        <translation>构建</translation>
+    </message>
+    <message>
+        <source>Property</source>
+        <translation type="vanished">属性</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="vanished">输出</translation>
+    </message>
+    <message>
+        <source>Configurations</source>
+        <translation type="vanished">配置</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="103"/>
+        <source>View</source>
+        <translation>视图</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="115"/>
+        <source>toolBar</source>
+        <translation>工具栏</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="129"/>
+        <source>Load Project</source>
+        <translation>加载工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="132"/>
+        <source>Ctrl+L</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="137"/>
+        <source>Import Project</source>
+        <translation>导入工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="142"/>
+        <source>Save Project</source>
+        <translation>保存工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="145"/>
+        <source>Ctrl+S</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="150"/>
+        <source>Save Project As ...</source>
+        <translation>另存工程为...</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="155"/>
+        <source>Close Project</source>
+        <translation>关闭工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="160"/>
+        <source>Generate Report</source>
+        <translation>生成报告</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="165"/>
+        <source>New Chip Project</source>
+        <translation>新建芯片工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="174"/>
+        <source>Generate code</source>
+        <translation>生成代码</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="183"/>
+        <source>Package Installer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Package Manager</source>
+        <translation type="vanished">包管理器</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="192"/>
+        <source>About Qt</source>
+        <translation>关于QT</translation>
+    </message>
+    <message>
+        <location filename="../../views/ViewMainWindow.ui" line="201"/>
+        <source>About CSP</source>
+        <translation>关于CSP</translation>
+    </message>
 </context>
 <context>
     <name>WizardNewProject</name>
@@ -359,29 +475,125 @@
         <translation>请输入工程路径与工程名</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="81"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="77"/>
         <source>Welcome to use this wizard to create a new project</source>
         <translation>欢迎使用此向导创建新项目</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="83"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="79"/>
         <source>this will create a new project in the path you choose.</source>
         <translation>这将在您选择的路径中创建一个新项目。</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="86"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="82"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation>单击“下一步”继续，或单击“取消”退出安装。</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="101"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="97"/>
         <source>Project Path</source>
         <translation>工程路径</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardNewProject.cpp" line="104"/>
+        <location filename="../../views/dialogs/WizardNewProject.cpp" line="100"/>
         <source>Project Name</source>
         <translation>工程名</translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstaller</name>
+    <message>
+        <source>New Project</source>
+        <translation type="obsolete">新建工程</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="45"/>
+        <source>Package installer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="52"/>
+        <source>Next</source>
+        <translation type="unfinished">下一步</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="53"/>
+        <source>Back</source>
+        <translation type="unfinished">上一步</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="54"/>
+        <source>Finish</source>
+        <translation type="unfinished">完成</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="55"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <source>Click Next to continue, or Cancel to exit Setup.</source>
+        <translation type="obsolete">单击“下一步”继续，或单击“取消”退出安装。</translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstallerIntroPage</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="74"/>
+        <source>Version %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="75"/>
+        <source>This wizard will help install a package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="81"/>
+        <source>This program installs the Package:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="92"/>
+        <source>Choose Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="93"/>
+        <source>CSP Package File(*.csppkg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="119"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="132"/>
+        <source>Click Next to continue, or Cancel to exit Setup.</source>
+        <translation type="unfinished">单击“下一步”继续，或单击“取消”退出安装。</translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstallerStatusPage</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="150"/>
+        <source>Install Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="151"/>
+        <source>install package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="157"/>
+        <source>install package ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click Next to continue, or Cancel to exit Setup.</source>
+        <translation type="obsolete">单击“下一步”继续，或单击“取消”退出安装。</translation>
     </message>
 </context>
 <context>
@@ -639,121 +851,6 @@
         <location filename="../../views/ViewHome.ui" line="193"/>
         <source>Other Tools</source>
         <translation>其他工具</translation>
-    </message>
-</context>
-<context>
-    <name>viewMainWindow</name>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="62"/>
-        <source>File</source>
-        <translation>文件</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="66"/>
-        <source>New Project</source>
-        <translation>新建工程</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="81"/>
-        <source>Project</source>
-        <translation>项目</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="88"/>
-        <source>Help</source>
-        <translation>帮助</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="95"/>
-        <source>Build</source>
-        <translation>构建</translation>
-    </message>
-    <message>
-        <source>Property</source>
-        <translation type="vanished">属性</translation>
-    </message>
-    <message>
-        <source>Output</source>
-        <translation type="vanished">输出</translation>
-    </message>
-    <message>
-        <source>Configurations</source>
-        <translation type="vanished">配置</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="103"/>
-        <source>View</source>
-        <translation>视图</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="115"/>
-        <source>toolBar</source>
-        <translation>工具栏</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="129"/>
-        <source>Load Project</source>
-        <translation>加载工程</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="132"/>
-        <source>Ctrl+L</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="137"/>
-        <source>Import Project</source>
-        <translation>导入工程</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="142"/>
-        <source>Save Project</source>
-        <translation>保存工程</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="145"/>
-        <source>Ctrl+S</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="150"/>
-        <source>Save Project As ...</source>
-        <translation>另存工程为...</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="155"/>
-        <source>Close Project</source>
-        <translation>关闭工程</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="160"/>
-        <source>Generate Report</source>
-        <translation>生成报告</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="165"/>
-        <source>New Chip Project</source>
-        <translation>新建芯片工程</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="174"/>
-        <source>Generate code</source>
-        <translation>生成代码</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="183"/>
-        <source>Package Manager</source>
-        <translation>包管理器</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="192"/>
-        <source>About Qt</source>
-        <translation>关于QT</translation>
-    </message>
-    <message>
-        <location filename="../../views/ViewMainWindow.ui" line="201"/>
-        <source>About CSP</source>
-        <translation>关于CSP</translation>
     </message>
 </context>
 </TS>

@@ -41,7 +41,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
-class viewMainWindow;
+class ViewMainWindow;
 }
 QT_END_NAMESPACE
 
@@ -64,11 +64,11 @@ class ViewMainWindow final : public QMainWindow
     void slotActionCloseTriggered() const;
     void slotActionReportTriggered() const;
     void slotActionGenerateTriggered() const;
-    void slotActionPackageManagerTriggered();
+    void slotActionPackageInstallerTriggered();
     void slotProjectReloaded();
 
   private:
-    Ui::viewMainWindow *ui;
+    Ui::ViewMainWindow *ui;
     DockLog *m_dockLog;
     DockPropertyBrowserPin *m_dockPropertyBrowserPin;
     DockModuleTree *m_dockModuleTree;

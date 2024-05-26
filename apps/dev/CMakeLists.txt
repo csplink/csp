@@ -40,9 +40,6 @@ file(GLOB COMPONENTS
         components/settings/*.cpp components/settings/*.h
         components/tools/*.cpp components/tools/*.h)
 
-file(GLOB SOURCES
-        *.cpp)
-
 file(GLOB WIDGETS
         widgets/*.h widgets/*.cpp
         widgets/interface/*.h
@@ -61,7 +58,7 @@ set(TS_FILES
         ./resources/translations/${name}.zh_CN.ts
         ./resources/translations/${name}.zh_TW.ts)
 
-set(PROJECT_SOURCES ${COMPONENTS} ${SOURCES} ${WIDGETS} ${RESOURCES} ${VIEWS} ${TS_FILES})
+set(PROJECT_SOURCES Main.cpp ${COMPONENTS} ${WIDGETS} ${RESOURCES} ${VIEWS} ${TS_FILES})
 
 include_directories(
         .
@@ -93,11 +90,18 @@ target_link_libraries(${name} PRIVATE ${LIBS})
 
 ##########################################################################
 
+set(name_package_installer "csp-package-installer")
+set(PROJECT_SOURCES tools/package-installer/Main.cpp ${COMPONENTS} ${WIDGETS} ${RESOURCES} ${VIEWS})
+if (${CMAKE_BUILD_TYPE} MATCHES "Release")
+    add_executable(${name_package_installer} WIN32 ${PROJECT_SOURCES})
+else ()
+    add_executable(${name_package_installer} ${PROJECT_SOURCES})
+endif ()
+target_link_libraries(${name_package_installer} PRIVATE ${LIBS})
+
+##########################################################################
+
 set(name_test "${name}-test")
-
-file(GLOB SOURCES
-        tests/*.cpp)
-
 set(RESOURCES ${RESOURCES} tests/resources/resources.qrc)
 
 file(GLOB TEST_CASES
@@ -107,7 +111,7 @@ file(GLOB TEST_CASES
         tests/components/repo/*.cpp tests/components/repo/*.h
         tests/components/settings/*.cpp tests/components/settings/*.h)
 
-add_executable(${name_test} ${COMPONENTS} ${SOURCES} ${WIDGETS} ${RESOURCES} ${TEST_CASES} ${VIEWS})
+add_executable(${name_test} tests/Main.cpp ${COMPONENTS} ${WIDGETS} ${RESOURCES} ${TEST_CASES} ${VIEWS})
 target_include_directories(${name_test} PRIVATE
         tests/components/jobs
         tests/components/parse
