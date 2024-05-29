@@ -33,6 +33,7 @@
 #include <QLineEdit>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QThread>
 #include <QWizard>
 #include <QWizardPage>
 
@@ -40,36 +41,79 @@ class WizardPackageInstaller final : public QWizard
 {
     Q_OBJECT
   public:
+    enum
+    {
+        Page_Intro,
+        Page_Installer,
+        Page_Result
+    };
+
     explicit WizardPackageInstaller(QWidget *parent, const QString &path = "");
     void accept() override;
+
+  private slots:
+    void slotSelfShowHelp();
 };
 
 class WizardPackageInstallerIntroPage : public QWizardPage
 {
     Q_OBJECT
   public:
-    WizardPackageInstallerIntroPage(QWidget *parent, const QString &path);
+    explicit WizardPackageInstallerIntroPage(QWidget *parent, const QString &path);
+    void initializePage() override;
     int nextId() const override;
 
   private:
+    QString m_packagePath;
     QLineEdit *m_lineEditPackagePath;
     QPushButton *m_pushButtonChoosePackagePath;
+};
+
+class WizardPackageInstallerStatusPageInstallThread : public QThread
+{
+    Q_OBJECT
+  public:
+    explicit WizardPackageInstallerStatusPageInstallThread(QObject *parent, const QString &path);
+
+  protected:
+    void run() override;
+
+  signals:
+    void signalUpdateFileName(const QString &name);
+    void signalUpdateProgress(int value);
+    void signalFinish();
+
+  private:
+    QString m_packagePath;
 };
 
 class WizardPackageInstallerStatusPage : public QWizardPage
 {
     Q_OBJECT
   public:
-    WizardPackageInstallerStatusPage(QWidget *parent);
+    explicit WizardPackageInstallerStatusPage(QWidget *parent);
     void initializePage() override;
+    bool isComplete() const override;
     int nextId() const override;
 
   private:
+    bool m_isFinish;
     QString m_packagePath;
     QLabel *m_labelPackagePath;
     QProgressBar *m_progressBar;
+    QLabel *m_labelFileName;
+    WizardPackageInstallerStatusPageInstallThread *m_threadInstall;
+};
 
-    void installPackage();
+class WizardPackageInstallerResultPage : public QWizardPage
+{
+    Q_OBJECT
+  public:
+    explicit WizardPackageInstallerResultPage(QWidget *parent);
+    void initializePage() override;
+
+  private:
+    QLabel *m_labelResult;
 };
 
 #endif /** WIZARD_PACKAGE_INSTALLER_H */

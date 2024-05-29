@@ -31,6 +31,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QVBoxLayout>
 
 #include "Configure.h"
@@ -53,12 +54,16 @@ WizardPackageInstaller::WizardPackageInstaller(QWidget *parent, const QString &p
     setButtonText(BackButton, tr("Back"));
     setButtonText(FinishButton, tr("Finish"));
     setButtonText(CancelButton, tr("Cancel"));
+    setButtonText(CommitButton, tr("Start"));
     setOption(HaveHelpButton, true);
 
-    setPage(0, new WizardPackageInstallerIntroPage(this, path));
-    setPage(1, new WizardPackageInstallerStatusPage(this));
+    setPage(Page_Intro, new WizardPackageInstallerIntroPage(this, path));
+    setPage(Page_Installer, new WizardPackageInstallerStatusPage(this));
+    setPage(Page_Result, new WizardPackageInstallerResultPage(this));
 
-    setStartId(1);
+    setStartId(Page_Intro);
+
+    connect(this, &QWizard::helpRequested, this, &WizardPackageInstaller::slotSelfShowHelp);
 }
 
 void WizardPackageInstaller::accept()
@@ -66,13 +71,41 @@ void WizardPackageInstaller::accept()
     QDialog::accept();
 }
 
+void WizardPackageInstaller::slotSelfShowHelp()
+{
+    static QString lastHelpMessage;
+
+    QString message;
+
+    switch (currentId())
+    {
+    case Page_Intro:
+        message = tr("On this page, select the package you want to install.");
+        break;
+    default:
+        message = tr("This help is likely not to be of any help.");
+        break;
+    }
+
+    if (lastHelpMessage == message)
+    {
+        message = tr("Sorry, I already gave what help I could. Maybe you should try asking a human?");
+    }
+
+    QMessageBox::information(this, tr("Package Installer Wizard Help"), message);
+
+    lastHelpMessage = message;
+}
+
 WizardPackageInstallerIntroPage::WizardPackageInstallerIntroPage(QWidget *parent, const QString &path)
     : QWizardPage(parent),
+      m_packagePath(path),
       m_lineEditPackagePath(nullptr),
       m_pushButtonChoosePackagePath(nullptr)
 {
     setTitle(tr("Version %1").arg(CONFIGURE_PROJECT_VERSION));
     setSubTitle(tr("This wizard will help install a package"));
+    setCommitPage(true);
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setSpacing(16);
@@ -109,12 +142,6 @@ WizardPackageInstallerIntroPage::WizardPackageInstallerIntroPage(QWidget *parent
         layout->addLayout(hLayout);
     }
 
-    if (!path.isEmpty() && QFile::exists(path) && path.endsWith(".csppkg"))
-    {
-        m_lineEditPackagePath->setText(path);
-        m_pushButtonChoosePackagePath->setEnabled(false);
-    }
-
     {
         QLabel *label = new QLabel(tr("To"), this);
         label->setWordWrap(true);
@@ -137,15 +164,26 @@ WizardPackageInstallerIntroPage::WizardPackageInstallerIntroPage(QWidget *parent
     setLayout(layout);
 }
 
+void WizardPackageInstallerIntroPage::initializePage()
+{
+    if (!m_packagePath.isEmpty() && QFile::exists(m_packagePath) && m_packagePath.endsWith(".csppkg"))
+    {
+        m_lineEditPackagePath->setText(m_packagePath);
+        m_pushButtonChoosePackagePath->setEnabled(false);
+    }
+}
+
 int WizardPackageInstallerIntroPage::nextId() const
 {
-    return 1;
+    return WizardPackageInstaller::Page_Installer;
 }
 
 WizardPackageInstallerStatusPage::WizardPackageInstallerStatusPage(QWidget *parent)
     : QWizardPage(parent),
+      m_isFinish(false),
       m_packagePath(),
-      m_labelPackagePath(nullptr)
+      m_labelPackagePath(nullptr),
+      m_threadInstall(nullptr)
 {
     setTitle(tr("Install Status"));
     setSubTitle(tr("install package"));
@@ -172,6 +210,11 @@ WizardPackageInstallerStatusPage::WizardPackageInstallerStatusPage(QWidget *pare
         layout->addWidget(m_progressBar);
     }
 
+    {
+        m_labelFileName = new QLabel("", this);
+        layout->addWidget(m_labelFileName);
+    }
+
     setLayout(layout);
 }
 
@@ -179,27 +222,68 @@ void WizardPackageInstallerStatusPage::initializePage()
 {
     m_packagePath = field("introduction.packagePath").toString();
     m_labelPackagePath->setText(m_packagePath);
+    if (m_threadInstall == nullptr)
+    {
+        m_threadInstall = new WizardPackageInstallerStatusPageInstallThread(this, m_packagePath);
+
+        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalUpdateFileName, this,
+                [this](const QString &name) {
+                    /** */
+                    m_labelFileName->setText(name);
+                });
+
+        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalUpdateProgress, this,
+                [this](int value) {
+                    /** */
+                    m_progressBar->setValue(value);
+                    if (value == m_progressBar->maximum())
+                    {
+                    }
+                });
+
+        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalFinish, this, [this]() {
+            m_isFinish = true;
+            emit completeChanged();
+        });
+
+        m_threadInstall->start();
+    }
+}
+
+bool WizardPackageInstallerStatusPage::isComplete() const
+{
+    return (m_progressBar->value() == m_progressBar->maximum()) && m_isFinish;
 }
 
 int WizardPackageInstallerStatusPage::nextId() const
 {
-    return 2;
+    return WizardPackageInstaller::Page_Result;
 }
 
-void WizardPackageInstallerStatusPage::installPackage()
+WizardPackageInstallerStatusPageInstallThread::WizardPackageInstallerStatusPageInstallThread(QObject *parent,
+                                                                                             const QString &path)
+    : QThread(parent),
+      m_packagePath(path)
+{
+}
+
+void WizardPackageInstallerStatusPageInstallThread::run()
 {
     QuaZip archive(m_packagePath);
     if (archive.open(QuaZip::mdUnzip))
     {
         QString dstPath = Settings.repository();
         QDir dir(dstPath);
-        //        int count = archive.getEntriesCount();
-        //        int i = 0;
+        int count = archive.getEntriesCount();
+        int i = 0;
         QString fileName;
 
         for (bool f = archive.goToFirstFile(); f; f = archive.goToNextFile())
         {
             fileName = archive.getCurrentFileName();
+
+            emit signalUpdateFileName(fileName);
+
             if (fileName.endsWith("/"))
             {
                 dir.mkpath(fileName);
@@ -207,31 +291,62 @@ void WizardPackageInstallerStatusPage::installPackage()
             else
             {
                 QuaZipFile zipFile;
-                QByteArray data;
                 QFile dstFile;
+                int bytesRead;
+                static constexpr int blockSize = 1024 * 1024;
+                char buffer[blockSize] = {0};
 
                 zipFile.setZipName(archive.getZipName());
                 zipFile.setFileName(fileName);
                 zipFile.open(QIODevice::ReadOnly);
-                data = zipFile.readAll();
-                zipFile.close();
+                dstFile.setFileName(QString("%1/%2").arg(dstPath, fileName));
 
-                dstFile.setFileName(dstPath + fileName);
-                if (!dstFile.open(QIODevice::WriteOnly))
+                if (dstFile.open(QIODevice::WriteOnly))
                 {
-                    return;
+                    while ((bytesRead = zipFile.read(buffer, blockSize)) > 0)
+                    {
+                        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+                        dstFile.write(buffer, bytesRead);
+                    }
+                    dstFile.close();
                 }
-                dstFile.write(data);
-                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-                dstFile.close();
-                //                i++;
-                // 这里可以获得解压进度，一般来说解压操作是放在多线程的，所以使用信号发送
-                // void sigUnzipping(int current, int total)
-                // emit sigUnzipping(i, count);
+                else
+                {
+                }
+                zipFile.close();
             }
+
+            i++;
+            emit signalUpdateProgress((i * 100.0) / count);
         }
     }
     else
     {
     }
+
+    emit signalFinish();
+}
+
+WizardPackageInstallerResultPage::WizardPackageInstallerResultPage(QWidget *parent)
+    : QWizardPage(parent),
+      m_labelResult(nullptr)
+{
+    setTitle(tr("Install Result"));
+    setSubTitle(tr("Installation completed"));
+    setFinalPage(true);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setSpacing(16);
+
+    {
+        m_labelResult = new QLabel(tr("The package has been successfully installed"), this);
+        m_labelResult->setWordWrap(true);
+        layout->addWidget(m_labelResult);
+    }
+
+    setLayout(layout);
+}
+
+void WizardPackageInstallerResultPage::initializePage()
+{
 }

@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 
     QApplication::setWindowIcon(QIcon(":/images/logo.ico"));
 
-    WizardPackageInstaller wizard(nullptr, "C:/Users/xqyjlj/Downloads/新建文件夹/新建文本文档.csppkg");
+    WizardPackageInstaller wizard(nullptr, "C:/Users/xqyjlj/Downloads/新建文件夹/csp_hal_apm32f1.csppkg");
     (void)wizard.show();
 
     const int rtn = QApplication::exec();

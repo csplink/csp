@@ -425,7 +425,7 @@
     <message>
         <location filename="../../views/ViewMainWindow.ui" line="183"/>
         <source>Package Installer</source>
-        <translation type="unfinished"></translation>
+        <translation>软件包安装器</translation>
     </message>
     <message>
         <source>Package Manager</source>
@@ -507,29 +507,54 @@
         <translation type="obsolete">新建工程</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="45"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="46"/>
         <source>Package installer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="52"/>
-        <source>Next</source>
-        <translation type="unfinished">下一步</translation>
+        <translation>软件包安装器</translation>
     </message>
     <message>
         <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="53"/>
-        <source>Back</source>
-        <translation type="unfinished">上一步</translation>
+        <source>Next</source>
+        <translation>下一步</translation>
     </message>
     <message>
         <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="54"/>
-        <source>Finish</source>
-        <translation type="unfinished">完成</translation>
+        <source>Back</source>
+        <translation>上一步</translation>
     </message>
     <message>
         <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="55"/>
+        <source>Finish</source>
+        <translation>完成</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="56"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="57"/>
+        <source>Start</source>
+        <translation>开始</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="83"/>
+        <source>On this page, select the package you want to install.</source>
+        <translation>在此页面上，选择要安装的包。</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="86"/>
+        <source>This help is likely not to be of any help.</source>
+        <translation>这种帮助很可能帮不上忙。</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="92"/>
+        <source>Sorry, I already gave what help I could. Maybe you should try asking a human?</source>
+        <translation>对不起，我已经尽力提供帮助了。也许你应该试着问问人类？</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="95"/>
+        <source>Package Installer Wizard Help</source>
+        <translation>软件包安装向导帮助</translation>
     </message>
     <message>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
@@ -539,57 +564,75 @@
 <context>
     <name>WizardPackageInstallerIntroPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="74"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="106"/>
         <source>Version %1</source>
-        <translation type="unfinished"></translation>
+        <translation>版本 %1</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="75"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="107"/>
         <source>This wizard will help install a package</source>
-        <translation type="unfinished"></translation>
+        <translation>该向导将帮助安装软件包</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="81"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="114"/>
         <source>This program installs the Package:</source>
-        <translation type="unfinished"></translation>
+        <translation>此程序安装软件包：</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="92"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="125"/>
         <source>Choose Package</source>
-        <translation type="unfinished"></translation>
+        <translation>选择软件包</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="93"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="126"/>
         <source>CSP Package File(*.csppkg)</source>
-        <translation type="unfinished"></translation>
+        <translation>CSP软件包(*.csppkg)</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="119"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="146"/>
         <source>To</source>
-        <translation type="unfinished"></translation>
+        <translation>到</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="132"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="159"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
-        <translation type="unfinished">单击“下一步”继续，或单击“取消”退出安装。</translation>
+        <translation>单击“下一步”继续，或单击“取消”退出安装。</translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstallerResultPage</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="334"/>
+        <source>Install Result</source>
+        <translation>安装结果</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="335"/>
+        <source>Installation completed</source>
+        <translation>安装完成</translation>
+    </message>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="342"/>
+        <source>The package has been successfully installed</source>
+        <translation>软件包已成功安装</translation>
     </message>
 </context>
 <context>
     <name>WizardPackageInstallerStatusPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="150"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="188"/>
         <source>Install Status</source>
-        <translation type="unfinished"></translation>
+        <translation>安装状态</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="151"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="189"/>
         <source>install package</source>
-        <translation type="unfinished"></translation>
+        <translation>安装软件包</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="157"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="195"/>
         <source>install package ...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在安装软件包中......</translation>
     </message>
     <message>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
