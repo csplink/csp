@@ -165,18 +165,16 @@ bool MapTable::loadMaps(MapsType *maps, const QString &hal)
                 rtn = true;
             }
 
-            static const QStringList list = {"gpio"};
+            static const QStringList list = {"GPIO"};
             if (rtn)
             {
-                for (const QString &file : list)
+                for (const QString &module : list)
                 {
                     MapType map;
-                    loadMap(&map, QString(":/database/map/%1.yml").arg(file));
-                    const QFileInfo info(file);
-                    const QString basename = info.baseName().toLower();
-                    if (maps->contains(basename))
+                    loadMap(&map, QString(":/database/map/%1.yml").arg(module.toLower()));
+                    if (maps->contains(module))
                     {
-                        MapType &ref_map = (*maps)[basename];
+                        MapType &ref_map = (*maps)[module];
                         auto group_i = map.Groups.constBegin();
                         while (group_i != map.Groups.constEnd())
                         {
@@ -204,7 +202,7 @@ bool MapTable::loadMaps(MapsType *maps, const QString &hal)
                     }
                     else
                     {
-                        maps->insert(basename, map);
+                        maps->insert(module, map);
                     }
                 }
             }

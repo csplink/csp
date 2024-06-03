@@ -95,10 +95,10 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
         return;
     }
 
-    const QString function = Project.pinFunction(name);                          // such as "GPIO-Input"
-    const QString comment = Project.pinComment(name);                            // such as "LED0"
-    const bool locked = Project.pinLocked(name);                                 // such as "true"
-    const QString functionType = pinoutUnit->Functions[function].Type.toLower(); // such as "gpio"
+    const QString function = Project.pinFunction(name);                // such as "GPIO-Input"
+    const QString comment = Project.pinComment(name);                  // such as "LED0"
+    const bool locked = Project.pinLocked(name);                       // such as "true"
+    const QString functionType = pinoutUnit->Functions[function].Type; // such as "GPIO"
     const MapTable::MapsType maps = Repo.getMaps(Project.hal());
 
     const auto base_group_item = setPinBase(name, comment, pinoutUnit->Position, locked);

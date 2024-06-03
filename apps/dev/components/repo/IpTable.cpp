@@ -129,22 +129,20 @@ bool IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
                 rtn = true;
             }
 
-            static const QStringList list = {"gpio"};
+            static const QStringList list = {"GPIO"};
             if (rtn)
             {
-                for (const QString &file : list)
+                for (const QString &module : list)
                 {
                     IpType ip;
-                    rtn = loadIp(&ip, QString(":/database/ip/%1.yml").arg(file));
+                    rtn = loadIp(&ip, QString(":/database/ip/%1.yml").arg(module.toLower()));
                     if (!rtn)
                     {
                         break;
                     }
-                    const QFileInfo info(file);
-                    const QString basename = info.baseName().toLower();
-                    if (ips->contains(basename))
+                    if (ips->contains(module))
                     {
-                        IpType &ref_ip = (*ips)[basename];
+                        IpType &ref_ip = (*ips)[module];
                         auto ipIterator = ip.constBegin();
                         while (ipIterator != ip.constEnd())
                         {
@@ -154,7 +152,7 @@ bool IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
                     }
                     else
                     {
-                        ips->insert(basename, ip);
+                        ips->insert(module, ip);
                     }
                 }
             }
