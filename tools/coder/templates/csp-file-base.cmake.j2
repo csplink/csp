@@ -22,16 +22,12 @@
 # 2024-03-25     xqyjlj       initial version
 #
 #}
-##==< add user code begin header
-{%- if UserCode["header"] %}
-{{UserCode["header"]}}
-{%- else %}
 ##
 ## -----------------------------------------------------------------------------
-##  @author:            {{Base.Author}}
+##  @author:            {{Author}}
 ##  @file:              {{File}}
 ##  @brief:             {{Brief}}
-##  @coder_version:     {{Base.Version}} x {{CoderData.Version|default("unknown", boolean=True)}}
+##  @coder_version:     {{Version}} x {{CoderVersion|default("unknown", boolean=True)}}
 ##  @hal:               {{Project.Company}}.{{Project.Hal}}
 ##  @hal_version:       {{Project.HalVersion}}
 ##  @project:           {{Project.Name}}
@@ -45,60 +41,71 @@
 ##
 ## -----------------------------------------------------------------------------
 ##
-{%- endif %}
-##==> add user code end header
+
+##==< add user code begin header, do not change this comment!
+{{UserCode["header"]}}
+##==> add user code end header, do not change this comment!
 
 ############################### project settings ###############################
 {%- block project_settings %}
 {%- endblock %}
-##==< add user code begin project settings
-{{- UserCode["project settings"]}}
-##==> add user code end project settings
+##==< add user code begin project settings, do not change this comment!
+{{UserCode["project settings"]}}
+##==> add user code end project settings, do not change this comment!
 
 ################################## toolchains ##################################
-##==< add user code begin toolchains
+
+##==< add user code begin toolchains, do not change this comment!
 {%- if UserCode["toolchains"] %}
 {{UserCode["toolchains"]}}
 {%- else %}
     {%- block toolchains %}
     {%- endblock %}
 {%- endif %}
-##==> add user code end toolchains
+##==> add user code end toolchains, do not change this comment!
 
 ################################# project info #################################
-##==< add user code begin project info
+
+##==< add user code begin project info, do not change this comment!
 {%- if UserCode["project info"] %}
 {{UserCode["project info"]}}
 {%- else %}
     {%- block project_info %}
     {%- endblock %}
 {%- endif %}
-##==> add user code end project info
+##==> add user code end project info, do not change this comment!
 
 ##################################### flags ####################################
-##==< add user code begin flags
+
+##==< add user code begin flags, do not change this comment!
 {%- if UserCode["flags"] %}
 {{UserCode["flags"]}}
 {%- else %}
     {%- block flags %}
     {%- endblock %}
 {%- endif %}
-##==> add user code end flags
+##==> add user code end flags, do not change this comment!
 
 ##################################### files ####################################
-{%- block files %}
+{%  block files %}
 {%- endblock %}
-##==< add user code begin files
-##==> add user code end files
+
+##==< add user code begin files, do not change this comment!
+{{UserCode["files"]}}
+##==> add user code end files, do not change this comment!
 {% block includes %}
 {%- endblock %}
-##==< add user code begin includes
-##==> add user code end includes
-{%- block files_includes %}
+
+##==< add user code begin includes, do not change this comment!
+{{UserCode["includes"]}}
+##==> add user code end includes, do not change this comment!
+{%  block files_includes %}
 {%- endblock %}
 
 #################################### command ###################################
-{%- block command %}
+{%  block command %}
 {%- endblock %}
-##==< add user code begin command
-##==> add user code end command
+
+##==< add user code begin command, do not change this comment!
+{{UserCode["command"]}}
+##==> add user code end command, do not change this comment!

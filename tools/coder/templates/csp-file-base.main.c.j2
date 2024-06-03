@@ -22,16 +22,12 @@
 # 2024-03-22     xqyjlj       initial version
 #
 #}
-/**< add user code begin header */
-{%- if UserCode["header"] %}
-{{UserCode["header"]}}
-{%- else %}
 /**
  * *****************************************************************************
- *  @author:            {{Base.Author}}
+ *  @author:            {{Author}}
  *  @file:              {{File}}
  *  @brief:             {{Brief}}
- *  @coder_version:     {{Base.Version}} x {{CoderData.Version|default("unknown", boolean=True)}}
+ *  @coder_version:     {{Version}} x {{CoderVersion|default("unknown", boolean=True)}}
  *  @hal:               {{Project.Company}}.{{Project.Hal}}
  *  @hal_version:       {{Project.HalVersion}}
  *  @project:           {{Project.Name}}
@@ -45,54 +41,56 @@
  *
  * *****************************************************************************
  */
-{%- endif %}
-/**> add user code end header */
+
+/**< add user code begin header, do not change this comment! */
+{{UserCode["header"]}}
+/**> add user code end header, do not change this comment! */
 
 /********************************** includes **********************************/
 {%- block includes %}
 {%- endblock %}
-/**< add user code begin includes */
+/**< add user code begin includes, do not change this comment! */
 {{UserCode["includes"]}}
-/**> add user code end includes */
+/**> add user code end includes, do not change this comment! */
 
 /*********************************** typedef **********************************/
 {%- block typedef %}
 {%- endblock %}
-/**< add user code begin typedef */
+/**< add user code begin typedef, do not change this comment! */
 {{UserCode["typedef"]}}
-/**> add user code end typedef */
+/**> add user code end typedef, do not change this comment! */
 
 /*********************************** define ***********************************/
 {%- block define %}
 {%- endblock %}
-/**< add user code begin define */
+/**< add user code begin define, do not change this comment! */
 {{UserCode["define"]}}
-/**> add user code end define */
+/**> add user code end define, do not change this comment! */
 
 /************************************ macro ***********************************/
 {%- block macro %}
 {%- endblock %}
-/**< add user code begin macro */
+/**< add user code begin macro, do not change this comment! */
 {{UserCode["macro"]}}
-/**> add user code end macro */
+/**> add user code end macro, do not change this comment! */
 
 /****************************** extern variables ******************************/
 {%- block extern_variables %}
 {%- endblock %}
-/**< add user code begin extern variables */
+/**< add user code begin extern variables, do not change this comment! */
 {{UserCode["extern variables"]}}
-/**> add user code end extern variables */
+/**> add user code end extern variables, do not change this comment! */
 
 /**************************** functions prototypes ****************************/
 {%- block functions_prototypes %}
 {%- endblock %}
-/**< add user code begin functions prototypes */
+/**< add user code begin functions prototypes, do not change this comment! */
 {{UserCode["functions prototypes"]}}
-/**> add user code end functions prototypes */
+/**> add user code end functions prototypes, do not change this comment! */
 
-/**< add user code begin 0 */
+/**< add user code begin 0, do not change this comment! */
 {{UserCode["0"]}}
-/**> add user code end 0 */
+/**> add user code end 0, do not change this comment! */
 
 /**
  * @brief the application entry point.
@@ -102,25 +100,25 @@ int main(void)
 {
 {%- block main_init_body %}
 {%- endblock %}
-    /* infinite loop */
-    /**< add user code begin while.0 */
+    /** infinite loop, do not change this comment! */
+    /**< add user code begin while.0, do not change this comment! */
 {%- if UserCode["while.0"] %}
 {{UserCode["while.0"]}}
 {%- else %}
     while (1)
     {
-{%- endif %}
-        /**> add user code end while.0 */
+{%  endif %}
+        /**> add user code end while.0, do not change this comment! */
 
-        /**< add user code begin while.1 */
-{%- if UserCode[" while.1"] %}
-{{UserCode[" while.1"]}}
+        /**< add user code begin while.1, do not change this comment! */
+{%- if UserCode["while.1"] %}
+{{UserCode["while.1"]}}
 {%- else %}
     }
-{%- endif %}
-    /**> add user code end while.1 */
+{%  endif %}
+    /**> add user code end while.1, do not change this comment! */
 }
 
-/**< add user code begin 1 */
+/**< add user code begin 1, do not change this comment! */
 {{UserCode["1"]}}
-/**> add user code end 1 */
+/**> add user code end 1, do not change this comment! */
