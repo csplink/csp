@@ -35,6 +35,7 @@
 #include <QVBoxLayout>
 
 #include "Configure.h"
+#include "PackageDescriptionTable.h"
 #include "Settings.h"
 #include "WizardPackageInstaller.h"
 #include "quazip.h"
@@ -178,6 +179,157 @@ int WizardPackageInstallerIntroPage::nextId() const
     return WizardPackageInstaller::Page_Installer;
 }
 
+WizardPackageInstallerStatusPageInstallThread::WizardPackageInstallerStatusPageInstallThread(QObject *parent,
+                                                                                             const QString &path)
+    : QThread(parent),
+      m_packagePath(path)
+{
+}
+
+void WizardPackageInstallerStatusPageInstallThread::run()
+{
+    if (!unzip())
+    {
+        emit signalFinish(false);
+        return;
+    }
+
+    if (install())
+    {
+        emit signalFinish(false);
+        return;
+    }
+
+    emit signalFinish(true);
+}
+
+bool WizardPackageInstallerStatusPageInstallThread::unzip()
+{
+    bool rtn = false;
+
+    QuaZip archive(m_packagePath);
+    if (archive.open(QuaZip::mdUnzip))
+    {
+        QString dstPath = Settings.repository() + "/tmp";
+        QDir dir(dstPath);
+        if (!dir.exists())
+        {
+            dir.mkpath(dstPath);
+        }
+        int count = archive.getEntriesCount();
+        int i = 0;
+        QString fileName;
+
+        for (bool f = archive.goToFirstFile(); f; f = archive.goToNextFile())
+        {
+            fileName = archive.getCurrentFileName();
+
+            emit signalUpdateFileName(fileName);
+
+            if (fileName.endsWith("/"))
+            {
+                dir.mkpath(fileName);
+            }
+            else
+            {
+                QuaZipFile zipFile;
+                QFile dstFile;
+                int bytesRead;
+                static constexpr int blockSize = 1024 * 1024;
+                char buffer[blockSize] = {0};
+
+                zipFile.setZipName(archive.getZipName());
+                zipFile.setFileName(fileName);
+                zipFile.open(QIODevice::ReadOnly);
+                dstFile.setFileName(QString("%1/%2").arg(dstPath, fileName));
+
+                if (dstFile.open(QIODevice::WriteOnly))
+                {
+                    while ((bytesRead = zipFile.read(buffer, blockSize)) > 0)
+                    {
+                        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+                        dstFile.write(buffer, bytesRead);
+                    }
+                    dstFile.close();
+                }
+                else
+                {
+                    qCritical() << QString("Can not open file: %1").arg(dstFile.fileName());
+                    return rtn;
+                }
+                zipFile.close();
+            }
+
+            i++;
+            emit signalUpdateProgress((i * 100.0) / count);
+        }
+
+        QFileInfoList files =
+            dir.entryInfoList({}, QDir::Files | QDir::Dirs | QDir::Hidden | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+        count = files.count();
+        if (count == 1 && files[0].isDir())
+        {
+            dir.rename(files[0].absoluteFilePath(), Settings.repository() + "/tmp.tmp");
+            dir.rmdir(dstPath);
+            dir.rename(Settings.repository() + "/tmp.tmp", dstPath);
+        }
+
+        rtn = true;
+    }
+    else
+    {
+        qCritical() << QString("Can not open file: %1").arg(m_packagePath);
+    }
+
+    return rtn;
+}
+
+bool WizardPackageInstallerStatusPageInstallThread::install()
+{
+    bool rtn = false;
+    QString dstPath = Settings.repository() + "/tmp";
+    QDir dir(dstPath);
+    QFileInfoList files = dir.entryInfoList({"*.sdp"}, QDir::Files | QDir::Hidden);
+    int count = files.count();
+    if (count > 0)
+    {
+        PackageDescriptionTable::PackageDescriptionType packageDescription;
+        PackageDescriptionTable::loadPackageDescription(&packageDescription, files[0].absoluteFilePath());
+
+        const QString &name = packageDescription.Name;
+        const QString &type = packageDescription.Type;
+        const QString &vendor = packageDescription.Vendor;
+        const QString &version = packageDescription.Version;
+
+        QString parentPath = QString("%1/%2/%3").arg(Settings.repository(), type.toLower(), vendor);
+        QString path = QString("%1/%2").arg(parentPath, version);
+        QDir parentDir(parentPath);
+        if (!parentDir.exists())
+        {
+            if (!parentDir.mkpath(parentPath))
+            {
+                qCritical() << QString("Can not mkdir: %1").arg(parentPath);
+                return rtn;
+            }
+        }
+
+        if (!dir.rename(dstPath, path))
+        {
+            qCritical() << QString("Can not rename: %1 to %2").arg(dstPath, path);
+            return rtn;
+        }
+
+        rtn = true;
+    }
+    else
+    {
+        qCritical() << QString("Can not find package description file");
+        return rtn;
+    }
+
+    return rtn;
+}
+
 WizardPackageInstallerStatusPage::WizardPackageInstallerStatusPage(QWidget *parent)
     : QWizardPage(parent),
       m_isFinish(false),
@@ -236,15 +388,20 @@ void WizardPackageInstallerStatusPage::initializePage()
                 [this](int value) {
                     /** */
                     m_progressBar->setValue(value);
-                    if (value == m_progressBar->maximum())
-                    {
-                    }
                 });
 
-        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalFinish, this, [this]() {
-            m_isFinish = true;
-            emit completeChanged();
-        });
+        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalFinish, this,
+                [this](bool succeed) {
+                    if (succeed)
+                    {
+                        m_isFinish = true;
+                        emit completeChanged();
+                    }
+                    else
+                    {
+                        /** TODO */
+                    }
+                });
 
         m_threadInstall->start();
     }
@@ -258,73 +415,6 @@ bool WizardPackageInstallerStatusPage::isComplete() const
 int WizardPackageInstallerStatusPage::nextId() const
 {
     return WizardPackageInstaller::Page_Result;
-}
-
-WizardPackageInstallerStatusPageInstallThread::WizardPackageInstallerStatusPageInstallThread(QObject *parent,
-                                                                                             const QString &path)
-    : QThread(parent),
-      m_packagePath(path)
-{
-}
-
-void WizardPackageInstallerStatusPageInstallThread::run()
-{
-    QuaZip archive(m_packagePath);
-    if (archive.open(QuaZip::mdUnzip))
-    {
-        QString dstPath = Settings.repository();
-        QDir dir(dstPath);
-        int count = archive.getEntriesCount();
-        int i = 0;
-        QString fileName;
-
-        for (bool f = archive.goToFirstFile(); f; f = archive.goToNextFile())
-        {
-            fileName = archive.getCurrentFileName();
-
-            emit signalUpdateFileName(fileName);
-
-            if (fileName.endsWith("/"))
-            {
-                dir.mkpath(fileName);
-            }
-            else
-            {
-                QuaZipFile zipFile;
-                QFile dstFile;
-                int bytesRead;
-                static constexpr int blockSize = 1024 * 1024;
-                char buffer[blockSize] = {0};
-
-                zipFile.setZipName(archive.getZipName());
-                zipFile.setFileName(fileName);
-                zipFile.open(QIODevice::ReadOnly);
-                dstFile.setFileName(QString("%1/%2").arg(dstPath, fileName));
-
-                if (dstFile.open(QIODevice::WriteOnly))
-                {
-                    while ((bytesRead = zipFile.read(buffer, blockSize)) > 0)
-                    {
-                        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-                        dstFile.write(buffer, bytesRead);
-                    }
-                    dstFile.close();
-                }
-                else
-                {
-                }
-                zipFile.close();
-            }
-
-            i++;
-            emit signalUpdateProgress((i * 100.0) / count);
-        }
-    }
-    else
-    {
-    }
-
-    emit signalFinish();
 }
 
 WizardPackageInstallerResultPage::WizardPackageInstallerResultPage(QWidget *parent)

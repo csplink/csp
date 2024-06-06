@@ -108,11 +108,11 @@ void PropertyBrowserPin::updatePropertyByPin(QGraphicsItem *item)
 
     if (maps.contains(functionType))
     {
-        auto map = maps[functionType];                                   // such as "map/gpio.yml"
+        auto map = maps[functionType];                                   // such as "map/GPIO.yml"
         const auto fps = Project.pinConfigFunctionProperty(name);        // ping config function properties
         const auto function_mode = pinoutUnit->Functions[function].Mode; // such as "Input-Std <just string>"
         const IpTable::IpsType ips = Repo.getIps(Project.hal(), Project.targetChip());
-        const IpTable::IpType ip = ips[functionType];        // such as "apm32f103zet6/ip/gpio.yml"
+        const IpTable::IpType ip = ips[functionType];        // such as "apm32f103zet6/ip/GPIO.yml"
         const IpTable::IpMapType ip_map = ip[function_mode]; // such as "Input-Std <just struct>"
         auto ip_map_i = ip_map.constBegin();
         const auto type = pinoutUnit->Functions[function].Type; // such as "GPIO"

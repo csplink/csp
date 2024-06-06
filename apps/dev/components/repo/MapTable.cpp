@@ -119,8 +119,7 @@ bool MapTable::loadMap(MapType *map, const QString &hal, const QString &mapName)
     {
         if (!hal.isEmpty() && !mapName.isEmpty())
         {
-            const QString path =
-                QString("%1/hal/%2/map/%3.yml").arg(Settings.database(), hal.toLower(), mapName.toLower());
+            const QString path = QString("%1/hal/%2/map/%3.yml").arg(Settings.database(), hal, mapName);
             rtn = loadMap(map, path);
         }
         else
@@ -142,7 +141,7 @@ bool MapTable::loadMaps(MapsType *maps, const QString &hal)
     {
         if (!hal.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/map").arg(Settings.database(), hal.toLower());
+            const QString path = QString("%1/hal/%2/map").arg(Settings.database(), hal);
             const QDir dir(path);
             QFileInfoList files = dir.entryInfoList({"*.yml"}, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
             if (!files.isEmpty())
@@ -156,7 +155,7 @@ bool MapTable::loadMaps(MapsType *maps, const QString &hal)
                         break;
                     }
                     const QFileInfo info(file);
-                    auto basename = info.baseName().toLower();
+                    auto basename = info.baseName();
                     maps->insert(basename, map);
                 }
             }
@@ -171,7 +170,7 @@ bool MapTable::loadMaps(MapsType *maps, const QString &hal)
                 for (const QString &module : list)
                 {
                     MapType map;
-                    loadMap(&map, QString(":/database/map/%1.yml").arg(module.toLower()));
+                    loadMap(&map, QString(":/database/map/%1.yml").arg(module));
                     if (maps->contains(module))
                     {
                         MapType &ref_map = (*maps)[module];

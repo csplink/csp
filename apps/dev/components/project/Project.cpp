@@ -156,14 +156,14 @@ void CspProject::setHal(const QString &hal)
     m_project.Hal = hal;
 }
 
-QString CspProject::company() const
+QString CspProject::vendor() const
 {
-    return m_project.Company;
+    return m_project.Vendor;
 }
 
-void CspProject::setCompany(const QString &company)
+void CspProject::setVendor(const QString &vendor)
 {
-    m_project.Company = company;
+    m_project.Vendor = vendor;
 }
 
 QString CspProject::targetChip() const

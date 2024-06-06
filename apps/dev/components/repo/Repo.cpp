@@ -45,7 +45,7 @@ CspRepo::CspRepo()
       m_chipSummary(),
       m_isLoadedChipSummary(false),
       m_hal(),
-      m_company(),
+      m_vendor(),
       m_targetChip()
 {
     RepositoryTable::loadRepository(&m_repository, Settings.database() + "/repository.yml");
@@ -95,12 +95,12 @@ const IpTable::IpsType &CspRepo::getIps(const QString &hal, const QString &targe
     return m_ips;
 }
 
-const ChipSummaryTable::ChipSummaryType &CspRepo::getChipSummary(const QString &company, const QString &targetChip)
+const ChipSummaryTable::ChipSummaryType &CspRepo::getChipSummary(const QString &vendor, const QString &targetChip)
 {
-    if (company != m_company || targetChip != m_targetChip || !m_isLoadedChipSummary)
+    if (vendor != m_vendor || targetChip != m_targetChip || !m_isLoadedChipSummary)
     {
-        ChipSummaryTable::loadChipSummary(&m_chipSummary, company, targetChip);
-        m_company = company;
+        ChipSummaryTable::loadChipSummary(&m_chipSummary, vendor, targetChip);
+        m_vendor = vendor;
         m_targetChip = targetChip;
         m_isLoadedChipSummary = true;
     }

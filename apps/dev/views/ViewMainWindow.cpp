@@ -143,7 +143,7 @@ void ViewMainWindow::setPage(const StackIndexType index)
     }
     case STACK_INDEX_CHIP_CONFIGURE: {
         ui->stackedWidget->setCurrentIndex(STACK_INDEX_CHIP_CONFIGURE);
-        m_dockModuleTree->setModule(Project.company(), Project.targetChip());
+        m_dockModuleTree->setModule(Project.vendor(), Project.targetChip());
         break;
     }
     case STACK_INDEX_EMPTY: {

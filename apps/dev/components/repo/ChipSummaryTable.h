@@ -70,8 +70,8 @@ class ChipSummaryTable final
     typedef struct
     {
         QString ClockTree;
-        QString Company;
-        QMap<QString, QString> CompanyUrl;
+        QString Vendor;
+        QMap<QString, QString> VendorUrl;
         DocumentsType Documents;
         QString Hal;
         bool HasPowerPad;
@@ -89,8 +89,8 @@ class ChipSummaryTable final
     } ChipSummaryType;
 
     static bool loadChipSummary(ChipSummaryType *chipSummary, const QString &path);
-    static bool loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name);
-    static bool fileExists(const QString &company, const QString &name);
+    static bool loadChipSummary(ChipSummaryType *chipSummary, const QString &vendor, const QString &name);
+    static bool fileExists(const QString &vendor, const QString &name);
 
   private:
     explicit ChipSummaryTable();

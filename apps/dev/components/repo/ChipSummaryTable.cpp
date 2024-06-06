@@ -49,7 +49,7 @@ QT_YAML_GEN_PARSE_CODE(ChipSummaryTable::TargetProjectType, XMake, CMake, MdkArm
 #define QT_YAML_MAYBE_UNUSED_LIST {};
 
 QT_YAML_GEN_PARSE_CODE(ChipSummaryTable::LinkerType, DefaultHeapSize, DefaultStackSize)
-QT_YAML_GEN_PARSE_CODE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal, HasPowerPad,
+QT_YAML_GEN_PARSE_CODE(ChipSummaryTable::ChipSummaryType, ClockTree, Vendor, VendorUrl, Documents, Hal, HasPowerPad,
                        Illustrate, Introduction, Line, Modules, Name, Package, Series, Url, TargetProject, Toolchains,
                        Linker)
 } // namespace QT_YAML
@@ -64,7 +64,7 @@ QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::LinkerType, DefaultHeapSize, DefaultSta
 
 #undef QT_YAML_MAYBE_UNUSED_LIST
 #define QT_YAML_MAYBE_UNUSED_LIST {"Linker"};
-QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::ChipSummaryType, ClockTree, Company, CompanyUrl, Documents, Hal, HasPowerPad,
+QT_JSON_GEN_PARSE_CODE(ChipSummaryTable::ChipSummaryType, ClockTree, Vendor, VendorUrl, Documents, Hal, HasPowerPad,
                        Illustrate, Introduction, Line, Modules, Name, Package, Series, Url, TargetProject, Linker)
 #undef QT_YAML_MAYBE_UNUSED_LIST
 #define QT_YAML_MAYBE_UNUSED_LIST {};
@@ -132,15 +132,14 @@ bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
     return rtn;
 }
 
-bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &company, const QString &name)
+bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QString &vendor, const QString &name)
 {
     bool rtn = false;
     if (chipSummary != nullptr)
     {
-        if (!company.isEmpty() && !name.isEmpty())
+        if (!vendor.isEmpty() && !name.isEmpty())
         {
-            const QString path =
-                QString("%1/chips/%2/%3.yml").arg(Settings.database(), company.toLower(), name.toLower());
+            const QString path = QString("%1/chips/%2/%3.yml").arg(Settings.database(), vendor, name);
             rtn = loadChipSummary(chipSummary, path);
         }
         else
@@ -155,7 +154,7 @@ bool ChipSummaryTable::loadChipSummary(ChipSummaryType *chipSummary, const QStri
     return rtn;
 }
 
-bool ChipSummaryTable::fileExists(const QString &company, const QString &name)
+bool ChipSummaryTable::fileExists(const QString &vendor, const QString &name)
 {
-    return QFile::exists(QString("%1/chips/%2/%3.yml").arg(Settings.database(), company.toLower(), name.toLower()));
+    return QFile::exists(QString("%1/chips/%2/%3.yml").arg(Settings.database(), vendor, name));
 }

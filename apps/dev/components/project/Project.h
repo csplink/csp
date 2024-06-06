@@ -75,8 +75,8 @@ class CspProject final : public QObject
     QString hal() const;
     void setHal(const QString &hal);
 
-    QString company() const;
-    void setCompany(const QString &company);
+    QString vendor() const;
+    void setVendor(const QString &vendor);
 
     QString targetChip() const;
     void setTargetChip(const QString &targetChip);

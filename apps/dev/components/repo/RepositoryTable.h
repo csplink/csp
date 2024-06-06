@@ -57,7 +57,7 @@ class RepositoryTable final
     typedef struct
     {
         QString Core;
-        QString Company;
+        QString Vendor;
         QString Line;
         QString Series;
         QString Name;
@@ -77,9 +77,9 @@ class RepositoryTable final
 
     typedef QMap<QString, ChipLineType> ChipSeriesType;
 
-    typedef QMap<QString, ChipSeriesType> ChipCompanyType;
+    typedef QMap<QString, ChipSeriesType> ChipVendorType;
 
-    typedef QMap<QString, ChipCompanyType> ChipType;
+    typedef QMap<QString, ChipVendorType> ChipType;
 
     typedef struct
     {

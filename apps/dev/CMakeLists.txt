@@ -34,6 +34,7 @@ configure_file(
 file(GLOB COMPONENTS
         components/jobs/*.cpp components/jobs/*.h
         components/misc/*.cpp components/misc/*.h
+        components/package/*.cpp components/package/*.h
         components/parse/*.cpp components/parse/*.h
         components/project/*.cpp components/project/*.h
         components/repo/*.cpp components/repo/*.h
@@ -64,7 +65,7 @@ include_directories(
         .
         views views/dialogs views/docks
         widgets widgets/packages widgets/interface
-        components/jobs components/misc components/parse
+        components/jobs components/misc components/package components/parse
         components/project components/repo components/settings
         components/tools)
 

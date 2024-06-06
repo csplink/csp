@@ -60,15 +60,14 @@ PinoutTable::PinoutTable() = default;
 
 PinoutTable::~PinoutTable() = default;
 
-bool PinoutTable::loadPinout(PinoutType *pinout, const QString &company, const QString &hal, const QString &name)
+bool PinoutTable::loadPinout(PinoutType *pinout, const QString &vendor, const QString &hal, const QString &name)
 {
     bool rtn = false;
     if (pinout != nullptr)
     {
         if (!hal.isEmpty() && !name.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/%3/%4/pinout.yml")
-                                     .arg(Settings.database(), company.toLower(), hal.toLower(), name.toLower());
+            const QString path = QString("%1/hal/%2/%3/%4/pinout.yml").arg(Settings.database(), vendor, hal, name);
             rtn = loadPinout(pinout, path);
         }
         else
@@ -119,7 +118,7 @@ bool PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
                     const QMap<QString, FunctionType> &functions = pinout_i.value().Functions;
                     if (position > 0 && !type.isEmpty())
                     {
-                        if (type.toLower() == "i/o")
+                        if (type == "I/O")
                         {
                             if (functions.isEmpty())
                             {
@@ -127,8 +126,7 @@ bool PinoutTable::loadPinout(PinoutType *pinout, const QString &path)
                                 /** TODO: error */
                             }
                         }
-                        else if (type.toLower() == "power" || type.toLower() == "nc" || type.toLower() == "boot" ||
-                                 type.toLower() == "reset")
+                        else if (type == "Power" || type == "NC" || type == "Boot" || type == "Reset")
                         { /* do nothings */
                         }
                         else

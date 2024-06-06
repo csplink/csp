@@ -34,18 +34,18 @@
 static constexpr int margin = 6;
 
 GraphicsItemChipBody::GraphicsItemChipBody(const qreal width, const qreal height, const QString &name,
-                                           const QString &company, const QString &package)
+                                           const QString &vendor, const QString &package)
     : QGraphicsItem(nullptr)
 {
     Q_ASSERT(width > 0 && height > 0);
     Q_ASSERT(!name.isEmpty());
-    Q_ASSERT(!company.isEmpty());
+    Q_ASSERT(!vendor.isEmpty());
     Q_ASSERT(!package.isEmpty());
 
     m_width = width;
     m_height = height;
     m_name = name.toUpper();
-    m_company = company;
+    m_vendor = vendor;
     m_package = package.toUpper();
 
     m_font = new QFont("JetBrains Mono", QFont::ExtraBold);
@@ -102,8 +102,8 @@ void GraphicsItemChipBody::paint(QPainter *painter, const QStyleOptionGraphicsIt
     painter->drawText(QPointF((m_width - pixels) / 2, m_height * (0.9)), m_package);
 
     const int height = fm.height();
-    pixels = static_cast<int>(fm.horizontalAdvance(m_company) * 0.8);
-    painter->drawText(QPointF((m_width - pixels) / 2, m_height * (0.9) - height - 10), m_company);
+    pixels = static_cast<int>(fm.horizontalAdvance(m_vendor) * 0.8);
+    painter->drawText(QPointF((m_width - pixels) / 2, m_height * (0.9) - height - 10), m_vendor);
 
     /******************** draw border (with margin) **************************/
     QVarLengthArray<QLineF, 4> lines;

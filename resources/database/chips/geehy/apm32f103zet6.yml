@@ -23,8 +23,8 @@
 #
 
 ClockTree: APM32F103
-Company: Geehy
-CompanyUrl:
+Vendor: Geehy
+VendorUrl:
   en:
   zh_CN: https://geehy.com
 Documents:

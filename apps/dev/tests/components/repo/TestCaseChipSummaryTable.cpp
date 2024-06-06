@@ -36,7 +36,7 @@
 void TestCaseChipSummaryTable::check(const ChipSummaryTable::ChipSummaryType &chip_summary)
 {
     QVERIFY(!chip_summary.ClockTree.isEmpty());
-    QVERIFY(!chip_summary.Company.isEmpty());
+    QVERIFY(!chip_summary.Vendor.isEmpty());
     QVERIFY(!chip_summary.Hal.isEmpty());
     QVERIFY(!chip_summary.Line.isEmpty());
     QVERIFY(!chip_summary.Name.isEmpty());

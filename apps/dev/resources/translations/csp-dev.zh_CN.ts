@@ -112,8 +112,8 @@
     <message>
         <location filename="../../views/dialogs/DialogChooseChip.cpp" line="133"/>
         <location filename="../../views/dialogs/DialogChooseChip.cpp" line="264"/>
-        <source>Company</source>
-        <translation>公司</translation>
+        <source>Vendor</source>
+        <translation>供应商</translation>
     </message>
     <message>
         <location filename="../../views/dialogs/DialogChooseChip.cpp" line="136"/>
@@ -602,17 +602,17 @@
 <context>
     <name>WizardPackageInstallerResultPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="334"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="349"/>
         <source>Install Result</source>
         <translation>安装结果</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="335"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="350"/>
         <source>Installation completed</source>
         <translation>安装完成</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="342"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="357"/>
         <source>The package has been successfully installed</source>
         <translation>软件包已成功安装</translation>
     </message>
@@ -620,17 +620,17 @@
 <context>
     <name>WizardPackageInstallerStatusPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="188"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="273"/>
         <source>Install Status</source>
         <translation>安装状态</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="189"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="274"/>
         <source>install package</source>
         <translation>安装软件包</translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="195"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="280"/>
         <source>install package ...</source>
         <translation>正在安装软件包中......</translation>
     </message>
@@ -689,8 +689,8 @@
     </message>
     <message>
         <location filename="../../views/dialogs/DialogChooseChip.ui" line="290"/>
-        <source>Company Name</source>
-        <translation>公司名</translation>
+        <source>Vendor Name</source>
+        <translation>供应商名</translation>
     </message>
     <message>
         <location filename="../../views/dialogs/DialogChooseChip.ui" line="316"/>

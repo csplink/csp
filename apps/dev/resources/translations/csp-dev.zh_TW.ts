@@ -43,7 +43,7 @@
     <message>
         <location filename="../../views/dialogs/DialogChooseChip.cpp" line="133"/>
         <location filename="../../views/dialogs/DialogChooseChip.cpp" line="264"/>
-        <source>Company</source>
+        <source>Vendor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -506,17 +506,17 @@
 <context>
     <name>WizardPackageInstallerResultPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="334"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="349"/>
         <source>Install Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="335"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="350"/>
         <source>Installation completed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="342"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="357"/>
         <source>The package has been successfully installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -524,17 +524,17 @@
 <context>
     <name>WizardPackageInstallerStatusPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="188"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="273"/>
         <source>Install Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="189"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="274"/>
         <source>install package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="195"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="280"/>
         <source>install package ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -589,7 +589,7 @@
     </message>
     <message>
         <location filename="../../views/dialogs/DialogChooseChip.ui" line="290"/>
-        <source>Company Name</source>
+        <source>Vendor Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -81,10 +81,13 @@ class WizardPackageInstallerStatusPageInstallThread : public QThread
   signals:
     void signalUpdateFileName(const QString &name);
     void signalUpdateProgress(int value);
-    void signalFinish();
+    void signalFinish(bool succeed);
 
   private:
     QString m_packagePath;
+
+    bool unzip();
+    bool install();
 };
 
 class WizardPackageInstallerStatusPage : public QWizardPage

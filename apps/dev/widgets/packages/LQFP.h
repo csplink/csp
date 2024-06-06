@@ -42,7 +42,7 @@ class LQFP final : public QObject
     explicit LQFP(QObject *parent);
     ~LQFP() override;
 
-    QList<QGraphicsItem *> getLqfp(const QString &hal, const QString &company, const QString &name);
+    QList<QGraphicsItem *> getLqfp(const QString &hal, const QString &vendor, const QString &name);
 
   private:
     int m_pinCount = 0;

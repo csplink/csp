@@ -50,7 +50,7 @@ class DockModuleTree : public QDockWidget
     void setModule(const ChipSummaryTable::ChipSummaryType &chipSummary) const;
 
   public slots:
-    void setModule(const QString &company, const QString &name) const;
+    void setModule(const QString &vendor, const QString &name) const;
 
   private:
     Ui::DockModuleTree *ui;

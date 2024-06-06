@@ -43,10 +43,10 @@ void TestCasePinoutTable::loadPinout()
 {
     PinoutTable::PinoutType pinout;
     const QDir dir1(Settings.database() + "/hal");
-    const QFileInfoList companyDirs = dir1.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-    for (const QFileInfo &companyDir : companyDirs)
+    const QFileInfoList vendorDirs = dir1.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    for (const QFileInfo &vendorDir : vendorDirs)
     {
-        const QDir dir2(companyDir.absoluteFilePath());
+        const QDir dir2(vendorDir.absoluteFilePath());
         const QFileInfoList halDirs = dir2.entryInfoList({"*"}, QDir::Dirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
         for (const QFileInfo &halDir : halDirs)
         {

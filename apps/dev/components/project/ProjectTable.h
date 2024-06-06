@@ -55,7 +55,7 @@ class ProjectTable
 
     typedef struct
     {
-        QString Company;
+        QString Vendor;
         QString Hal;
         QString HalVersion;
         QStringList Modules;

@@ -74,10 +74,10 @@ void DockModuleTree::setModule(const ChipSummaryTable::ChipSummaryType &chipSumm
     ui->treeViewModule->expandAll();
 }
 
-void DockModuleTree::setModule(const QString &company, const QString &name) const
+void DockModuleTree::setModule(const QString &vendor, const QString &name) const
 {
     ChipSummaryTable::ChipSummaryType chipSummary;
-    ChipSummaryTable::loadChipSummary(&chipSummary, company, name);
+    ChipSummaryTable::loadChipSummary(&chipSummary, vendor, name);
 
     setModule(chipSummary);
 }

@@ -36,7 +36,7 @@
 class GraphicsItemChipBody final : public QGraphicsItem
 {
   public:
-    explicit GraphicsItemChipBody(qreal width, qreal height, const QString &name, const QString &company,
+    explicit GraphicsItemChipBody(qreal width, qreal height, const QString &name, const QString &vendor,
                                   const QString &package);
     ~GraphicsItemChipBody() override;
 
@@ -44,7 +44,7 @@ class GraphicsItemChipBody final : public QGraphicsItem
     qreal m_width;
     qreal m_height;
     QString m_name;
-    QString m_company;
+    QString m_vendor;
     QString m_package;
     QFont *m_font;
 

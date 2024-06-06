@@ -42,7 +42,7 @@ QT_JSON_GEN_PARSE_CODE(ProjectTable::LinkerType, HeapSize, StackSize)
 #undef QT_JSON_MAYBE_UNUSED_LIST
 #define QT_JSON_MAYBE_UNUSED_LIST                                                                                      \
     {"Modules", "Toolchains", "ToolchainsVersion", "TargetProject", "TargetProjectMinVersion", "Linker", "Version"};
-QT_JSON_GEN_PARSE_CODE(ProjectTable::ProjectType, Company, Hal, HalVersion, Modules, Package, TargetChip, Toolchains,
+QT_JSON_GEN_PARSE_CODE(ProjectTable::ProjectType, Vendor, Hal, HalVersion, Modules, Package, TargetChip, Toolchains,
                        ToolchainsVersion, Type, Name, PinConfigs, TargetProject, TargetProjectMinVersion, Linker,
                        Version)
 #undef QT_JSON_MAYBE_UNUSED_LIST
@@ -138,7 +138,7 @@ void ProjectTable::setValue(ProjectType &project)
     }
 
     {
-        const ChipSummaryTable::ChipSummaryType &chipSummary = Repo.getChipSummary(project.Company, project.TargetChip);
+        const ChipSummaryTable::ChipSummaryType &chipSummary = Repo.getChipSummary(project.Vendor, project.TargetChip);
         if (!project.Linker.HeapSize.isEmpty() && !Utils::isHex(project.Linker.HeapSize))
         {
             qWarning().noquote() << QObject::tr("The field ChipSummaryType::LinkerType::DefaultHeapSize is an "

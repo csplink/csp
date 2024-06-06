@@ -49,13 +49,13 @@ LQFP::LQFP(QObject *parent)
 
 LQFP::~LQFP() = default;
 
-QList<QGraphicsItem *> LQFP::getLqfp(const QString &hal, const QString &company, const QString &name)
+QList<QGraphicsItem *> LQFP::getLqfp(const QString &hal, const QString &vendor, const QString &name)
 {
     Q_ASSERT(!hal.isEmpty());
-    Q_ASSERT(!company.isEmpty());
+    Q_ASSERT(!vendor.isEmpty());
     Q_ASSERT(!name.isEmpty());
 
-    PinoutTable::loadPinout(&m_pinout, company, hal, name);
+    PinoutTable::loadPinout(&m_pinout, vendor, hal, name);
     m_pinCount = m_pinout.count();
     QList<QGraphicsItem *> items;
     QVector<QString> vector(m_pinCount); // sort pinout
@@ -120,7 +120,7 @@ QList<QGraphicsItem *> LQFP::getLqfp(const QString &hal, const QString &company,
         items << item;
     }
 
-    auto *item = new GraphicsItemChipBody(GetBodyLength(num), GetBodyLength(num), name, company,
+    auto *item = new GraphicsItemChipBody(GetBodyLength(num), GetBodyLength(num), name, vendor,
                                           "LQFP" + QString::number(m_pinCount));
     item->setPos(QPointF(LqfpPinWidth, LqfpPinWidth));
     items << item;

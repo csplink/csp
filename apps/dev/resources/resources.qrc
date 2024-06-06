@@ -12,7 +12,7 @@
         <file>packages/LQFP48.png</file>
         <file>packages/LQFP64.png</file>
         <file>packages/LQFP144.png</file>
-        <file>database/ip/gpio.yml</file>
-        <file>database/map/gpio.yml</file>
+        <file>database/ip/GPIO.yml</file>
+        <file>database/map/GPIO.yml</file>
     </qresource>
 </RCC>

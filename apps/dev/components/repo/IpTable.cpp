@@ -87,8 +87,7 @@ bool IpTable::loadIp(IpType *ip, const QString &hal, const QString &name, const 
     {
         if (!hal.isEmpty() && !name.isEmpty() && !ipName.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/%3/ip/%4.yml")
-                                     .arg(Settings.database(), hal.toLower(), name.toLower(), ipName.toLower());
+            const QString path = QString("%1/hal/%2/%3/ip/%4.yml").arg(Settings.database(), hal, name, ipName);
             rtn = loadIp(ip, path);
         }
     }
@@ -106,7 +105,7 @@ bool IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
     {
         if (!hal.isEmpty() && !name.isEmpty())
         {
-            const QString path = QString("%1/hal/%2/%3/ip").arg(Settings.database(), hal.toLower(), name.toLower());
+            const QString path = QString("%1/hal/%2/%3/ip").arg(Settings.database(), hal, name);
             const QDir dir(path);
             QFileInfoList files = dir.entryInfoList({"*.yml"}, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
             if (!files.isEmpty())
@@ -120,7 +119,7 @@ bool IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
                         break;
                     }
                     const QFileInfo info(file);
-                    auto basename = info.baseName().toLower();
+                    auto basename = info.baseName();
                     ips->insert(basename, ip);
                 }
             }
@@ -135,7 +134,7 @@ bool IpTable::loadIps(IpsType *ips, const QString &hal, const QString &name)
                 for (const QString &module : list)
                 {
                     IpType ip;
-                    rtn = loadIp(&ip, QString(":/database/ip/%1.yml").arg(module.toLower()));
+                    rtn = loadIp(&ip, QString(":/database/ip/%1.yml").arg(module));
                     if (!rtn)
                     {
                         break;

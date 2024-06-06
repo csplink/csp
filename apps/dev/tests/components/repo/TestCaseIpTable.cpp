@@ -41,7 +41,7 @@ void TestCaseIpTable::loadIp()
 {
     IpTable::IpType ip;
     bool rtn;
-    rtn = IpTable::loadIp(&ip, ":/database/ip/gpio.yml");
+    rtn = IpTable::loadIp(&ip, ":/database/ip/GPIO.yml");
     QVERIFY(rtn);
     QVERIFY(!ip.isEmpty());
 }

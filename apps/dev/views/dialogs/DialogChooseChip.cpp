@@ -51,7 +51,7 @@ DialogChooseChip::DialogChooseChip(QWidget *parent)
 
     connect(ui->dialogButtonBox, &QDialogButtonBox::clicked, this, &DialogChooseChip::slotDialogButtonBoxClicked);
     connect(ui->pushButtonName, &QPushButton::pressed, this, &DialogChooseChip::slotPushButtonNamePressed);
-    connect(ui->pushButtonCompany, &QPushButton::pressed, this, &DialogChooseChip::slotPushButtonCompanyPressed);
+    connect(ui->pushButtonVendor, &QPushButton::pressed, this, &DialogChooseChip::slotPushButtonVendorPressed);
     connect(ui->dialogButtonBox, &QDialogButtonBox::accepted, this, &DialogChooseChip::accept);
     connect(ui->dialogButtonBox, &QDialogButtonBox::rejected, this, &DialogChooseChip::reject);
 
@@ -69,26 +69,26 @@ void DialogChooseChip::findAllKeys()
 {
     RepositoryTable::RepositoryType repository = Repo.getRepository();
     RepositoryTable::ChipType &chips = repository.Chips;
-    QMap<QString, RepositoryTable::ChipCompanyType>::iterator chipsI = chips.begin();
+    QMap<QString, RepositoryTable::ChipVendorType>::iterator chipsI = chips.begin();
     while (chipsI != chips.end())
     {
-        const QString companyName = chipsI.key();
-        if (!m_companyKeys.contains(companyName))
+        const QString vendorName = chipsI.key();
+        if (!m_vendorKeys.contains(vendorName))
         {
-            m_companyKeys << companyName;
+            m_vendorKeys << vendorName;
         }
 
-        RepositoryTable::ChipCompanyType &company = chipsI.value();
-        QMap<QString, RepositoryTable::ChipSeriesType>::iterator companyI = company.begin();
-        while (companyI != company.end())
+        RepositoryTable::ChipVendorType &vendor = chipsI.value();
+        QMap<QString, RepositoryTable::ChipSeriesType>::iterator vendorI = vendor.begin();
+        while (vendorI != vendor.end())
         {
-            const QString seriesName = companyI.key();
+            const QString seriesName = vendorI.key();
             if (!m_seriesKeys.contains(seriesName))
             {
                 m_seriesKeys << seriesName;
             }
 
-            RepositoryTable::ChipSeriesType &series = companyI.value();
+            RepositoryTable::ChipSeriesType &series = vendorI.value();
             QMap<QString, RepositoryTable::ChipLineType>::iterator seriesI = series.begin();
             while (seriesI != series.end())
             {
@@ -113,7 +113,7 @@ void DialogChooseChip::findAllKeys()
                     }
 
                     chip.Name = lineI.key();
-                    chip.Company = companyName;
+                    chip.Vendor = vendorName;
                     chip.Series = seriesName;
                     chip.Line = lineName;
                     m_chips.append(chip);
@@ -122,7 +122,7 @@ void DialogChooseChip::findAllKeys()
                 }
                 ++seriesI;
             }
-            ++companyI;
+            ++vendorI;
         }
         ++chipsI;
     }
@@ -130,13 +130,13 @@ void DialogChooseChip::findAllKeys()
 
 void DialogChooseChip::initTreeViewChipFilter()
 {
-    m_companyRoot = new QStandardItem(tr("Company"));
+    m_vendorRoot = new QStandardItem(tr("Vendor"));
     m_seriesRoot = new QStandardItem(tr("Series"));
     m_lineRoot = new QStandardItem(tr("Line"));
     m_coreRoot = new QStandardItem(tr("Core"));
     m_packageRoot = new QStandardItem(tr("Package"));
 
-    m_companyRoot->setCheckable(true);
+    m_vendorRoot->setCheckable(true);
     m_seriesRoot->setCheckable(true);
     m_lineRoot->setCheckable(true);
     m_coreRoot->setCheckable(true);
@@ -145,21 +145,21 @@ void DialogChooseChip::initTreeViewChipFilter()
     auto *model = new QStandardItemModel(ui->treeViewChipFilter);
     model->setHorizontalHeaderLabels(QStringList(tr("Chip Filter")));
 
-    model->appendRow(m_companyRoot);
+    model->appendRow(m_vendorRoot);
     model->appendRow(m_seriesRoot);
     model->appendRow(m_lineRoot);
     model->appendRow(m_coreRoot);
     model->appendRow(m_packageRoot);
 
     QStringList::const_iterator iter;
-    for (iter = m_companyKeys.constBegin(); iter != m_companyKeys.constEnd(); ++iter)
+    for (iter = m_vendorKeys.constBegin(); iter != m_vendorKeys.constEnd(); ++iter)
     {
         const QString &str = *iter;
         auto *item = new QStandardItem(str);
         item->setCheckable(true);
-        m_companyItems.append(item);
+        m_vendorItems.append(item);
     }
-    m_companyRoot->appendRows(m_companyItems);
+    m_vendorRoot->appendRows(m_vendorItems);
 
     for (iter = m_seriesKeys.constBegin(); iter != m_seriesKeys.constEnd(); ++iter)
     {
@@ -261,7 +261,7 @@ void DialogChooseChip::initTableViewChipInfos()
     model->setHeaderData(5, Qt::Horizontal, tr("RAM"));
     model->setHeaderData(6, Qt::Horizontal, tr("IO"));
     model->setHeaderData(7, Qt::Horizontal, tr("Frequency"));
-    model->setHeaderData(8, Qt::Horizontal, tr("Company"));
+    model->setHeaderData(8, Qt::Horizontal, tr("Vendor"));
     model->setHeaderData(9, Qt::Horizontal, tr("Core"));
 
     for (const RepositoryTable::ChipInfoType &chip : qAsConst(m_chips))
@@ -275,7 +275,7 @@ void DialogChooseChip::initTableViewChipInfos()
         chips_item->append(new QStandardItem(QString::number(chip.Ram, 'f', 2)));
         chips_item->append(new QStandardItem(QString::number(chip.IO, 10)));
         chips_item->append(new QStandardItem(QString::number(chip.Frequency, 'f', 2)));
-        chips_item->append(new QStandardItem(chip.Company));
+        chips_item->append(new QStandardItem(chip.Vendor));
         chips_item->append(new QStandardItem(chip.Core));
         m_chipsItems.append(chips_item);
 
@@ -315,14 +315,14 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selectedIndex)
     const auto marketStatus = selectedIndex[1].data().toString();
     const auto price = selectedIndex[2].data().toString();
     const auto package = selectedIndex[3].data().toString();
-    const auto company = selectedIndex[8].data().toString();
+    const auto vendor = selectedIndex[8].data().toString();
     const auto packagePath = QString(":/packages/%1.png").arg(package);
 
     ui->labelMarketStatus->setText(marketStatus);
     ui->labelPrice->setText(price);
     ui->labelPackage->setText(package);
     ui->pushButtonName->setText(m_chipName);
-    ui->pushButtonCompany->setText(company);
+    ui->pushButtonVendor->setText(vendor);
 
     QPixmap image;
     if (QFile::exists(packagePath))
@@ -335,29 +335,29 @@ void DialogChooseChip::setChipsInfoUi(const QModelIndexList &selectedIndex)
     }
     ui->labelPackageImage->setPixmap(image);
 
-    if (ChipSummaryTable::fileExists(company, m_chipName))
+    if (ChipSummaryTable::fileExists(vendor, m_chipName))
     {
         ChipSummaryTable::ChipSummaryType chipSummary;
-        ChipSummaryTable::loadChipSummary(&chipSummary, company, m_chipName);
+        ChipSummaryTable::loadChipSummary(&chipSummary, vendor, m_chipName);
         m_halName = chipSummary.Hal;
         m_packageName = chipSummary.Package;
-        m_companyName = company;
+        m_vendorName = vendor;
 
         ui->textBrowserReadme->setMarkdown(QString("# %1\n\n").arg(m_chipName) +
                                            chipSummary.Illustrate[Settings.language()]);
         ui->pushButtonName->setProperty("user_url", chipSummary.Url[Settings.language()]);
-        ui->pushButtonCompany->setProperty("user_url", chipSummary.CompanyUrl[Settings.language()]);
+        ui->pushButtonVendor->setProperty("user_url", chipSummary.VendorUrl[Settings.language()]);
     }
     else
     {
         m_halName = QString();
         m_packageName = QString();
-        m_companyName = QString();
+        m_vendorName = QString();
 
         ui->textBrowserReadme->setMarkdown(QString("# %1\n\n").arg(m_chipName) +
                                            tr("The chip description file <%1.yml> does not exist").arg(m_chipName));
         ui->pushButtonName->setProperty("user_url", "");
-        ui->pushButtonCompany->setProperty("user_url", "");
+        ui->pushButtonVendor->setProperty("user_url", "");
     }
 }
 
@@ -374,7 +374,7 @@ void DialogChooseChip::slotDialogButtonBoxClicked(const QAbstractButton *button)
             return;
         }
 
-        if (m_halName.isEmpty() || m_packageName.isEmpty() || m_companyName.isEmpty())
+        if (m_halName.isEmpty() || m_packageName.isEmpty() || m_vendorName.isEmpty())
         {
             qWarning().noquote() << tr("The chip description file <%1.yml> does not exist").arg(m_chipName);
             return;
@@ -388,7 +388,7 @@ void DialogChooseChip::slotDialogButtonBoxClicked(const QAbstractButton *button)
                 Project.setHal(m_halName);
                 Project.setTargetChip(m_chipName);
                 Project.setPackage(m_packageName);
-                Project.setCompany(m_companyName);
+                Project.setVendor(m_vendorName);
                 Project.setType("chip");
                 Project.createProject();
             }
@@ -406,9 +406,9 @@ void DialogChooseChip::slotPushButtonNamePressed() const
     }
 }
 
-void DialogChooseChip::slotPushButtonCompanyPressed() const
+void DialogChooseChip::slotPushButtonVendorPressed() const
 {
-    const auto url = ui->pushButtonCompany->property("user_url").toString();
+    const auto url = ui->pushButtonVendor->property("user_url").toString();
     if (!url.isEmpty())
     {
         QDesktopServices::openUrl(QUrl(url));

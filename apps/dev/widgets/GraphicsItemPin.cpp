@@ -86,7 +86,7 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     int width, height;
     const auto b = painter->brush();
     /******************** draw background **************************/
-    if (m_pinoutUnit.Type.toUpper() == "I/O")
+    if (m_pinoutUnit.Type == "I/O")
     {
         if (m_locked)
         {
@@ -97,7 +97,7 @@ void GraphicsItemPin::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
             painter->setBrush(defaultColor);
         }
     }
-    else if (m_pinoutUnit.Type.toUpper() == "POWER")
+    else if (m_pinoutUnit.Type == "Power")
     {
         painter->setBrush(powerColor);
     }

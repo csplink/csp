@@ -41,7 +41,7 @@ void TestCaseMapTable::loadMap()
 {
     MapTable::MapType map;
     bool rtn;
-    rtn = MapTable::loadMap(&map, ":/database/map/gpio.yml");
+    rtn = MapTable::loadMap(&map, ":/database/map/GPIO.yml");
     QVERIFY(rtn);
     QVERIFY(!map.Groups.isEmpty());
     QVERIFY(!map.Properties.isEmpty());

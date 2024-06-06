@@ -52,7 +52,7 @@ class CspRepo final : public QObject
     const RepositoryTable::RepositoryType &getRepository();
     const MapTable::MapsType &getMaps(const QString &hal);
     const IpTable::IpsType &getIps(const QString &hal, const QString &targetChip);
-    const ChipSummaryTable::ChipSummaryType &getChipSummary(const QString &company, const QString &targetChip);
+    const ChipSummaryTable::ChipSummaryType &getChipSummary(const QString &vendor, const QString &targetChip);
 
   private:
     RepositoryTable::RepositoryType m_repository;
@@ -64,7 +64,7 @@ class CspRepo final : public QObject
     ChipSummaryTable::ChipSummaryType m_chipSummary;
     bool m_isLoadedChipSummary;
     QString m_hal;
-    QString m_company;
+    QString m_vendor;
     QString m_targetChip;
 
     Q_DISABLE_COPY_MOVE(CspRepo)

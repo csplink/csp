@@ -117,17 +117,17 @@ void ViewConfigure::initView()
 
 void ViewConfigure::initMainView()
 {
-    const QString package = Project.package().toLower();
-    const QString hal = Project.hal().toLower();
-    const QString company = Project.company();
+    const QString package = Project.package();
+    const QString hal = Project.hal();
+    const QString vendor = Project.vendor();
     const QString targetChip = Project.targetChip();
 
     delete ui->graphicsView->scene();
     const auto scene = new QGraphicsScene(ui->graphicsView);
-    if (package.startsWith("lqfp"))
+    if (package.startsWith("LQFP"))
     {
         LQFP lqfp(nullptr);
-        auto items = lqfp.getLqfp(hal, company, targetChip);
+        auto items = lqfp.getLqfp(hal, vendor, targetChip);
         for (const auto &item : items)
         {
             scene->addItem(item);
@@ -145,7 +145,7 @@ void ViewConfigure::initMainView()
 void ViewConfigure::initProjectSettings() const
 {
     const ChipSummaryTable::TargetProjectType &targetProject =
-        Repo.getChipSummary(Project.company(), Project.targetChip()).TargetProject;
+        Repo.getChipSummary(Project.vendor(), Project.targetChip()).TargetProject;
 
     ui->comboBoxBuildScriptIde->clear();
 
@@ -273,8 +273,7 @@ void ViewConfigure::initLinkerSettings() const
 
 void ViewConfigure::initPackageSettings() const
 {
-    const ChipSummaryTable::ChipSummaryType &chip_summary =
-        Repo.getChipSummary(Project.company(), Project.targetChip());
+    const ChipSummaryTable::ChipSummaryType &chip_summary = Repo.getChipSummary(Project.vendor(), Project.targetChip());
 
     if (!chip_summary.Hal.isEmpty())
     {
@@ -286,8 +285,7 @@ void ViewConfigure::initPackageSettings() const
 
 void ViewConfigure::initToolchainsSettings() const
 {
-    const ChipSummaryTable::ChipSummaryType &chip_summary =
-        Repo.getChipSummary(Project.company(), Project.targetChip());
+    const ChipSummaryTable::ChipSummaryType &chip_summary = Repo.getChipSummary(Project.vendor(), Project.targetChip());
 
     if (!chip_summary.Toolchains.isEmpty())
     {
@@ -333,7 +331,7 @@ void ViewConfigure::slotComboBoxBuildScriptIdeCurrentTextChanged(const QString &
         if (text == "MDK-Arm")
         {
             const ChipSummaryTable::TargetProjectType &targetProject =
-                Repo.getChipSummary(Project.company(), Project.targetChip()).TargetProject;
+                Repo.getChipSummary(Project.vendor(), Project.targetChip()).TargetProject;
             const QString minVersion = Project.targetProjectMinVersion();
             ui->comboBoxBuildScriptIdeMinVersion->clear();
             for (const QString &version : qAsConst(targetProject.MdkArm.Versions))

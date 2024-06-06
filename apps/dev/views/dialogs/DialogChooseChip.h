@@ -56,7 +56,7 @@ class DialogChooseChip final : public QDialog
                                                               const QItemSelection &deselected);
     void slotDialogButtonBoxClicked(const QAbstractButton *button);
     void slotPushButtonNamePressed() const;
-    void slotPushButtonCompanyPressed() const;
+    void slotPushButtonVendorPressed() const;
 
   private:
     Ui::dialogChooseChip *ui;
@@ -64,21 +64,21 @@ class DialogChooseChip final : public QDialog
     QString m_chipName;
     QString m_halName;
     QString m_packageName;
-    QString m_companyName;
+    QString m_vendorName;
 
-    QStringList m_companyKeys;
+    QStringList m_vendorKeys;
     QStringList m_seriesKeys;
     QStringList m_lineKeys;
     QStringList m_coreKeys;
     QStringList m_packageKeys;
 
-    QStandardItem *m_companyRoot = nullptr;
+    QStandardItem *m_vendorRoot = nullptr;
     QStandardItem *m_seriesRoot = nullptr;
     QStandardItem *m_lineRoot = nullptr;
     QStandardItem *m_coreRoot = nullptr;
     QStandardItem *m_packageRoot = nullptr;
 
-    QList<QStandardItem *> m_companyItems;
+    QList<QStandardItem *> m_vendorItems;
     QList<QStandardItem *> m_seriesItems;
     QList<QStandardItem *> m_lineItems;
     QList<QStandardItem *> m_coreItems;

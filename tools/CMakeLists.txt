@@ -25,11 +25,9 @@
 set(name custom_tools)
 
 add_subdirectory(coder)
-add_subdirectory(repo)
 
 add_custom_target(${name})
 
 add_dependencies(${name}
         custom_tools_coder
-        custom_tools_repo
 )

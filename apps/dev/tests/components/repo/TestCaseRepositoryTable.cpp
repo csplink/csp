@@ -45,20 +45,20 @@ void TestCaseRepositoryTable::loadRepository()
     rtn = RepositoryTable::loadRepository(&repository, Settings.database() + "/repository.yml");
     QVERIFY(rtn);
     const RepositoryTable::ChipType &chips = repository.Chips;
-    QMap<QString, RepositoryTable::ChipCompanyType>::const_iterator chipsI = chips.constBegin();
+    QMap<QString, RepositoryTable::ChipVendorType>::const_iterator chipsI = chips.constBegin();
     while (chipsI != chips.constEnd())
     {
         QVERIFY(!chipsI.key().isEmpty());
         QVERIFY(!chipsI.value().isEmpty());
 
-        const RepositoryTable::ChipCompanyType &company = chipsI.value();
-        QMap<QString, RepositoryTable::ChipSeriesType>::const_iterator companyI = company.constBegin();
-        while (companyI != company.constEnd())
+        const RepositoryTable::ChipVendorType &vendor = chipsI.value();
+        QMap<QString, RepositoryTable::ChipSeriesType>::const_iterator vendorI = vendor.constBegin();
+        while (vendorI != vendor.constEnd())
         {
-            QVERIFY(!companyI.key().isEmpty());
-            QVERIFY(!companyI.value().isEmpty());
+            QVERIFY(!vendorI.key().isEmpty());
+            QVERIFY(!vendorI.value().isEmpty());
 
-            const RepositoryTable::ChipSeriesType &series = companyI.value();
+            const RepositoryTable::ChipSeriesType &series = vendorI.value();
             QMap<QString, RepositoryTable::ChipLineType>::const_iterator seriesI = series.constBegin();
             while (seriesI != series.constEnd())
             {
@@ -91,7 +91,7 @@ void TestCaseRepositoryTable::loadRepository()
                 }
                 ++seriesI;
             }
-            ++companyI;
+            ++vendorI;
         }
         ++chipsI;
     }

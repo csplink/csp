@@ -1,7 +1,7 @@
 /*
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        PinoutTable.h
+ *  @file        PackageDescriptionTable.h
  *  @brief
  *
  * ****************************************************************************
@@ -18,51 +18,53 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
- *  Copyright (C) 2023-2023 xqyjlj<xqyjlj@126.com>
+ *  Copyright (C) 2023-2024 xqyjlj<xqyjlj@126.com>
  *
  * ****************************************************************************
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2023-05-28     xqyjlj       initial version
+ *  2023-06-04     xqyjlj       initial version
  */
 
-#ifndef PINOUT_TABLE_H
-#define PINOUT_TABLE_H
+#ifndef PACKAGE_DESCRIPTION_TABLE_H
+#define PACKAGE_DESCRIPTION_TABLE_H
 
 #include <QDebug>
 #include <QMap>
 
-class PinoutTable final
+class PackageDescriptionTable final
 {
   public:
     typedef struct
     {
-        QString Mode;
-        QString Type;
-    } FunctionType;
+        QString Name;
+        QString Email;
+        QMap<QString, QString> Website;
+    } AuthorType;
 
     typedef struct
     {
-        int Position;
+        AuthorType Author;
+        QString Name;
+        QString Version;
+        QString License;
         QString Type;
-        QMap<QString, FunctionType> Functions;
-    } PinoutUnitType;
+        QString Vendor;
+        QMap<QString, QString> VendorUrl;
+        QMap<QString, QString> Description;
+        QMap<QString, QString> Url;
+        QString SupportContact;
+    } PackageDescriptionType;
 
-    typedef QMap<QString, PinoutUnitType> PinoutType;
-
-    static bool loadPinout(PinoutType *pinout, const QString &path);
-    static bool loadPinout(PinoutType *pinout, const QString &vendor, const QString &hal, const QString &name);
+    static bool loadPackageDescription(PackageDescriptionType *packageDescription, const QString &path);
 
   private:
-    explicit PinoutTable();
-    ~PinoutTable();
+    explicit PackageDescriptionTable();
+    ~PackageDescriptionTable();
 };
 
-Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType)
-Q_DECLARE_METATYPE(PinoutTable::PinoutUnitType *)
+QDebug operator<<(QDebug, const PackageDescriptionTable::PackageDescriptionType &);
+QDebug operator<<(QDebug, const PackageDescriptionTable::AuthorType &);
 
-QDebug operator<<(QDebug, const PinoutTable::FunctionType &);
-QDebug operator<<(QDebug, const PinoutTable::PinoutUnitType &);
-
-#endif /** PINOUT_TABLE_H */
+#endif /** PACKAGE_DESCRIPTION_TABLE_H */

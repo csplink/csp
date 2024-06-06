@@ -42,6 +42,8 @@
 #include "TestCaseRepositoryTable.h"
 #include "TestCaseSettings.h"
 
+#include "Settings.h"
+
 #define TEST_EXEC(MODULE)                                                                                              \
     do                                                                                                                 \
     {                                                                                                                  \
@@ -57,6 +59,18 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    QString dstPath = Settings.repository() + "/tmp";
+    QDir dir(dstPath);
+    QFileInfoList files =
+        dir.entryInfoList({}, QDir::Files | QDir::Dirs | QDir::Hidden | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    int count = files.count();
+    if (count == 1 && files[0].isDir())
+    {
+        dir.rename(files[0].absoluteFilePath(), Settings.repository() + "/tmp.tmp");
+        dir.rmdir(dstPath);
+        dir.rename(Settings.repository() + "/tmp.tmp", dstPath);
+    }
 
     /** test components */
     {
