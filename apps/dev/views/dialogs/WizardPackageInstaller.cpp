@@ -194,7 +194,7 @@ void WizardPackageInstallerStatusPageInstallThread::run()
         return;
     }
 
-    if (install())
+    if (!install())
     {
         emit signalFinish(false);
         return;
@@ -301,7 +301,7 @@ bool WizardPackageInstallerStatusPageInstallThread::install()
         const QString &vendor = packageDescription.Vendor;
         const QString &version = packageDescription.Version;
 
-        QString parentPath = QString("%1/%2/%3").arg(Settings.repository(), type.toLower(), vendor);
+        QString parentPath = QString("%1/%2/%3/%4").arg(Settings.repository(), type.toLower(), vendor, name);
         QString path = QString("%1/%2").arg(parentPath, version);
         QDir parentDir(parentPath);
         if (!parentDir.exists())
