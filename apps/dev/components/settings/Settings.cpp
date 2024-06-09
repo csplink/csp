@@ -37,6 +37,7 @@
 #include <QProcess>
 #include <QStandardPaths>
 
+#include "Debug.h"
 #include "Settings.h"
 
 static constexpr const char *SettingsIniFilePath = "/csplink.ini";
@@ -51,6 +52,7 @@ static constexpr const char *SettingsKeyGit = "git";
 static constexpr const char *SettingsKeyPython = "python";
 static constexpr const char *SettingsKeyOpenPath = "openPath";
 static constexpr const char *SettingsKeyPackagePath = "packagePath";
+static constexpr const char *SettingsKeyRepositoryIndexFile = "repositoryIndexFile";
 
 Q_GLOBAL_STATIC(QScopedPointer<CspSettings>, instance)
 
@@ -88,8 +90,7 @@ void CspSettings::checkDirValid(const char *key, const QString &dir, const bool 
 
     if (!isValid)
     {
-        QMessageBox::critical(nullptr, tr("Critical"), tr("The '%1' <%2> path is not a directory!").arg(key, dir),
-                              QMessageBox::Ok);
+        SHOW_E(nullptr, tr("Critical"), tr("The '%1' <%2> path is not a directory!").arg(key, dir));
         QApplication::exit(-1);
     }
 }
@@ -278,6 +279,18 @@ QString CspSettings::packagePath() const
 void CspSettings::setPackagePath(const QString &path)
 {
     m_settings.setValue(SettingsKeyPackagePath, path);
+}
+
+QString CspSettings::repositoryIndexFile() const
+{
+    const QString path = QCoreApplication::applicationDirPath() + "/repository.index";
+
+    return m_settings.value(SettingsKeyRepositoryIndexFile, path).toString();
+}
+
+void CspSettings::setRepositoryIndexFile(const QString &path)
+{
+    m_settings.setValue(SettingsKeyRepositoryIndexFile, path);
 }
 
 QMap<QString, QString> CspSettings::env() const

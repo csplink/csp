@@ -33,8 +33,9 @@
 #include <QDebug>
 #include <QMap>
 
-class PackageDescriptionTable final
+class PackageDescriptionTable final : public QObject
 {
+    Q_OBJECT
   public:
     typedef struct
     {

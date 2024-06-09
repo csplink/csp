@@ -112,6 +112,9 @@ class CspSettings final : public QObject
     QString packagePath() const;
     void setPackagePath(const QString &path);
 
+    QString repositoryIndexFile() const;
+    void setRepositoryIndexFile(const QString &path);
+
     QMap<QString, QString> env() const;
 
   private:

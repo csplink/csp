@@ -37,6 +37,8 @@
 #include <QWizard>
 #include <QWizardPage>
 
+#include "Debug.h"
+
 class WizardPackageInstaller final : public QWizard
 {
     Q_OBJECT

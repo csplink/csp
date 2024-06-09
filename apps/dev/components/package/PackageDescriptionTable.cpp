@@ -29,6 +29,7 @@
 
 #include <QFile>
 
+#include "Debug.h"
 #include "PackageDescriptionTable.h"
 #include "QtJson.h"
 #include "QtYaml.h"
@@ -46,6 +47,15 @@ QT_JSON_GEN_PARSE_CODE(PackageDescriptionTable::AuthorType, Name, Email, Website
 QT_JSON_GEN_PARSE_CODE(PackageDescriptionTable::PackageDescriptionType, Author, Name, Version, License, Type, Vendor,
                        VendorUrl, Description, Url, SupportContact)
 } // namespace QT_JSON
+
+PackageDescriptionTable::PackageDescriptionTable()
+    : QObject()
+{
+}
+
+PackageDescriptionTable::~PackageDescriptionTable()
+{
+}
 
 bool PackageDescriptionTable::loadPackageDescription(PackageDescriptionType *packageDescription, const QString &path)
 {
@@ -65,7 +75,8 @@ bool PackageDescriptionTable::loadPackageDescription(PackageDescriptionType *pac
             }
             catch (std::exception &e)
             {
-                qCritical() << QString("try to parse file \"%1\" failed. reason: %2").arg(path, e.what());
+                SHOW_E(nullptr, tr("Package description table"),
+                       QString("Try to parse file \"%1\" failed. reason: %2").arg(path, e.what()));
                 throw;
             }
 
@@ -73,12 +84,12 @@ bool PackageDescriptionTable::loadPackageDescription(PackageDescriptionType *pac
         }
         else
         {
-            qWarning() << QString("the file %1 not found!").arg(path);
+            SHOW_W(nullptr, tr("Package description table"), QString("The file %1 not found!").arg(path));
         }
     }
     else
     {
-        qFatal("the packageDescription ptr is nullptr!");
+        SHOW_W(nullptr, tr("Package description table"), "The packageDescription ptr is nullptr!");
     }
     return rtn;
 }

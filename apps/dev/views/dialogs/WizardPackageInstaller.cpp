@@ -34,14 +34,11 @@
 #include <QVBoxLayout>
 
 #include "Configure.h"
-#include "Debug.h"
 #include "PackageDescriptionTable.h"
 #include "Settings.h"
 #include "WizardPackageInstaller.h"
 #include "quazip.h"
 #include "quazipfile.h"
-
-#define MESSAGE_BOX_TITLE tr("Package Installer")
 
 WizardPackageInstaller::WizardPackageInstaller(QWidget *parent, const QString &path)
     : QWizard(parent)
@@ -95,7 +92,7 @@ void WizardPackageInstaller::slotSelfShowHelp()
         message = tr("Sorry, I already gave what help I could. Maybe you should try asking a human?");
     }
 
-    QMessageBox::information(this, MESSAGE_BOX_TITLE, message);
+    QMessageBox::information(this, tr("Package Installer"), message);
 
     lastHelpMessage = message;
 }
@@ -214,9 +211,9 @@ bool WizardPackageInstallerStatusPageInstallThread::unzip()
     {
         QString dstPath = Settings.repository() + "/tmp";
         QDir dir(dstPath);
-        if (!dir.exists())
+        if (dir.exists())
         {
-            dir.mkpath(dstPath);
+            dir.removeRecursively();
         }
         int count = archive.getEntriesCount();
         int i = 0;
@@ -249,14 +246,13 @@ bool WizardPackageInstallerStatusPageInstallThread::unzip()
                 {
                     while ((bytesRead = zipFile.read(buffer, blockSize)) > 0)
                     {
-                        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
                         dstFile.write(buffer, bytesRead);
                     }
                     dstFile.close();
                 }
                 else
                 {
-                    SHOW_E(nullptr, MESSAGE_BOX_TITLE, QString("Can not open file: %1").arg(dstFile.fileName()));
+                    SHOW_E(nullptr, tr("Package Installer"), QString("Can not open file: %1").arg(dstFile.fileName()));
                     return rtn;
                 }
                 zipFile.close();
@@ -280,7 +276,7 @@ bool WizardPackageInstallerStatusPageInstallThread::unzip()
     }
     else
     {
-        SHOW_E(nullptr, MESSAGE_BOX_TITLE, QString("Can not open file: %1").arg(m_packagePath));
+        SHOW_E(nullptr, tr("Package Installer"), QString("Can not open file: %1").arg(m_packagePath));
     }
 
     return rtn;
@@ -310,14 +306,14 @@ bool WizardPackageInstallerStatusPageInstallThread::install()
         {
             if (!parentDir.mkpath(parentPath))
             {
-                SHOW_E(nullptr, MESSAGE_BOX_TITLE, QString("Can not mkdir: %1").arg(parentPath));
+                SHOW_E(nullptr, tr("Package Installer"), QString("Can not mkdir: %1").arg(parentPath));
                 return rtn;
             }
         }
 
         if (!dir.rename(dstPath, path))
         {
-            SHOW_E(nullptr, MESSAGE_BOX_TITLE, QString("Can not rename: %1 to %2").arg(dstPath, path));
+            SHOW_E(nullptr, tr("Package Installer"), QString("Can not rename: %1 to %2").arg(dstPath, path));
             return rtn;
         }
 
@@ -325,7 +321,7 @@ bool WizardPackageInstallerStatusPageInstallThread::install()
     }
     else
     {
-        SHOW_E(nullptr, MESSAGE_BOX_TITLE, QString("Can not find package description file"));
+        SHOW_E(nullptr, tr("Package Installer"), QString("Can not find package description file"));
         return rtn;
     }
 

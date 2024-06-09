@@ -2,6 +2,16 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_TW">
 <context>
+    <name>CspPackageManager</name>
+    <message>
+        <location filename="../../components/package/PackageManager.cpp" line="87"/>
+        <location filename="../../components/package/PackageManager.cpp" line="96"/>
+        <location filename="../../components/package/PackageManager.cpp" line="101"/>
+        <source>Package manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CspProject</name>
     <message>
         <location filename="../../components/project/Project.cpp" line="293"/>
@@ -17,12 +27,12 @@
 <context>
     <name>CspSettings</name>
     <message>
-        <location filename="../../components/settings/Settings.cpp" line="91"/>
+        <location filename="../../components/settings/Settings.cpp" line="93"/>
         <source>Critical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../components/settings/Settings.cpp" line="91"/>
+        <location filename="../../components/settings/Settings.cpp" line="93"/>
         <source>The &apos;%1&apos; &lt;%2&gt; path is not a directory!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -173,6 +183,16 @@
     <message>
         <location filename="../../widgets/GraphicsItemPin.cpp" line="200"/>
         <source>Reset State</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PackageDescriptionTable</name>
+    <message>
+        <location filename="../../components/package/PackageDescriptionTable.cpp" line="78"/>
+        <location filename="../../components/package/PackageDescriptionTable.cpp" line="87"/>
+        <location filename="../../components/package/PackageDescriptionTable.cpp" line="92"/>
+        <source>Package description table</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -415,90 +435,90 @@
 <context>
     <name>WizardPackageInstaller</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="47"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="46"/>
         <source>Package installer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="54"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="53"/>
         <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="55"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="54"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="56"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="55"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="57"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="56"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="58"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="57"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="84"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="83"/>
         <source>On this page, select the package you want to install.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="87"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="86"/>
         <source>This help is likely not to be of any help.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="93"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="92"/>
         <source>Sorry, I already gave what help I could. Maybe you should try asking a human?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="96"/>
-        <source>Package Installer Wizard Help</source>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="95"/>
+        <source>Package Installer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>WizardPackageInstallerIntroPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="107"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="106"/>
         <source>Version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="108"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="107"/>
         <source>This wizard will help install a package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="115"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="114"/>
         <source>This program installs the Package:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="126"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="125"/>
         <source>Choose Package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="127"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="126"/>
         <source>CSP Package File(*.csppkg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="147"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="146"/>
         <source>To</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="160"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="159"/>
         <source>Click Next to continue, or Cancel to exit Setup.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -506,17 +526,17 @@
 <context>
     <name>WizardPackageInstallerResultPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="424"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="422"/>
         <source>Install Result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="425"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="423"/>
         <source>Installation completed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="432"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="430"/>
         <source>The package has been successfully installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -524,18 +544,30 @@
 <context>
     <name>WizardPackageInstallerStatusPage</name>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="340"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="338"/>
         <source>Install Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="341"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="339"/>
         <source>install package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="347"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="345"/>
         <source>install package ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WizardPackageInstallerStatusPageInstallThread</name>
+    <message>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="255"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="279"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="309"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="316"/>
+        <location filename="../../views/dialogs/WizardPackageInstaller.cpp" line="324"/>
+        <source>Package Installer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
