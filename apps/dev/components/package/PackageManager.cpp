@@ -59,18 +59,28 @@ Q_GLOBAL_STATIC(QScopedPointer<CspPackageManager>, instance)
 
 CspPackageManager::CspPackageManager()
     : QObject(),
-      m_packages()
+      m_packages(),
+      m_repositoryIndexFilePath(Settings.repositoryIndexFile()),
+      m_workerThread(nullptr)
 {
-    const QString &path = Settings.repositoryIndexFile();
 
-    if (!QFile::exists(path))
+    m_workerThread = new CspPackageManagerWorkerThread(this->parent(), "", this);
+
+    if (!QFile::exists(m_repositoryIndexFilePath))
     {
-        QFile file(path);
+        QFile file(m_repositoryIndexFilePath);
         file.open(QIODevice::WriteOnly);
         file.close();
     }
 
-    loadPackages(&m_packages, path);
+    loadPackages(&m_packages, m_repositoryIndexFilePath);
+
+    dump();
+}
+
+CspPackageManager::~CspPackageManager()
+{
+    save();
 }
 
 CspPackageManager &CspPackageManager::singleton()
@@ -119,8 +129,46 @@ bool CspPackageManager::loadPackages(PackagesType *packages, const QString &path
     return rtn;
 }
 
+void CspPackageManager::uninstall(const QString &name, const QString &version)
+{
+    const QString path = packagePath(name, version);
+    QMutexLocker locker(&mutex);
+    QDir dir(path);
+
+    if (dir.exists())
+    {
+        dir.removeRecursively();
+        m_packages[name][version] = {};
+        save();
+    }
+    else
+    {
+        LOG_W() << QString("The package %1:%2 is not installed");
+    }
+}
+
 void CspPackageManager::install(const QString &path)
 {
+    QMutexLocker locker(&mutex);
+    if (!unzip(path))
+    {
+        emit signalFinish(false);
+        return;
+    }
+
+    if (!install())
+    {
+        emit signalFinish(false);
+        return;
+    }
+
+    emit signalFinish(true);
+}
+
+void CspPackageManager::installAsync(const QString &path)
+{
+    m_workerThread->setPath(path);
+    m_workerThread->start();
 }
 
 bool CspPackageManager::unzip(const QString &path)
@@ -197,7 +245,7 @@ bool CspPackageManager::unzip(const QString &path)
     }
     else
     {
-        SHOW_E(nullptr, tr("Package Installer"), QString("Can not open file: %1").arg(m_packagePath));
+        SHOW_E(nullptr, tr("Package Installer"), QString("Can not open file: %1").arg(path));
     }
 
     return rtn;
@@ -238,6 +286,12 @@ bool CspPackageManager::install()
             return rtn;
         }
 
+        PackageType package = {.Path = path};
+
+        m_packages[name][version] = package;
+
+        save();
+
         rtn = true;
     }
     else
@@ -267,4 +321,26 @@ bool CspPackageManager::packageInstalled(const QString &name, const QString &ver
 QString CspPackageManager::packagePath(const QString &name, const QString &version)
 {
     return m_packages[name][version].Path;
+}
+
+void CspPackageManager::save()
+{
+    const QString yaml = dump();
+
+    QFile file(m_repositoryIndexFilePath);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        file.write(yaml.toUtf8());
+        file.close();
+    }
+}
+
+QString CspPackageManager::dump()
+{
+    const YAML::Node yaml = YAML::convert<PackagesType>::encode(m_packages);
+    YAML::Emitter out;
+
+    out << yaml;
+
+    return QString(out.c_str());
 }

@@ -29,6 +29,7 @@
 
 #include <QCoreApplication>
 #include <QGlobalStatic>
+#include <QMessageBox>
 #include <QThread>
 
 #include "Debug.h"

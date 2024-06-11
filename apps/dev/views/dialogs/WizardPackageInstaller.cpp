@@ -35,10 +35,9 @@
 
 #include "Configure.h"
 #include "PackageDescriptionTable.h"
+#include "PackageManager.h"
 #include "Settings.h"
 #include "WizardPackageInstaller.h"
-#include "quazip.h"
-#include "quazipfile.h"
 
 WizardPackageInstaller::WizardPackageInstaller(QWidget *parent, const QString &path)
     : QWizard(parent)
@@ -178,162 +177,12 @@ int WizardPackageInstallerIntroPage::nextId() const
     return WizardPackageInstaller::Page_Installer;
 }
 
-WizardPackageInstallerStatusPageInstallThread::WizardPackageInstallerStatusPageInstallThread(QObject *parent,
-                                                                                             const QString &path)
-    : QThread(parent),
-      m_packagePath(path)
-{
-}
-
-void WizardPackageInstallerStatusPageInstallThread::run()
-{
-    if (!unzip())
-    {
-        emit signalFinish(false);
-        return;
-    }
-
-    if (!install())
-    {
-        emit signalFinish(false);
-        return;
-    }
-
-    emit signalFinish(true);
-}
-
-bool WizardPackageInstallerStatusPageInstallThread::unzip()
-{
-    bool rtn = false;
-
-    QuaZip archive(m_packagePath);
-    if (archive.open(QuaZip::mdUnzip))
-    {
-        QString dstPath = Settings.repository() + "/tmp";
-        QDir dir(dstPath);
-        if (dir.exists())
-        {
-            dir.removeRecursively();
-        }
-        int count = archive.getEntriesCount();
-        int i = 0;
-        QString fileName;
-
-        for (bool f = archive.goToFirstFile(); f; f = archive.goToNextFile())
-        {
-            fileName = archive.getCurrentFileName();
-
-            emit signalUpdateFileName(fileName);
-
-            if (fileName.endsWith("/"))
-            {
-                dir.mkpath(fileName);
-            }
-            else
-            {
-                QuaZipFile zipFile;
-                QFile dstFile;
-                int bytesRead;
-                static constexpr int blockSize = 1024 * 1024;
-                char buffer[blockSize] = {0};
-
-                zipFile.setZipName(archive.getZipName());
-                zipFile.setFileName(fileName);
-                zipFile.open(QIODevice::ReadOnly);
-                dstFile.setFileName(QString("%1/%2").arg(dstPath, fileName));
-
-                if (dstFile.open(QIODevice::WriteOnly))
-                {
-                    while ((bytesRead = zipFile.read(buffer, blockSize)) > 0)
-                    {
-                        dstFile.write(buffer, bytesRead);
-                    }
-                    dstFile.close();
-                }
-                else
-                {
-                    SHOW_E(nullptr, tr("Package Installer"), QString("Can not open file: %1").arg(dstFile.fileName()));
-                    return rtn;
-                }
-                zipFile.close();
-            }
-
-            i++;
-            emit signalUpdateProgress((i * 100.0) / count);
-        }
-
-        QFileInfoList files =
-            dir.entryInfoList({}, QDir::Files | QDir::Dirs | QDir::Hidden | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-        count = files.count();
-        if (count == 1 && files[0].isDir())
-        {
-            dir.rename(files[0].absoluteFilePath(), Settings.repository() + "/tmp.tmp");
-            dir.rmdir(dstPath);
-            dir.rename(Settings.repository() + "/tmp.tmp", dstPath);
-        }
-
-        rtn = true;
-    }
-    else
-    {
-        SHOW_E(nullptr, tr("Package Installer"), QString("Can not open file: %1").arg(m_packagePath));
-    }
-
-    return rtn;
-}
-
-bool WizardPackageInstallerStatusPageInstallThread::install()
-{
-    bool rtn = false;
-    QString dstPath = Settings.repository() + "/tmp";
-    QDir dir(dstPath);
-    QFileInfoList files = dir.entryInfoList({"*.sdp"}, QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-    int count = files.count();
-    if (count > 0)
-    {
-        PackageDescriptionTable::PackageDescriptionType packageDescription;
-        PackageDescriptionTable::loadPackageDescription(&packageDescription, files[0].absoluteFilePath());
-
-        const QString &name = packageDescription.Name;
-        const QString &type = packageDescription.Type;
-        const QString &vendor = packageDescription.Vendor;
-        const QString &version = packageDescription.Version;
-
-        QString parentPath = QString("%1/%2/%3/%4").arg(Settings.repository(), type.toLower(), vendor, name);
-        QString path = QString("%1/%2").arg(parentPath, version);
-        QDir parentDir(parentPath);
-        if (!parentDir.exists())
-        {
-            if (!parentDir.mkpath(parentPath))
-            {
-                SHOW_E(nullptr, tr("Package Installer"), QString("Can not mkdir: %1").arg(parentPath));
-                return rtn;
-            }
-        }
-
-        if (!dir.rename(dstPath, path))
-        {
-            SHOW_E(nullptr, tr("Package Installer"), QString("Can not rename: %1 to %2").arg(dstPath, path));
-            return rtn;
-        }
-
-        rtn = true;
-    }
-    else
-    {
-        SHOW_E(nullptr, tr("Package Installer"), QString("Can not find package description file"));
-        return rtn;
-    }
-
-    return rtn;
-}
-
 WizardPackageInstallerStatusPage::WizardPackageInstallerStatusPage(QWidget *parent)
     : QWizardPage(parent),
       m_isFinish(false),
       m_packagePath(),
       m_labelPackagePath(nullptr),
-      m_threadInstall(nullptr)
+      m_isInit(false)
 {
     setTitle(tr("Install Status"));
     setSubTitle(tr("install package"));
@@ -372,36 +221,31 @@ void WizardPackageInstallerStatusPage::initializePage()
 {
     m_packagePath = field("introduction.packagePath").toString();
     m_labelPackagePath->setText(m_packagePath);
-    if (m_threadInstall == nullptr)
+    if (!m_isInit)
     {
-        m_threadInstall = new WizardPackageInstallerStatusPageInstallThread(this, m_packagePath);
+        connect(&PackageManager, &CspPackageManager::signalUpdateFileName, this, [this](const QString &name) {
+            /** */
+            m_labelFileName->setText(name);
+        });
 
-        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalUpdateFileName, this,
-                [this](const QString &name) {
-                    /** */
-                    m_labelFileName->setText(name);
-                });
+        connect(&PackageManager, &CspPackageManager::signalUpdateProgress, this, [this](int value) {
+            /** */
+            m_progressBar->setValue(value);
+        });
 
-        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalUpdateProgress, this,
-                [this](int value) {
-                    /** */
-                    m_progressBar->setValue(value);
-                });
-
-        connect(m_threadInstall, &WizardPackageInstallerStatusPageInstallThread::signalFinish, this,
-                [this](bool succeed) {
-                    if (succeed)
-                    {
-                        m_isFinish = true;
-                        emit completeChanged();
-                    }
-                    else
-                    {
-                        /** TODO */
-                    }
-                });
-
-        m_threadInstall->start();
+        connect(&PackageManager, &CspPackageManager::signalFinish, this, [this](bool succeed) {
+            if (succeed)
+            {
+                m_isFinish = true;
+                emit completeChanged();
+            }
+            else
+            {
+                /** TODO */
+            }
+        });
+        m_isInit = true;
+        PackageManager.installAsync(m_packagePath);
     }
 }
 

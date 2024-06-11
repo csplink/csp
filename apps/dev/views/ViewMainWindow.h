@@ -66,6 +66,7 @@ class ViewMainWindow final : public QMainWindow
     void slotActionGenerateTriggered() const;
     void slotActionPackageInstallerTriggered();
     void slotProjectReloaded();
+    void slotDebugShowMessageBox(int type, const QString &title, const QString &message);
 
   private:
     Ui::ViewMainWindow *ui;

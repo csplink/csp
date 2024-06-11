@@ -31,7 +31,6 @@
 #define DEBUG_H
 
 #include <QDebug>
-#include <QMessageBox>
 #include <QObject>
 #include <QThread>
 

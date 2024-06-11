@@ -32,9 +32,12 @@
 
 #include <QDebug>
 #include <QMap>
+#include <QMutex>
 #include <QObject>
 #include <QStringList>
+#include <QThread>
 
+class CspPackageManagerWorkerThread;
 class CspPackageManager final : public QObject
 {
     Q_OBJECT
@@ -48,6 +51,7 @@ class CspPackageManager final : public QObject
     typedef QMap<QString, PackageVersionType> PackagesType;
 
     explicit CspPackageManager();
+    ~CspPackageManager();
     static CspPackageManager &singleton();
 
     static bool loadPackages(PackagesType *packages, const QString &path);
@@ -60,13 +64,50 @@ class CspPackageManager final : public QObject
     bool packageInstalled(const QString &name, const QString &version);
     QString packagePath(const QString &name, const QString &version);
 
+  signals:
+    void signalUpdateFileName(const QString &name);
+    void signalUpdateProgress(int value);
+    void signalFinish(bool succeed);
+
   private:
     PackagesType m_packages;
+    QString m_repositoryIndexFilePath;
+    CspPackageManagerWorkerThread *m_workerThread;
+    QMutex mutex;
 
     bool unzip(const QString &path);
     bool install();
+    void save();
+    QString dump();
 
     Q_DISABLE_COPY_MOVE(CspPackageManager)
+};
+
+class CspPackageManagerWorkerThread : public QThread
+{
+    Q_OBJECT
+  public:
+    explicit CspPackageManagerWorkerThread(QObject *parent, const QString &path, CspPackageManager *manager)
+        : QThread(parent),
+          m_packagePath(path),
+          m_manager(manager)
+    {
+    }
+
+    void setPath(const QString &path)
+    {
+        m_packagePath = path;
+    }
+
+  protected:
+    void run() override
+    {
+        m_manager->install(m_packagePath);
+    }
+
+  private:
+    QString m_packagePath;
+    CspPackageManager *m_manager;
 };
 
 #define PackageManager CspPackageManager::singleton()

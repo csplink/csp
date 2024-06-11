@@ -71,27 +71,6 @@ class WizardPackageInstallerIntroPage : public QWizardPage
     QPushButton *m_pushButtonChoosePackagePath;
 };
 
-class WizardPackageInstallerStatusPageInstallThread : public QThread
-{
-    Q_OBJECT
-  public:
-    explicit WizardPackageInstallerStatusPageInstallThread(QObject *parent, const QString &path);
-
-  protected:
-    void run() override;
-
-  signals:
-    void signalUpdateFileName(const QString &name);
-    void signalUpdateProgress(int value);
-    void signalFinish(bool succeed);
-
-  private:
-    QString m_packagePath;
-
-    bool unzip();
-    bool install();
-};
-
 class WizardPackageInstallerStatusPage : public QWizardPage
 {
     Q_OBJECT
@@ -107,7 +86,7 @@ class WizardPackageInstallerStatusPage : public QWizardPage
     QLabel *m_labelPackagePath;
     QProgressBar *m_progressBar;
     QLabel *m_labelFileName;
-    WizardPackageInstallerStatusPageInstallThread *m_threadInstall;
+    bool m_isInit;
 };
 
 class WizardPackageInstallerResultPage : public QWizardPage

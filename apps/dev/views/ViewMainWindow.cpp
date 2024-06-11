@@ -33,6 +33,7 @@
 #include <QMutex>
 #include <QThreadPool>
 
+#include "Debug.h"
 #include "DialogChooseChip.h"
 #include "ViewMainWindow.h"
 #include "WizardNewProject.h"
@@ -48,6 +49,8 @@ ViewMainWindow::ViewMainWindow(QWidget *parent)
       m_dockJobs(nullptr)
 {
     ui->setupUi(this);
+
+    (void)connect(&Debug, &CspDebug::signalShowMessageBox, this, &ViewMainWindow::slotDebugShowMessageBox);
 
     {
         QThreadPool::globalInstance()->setMaxThreadCount(qMin(4, QThreadPool::globalInstance()->maxThreadCount()));
@@ -214,4 +217,26 @@ void ViewMainWindow::slotActionPackageInstallerTriggered()
 void ViewMainWindow::slotProjectReloaded()
 {
     setupPage();
+}
+
+void ViewMainWindow::slotDebugShowMessageBox(int type, const QString &title, const QString &message)
+{
+    switch (type)
+    {
+    case CspDebug::MessageBoxInformation: {
+        QMessageBox::information(this, title, message);
+        break;
+    }
+    case CspDebug::MessageBoxWarning: {
+        QMessageBox::warning(this, title, message);
+        break;
+    }
+    case CspDebug::MessageBoxCritical: {
+        QMessageBox::critical(this, title, message);
+        break;
+    }
+    default: {
+        break;
+    }
+    }
 }
