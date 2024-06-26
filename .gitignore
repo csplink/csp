@@ -1,0 +1,15 @@
+#vscode
+.vscode
+
+#clion
+.idea
+
+# python
+__pycache__
+
+#project
+csplink.config
+
+#other
+*.bak
+

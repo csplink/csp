@@ -1,0 +1,4 @@
+QGraphicsView {
+    background: transparent;
+    border: none
+}
