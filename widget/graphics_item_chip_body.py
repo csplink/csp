@@ -45,7 +45,7 @@ class GraphicsItemChipBody(QGraphicsItem):
         self.m_font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
 
     def boundingRect(self) -> QRectF:
-        return QRectF(-0.5, -0.5, self.m_width + 1, self.m_height + 1)
+        return QRectF(0, 0, self.m_width, self.m_height)
 
     def shape(self) -> QPainterPath:
         path = QPainterPath()

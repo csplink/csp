@@ -24,7 +24,7 @@
 # 2024-06-24     xqyjlj       initial version
 #
 
-import math
+import math, sys
 
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtOpenGL import QGLWidget, QGLFormat, QGL
@@ -64,12 +64,13 @@ class GraphicsViewPanZoom(QGraphicsView):
                             | QPainter.RenderHint.LosslessImageRendering)
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
         # self.setSceneRect(4000 / 2, 4000 / 2, 4000, 4000)
+        # self.setSceneRect(sys.maxsize / 2, sys.maxsize / 2, sys.maxsize, sys.maxsize)
 
     def setupMatrix(self):
         scale = math.pow(2, (self.m_scale - (self.m_min_scale + self.m_max_scale) / 2) / self.m_resolution)
         matrix = QTransform()
         matrix.scale(scale, scale)
-        # matrix.rotate(90);
+        # matrix.rotate(90)
 
         self.setTransform(matrix)
 
