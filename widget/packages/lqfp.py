@@ -45,6 +45,11 @@ class LQFP():
         count = len(pinouts)
         num = count / 4
         items = []
+
+        item = GraphicsItemChipBody(self.getBodyLength(num), self.getBodyLength(num), name, vendor, f"LQFP{count}")
+        item.setPos(QPointF(self.pin_width, self.pin_width))
+        items.append(item)
+
         for name, pinout in pinouts.items():
             position = pinout["Position"] - 1
             if (position < num):
@@ -79,11 +84,8 @@ class LQFP():
                 x = self.pin_width + self.getBodyLength(num) - index * (self.pin_height + self.pin_spacing)
                 y = 0
 
-            item = GraphicsItemPin(w, h, direction, name)
+            item = GraphicsItemPin(w, h, direction, name, pinout)
             item.setPos(QPointF(x, y))
             items.append(item)
 
-        item = GraphicsItemChipBody(self.getBodyLength(num), self.getBodyLength(num), name, vendor, f"LQFP{count}")
-        item.setPos(QPointF(self.pin_width, self.pin_width))
-        items.append(item)
         return items

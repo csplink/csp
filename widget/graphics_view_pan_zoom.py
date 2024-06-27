@@ -24,12 +24,13 @@
 # 2024-06-24     xqyjlj       initial version
 #
 
-import math, sys
+import math
 
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtOpenGL import QGLWidget, QGLFormat, QGL
-from PyQt5.QtGui import QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat
-from PyQt5.QtWidgets import QWidget, QGraphicsScene, QGraphicsView, QGraphicsItem, QOpenGLWidget
+from PyQt5.QtGui import QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget, QMenu
+
+from widget.graphics_item_pin import GraphicsItemPin
 
 
 class GraphicsViewPanZoom(QGraphicsView):
@@ -62,8 +63,9 @@ class GraphicsViewPanZoom(QGraphicsView):
                             | QPainter.RenderHint.Qt4CompatiblePainting
                             | QPainter.RenderHint.LosslessImageRendering)
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
-        # self.setSceneRect(4000 / 2, 4000 / 2, 4000, 4000)
-        # self.setSceneRect(sys.maxsize / 2, sys.maxsize / 2, sys.maxsize, sys.maxsize)
+        INT_MAX = 2147483647
+        INT_MIN = -2147483648
+        self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
 
     def setupMatrix(self):
         scale = math.pow(2, (self.m_scale - (self.m_min_scale + self.m_max_scale) / 2) / self.m_resolution)
@@ -94,11 +96,21 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
 
     def wheelEvent(self, event: QWheelEvent):
+        # super().wheelEvent(event)
         scroll_amount = event.angleDelta()
         if scroll_amount.y() > 0:
             self.zoomIn(6)
         else:
             self.zoomOut(6)
+
+    def contextMenuEvent(self, event: QContextMenuEvent):
+        super().contextMenuEvent(event)
+        item = self.itemAt(event.pos())
+        if item != None and item.flags():
+            if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
+                menu = item.data(GraphicsItemPin.Data.MENU.value)
+                if menu != None:
+                    menu.exec(event.globalPos())
 
     def zoomIn(self, value: int):
         self.m_scale += value

@@ -24,12 +24,12 @@
 # 2024-06-24     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import QRectF, QPointF, QLineF
+from PyQt5.QtCore import QRectF, QPointF, QLineF, QObject
 from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics
 from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 
 
-class GraphicsItemChipBody(QGraphicsItem):
+class GraphicsItemChipBody(QGraphicsItem, QObject):
 
     def __init__(self, width: int, height: int, name: str, vendor: str, package: str, parent=None):
         super().__init__(parent=parent)

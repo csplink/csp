@@ -24,17 +24,14 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
-import sys
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtOpenGL import QGLWidget, QGLFormat, QGL
-from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QWidget, QGraphicsScene, QGraphicsView
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QWidget, QGraphicsScene
 
 from view.ui.Ui_chip_view import Ui_chipView
 from common.style import Style
 from common.icon import Icon
 from widget.packages.lqfp import LQFP
+from qfluentwidgets import (isDarkTheme)
 
 
 class chipView(Ui_chipView, QWidget):
@@ -52,7 +49,7 @@ class chipView(Ui_chipView, QWidget):
         self.toolButtonZoomOut.pressed.connect(lambda: self.graphicsView.zoomOut(6))
 
         scene = QGraphicsScene(self.graphicsView)
-        scene.setBackgroundBrush(QColor(0x555555))
+        scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
 
         lqfp = LQFP()
         items = lqfp.getItems("geehy", "csp_hal_apm32f1", "apm32f103zet6")

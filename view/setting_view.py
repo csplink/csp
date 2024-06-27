@@ -24,13 +24,12 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
-from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, FolderListSettingCard, OptionsSettingCard,
-                            PushSettingCard, HyperlinkCard, PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard,
-                            ExpandLayout, Theme, CustomColorSettingCard, setTheme, setThemeColor, RangeSettingCard,
-                            isDarkTheme)
+from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
+                            PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout,
+                            CustomColorSettingCard, setTheme, setThemeColor)
 from qfluentwidgets import FluentIcon as FIF
 from qfluentwidgets import InfoBar
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl, QStandardPaths
+from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QLabel, QFileDialog
 

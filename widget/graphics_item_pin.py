@@ -26,13 +26,22 @@
 
 from enum import Enum
 
-from PyQt5.QtCore import QRectF, QPointF, QLineF, Qt
+from PyQt5.QtCore import QRectF, Qt, QObject
 from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics
 from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
 
-class GraphicsItemPin(QGraphicsItem):
+class GraphicsItemPin(QGraphicsItem, QObject):
     pin_length = 100
+    default_color = QColor(185, 196, 202)
+    power_color = QColor(255, 246, 204)
+    other_color = QColor(187, 204, 0)
+    selected_color = QColor(0, 204, 68)
+
+    m_locked = False
+    m_comment = ""
+    m_function = ""
 
     class Direction(Enum):
         TOP = 1
@@ -40,19 +49,36 @@ class GraphicsItemPin(QGraphicsItem):
         LEFT = 3
         RIGHT = 4
 
-    def __init__(self, width: int, height: int, direction: Direction, name: str, parent=None):
-        super().__init__(parent=parent)
+    class Data(Enum):
+        MENU = 1
+
+    def __init__(self, width: int, height: int, direction: Direction, name: str, pinout_unit: dict):
+        super().__init__()
 
         self.m_width = int(width)
         self.m_height = int(height)
         self.m_direction = direction
         self.m_name = name
+        self.m_pinout_unit = pinout_unit
 
-        self.m_font = QFont("JetBrains Mono", QFont.Weight.ExtraBold)
-        self.m_font.setPointSize(12)
-        print(self.m_font.pointSize())
+        self.m_font = QFont("JetBrains Mono", 14, QFont.Weight.Bold)
         self.m_font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
         self.m_font_metrics = QFontMetrics(self.m_font)
+
+        self.m_menu = CheckableMenu()
+        self.m_menu.setFont(QFont("JetBrains Mono", 12))
+
+        self.m_menu.clear()
+        self.m_menu.addAction(Action(self.tr("Reset State")))
+        self.m_menu.addSeparator()
+
+        if "Functions" in pinout_unit:
+            for name, function in pinout_unit["Functions"].items():
+                action = Action(name)
+                action.setCheckable(True)
+                self.m_menu.addAction(action)
+
+        self.setData(GraphicsItemPin.Data.MENU.value, self.m_menu)
 
         self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
@@ -68,6 +94,18 @@ class GraphicsItemPin(QGraphicsItem):
 
     def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
         brush = painter.brush()
+
+        # draw background
+        painter.setPen(QPen(QColor(0, 0, 0), 1))
+        if self.m_pinout_unit["Type"] == "I/O":
+            if (self.m_locked):
+                painter.setBrush(self.selected_color)
+            else:
+                painter.setBrush(self.default_color)
+        elif self.m_pinout_unit["Type"] == "Power":
+            painter.setBrush(self.power_color)
+        else:
+            painter.setBrush(self.other_color)
 
         # draw body
         if (self.m_direction == GraphicsItemPin.Direction.LEFT):
@@ -92,7 +130,6 @@ class GraphicsItemPin(QGraphicsItem):
             height = self.pin_length
 
         painter.drawRect(x, y, width, height)
-        painter.setBrush(brush)
 
         #  draw text
         if self.m_direction == GraphicsItemPin.Direction.LEFT or self.m_direction == GraphicsItemPin.Direction.RIGHT:
@@ -102,5 +139,39 @@ class GraphicsItemPin(QGraphicsItem):
             text = self.m_font_metrics.elidedText(self.m_name, Qt.TextElideMode.ElideRight, self.pin_length - 20)
             painter.translate((self.m_width / 2) + 8, self.pin_length - 10 + y)
             painter.rotate(-90)
+        painter.setPen(QPen(QColor(0, 0, 0), 1))
         painter.setFont(self.m_font)
         painter.drawText(0, 0, text)
+
+        # draw comment
+        if self.m_comment == "":
+            text = self.m_function
+        else:
+            text = f"{self.m_comment}({self.m_function})"
+
+        if (self.m_direction == GraphicsItemPin.Direction.LEFT):
+            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                  self.m_width - self.pin_length - 20)
+            pixels = self.m_font_metrics.horizontalAdvance(text)
+            painter.translate(-pixels - 20, 0)
+        elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
+            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                  self.m_height - self.pin_length - 20)
+            pixels = self.m_font_metrics.horizontalAdvance(text)
+            painter.translate(-pixels - 20, 0)
+        elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
+            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                  self.m_width - self.pin_length - 20)
+            painter.translate(self.pin_length, 0)
+        else:
+            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                  self.m_height - self.pin_length - 20)
+            painter.translate(self.pin_length, 0)
+
+        if isDarkTheme():
+            painter.setPen(QPen(QColor(255, 255, 255), 1))
+
+        painter.drawText(0, 0, text)
+        painter.resetTransform()
+
+        painter.setBrush(brush)
