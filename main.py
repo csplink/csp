@@ -59,11 +59,11 @@ def main():
         translator.load(file)
         app.installTranslator(translator)
 
-    dirs = glob.glob(f"resource/fonts/*")
-    for dir in dirs:
-        files = glob.glob(f"{dir}/*.ttf")
-        for file in files:
-            QFontDatabase.addApplicationFont(file)
+    # dirs = glob.glob(f"resource/fonts/*")
+    # for dir in dirs:
+    #     files = glob.glob(f"{dir}/*.ttf")
+    #     for file in files:
+    #         QFontDatabase.addApplicationFont(file)
 
     w = MainWindowView()
     w.show()

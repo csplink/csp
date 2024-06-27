@@ -52,9 +52,7 @@ properties:
                             type: number
                           Run:
                             type: number
-                        required:
-                          - Lowest
-                          - Run
+                        required: ["Lowest", "Run"]
                       Flash:
                         type: integer
                       Frequency:
@@ -77,9 +75,7 @@ properties:
                             type: number
                           Min:
                             type: number
-                        required:
-                          - Max
-                          - Min
+                        required: ["Max", "Min"]
                       Voltage:
                         type: object
                         properties:
@@ -87,9 +83,7 @@ properties:
                             type: number
                           Min:
                             type: number
-                        required:
-                          - Max
-                          - Min
+                        required: ["Max", "Min"]
                     required:
                       - Core
                       - Current

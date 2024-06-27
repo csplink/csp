@@ -24,90 +24,60 @@
 # 2024-06-24     xqyjlj       initial version
 #
 
-from jsonschema import validate
-import yaml, json
+import jsonschema
+import yaml, os
 
-with open("C:/Users/xqyjlj/Documents/git/github/csplink/csp/resource/database/repository.yml", 'r',
-          encoding='utf-8') as f:
-    repository = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-with open("C:/Users/xqyjlj/Documents/git/github/csplink/csp/resource/database/schema/repository.yml",
-          'r',
-          encoding='utf-8') as f:
-    schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+class Database():
 
-validate(instance=repository, schema=schema)
+    @staticmethod
+    def checkPinout(pinout: dict, path: str) -> bool:
+        with open("resource/database/schema/pinout.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=pinout, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
 
-with open(
-        "C:/Users/xqyjlj/Documents/git/github/csplink/csp/resource/database/hal/geehy/csp_hal_apm32f1/apm32f103zet6/pinout.yml",
-        'r',
-        encoding='utf-8') as f:
-    pinout = yaml.load(f.read(), Loader=yaml.FullLoader)
+    @staticmethod
+    def getPinoutByPath(path: str) -> dict:
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                pinout = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-with open("C:/Users/xqyjlj/Documents/git/github/csplink/csp/resource/database/schema/pinout.yml", 'r',
-          encoding='utf-8') as f:
-    schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+            Database.checkPinout(pinout, path)
+            return pinout
+        else:
+            print(path)
 
-validate(instance=pinout, schema=schema)
+    @staticmethod
+    def getPinout(vendor: str, hal: str, name: str) -> dict:
+        return Database.getPinoutByPath(f"resource/database/hal/{vendor}/{hal}/{name}/pinout.yml")
 
-# class Database():
+    @staticmethod
+    def checkRepository(repository: dict, path: str) -> bool:
+        with open("resource/database/schema/repository.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=repository, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
 
-#     def  checkPinout(self,pinout:dict)->bool :
-#         if pinout!=None:
-#             if isinstance(pinout,list):
-#                 for pin_name, pin_info in  pinout.items():
+    @staticmethod
+    def getRepositoryByPath(path: str) -> dict:
+        with open(path, 'r', encoding='utf-8') as f:
+            repository = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-#             else:
-#                 return False
-#         else:
-#             return False
+        Database.checkRepository(repository, path)
+        return repository
 
-#     def getPinout(self, path: str) -> dict:
-#         with open(path, 'r', encoding='utf-8') as f:
-#             pinout = yaml.load(f.read(), Loader=yaml.FullLoader)
+    @staticmethod
+    def getRepository() -> dict:
+        return Database.getRepositoryByPath(f"resource/database/repository.yml")
 
-#         if pinout!=None:
-#             for p in  pinout.items():
 
-#         auto pinout_i = pinout->constBegin();
-#         while (pinout_i != pinout->constEnd())
-#         {
-#             const QString &key = pinout_i.key();
-#             const PinoutUnitType &unit = pinout_i.value();
-#             const int &position = unit.Position;
-#             const QString &type = unit.Type;
-#             const QMap<QString, FunctionType> &functions = pinout_i.value().Functions;
-#             if (position > 0 && !type.isEmpty())
-#             {
-#                 if (type == "I/O")
-#                 {
-#                     if (functions.isEmpty())
-#                     {
-#                         qCritical().noquote() << QString("%1: pinout %2`s functions is empty").arg(path, key);
-#                         /** TODO: error */
-#                     }
-#                 }
-#                 else if (type == "Power" || type == "NC" || type == "Boot" || type == "Reset")
-#                 { /* do nothings */
-#                 }
-#                 else
-#                 {
-#                     qCritical().noquote()
-#                         << QString("%1: pinout %2`s type<%3> is invalid").arg(path, key, type);
-#                     /** TODO: error */
-#                 }
-
-#                 ++pinout_i;
-#             }
-#             else
-#             {
-#                 /** TODO: QString("%1: pinout %2`s position<%3> is invalid").arg(path, key).arg(position);
-#                     *        QString("%1: pinout %2`s type is empty").arg(path, key);
-#                     */
-#             }
-#         }
-
-#         return result
-
-#     def getPinout(self, vendor: str, hal: str, name: str) -> dict:
-#         return self.getPinout(f"resource/database/hal/{vendor}/{hal}/{name}/pinout.yml")
+if __name__ == '__main__':
+    Database.getPinout("geehy", "csp_hal_apm32f1", "apm32f103zet6")
+    Database.getRepository()

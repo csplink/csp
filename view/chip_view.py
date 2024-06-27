@@ -28,13 +28,13 @@ import sys
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtOpenGL import QGLWidget, QGLFormat, QGL
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QWidget, QGraphicsScene, QGraphicsView
 
 from view.ui.Ui_chip_view import Ui_chipView
 from common.style import Style
 from common.icon import Icon
-from widget.graphics_item_chip_body import GraphicsItemChipBody
+from widget.packages.lqfp import LQFP
 
 
 class chipView(Ui_chipView, QWidget):
@@ -47,12 +47,18 @@ class chipView(Ui_chipView, QWidget):
         self.toolButtonZoomReset.setIcon(Icon.REFRESH)
         self.toolButtonZoomOut.setIcon(Icon.ZOOM_OUT)
 
-        # self.graphicsView.setSceneRect(sys.maxsize / 2, sys.maxsize / 2, sys.maxsize, sys.maxsize)
+        self.toolButtonZoomIn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
+        self.toolButtonZoomReset.pressed.connect(lambda: self.graphicsView.resize())
+        self.toolButtonZoomOut.pressed.connect(lambda: self.graphicsView.zoomOut(6))
 
         scene = QGraphicsScene(self.graphicsView)
+        scene.setBackgroundBrush(QColor(0x555555))
 
-        item = GraphicsItemChipBody(2080, 2080, "TEST", "TEST", "LQFP144")
-        scene.addItem(item)
+        lqfp = LQFP()
+        items = lqfp.getItems("geehy", "csp_hal_apm32f1", "apm32f103zet6")
+        for item in items:
+            scene.addItem(item)
         self.graphicsView.setScene(scene)
+        self.graphicsView.resize()
 
         Style.CHIP_VIEW.apply(self)

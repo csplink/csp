@@ -34,8 +34,8 @@ class GraphicsItemChipBody(QGraphicsItem):
     def __init__(self, width: int, height: int, name: str, vendor: str, package: str, parent=None):
         super().__init__(parent=parent)
 
-        self.m_width = width
-        self.m_height = height
+        self.m_width = int(width)
+        self.m_height = int(height)
         self.m_name = name.upper()
         self.m_vendor = vendor
         self.m_package = package.upper()

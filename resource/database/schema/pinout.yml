@@ -46,7 +46,12 @@ patternProperties:
             # required:
             #   - Type
             #   - Mode
-    required:
-      - Position
-      - Type
+    required: ["Position", "Type"]
+    if:
+      properties:
+        Type:
+          const: "I/O"
+    then:
+      required: ["Functions"]
+
 minProperties: 1

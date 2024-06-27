@@ -33,11 +33,10 @@ from PyQt5.QtWidgets import QWidget, QGraphicsScene, QGraphicsView, QGraphicsIte
 
 
 class GraphicsViewPanZoom(QGraphicsView):
+    selectedItemClicked = pyqtSignal(QGraphicsItem)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-
-        self.signalsSelectedItemClicked = pyqtSignal(QGraphicsItem)
 
         self.m_min_scale = 0
         self.m_max_scale = 1000
@@ -45,12 +44,12 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.m_scale = (self.m_min_scale + self.m_max_scale) / 2
         self.m_pressed = False
 
-        # self.m_opengl = QOpenGLWidget(self)
-        # fmt = QSurfaceFormat()
-        # fmt.setSamples(10)
-        # self.m_opengl.setFormat(fmt)
+        self.m_opengl = QOpenGLWidget(self)
+        fmt = QSurfaceFormat()
+        fmt.setSamples(10)
+        self.m_opengl.setFormat(fmt)
 
-        # self.setViewport(self.m_opengl)
+        self.setViewport(self.m_opengl)
         self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
         self.setInteractive(False)
         self.setAcceptDrops(False)
@@ -82,7 +81,7 @@ class GraphicsViewPanZoom(QGraphicsView):
         item = self.itemAt(event.pos())
         if item != None:
             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
-                self.signalsSelectedItemClicked.emit()
+                self.selectedItemClicked.emit(item)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         super().mouseMoveEvent(event)
@@ -90,7 +89,7 @@ class GraphicsViewPanZoom(QGraphicsView):
             self.viewport().setCursor(Qt.CursorShape.ClosedHandCursor)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
-        super().mouseMoveEvent(event)
+        super().mouseReleaseEvent(event)
         self.m_pressed = False
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
 
@@ -99,7 +98,6 @@ class GraphicsViewPanZoom(QGraphicsView):
         if scroll_amount.y() > 0:
             self.zoomIn(6)
         else:
-
             self.zoomOut(6)
 
     def zoomIn(self, value: int):
@@ -115,3 +113,28 @@ class GraphicsViewPanZoom(QGraphicsView):
             self.m_scale = self.m_min_scale
 
         self.setupMatrix()
+
+    def zoom(self, value):
+        self.m_scale = math.log(value, 2) * self.m_resolution + (self.m_min_scale + self.m_max_scale / 2)
+        if (self.m_scale >= self.m_max_scale):
+            self.m_scale = self.m_max_scale
+
+        if (self.m_scale <= self.m_min_scale):
+            self.m_scale = self.m_min_scale
+
+        self.setupMatrix()
+
+    def resize(self):
+        graphicsScene = self.scene()
+        if (graphicsScene != None):
+
+            graphicsSceneWidth = graphicsScene.itemsBoundingRect().width()
+            graphicsSceneHeight = graphicsScene.itemsBoundingRect().height()
+            viewWidth = self.width()
+            viewHeight = self.height()
+            sceneMax = graphicsSceneWidth if graphicsSceneWidth > graphicsSceneHeight else graphicsSceneHeight
+            viewMin = viewHeight if viewWidth > viewHeight else viewWidth
+            scale = viewMin / sceneMax
+
+            self.centerOn(graphicsSceneWidth / 2, graphicsSceneHeight / 2)
+            self.zoom(scale)
