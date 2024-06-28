@@ -26,13 +26,13 @@
 
 from enum import Enum
 
-from PyQt5.QtCore import QRectF, Qt, QObject
+from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics
-from PyQt5.QtWidgets import QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem, QAction
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
 
-class GraphicsItemPin(QGraphicsItem, QObject):
+class GraphicsItemPin(QGraphicsObject):
     pin_length = 100
     default_color = QColor(185, 196, 202)
     power_color = QColor(255, 246, 204)
@@ -42,6 +42,8 @@ class GraphicsItemPin(QGraphicsItem, QObject):
     m_locked = False
     m_comment = ""
     m_function = ""
+    m_current_checked_action = None
+    m_previous_checked_action = None
 
     class Direction(Enum):
         TOP = 1
@@ -66,12 +68,14 @@ class GraphicsItemPin(QGraphicsItem, QObject):
         self.m_font_metrics = QFontMetrics(self.m_font)
 
         self.m_menu = CheckableMenu()
-        self.m_menu.setFont(QFont("JetBrains Mono", 12))
-
+        self.m_menu.view.setStyleSheet('''MenuActionListWidget {
+                    font: 12px "JetBrains Mono", "Segoe UI", "Microsoft YaHei", "PingFang SC";
+                    font-weight: normal;
+            }''')
         self.m_menu.clear()
+        self.m_menu.triggered.connect(self.menuTriggered)
         self.m_menu.addAction(Action(self.tr("Reset State")))
         self.m_menu.addSeparator()
-
         if "Functions" in pinout_unit:
             for name, function in pinout_unit["Functions"].items():
                 action = Action(name)
@@ -131,7 +135,7 @@ class GraphicsItemPin(QGraphicsItem, QObject):
 
         painter.drawRect(x, y, width, height)
 
-        #  draw text
+        # draw text
         if self.m_direction == GraphicsItemPin.Direction.LEFT or self.m_direction == GraphicsItemPin.Direction.RIGHT:
             text = self.m_font_metrics.elidedText(self.m_name, Qt.TextElideMode.ElideRight, self.pin_length - 20)
             painter.translate(10 + x, (self.m_height / 2) + 8)
@@ -175,3 +179,19 @@ class GraphicsItemPin(QGraphicsItem, QObject):
         painter.resetTransform()
 
         painter.setBrush(brush)
+
+    def menuTriggered(self, action: QAction):
+        self.m_current_checked_action = action
+        if action.isCheckable():
+            if self.m_previous_checked_action != None and self.m_previous_checked_action != action:
+                self.m_previous_checked_action.setChecked(False)
+            if action.isChecked():
+                print(f"lock {action.text()}")
+        else:
+            if self.m_previous_checked_action != None:
+                self.m_previous_checked_action.setChecked(False)
+            self.m_previous_checked_action = None
+            print(f"unlock {action.text()}")
+
+        if self.m_previous_checked_action != action:
+            self.m_previous_checked_action = action

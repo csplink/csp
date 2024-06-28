@@ -24,8 +24,7 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
-from pyclbr import Class
-from PyQt5.QtCore import QUrl, QPoint, Qt
+from PyQt5.QtCore import QUrl, QPoint
 from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QStackedWidget, QWidget, QSplitter
 

@@ -29,7 +29,14 @@ import sys, os, glob
 from PyQt5.QtCore import Qt, QTranslator
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QFontDatabase
+
+# masking printing: 📢 Tips: QFluentWidgets Pro is now released. Click https://qfluentwidgets.com/pages/pro to learn more about it.
+stdout = sys.stdout
+sys.stdout = None
+
 from qfluentwidgets import FluentTranslator
+
+sys.stdout = stdout
 
 from common.settings import SETTINGS
 from view.main_view import MainWindowView
@@ -59,11 +66,11 @@ def main():
         translator.load(file)
         app.installTranslator(translator)
 
-    # dirs = glob.glob(f"resource/fonts/*")
-    # for dir in dirs:
-    #     files = glob.glob(f"{dir}/*.ttf")
-    #     for file in files:
-    #         QFontDatabase.addApplicationFont(file)
+    dirs = glob.glob(f"resource/fonts/*")
+    for dir in dirs:
+        files = glob.glob(f"{dir}/*.ttf")
+        for file in files:
+            QFontDatabase.addApplicationFont(file)
 
     w = MainWindowView()
     w.show()

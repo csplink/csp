@@ -27,8 +27,8 @@
 import math
 
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget, QMenu
+from PyQt5.QtGui import QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QResizeEvent
+from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget
 
 from widget.graphics_item_pin import GraphicsItemPin
 
@@ -111,6 +111,10 @@ class GraphicsViewPanZoom(QGraphicsView):
                 menu = item.data(GraphicsItemPin.Data.MENU.value)
                 if menu != None:
                     menu.exec(event.globalPos())
+
+    def resizeEvent(self, event: QResizeEvent):
+        super().resizeEvent(event)
+        self.resize()
 
     def zoomIn(self, value: int):
         self.m_scale += value
