@@ -24,7 +24,7 @@
 # 2024-06-17     xqyjlj       initial version
 #
 
-import sys, os, glob
+import sys, os, glob, getopt
 
 from PyQt5.QtCore import Qt, QTranslator
 from PyQt5.QtWidgets import QApplication
@@ -39,6 +39,7 @@ from qfluentwidgets import FluentTranslator
 sys.stdout = stdout
 
 from common.settings import SETTINGS
+from common.project import PROJECT
 from view.main_view import MainWindowView
 
 
@@ -79,5 +80,22 @@ def main():
     app.exec_()
 
 
+def checkOpt():
+    if len(sys.argv) == 2:
+        file = sys.argv[1]
+        if os.path.isfile(file):
+            PROJECT.path = file
+    elif len(sys.argv) > 2:
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], "hf:o:r:d:t:",
+                                       ["help", "file=", "output=", "repository=", "package_dir=", "toolchains_dir="])
+        except getopt.GetoptError:
+            # help()
+            sys.exit(2)
+    else:
+        return
+
+
 if __name__ == '__main__':
+    checkOpt()
     main()

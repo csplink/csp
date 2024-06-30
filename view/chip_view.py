@@ -24,14 +24,18 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
+import re
+
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QWidget, QGraphicsScene
+from PyQt5.QtWidgets import QWidget, QGraphicsScene, QMessageBox
+
+from qfluentwidgets import (isDarkTheme)
 
 from view.ui.Ui_chip_view import Ui_chipView
 from common.style import Style
 from common.icon import Icon
+from common.project import PROJECT
 from widget.packages.lqfp import LQFP
-from qfluentwidgets import (isDarkTheme)
 
 
 class chipView(Ui_chipView, QWidget):
@@ -44,6 +48,8 @@ class chipView(Ui_chipView, QWidget):
         self.toolButtonZoomReset.setIcon(Icon.REFRESH)
         self.toolButtonZoomOut.setIcon(Icon.ZOOM_OUT)
 
+        self.splitter.setSizes([100, 200, 300])
+
         self.toolButtonZoomIn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
         self.toolButtonZoomReset.pressed.connect(lambda: self.graphicsView.resize())
         self.toolButtonZoomOut.pressed.connect(lambda: self.graphicsView.zoomOut(6))
@@ -51,10 +57,15 @@ class chipView(Ui_chipView, QWidget):
         scene = QGraphicsScene(self.graphicsView)
         scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
 
-        lqfp = LQFP()
-        items = lqfp.getItems("geehy", "csp_hal_apm32f1", "apm32f103zet6")
-        for item in items:
-            scene.addItem(item)
+        if PROJECT.package != "unknown":
+            if re.match("^LQFP\d+$", PROJECT.package):
+                items = LQFP().getItems(PROJECT.vendor, PROJECT.hal, PROJECT.targetChip)
+            else:
+                QMessageBox.critical(self, self.tr("critical"),
+                                     self.tr(f"The package '{PROJECT.package}' is not supported at this time"))
+            if items != None:
+                for item in items:
+                    scene.addItem(item)
         self.graphicsView.setScene(scene)
         self.graphicsView.resize()
 

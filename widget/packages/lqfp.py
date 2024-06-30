@@ -41,7 +41,7 @@ class LQFP():
 
     def getItems(self, vendor: str, hal: str, name: str):
         pinouts = Database.getPinout(vendor, hal, name)
-        pinouts = dict(sorted(pinouts.items(), key=lambda d: d[1]["Position"], reverse=False))
+        pinouts = dict(sorted(pinouts.items(), key=lambda d: d[1]["position"], reverse=False))
         count = len(pinouts)
         num = count / 4
         items = []
@@ -51,7 +51,7 @@ class LQFP():
         items.append(item)
 
         for name, pinout in pinouts.items():
-            position = pinout["Position"] - 1
+            position = pinout["position"] - 1
             if (position < num):
                 index = position
                 direction = GraphicsItemPin.Direction.LEFT

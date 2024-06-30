@@ -12,4 +12,6 @@ csplink.config
 
 #other
 *.bak
+build
+build-*
 

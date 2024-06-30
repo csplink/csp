@@ -49,11 +49,13 @@ class Database():
             Database.checkPinout(pinout, path)
             return pinout
         else:
-            print(path)
+            print(f"{path} is not file!")
+            return {}
 
     @staticmethod
     def getPinout(vendor: str, hal: str, name: str) -> dict:
-        return Database.getPinoutByPath(f"resource/database/hal/{vendor}/{hal}/{name}/pinout.yml")
+        return Database.getPinoutByPath(
+            f"resource/database/hal/{vendor.lower()}/{hal.lower()}/{name.lower()}/pinout.yml")
 
     @staticmethod
     def checkRepository(repository: dict, path: str) -> bool:
@@ -67,17 +69,48 @@ class Database():
 
     @staticmethod
     def getRepositoryByPath(path: str) -> dict:
-        with open(path, 'r', encoding='utf-8') as f:
-            repository = yaml.load(f.read(), Loader=yaml.FullLoader)
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                repository = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-        Database.checkRepository(repository, path)
-        return repository
+            Database.checkRepository(repository, path)
+            return repository
+        else:
+            print(f"{path} is not file!")
+            return {}
 
     @staticmethod
     def getRepository() -> dict:
         return Database.getRepositoryByPath(f"resource/database/repository.yml")
 
+    @staticmethod
+    def checkSummary(summary: dict, path: str) -> bool:
+        with open("resource/database/schema/summary.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=summary, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
+
+    @staticmethod
+    def getSummaryByPath(path: str) -> dict:
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                summary = yaml.load(f.read(), Loader=yaml.FullLoader)
+
+            Database.checkSummary(summary, path)
+            return summary
+        else:
+            print(f"{path} is not file!")
+            return {}
+
+    @staticmethod
+    def getSummary(vendor: str, name: str) -> dict:
+        return Database.getSummaryByPath(f"resource/database/{vendor.lower()}/{name.lower()}.yml")
+
 
 if __name__ == '__main__':
     Database.getPinout("geehy", "csp_hal_apm32f1", "apm32f103zet6")
     Database.getRepository()
+    Database.getSummary("geehy", "apm32f103zet6")

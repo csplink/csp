@@ -24,7 +24,7 @@
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
 properties:
-  Chips:
+  chips:
     type: object
     additionalProperties: false
     patternProperties:
@@ -43,57 +43,57 @@ properties:
                   "^[A-Za-z0-9_]+$": # Name
                     type: object
                     properties:
-                      Core:
+                      core:
                         type: string
-                      Current:
+                      current:
                         type: object
                         properties:
-                          Lowest:
+                          lowest:
                             type: number
-                          Run:
+                          run:
                             type: number
-                        required: ["Lowest", "Run"]
-                      Flash:
+                        required: ["lowest", "run"]
+                      flash:
                         type: integer
-                      Frequency:
+                      frequency:
                         type: integer
-                      IO:
+                      io:
                         type: integer
-                      Package:
+                      package:
                         type: string
-                      Peripherals:
+                      peripherals:
                         type: object
                         patternProperties:
                           "^.+$":
                             type: integer
-                      Ram:
+                      ram:
                         type: integer
-                      Temperature:
+                      temperature:
                         type: object
                         properties:
-                          Max:
+                          max:
                             type: number
-                          Min:
+                          min:
                             type: number
-                        required: ["Max", "Min"]
-                      Voltage:
+                        required: ["max", "min"]
+                      voltage:
                         type: object
                         properties:
-                          Max:
+                          max:
                             type: number
-                          Min:
+                          min:
                             type: number
-                        required: ["Max", "Min"]
+                        required: ["max", "min"]
                     required:
-                      - Core
-                      - Current
-                      - Flash
-                      - Frequency
-                      - IO
-                      - Package
-                      - Peripherals
-                      - Ram
-                      - Temperature
-                      - Voltage
+                      - core
+                      - current
+                      - flash
+                      - frequency
+                      - io
+                      - package
+                      - peripherals
+                      - ram
+                      - temperature
+                      - voltage
 required:
-  - Chips
+  - chips

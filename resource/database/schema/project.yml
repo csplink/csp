@@ -13,45 +13,30 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        pinout.yml
+# @file        project.yml
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-06-26     xqyjlj       initial version
+# 2024-06-29     xqyjlj       initial version
 #
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
-additionalProperties: false
-patternProperties:
-  "^[A-Za-z0-9_+-]+$":
+properties:
+  version:
+    type: string
+    pattern: "^\\d+\\.\\d+\\.\\d+$"
+  name:
+    type: string
+    minLength: 1
+  vendor:
+    type: string
+    minLength: 1
+  targetChip:
+    type: string
+    minLength: 1
+  config:
     type: object
-    properties:
-      position:
-        type: integer
-      type:
-        enum: ["I/O", "Power", "Reset", "NC", "Boot"]
-      functions:
-        type: object
-        additionalProperties: false
-        patternProperties:
-          ^.+$:
-            type: ["object", "null"] #TODO: null
-            properties:
-              type:
-                type: ["string"]
-              mode:
-                type: ["string"]
-            # required:
-            #   - type
-            #   - mode
-    required: ["position", "type"]
-    if:
-      properties:
-        type:
-          const: "I/O"
-    then:
-      required: ["functions"]
-
-minProperties: 1
+required: ["version", "name", "vendor", "targetChip"]
+additionalProperties: false

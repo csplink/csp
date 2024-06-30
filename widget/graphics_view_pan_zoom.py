@@ -26,15 +26,38 @@
 
 import math
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QResizeEvent
+from PyQt5.QtCore import Qt, pyqtSignal, QRegExp
+from PyQt5.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent,
+                         QResizeEvent, QRegExpValidator)
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget
 
+from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit)
+
 from widget.graphics_item_pin import GraphicsItemPin
+from common.project import PROJECT
+
+
+class CommentMessageBox(MessageBoxBase):
+
+    def __init__(self, text: str, parent=None):
+        super().__init__(parent)
+        self.titleLabel = SubtitleLabel(self.tr('Set label'), self)
+        self.labelLineEdit = LineEdit(self)
+
+        self.labelLineEdit.setText(text)
+        self.labelLineEdit.setPlaceholderText(self.tr('Enter the user label'))
+        self.labelLineEdit.setClearButtonEnabled(True)
+        self.labelLineEdit.setValidator(QRegExpValidator(QRegExp("^[A-Za-z_][A-Za-z0-9_]+$")))
+
+        self.viewLayout.addWidget(self.titleLabel)
+        self.viewLayout.addWidget(self.labelLineEdit)
+
+        self.widget.setMinimumWidth(360)
 
 
 class GraphicsViewPanZoom(QGraphicsView):
     selectedItemClicked = pyqtSignal(QGraphicsItem)
+    resize_cnt = 0
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -103,6 +126,16 @@ class GraphicsViewPanZoom(QGraphicsView):
         else:
             self.zoomOut(6)
 
+    def mouseDoubleClickEvent(self, event):
+        super().mouseDoubleClickEvent(event)
+        item = self.itemAt(event.pos())
+        if item != None and item.flags():
+            if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
+                key = item.data(GraphicsItemPin.Data.LABEL.value)
+                w = CommentMessageBox(PROJECT.config(key, ""), self.window())
+                if w.exec():
+                    PROJECT.setConfig(key, w.labelLineEdit.text())
+
     def contextMenuEvent(self, event: QContextMenuEvent):
         super().contextMenuEvent(event)
         item = self.itemAt(event.pos())
@@ -114,7 +147,9 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
-        self.resize()
+        if self.resize_cnt < 3:
+            self.resize_cnt += 1
+            self.resize()
 
     def zoomIn(self, value: int):
         self.m_scale += value
@@ -141,16 +176,19 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.setupMatrix()
 
     def resize(self):
-        graphicsScene = self.scene()
-        if (graphicsScene != None):
+        graphics_scene = self.scene()
 
-            graphicsSceneWidth = graphicsScene.itemsBoundingRect().width()
-            graphicsSceneHeight = graphicsScene.itemsBoundingRect().height()
-            viewWidth = self.width()
-            viewHeight = self.height()
-            sceneMax = graphicsSceneWidth if graphicsSceneWidth > graphicsSceneHeight else graphicsSceneHeight
-            viewMin = viewHeight if viewWidth > viewHeight else viewWidth
-            scale = viewMin / sceneMax
+        if (graphics_scene != None):
+            graphics_scene_width = graphics_scene.itemsBoundingRect().width()
+            graphics_scene_height = graphics_scene.itemsBoundingRect().height()
+            view_width = self.width()
+            view_height = self.height()
+            scene_max = graphics_scene_width if graphics_scene_width > graphics_scene_height else graphics_scene_height
+            view_min = view_height if view_width > view_height else view_width
+            if scene_max == 0:
+                return
 
-            self.centerOn(graphicsSceneWidth / 2, graphicsSceneHeight / 2)
+            scale = view_min / scene_max
+
+            self.centerOn(graphics_scene_width / 2, graphics_scene_height / 2)
             self.zoom(scale)

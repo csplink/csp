@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Users\xqyjlj\Desktop\csp\view\ui\chip_view.ui'
+# Form implementation generated from reading ui file 'd:\Users\xqyjlj\Documents\git\github\csplink\csp\view\ui\chip_view.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -14,10 +14,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_chipView(object):
     def setupUi(self, chipView):
         chipView.setObjectName("chipView")
-        chipView.resize(1342, 994)
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(chipView)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.frame = SimpleCardWidget(chipView)
+        chipView.resize(900, 900)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(chipView)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.splitter = QtWidgets.QSplitter(chipView)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setObjectName("splitter")
+        self.frame = SimpleCardWidget(self.splitter)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -26,8 +29,16 @@ class Ui_chipView(object):
         self.treeView = TreeView(self.frame)
         self.treeView.setObjectName("treeView")
         self.horizontalLayout_2.addWidget(self.treeView)
-        self.horizontalLayout_3.addWidget(self.frame)
-        self.frame_2 = SimpleCardWidget(chipView)
+        self.frame_3 = SimpleCardWidget(self.splitter)
+        self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setObjectName("frame_3")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_3)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.treeView_2 = TreeView(self.frame_3)
+        self.treeView_2.setObjectName("treeView_2")
+        self.horizontalLayout_3.addWidget(self.treeView_2)
+        self.frame_2 = SimpleCardWidget(self.splitter)
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
@@ -45,6 +56,7 @@ class Ui_chipView(object):
         spacerItem = QtWidgets.QSpacerItem(463, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.toolButtonZoomIn = ToolButton(self.widget_2)
+        self.toolButtonZoomIn.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.toolButtonZoomIn.setText("")
         self.toolButtonZoomIn.setObjectName("toolButtonZoomIn")
         self.horizontalLayout.addWidget(self.toolButtonZoomIn)
@@ -59,15 +71,13 @@ class Ui_chipView(object):
         spacerItem1 = QtWidgets.QSpacerItem(462, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.verticalLayout_2.addWidget(self.widget_2)
-        self.horizontalLayout_3.addWidget(self.frame_2)
-        self.horizontalLayout_3.setStretch(0, 1)
-        self.horizontalLayout_3.setStretch(1, 5)
+        self.horizontalLayout_4.addWidget(self.splitter)
 
         self.retranslateUi(chipView)
         QtCore.QMetaObject.connectSlotsByName(chipView)
 
     def retranslateUi(self, chipView):
         _translate = QtCore.QCoreApplication.translate
-        chipView.setWindowTitle(_translate("chipView", "Form"))
+        chipView.setWindowTitle(_translate("chipView", "chipView"))
 from qfluentwidgets import SimpleCardWidget, ToolButton, TreeView
 from widget.graphics_view_pan_zoom import GraphicsViewPanZoom

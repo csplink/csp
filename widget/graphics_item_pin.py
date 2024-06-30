@@ -31,6 +31,8 @@ from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetric
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem, QAction
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
+from common.project import PROJECT
+
 
 class GraphicsItemPin(QGraphicsObject):
     pin_length = 100
@@ -39,20 +41,24 @@ class GraphicsItemPin(QGraphicsObject):
     other_color = QColor(187, 204, 0)
     selected_color = QColor(0, 204, 68)
 
+    m_name = ""
     m_locked = False
-    m_comment = ""
+    m_label = ""
     m_function = ""
     m_current_checked_action = None
     m_previous_checked_action = None
 
     class Direction(Enum):
-        TOP = 1
-        BOTTOM = 2
-        LEFT = 3
-        RIGHT = 4
+        TOP = 0
+        BOTTOM = 1
+        LEFT = 2
+        RIGHT = 3
 
     class Data(Enum):
-        MENU = 1
+        MENU = 0
+        LABEL = 1
+        FUNCTION = 2
+        LOCKED = 3
 
     def __init__(self, width: int, height: int, direction: Direction, name: str, pinout_unit: dict):
         super().__init__()
@@ -62,6 +68,18 @@ class GraphicsItemPin(QGraphicsObject):
         self.m_direction = direction
         self.m_name = name
         self.m_pinout_unit = pinout_unit
+
+        self.label_key = f"pin/{self.m_name}/label"
+        self.function_key = f"pin/{self.m_name}/function"
+        self.locked_key = f"pin/{self.m_name}/locked"
+
+        self.setData(GraphicsItemPin.Data.LABEL.value, self.label_key)
+        self.setData(GraphicsItemPin.Data.FUNCTION.value, self.function_key)
+        self.setData(GraphicsItemPin.Data.LOCKED.value, self.locked_key)
+
+        self.m_label = PROJECT.config(self.label_key, "")
+        self.m_function = PROJECT.config(self.function_key, "")
+        self.m_locked = PROJECT.config(self.locked_key, False)
 
         self.m_font = QFont("JetBrains Mono", 14, QFont.Weight.Bold)
         self.m_font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
@@ -76,8 +94,8 @@ class GraphicsItemPin(QGraphicsObject):
         self.m_menu.triggered.connect(self.menuTriggered)
         self.m_menu.addAction(Action(self.tr("Reset State")))
         self.m_menu.addSeparator()
-        if "Functions" in pinout_unit:
-            for name, function in pinout_unit["Functions"].items():
+        if "functions" in pinout_unit:
+            for name, function in pinout_unit["functions"].items():
                 action = Action(name)
                 action.setCheckable(True)
                 self.m_menu.addAction(action)
@@ -87,6 +105,8 @@ class GraphicsItemPin(QGraphicsObject):
         self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
+
+        PROJECT.pinConfigChanged.connect(self.projectPinConfigChanged)
 
     def boundingRect(self) -> QRectF:
         return QRectF(0, 0, self.m_width, self.m_height)
@@ -101,12 +121,12 @@ class GraphicsItemPin(QGraphicsObject):
 
         # draw background
         painter.setPen(QPen(QColor(0, 0, 0), 1))
-        if self.m_pinout_unit["Type"] == "I/O":
+        if self.m_pinout_unit["type"] == "I/O":
             if (self.m_locked):
                 painter.setBrush(self.selected_color)
             else:
                 painter.setBrush(self.default_color)
-        elif self.m_pinout_unit["Type"] == "Power":
+        elif self.m_pinout_unit["type"] == "Power":
             painter.setBrush(self.power_color)
         else:
             painter.setBrush(self.other_color)
@@ -147,30 +167,34 @@ class GraphicsItemPin(QGraphicsObject):
         painter.setFont(self.m_font)
         painter.drawText(0, 0, text)
 
-        # draw comment
-        if self.m_comment == "":
+        # draw label
+        if self.m_label == "":
             text = self.m_function
         else:
-            text = f"{self.m_comment}({self.m_function})"
+            if self.m_function == "":
+                text = self.m_label
+            else:
+                text = f"{self.m_label}({self.m_function})"
 
-        if (self.m_direction == GraphicsItemPin.Direction.LEFT):
-            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                  self.m_width - self.pin_length - 20)
-            pixels = self.m_font_metrics.horizontalAdvance(text)
-            painter.translate(-pixels - 20, 0)
-        elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
-            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                  self.m_height - self.pin_length - 20)
-            pixels = self.m_font_metrics.horizontalAdvance(text)
-            painter.translate(-pixels - 20, 0)
-        elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
-            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                  self.m_width - self.pin_length - 20)
-            painter.translate(self.pin_length, 0)
-        else:
-            text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                  self.m_height - self.pin_length - 20)
-            painter.translate(self.pin_length, 0)
+        if text != "":
+            if (self.m_direction == GraphicsItemPin.Direction.LEFT):
+                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                      self.m_width - self.pin_length - 20)
+                pixels = self.m_font_metrics.horizontalAdvance(text)
+                painter.translate(-pixels - 20, 0)
+            elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
+                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                      self.m_height - self.pin_length - 20)
+                pixels = self.m_font_metrics.horizontalAdvance(text)
+                painter.translate(-pixels - 20, 0)
+            elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
+                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                      self.m_width - self.pin_length - 20)
+                painter.translate(self.pin_length, 0)
+            else:
+                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                      self.m_height - self.pin_length - 20)
+                painter.translate(self.pin_length, 0)
 
         if isDarkTheme():
             painter.setPen(QPen(QColor(255, 255, 255), 1))
@@ -186,12 +210,24 @@ class GraphicsItemPin(QGraphicsObject):
             if self.m_previous_checked_action != None and self.m_previous_checked_action != action:
                 self.m_previous_checked_action.setChecked(False)
             if action.isChecked():
-                print(f"lock {action.text()}")
+                PROJECT.setConfig(self.locked_key, True)
+                PROJECT.setConfig(self.function_key, action.text())
         else:
             if self.m_previous_checked_action != None:
                 self.m_previous_checked_action.setChecked(False)
             self.m_previous_checked_action = None
-            print(f"unlock {action.text()}")
+            PROJECT.setConfig(self.locked_key, False)
+            PROJECT.setConfig(self.function_key, "")
 
         if self.m_previous_checked_action != action:
             self.m_previous_checked_action = action
+
+    def projectPinConfigChanged(self, key: str, value: str):
+        if key[1] == self.m_name:
+            if key[-1] == "label":
+                self.m_label = value
+            elif key[-1] == "locked":
+                self.m_locked = value
+            elif key[-1] == "function":
+                self.m_function = value
+            self.update()
