@@ -24,11 +24,12 @@
 # 2024-06-27     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import QRectF, QPointF, QLineF, Qt
+from PyQt5.QtCore import QPointF
 
-from common.database import Database
 from widget.graphics_item_pin import GraphicsItemPin
 from widget.graphics_item_chip_body import GraphicsItemChipBody
+
+from common import PROJECT
 
 
 class LQFP():
@@ -39,10 +40,10 @@ class LQFP():
     def getBodyLength(self, num: int):
         return self.pin_spacing + (self.pin_height + self.pin_spacing) * num
 
-    def getItems(self, vendor: str, hal: str, name: str):
-        pinouts = Database.getPinout(vendor, hal, name)
-        pinouts = dict(sorted(pinouts.items(), key=lambda d: d[1]["position"], reverse=False))
-        count = len(pinouts)
+    def getItems(self, vendor: str, name: str):
+        pins = PROJECT.pins
+        pins = dict(sorted(pins.items(), key=lambda d: d[1]["position"], reverse=False))
+        count = len(pins)
         num = count / 4
         items = []
 
@@ -50,8 +51,8 @@ class LQFP():
         item.setPos(QPointF(self.pin_width, self.pin_width))
         items.append(item)
 
-        for name, pinout in pinouts.items():
-            position = pinout["position"] - 1
+        for name, pin in pins.items():
+            position = pin["position"] - 1
             if (position < num):
                 index = position
                 direction = GraphicsItemPin.Direction.LEFT
@@ -84,7 +85,7 @@ class LQFP():
                 x = self.pin_width + self.getBodyLength(num) - index * (self.pin_height + self.pin_spacing)
                 y = 0
 
-            item = GraphicsItemPin(w, h, direction, name, pinout)
+            item = GraphicsItemPin(w, h, direction, name, pin)
             item.setPos(QPointF(x, y))
             items.append(item)
 

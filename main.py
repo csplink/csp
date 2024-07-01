@@ -38,9 +38,8 @@ from qfluentwidgets import FluentTranslator
 
 sys.stdout = stdout
 
-from common.settings import SETTINGS
-from common.project import PROJECT
-from view.main_view import MainWindowView
+from common import SETTINGS, PROJECT
+from view import MainView
 
 
 def main():
@@ -73,7 +72,7 @@ def main():
         for file in files:
             QFontDatabase.addApplicationFont(file)
 
-    w = MainWindowView()
+    w = MainView()
     w.show()
 
     w.setMicaEffectEnabled(False)

@@ -31,14 +31,12 @@ from PyQt5.QtWidgets import QWidget, QGraphicsScene, QMessageBox
 
 from qfluentwidgets import (isDarkTheme)
 
-from view.ui.Ui_chip_view import Ui_chipView
-from common.style import Style
-from common.icon import Icon
-from common.project import PROJECT
-from widget.packages.lqfp import LQFP
+from .ui.Ui_chip_view import Ui_chipView
+from common import Style, Icon, PROJECT
+from widget import LQFP
 
 
-class chipView(Ui_chipView, QWidget):
+class ChipView(Ui_chipView, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -59,7 +57,7 @@ class chipView(Ui_chipView, QWidget):
 
         if PROJECT.package != "unknown":
             if re.match("^LQFP\d+$", PROJECT.package):
-                items = LQFP().getItems(PROJECT.vendor, PROJECT.hal, PROJECT.targetChip)
+                items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
             else:
                 QMessageBox.critical(self, self.tr("critical"),
                                      self.tr(f"The package '{PROJECT.package}' is not supported at this time"))

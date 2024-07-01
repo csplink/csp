@@ -56,8 +56,7 @@ class Settings(QConfig):
     """ Config of application """
 
     # folders
-    databaseFolder = ConfigItem("Folders", "Database", "database", FolderValidator())
-    downloadFolder = ConfigItem("Folders", "Download", "app/download", FolderValidator())
+    databaseFolder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
 
     # system
     language = OptionsConfigItem("System",

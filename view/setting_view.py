@@ -33,8 +33,7 @@ from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import QWidget, QLabel, QFileDialog
 
-from common.settings import SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR
-from common.style import Style
+from common import SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style
 
 
 class SettingView(ScrollArea):

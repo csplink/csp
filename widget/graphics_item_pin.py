@@ -31,7 +31,7 @@ from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetric
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem, QAction
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
-from common.project import PROJECT
+from common import PROJECT
 
 
 class GraphicsItemPin(QGraphicsObject):
@@ -44,7 +44,7 @@ class GraphicsItemPin(QGraphicsObject):
     m_name = ""
     m_locked = False
     m_label = ""
-    m_function = ""
+    m_signal = ""
     m_current_checked_action = None
     m_previous_checked_action = None
 
@@ -60,25 +60,25 @@ class GraphicsItemPin(QGraphicsObject):
         FUNCTION = 2
         LOCKED = 3
 
-    def __init__(self, width: int, height: int, direction: Direction, name: str, pinout_unit: dict):
+    def __init__(self, width: int, height: int, direction: Direction, name: str, pin_config: dict):
         super().__init__()
 
         self.m_width = int(width)
         self.m_height = int(height)
         self.m_direction = direction
         self.m_name = name
-        self.m_pinout_unit = pinout_unit
+        self.m_pin_config = pin_config
 
         self.label_key = f"pin/{self.m_name}/label"
-        self.function_key = f"pin/{self.m_name}/function"
+        self.signal_key = f"pin/{self.m_name}/signal"
         self.locked_key = f"pin/{self.m_name}/locked"
 
         self.setData(GraphicsItemPin.Data.LABEL.value, self.label_key)
-        self.setData(GraphicsItemPin.Data.FUNCTION.value, self.function_key)
+        self.setData(GraphicsItemPin.Data.FUNCTION.value, self.signal_key)
         self.setData(GraphicsItemPin.Data.LOCKED.value, self.locked_key)
 
         self.m_label = PROJECT.config(self.label_key, "")
-        self.m_function = PROJECT.config(self.function_key, "")
+        self.m_signal = PROJECT.config(self.signal_key, "")
         self.m_locked = PROJECT.config(self.locked_key, False)
 
         self.m_font = QFont("JetBrains Mono", 14, QFont.Weight.Bold)
@@ -94,8 +94,8 @@ class GraphicsItemPin(QGraphicsObject):
         self.m_menu.triggered.connect(self.menuTriggered)
         self.m_menu.addAction(Action(self.tr("Reset State")))
         self.m_menu.addSeparator()
-        if "functions" in pinout_unit:
-            for name, function in pinout_unit["functions"].items():
+        if "signals" in pin_config:
+            for name, signal in pin_config["signals"].items():
                 action = Action(name)
                 action.setCheckable(True)
                 self.m_menu.addAction(action)
@@ -121,12 +121,12 @@ class GraphicsItemPin(QGraphicsObject):
 
         # draw background
         painter.setPen(QPen(QColor(0, 0, 0), 1))
-        if self.m_pinout_unit["type"] == "I/O":
+        if self.m_pin_config["type"] == "I/O":
             if (self.m_locked):
                 painter.setBrush(self.selected_color)
             else:
                 painter.setBrush(self.default_color)
-        elif self.m_pinout_unit["type"] == "Power":
+        elif self.m_pin_config["type"] == "Power":
             painter.setBrush(self.power_color)
         else:
             painter.setBrush(self.other_color)
@@ -169,12 +169,12 @@ class GraphicsItemPin(QGraphicsObject):
 
         # draw label
         if self.m_label == "":
-            text = self.m_function
+            text = self.m_signal
         else:
-            if self.m_function == "":
+            if self.m_signal == "":
                 text = self.m_label
             else:
-                text = f"{self.m_label}({self.m_function})"
+                text = f"{self.m_label}({self.m_signal})"
 
         if text != "":
             if (self.m_direction == GraphicsItemPin.Direction.LEFT):
@@ -211,13 +211,13 @@ class GraphicsItemPin(QGraphicsObject):
                 self.m_previous_checked_action.setChecked(False)
             if action.isChecked():
                 PROJECT.setConfig(self.locked_key, True)
-                PROJECT.setConfig(self.function_key, action.text())
+                PROJECT.setConfig(self.signal_key, action.text())
         else:
             if self.m_previous_checked_action != None:
                 self.m_previous_checked_action.setChecked(False)
             self.m_previous_checked_action = None
             PROJECT.setConfig(self.locked_key, False)
-            PROJECT.setConfig(self.function_key, "")
+            PROJECT.setConfig(self.signal_key, "")
 
         if self.m_previous_checked_action != action:
             self.m_previous_checked_action = action
@@ -228,6 +228,6 @@ class GraphicsItemPin(QGraphicsObject):
                 self.m_label = value
             elif key[-1] == "locked":
                 self.m_locked = value
-            elif key[-1] == "function":
-                self.m_function = value
+            elif key[-1] == "signal":
+                self.m_signal = value
             self.update()

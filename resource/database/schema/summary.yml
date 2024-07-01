@@ -23,6 +23,7 @@
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
+additionalProperties: false
 properties:
   name:
     type: string
@@ -57,9 +58,9 @@ properties:
     properties:
       en:
         type: ["string", "null"] #TODO: null
-      zh_cn:
+      zh_CN:
         type: ["string", "null"] #TODO: null
-    required: ["en", "zh_cn"]
+    required: ["en", "zh_CN"]
   introduction:
     $ref: "#/properties/illustrate"
   modules:
@@ -76,16 +77,21 @@ properties:
             properties:
               description:
                 $ref: "#/properties/illustrate"
+              ip:
+                type: string
+            required:
+              - description
+              # - ip # TODO
   url:
     type: object
     properties:
       en:
         type: string
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-      zh_cn:
+      zh_CN:
         type: string
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-    required: ["en", "zh_cn"]
+    required: ["en", "zh_CN"]
   targetProject:
     type: object
     additionalProperties: false
@@ -118,21 +124,51 @@ properties:
       defaultStackSize:
         type: integer
     required: ["defaultHeapSize", "defaultStackSize"]
+  pins:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_+-]+$":
+        type: object
+        properties:
+          position:
+            type: integer
+          type:
+            enum: ["I/O", "Power", "Reset", "NC", "Boot"]
+          signals:
+            type: object
+            additionalProperties: false
+            patternProperties:
+              ^.+$:
+                type: ["object", "null"] #TODO: null
+                properties:
+                  type:
+                    type: string
+                  mode:
+                    type: string
+                # required:
+                #   - type
+                #   - mode
+        required: ["position", "type"]
+        if:
+          properties:
+            type:
+              const: "I/O"
+        then:
+          required: ["signals"]
 required:
-  [
-    "name",
-    "clockTree",
-    "vendor",
-    "vendorUrl",
-    "documents",
-    "illustrate",
-    "introduction",
-    "modules",
-    "url",
-    "targetProject",
-    "hal",
-    "hasPowerPad",
-    "package",
-    "toolchains",
-  ]
-additionalProperties: false
+  - name
+  - clockTree
+  - vendor
+  - vendorUrl
+  - documents
+  - illustrate
+  - introduction
+  - modules
+  - url
+  - targetProject
+  - hal
+  - hasPowerPad
+  - package
+  - toolchains
+  - pins

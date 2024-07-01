@@ -31,33 +31,6 @@ import yaml, os
 class Database():
 
     @staticmethod
-    def checkPinout(pinout: dict, path: str) -> bool:
-        with open("resource/database/schema/pinout.yml", 'r', encoding='utf-8') as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
-            jsonschema.validate(instance=pinout, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-
-    @staticmethod
-    def getPinoutByPath(path: str) -> dict:
-        if os.path.isfile(path):
-            with open(path, 'r', encoding='utf-8') as f:
-                pinout = yaml.load(f.read(), Loader=yaml.FullLoader)
-
-            Database.checkPinout(pinout, path)
-            return pinout
-        else:
-            print(f"{path} is not file!")
-            return {}
-
-    @staticmethod
-    def getPinout(vendor: str, hal: str, name: str) -> dict:
-        return Database.getPinoutByPath(
-            f"resource/database/hal/{vendor.lower()}/{hal.lower()}/{name.lower()}/pinout.yml")
-
-    @staticmethod
     def checkRepository(repository: dict, path: str) -> bool:
         with open("resource/database/schema/repository.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -66,6 +39,7 @@ class Database():
         except jsonschema.exceptions.ValidationError as exception:
             print(f"invalid yaml {path}")
             print(exception)
+            raise exception
 
     @staticmethod
     def getRepositoryByPath(path: str) -> dict:
@@ -92,6 +66,7 @@ class Database():
         except jsonschema.exceptions.ValidationError as exception:
             print(f"invalid yaml {path}")
             print(exception)
+            raise exception
 
     @staticmethod
     def getSummaryByPath(path: str) -> dict:
@@ -107,10 +82,37 @@ class Database():
 
     @staticmethod
     def getSummary(vendor: str, name: str) -> dict:
-        return Database.getSummaryByPath(f"resource/database/{vendor.lower()}/{name.lower()}.yml")
+        return Database.getSummaryByPath(f"resource/database/summary/{vendor.lower()}/{name.lower()}.yml")
+
+    @staticmethod
+    def checkIp(ip: dict, path: str) -> bool:
+        with open("resource/database/schema/ip.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=ip, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
+            raise exception
+
+    @staticmethod
+    def getIpByPath(path: str) -> dict:
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                ip = yaml.load(f.read(), Loader=yaml.FullLoader)
+
+            Database.checkIp(ip, path)
+            return ip
+        else:
+            print(f"{path} is not file!")
+            return {}
+
+    @staticmethod
+    def getIp(vendor: str, name: str) -> dict:
+        return Database.getIpByPath(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
 
 
 if __name__ == '__main__':
-    Database.getPinout("geehy", "csp_hal_apm32f1", "apm32f103zet6")
     Database.getRepository()
     Database.getSummary("geehy", "apm32f103zet6")
+    Database.getIp("geehy", "apm32f103_gpio")

@@ -25,16 +25,16 @@
 #
 
 from PyQt5.QtCore import QUrl, QPoint
-from PyQt5.QtGui import QIcon, QDesktopServices
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QApplication, QStackedWidget, QWidget, QSplitter
+from PyQt5.QtGui import QIcon, QDesktopServices, QKeySequence
+from PyQt5.QtWidgets import QHBoxLayout, QApplication
 
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton)
 from qfluentwidgets import FluentIcon as FIF
 
-from view.setting_view import SettingView
+from .chip_view import ChipView
+from .setting_view import SettingView
 from common.icon import Icon
-from view.chip_view import chipView
 
 
 class CustomTitleBar(MSFluentTitleBar):
@@ -65,9 +65,19 @@ class CustomTitleBar(MSFluentTitleBar):
     def createMenu(self, pos):
         menu = RoundMenu(parent=self)
 
-        # # add actions
-        # menu.addAction(Action(FIF.COPY, self.tr('Copy')))
-        # menu.addAction(Action(FIF.CUT, self.tr('Cut')))
+        # add actions
+
+        action = Action(FIF.COPY, self.tr('New'))
+        action.setShortcut(QKeySequence("Ctrl+N"))
+        menu.addAction(action)
+
+        action = Action(FIF.COPY, self.tr('Open'))
+        action.setShortcut(QKeySequence("Ctrl+O"))
+        menu.addAction(action)
+
+        action = Action(FIF.COPY, self.tr('Save'))
+        action.setShortcut(QKeySequence("Ctrl+S"))
+        menu.addAction(action)
 
         # # add sub menu
         # submenu = RoundMenu(self.tr("Add to"), self)
@@ -94,7 +104,7 @@ class CustomTitleBar(MSFluentTitleBar):
         menu.exec(pos, ani=True)
 
 
-class MainWindowView(MSFluentWindow):
+class MainView(MSFluentWindow):
 
     def __init__(self):
         super().__init__()
@@ -105,7 +115,7 @@ class MainWindowView(MSFluentWindow):
         self.setTitleBar(CustomTitleBar(self))
 
         # create sub interface
-        self.chipView = chipView(self)
+        self.ChipView = ChipView(self)
 
         # self.mainWidget = QSplitter(self)
         # self.mainWidget.setOrientation(Qt.Orientation.Vertical)
@@ -117,7 +127,7 @@ class MainWindowView(MSFluentWindow):
         self.initWindow()
 
     def initNavigation(self):
-        self.addSubInterface(self.chipView, Icon.CPU, 'Chip', Icon.CPU)
+        self.addSubInterface(self.ChipView, Icon.CPU, 'Chip', Icon.CPU)
 
         self.navigationInterface.addItem(
             routeKey='Help',
@@ -130,7 +140,7 @@ class MainWindowView(MSFluentWindow):
         self.addSubInterface(SettingView(self), FIF.SETTING, self.tr('Settings'), FIF.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.chipView.objectName())
+        self.navigationInterface.setCurrentItem(self.ChipView.objectName())
 
     def initWindow(self):
         self.resize(1100, 750)

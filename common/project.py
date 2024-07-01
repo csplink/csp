@@ -27,7 +27,7 @@
 import jsonschema
 import yaml, os
 
-from PyQt5.QtCore import Qt, pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject
 
 from common.settings import VERSION
 from common.database import Database
@@ -37,6 +37,7 @@ class Project(QObject):
 
     pinConfigChanged = pyqtSignal(list, object)
     configChanged = pyqtSignal(str, list, object)
+    reloaded = pyqtSignal()
 
     __p_map__ = {}
     __p_path__ = ""
@@ -93,6 +94,7 @@ class Project(QObject):
     def path(self, path: str):
         if self.__p_path__ != path:
             self.load(path)
+            self.reloaded.emit()
         self.__p_path__ = path
 
     @property
@@ -102,6 +104,10 @@ class Project(QObject):
     @property
     def package(self) -> str:
         return self.__p_summary__.setdefault("package", "unknown")
+
+    @property
+    def pins(self) -> str:
+        return self.__p_summary__.setdefault("pins", {})
 
     def load(self, path: str):
         if os.path.isfile(path):
@@ -126,7 +132,7 @@ class Project(QObject):
 
     def saveTmp(self):
         if self.__p_path__ != "":
-            path = f"{self.__p_path__}.tmp" if self.__p_path__.startswith(".csp") else self.__p_path__
+            path = f"{self.__p_path__}.tmp" if self.__p_path__.endswith(".csp") else self.__p_path__
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(self.dump())
 

@@ -12,12 +12,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_chipView(object):
-    def setupUi(self, chipView):
-        chipView.setObjectName("chipView")
-        chipView.resize(900, 900)
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(chipView)
+    def setupUi(self, ChipView):
+        ChipView.setObjectName("ChipView")
+        ChipView.resize(900, 900)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(ChipView)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.splitter = QtWidgets.QSplitter(chipView)
+        self.splitter = QtWidgets.QSplitter(ChipView)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
         self.frame = SimpleCardWidget(self.splitter)
@@ -73,11 +73,11 @@ class Ui_chipView(object):
         self.verticalLayout_2.addWidget(self.widget_2)
         self.horizontalLayout_4.addWidget(self.splitter)
 
-        self.retranslateUi(chipView)
-        QtCore.QMetaObject.connectSlotsByName(chipView)
+        self.retranslateUi(ChipView)
+        QtCore.QMetaObject.connectSlotsByName(ChipView)
 
-    def retranslateUi(self, chipView):
+    def retranslateUi(self, ChipView):
         _translate = QtCore.QCoreApplication.translate
-        chipView.setWindowTitle(_translate("chipView", "chipView"))
+        ChipView.setWindowTitle(_translate("ChipView", "ChipView"))
 from qfluentwidgets import SimpleCardWidget, ToolButton, TreeView
 from widget.graphics_view_pan_zoom import GraphicsViewPanZoom

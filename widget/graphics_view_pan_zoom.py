@@ -33,8 +33,8 @@ from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget
 
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit)
 
-from widget.graphics_item_pin import GraphicsItemPin
-from common.project import PROJECT
+from .graphics_item_pin import GraphicsItemPin
+from common import PROJECT
 
 
 class CommentMessageBox(MessageBoxBase):
