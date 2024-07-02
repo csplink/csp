@@ -16,10 +16,11 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        gpio_browser.py
+# @file        property_grid_ip.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
 # 2024-07-01     xqyjlj       initial version
 #
+

@@ -69,6 +69,7 @@ parameters:
     label:
       zh_CN: GPIO电平类型
       en:
+    type: enum
     values:
       geehy.gpio_level_low:
         comment:
@@ -89,6 +90,7 @@ parameters:
     label:
       zh_CN: GPIO模式类型
       en:
+    type: enum
     values:
       geehy.gpio_mode_analog:
         comment:
@@ -117,6 +119,7 @@ parameters:
     label:
       zh_CN: GPIO输出类型
       en:
+    type: enum
     values:
       geehy.gpio_output_pp:
         comment:
@@ -137,6 +140,7 @@ parameters:
     label:
       zh_CN: GPIO钳位类型
       en:
+    type: enum
     values:
       geehy.gpio_pull_down:
         comment:
@@ -161,6 +165,7 @@ parameters:
     label:
       zh_CN: GPIO速度类型
       en:
+    type: enum
     values:
       geehy.gpio_speed_low:
         comment:
