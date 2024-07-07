@@ -142,12 +142,9 @@ properties:
               ^.+$:
                 type: ["object", "null"] #TODO: null
                 properties:
-                  type:
-                    type: string
                   mode:
                     type: string
                 # required:
-                #   - type
                 #   - mode
         required: ["position", "type"]
         if:

@@ -44,16 +44,16 @@ class CustomTitleBar(MSFluentTitleBar):
         super().__init__(parent)
 
         # add buttons
-        self.toolButtonLayout = QHBoxLayout()
+        self.layout_toolButton = QHBoxLayout()
 
-        self.searchButton = TransparentPushButton(self.tr("File"), self)
-        self.searchButton.clicked.connect(
-            lambda: self.createMenu(self.searchButton.mapToGlobal(QPoint(0, self.searchButton.height()))))
+        self.button_search = TransparentPushButton(self.tr("File"), self)
+        self.button_search.clicked.connect(
+            lambda: self.createMenu(self.button_search.mapToGlobal(QPoint(0, self.button_search.height()))))
 
-        self.toolButtonLayout.setContentsMargins(20, 0, 20, 0)
-        self.toolButtonLayout.setSpacing(15)
-        self.toolButtonLayout.addWidget(self.searchButton)
-        self.hBoxLayout.insertLayout(4, self.toolButtonLayout)
+        self.layout_toolButton.setContentsMargins(20, 0, 20, 0)
+        self.layout_toolButton.setSpacing(15)
+        self.layout_toolButton.addWidget(self.button_search)
+        self.hBoxLayout.insertLayout(4, self.layout_toolButton)
         self.hBoxLayout.setStretch(6, 0)
 
         # # add avatar
@@ -115,7 +115,7 @@ class MainView(MSFluentWindow):
         self.setTitleBar(CustomTitleBar(self))
 
         # create sub interface
-        self.ChipView = ChipView(self)
+        self.chip_view = ChipView(self)
 
         # self.mainWidget = QSplitter(self)
         # self.mainWidget.setOrientation(Qt.Orientation.Vertical)
@@ -127,7 +127,7 @@ class MainView(MSFluentWindow):
         self.initWindow()
 
     def initNavigation(self):
-        self.addSubInterface(self.ChipView, Icon.CPU, 'Chip', Icon.CPU)
+        self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)
 
         self.navigationInterface.addItem(
             routeKey='Help',
@@ -140,7 +140,7 @@ class MainView(MSFluentWindow):
         self.addSubInterface(SettingView(self), FIF.SETTING, self.tr('Settings'), FIF.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.ChipView.objectName())
+        self.navigationInterface.setCurrentItem(self.chip_view.objectName())
 
     def initWindow(self):
         self.resize(1100, 750)

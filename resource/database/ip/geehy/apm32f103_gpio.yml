@@ -24,46 +24,72 @@
 modes:
   geehy.input:
     geehy.gpio_pull_t:
-      - geehy.gpio_pull_up
-      - geehy.gpio_pull_down
-      - geehy.gpio_pull_no
+      values:
+        - geehy.gpio_pull_up
+        - geehy.gpio_pull_down
+        - geehy.gpio_pull_no
+      default: geehy.gpio_pull_no
     geehy.gpio_mode_t:
-      - geehy.gpio_mode_input
+      values:
+        - geehy.gpio_mode_input
+      default: geehy.gpio_mode_input
   geehy.output:
     geehy.gpio_level_t:
-      - geehy.gpio_level_low
-      - geehy.gpio_level_high
+      values:
+        - geehy.gpio_level_low
+        - geehy.gpio_level_high
+      default: geehy.gpio_level_low
     geehy.gpio_speed_t:
-      - geehy.gpio_speed_low
-      - geehy.gpio_speed_medium
-      - geehy.gpio_speed_high
+      values:
+        - geehy.gpio_speed_low
+        - geehy.gpio_speed_medium
+        - geehy.gpio_speed_high
+      default: geehy.gpio_speed_low
     geehy.gpio_mode_t:
-      - geehy.gpio_mode_output
+      values:
+        - geehy.gpio_mode_output
+      default: geehy.gpio_mode_output
     geehy.gpio_output_type_t:
-      - geehy.gpio_output_pp
-      - geehy.gpio_output_od
+      values:
+        - geehy.gpio_output_pp
+        - geehy.gpio_output_od
+      default: geehy.gpio_output_pp
   geehy.analog:
     geehy.gpio_mode_t:
-      - geehy.gpio_mode_analog
+      values:
+        - geehy.gpio_mode_analog
+      default: geehy.gpio_mode_analog
   geehy.eventout:
     geehy.gpio_pull_t:
-      - geehy.gpio_pull_up
-      - geehy.gpio_pull_down
+      values:
+        - geehy.gpio_pull_up
+        - geehy.gpio_pull_down
+      default: geehy.gpio_pull_up
     geehy.gpio_speed_t:
-      - geehy.gpio_speed_low
-      - geehy.gpio_speed_medium
-      - geehy.gpio_speed_high
+      values:
+        - geehy.gpio_speed_low
+        - geehy.gpio_speed_medium
+        - geehy.gpio_speed_high
+      default: geehy.gpio_speed_low
     geehy.gpio_mode_t:
-      - geehy.gpio_mode_alternate
+      values:
+        - geehy.gpio_mode_alternate
+      default: geehy.gpio_mode_alternate
     geehy.gpio_output_type_t:
-      - geehy.gpio_output_pp
+      values:
+        - geehy.gpio_output_pp
+      default: geehy.gpio_output_pp
   geehy.exti:
     geehy.gpio_pull_t:
-      - geehy.gpio_pull_up
-      - geehy.gpio_pull_down
-      - geehy.gpio_pull_no
+      values:
+        - geehy.gpio_pull_up
+        - geehy.gpio_pull_down
+        - geehy.gpio_pull_no
+      default: geehy.gpio_pull_no
     geehy.gpio_mode_t:
-      - geehy.gpio_mode_input
+      values:
+        - geehy.gpio_mode_input
+      default: geehy.gpio_mode_input
 parameters:
   geehy.gpio_level_t:
     label:
@@ -190,3 +216,4 @@ parameters:
       zh_CN: GPIO-速度
       en:
     readonly: false
+modeGrid: mode_grid_io

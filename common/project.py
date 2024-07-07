@@ -29,19 +29,22 @@ import yaml, os
 
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from common.settings import VERSION
+from common.settings import SETTINGS, VERSION
 from common.database import Database
 
 
 class Project(QObject):
 
-    pinConfigChanged = pyqtSignal(list, object)
-    configChanged = pyqtSignal(str, list, object)
+    pinConfigChanged = pyqtSignal(list, object, object)
+    configChanged = pyqtSignal(list, object, object)
     reloaded = pyqtSignal()
 
     __p_map__ = {}
     __p_path__ = ""
     __p_summary__ = {}
+    __p_ip__ = {}
+    __p_ip_total__ = {}
+    __p_ip_reverse_total__ = {}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -106,8 +109,12 @@ class Project(QObject):
         return self.__p_summary__.setdefault("package", "unknown")
 
     @property
-    def pins(self) -> str:
+    def pins(self) -> dict:
         return self.__p_summary__.setdefault("pins", {})
+
+    @property
+    def modules(self) -> dict:
+        return self.__p_summary__.setdefault("modules", {})
 
     def load(self, path: str):
         if os.path.isfile(path):
@@ -123,7 +130,15 @@ class Project(QObject):
                 print(exception)
 
             self.__p_summary__ = Database.getSummary(self.vendor, self.targetChip)
-
+            locale = SETTINGS.get(SETTINGS.language).value.name()
+            for _, module_group in self.modules.items():
+                for name, module in module_group.items():
+                    if "ip" in module:
+                        self.__p_ip__[name] = Database.getIp(self.vendor, module["ip"])
+                        for _, parameter in self.__p_ip__[name]["parameters"].items():
+                            for key, value in parameter["values"].items():
+                                self.__p_ip_total__[key] = value["comment"][locale]
+                                self.__p_ip_reverse_total__[value["comment"][locale]] = key
         else:
             print(f"{path} is not file!")
 
@@ -153,13 +168,31 @@ class Project(QObject):
                 map[key] = {}
             map = map[key]
         if map.get(keys[-1], None) != value:
+            old = map.get(keys[-1], None)
             map[keys[-1]] = value
             if len(keys) > 2:
                 if keys[0] == "pin":
-                    self.pinConfigChanged.emit(keys, value)
+                    self.pinConfigChanged.emit(keys, old, value)
                 else:
-                    self.configChanged.emit(keys[0], keys, value)
+                    self.configChanged.emit(keys, old, value)
             self.saveTmp()
+
+    def ip(self, name: str) -> dict:
+        if name not in self.__p_ip__:
+            return {}
+        return self.__p_ip__[name]
+
+    def ipTr(self, name: str) -> str:
+        if name in self.__p_ip_total__:
+            return self.__p_ip_total__[name]
+        else:
+            return name
+
+    def ipTrR(self, name: str) -> str:
+        if name in self.__p_ip_reverse_total__:
+            return self.__p_ip_reverse_total__[name]
+        else:
+            return name
 
 
 PROJECT = Project()

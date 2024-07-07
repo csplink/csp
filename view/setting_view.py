@@ -41,68 +41,69 @@ class SettingView(ScrollArea):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.scrollWidget = QWidget()
-        self.expandLayout = ExpandLayout(self.scrollWidget)
+        self.widget_scroll = QWidget()
+        self.expandLayout = ExpandLayout(self.widget_scroll)
 
         # setting label
-        self.settingLabel = QLabel(self.tr("Settings"), self)
+        self.label_setting = QLabel(self.tr("Settings"), self)
 
         # folders
-        self.foldersGroup = SettingCardGroup(self.tr("Folders Location"), self.scrollWidget)
-        self.databaseFolderCard = PushSettingCard(self.tr('Choose folder'), FIF.FOLDER, self.tr("Database directory"),
-                                                  SETTINGS.get(SETTINGS.databaseFolder), self.foldersGroup)
+        self.group_folders = SettingCardGroup(self.tr("Folders Location"), self.widget_scroll)
+        self.card_databaseFolder = PushSettingCard(self.tr('Choose folder'), FIF.FOLDER, self.tr("Database directory"),
+                                                   SETTINGS.get(SETTINGS.databaseFolder), self.group_folders)
 
         # personalization
-        self.styleGroup = SettingCardGroup(self.tr('Personalization'), self.scrollWidget)
-        self.themeCard = OptionsSettingCard(SETTINGS.themeMode,
-                                            FIF.BRUSH,
-                                            self.tr('Application theme'),
-                                            self.tr("Change the appearance of your application"),
-                                            texts=[self.tr('Light'),
-                                                   self.tr('Dark'),
-                                                   self.tr('Use system setting')],
-                                            parent=self.styleGroup)
-        self.themeColorCard = CustomColorSettingCard(SETTINGS.themeColor, FIF.PALETTE, self.tr('Theme color'),
-                                                     self.tr('Change the theme color of you application'),
-                                                     self.styleGroup)
+        self.group_style = SettingCardGroup(self.tr('Personalization'), self.widget_scroll)
+        self.card_theme = OptionsSettingCard(SETTINGS.themeMode,
+                                             FIF.BRUSH,
+                                             self.tr('Application theme'),
+                                             self.tr("Change the appearance of your application"),
+                                             texts=[self.tr('Light'),
+                                                    self.tr('Dark'),
+                                                    self.tr('Use system setting')],
+                                             parent=self.group_style)
+        self.card_themeColor = CustomColorSettingCard(SETTINGS.themeColor, FIF.PALETTE, self.tr('Theme color'),
+                                                      self.tr('Change the theme color of you application'),
+                                                      self.group_style)
 
-        self.systemGroup = SettingCardGroup(self.tr('System'), self.scrollWidget)
-        self.languageCard = ComboBoxSettingCard(SETTINGS.language,
-                                                FIF.LANGUAGE,
-                                                self.tr('Language'),
-                                                self.tr('Set your preferred language for UI'),
-                                                texts=['简体中文', '繁體中文', 'English',
-                                                       self.tr('Use system setting')],
-                                                parent=self.systemGroup)
-        self.zoomCard = OptionsSettingCard(
+        self.group_system = SettingCardGroup(self.tr('System'), self.widget_scroll)
+        self.card_language = ComboBoxSettingCard(SETTINGS.language,
+                                                 FIF.LANGUAGE,
+                                                 self.tr('Language'),
+                                                 self.tr('Set your preferred language for UI'),
+                                                 texts=['简体中文', '繁體中文', 'English',
+                                                        self.tr('Use system setting')],
+                                                 parent=self.group_system)
+        self.card_zoom = OptionsSettingCard(
             SETTINGS.dpiScale,
             FIF.ZOOM,
             self.tr("Interface zoom"),
             self.tr("Change the size of widgets and fonts"),
             texts=["100%", "125%", "150%", "175%", "200%",
                    self.tr("Use system setting")],
-            parent=self.systemGroup)
+            parent=self.group_system)
 
         # update software
-        self.updateSoftwareGroup = SettingCardGroup(self.tr("Software update"), self.scrollWidget)
-        self.updateOnStartUpCard = SwitchSettingCard(
+        self.group_updateSoftware = SettingCardGroup(self.tr("Software update"), self.widget_scroll)
+        self.card_updateOnStartUp = SwitchSettingCard(
             FIF.UPDATE,
             self.tr('Check for updates when the application starts'),
             self.tr('The new version will be more stable and have more features'),
             configItem=SETTINGS.checkUpdateAtStartUp,
-            parent=self.updateSoftwareGroup)
+            parent=self.group_updateSoftware)
 
         # application
-        self.aboutGroup = SettingCardGroup(self.tr('About'), self.scrollWidget)
-        self.helpCard = HyperlinkCard(HELP_URL, self.tr('Open help page'), FIF.HELP, self.tr('Help'),
-                                      self.tr('Discover new features and learn useful tips about csp'), self.aboutGroup)
-        self.feedbackCard = PrimaryPushSettingCard(self.tr('Provide feedback'), FIF.FEEDBACK,
-                                                   self.tr('Provide feedback'),
-                                                   self.tr('Help us improve csp by providing feedback'),
-                                                   self.aboutGroup)
-        self.aboutCard = PrimaryPushSettingCard(
+        self.group_about = SettingCardGroup(self.tr('About'), self.widget_scroll)
+        self.card_help = HyperlinkCard(HELP_URL, self.tr('Open help page'), FIF.HELP, self.tr('Help'),
+                                       self.tr('Discover new features and learn useful tips about csp'),
+                                       self.group_about)
+        self.card_feedback = PrimaryPushSettingCard(self.tr('Provide feedback'), FIF.FEEDBACK,
+                                                    self.tr('Provide feedback'),
+                                                    self.tr('Help us improve csp by providing feedback'),
+                                                    self.group_about)
+        self.card_about = PrimaryPushSettingCard(
             self.tr('Check update'), FIF.INFO, self.tr('About'),
-            '© ' + self.tr('Copyright') + f" {YEAR}, {AUTHOR}. " + self.tr('Version') + " " + VERSION, self.aboutGroup)
+            f"© {self.tr('Copyright')} {YEAR}, {AUTHOR}. {self.tr('Version')} {VERSION}", self.group_about)
 
         self.__initWidget()
 
@@ -110,13 +111,13 @@ class SettingView(ScrollArea):
         self.resize(1000, 800)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setViewportMargins(0, 80, 0, 20)
-        self.setWidget(self.scrollWidget)
+        self.setWidget(self.widget_scroll)
         self.setWidgetResizable(True)
         self.setObjectName('SettingView')
 
         # initialize style sheet
-        self.scrollWidget.setObjectName('scrollWidget')
-        self.settingLabel.setObjectName('settingLabel')
+        self.widget_scroll.setObjectName('widget_scroll')
+        self.label_setting.setObjectName('label_setting')
         Style.SETTING_VIEW.apply(self)
 
         # self.micaCard.setEnabled(isWin11())
@@ -126,31 +127,31 @@ class SettingView(ScrollArea):
         self.__connectSignalToSlot()
 
     def __initLayout(self):
-        self.settingLabel.move(36, 30)
+        self.label_setting.move(36, 30)
 
         # add cards to group
-        self.foldersGroup.addSettingCard(self.databaseFolderCard)
+        self.group_folders.addSettingCard(self.card_databaseFolder)
 
-        self.styleGroup.addSettingCard(self.themeCard)
-        self.styleGroup.addSettingCard(self.themeColorCard)
+        self.group_style.addSettingCard(self.card_theme)
+        self.group_style.addSettingCard(self.card_themeColor)
 
-        self.systemGroup.addSettingCard(self.languageCard)
-        self.systemGroup.addSettingCard(self.zoomCard)
+        self.group_system.addSettingCard(self.card_language)
+        self.group_system.addSettingCard(self.card_zoom)
 
-        self.updateSoftwareGroup.addSettingCard(self.updateOnStartUpCard)
+        self.group_updateSoftware.addSettingCard(self.card_updateOnStartUp)
 
-        self.aboutGroup.addSettingCard(self.helpCard)
-        self.aboutGroup.addSettingCard(self.feedbackCard)
-        self.aboutGroup.addSettingCard(self.aboutCard)
+        self.group_about.addSettingCard(self.card_help)
+        self.group_about.addSettingCard(self.card_feedback)
+        self.group_about.addSettingCard(self.card_about)
 
         # add setting card group to layout
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(36, 10, 36, 0)
-        self.expandLayout.addWidget(self.foldersGroup)
-        self.expandLayout.addWidget(self.styleGroup)
-        self.expandLayout.addWidget(self.systemGroup)
-        self.expandLayout.addWidget(self.updateSoftwareGroup)
-        self.expandLayout.addWidget(self.aboutGroup)
+        self.expandLayout.addWidget(self.group_folders)
+        self.expandLayout.addWidget(self.group_style)
+        self.expandLayout.addWidget(self.group_system)
+        self.expandLayout.addWidget(self.group_updateSoftware)
+        self.expandLayout.addWidget(self.group_about)
 
     def __showRestartTooltip(self):
         """ show restart tooltip """
@@ -159,25 +160,25 @@ class SettingView(ScrollArea):
                         duration=1500,
                         parent=self)
 
-    def __onDatabaseFolderCardClicked(self):
+    def __onCard_databaseFolderClicked(self):
         """ download folder card clicked slot """
         folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
         if not folder or SETTINGS.get(SETTINGS.databaseFolder) == folder:
             return
 
         SETTINGS.set(SETTINGS.databaseFolder, folder)
-        self.databaseFolderCard.setContent(folder)
+        self.card_databaseFolder.setContent(folder)
 
     def __connectSignalToSlot(self):
         """ connect signal to slot """
         SETTINGS.appRestartSig.connect(self.__showRestartTooltip)
 
         # folders
-        self.databaseFolderCard.clicked.connect(self.__onDatabaseFolderCardClicked)
+        self.card_databaseFolder.clicked.connect(self.__onCard_databaseFolderClicked)
 
         # personalization
-        self.themeCard.optionChanged.connect(lambda ci: setTheme(SETTINGS.get(ci)))
-        self.themeColorCard.colorChanged.connect(lambda c: setThemeColor(c))
+        self.card_theme.optionChanged.connect(lambda ci: setTheme(SETTINGS.get(ci)))
+        self.card_themeColor.colorChanged.connect(lambda c: setThemeColor(c))
 
         # about
-        self.feedbackCard.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(FEEDBACK_URL)))
+        self.card_feedback.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(FEEDBACK_URL)))

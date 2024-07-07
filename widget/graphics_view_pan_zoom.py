@@ -37,20 +37,23 @@ from .graphics_item_pin import GraphicsItemPin
 from common import PROJECT
 
 
-class CommentMessageBox(MessageBoxBase):
+class LabelMessageBox(MessageBoxBase):
 
     def __init__(self, text: str, parent=None):
         super().__init__(parent)
         self.titleLabel = SubtitleLabel(self.tr('Set label'), self)
-        self.labelLineEdit = LineEdit(self)
+        self.lineEdit_label = LineEdit(self)
 
-        self.labelLineEdit.setText(text)
-        self.labelLineEdit.setPlaceholderText(self.tr('Enter the user label'))
-        self.labelLineEdit.setClearButtonEnabled(True)
-        self.labelLineEdit.setValidator(QRegExpValidator(QRegExp("^[A-Za-z_][A-Za-z0-9_]+$")))
+        self.lineEdit_label.setText(text)
+        self.lineEdit_label.setPlaceholderText(self.tr('Enter the user label'))
+        self.lineEdit_label.setClearButtonEnabled(True)
+        self.lineEdit_label.setValidator(QRegExpValidator(QRegExp("^[A-Za-z_][A-Za-z0-9_]+$")))
 
         self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.labelLineEdit)
+        self.viewLayout.addWidget(self.lineEdit_label)
+
+        self.yesButton.setText(self.tr('OK'))
+        self.cancelButton.setText(self.tr('Cancel'))
 
         self.widget.setMinimumWidth(360)
 
@@ -132,9 +135,9 @@ class GraphicsViewPanZoom(QGraphicsView):
         if item != None and item.flags():
             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
                 key = item.data(GraphicsItemPin.Data.LABEL.value)
-                w = CommentMessageBox(PROJECT.config(key, ""), self.window())
+                w = LabelMessageBox(PROJECT.config(key, ""), self.window())
                 if w.exec():
-                    PROJECT.setConfig(key, w.labelLineEdit.text())
+                    PROJECT.setConfig(key, w.lineEdit_label.text())
 
     def contextMenuEvent(self, event: QContextMenuEvent):
         super().contextMenuEvent(event)

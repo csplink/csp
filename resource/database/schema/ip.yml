@@ -33,10 +33,17 @@ properties:
         additionalProperties: false
         patternProperties:
           "^[A-Za-z0-9_.+-]+$":
-            type: array
-            items:
-              type: string
-              pattern: "^[A-Za-z0-9_.+-]+$"
+            type: object
+            additionalProperties: false
+            properties:
+              values:
+                type: array
+                items:
+                  type: string
+                  pattern: "^[A-Za-z0-9_.+-]+$"
+              default:
+                type: string
+                pattern: "^[A-Za-z0-9_.+-]+$"
   language:
     type: object
     properties:
@@ -61,6 +68,8 @@ properties:
             $ref: "#/properties/language"
           readonly:
             type: boolean
+          type:
+            enum: ["enum"]
           values:
             type: object
             additionalProperties: false
@@ -72,5 +81,8 @@ properties:
                   comment:
                     $ref: "#/properties/language"
                 required: ["comment"]
-        required: ["label", "displayName", "description", "readonly"]
-required: ["modes", "parameters"]
+        required: ["label", "displayName", "type", "description", "readonly"]
+  modeGrid:
+    enum: ["mode_grid_io", "mode_grid_ip"]
+
+required: ["modes", "parameters", "modeGrid"]

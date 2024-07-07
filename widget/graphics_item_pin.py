@@ -85,24 +85,28 @@ class GraphicsItemPin(QGraphicsObject):
         self.m_font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
         self.m_font_metrics = QFontMetrics(self.m_font)
 
-        self.m_menu = CheckableMenu()
-        self.m_menu.view.setStyleSheet('''MenuActionListWidget {
-                    font: 12px "JetBrains Mono", "Segoe UI", "Microsoft YaHei", "PingFang SC";
-                    font-weight: normal;
-            }''')
-        self.m_menu.clear()
-        self.m_menu.triggered.connect(self.menuTriggered)
-        self.m_menu.addAction(Action(self.tr("Reset State")))
-        self.m_menu.addSeparator()
-        if "signals" in pin_config:
-            for name, signal in pin_config["signals"].items():
-                action = Action(name)
-                action.setCheckable(True)
-                self.m_menu.addAction(action)
+        if self.m_pin_config["type"] == "I/O":
+            self.m_menu = CheckableMenu()
+            self.m_menu.view.setStyleSheet('''MenuActionListWidget {
+                        font: 12px "JetBrains Mono", "Segoe UI", "Microsoft YaHei", "PingFang SC";
+                        font-weight: normal;
+                }''')
+            self.m_menu.clear()
+            self.m_menu.triggered.connect(self.menuTriggered)
+            self.m_menu.addAction(Action(self.tr("Reset State")))
+            self.m_menu.addSeparator()
+            if "signals" in pin_config:
+                for name, signal in pin_config["signals"].items():
+                    action = Action(name)
+                    action.setCheckable(True)
+                    if self.m_signal == name:
+                        action.setChecked(True)
+                        self.m_current_checked_action = action
+                    self.m_menu.addAction(action)
 
-        self.setData(GraphicsItemPin.Data.MENU.value, self.m_menu)
+            self.setData(GraphicsItemPin.Data.MENU.value, self.m_menu)
 
-        self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
+            self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
 
@@ -168,40 +172,41 @@ class GraphicsItemPin(QGraphicsObject):
         painter.drawText(0, 0, text)
 
         # draw label
-        if self.m_label == "":
-            text = self.m_signal
-        else:
-            if self.m_signal == "":
-                text = self.m_label
+        if self.m_pin_config["type"] == "I/O":
+            if self.m_label == "":
+                text = self.m_signal
             else:
-                text = f"{self.m_label}({self.m_signal})"
+                if self.m_signal == "":
+                    text = self.m_label
+                else:
+                    text = f"{self.m_label}({self.m_signal})"
 
-        if text != "":
-            if (self.m_direction == GraphicsItemPin.Direction.LEFT):
-                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                      self.m_width - self.pin_length - 20)
-                pixels = self.m_font_metrics.horizontalAdvance(text)
-                painter.translate(-pixels - 20, 0)
-            elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
-                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                      self.m_height - self.pin_length - 20)
-                pixels = self.m_font_metrics.horizontalAdvance(text)
-                painter.translate(-pixels - 20, 0)
-            elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
-                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                      self.m_width - self.pin_length - 20)
-                painter.translate(self.pin_length, 0)
-            else:
-                text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                      self.m_height - self.pin_length - 20)
-                painter.translate(self.pin_length, 0)
+            if text != "":
+                if (self.m_direction == GraphicsItemPin.Direction.LEFT):
+                    text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                          self.m_width - self.pin_length - 20)
+                    pixels = self.m_font_metrics.horizontalAdvance(text)
+                    painter.translate(-pixels - 20, 0)
+                elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
+                    text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                          self.m_height - self.pin_length - 20)
+                    pixels = self.m_font_metrics.horizontalAdvance(text)
+                    painter.translate(-pixels - 20, 0)
+                elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
+                    text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                          self.m_width - self.pin_length - 20)
+                    painter.translate(self.pin_length, 0)
+                else:
+                    text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
+                                                          self.m_height - self.pin_length - 20)
+                    painter.translate(self.pin_length, 0)
 
-        if isDarkTheme():
-            painter.setPen(QPen(QColor(255, 255, 255), 1))
+            if isDarkTheme():
+                painter.setPen(QPen(QColor(255, 255, 255), 1))
 
-        painter.drawText(0, 0, text)
+            painter.drawText(0, 0, text)
+
         painter.resetTransform()
-
         painter.setBrush(brush)
 
     def menuTriggered(self, action: QAction):
@@ -212,6 +217,9 @@ class GraphicsItemPin(QGraphicsObject):
             if action.isChecked():
                 PROJECT.setConfig(self.locked_key, True)
                 PROJECT.setConfig(self.signal_key, action.text())
+            else:
+                PROJECT.setConfig(self.locked_key, False)
+                PROJECT.setConfig(self.signal_key, "")
         else:
             if self.m_previous_checked_action != None:
                 self.m_previous_checked_action.setChecked(False)
@@ -222,12 +230,31 @@ class GraphicsItemPin(QGraphicsObject):
         if self.m_previous_checked_action != action:
             self.m_previous_checked_action = action
 
-    def projectPinConfigChanged(self, key: str, value: str):
+    def projectPinConfigChanged(self, key: list[str], oldValue: str, newvalue: str):
         if key[1] == self.m_name:
             if key[-1] == "label":
-                self.m_label = value
+                self.m_label = newvalue
             elif key[-1] == "locked":
-                self.m_locked = value
+                self.m_locked = newvalue
             elif key[-1] == "signal":
-                self.m_signal = value
+                self.m_signal = newvalue
+                pin = PROJECT.pins[self.m_name]
+                if newvalue != "":
+                    instance = newvalue.split("-")[0]
+                    info = pin["signals"][newvalue]
+                    if "mode" in info:
+                        mode = info["mode"]
+                        ip = PROJECT.ip(instance)
+                        ip_modes = ip["modes"][mode]
+                        path = f"{instance}/{self.m_name}"
+                        PROJECT.setConfig(path, {})
+                        for key, info in ip_modes.items():
+                            path = f"{instance}/{self.m_name}/{key}"
+                            PROJECT.setConfig(path, info["default"])
+                elif oldValue != "" and oldValue != None:
+                    instance = oldValue.split("-")[0]
+                    info = pin["signals"][oldValue]
+                    if "mode" in info:
+                        path = f"{instance}/{self.m_name}"
+                        PROJECT.setConfig(path, {})
             self.update()
