@@ -1630,3 +1630,4 @@ pins:
   VDD-3:
     position: 144
     type: Power
+pinIp: GPIO

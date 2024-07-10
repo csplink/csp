@@ -60,8 +60,6 @@ properties:
         type: object
         additionalProperties: false
         properties:
-          label:
-            $ref: "#/properties/language"
           displayName:
             $ref: "#/properties/language"
           description:
@@ -81,7 +79,7 @@ properties:
                   comment:
                     $ref: "#/properties/language"
                 required: ["comment"]
-        required: ["label", "displayName", "type", "description", "readonly"]
+        required: ["displayName", "type", "description", "readonly"]
   modeGrid:
     enum: ["mode_grid_io", "mode_grid_ip"]
 

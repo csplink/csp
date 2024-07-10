@@ -153,6 +153,9 @@ properties:
               const: "I/O"
         then:
           required: ["signals"]
+  pinIp:
+    type: string
+    minLength: 1
 required:
   - name
   - clockTree
@@ -169,3 +172,4 @@ required:
   - package
   - toolchains
   - pins
+  - pinIp

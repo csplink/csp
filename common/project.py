@@ -37,6 +37,7 @@ class Project(QObject):
 
     pinConfigChanged = pyqtSignal(list, object, object)
     configChanged = pyqtSignal(list, object, object)
+    propertyGridIpTriggered = pyqtSignal(str, str)
     reloaded = pyqtSignal()
 
     __p_map__ = {}
@@ -116,6 +117,10 @@ class Project(QObject):
     def modules(self) -> dict:
         return self.__p_summary__.setdefault("modules", {})
 
+    @property
+    def pinIp(self) -> dict:
+        return self.__p_summary__.setdefault("pinIp", "")
+
     def load(self, path: str):
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
@@ -170,7 +175,13 @@ class Project(QObject):
         if map.get(keys[-1], None) != value:
             old = map.get(keys[-1], None)
             map[keys[-1]] = value
-            if len(keys) > 2:
+
+            if (isinstance(value, dict) or isinstance(value, str) or isinstance(value, list)) and len(value) == 0:
+                map.pop(keys[-1])
+            elif value == None:
+                map.pop(keys[-1])
+
+            if len(keys) >= 2:
                 if keys[0] == "pin":
                     self.pinConfigChanged.emit(keys, old, value)
                 else:
@@ -193,6 +204,9 @@ class Project(QObject):
             return self.__p_ip_reverse_total__[name]
         else:
             return name
+
+    def triggerPropertyGridIp(self, instance: str, name: object) -> str:
+        self.propertyGridIpTriggered.emit(instance, name)
 
 
 PROJECT = Project()

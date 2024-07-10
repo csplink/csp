@@ -26,8 +26,8 @@
 
 import math
 
-from PyQt5.QtCore import Qt, pyqtSignal, QRegExp
-from PyQt5.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent,
+from PyQt5.QtCore import Qt, pyqtSignal, QRegExp, QTimer
+from PyQt5.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
                          QResizeEvent, QRegExpValidator)
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget
 
@@ -60,7 +60,8 @@ class LabelMessageBox(MessageBoxBase):
 
 class GraphicsViewPanZoom(QGraphicsView):
     selectedItemClicked = pyqtSignal(QGraphicsItem)
-    resize_cnt = 0
+    m_resize_cnt = 0
+    m_key = 0
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -103,23 +104,34 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def mousePressEvent(self, event: QMouseEvent):
         super().mousePressEvent(event)
-        self.m_pressed = True
-        self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
-
-        item = self.itemAt(event.pos())
-        if item != None:
-            if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
-                self.selectedItemClicked.emit(item)
+        if event.button() & Qt.MouseButton.LeftButton:
+            self.m_pressed = True
+            self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
+            item = self.itemAt(event.pos())
+            if item != None and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
+                if self.m_key != 0:
+                    if self.m_key == Qt.Key.Key_Control:
+                        self.m_key = 0
+                        key = item.data(GraphicsItemPin.Data.LABEL_KEY.value)
+                        w = LabelMessageBox(PROJECT.config(key, ""), self.window())
+                        if w.exec():
+                            PROJECT.setConfig(key, w.lineEdit_label.text())
+                else:
+                    ip = PROJECT.pinIp
+                    name = item.data(GraphicsItemPin.Data.NAME.value)
+                    PROJECT.triggerPropertyGridIp(ip, name)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         super().mouseMoveEvent(event)
-        if self.m_pressed:
-            self.viewport().setCursor(Qt.CursorShape.ClosedHandCursor)
+        if event.button() & Qt.MouseButton.LeftButton:
+            if self.m_pressed:
+                self.viewport().setCursor(Qt.CursorShape.ClosedHandCursor)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
-        self.m_pressed = False
-        self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
+        if event.button() & Qt.MouseButton.LeftButton:
+            self.m_pressed = False
+            self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
 
     def wheelEvent(self, event: QWheelEvent):
         # super().wheelEvent(event)
@@ -129,30 +141,39 @@ class GraphicsViewPanZoom(QGraphicsView):
         else:
             self.zoomOut(6)
 
-    def mouseDoubleClickEvent(self, event):
-        super().mouseDoubleClickEvent(event)
-        item = self.itemAt(event.pos())
-        if item != None and item.flags():
-            if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
-                key = item.data(GraphicsItemPin.Data.LABEL.value)
-                w = LabelMessageBox(PROJECT.config(key, ""), self.window())
-                if w.exec():
-                    PROJECT.setConfig(key, w.lineEdit_label.text())
+    # def mouseDoubleClickEvent(self, event: QMouseEvent):
+    #     super().mouseDoubleClickEvent(event)
+    #     if event.button() & Qt.MouseButton.LeftButton:
+    #         item = self.itemAt(event.pos())
+    #         if item != None and item.flags():
+    #             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
+    #                 key = item.data(GraphicsItemPin.Data.LABEL_KEY.value)
+    #                 w = LabelMessageBox(PROJECT.config(key, ""), self.window())
+    #                 if w.exec():
+    #                     PROJECT.setConfig(key, w.lineEdit_label.text())
 
     def contextMenuEvent(self, event: QContextMenuEvent):
         super().contextMenuEvent(event)
         item = self.itemAt(event.pos())
         if item != None and item.flags():
             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
-                menu = item.data(GraphicsItemPin.Data.MENU.value)
+                menu = item.data(GraphicsItemPin.Data.MENU_KEY.value)
                 if menu != None:
                     menu.exec(event.globalPos())
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
-        if self.resize_cnt < 3:
-            self.resize_cnt += 1
+        if self.m_resize_cnt < 3:
+            self.m_resize_cnt += 1
             self.resize()
+
+    def keyPressEvent(self, event: QKeyEvent):
+        super().keyPressEvent(event)
+        self.m_key = event.key()
+
+    def keyReleaseEvent(self, event: QKeyEvent):
+        super().keyReleaseEvent(event)
+        self.m_key = 0
 
     def zoomIn(self, value: int):
         self.m_scale += value
@@ -181,7 +202,7 @@ class GraphicsViewPanZoom(QGraphicsView):
     def resize(self):
         graphics_scene = self.scene()
 
-        if (graphics_scene != None):
+        if graphics_scene != None:
             graphics_scene_width = graphics_scene.itemsBoundingRect().width()
             graphics_scene_height = graphics_scene.itemsBoundingRect().height()
             view_width = self.width()

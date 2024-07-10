@@ -35,11 +35,11 @@ from common import PROJECT
 
 
 class GraphicsItemPin(QGraphicsObject):
-    pin_length = 100
-    default_color = QColor(185, 196, 202)
-    power_color = QColor(255, 246, 204)
-    other_color = QColor(187, 204, 0)
-    selected_color = QColor(0, 204, 68)
+    m_pin_length = 100
+    m_default_color = QColor(185, 196, 202)
+    m_power_color = QColor(255, 246, 204)
+    m_other_color = QColor(187, 204, 0)
+    m_selected_color = QColor(0, 204, 68)
 
     m_name = ""
     m_locked = False
@@ -55,10 +55,11 @@ class GraphicsItemPin(QGraphicsObject):
         RIGHT = 3
 
     class Data(Enum):
-        MENU = 0
-        LABEL = 1
-        FUNCTION = 2
-        LOCKED = 3
+        MENU_KEY = 0
+        LABEL_KEY = 1
+        FUNCTION_KEY = 2
+        LOCKED_KEY = 3
+        NAME = 4
 
     def __init__(self, width: int, height: int, direction: Direction, name: str, pin_config: dict):
         super().__init__()
@@ -73,9 +74,10 @@ class GraphicsItemPin(QGraphicsObject):
         self.signal_key = f"pin/{self.m_name}/signal"
         self.locked_key = f"pin/{self.m_name}/locked"
 
-        self.setData(GraphicsItemPin.Data.LABEL.value, self.label_key)
-        self.setData(GraphicsItemPin.Data.FUNCTION.value, self.signal_key)
-        self.setData(GraphicsItemPin.Data.LOCKED.value, self.locked_key)
+        self.setData(GraphicsItemPin.Data.LABEL_KEY.value, self.label_key)
+        self.setData(GraphicsItemPin.Data.FUNCTION_KEY.value, self.signal_key)
+        self.setData(GraphicsItemPin.Data.LOCKED_KEY.value, self.locked_key)
+        self.setData(GraphicsItemPin.Data.NAME.value, name)
 
         self.m_label = PROJECT.config(self.label_key, "")
         self.m_signal = PROJECT.config(self.signal_key, "")
@@ -102,9 +104,10 @@ class GraphicsItemPin(QGraphicsObject):
                     if self.m_signal == name:
                         action.setChecked(True)
                         self.m_current_checked_action = action
+                        self.m_previous_checked_action = action
                     self.m_menu.addAction(action)
 
-            self.setData(GraphicsItemPin.Data.MENU.value, self.m_menu)
+            self.setData(GraphicsItemPin.Data.MENU_KEY.value, self.m_menu)
 
             self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
@@ -127,45 +130,45 @@ class GraphicsItemPin(QGraphicsObject):
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         if self.m_pin_config["type"] == "I/O":
             if (self.m_locked):
-                painter.setBrush(self.selected_color)
+                painter.setBrush(self.m_selected_color)
             else:
-                painter.setBrush(self.default_color)
+                painter.setBrush(self.m_default_color)
         elif self.m_pin_config["type"] == "Power":
-            painter.setBrush(self.power_color)
+            painter.setBrush(self.m_power_color)
         else:
-            painter.setBrush(self.other_color)
+            painter.setBrush(self.m_other_color)
 
         # draw body
         if (self.m_direction == GraphicsItemPin.Direction.LEFT):
             x = self.m_width - 100
             y = 0
-            width = self.pin_length
+            width = self.m_pin_length
             height = self.m_height
         elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
             x = 0
             y = 0
             width = self.m_width
-            height = self.pin_length
+            height = self.m_pin_length
         elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
             x = 0
             y = 0
-            width = self.pin_length
+            width = self.m_pin_length
             height = self.m_height
         else:
             x = 0
-            y = self.m_height - self.pin_length
+            y = self.m_height - self.m_pin_length
             width = self.m_width
-            height = self.pin_length
+            height = self.m_pin_length
 
         painter.drawRect(x, y, width, height)
 
         # draw text
         if self.m_direction == GraphicsItemPin.Direction.LEFT or self.m_direction == GraphicsItemPin.Direction.RIGHT:
-            text = self.m_font_metrics.elidedText(self.m_name, Qt.TextElideMode.ElideRight, self.pin_length - 20)
+            text = self.m_font_metrics.elidedText(self.m_name, Qt.TextElideMode.ElideRight, self.m_pin_length - 20)
             painter.translate(10 + x, (self.m_height / 2) + 8)
         else:
-            text = self.m_font_metrics.elidedText(self.m_name, Qt.TextElideMode.ElideRight, self.pin_length - 20)
-            painter.translate((self.m_width / 2) + 8, self.pin_length - 10 + y)
+            text = self.m_font_metrics.elidedText(self.m_name, Qt.TextElideMode.ElideRight, self.m_pin_length - 20)
+            painter.translate((self.m_width / 2) + 8, self.m_pin_length - 10 + y)
             painter.rotate(-90)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         painter.setFont(self.m_font)
@@ -184,22 +187,22 @@ class GraphicsItemPin(QGraphicsObject):
             if text != "":
                 if (self.m_direction == GraphicsItemPin.Direction.LEFT):
                     text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                          self.m_width - self.pin_length - 20)
+                                                          self.m_width - self.m_pin_length - 20)
                     pixels = self.m_font_metrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
                 elif (self.m_direction == GraphicsItemPin.Direction.BOTTOM):
                     text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                          self.m_height - self.pin_length - 20)
+                                                          self.m_height - self.m_pin_length - 20)
                     pixels = self.m_font_metrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
                 elif (self.m_direction == GraphicsItemPin.Direction.RIGHT):
                     text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                          self.m_width - self.pin_length - 20)
-                    painter.translate(self.pin_length, 0)
+                                                          self.m_width - self.m_pin_length - 20)
+                    painter.translate(self.m_pin_length, 0)
                 else:
                     text = self.m_font_metrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                          self.m_height - self.pin_length - 20)
-                    painter.translate(self.pin_length, 0)
+                                                          self.m_height - self.m_pin_length - 20)
+                    painter.translate(self.m_pin_length, 0)
 
             if isDarkTheme():
                 painter.setPen(QPen(QColor(255, 255, 255), 1))
@@ -226,23 +229,25 @@ class GraphicsItemPin(QGraphicsObject):
             self.m_previous_checked_action = None
             PROJECT.setConfig(self.locked_key, False)
             PROJECT.setConfig(self.signal_key, "")
+            PROJECT.setConfig(self.label_key, "")
 
         if self.m_previous_checked_action != action:
             self.m_previous_checked_action = action
 
-    def projectPinConfigChanged(self, key: list[str], oldValue: str, newvalue: str):
-        if key[1] == self.m_name:
-            if key[-1] == "label":
+    def projectPinConfigChanged(self, keys: list[str], oldValue: str, newvalue: str):
+        if keys[1] == self.m_name:
+            if keys[-1] == "label":
                 self.m_label = newvalue
-            elif key[-1] == "locked":
+                PROJECT.triggerPropertyGridIp(PROJECT.pinIp, self.m_name)
+            elif keys[-1] == "locked":
                 self.m_locked = newvalue
-            elif key[-1] == "signal":
+            elif keys[-1] == "signal":
                 self.m_signal = newvalue
                 pin = PROJECT.pins[self.m_name]
                 if newvalue != "":
                     instance = newvalue.split("-")[0]
                     info = pin["signals"][newvalue]
-                    if "mode" in info:
+                    if info != None and "mode" in info:
                         mode = info["mode"]
                         ip = PROJECT.ip(instance)
                         ip_modes = ip["modes"][mode]
@@ -251,10 +256,18 @@ class GraphicsItemPin(QGraphicsObject):
                         for key, info in ip_modes.items():
                             path = f"{instance}/{self.m_name}/{key}"
                             PROJECT.setConfig(path, info["default"])
+                    elif oldValue != "" and oldValue != None:
+                        instance = oldValue.split("-")[0]
+                        info = pin["signals"][oldValue]
+                        if "mode" in info:
+                            path = f"{instance}/{self.m_name}"
+                            PROJECT.setConfig(path, {})
+                    PROJECT.triggerPropertyGridIp(instance, self.m_name)
                 elif oldValue != "" and oldValue != None:
                     instance = oldValue.split("-")[0]
                     info = pin["signals"][oldValue]
                     if "mode" in info:
                         path = f"{instance}/{self.m_name}"
                         PROJECT.setConfig(path, {})
+                    PROJECT.triggerPropertyGridIp(instance, self.m_name)
             self.update()

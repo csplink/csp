@@ -92,9 +92,6 @@ modes:
       default: geehy.gpio_mode_input
 parameters:
   geehy.gpio_level_t:
-    label:
-      zh_CN: GPIO电平类型
-      en:
     type: enum
     values:
       geehy.gpio_level_low:
@@ -113,9 +110,6 @@ parameters:
       en:
     readonly: false
   geehy.gpio_mode_t:
-    label:
-      zh_CN: GPIO模式类型
-      en:
     type: enum
     values:
       geehy.gpio_mode_analog:
@@ -142,9 +136,6 @@ parameters:
       en:
     readonly: false
   geehy.gpio_output_type_t:
-    label:
-      zh_CN: GPIO输出类型
-      en:
     type: enum
     values:
       geehy.gpio_output_pp:
@@ -163,9 +154,6 @@ parameters:
       en:
     readonly: false
   geehy.gpio_pull_t:
-    label:
-      zh_CN: GPIO钳位类型
-      en:
     type: enum
     values:
       geehy.gpio_pull_down:
@@ -188,9 +176,6 @@ parameters:
       en:
     readonly: false
   geehy.gpio_speed_t:
-    label:
-      zh_CN: GPIO速度类型
-      en:
     type: enum
     values:
       geehy.gpio_speed_low:

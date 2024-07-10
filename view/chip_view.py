@@ -52,7 +52,9 @@ class ChipView(Ui_ChipView, QWidget):
         self.toolButton_zoomReset.setIcon(Icon.REFRESH)
         self.toolButton_zoomOut.setIcon(Icon.ZOOM_OUT)
 
-        self.splitter.setSizes([100, 200, 300])
+        self.splitter.setSizes([500, 100])
+        self.splitter_2.setSizes([500, 200])
+        self.splitter_3.setSizes([200, 1000])
 
         self.toolButton_zoomIn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
         self.toolButton_zoomReset.pressed.connect(lambda: self.graphicsView.resize())
@@ -90,6 +92,8 @@ class ChipView(Ui_ChipView, QWidget):
         self.graphicsView.resize()
 
         Style.CHIP_VIEW.apply(self)
+
+        self.widget_modeGridIo.setInstance("GPIO")
 
     def treeView_modulesSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
         indexes = selected.indexes()
