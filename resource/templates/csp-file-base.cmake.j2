@@ -1,0 +1,112 @@
+{#
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        csp-file-base.cmake.j2
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-07-10     xqyjlj       initial version
+#
+#}
+##
+## -----------------------------------------------------------------------------
+##  @author:            {{Author}}
+##  @file:              {{File}}
+##  @brief:             {{Brief}}
+##  @coder_version:     {{Version}}
+##  @hal:               {{Project.Vendor}}.{{Project.Hal}}
+##  @hal_version:       {{Project.HalVersion}}
+##  @project:           {{Project.Name}}
+##  @target_chip:       {{Project.TargetChip}}
+##  @time:              {{Time}}
+##
+## -----------------------------------------------------------------------------
+##  @attention
+##
+##  Copyright (C) {{Year}} csplink software.
+##  All rights reserved.
+##
+## -----------------------------------------------------------------------------
+##
+
+##==< add user code begin header, do not change this comment!
+{{UserCode["header"]}}
+##==> add user code end header, do not change this comment!
+
+############################### project settings ###############################
+{%- block project_settings %}
+{%- endblock %}
+##==< add user code begin project settings, do not change this comment!
+{{UserCode["project settings"]}}
+##==> add user code end project settings, do not change this comment!
+
+################################## toolchains ##################################
+
+##==< add user code begin toolchains, do not change this comment!
+{%- if UserCode["toolchains"] %}
+{{UserCode["toolchains"]}}
+{%- else %}
+    {%- block toolchains %}
+    {%- endblock %}
+{%- endif %}
+##==> add user code end toolchains, do not change this comment!
+
+################################# project info #################################
+
+##==< add user code begin project info, do not change this comment!
+{%- if UserCode["project info"] %}
+{{UserCode["project info"]}}
+{%- else %}
+    {%- block project_info %}
+    {%- endblock %}
+{%- endif %}
+##==> add user code end project info, do not change this comment!
+
+##################################### flags ####################################
+
+##==< add user code begin flags, do not change this comment!
+{%- if UserCode["flags"] %}
+{{UserCode["flags"]}}
+{%- else %}
+    {%- block flags %}
+    {%- endblock %}
+{%- endif %}
+##==> add user code end flags, do not change this comment!
+
+##################################### files ####################################
+{%  block files %}
+{%- endblock %}
+
+##==< add user code begin files, do not change this comment!
+{{UserCode["files"]}}
+##==> add user code end files, do not change this comment!
+{% block includes %}
+{%- endblock %}
+
+##==< add user code begin includes, do not change this comment!
+{{UserCode["includes"]}}
+##==> add user code end includes, do not change this comment!
+{%  block files_includes %}
+{%- endblock %}
+
+#################################### command ###################################
+{%  block command %}
+{%- endblock %}
+
+##==< add user code begin command, do not change this comment!
+{{UserCode["command"]}}
+##==> add user code end command, do not change this comment!

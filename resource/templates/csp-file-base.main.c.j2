@@ -1,0 +1,125 @@
+{#
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        csp-file-base.main.c.j2
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-07-10     xqyjlj       initial version
+#
+#}
+/**
+ * *****************************************************************************
+ *  @author:            {{Author}}
+ *  @file:              {{File}}
+ *  @brief:             {{Brief}}
+ *  @coder_version:     {{Version}}
+ *  @hal:               {{Project.Vendor}}.{{Project.Hal}}
+ *  @hal_version:       {{Project.HalVersion}}
+ *  @project:           {{Project.Name}}
+ *  @target_chip:       {{Project.TargetChip}}
+ *  @time:              {{Time}}
+ *
+ * *****************************************************************************
+ *  @attention
+ *
+ *  Copyright (C) {{Year}} csplink software.
+ *  All rights reserved.
+ *
+ * *****************************************************************************
+ */
+
+/**< add user code begin header, do not change this comment! */
+{{UserCode["header"]}}
+/**> add user code end header, do not change this comment! */
+
+/********************************** includes **********************************/
+{%- block includes %}
+{%- endblock %}
+/**< add user code begin includes, do not change this comment! */
+{{UserCode["includes"]}}
+/**> add user code end includes, do not change this comment! */
+
+/*********************************** typedef **********************************/
+{%- block typedef %}
+{%- endblock %}
+/**< add user code begin typedef, do not change this comment! */
+{{UserCode["typedef"]}}
+/**> add user code end typedef, do not change this comment! */
+
+/*********************************** define ***********************************/
+{%- block define %}
+{%- endblock %}
+/**< add user code begin define, do not change this comment! */
+{{UserCode["define"]}}
+/**> add user code end define, do not change this comment! */
+
+/************************************ macro ***********************************/
+{%- block macro %}
+{%- endblock %}
+/**< add user code begin macro, do not change this comment! */
+{{UserCode["macro"]}}
+/**> add user code end macro, do not change this comment! */
+
+/****************************** extern variables ******************************/
+{%- block extern_variables %}
+{%- endblock %}
+/**< add user code begin extern variables, do not change this comment! */
+{{UserCode["extern variables"]}}
+/**> add user code end extern variables, do not change this comment! */
+
+/**************************** functions prototypes ****************************/
+{%- block functions_prototypes %}
+{%- endblock %}
+/**< add user code begin functions prototypes, do not change this comment! */
+{{UserCode["functions prototypes"]}}
+/**> add user code end functions prototypes, do not change this comment! */
+
+/**< add user code begin 0, do not change this comment! */
+{{UserCode["0"]}}
+/**> add user code end 0, do not change this comment! */
+
+/**
+ * @brief the application entry point.
+ * @retval int
+ */
+int main(void)
+{
+{%- block main_init_body %}
+{%- endblock %}
+    /** infinite loop, do not change this comment! */
+    /**< add user code begin while.0, do not change this comment! */
+{%- if UserCode["while.0"] %}
+{{UserCode["while.0"]}}
+{%- else %}
+    while (1)
+    {
+{%  endif %}
+        /**> add user code end while.0, do not change this comment! */
+
+        /**< add user code begin while.1, do not change this comment! */
+{%- if UserCode["while.1"] %}
+{{UserCode["while.1"]}}
+{%- else %}
+    }
+{%  endif %}
+    /**> add user code end while.1, do not change this comment! */
+}
+
+/**< add user code begin 1, do not change this comment! */
+{{UserCode["1"]}}
+/**> add user code end 1, do not change this comment! */

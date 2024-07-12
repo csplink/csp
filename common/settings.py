@@ -24,7 +24,7 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
-import sys
+import os
 from enum import Enum
 
 from PyQt5.QtCore import QLocale
@@ -84,6 +84,7 @@ HELP_URL = "https://csplink.top"
 REPO_URL = "https://github.com/csplink/csp"
 FEEDBACK_URL = "https://github.com/csplink/csp/issues"
 RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
+ROOT_DIR = f"{os.path.dirname(__file__)}/.."
 
 SETTINGS = Settings()
 qconfig.load('csplink.config', SETTINGS)

@@ -41,6 +41,9 @@ sys.stdout = stdout
 from common import SETTINGS, PROJECT
 from view import MainView
 
+script_dir = os.path.dirname(__file__)
+sys.path.append(f"{script_dir}/plugins")
+
 
 def main():
 

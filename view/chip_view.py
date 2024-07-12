@@ -93,8 +93,6 @@ class ChipView(Ui_ChipView, QWidget):
 
         Style.CHIP_VIEW.apply(self)
 
-        self.widget_modeGridIo.setInstance("GPIO")
-
     def treeView_modulesSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
         indexes = selected.indexes()
         if len(indexes) > 0:

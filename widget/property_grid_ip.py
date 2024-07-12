@@ -210,11 +210,13 @@ class PropertyGridModel(QAbstractTableModel):
         g_data.clear()
         signal = PROJECT.config(f"pin/{value}/signal", "")
         if signal == "":
+            self.modelReset.emit()
             return
 
         cfg = PROJECT.pins[value]["signals"][signal]
         ip = PROJECT.ip(instance)
         if len(ip) == 0:
+            self.modelReset.emit()
             return
 
         if "mode" in cfg:
