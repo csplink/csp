@@ -128,6 +128,9 @@ class GridPropertyIpModel(QAbstractTableModel):
 
     m_pin_instance = ""
 
+    m_font = QFont('JetBrains Mono')
+    m_font.setPixelSize(12)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.m_headers = [self.tr("property"), self.tr("value")]
@@ -157,9 +160,7 @@ class GridPropertyIpModel(QAbstractTableModel):
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
-            font = QFont('JetBrains Mono')
-            font.setPixelSize(12)
-            return font
+            return self.m_font
         elif role == Qt.ItemDataRole.TextAlignmentRole:  # 7
             return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
@@ -199,10 +200,6 @@ class GridPropertyIpModel(QAbstractTableModel):
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
             return self.m_headers[section]
-        elif role == Qt.ItemDataRole.FontRole:  # 6
-            font = QFont('JetBrains Mono')
-            font.setPixelSize(12)
-            return font
         else:
             return None
 

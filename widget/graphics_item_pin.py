@@ -266,7 +266,7 @@ class GraphicsItemPin(QGraphicsObject):
                 elif oldValue != "" and oldValue != None:
                     instance = oldValue.split("-")[0]
                     info = pin["signals"][oldValue]
-                    if "mode" in info:
+                    if info != None and "mode" in info:
                         path = f"{instance}/{self.m_name}"
                         PROJECT.setConfig(path, {})
                     PROJECT.triggerGridPropertyIp(instance, self.m_name)

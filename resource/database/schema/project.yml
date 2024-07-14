@@ -38,5 +38,9 @@ properties:
     minLength: 1
   config:
     type: object
+  modules:
+    type: array
+    items:
+          type: string
 required: ["version", "name", "vendor", "targetChip"]
 additionalProperties: false

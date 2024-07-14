@@ -27,7 +27,7 @@
 import attr
 
 from PyQt5.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QBrush, QColor
 from PyQt5.QtWidgets import (QWidget)
 
 from .ui.Ui_tree_module import Ui_TreeModule
@@ -64,6 +64,13 @@ class TreeModuleModel(QAbstractItemModel):
 
     m_model = PModel()
 
+    m_selected_color = QColor(0, 204, 68)
+    m_brush = QBrush()
+    m_brush.setColor(QColor(0, 204, 68))
+
+    m_font = QFont('JetBrains Mono')
+    m_font.setPixelSize(12)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.__load_module()
@@ -90,15 +97,15 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
-            font = QFont('JetBrains Mono')
-            font.setStyleStrategy(QFont.PreferAntialias)
-            font.setPixelSize(12)
-            return font
+            return self.m_font
         elif role == Qt.ItemDataRole.TextAlignmentRole:  # 7
             return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
             return None
         elif role == Qt.ItemDataRole.ForegroundRole:  # 9
+            model = index.internalPointer()
+            if model.displayName in PROJECT.modules:
+                return self.m_brush
             return None
         elif role == Qt.ItemDataRole.CheckStateRole:  # 10
             return None

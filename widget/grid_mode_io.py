@@ -34,6 +34,9 @@ from common import PROJECT, SETTINGS
 
 class GridModeIoModel(QAbstractTableModel):
 
+    m_font = QFont('JetBrains Mono')
+    m_font.setPixelSize(12)
+
     m_instance = ""
     m_ip = {}
     m_headers_map = {}
@@ -66,9 +69,7 @@ class GridModeIoModel(QAbstractTableModel):
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
-            font = QFont('JetBrains Mono')
-            font.setPixelSize(12)
-            return font
+            return self.m_font
         elif role == Qt.ItemDataRole.TextAlignmentRole:  # 7
             return Qt.AlignmentFlag.AlignCenter
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
@@ -92,10 +93,6 @@ class GridModeIoModel(QAbstractTableModel):
                 return self.m_headers_list[section]
             else:
                 return f"{section + 1}"
-        elif role == Qt.ItemDataRole.FontRole:  # 6
-            font = QFont('JetBrains Mono')
-            font.setPixelSize(12)
-            return font
         else:
             return None
 

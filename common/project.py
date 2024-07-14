@@ -126,6 +126,7 @@ class Project(QObject):
     configChanged = pyqtSignal(list, object, object)
     gridPropertyIpTriggered = pyqtSignal(str, str)
     reloaded = pyqtSignal()
+    modulesChanged = pyqtSignal()
 
     m_data = {}
     m_path = ""
@@ -192,6 +193,10 @@ class Project(QObject):
             self.reloaded.emit()
         self.m_path = path
 
+    @property
+    def modules(self) -> list:
+        return self.m_data.setdefault("modules", [])
+
     def load(self, path: str):
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
@@ -246,9 +251,8 @@ class Project(QObject):
             old = map.get(keys[-1], None)
             map[keys[-1]] = value
 
-            if (isinstance(value, dict) or isinstance(value, str) or isinstance(value, list)) and len(value) == 0:
-                map.pop(keys[-1])
-            elif value == None:
+            if ((isinstance(value, dict) or isinstance(value, str) or isinstance(value, list))
+                    and len(value) == 0) or value == None:
                 map.pop(keys[-1])
 
             if len(keys) >= 2:
@@ -256,6 +260,15 @@ class Project(QObject):
                     self.pinConfigChanged.emit(keys, old, value)
                 else:
                     self.configChanged.emit(keys, old, value)
+
+            modules = set()
+            for name, cfg in self.m_data["config"].items():
+                if name not in ["pin"] and cfg != None and len(cfg) > 0:
+                    modules.add(name)
+            if set(self.modules) != modules:
+                self.m_data["modules"] = list(modules)
+                self.modulesChanged.emit()
+
             self.saveTmp()
 
     def triggerGridPropertyIp(self, instance: str, name: object) -> str:
