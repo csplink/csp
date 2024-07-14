@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        mode_grid_ip.py
+# @file        grid_mode_ip.py
 #
 # Change Logs:
 # Date           Author       Notes

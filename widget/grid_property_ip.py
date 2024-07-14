@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        property_grid_ip.py
+# @file        grid_property_ip.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -33,7 +33,7 @@ from PyQt5.QtWidgets import (QWidget, QHeaderView, QTableWidgetItem, QAbstractIt
 
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
-from .ui.Ui_property_grid_ip import Ui_PropertyGridIp
+from .ui.Ui_grid_property_ip import Ui_GridPropertyIp
 from common import PROJECT, SETTINGS
 
 
@@ -43,7 +43,7 @@ class PModel():
     path = attr.ib(default="", validator=attr.validators.instance_of(str))
     value = attr.ib(default="", validator=attr.validators.instance_of(str))
     typeof = attr.ib(default="", validator=attr.validators.instance_of(str))
-    possibleValues = attr.ib(default="", validator=attr.validators.instance_of(list))
+    possibleValues = attr.ib(default=[], validator=attr.validators.instance_of(list))
     readonly = attr.ib(default="", validator=attr.validators.instance_of(bool))
     description = attr.ib(default="", validator=attr.validators.instance_of(str))
 
@@ -106,8 +106,8 @@ ComboBox[isPlaceholderText=true] {
 }""")
             comboBox.setStyle(QApplication.style())
             for value in g_data[index.row()].possibleValues:
-                comboBox.addItem(PROJECT.ipTr(value))
-            comboBox.setCurrentText(PROJECT.ipTr(g_data[index.row()].value))
+                comboBox.addItem(PROJECT.ip.ipTr(value))
+            comboBox.setCurrentText(PROJECT.ip.ipTr(g_data[index.row()].value))
             return comboBox
         else:
             return None
@@ -124,16 +124,16 @@ ComboBox[isPlaceholderText=true] {
             model.setData(index, editor.currentText(), Qt.ItemDataRole.EditRole)
 
 
-class PropertyGridModel(QAbstractTableModel):
+class GridPropertyIpModel(QAbstractTableModel):
 
     m_pin_instance = ""
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.m_headers = [self.tr("property"), self.tr("value")]
-        self.m_pin_instance = PROJECT.pinIp
+        self.m_pin_instance = PROJECT.summary.pinIp
 
-        PROJECT.propertyGridIpTriggered.connect(self.projectPropertyGridIpTriggered)
+        PROJECT.gridPropertyIpTriggered.connect(self.projectGridPropertyIpTriggered)
 
     def rowCount(self, parent: QModelIndex) -> int:
         return len(g_data)
@@ -146,7 +146,7 @@ class PropertyGridModel(QAbstractTableModel):
             if index.column() == 0:
                 return g_data[index.row()].property
             elif index.column() == 1:
-                return PROJECT.ipTr(g_data[index.row()].value)
+                return PROJECT.ip.ipTr(g_data[index.row()].value)
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
@@ -181,7 +181,7 @@ class PropertyGridModel(QAbstractTableModel):
                 PROJECT.setConfig(path, value)
             elif g_data[index.row()].typeof == "enum":
                 path = g_data[index.row()].path
-                PROJECT.setConfig(path, PROJECT.ipTrR(value))
+                PROJECT.setConfig(path, PROJECT.ip.ipTrR(value))
                 g_data[index.row()].value = value
             return True
         else:
@@ -206,15 +206,15 @@ class PropertyGridModel(QAbstractTableModel):
         else:
             return None
 
-    def projectPropertyGridIpTriggered(self, instance: str, value: str):
+    def projectGridPropertyIpTriggered(self, instance: str, value: str):
         g_data.clear()
         signal = PROJECT.config(f"pin/{value}/signal", "")
         if signal == "":
             self.modelReset.emit()
             return
 
-        cfg = PROJECT.pins[value]["signals"][signal]
-        ip = PROJECT.ip(instance)
+        cfg = PROJECT.summary.pins[value]["signals"][signal]
+        ip = PROJECT.ip.ip(instance)
         if len(ip) == 0:
             self.modelReset.emit()
             return
@@ -242,9 +242,9 @@ class PropertyGridModel(QAbstractTableModel):
                            readonly=False,
                            description=""))
 
-            ip = PROJECT.ip(instance)
+            ip = PROJECT.ip.ip(instance)
             if "parameters" in ip:
-                parameters = PROJECT.ip(instance)["parameters"]
+                parameters = PROJECT.ip.ip(instance)["parameters"]
                 local = SETTINGS.get(SETTINGS.language).value.name()
                 for mode, cfg in mode_cfg.items():
                     path = f"{instance}/{value}/{mode}"
@@ -260,7 +260,7 @@ class PropertyGridModel(QAbstractTableModel):
         self.modelReset.emit()
 
 
-class PropertyGridIp(Ui_PropertyGridIp, QWidget):
+class GridPropertyIp(Ui_GridPropertyIp, QWidget):
 
     m_pin_instance = ""
 
@@ -269,7 +269,7 @@ class PropertyGridIp(Ui_PropertyGridIp, QWidget):
         self.setupUi(self)
 
         self.m_tableView_propertyProxyModel = QSortFilterProxyModel(self)
-        self.m_model = PropertyGridModel(self)
+        self.m_model = GridPropertyIpModel(self)
         self.m_tableView_propertyProxyModel.setSourceModel(self.m_model)
         self.tableView_property.setModel(self.m_tableView_propertyProxyModel)
         self.tableView_property.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)

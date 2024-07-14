@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PropertyGridIp</class>
- <widget class="QWidget" name="PropertyGridIp">
+ <class>GridPropertyIp</class>
+ <widget class="QWidget" name="GridPropertyIp">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,9 +11,21 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PropertyGridIp</string>
+   <string>GridPropertyIp</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="TableView" name="tableView_property"/>
    </item>

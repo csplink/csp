@@ -238,18 +238,18 @@ class GraphicsItemPin(QGraphicsObject):
         if keys[1] == self.m_name:
             if keys[-1] == "label":
                 self.m_label = newvalue
-                PROJECT.triggerPropertyGridIp(PROJECT.pinIp, self.m_name)
+                PROJECT.triggerGridPropertyIp(PROJECT.summary.pinIp, self.m_name)
             elif keys[-1] == "locked":
                 self.m_locked = newvalue
             elif keys[-1] == "signal":
                 self.m_signal = newvalue
-                pin = PROJECT.pins[self.m_name]
+                pin = PROJECT.summary.pins[self.m_name]
                 if newvalue != "":
                     instance = newvalue.split("-")[0]
                     info = pin["signals"][newvalue]
                     if info != None and "mode" in info:
                         mode = info["mode"]
-                        ip = PROJECT.ip(instance)
+                        ip = PROJECT.ip.ip(instance)
                         ip_modes = ip["modes"][mode]
                         path = f"{instance}/{self.m_name}"
                         PROJECT.setConfig(path, {})
@@ -262,12 +262,12 @@ class GraphicsItemPin(QGraphicsObject):
                         if "mode" in info:
                             path = f"{instance}/{self.m_name}"
                             PROJECT.setConfig(path, {})
-                    PROJECT.triggerPropertyGridIp(instance, self.m_name)
+                    PROJECT.triggerGridPropertyIp(instance, self.m_name)
                 elif oldValue != "" and oldValue != None:
                     instance = oldValue.split("-")[0]
                     info = pin["signals"][oldValue]
                     if "mode" in info:
                         path = f"{instance}/{self.m_name}"
                         PROJECT.setConfig(path, {})
-                    PROJECT.triggerPropertyGridIp(instance, self.m_name)
+                    PROJECT.triggerGridPropertyIp(instance, self.m_name)
             self.update()

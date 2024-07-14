@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>900</height>
+    <width>1219</width>
+    <height>967</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ChipView</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_6">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QSplitter" name="splitter_3">
+    <widget class="QSplitter" name="splitter_1">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -28,117 +28,35 @@
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="TreeView" name="treeView_modules"/>
+        <widget class="TreeModule" name="widget" native="true"/>
        </item>
       </layout>
      </widget>
-     <widget class="QSplitter" name="splitter_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+     <widget class="SimpleCardWidget" name="frame_3">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
-      <widget class="QSplitter" name="splitter">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
        </property>
-       <widget class="SimpleCardWidget" name="frame_2">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="GraphicsViewPanZoom" name="graphicsView">
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_2" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>20</number>
-            </property>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>463</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="ToolButton" name="toolButton_zoomIn">
-              <property name="cursor">
-               <cursorShape>ArrowCursor</cursorShape>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="ToolButton" name="toolButton_zoomReset">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="ToolButton" name="toolButton_zoomOut">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>462</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="SimpleCardWidget" name="frame_4">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="PropertyGridIp" name="widget_propertyGridIo" native="true"/>
-         </item>
-        </layout>
-       </widget>
-      </widget>
-      <widget class="SimpleCardWidget" name="frame_3">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+       <property name="topMargin">
+        <number>0</number>
        </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+       <property name="rightMargin">
+        <number>0</number>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QSplitter" name="splitter_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
          <widget class="QStackedWidget" name="stackedWidget">
           <property name="currentIndex">
            <number>0</number>
@@ -161,7 +79,7 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="ModeGridIo" name="widget_modeGridIo" native="true"/>
+             <widget class="GridModeIo" name="widget_gridModeIo" native="true"/>
             </item>
            </layout>
           </widget>
@@ -185,9 +103,86 @@
            </layout>
           </widget>
          </widget>
-        </item>
-       </layout>
-      </widget>
+         <widget class="GridPropertyIp" name="widget_propertyGridIo" native="true"/>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="SimpleCardWidget" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="GraphicsViewPanZoom" name="graphicsView">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>463</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="ToolButton" name="toolButton_zoomIn">
+            <property name="cursor">
+             <cursorShape>ArrowCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ToolButton" name="toolButton_zoomReset">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ToolButton" name="toolButton_zoomOut">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>462</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -197,11 +192,6 @@
   <customwidget>
    <class>ToolButton</class>
    <extends>QToolButton</extends>
-   <header location="global">qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>TreeView</class>
-   <extends>QTreeView</extends>
    <header location="global">qfluentwidgets</header>
   </customwidget>
   <customwidget>
@@ -216,15 +206,21 @@
    <header>widget.graphics_view_pan_zoom</header>
   </customwidget>
   <customwidget>
-   <class>ModeGridIo</class>
+   <class>GridModeIo</class>
    <extends>QWidget</extends>
-   <header>widget.mode_grid_io</header>
+   <header>widget.grid_mode_io</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>PropertyGridIp</class>
+   <class>GridPropertyIp</class>
    <extends>QWidget</extends>
-   <header>widget.property_grid_ip</header>
+   <header>widget.grid_property_ip</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TreeModule</class>
+   <extends>QWidget</extends>
+   <header>widget.tree_module</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

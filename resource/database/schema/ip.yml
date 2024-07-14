@@ -81,6 +81,6 @@ properties:
                 required: ["comment"]
         required: ["displayName", "type", "description", "readonly"]
   modeGrid:
-    enum: ["mode_grid_io", "mode_grid_ip"]
+    enum: ["grid_mode_io", "mode_grid_ip"]
 
 required: ["modes", "parameters", "modeGrid"]

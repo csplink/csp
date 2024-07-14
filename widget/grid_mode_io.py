@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        mode_grid_io.py
+# @file        grid_mode_io.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -28,11 +28,11 @@ from PyQt5.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelI
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
 from PyQt5.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
-from .ui.Ui_mode_grid_io import Ui_ModeGridIo
+from .ui.Ui_grid_mode_io import Ui_GridModeIo
 from common import PROJECT, SETTINGS
 
 
-class ModeGridIoModel(QAbstractTableModel):
+class GridModeIoModel(QAbstractTableModel):
 
     m_instance = ""
     m_ip = {}
@@ -105,7 +105,7 @@ class ModeGridIoModel(QAbstractTableModel):
 
             locale = SETTINGS.get(SETTINGS.language).value
 
-            self.m_ip = PROJECT.ip(instance)
+            self.m_ip = PROJECT.ip.ip(instance)
             self.m_headers_map.clear()
 
             self.m_headers_map = {
@@ -140,19 +140,19 @@ class ModeGridIoModel(QAbstractTableModel):
                             if path != "":
                                 path = path.replace("(name)", name)
                                 value = PROJECT.config(path, "")
-                                l.append({"display": PROJECT.ipTr(self._value2str(value)), "tooltip": value})
+                                l.append({"display": PROJECT.ip.ipTr(self.__value2str(value)), "tooltip": value})
                             else:
                                 l.append({"display": name, "tooltip": name})
                         self.m_data.append(l)
 
             self.modelReset.emit()
 
-    def _value2str(self, value):
+    def __value2str(self, value):
         if isinstance(value, bool):
             return self.tr("Locked") if value else self.tr("Unlocked")
         return value
 
-    def _removeModelData(self, name: str):
+    def __removeModelData(self, name: str):
         row = 0
         for item in self.m_data:
             if item[0]["display"] == name:
@@ -163,7 +163,7 @@ class ModeGridIoModel(QAbstractTableModel):
             self.m_data.pop(row)
             self.endRemoveRows()
 
-    def _insertModelData(self, row: int, name: str):
+    def __insertModelData(self, row: int, name: str):
         self.beginInsertRows(QModelIndex(), row, row)
 
         li = [{"display": name, "tooltip": name}]
@@ -173,7 +173,7 @@ class ModeGridIoModel(QAbstractTableModel):
 
         self.endInsertRows()
 
-    def _getModelDataIndex(self, name: str) -> int:
+    def __getModelDataIndex(self, name: str) -> int:
         li = sorted(list(self.m_config.keys()))
         if not name in li:
             return -1
@@ -187,7 +187,7 @@ class ModeGridIoModel(QAbstractTableModel):
             exists = False
 
         if not exists:
-            self._insertModelData(index, name)
+            self.__insertModelData(index, name)
 
         return index
 
@@ -196,15 +196,15 @@ class ModeGridIoModel(QAbstractTableModel):
             name = keys[1]
 
             if len(keys) == 2:
-                self._removeModelData(name)
+                self.__removeModelData(name)
             elif len(keys) == 3:
-                index = self._getModelDataIndex(name)
+                index = self.__getModelDataIndex(name)
                 if index >= 0:
                     locale = SETTINGS.get(SETTINGS.language).value
                     param = self.m_ip["parameters"][keys[2]]["displayName"][locale.name()]
                     column = self.m_headers_list.index(param)
                     self.m_data[index][column] = {
-                        "display": PROJECT.ipTr(self._value2str(newvalue)),
+                        "display": PROJECT.ip.ipTr(self.__value2str(newvalue)),
                         "tooltip": newvalue
                     }
                     index = self.createIndex(index, column)
@@ -214,23 +214,22 @@ class ModeGridIoModel(QAbstractTableModel):
         if "" != self.m_instance:
             if len(keys) == 3 and keys[2] == "label":
                 name = keys[1]
-                index = self._getModelDataIndex(name)
+                index = self.__getModelDataIndex(name)
                 if index >= 0:
                     self.m_data[index][1] = {"display": newvalue, "tooltip": newvalue}
                     index = self.createIndex(index, 1)
                     self.dataChanged.emit(index, index)
 
 
-class ModeGridIo(Ui_ModeGridIo, QWidget):
+class GridModeIo(Ui_GridModeIo, QWidget):
     m_instance = ""
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.lineEdit_search.setVisible(False)
         self.m_tableView_ioProxyModel = QSortFilterProxyModel(self)
-        self.m_model = ModeGridIoModel(self)
+        self.m_model = GridModeIoModel(self)
         self.m_tableView_ioProxyModel.setSourceModel(self.m_model)
         self.tableView_io.setModel(self.m_tableView_ioProxyModel)
         self.tableView_io.setBorderVisible(True)
@@ -252,4 +251,4 @@ class ModeGridIo(Ui_ModeGridIo, QWidget):
         if len(indexes) > 0:
             index = indexes[0]
             name = str(index.data())
-            PROJECT.triggerPropertyGridIp(self.m_instance, name)
+            PROJECT.triggerGridPropertyIp(self.m_instance, name)

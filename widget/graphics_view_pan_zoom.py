@@ -117,9 +117,9 @@ class GraphicsViewPanZoom(QGraphicsView):
                         if w.exec():
                             PROJECT.setConfig(key, w.lineEdit_label.text())
                 else:
-                    ip = PROJECT.pinIp
+                    ip = PROJECT.summary.pinIp
                     name = item.data(GraphicsItemPin.Data.NAME.value)
-                    PROJECT.triggerPropertyGridIp(ip, name)
+                    PROJECT.triggerGridPropertyIp(ip, name)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         super().mouseMoveEvent(event)

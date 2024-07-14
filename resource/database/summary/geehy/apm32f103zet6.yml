@@ -168,7 +168,7 @@ modules:
     SYS:
       description:
         en:
-        zh_CN:
+        zh_CN: 系统模块
     WWDT:
       description:
         en:

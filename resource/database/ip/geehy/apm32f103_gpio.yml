@@ -201,4 +201,4 @@ parameters:
       zh_CN: GPIO-速度
       en:
     readonly: false
-modeGrid: mode_grid_io
+modeGrid: grid_mode_io

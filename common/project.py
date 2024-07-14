@@ -33,93 +33,164 @@ from common.settings import SETTINGS, VERSION
 from common.database import Database
 
 
-class Project(QObject):
+class Summary(QObject):
 
-    pinConfigChanged = pyqtSignal(list, object, object)
-    configChanged = pyqtSignal(list, object, object)
-    propertyGridIpTriggered = pyqtSignal(str, str)
-    reloaded = pyqtSignal()
-
-    __p_map__ = {}
-    __p_path__ = ""
-    __p_summary__ = {}
-    __p_ip__ = {}
-    __p_ip_total__ = {}
-    __p_ip_reverse_total__ = {}
+    m_summary = {}
+    m_modulesList = []
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
     @property
+    def hal(self) -> str:
+        return self.m_summary.setdefault("hal", "unknown")
+
+    @property
+    def package(self) -> str:
+        return self.m_summary.setdefault("package", "unknown")
+
+    @property
+    def pins(self) -> dict:
+        return self.m_summary.setdefault("pins", {})
+
+    @property
+    def modules(self) -> dict:
+        return self.m_summary.setdefault("modules", {})
+
+    @property
+    def pinIp(self) -> dict:
+        return self.m_summary.setdefault("pinIp", "")
+
+    @property
+    def modulesList(self) -> list:
+        return self.m_modulesList
+
+    @property
+    def originSummary(self) -> dict:
+        return self.m_summary
+
+    @originSummary.setter
+    def originSummary(self, summary: dict):
+        self.m_summary = summary
+
+        for _, module_group in self.modules.items():
+            for name, _ in module_group.items():
+                self.m_modulesList.append(name)
+
+
+class Ip(QObject):
+
+    m_ip = {}
+    m_ip_total = {}
+    m_ip_reverse_total = {}
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+
+    def ip(self, name: str) -> dict:
+        if name not in self.m_ip:
+            return {}
+        return self.m_ip[name]
+
+    def ipTr(self, name: str) -> str:
+        if name in self.m_ip_total:
+            return self.m_ip_total[name]
+        else:
+            return name
+
+    def ipTrR(self, name: str) -> str:
+        if name in self.m_ip_reverse_total:
+            return self.m_ip_reverse_total[name]
+        else:
+            return name
+
+    @property
+    def originIp(self) -> dict:
+        return self.m_ip
+
+    @originIp.setter
+    def originIp(self, ip: dict):
+        self.m_ip = ip
+
+        locale = SETTINGS.get(SETTINGS.language).value.name()
+        for name in ip.keys():
+            for _, parameter in ip[name]["parameters"].items():
+                for key, value in parameter["values"].items():
+                    self.m_ip_total[key] = value["comment"][locale]
+                    self.m_ip_reverse_total[value["comment"][locale]] = key
+
+
+class Project(QObject):
+
+    pinConfigChanged = pyqtSignal(list, object, object)
+    configChanged = pyqtSignal(list, object, object)
+    gridPropertyIpTriggered = pyqtSignal(str, str)
+    reloaded = pyqtSignal()
+
+    m_data = {}
+    m_path = ""
+    summary = None
+    ip = None
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.summary = Summary(self)
+        self.ip = Ip(self)
+
+    @property
     def version(self) -> str:
-        return self.__p_map__.setdefault("version", VERSION)
+        return self.m_data.setdefault("version", VERSION)
 
     @property
     def vendor(self) -> str:
-        return self.__p_map__.setdefault("vendor", "unknown")
+        return self.m_data.setdefault("vendor", "unknown")
+
+    @property
+    def origin(self) -> dict:
+        return self.m_data
 
     @vendor.setter
     def vendor(self, vendor: str):
-        self.__p_map__["vendor"] = vendor
+        self.m_data["vendor"] = vendor
         self.saveTmp()
 
     @property
     def targetChip(self) -> str:
-        return self.__p_map__.setdefault("targetChip", "unknown")
+        return self.m_data.setdefault("targetChip", "unknown")
 
     @targetChip.setter
     def targetChip(self, targetChip: str):
-        self.__p_map__["targetChip"] = targetChip
+        self.m_data["targetChip"] = targetChip
         self.saveTmp()
 
     @property
     def name(self) -> str:
-        return self.__p_map__.setdefault("name", "unknown")
+        return self.m_data.setdefault("name", "unknown")
 
     @name.setter
     def name(self, name: str):
-        self.__p_map__["name"] = name
+        self.m_data["name"] = name
         self.saveTmp()
 
     @property
     def halVersion(self) -> str:
-        return self.__p_map__.setdefault("halVersion", "unknown")
+        return self.m_data.setdefault("halVersion", "unknown")
 
     @halVersion.setter
     def halVersion(self, halVersion: str):
-        self.__p_map__["halVersion"] = halVersion
+        self.m_data["halVersion"] = halVersion
         self.saveTmp()
 
     @property
     def path(self) -> str:
-        return self.__p_path__
+        return self.m_path
 
     @path.setter
     def path(self, path: str):
-        if self.__p_path__ != path:
+        if self.m_path != path:
             self.load(path)
             self.reloaded.emit()
-        self.__p_path__ = path
-
-    @property
-    def hal(self) -> str:
-        return self.__p_summary__.setdefault("hal", "unknown")
-
-    @property
-    def package(self) -> str:
-        return self.__p_summary__.setdefault("package", "unknown")
-
-    @property
-    def pins(self) -> dict:
-        return self.__p_summary__.setdefault("pins", {})
-
-    @property
-    def modules(self) -> dict:
-        return self.__p_summary__.setdefault("modules", {})
-
-    @property
-    def pinIp(self) -> dict:
-        return self.__p_summary__.setdefault("pinIp", "")
+        self.m_path = path
 
     def load(self, path: str):
         if os.path.isfile(path):
@@ -129,35 +200,34 @@ class Project(QObject):
                 schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             try:
                 jsonschema.validate(instance=map, schema=schema)
-                self.__p_map__ = map
+                self.m_data = map
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)
 
-            self.__p_summary__ = Database.getSummary(self.vendor, self.targetChip)
-            locale = SETTINGS.get(SETTINGS.language).value.name()
-            for _, module_group in self.modules.items():
+            self.summary.originSummary = Database.getSummary(self.vendor, self.targetChip)
+
+            ip = {}
+            for _, module_group in self.summary.modules.items():
                 for name, module in module_group.items():
                     if "ip" in module:
-                        self.__p_ip__[name] = Database.getIp(self.vendor, module["ip"])
-                        for _, parameter in self.__p_ip__[name]["parameters"].items():
-                            for key, value in parameter["values"].items():
-                                self.__p_ip_total__[key] = value["comment"][locale]
-                                self.__p_ip_reverse_total__[value["comment"][locale]] = key
+                        ip[name] = Database.getIp(self.vendor, module["ip"])
+            self.ip.originIp = ip
+
         else:
             print(f"{path} is not file!")
 
     def dump(self):
-        return yaml.dump(self.__p_map__)
+        return yaml.dump(self.m_data)
 
     def saveTmp(self):
-        if self.__p_path__ != "":
-            path = f"{self.__p_path__}.tmp" if self.__p_path__.endswith(".csp") else self.__p_path__
+        if self.m_path != "":
+            path = f"{self.m_path}.tmp" if self.m_path.endswith(".csp") else self.m_path
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(self.dump())
 
     def config(self, path: str, default=None):
-        map = self.__p_map__.setdefault("config", {})
+        map = self.m_data.setdefault("config", {})
         keys = path.split("/")
         for key in keys:
             if key not in map:
@@ -166,7 +236,7 @@ class Project(QObject):
         return map
 
     def setConfig(self, path: str, value: object):
-        map = self.__p_map__.setdefault("config", {})
+        map = self.m_data.setdefault("config", {})
         keys = path.split("/")
         for key in keys[:-1]:
             if key not in map:
@@ -188,25 +258,8 @@ class Project(QObject):
                     self.configChanged.emit(keys, old, value)
             self.saveTmp()
 
-    def ip(self, name: str) -> dict:
-        if name not in self.__p_ip__:
-            return {}
-        return self.__p_ip__[name]
-
-    def ipTr(self, name: str) -> str:
-        if name in self.__p_ip_total__:
-            return self.__p_ip_total__[name]
-        else:
-            return name
-
-    def ipTrR(self, name: str) -> str:
-        if name in self.__p_ip_reverse_total__:
-            return self.__p_ip_reverse_total__[name]
-        else:
-            return name
-
-    def triggerPropertyGridIp(self, instance: str, name: object) -> str:
-        self.propertyGridIpTriggered.emit(instance, name)
+    def triggerGridPropertyIp(self, instance: str, name: object) -> str:
+        self.gridPropertyIpTriggered.emit(instance, name)
 
 
 PROJECT = Project()
