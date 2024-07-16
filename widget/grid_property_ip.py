@@ -216,7 +216,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             self.modelReset.emit()
             return
 
-        if "mode" in cfg:
+        if cfg != None and "mode" in cfg:
             mode = cfg["mode"]
             mode_cfg = ip["modes"][mode]
 

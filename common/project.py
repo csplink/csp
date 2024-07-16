@@ -127,6 +127,7 @@ class Project(QObject):
     gridPropertyIpTriggered = pyqtSignal(str, str)
     reloaded = pyqtSignal()
     modulesChanged = pyqtSignal()
+    gridModeTriggered = pyqtSignal(str, str)
 
     m_data = {}
     m_path = ""
@@ -271,8 +272,11 @@ class Project(QObject):
 
             self.saveTmp()
 
-    def triggerGridPropertyIp(self, instance: str, name: object) -> str:
+    def triggerGridPropertyIp(self, instance: str, name: str):
         self.gridPropertyIpTriggered.emit(instance, name)
+
+    def triggerGridMode(self, module: str, widget: str):
+        self.gridModeTriggered.emit(module, widget)
 
 
 PROJECT = Project()

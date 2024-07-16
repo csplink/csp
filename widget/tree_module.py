@@ -26,7 +26,7 @@
 
 import attr
 
-from PyQt5.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel
+from PyQt5.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
 from PyQt5.QtGui import QFont, QBrush, QColor
 from PyQt5.QtWidgets import (QWidget)
 
@@ -168,4 +168,14 @@ class TreeModule(Ui_TreeModule, QWidget):
         self.m_treeView_modulesProxyModel.setSourceModel(self.m_model)
         self.treeView_modules.setModel(self.m_treeView_modulesProxyModel)
         self.treeView_modules.expandAll()
-        # self.treeView_modules.selectionModel().selectionChanged.connect(self.treeView_modulesSelectionChanged)
+        self.treeView_modules.selectionModel().selectionChanged.connect(self.treeView_modulesSelectionChanged)
+
+    def treeView_modulesSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+        indexes = selected.indexes()
+        if len(indexes) > 0:
+            index = indexes[0]
+            if str(index.parent().data()) != "None":
+                module = str(index.data())
+                ip = PROJECT.ip.ip(module)
+                if "modeGrid" in ip:
+                    PROJECT.triggerGridMode(module, ip["modeGrid"])

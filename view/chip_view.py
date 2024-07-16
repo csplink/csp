@@ -25,7 +25,6 @@
 #
 
 import re
-from enum import Enum
 
 from PyQt5.QtCore import QItemSelection
 from PyQt5.QtGui import QColor, QStandardItemModel, QStandardItem
@@ -38,10 +37,6 @@ from common import Style, Icon, PROJECT, SETTINGS
 from widget import LQFP
 
 
-class StackedWidgetIndex(Enum):
-    GRID_MODE_IO = 0
-
-
 class ChipView(Ui_ChipView, QWidget):
 
     def __init__(self, parent=None):
@@ -52,28 +47,16 @@ class ChipView(Ui_ChipView, QWidget):
         self.toolButton_zoomReset.setIcon(Icon.REFRESH)
         self.toolButton_zoomOut.setIcon(Icon.ZOOM_OUT)
 
-        self.splitter_1.setSizes([100, 200, 500])
+        self.splitter_1.setSizes([100, 300])
+        self.splitter_1.setCollapsible(0, False)
+        self.splitter_1.setCollapsible(1, False)
         self.splitter_2.setSizes([300, 100])
+        self.splitter_2.setCollapsible(0, False)
+        self.splitter_2.setCollapsible(1, False)
 
         self.toolButton_zoomIn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
         self.toolButton_zoomReset.pressed.connect(lambda: self.graphicsView.resize())
         self.toolButton_zoomOut.pressed.connect(lambda: self.graphicsView.zoomOut(6))
-
-        # self.treeView_modules.header().hide()
-        # locale = SETTINGS.get(SETTINGS.language).value
-        # model = QStandardItemModel(self.treeView_modules)
-        # for group, module_group in PROJECT.summary.modules.items():
-        #     item = QStandardItem(group)
-        #     item.setEditable(False)
-        #     model.appendRow(item)
-        #     for name, module in module_group.items():
-        #         item_child = QStandardItem(name)
-        #         item_child.setEditable(False)
-        #         item_child.setToolTip(module["description"][locale.name()])
-        #         item.appendRow(item_child)
-        # self.treeView_modules.setModel(model)
-        # self.treeView_modules.expandAll()
-        # self.treeView_modules.selectionModel().selectionChanged.connect(self.treeView_modulesSelectionChanged)
 
         scene = QGraphicsScene(self.graphicsView)
         scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
@@ -91,14 +74,3 @@ class ChipView(Ui_ChipView, QWidget):
         self.graphicsView.resize()
 
         Style.CHIP_VIEW.apply(self)
-
-    def treeView_modulesSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
-        indexes = selected.indexes()
-        if len(indexes) > 0:
-            index = indexes[0]
-            if str(index.parent().data()) != "None":
-                module = str(index.data())
-                ip = PROJECT.ip.ip(module)
-                if "modeGrid" in ip and ip["modeGrid"] == "grid_mode_io":
-                    self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.GRID_MODE_IO.value))
-                    self.widget_gridModeIo.setInstance(module)

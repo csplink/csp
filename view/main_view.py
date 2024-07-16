@@ -24,6 +24,8 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
+from enum import Enum
+
 from PyQt5.QtCore import QUrl, QPoint
 from PyQt5.QtGui import QIcon, QDesktopServices, QKeySequence
 from PyQt5.QtWidgets import QHBoxLayout, QApplication
@@ -37,22 +39,36 @@ from .setting_view import SettingView
 from common.icon import Icon
 
 
+class MenuIndex(Enum):
+    FILE = 0
+    PROJECT = 1
+
+
 class CustomTitleBar(MSFluentTitleBar):
     """ Title bar with icon and title """
+
+    m_menus = []
 
     def __init__(self, parent):
         super().__init__(parent)
 
+        self.__initMenu()
+
         # add buttons
         self.layout_toolButton = QHBoxLayout()
 
-        self.button_search = TransparentPushButton(self.tr("File"), self)
-        self.button_search.clicked.connect(
-            lambda: self.createMenu(self.button_search.mapToGlobal(QPoint(0, self.button_search.height()))))
+        self.button_file = TransparentPushButton(self.tr("File"), self)
+        self.button_file.clicked.connect(lambda: self.m_menus[MenuIndex.FILE.value].exec(
+            self.button_file.mapToGlobal(QPoint(0, self.button_file.height())), ani=True))
+
+        self.button_project = TransparentPushButton(self.tr("Project"), self)
+        self.button_project.clicked.connect(lambda: self.m_menus[MenuIndex.PROJECT.value].exec(
+            self.button_project.mapToGlobal(QPoint(0, self.button_project.height())), ani=True))
 
         self.layout_toolButton.setContentsMargins(20, 0, 20, 0)
         self.layout_toolButton.setSpacing(15)
-        self.layout_toolButton.addWidget(self.button_search)
+        self.layout_toolButton.addWidget(self.button_file)
+        self.layout_toolButton.addWidget(self.button_project)
         self.hBoxLayout.insertLayout(4, self.layout_toolButton)
         self.hBoxLayout.setStretch(6, 0)
 
@@ -62,10 +78,13 @@ class CustomTitleBar(MSFluentTitleBar):
         # self.avatar.setFixedHeight(30)
         # self.hBoxLayout.insertWidget(6, self.avatar, 0, Qt.AlignRight)
         # self.hBoxLayout.insertSpacing(8, 20)
-    def createMenu(self, pos):
-        menu = RoundMenu(parent=self)
+    def __initMenu(self):
+        self.m_menus.append(self.__createFileMenu())
+        self.m_menus.append(self.__createProjectMenu())
 
-        # add actions
+    def __createFileMenu(self) -> RoundMenu:
+        menu = RoundMenu(parent=self)
+        menu.setShortcutEnabled
 
         action = Action(FIF.COPY, self.tr('New'))
         action.setShortcut(QKeySequence("Ctrl+N"))
@@ -79,29 +98,16 @@ class CustomTitleBar(MSFluentTitleBar):
         action.setShortcut(QKeySequence("Ctrl+S"))
         menu.addAction(action)
 
-        # # add sub menu
-        # submenu = RoundMenu(self.tr("Add to"), self)
-        # submenu.setIcon(FIF.ADD)
-        # submenu.addActions([
-        #     Action(FIF.VIDEO, self.tr('Video')),
-        #     Action(FIF.MUSIC, self.tr('Music')),
-        # ])
-        # menu.addMenu(submenu)
+        return menu
 
-        # # add actions
-        # menu.addActions([Action(FIF.PASTE, self.tr('Paste')), Action(FIF.CANCEL, self.tr('Undo'))])
+    def __createProjectMenu(self) -> RoundMenu:
+        menu = RoundMenu(parent=self)
 
-        # # add separator
-        # menu.addSeparator()
-        # menu.addAction(Action(self.tr('Select all')))
+        action = Action(FIF.COPY, self.tr('Generate'))
+        action.setShortcut(QKeySequence("Ctrl+G"))
+        menu.addAction(action)
 
-        # # insert actions
-        # menu.insertAction(menu.actions()[-1], Action(FIF.SETTING, self.tr('Settings')))
-        # menu.insertActions(menu.actions()[-1],
-        #                    [Action(FIF.HELP, self.tr('Help')),
-        #                     Action(FIF.FEEDBACK, self.tr('Feedback'))])
-
-        menu.exec(pos, ani=True)
+        return menu
 
 
 class MainView(MSFluentWindow):
