@@ -24,15 +24,15 @@
 #}
 ##
 ## -----------------------------------------------------------------------------
-##  @author:            {{Author}}
-##  @file:              {{File}}
-##  @brief:             {{Brief}}
-##  @coder_version:     {{Version}}
-##  @hal:               {{Project.Vendor}}.{{Project.Hal}}
-##  @hal_version:       {{Project.HalVersion}}
-##  @project:           {{Project.Name}}
-##  @target_chip:       {{Project.TargetChip}}
-##  @time:              {{Time}}
+##  @author:            {{author}}
+##  @file:              {{file}}
+##  @brief:             {{brief}}
+##  @coderVersion:      {{version}}
+##  @hal:               {{project.vendor}}.{{project.hal}}
+##  @halVersion:        {{project.halVersion}}
+##  @project:           {{project.name}}
+##  @targetChip:        {{project.targetChip}}
+##  @time:              {{time}}
 ##
 ## -----------------------------------------------------------------------------
 ##  @attention
@@ -44,21 +44,21 @@
 ##
 
 ##==< add user code begin header, do not change this comment!
-{{UserCode["header"]}}
+{{userCode["header"]}}
 ##==> add user code end header, do not change this comment!
 
 ############################### project settings ###############################
 {%- block project_settings %}
 {%- endblock %}
 ##==< add user code begin project settings, do not change this comment!
-{{UserCode["project settings"]}}
+{{userCode["project settings"]}}
 ##==> add user code end project settings, do not change this comment!
 
 ################################## toolchains ##################################
 
 ##==< add user code begin toolchains, do not change this comment!
-{%- if UserCode["toolchains"] %}
-{{UserCode["toolchains"]}}
+{%- if userCode["toolchains"] %}
+{{userCode["toolchains"]}}
 {%- else %}
     {%- block toolchains %}
     {%- endblock %}
@@ -68,8 +68,8 @@
 ################################# project info #################################
 
 ##==< add user code begin project info, do not change this comment!
-{%- if UserCode["project info"] %}
-{{UserCode["project info"]}}
+{%- if userCode["project info"] %}
+{{userCode["project info"]}}
 {%- else %}
     {%- block project_info %}
     {%- endblock %}
@@ -79,8 +79,8 @@
 ##################################### flags ####################################
 
 ##==< add user code begin flags, do not change this comment!
-{%- if UserCode["flags"] %}
-{{UserCode["flags"]}}
+{%- if userCode["flags"] %}
+{{userCode["flags"]}}
 {%- else %}
     {%- block flags %}
     {%- endblock %}
@@ -92,13 +92,13 @@
 {%- endblock %}
 
 ##==< add user code begin files, do not change this comment!
-{{UserCode["files"]}}
+{{userCode["files"]}}
 ##==> add user code end files, do not change this comment!
 {% block includes %}
 {%- endblock %}
 
 ##==< add user code begin includes, do not change this comment!
-{{UserCode["includes"]}}
+{{userCode["includes"]}}
 ##==> add user code end includes, do not change this comment!
 {%  block files_includes %}
 {%- endblock %}
@@ -108,5 +108,5 @@
 {%- endblock %}
 
 ##==< add user code begin command, do not change this comment!
-{{UserCode["command"]}}
+{{userCode["command"]}}
 ##==> add user code end command, do not change this comment!

@@ -36,6 +36,9 @@ class Icon(FluentIconBase, Enum):
     REFRESH = "refresh-line"
     ZOOM_IN = "zoom-in-line"
     ZOOM_OUT = "zoom-out-line"
+    MONEY = "money-cny-circle-line"
+    SETTING = "settings-line"
+    GENERATE = "ai-generate"
 
     def path(self, theme=Theme.AUTO):
         return f'resource/icon/{getIconColor(theme)}/{self.value}.svg'

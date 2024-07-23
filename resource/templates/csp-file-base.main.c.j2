@@ -24,73 +24,73 @@
 #}
 /**
  * *****************************************************************************
- *  @author:            {{Author}}
- *  @file:              {{File}}
- *  @brief:             {{Brief}}
- *  @coder_version:     {{Version}}
- *  @hal:               {{Project.Vendor}}.{{Project.Hal}}
- *  @hal_version:       {{Project.HalVersion}}
- *  @project:           {{Project.Name}}
- *  @target_chip:       {{Project.TargetChip}}
- *  @time:              {{Time}}
+ *  @author:            {{author}}
+ *  @file:              {{file}}
+ *  @brief:             {{brief}}
+ *  @coderVersion:      {{version}}
+ *  @hal:               {{project.vendor}}
+ *  @halVersion:        {{project.halVersion}}
+ *  @project:           {{project.name}}
+ *  @targetChip:        {{project.targetChip}}
+ *  @time:              {{time}}
  *
  * *****************************************************************************
  *  @attention
  *
- *  Copyright (C) {{Year}} csplink software.
+ *  Copyright (C) {{year}} csplink software.
  *  All rights reserved.
  *
  * *****************************************************************************
  */
 
 /**< add user code begin header, do not change this comment! */
-{{UserCode["header"]}}
+{{userCode["header"]}}
 /**> add user code end header, do not change this comment! */
 
 /********************************** includes **********************************/
 {%- block includes %}
 {%- endblock %}
 /**< add user code begin includes, do not change this comment! */
-{{UserCode["includes"]}}
+{{userCode["includes"]}}
 /**> add user code end includes, do not change this comment! */
 
 /*********************************** typedef **********************************/
 {%- block typedef %}
 {%- endblock %}
 /**< add user code begin typedef, do not change this comment! */
-{{UserCode["typedef"]}}
+{{userCode["typedef"]}}
 /**> add user code end typedef, do not change this comment! */
 
 /*********************************** define ***********************************/
 {%- block define %}
 {%- endblock %}
 /**< add user code begin define, do not change this comment! */
-{{UserCode["define"]}}
+{{userCode["define"]}}
 /**> add user code end define, do not change this comment! */
 
 /************************************ macro ***********************************/
 {%- block macro %}
 {%- endblock %}
 /**< add user code begin macro, do not change this comment! */
-{{UserCode["macro"]}}
+{{userCode["macro"]}}
 /**> add user code end macro, do not change this comment! */
 
 /****************************** extern variables ******************************/
 {%- block extern_variables %}
 {%- endblock %}
 /**< add user code begin extern variables, do not change this comment! */
-{{UserCode["extern variables"]}}
+{{userCode["extern variables"]}}
 /**> add user code end extern variables, do not change this comment! */
 
 /**************************** functions prototypes ****************************/
 {%- block functions_prototypes %}
 {%- endblock %}
 /**< add user code begin functions prototypes, do not change this comment! */
-{{UserCode["functions prototypes"]}}
+{{userCode["functions prototypes"]}}
 /**> add user code end functions prototypes, do not change this comment! */
 
 /**< add user code begin 0, do not change this comment! */
-{{UserCode["0"]}}
+{{userCode["0"]}}
 /**> add user code end 0, do not change this comment! */
 
 /**
@@ -103,8 +103,8 @@ int main(void)
 {%- endblock %}
     /** infinite loop, do not change this comment! */
     /**< add user code begin while.0, do not change this comment! */
-{%- if UserCode["while.0"] %}
-{{UserCode["while.0"]}}
+{%- if userCode["while.0"] %}
+{{userCode["while.0"]}}
 {%- else %}
     while (1)
     {
@@ -112,8 +112,8 @@ int main(void)
         /**> add user code end while.0, do not change this comment! */
 
         /**< add user code begin while.1, do not change this comment! */
-{%- if UserCode["while.1"] %}
-{{UserCode["while.1"]}}
+{%- if userCode["while.1"] %}
+{{userCode["while.1"]}}
 {%- else %}
     }
 {%  endif %}
@@ -121,5 +121,5 @@ int main(void)
 }
 
 /**< add user code begin 1, do not change this comment! */
-{{UserCode["1"]}}
+{{userCode["1"]}}
 /**> add user code end 1, do not change this comment! */

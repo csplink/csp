@@ -66,11 +66,11 @@ class Summary(QObject):
         return self.m_modulesList
 
     @property
-    def originSummary(self) -> dict:
+    def origin(self) -> dict:
         return self.m_summary
 
-    @originSummary.setter
-    def originSummary(self, summary: dict):
+    @origin.setter
+    def origin(self, summary: dict):
         self.m_summary = summary
 
         for _, module_group in self.modules.items():
@@ -105,11 +105,11 @@ class Ip(QObject):
             return name
 
     @property
-    def originIp(self) -> dict:
+    def origin(self) -> dict:
         return self.m_ip
 
-    @originIp.setter
-    def originIp(self, ip: dict):
+    @origin.setter
+    def origin(self, ip: dict):
         self.m_ip = ip
 
         locale = SETTINGS.get(SETTINGS.language).value.name()
@@ -211,14 +211,14 @@ class Project(QObject):
                 print(f"invalid yaml {path}")
                 print(exception)
 
-            self.summary.originSummary = Database.getSummary(self.vendor, self.targetChip)
+            self.summary.origin = Database.getSummary(self.vendor, self.targetChip)
 
             ip = {}
             for _, module_group in self.summary.modules.items():
                 for name, module in module_group.items():
                     if "ip" in module:
                         ip[name] = Database.getIp(self.vendor, module["ip"])
-            self.ip.originIp = ip
+            self.ip.origin = ip
 
         else:
             print(f"{path} is not file!")

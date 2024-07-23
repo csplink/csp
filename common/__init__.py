@@ -24,6 +24,7 @@
 # 2024-07-01     xqyjlj       initial version
 #
 
+from .coder import Coder
 from .database import Database
 from .icon import Icon
 from .project import Project, PROJECT
