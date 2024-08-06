@@ -63,5 +63,5 @@ properties:
         type: boolean
       halVersion:
         type: string
-        pattern: "^\\d+\\.\\d+\\.\\d+$"
+        pattern: "^v\\d+\\.\\d+\\.\\d+$"
 required: ["version", "name", "vendor", "targetChip"]

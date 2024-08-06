@@ -22,17 +22,14 @@
 #
 
 $schema: "http://json-schema.org/draft-07/schema#"
-type: object
+type: [object, "null"]
 additionalProperties: false
 properties:
   hal:
     type: object
     properties:
-      ".*":
+      "^[A-Za-z0-9_]+$":
         type: object
         properties:
-          "^[A-Za-z0-9_]+$":
-            type: object
-            properties:
-              "^\\d+\\.\\d+\\.\\d+$":
-                type: string
+          "^v\\d+\\.\\d+\\.\\d+$":
+            type: string

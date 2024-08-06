@@ -125,7 +125,7 @@ class MainView(MSFluentWindow):
         self.__initNavigation()
         self.__initWindow()
 
-        self.showMaximized()
+        # self.showMaximized()
 
     def __initNavigation(self):
         self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)

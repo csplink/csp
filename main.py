@@ -75,10 +75,13 @@ def main():
         for file in files:
             QFontDatabase.addApplicationFont(file)
 
-    w = MainView()
-    w.show()
+    if PROJECT.path != "":
+        view = MainView()
+        view.show()
+        view.setMicaEffectEnabled(False)
+    else:
+        pass
 
-    w.setMicaEffectEnabled(False)
     app.exec_()
 
 

@@ -53,13 +53,14 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         self.lineEdit_minHeapSize.setValidator(QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")))
         self.lineEdit_minStackSize.setValidator(QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")))
 
-        # enable
+        # linker
         if Utils.isHex(PROJECT.defaultHeapSize):
             self.lineEdit_minHeapSize.setText(PROJECT.defaultHeapSize)
         elif Utils.isHex(PROJECT.summary.defaultHeapSize):
             self.lineEdit_minHeapSize.setText(PROJECT.summary.defaultHeapSize)
         else:
             self.lineEdit_minHeapSize.setEnabled(False)
+
         if Utils.isHex(PROJECT.defaultStackSize):
             self.lineEdit_minStackSize.setText(PROJECT.defaultStackSize)
         elif PROJECT.summary.defaultStackSize != "":
@@ -67,12 +68,14 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         else:
             self.lineEdit_minStackSize.setEnabled(False)
 
+        # checkBox
         self.checkBox_isCopyLibrary.setChecked(PROJECT.copyLibrary)
         self.checkBox_useToolchainsPackage.setChecked(PROJECT.useToolchainsPackage)
 
         self.toolButton_packageManager.setIcon(Icon.BOX)
         self.toolButton_toolchainsManager.setIcon(Icon.BOX)
 
+        # package choose
         hal = PROJECT.summary.hal
         versions = PACKAGE.hal.get(hal, {}).keys()
         if len(versions) != 0:
@@ -91,15 +94,16 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
                 else:
                     self.comboBox_packageVersion.setCurrentText(PROJECT.halVersion)
             self.lineEdit_packagePath.setText(PROJECT.halPath)
-
         self.comboBox_packageVersion.currentTextChanged.connect(self.__onComboBox_packageVersionCurrentTextChanged)
 
+        # toolchains choose
         toolchains = PROJECT.summary.toolchains
         if len(toolchains) != 0:
             self.comboBox_toolchains.addItems(toolchains)
             self.comboBox_toolchains.setCurrentIndex(-1)
         self.comboBox_toolchains.currentTextChanged.connect(self.__onComboBox_toolchainsVersionCurrentTextChanged)
 
+        # builder choose
         builder = PROJECT.summary.builder
         builderList = builder.keys()
         if len(builderList) != 0:

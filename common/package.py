@@ -31,7 +31,11 @@ class Package():
     m_data = {}
 
     def __init__(self) -> None:
-        self.m_data = Database.getPackageIndex()
+        index = Database.getPackageIndex()
+        if index is None:
+            self.m_data = {}
+        else:
+            self.m_data = index
 
     @property
     def hal(self) -> dict:

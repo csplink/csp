@@ -75,7 +75,7 @@ class CodeView(Ui_CodeView, QWidget):
                     elif key.lower().endswith(".c"):
                         item.setIcon(0, FluentIconBase.qicon(Icon.C))
 
-        for key, di in tree["core"].items():
+        for key, di in tree.get("core", {}).items():
             top_level_item = QTreeWidgetItem([key])
             top_level_item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
             top_level_item.setExpanded(True)
