@@ -24,6 +24,7 @@
 # 2024-07-01     xqyjlj        initial version
 #
 
+from .highlighter import *
 from .packages import *
 from .graphics_item_chip_body import GraphicsItemChipBody
 from .graphics_item_pin import GraphicsItemPin
@@ -31,4 +32,5 @@ from .graphics_view_pan_zoom import GraphicsViewPanZoom
 from .grid_mode_io import GridModeIo
 # from .grid_mode_ip import GridModeIp
 from .grid_property_ip import GridPropertyIp
+from .plain_text_edit_code import PlainTextEditCode
 # from .tree_module import TreeModule

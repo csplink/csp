@@ -27,6 +27,8 @@
 import jsonschema
 import yaml, os
 
+from .settings import REPOSITORY_INDEX_FILE
+
 
 class Database():
 
@@ -110,6 +112,51 @@ class Database():
     @staticmethod
     def getIp(vendor: str, name: str) -> dict:
         return Database.getIpByPath(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
+
+    @staticmethod
+    def checkSdp(sdp: dict, path: str) -> bool:
+        with open("resource/database/schema/sdp.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=sdp, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
+            raise exception
+
+    @staticmethod
+    def getSdp(path: str) -> dict:
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                sdp = yaml.load(f.read(), Loader=yaml.FullLoader)
+            Database.checkSdp(sdp, path)
+            return sdp
+        else:
+            print(f"{path} is not file!")
+            return {}
+
+    @staticmethod
+    def checkPackageIndex(index: dict, path: str) -> bool:
+        with open("resource/database/schema/package_index.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=index, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
+            raise exception
+
+    @staticmethod
+    def getPackageIndex() -> dict:
+        if os.path.isfile(REPOSITORY_INDEX_FILE):
+            with open(REPOSITORY_INDEX_FILE, 'r', encoding='utf-8') as f:
+                index = yaml.load(f.read(), Loader=yaml.FullLoader)
+            Database.checkPackageIndex(index, REPOSITORY_INDEX_FILE)
+            return index
+        else:
+            with open(REPOSITORY_INDEX_FILE, 'w') as f:
+                pass
+            return {}
 
 
 if __name__ == '__main__':

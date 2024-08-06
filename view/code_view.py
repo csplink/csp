@@ -24,86 +24,70 @@
 # 2024-07-20     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import Qt, QEasingCurve
-from PyQt5.QtWidgets import QWidget, QStackedWidget, QVBoxLayout, QLabel, QHBoxLayout, QFrame, QSizePolicy
-from qfluentwidgets import (Pivot, qrouter, SegmentedWidget, TabBar, CheckBox, ComboBox, TabCloseButtonDisplayMode,
-                            BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget, FluentIcon)
+from PyQt5.QtCore import Qt, QEasingCurve, QItemSelection
+from PyQt5.QtGui import QShowEvent
+from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QPlainTextEdit, QLabel, QHBoxLayout, QFrame, QSizePolicy
+from qfluentwidgets import (FluentIconBase, qrouter, SegmentedWidget, TabBar, CheckBox, ComboBox,
+                            TabCloseButtonDisplayMode, BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget,
+                            FluentIcon)
 
 from .ui.Ui_code_view import Ui_CodeView
+from common import Style, Icon, Coder, Utils, PROJECT
+from widget import CHighlighter
 
 
 class CodeView(Ui_CodeView, QWidget):
     """ Tab interface """
 
+    m_codes = {}
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.tabCount = 1
+        self.cardWidget_file.setFixedWidth(300)
+        self.treeWidget_file.header().setVisible(False)
+        self.treeWidget_file.selectionModel().selectionChanged.connect(self.treeWidget_fileSelectionChanged)
 
-        self.songInterface = QLabel('Song Interface', self)
-        self.albumInterface = QLabel('Album Interface', self)
-        self.artistInterface = QLabel('Artist Interface', self)
+        Style.CODE_VIEW.apply(self)
 
-        # add items to pivot
-        self.__initWidget()
+    def showEvent(self, event: QShowEvent):
+        super().showEvent(event)
+        coder = Coder()
+        self.m_codes = coder.dump(PROJECT.halPath)
+        tree = Utils.paths2Dict(self.m_codes)
 
-    def __initWidget(self):
-        self.initLayout()
+        self.treeWidget_file.clear()
+        self.plainTextEdit.clear()
 
-        self.addSubInterface(self.songInterface, 'tabSongInterface', self.tr('Song'), ':/gallery/images/MusicNote.png')
-        self.addSubInterface(self.albumInterface, 'tabAlbumInterface', self.tr('Album'), ':/gallery/images/Dvd.png')
-        self.addSubInterface(self.artistInterface, 'tabArtistInterface', self.tr('Artist'),
-                             ':/gallery/images/Singer.png')
+        def traverse_tree(tree: dict, top_item: QTreeWidgetItem, path: str):
+            for key, value in tree.items():
+                if isinstance(value, dict):
+                    item = QTreeWidgetItem(top_item, [key])
+                    item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
+                    traverse_tree(value, item, f"{path}/{key}")
+                    item.setExpanded(True)
+                else:
+                    item = QTreeWidgetItem(top_item, [key])
+                    item.setData(0, Qt.ItemDataRole.StatusTipRole, f"{path}/{key}")
+                    if key.lower().endswith(".h"):
+                        item.setIcon(0, FluentIconBase.qicon(Icon.H))
+                    elif key.lower().endswith(".c"):
+                        item.setIcon(0, FluentIconBase.qicon(Icon.C))
 
-        # StyleSheet.NAVIGATION_VIEW_INTERFACE.apply(self)
+        for key, di in tree["core"].items():
+            top_level_item = QTreeWidgetItem([key])
+            top_level_item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
+            top_level_item.setExpanded(True)
+            self.treeWidget_file.addTopLevelItem(top_level_item)
+            traverse_tree(di, top_level_item, f"core/{key}")
+            top_level_item.setExpanded(True)
 
-        self.connectSignalToSlot()
-
-        qrouter.setDefaultRouteKey(self.stackedWidget, self.songInterface.objectName())
-
-    def connectSignalToSlot(self):
-
-        self.tabBar.tabAddRequested.connect(self.addTab)
-        self.tabBar.tabCloseRequested.connect(self.removeTab)
-
-        self.stackedWidget.currentChanged.connect(self.onCurrentIndexChanged)
-
-    def initLayout(self):
-        self.tabBar.setTabMaximumWidth(200)
-
-        self.setFixedHeight(280)
-
-    def addSubInterface(self, widget: QLabel, objectName, text, icon):
-        widget.setObjectName(objectName)
-        widget.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        self.stackedWidget.addWidget(widget)
-        self.tabBar.addTab(routeKey=objectName,
-                           text=text,
-                           icon=icon,
-                           onClick=lambda: self.stackedWidget.setCurrentWidget(widget))
-
-    def onDisplayModeChanged(self, index):
-        mode = self.closeDisplayModeComboBox.itemData(index)
-        self.tabBar.setCloseButtonDisplayMode(mode)
-
-    def onCurrentIndexChanged(self, index):
-        widget = self.stackedWidget.widget(index)
-        if not widget:
-            return
-
-        self.tabBar.setCurrentTab(widget.objectName())
-        qrouter.push(self.stackedWidget, widget.objectName())
-
-    def addTab(self):
-        text = f'硝子酱一级棒卡哇伊×{self.tabCount}'
-        self.addSubInterface(QLabel('🥰 ' + text), text, text, ':/gallery/images/Smiling_with_heart.png')
-        self.tabCount += 1
-
-    def removeTab(self, index):
-        item = self.tabBar.tabItem(index)
-        widget = self.findChild(QLabel, item.routeKey())
-
-        self.stackedWidget.removeWidget(widget)
-        self.tabBar.removeTab(index)
-        widget.deleteLater()
+    def treeWidget_fileSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+        indexes = selected.indexes()
+        if len(indexes) > 0:
+            index = indexes[0]
+            path = str(index.data(Qt.ItemDataRole.StatusTipRole))
+            if path != "None":
+                self.plainTextEdit.setPlainText(self.m_codes.get(path, ""))
+                self.highlighter = CHighlighter(self.plainTextEdit.document())

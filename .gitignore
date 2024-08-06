@@ -9,9 +9,10 @@ __pycache__
 
 #project
 csplink.config
+repository
+repository.index
 
 #other
 *.bak
 build
 build-*
-

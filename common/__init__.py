@@ -27,6 +27,9 @@
 from .coder import Coder
 from .database import Database
 from .icon import Icon
+from .package import PACKAGE
 from .project import Project, PROJECT
-from .settings import *
+from .settings import (YEAR, AUTHOR, VERSION, HELP_URL, REPO_URL, FEEDBACK_URL, RELEASE_URL, ROOT_DIR,
+                       REPOSITORY_FOLDER, REPOSITORY_INDEX_FILE, SETTINGS)
 from .style import Style
+from .utils import Utils

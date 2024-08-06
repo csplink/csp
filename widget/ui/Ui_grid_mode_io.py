@@ -16,7 +16,7 @@ class Ui_GridModeIo(object):
         GridModeIo.setObjectName("GridModeIo")
         GridModeIo.resize(654, 355)
         self.verticalLayout = QtWidgets.QVBoxLayout(GridModeIo)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(9, 9, 9, 9)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tableView_io = TableView(GridModeIo)
         self.tableView_io.setObjectName("tableView_io")

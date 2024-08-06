@@ -1,0 +1,5 @@
+CodeView QLabel {
+    padding-left: 10px;
+    font: 14px 'Segoe UI', 'Microsoft YaHei', 'PingFang SC';
+    color: white;
+}

@@ -26,7 +26,7 @@
 
 import math
 
-from PyQt5.QtCore import Qt, pyqtSignal, QRegExp, QTimer
+from PyQt5.QtCore import Qt, pyqtSignal, QRegExp
 from PyQt5.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
                          QResizeEvent, QRegExpValidator)
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget

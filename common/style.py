@@ -33,6 +33,9 @@ class Style(StyleSheetBase, Enum):
 
     SETTING_VIEW = "setting_view"
     CHIP_VIEW = "chip_view"
+    CODE_VIEW = "code_view"
+    GRID_PROPERTY_IP_COMBOBOX = "grid_property_ip.ComboBox"
+    PLAIN_TEXT_EDIT_CODE = "plain_text_edit_code"
 
     def path(self, theme=Theme.AUTO):
         theme = qconfig.theme if theme == Theme.AUTO else theme

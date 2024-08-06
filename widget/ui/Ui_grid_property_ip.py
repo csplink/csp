@@ -16,7 +16,7 @@ class Ui_GridPropertyIp(object):
         GridPropertyIp.setObjectName("GridPropertyIp")
         GridPropertyIp.resize(400, 300)
         self.verticalLayout = QtWidgets.QVBoxLayout(GridPropertyIp)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(9, 9, 9, 9)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tableView_property = TableView(GridPropertyIp)
         self.tableView_property.setObjectName("tableView_property")

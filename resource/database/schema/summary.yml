@@ -92,18 +92,25 @@ properties:
         type: string
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
     required: ["en", "zh_CN"]
-  targetProject:
+  builder:
     type: object
     additionalProperties: false
     properties:
       XMake:
-        type: boolean
+        type: array
+        items:
+          type: string
+          pattern: "^v\\d+\\.\\d+\\.\\d+$"
       CMake:
-        type: boolean
+        type: array
+        items:
+          type: string
+          pattern: "^v\\d+\\.\\d+$"
       MdkArm:
         type: array
         items:
           type: string
+          pattern: "^v\\d+\\.\\d+$"
   hal:
     type: string
     minLength: 1
@@ -120,9 +127,11 @@ properties:
     type: object
     properties:
       defaultHeapSize:
-        type: integer
+        type: string
+        pattern: "^0x[0-9A-Fa-f]+$"
       defaultStackSize:
-        type: integer
+        type: string
+        pattern: "^0x[0-9A-Fa-f]+$"
     required: ["defaultHeapSize", "defaultStackSize"]
   pins:
     type: object
@@ -166,7 +175,7 @@ required:
   - introduction
   - modules
   - url
-  - targetProject
+  - builder
   - hal
   - hasPowerPad
   - package

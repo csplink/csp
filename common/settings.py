@@ -85,6 +85,8 @@ REPO_URL = "https://github.com/csplink/csp"
 FEEDBACK_URL = "https://github.com/csplink/csp/issues"
 RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
 ROOT_DIR = f"{os.path.dirname(__file__)}/.."
+REPOSITORY_FOLDER = f"{ROOT_DIR}/repository"
+REPOSITORY_INDEX_FILE = f"{ROOT_DIR}/repository.index"
 
 SETTINGS = Settings()
 qconfig.load('csplink.config', SETTINGS)

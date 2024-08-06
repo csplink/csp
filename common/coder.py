@@ -81,19 +81,19 @@ class Coder():
         if module == "main":
             path = f"core/inc/main.h"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(path)
+            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
             main_h = tpl.render(args, file=os.path.basename(path), brief="main program body")
             self.m_data[path] = main_h.strip() + "\n"
 
             path = f"core/src/main.c"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(path)
+            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
             main_c = tpl.render(args, file=os.path.basename(path), brief="main program body")
             self.m_data[path] = main_c.strip() + "\n"
         else:
             path = f"core/inc/csplink/{module}.h"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(path)
+            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
             module_h = tpl.render(args,
                                   file=os.path.basename(path),
                                   brief=f"this file provides code for the {module} initialization")
@@ -101,7 +101,7 @@ class Coder():
 
             path = f"core/src/{module}.c"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(path)
+            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
             module_c = tpl.render(args,
                                   file=os.path.basename(path),
                                   brief=f"this file provides code for the {module} initialization")
@@ -167,10 +167,12 @@ class Coder():
         data = module.main(copy.deepcopy(project), copy.deepcopy(output_dir))
         return data
 
-    def generate(self, outputDir: str, packageDir: str):
+    def generate(self, packageDir: str):
         """
         generate
         """
+
+        outputDir = os.path.dirname(PROJECT.path)
 
         if not os.path.isdir(f"{outputDir}/core/src/"):
             os.makedirs(f"{outputDir}/core/src/")
@@ -222,56 +224,3 @@ class Coder():
             self.__generate_c(env, str.lower(module), data)
 
         return self.m_data
-
-    def main(self, project_file: str, output_dir: str, repository_dir: str, package_dir, toolchains_dir: str):
-        """
-        main
-        """
-        project_json = {}
-        with open(project_file, "r", encoding='utf-8') as file:
-            project_json = json.loads(file.read())
-
-        hal = project_json["Hal"]
-        modules = project_json["Modules"]
-
-        if package_dir == "":
-            package_dir = f'{repository_dir}/library/{hal}/{project_json["HalVersion"]}'
-
-        data = {
-            "Author": "csplink coder",
-            "Version": VERSION,
-            "Project": project_json,
-            "Time": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
-            "Year": time.strftime('%Y', time.localtime()),
-            "ToolchainsPath": toolchains_dir if toolchains_dir != "" else None,
-        }
-
-        if not os.path.isdir(f"{output_dir}/core/src/"):
-            os.makedirs(f"{output_dir}/core/src/")
-        if not os.path.isdir(f"{output_dir}/core/inc/csplink"):
-            os.makedirs(f"{output_dir}/core/inc/csplink")
-
-        env = jinja2.Environment(loader=jinja2.FileSystemLoader(
-            [f'{ROOT_DIR}/templates', f'{package_dir}/tools/coder/templates']),
-                                 line_comment_prefix="//")
-
-        filter_files = glob.glob(f"{package_dir}/tools/coder/filters/*.py")
-        for file in filter_files:
-            spec = importlib.util.spec_from_file_location(os.path.basename(file).split(".")[0], file)
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-            functions = [name for name in dir(module) if callable(getattr(module, name))]
-            for fun in functions:
-                if not fun.startswith("_"):
-                    function = getattr(module, fun)
-                    env.filters[fun] = function
-
-        generate_cfile(env, "main", output_dir, data)
-
-        for module in modules:
-            module = str.lower(module)
-            generate_cfile(env, module, output_dir, data)
-
-        __generate_project(env, output_dir, data)
-
-        __deploy(package_dir, project_json, output_dir)

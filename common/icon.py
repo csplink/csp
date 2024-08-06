@@ -39,6 +39,12 @@ class Icon(FluentIconBase, Enum):
     MONEY = "money-cny-circle-line"
     SETTING = "settings-line"
     GENERATE = "ai-generate"
+    C = "c"
+    H = "h"
+    CODE = "code-line"
+    FOLDER_LIB_OPEN = "folder-lib-open"
+    FOLDER_LIB = "folder-lib"
+    BOX = "box-3-line"
 
     def path(self, theme=Theme.AUTO):
         return f'resource/icon/{getIconColor(theme)}/{self.value}.svg'

@@ -28,13 +28,12 @@ import attr
 
 from PyQt5.QtCore import Qt, QRegExp, QModelIndex, QAbstractTableModel, QSortFilterProxyModel, QAbstractItemModel
 from PyQt5.QtGui import QRegExpValidator, QFont
-from PyQt5.QtWidgets import (QWidget, QHeaderView, QTableWidgetItem, QAbstractItemView, QStyleOptionViewItem,
-                             QApplication)
+from PyQt5.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication)
 
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
 from .ui.Ui_grid_property_ip import Ui_GridPropertyIp
-from common import PROJECT, SETTINGS
+from common import PROJECT, SETTINGS, Style
 
 
 @attr.s
@@ -71,39 +70,7 @@ class EditorDelegate(TableItemDelegate):
             return lineEdit
         elif g_data[row].typeof == "enum":
             comboBox = ComboBox(parent)
-            comboBox.setStyleSheet("""
-ComboBox {
-    border: 1px solid rgba(255, 255, 255, 0.053);
-    border-radius: 5px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 5px 31px 6px 11px;
-    /* font: 14px 'Segoe UI', 'Microsoft YaHei', 'PingFang SC'; */
-    color: white;
-    background-color: rgba(30, 30, 30, 1);
-    text-align: left;
-    outline: none;
-}
-
-ComboBox:hover {
-    background-color: rgba(30, 30, 30, 1);
-}
-
-ComboBox:pressed {
-    background-color: rgba(30, 30, 30, 1);
-    border-top: 1px solid rgba(255, 255, 255, 0.053);
-    color: rgba(255, 255, 255, 0.63);
-}
-
-ComboBox:disabled {
-    color: rgba(255, 255, 255, 0.3628);
-    background-color: rgba(30, 30, 30, 1);
-    border: 1px solid rgba(255, 255, 255, 0.053);
-    border-top: 1px solid rgba(255, 255, 255, 0.053);
-}
-
-ComboBox[isPlaceholderText=true] {
-    color: rgba(255, 255, 255, 0.6063);
-}""")
+            Style.GRID_PROPERTY_IP_COMBOBOX.apply(comboBox)
             comboBox.setStyle(QApplication.style())
             for value in g_data[index.row()].possibleValues:
                 comboBox.addItem(PROJECT.ip.ipTr(value))
@@ -133,7 +100,7 @@ class GridPropertyIpModel(QAbstractTableModel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.m_headers = [self.tr("property"), self.tr("value")]
+        self.m_headers = [self.tr("Property"), self.tr("Value")]
         self.m_pin_instance = PROJECT.summary.pinIp
 
         PROJECT.gridPropertyIpTriggered.connect(self.projectGridPropertyIpTriggered)
@@ -273,6 +240,5 @@ class GridPropertyIp(Ui_GridPropertyIp, QWidget):
         self.tableView_property.verticalHeader().setVisible(False)
         self.tableView_property.setBorderVisible(True)
         self.tableView_property.setBorderRadius(8)
-        self.tableView_property.setMinimumWidth(200)
         self.tableView_property.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.tableView_property.setItemDelegateForColumn(1, EditorDelegate(self.tableView_property))

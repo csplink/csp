@@ -214,15 +214,17 @@ package: LQFP144
 url:
   en: https://global.geehy.com/product/fifth/APM32F103
   zh_CN: https://geehy.com/product/fifth/APM32F103
-targetProject:
-  XMake: true
-  CMake: true
+builder:
+  XMake:
+    - v2.8.1
+  CMake:
+    - v3.7
   MdkArm:
     - v5.27
 toolchains: ["arm-none-eabi"]
 linker:
-  defaultHeapSize: 0x200
-  defaultStackSize: 0x400
+  defaultHeapSize: "0x200"
+  defaultStackSize: "0x400"
 pins:
   PE2:
     position: 1

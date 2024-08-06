@@ -29,8 +29,9 @@ import yaml, os
 
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from common.settings import SETTINGS, VERSION
-from common.database import Database
+from .settings import SETTINGS, VERSION
+from .database import Database
+from .package import PACKAGE
 
 
 class Summary(QObject):
@@ -43,23 +44,43 @@ class Summary(QObject):
 
     @property
     def hal(self) -> str:
-        return self.m_summary.setdefault("hal", "unknown")
+        return self.m_summary.get("hal", "unknown")
 
     @property
     def package(self) -> str:
-        return self.m_summary.setdefault("package", "unknown")
+        return self.m_summary.get("package", "unknown")
 
     @property
     def pins(self) -> dict:
-        return self.m_summary.setdefault("pins", {})
+        return self.m_summary.get("pins", {})
 
     @property
     def modules(self) -> dict:
-        return self.m_summary.setdefault("modules", {})
+        return self.m_summary.get("modules", {})
 
     @property
     def pinIp(self) -> dict:
-        return self.m_summary.setdefault("pinIp", "")
+        return self.m_summary.get("pinIp", "")
+
+    @property
+    def builder(self) -> dict[str, list[str]]:
+        return self.m_summary.get("builder", {})
+
+    @property
+    def toolchains(self) -> list[str]:
+        return self.m_summary.get("toolchains", [])
+
+    @property
+    def linker(self) -> dict:
+        return self.m_summary.get("linker", {})
+
+    @property
+    def defaultHeapSize(self) -> str:
+        return self.linker.get("defaultHeapSize", "")
+
+    @property
+    def defaultStackSize(self) -> str:
+        return self.linker.get("defaultStackSize", "")
 
     @property
     def modulesList(self) -> list:
@@ -145,7 +166,7 @@ class Project(QObject):
 
     @property
     def vendor(self) -> str:
-        return self.m_data.setdefault("vendor", "unknown")
+        return self.m_data.get("vendor", "")
 
     @property
     def origin(self) -> dict:
@@ -158,7 +179,7 @@ class Project(QObject):
 
     @property
     def targetChip(self) -> str:
-        return self.m_data.setdefault("targetChip", "unknown")
+        return self.m_data.get("targetChip", "")
 
     @targetChip.setter
     def targetChip(self, targetChip: str):
@@ -167,20 +188,75 @@ class Project(QObject):
 
     @property
     def name(self) -> str:
-        return self.m_data.setdefault("name", "unknown")
+        return self.m_data.get("name", "")
 
     @name.setter
     def name(self, name: str):
         self.m_data["name"] = name
         self.saveTmp()
 
+    # gen
+    @property
+    def copyLibrary(self) -> bool:
+        return self.m_data.get("gen", {}).get("copyLibrary", True)
+
+    @copyLibrary.setter
+    def copyLibrary(self, copyLibrary: bool):
+        self.m_data.setdefault("gen", {})["copyLibrary"] = copyLibrary
+        self.saveTmp()
+
+    @property
+    def defaultHeapSize(self) -> str:
+        return self.m_data.get("gen", {}).get("linker", {}).get("linker", "")
+
+    @defaultHeapSize.setter
+    def defaultHeapSize(self, defaultHeapSize: str):
+        self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultHeapSize"] = defaultHeapSize
+        self.saveTmp()
+
+    @property
+    def defaultStackSize(self) -> str:
+        return self.m_data.get("gen", {}).get("linker", {}).get("linker", "")
+
+    @defaultStackSize.setter
+    def defaultStackSize(self, defaultStackSize: str):
+        self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultStackSize"] = defaultStackSize
+        self.saveTmp()
+
+    @property
+    def useToolchainsPackage(self) -> bool:
+        return self.m_data.get("gen", {}).get("useToolchainsPackage", False)
+
+    @useToolchainsPackage.setter
+    def useToolchainsPackage(self, useToolchainsPackage: bool):
+        self.m_data.setdefault("gen", {})["useToolchainsPackage"] = useToolchainsPackage
+        self.saveTmp()
+
+    @property
+    def toolchains(self) -> str:
+        return self.m_data.get("gen", {}).get("toolchains", "")
+
+    @toolchains.setter
+    def toolchains(self, toolchains: str):
+        self.m_data.setdefault("gen", {})["toolchains"] = toolchains
+        self.saveTmp()
+
+    @property
+    def toolchainsVersion(self) -> str:
+        return self.m_data.get("gen", {}).get("toolchainsVersion", "")
+
+    @toolchainsVersion.setter
+    def toolchainsVersion(self, toolchainsVersion: str):
+        self.m_data.setdefault("gen", {})["toolchainsVersion"] = toolchainsVersion
+        self.saveTmp()
+
     @property
     def halVersion(self) -> str:
-        return self.m_data.setdefault("halVersion", "unknown")
+        return self.m_data.get("gen", {}).get("halVersion", "")
 
     @halVersion.setter
     def halVersion(self, halVersion: str):
-        self.m_data["halVersion"] = halVersion
+        self.m_data.setdefault("gen", {})["halVersion"] = halVersion
         self.saveTmp()
 
     @property
@@ -195,8 +271,16 @@ class Project(QObject):
         self.m_path = path
 
     @property
+    def dir(self) -> str:
+        return os.path.dirname(self.m_path)
+
+    @property
     def modules(self) -> list:
         return self.m_data.setdefault("modules", [])
+
+    @property
+    def halPath(self) -> str:
+        return PACKAGE.path("hal", self.summary.hal, self.halVersion)
 
     def load(self, path: str):
         if os.path.isfile(path):
@@ -233,7 +317,7 @@ class Project(QObject):
                 f.write(self.dump())
 
     def config(self, path: str, default=None):
-        map = self.m_data.setdefault("config", {})
+        map = self.m_data.get("config", {})
         keys = path.split("/")
         for key in keys:
             if key not in map:
@@ -264,7 +348,7 @@ class Project(QObject):
 
             modules = set()
             for name, cfg in self.m_data["config"].items():
-                if name not in ["pin"] and cfg != None and len(cfg) > 0:
+                if name in self.summary.m_modulesList and cfg != None and len(cfg) > 0:
                     modules.add(name)
             if set(self.modules) != modules:
                 self.m_data["modules"] = list(modules)

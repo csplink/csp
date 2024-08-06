@@ -23,6 +23,7 @@ class Ui_GridMode(object):
         self.page_1 = QtWidgets.QWidget()
         self.page_1.setObjectName("page_1")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.page_1)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.widget_gridModeIo = GridModeIo(self.page_1)
         self.widget_gridModeIo.setObjectName("widget_gridModeIo")

@@ -39,6 +39,7 @@ from .chip_view import ChipView
 from .setting_view import SettingView
 from .code_view import CodeView
 from common import Icon, Coder, PROJECT
+from dialogs import GenCodeDialog
 
 
 class MenuIndex(Enum):
@@ -74,12 +75,6 @@ class CustomTitleBar(MSFluentTitleBar):
         self.hBoxLayout.insertLayout(4, self.layout_toolButton)
         self.hBoxLayout.setStretch(6, 0)
 
-        # # add avatar
-        # self.avatar = TransparentDropDownToolButton('resource/shoko.png', self)
-        # self.avatar.setIconSize(QSize(26, 26))
-        # self.avatar.setFixedHeight(30)
-        # self.hBoxLayout.insertWidget(6, self.avatar, 0, Qt.AlignRight)
-        # self.hBoxLayout.insertSpacing(8, 20)
     def __initMenu(self):
         self.m_menus.append(self.__createFileMenu())
         self.m_menus.append(self.__createProjectMenu())
@@ -101,15 +96,14 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createProjectMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        action = Action(self.tr('Generate'))
-        action.triggered.connect(self.action_generateTriggered)
-        menu.addAction(action)
+        self.m_action_generate = Action(self.tr('Generate'))
+        menu.addAction(self.m_action_generate)
 
         return menu
 
     def action_generateTriggered(self):
-        coder = Coder()
-        coder.generate(os.path.dirname(PROJECT.path), "D:/Users/xqyjlj/Documents/git/github/csplink/csp_hal_apm32f1")
+        dialog = GenCodeDialog(self)
+        dialog.exec()
 
 
 class MainView(MSFluentWindow):
@@ -117,28 +111,34 @@ class MainView(MSFluentWindow):
     def __init__(self):
         super().__init__()
 
+        title_bar = CustomTitleBar(self)
+
         self.updateFrameless()
-
         self.setMicaEffectEnabled(False)
-        self.setTitleBar(CustomTitleBar(self))
+        self.setTitleBar(title_bar)
 
-        # create sub interface
         self.chip_view = ChipView(self)
         self.code_view = CodeView(self)
 
-        # self.mainWidget = QSplitter(self)
-        # self.mainWidget.setOrientation(Qt.Orientation.Vertical)
-        # self.hBoxLayout.replaceWidget(self.stackedWidget, self.mainWidget)
-        # self.mainWidget.addWidget(self.stackedWidget)
-        # self.mainWidget.addWidget(QWidget(self))
+        title_bar.m_action_generate.triggered.connect(lambda: self.__generateCodeClick())
 
         self.__initNavigation()
         self.__initWindow()
 
+        self.showMaximized()
+
     def __initNavigation(self):
         self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)
-        self.addSubInterface(self.code_view, Icon.CPU, 'Code', Icon.CPU)
+        self.addSubInterface(self.code_view, Icon.CODE, 'Code', Icon.CODE)
 
+        self.navigationInterface.addItem(
+            routeKey='Generate',
+            icon=Icon.GENERATE,
+            text=self.tr('Generate'),
+            onClick=self.__generateCodeClick,
+            selectable=False,
+            position=NavigationItemPosition.BOTTOM,
+        )
         self.navigationInterface.addItem(
             routeKey='Sponsor',
             icon=Icon.MONEY,
@@ -171,3 +171,7 @@ If you would like to support the development of csplink, you are encouraged to d
 
         if w.exec():
             QDesktopServices.openUrl(QUrl("https://xqyjlj.github.io/"))
+
+    def __generateCodeClick(self):
+        dialog = GenCodeDialog(self)
+        dialog.exec()
