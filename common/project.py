@@ -63,12 +63,8 @@ class Summary(QObject):
         return self.m_summary.get("pinIp", "")
 
     @property
-    def builder(self) -> dict[str, list[str]]:
+    def builder(self) -> dict[str, dict[str, list[str]]]:
         return self.m_summary.get("builder", {})
-
-    @property
-    def toolchains(self) -> list[str]:
-        return self.m_summary.get("toolchains", [])
 
     @property
     def linker(self) -> dict:
@@ -239,6 +235,15 @@ class Project(QObject):
     @toolchains.setter
     def toolchains(self, toolchains: str):
         self.m_data.setdefault("gen", {})["toolchains"] = toolchains
+        self.saveTmp()
+
+    @property
+    def builder(self) -> str:
+        return self.m_data.get("gen", {}).get("builder", "")
+
+    @builder.setter
+    def builder(self, builder: str):
+        self.m_data.setdefault("gen", {})["builder"] = builder
         self.saveTmp()
 
     @property

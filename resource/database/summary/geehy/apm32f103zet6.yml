@@ -216,12 +216,11 @@ url:
   zh_CN: https://geehy.com/product/fifth/APM32F103
 builder:
   XMake:
-    - v2.8.1
+    v2.8.1: ["arm-none-eabi"]
   CMake:
-    - v3.7
+    v3.7: ["arm-none-eabi"]
   MdkArm:
-    - v5.27
-toolchains: ["arm-none-eabi"]
+    v5.27: ["armcc", "armclang"]
 linker:
   defaultHeapSize: "0x200"
   defaultStackSize: "0x400"

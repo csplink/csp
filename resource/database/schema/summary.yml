@@ -97,20 +97,32 @@ properties:
     additionalProperties: false
     properties:
       XMake:
-        type: array
-        items:
-          type: string
-          pattern: "^v\\d+\\.\\d+\\.\\d+$"
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^v\\d+\\.\\d+\\.\\d+$":
+            type: array
+            items:
+              type: string
+              minLength: 1
       CMake:
-        type: array
-        items:
-          type: string
-          pattern: "^v\\d+\\.\\d+$"
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^v\\d+\\.\\d+$":
+            type: array
+            items:
+              type: string
+              minLength: 1
       MdkArm:
-        type: array
-        items:
-          type: string
-          pattern: "^v\\d+\\.\\d+$"
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^v\\d+\\.\\d+$":
+            type: array
+            items:
+              type: string
+              minLength: 1
   hal:
     type: string
     minLength: 1
@@ -119,10 +131,6 @@ properties:
   package:
     type: string
     minLength: 1
-  toolchains:
-    type: array
-    items:
-      enum: ["", "arm-none-eabi"]
   linker:
     type: object
     properties:
@@ -179,6 +187,5 @@ required:
   - hal
   - hasPowerPad
   - package
-  - toolchains
   - pins
   - pinIp

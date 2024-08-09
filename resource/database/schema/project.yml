@@ -64,4 +64,6 @@ properties:
       halVersion:
         type: string
         pattern: "^v\\d+\\.\\d+\\.\\d+$"
+      builder:
+        type: string
 required: ["version", "name", "vendor", "targetChip"]

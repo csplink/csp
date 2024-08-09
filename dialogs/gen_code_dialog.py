@@ -96,19 +96,29 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
             self.lineEdit_packagePath.setText(PROJECT.halPath)
         self.comboBox_packageVersion.currentTextChanged.connect(self.__onComboBox_packageVersionCurrentTextChanged)
 
-        # toolchains choose
-        toolchains = PROJECT.summary.toolchains
-        if len(toolchains) != 0:
-            self.comboBox_toolchains.addItems(toolchains)
-            self.comboBox_toolchains.setCurrentIndex(-1)
-        self.comboBox_toolchains.currentTextChanged.connect(self.__onComboBox_toolchainsVersionCurrentTextChanged)
-
         # builder choose
         builder = PROJECT.summary.builder
         builderList = builder.keys()
         if len(builderList) != 0:
             self.comboBox_builder.addItems(builderList)
-            self.comboBox_builder.setCurrentIndex(-1)
+            if PROJECT.builder == "":
+                PROJECT.builder = self.comboBox_builder.currentText()
+            else:
+                if PROJECT.builder not in builderList:
+                    self.comboBox_builder.setCurrentIndex(-1)
+                    title = self.tr('Warning')
+                    content = self.tr("The builder %1 is not supported.").replace("%1", PROJECT.builder)
+                    message = MessageBox(title, content, self.window())
+                    message.setContentCopyable(True)
+                    message.exec()
+                else:
+                    self.comboBox_builder.setCurrentText(PROJECT.builder)
+
+            # builder version choose
+            builderVersion = PROJECT.summary.builder.get(self.comboBox_builder.currentText(), [])
+            if len(builderVersion) != 0:
+                self.comboBox_builderVersion.addItems(builderVersion)
+        self.comboBox_toolchains.currentTextChanged.connect(self.__onComboBox_toolchainsVersionCurrentTextChanged)
 
         self.setMinimumWidth(900)
 
