@@ -45,6 +45,7 @@ class Icon(FluentIconBase, Enum):
     FOLDER_LIB_OPEN = "folder-lib-open"
     FOLDER_LIB = "folder-lib"
     BOX = "box-3-line"
+    EQUALIZER = "equalizer-line"
 
     def path(self, theme=Theme.AUTO):
         return f'resource/icon/{getIconColor(theme)}/{self.value}.svg'

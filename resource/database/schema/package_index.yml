@@ -33,3 +33,5 @@ properties:
         properties:
           "^v\\d+\\.\\d+\\.\\d+$":
             type: string
+  toolchains:
+    $ref: "#/properties/hal"

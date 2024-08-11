@@ -26,14 +26,15 @@
 
 from PyQt5.QtCore import Qt, QEasingCurve, QItemSelection
 from PyQt5.QtGui import QShowEvent
-from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QPlainTextEdit, QLabel, QHBoxLayout, QFrame, QSizePolicy
-from qfluentwidgets import (FluentIconBase, qrouter, SegmentedWidget, TabBar, CheckBox, ComboBox,
+from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
+from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, ToolButton, ComboBox,
                             TabCloseButtonDisplayMode, BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget,
                             FluentIcon)
 
 from .ui.Ui_code_view import Ui_CodeView
 from common import Style, Icon, Coder, Utils, PROJECT
 from widget import CHighlighter
+from dialogs import GenCodeDialog
 
 
 class CodeView(Ui_CodeView, QWidget):
@@ -47,7 +48,19 @@ class CodeView(Ui_CodeView, QWidget):
 
         self.cardWidget_file.setFixedWidth(300)
         self.treeWidget_file.header().setVisible(False)
-        self.treeWidget_file.selectionModel().selectionChanged.connect(self.treeWidget_fileSelectionChanged)
+        self.treeWidget_file.selectionModel().selectionChanged.connect(self.__on__treeWidget_file__selectionChanged)
+
+        layout = FlowLayout(None, False)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setVerticalSpacing(20)
+        layout.setHorizontalSpacing(10)
+
+        self.tb_gen_settings = ToolButton()
+        self.tb_gen_settings.setIcon(Icon.EQUALIZER)
+        self.tb_gen_settings.pressed.connect(self.__on__tb_gen_settings__pressed)
+        layout.addWidget(self.tb_gen_settings)
+
+        self.verticalLayout_cardWidget_file.insertLayout(0, layout)
 
         Style.CODE_VIEW.apply(self)
 
@@ -83,7 +96,7 @@ class CodeView(Ui_CodeView, QWidget):
             traverse_tree(di, top_level_item, f"core/{key}")
             top_level_item.setExpanded(True)
 
-    def treeWidget_fileSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+    def __on__treeWidget_file__selectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
@@ -91,3 +104,7 @@ class CodeView(Ui_CodeView, QWidget):
             if path != "None":
                 self.plainTextEdit.setPlainText(self.m_codes.get(path, ""))
                 self.highlighter = CHighlighter(self.plainTextEdit.document())
+
+    def __on__tb_gen_settings__pressed(self):
+        dialog = GenCodeDialog(self, False)
+        dialog.exec()

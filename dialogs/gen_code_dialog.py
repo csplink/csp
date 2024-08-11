@@ -28,7 +28,7 @@ import os
 
 from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtGui import (QRegExpValidator)
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QWidget
 
 from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox)
 
@@ -38,14 +38,6 @@ from common import PROJECT, PACKAGE, Coder, Utils, Icon
 
 class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
 
-    @property
-    def ready(self) -> bool:
-        if not (self.lineEdit_minHeapSize.isEnabled() and Utils.isHex(self.lineEdit_minHeapSize.text())):
-            return False
-        if not (self.lineEdit_minStackSize.isEnabled() and Utils.isHex(self.lineEdit_minStackSize.text())):
-            return False
-        return True
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -53,7 +45,7 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         self.lineEdit_minHeapSize.setValidator(QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")))
         self.lineEdit_minStackSize.setValidator(QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")))
 
-        # linker
+        # linker default heap size
         if Utils.isHex(PROJECT.defaultHeapSize):
             self.lineEdit_minHeapSize.setText(PROJECT.defaultHeapSize)
         elif Utils.isHex(PROJECT.summary.defaultHeapSize):
@@ -61,6 +53,7 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         else:
             self.lineEdit_minHeapSize.setEnabled(False)
 
+        # linker default stack size
         if Utils.isHex(PROJECT.defaultStackSize):
             self.lineEdit_minStackSize.setText(PROJECT.defaultStackSize)
         elif PROJECT.summary.defaultStackSize != "":
@@ -68,23 +61,35 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         else:
             self.lineEdit_minStackSize.setEnabled(False)
 
-        # checkBox
+        # isCopyLibrary checkBox
         self.checkBox_isCopyLibrary.setChecked(PROJECT.copyLibrary)
+
+        # useToolchainsPackage checkBox
         self.checkBox_useToolchainsPackage.setChecked(PROJECT.useToolchainsPackage)
+        self.widget_toolchainsPackage.setEnabled(PROJECT.useToolchainsPackage)
+        self.checkBox_useToolchainsPackage.stateChanged.connect(self.__on__checkBox_useToolchainsPackage__stateChanged)
 
         self.toolButton_packageManager.setIcon(Icon.BOX)
         self.toolButton_toolchainsManager.setIcon(Icon.BOX)
 
-        # package choose
+        # hal choose
+        self.__hal_init()
+
+        # builder choose
+        self.__builder_init()
+
+        self.setMinimumWidth(900)
+
+    def __hal_init(self):
         hal = PROJECT.summary.hal
         versions = PACKAGE.hal.get(hal, {}).keys()
         if len(versions) != 0:
-            self.comboBox_packageVersion.addItems(versions)
+            self.comboBox_halVersion.addItems(versions)
             if PROJECT.halVersion == "":
-                PROJECT.halVersion = self.comboBox_packageVersion.currentText()
+                PROJECT.halVersion = self.comboBox_halVersion.currentText()
             else:
                 if PROJECT.halVersion not in versions:
-                    self.comboBox_packageVersion.setCurrentIndex(-1)
+                    self.comboBox_halVersion.setCurrentIndex(-1)
                     title = self.tr('Warning')
                     content = self.tr("The HAL package %1 is not installed.").replace(
                         "%1", f"{hal}@{PROJECT.halVersion}")
@@ -92,11 +97,11 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
                     message.setContentCopyable(True)
                     message.exec()
                 else:
-                    self.comboBox_packageVersion.setCurrentText(PROJECT.halVersion)
-            self.lineEdit_packagePath.setText(PROJECT.halPath)
-        self.comboBox_packageVersion.currentTextChanged.connect(self.__onComboBox_packageVersionCurrentTextChanged)
+                    self.comboBox_halVersion.setCurrentText(PROJECT.halVersion)
+            self.lineEdit_halPath.setText(PROJECT.halPath)
+        self.comboBox_halVersion.currentTextChanged.connect(self.__on__comboBox_halVersion__currentTextChanged)
 
-        # builder choose
+    def __builder_init(self):
         builder = PROJECT.summary.builder
         builderList = builder.keys()
         if len(builderList) != 0:
@@ -113,38 +118,136 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
                     message.exec()
                 else:
                     self.comboBox_builder.setCurrentText(PROJECT.builder)
-
             # builder version choose
-            builderVersion = PROJECT.summary.builder.get(self.comboBox_builder.currentText(), [])
-            if len(builderVersion) != 0:
-                self.comboBox_builderVersion.addItems(builderVersion)
-        self.comboBox_toolchains.currentTextChanged.connect(self.__onComboBox_toolchainsVersionCurrentTextChanged)
+            self.__builderVersion_init(builder)
+        self.comboBox_builder.currentTextChanged.connect(self.__on__comboBox_builder__currentTextChanged)
 
-        self.setMinimumWidth(900)
+    def __builderVersion_init(self, builder: dict[str, dict[str, list[str]]]):
+        builderVersion = builder.get(self.comboBox_builder.currentText(), {})
+        builderVersionList = builderVersion.keys()
+        if len(builderVersionList) != 0:
+            self.comboBox_builderVersion.addItems(builderVersionList)
+            if PROJECT.builderVersion == "":
+                PROJECT.builderVersion = self.comboBox_builderVersion.currentText()
+            else:
+                if PROJECT.builderVersion not in builderVersionList:
+                    self.comboBox_builderVersion.setCurrentIndex(-1)
+                    title = self.tr('Warning')
+                    content = self.tr("The builder %1 is not supported.").replace(
+                        "%1", f"{self.comboBox_builder.currentText()}@{PROJECT.builderVersion}")
+                    message = MessageBox(title, content, self.window())
+                    message.setContentCopyable(True)
+                    message.exec()
+                else:
+                    self.comboBox_builderVersion.setCurrentText(PROJECT.builderVersion)
+            # toolchains choose
+            self.__toolchains_init(builderVersion)
+        self.comboBox_builderVersion.currentTextChanged.connect(self.__on__comboBox_builderVersion__currentTextChanged)
 
-    def __onComboBox_packageVersionCurrentTextChanged(self, text: str):
-        self.lineEdit_packagePath.setText(PACKAGE.path("hal", PROJECT.summary.hal, text))
+    def __toolchains_init(self, builderVersion: dict[str, list[str]]):
+        toolchains = builderVersion.get(self.comboBox_builderVersion.currentText(), {})
+        if len(toolchains) != 0:
+            self.comboBox_toolchains.addItems(toolchains)
+            if PROJECT.toolchains == "":
+                PROJECT.toolchains = self.comboBox_toolchains.currentText()
+            else:
+                if PROJECT.toolchains not in toolchains:
+                    self.comboBox_toolchains.setCurrentIndex(-1)
+                    title = self.tr('Warning')
+                    content = self.tr("The builder %1 is not supported.").replace(
+                        "%1", f"{self.comboBox_builder.currentText()}@{PROJECT.toolchains}")
+                    message = MessageBox(title, content, self.window())
+                    message.setContentCopyable(True)
+                    message.exec()
+                else:
+                    self.comboBox_toolchains.setCurrentText(PROJECT.toolchains)
+            # toolchains choose
+            self.__toolchainsVersion_init()
+        self.comboBox_toolchains.currentTextChanged.connect(self.__on__comboBox_toolchains__currentTextChanged)
 
-    def __onComboBox_toolchainsVersionCurrentTextChanged(self, text: str):
-        self.lineEdit_toolchainsPath.setText(
-            PACKAGE.path("toolchains", text, self.comboBox_toolchainsVersion.currentText()))
+    def __toolchainsVersion_init(self):
+        toolchains = self.comboBox_toolchains.currentText()
+        versions = PACKAGE.toolchains.get(toolchains, {}).keys()
+        if len(versions) != 0:
+            self.comboBox_toolchainsVersion.addItems(versions)
+            if PROJECT.toolchainsVersion == "":
+                PROJECT.toolchainsVersion = self.comboBox_toolchainsVersion.currentText()
+            else:
+                if PROJECT.toolchainsVersion not in versions:
+                    self.comboBox_toolchainsVersion.setCurrentIndex(-1)
+                    title = self.tr('Warning')
+                    content = self.tr("The toolchains package %1 is not installed.").replace(
+                        "%1", f"{toolchains}@{PROJECT.toolchainsVersion}")
+                    message = MessageBox(title, content, self.window())
+                    message.setContentCopyable(True)
+                    message.exec()
+                else:
+                    self.comboBox_toolchainsVersion.setCurrentText(PROJECT.toolchainsVersion)
+            self.lineEdit_toolchainsPath.setText(
+                PACKAGE.path("toolchains", toolchains, self.comboBox_toolchainsVersion.currentText()))
+        self.comboBox_toolchainsVersion.currentTextChanged.connect(
+            self.__on__comboBox_toolchainsVersion__currentTextChanged)
+
+    def __on__comboBox_builder__currentTextChanged(self, text: str):
+        builderVersion = PROJECT.summary.builder.get(text, {})
+        builderVersionList = builderVersion.keys()
+        self.comboBox_builderVersion.clear()
+        if len(builderVersionList) != 0:
+            self.comboBox_builderVersion.addItems(builderVersionList)
+        else:
+            self.__on__comboBox_builderVersion__currentTextChanged("")
+
+    def __on__comboBox_builderVersion__currentTextChanged(self, text: str):
+        builderVersion = PROJECT.summary.builder.get(self.comboBox_builder.currentText(), {})
+        toolchains = builderVersion.get(text, {})
+        self.comboBox_toolchains.clear()
+        if len(toolchains) != 0:
+            self.comboBox_toolchains.addItems(toolchains)
+        else:
+            self.__on__comboBox_toolchains__currentTextChanged("")
+
+    def __on__comboBox_toolchains__currentTextChanged(self, text: str):
+        versions = PACKAGE.toolchains.get(text, {}).keys()
+        self.comboBox_toolchainsVersion.clear()
+        if len(versions) != 0:
+            self.comboBox_toolchainsVersion.addItems(versions)
+        else:
+            self.__on__comboBox_toolchainsVersion__currentTextChanged("")
+
+    def __on__comboBox_toolchainsVersion__currentTextChanged(self, text: str):
+        self.lineEdit_toolchainsPath.setText(PACKAGE.path("toolchains", self.comboBox_toolchains.currentText(), text))
+
+    def __on__comboBox_halVersion__currentTextChanged(self, text: str):
+        self.lineEdit_halPath.setText(PACKAGE.path("hal", PROJECT.summary.hal, text))
+
+    def __on__checkBox_useToolchainsPackage__stateChanged(self, state: int):
+        self.widget_toolchainsPackage.setEnabled(state == Qt.CheckState.Checked)
 
 
 class GenCodeDialog(MessageBoxBase):
 
-    def __init__(self, parent=None):
+    m_gen = False
+
+    def __init__(self, parent=None, gen=False):
         super().__init__(parent)
+
+        self.m_gen = gen
 
         self.main_widget = GenCodeDialogWidget(self)
         self.viewLayout.addWidget(self.main_widget)
 
-        self.yesButton.setText(self.tr('Generate'))
+        if gen:
+            self.yesButton.setText(self.tr('Generate'))
+        else:
+            self.yesButton.setText(self.tr('Save'))
         self.cancelButton.setText(self.tr('Cancel'))
 
         self.yesButton.disconnect()
         self.yesButton.clicked.connect(self.__onYesButtonClicked)
 
     def __showError(self, message: str):
+        if not self.m_gen:
+            return
         Flyout.create(icon=InfoBarIcon.ERROR,
                       title=self.tr('Error'),
                       content=message,
@@ -156,7 +259,7 @@ class GenCodeDialog(MessageBoxBase):
         defaultHeapSize = self.main_widget.lineEdit_minHeapSize.text()
         defaultStackSize = self.main_widget.lineEdit_minStackSize.text()
         isCopyLibrary = self.main_widget.checkBox_isCopyLibrary.isChecked()
-        packagePath = self.main_widget.lineEdit_packagePath.text()
+        packagePath = self.main_widget.lineEdit_halPath.text()
 
         if not (self.main_widget.lineEdit_minHeapSize.isEnabled() and Utils.isHex(defaultHeapSize)):
             self.__showError(self.tr("The minimum heap size data is invalid"))
@@ -164,7 +267,7 @@ class GenCodeDialog(MessageBoxBase):
         elif not (self.main_widget.lineEdit_minStackSize.isEnabled() and Utils.isHex(defaultStackSize)):
             self.__showError(self.tr("The minimum stack size data is invalid"))
             return
-        elif self.main_widget.comboBox_packageVersion.currentText() == "":
+        elif self.main_widget.comboBox_halVersion.currentText() == "":
             self.__showError(self.tr("Please select a valid package version"))
             return
         elif not os.path.isdir(packagePath):
@@ -176,9 +279,10 @@ class GenCodeDialog(MessageBoxBase):
             PROJECT.defaultHeapSize = defaultHeapSize
             PROJECT.defaultStackSize = defaultStackSize
             PROJECT.copyLibrary = isCopyLibrary
-            PROJECT.halVersion = self.main_widget.comboBox_packageVersion.currentText()
+            PROJECT.halVersion = self.main_widget.comboBox_halVersion.currentText()
 
-            coder = Coder()
-            coder.generate(PROJECT.halPath)
+            if self.m_gen:
+                coder = Coder()
+                coder.generate(PROJECT.halPath)
             self.reject()
             self.rejected.emit()

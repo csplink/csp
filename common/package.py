@@ -41,6 +41,10 @@ class Package():
     def hal(self) -> dict:
         return self.m_data.get("hal", {})
 
+    @property
+    def toolchains(self) -> dict:
+        return self.m_data.get("toolchains", {})
+
     def path(self, type: str, name: str, version: str):
         return self.m_data.get(type, {}).get(name, {}).get(version, "")
 

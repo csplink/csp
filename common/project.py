@@ -138,14 +138,6 @@ class Ip(QObject):
 
 
 class Project(QObject):
-
-    pinConfigChanged = pyqtSignal(list, object, object)
-    configChanged = pyqtSignal(list, object, object)
-    gridPropertyIpTriggered = pyqtSignal(str, str)
-    reloaded = pyqtSignal()
-    modulesChanged = pyqtSignal()
-    gridModeTriggered = pyqtSignal(str, str)
-
     m_data = {}
     m_path = ""
     summary = None
@@ -192,13 +184,20 @@ class Project(QObject):
         self.saveTmp()
 
     # gen
+
+    # gen/copyLibrary
+    copyLibraryChanged = pyqtSignal(bool)
+
     @property
     def copyLibrary(self) -> bool:
         return self.m_data.get("gen", {}).get("copyLibrary", True)
 
     @copyLibrary.setter
     def copyLibrary(self, copyLibrary: bool):
+        if self.copyLibrary == copyLibrary:
+            return
         self.m_data.setdefault("gen", {})["copyLibrary"] = copyLibrary
+        self.copyLibraryChanged.emit(copyLibrary)
         self.saveTmp()
 
     @property
@@ -219,14 +218,23 @@ class Project(QObject):
         self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultStackSize"] = defaultStackSize
         self.saveTmp()
 
+    # gen/useToolchainsPackage
+    useToolchainsPackageChanged = pyqtSignal(bool)
+
     @property
     def useToolchainsPackage(self) -> bool:
         return self.m_data.get("gen", {}).get("useToolchainsPackage", False)
 
     @useToolchainsPackage.setter
     def useToolchainsPackage(self, useToolchainsPackage: bool):
+        if self.useToolchainsPackage == useToolchainsPackage:
+            return
         self.m_data.setdefault("gen", {})["useToolchainsPackage"] = useToolchainsPackage
+        self.useToolchainsPackageChanged.emit(useToolchainsPackage)
         self.saveTmp()
+
+    # gen/toolchains
+    toolchainsChanged = pyqtSignal(str)
 
     @property
     def toolchains(self) -> str:
@@ -234,8 +242,14 @@ class Project(QObject):
 
     @toolchains.setter
     def toolchains(self, toolchains: str):
+        if self.toolchains == toolchains:
+            return
         self.m_data.setdefault("gen", {})["toolchains"] = toolchains
+        self.toolchainsChanged.emit(toolchains)
         self.saveTmp()
+
+    # gen/builder
+    builderChanged = pyqtSignal(str)
 
     @property
     def builder(self) -> str:
@@ -243,8 +257,29 @@ class Project(QObject):
 
     @builder.setter
     def builder(self, builder: str):
+        if self.builder == builder:
+            return
         self.m_data.setdefault("gen", {})["builder"] = builder
+        self.builderChanged.emit(builder)
         self.saveTmp()
+
+    # gen/builderVersion
+    builderVersionChanged = pyqtSignal(str)
+
+    @property
+    def builderVersion(self) -> str:
+        return self.m_data.get("gen", {}).get("builderVersion", "")
+
+    @builderVersion.setter
+    def builderVersion(self, builderVersion: str):
+        if self.builderVersion == builderVersion:
+            return
+        self.m_data.setdefault("gen", {})["builderVersion"] = builderVersion
+        self.builderVersionChanged.emit(builderVersion)
+        self.saveTmp()
+
+    # gen/toolchainsVersion
+    toolchainsVersionChanged = pyqtSignal(str)
 
     @property
     def toolchainsVersion(self) -> str:
@@ -252,8 +287,14 @@ class Project(QObject):
 
     @toolchainsVersion.setter
     def toolchainsVersion(self, toolchainsVersion: str):
+        if self.toolchainsVersion == toolchainsVersion:
+            return
         self.m_data.setdefault("gen", {})["toolchainsVersion"] = toolchainsVersion
+        self.toolchainsVersionChanged.emit(toolchainsVersion)
         self.saveTmp()
+
+    # gen/halVersion
+    halVersionChanged = pyqtSignal(str)
 
     @property
     def halVersion(self) -> str:
@@ -261,8 +302,16 @@ class Project(QObject):
 
     @halVersion.setter
     def halVersion(self, halVersion: str):
+        if self.halVersion == halVersion:
+            return
         self.m_data.setdefault("gen", {})["halVersion"] = halVersion
+        self.halVersionChanged.emit(halVersion)
         self.saveTmp()
+
+    def isGenValid(self) -> bool:
+        pass
+
+    reloaded = pyqtSignal()
 
     @property
     def path(self) -> str:
@@ -321,6 +370,10 @@ class Project(QObject):
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(self.dump())
 
+    pinConfigChanged = pyqtSignal(list, object, object)
+    configChanged = pyqtSignal(list, object, object)
+    modulesChanged = pyqtSignal()
+
     def config(self, path: str, default=None):
         map = self.m_data.get("config", {})
         keys = path.split("/")
@@ -361,8 +414,12 @@ class Project(QObject):
 
             self.saveTmp()
 
+    gridPropertyIpTriggered = pyqtSignal(str, str)
+
     def triggerGridPropertyIp(self, instance: str, name: str):
         self.gridPropertyIpTriggered.emit(instance, name)
+
+    gridModeTriggered = pyqtSignal(str, str)
 
     def triggerGridMode(self, module: str, widget: str):
         self.gridModeTriggered.emit(module, widget)

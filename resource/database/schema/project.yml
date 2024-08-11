@@ -66,4 +66,10 @@ properties:
         pattern: "^v\\d+\\.\\d+\\.\\d+$"
       builder:
         type: string
+      builderVersion:
+        type: string
+      toolchains:
+        type: string
+      toolchainsVersion:
+        type: string
 required: ["version", "name", "vendor", "targetChip"]

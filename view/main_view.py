@@ -173,5 +173,5 @@ If you would like to support the development of csplink, you are encouraged to d
             QDesktopServices.openUrl(QUrl("https://xqyjlj.github.io/"))
 
     def __generateCodeClick(self):
-        dialog = GenCodeDialog(self)
+        dialog = GenCodeDialog(self, True)
         dialog.exec()
