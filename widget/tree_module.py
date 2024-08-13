@@ -26,9 +26,9 @@
 
 import attr
 
-from PyQt5.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
-from PyQt5.QtGui import QFont, QBrush, QColor
-from PyQt5.QtWidgets import (QWidget)
+from PySide6.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
+from PySide6.QtGui import QFont, QBrush, QColor
+from PySide6.QtWidgets import (QWidget)
 
 from .ui.Ui_tree_module import Ui_TreeModule
 from common import PROJECT, SETTINGS

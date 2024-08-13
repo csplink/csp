@@ -27,7 +27,7 @@
 import os
 from enum import Enum
 
-from PyQt5.QtCore import QLocale
+from PySide6.QtCore import QLocale
 from qfluentwidgets import (qconfig, QConfig, ConfigItem, OptionsConfigItem, BoolValidator, OptionsValidator,
                             EnumSerializer, ColorConfigItem, FolderListValidator, Theme, FolderValidator,
                             ConfigSerializer)

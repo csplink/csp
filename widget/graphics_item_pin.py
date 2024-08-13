@@ -26,9 +26,9 @@
 
 from enum import Enum
 
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics
-from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem, QAction
+from PySide6.QtCore import QRectF, Qt
+from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics, QAction
+from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
 from common import PROJECT

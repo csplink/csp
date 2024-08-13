@@ -28,9 +28,9 @@ import os
 
 from enum import Enum
 
-from PyQt5.QtCore import QUrl, QPoint
-from PyQt5.QtGui import QIcon, QDesktopServices, QKeySequence
-from PyQt5.QtWidgets import QHBoxLayout, QApplication
+from PySide6.QtCore import QUrl, QPoint
+from PySide6.QtGui import QIcon, QDesktopServices
+from PySide6.QtWidgets import QHBoxLayout, QApplication
 
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton)
@@ -125,7 +125,7 @@ class MainView(MSFluentWindow):
         self.__initNavigation()
         self.__initWindow()
 
-        # self.showMaximized()
+        self.showMaximized()
 
     def __initNavigation(self):
         self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)
@@ -157,7 +157,7 @@ class MainView(MSFluentWindow):
         self.setWindowIcon(QIcon('resource/images/logo.svg'))
         self.setWindowTitle('CSPLink')
 
-        desktop = QApplication.desktop().availableGeometry()
+        desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 

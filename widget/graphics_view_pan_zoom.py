@@ -26,10 +26,11 @@
 
 import math
 
-from PyQt5.QtCore import Qt, pyqtSignal, QRegExp
-from PyQt5.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
-                         QResizeEvent, QRegExpValidator)
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QOpenGLWidget
+from PySide6.QtCore import Qt, Signal, QRegularExpression
+from PySide6.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
+                           QResizeEvent, QRegularExpressionValidator)
+from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
+from PySide6.QtOpenGLWidgets import QOpenGLWidget
 
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit)
 
@@ -47,7 +48,7 @@ class LabelMessageBox(MessageBoxBase):
         self.lineEdit_label.setText(text)
         self.lineEdit_label.setPlaceholderText(self.tr('Enter the user label'))
         self.lineEdit_label.setClearButtonEnabled(True)
-        self.lineEdit_label.setValidator(QRegExpValidator(QRegExp("^[A-Za-z_][A-Za-z0-9_]+$")))
+        self.lineEdit_label.setValidator(QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")))
 
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.lineEdit_label)
@@ -59,7 +60,7 @@ class LabelMessageBox(MessageBoxBase):
 
 
 class GraphicsViewPanZoom(QGraphicsView):
-    selectedItemClicked = pyqtSignal(QGraphicsItem)
+    selectedItemClicked = Signal(QGraphicsItem)
     m_resize_cnt = 0
     m_key = 0
 
@@ -87,12 +88,13 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.SmartViewportUpdate)
         self.setRenderHints(QPainter.RenderHint.Antialiasing | QPainter.RenderHint.TextAntialiasing
                             | QPainter.RenderHint.SmoothPixmapTransform
-                            | QPainter.RenderHint.Qt4CompatiblePainting
+                            | QPainter.RenderHint.VerticalSubpixelPositioning
                             | QPainter.RenderHint.LosslessImageRendering)
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
         INT_MAX = 2147483647
         INT_MIN = -2147483648
         self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
+        self.window().updateFrameless()
 
     def setupMatrix(self):
         scale = math.pow(2, (self.m_scale - (self.m_min_scale + self.m_max_scale) / 2) / self.m_resolution)

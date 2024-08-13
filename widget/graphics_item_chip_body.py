@@ -24,9 +24,9 @@
 # 2024-06-24     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import QRectF, QPointF, QLineF
-from PyQt5.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics
-from PyQt5.QtWidgets import QGraphicsObject, QWidget, QStyleOptionGraphicsItem
+from PySide6.QtCore import QRectF, QPointF, QLineF
+from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics
+from PySide6.QtWidgets import QGraphicsObject, QWidget, QStyleOptionGraphicsItem
 
 
 class GraphicsItemChipBody(QGraphicsObject):

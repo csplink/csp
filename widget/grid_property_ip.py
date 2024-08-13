@@ -26,9 +26,9 @@
 
 import attr
 
-from PyQt5.QtCore import Qt, QRegExp, QModelIndex, QAbstractTableModel, QSortFilterProxyModel, QAbstractItemModel
-from PyQt5.QtGui import QRegExpValidator, QFont
-from PyQt5.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication)
+from PySide6.QtCore import Qt, QRegularExpression, QModelIndex, QAbstractTableModel, QSortFilterProxyModel, QAbstractItemModel
+from PySide6.QtGui import QRegularExpressionValidator, QFont
+from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication)
 
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
@@ -66,7 +66,7 @@ class EditorDelegate(TableItemDelegate):
             lineEdit.setProperty("transparent", False)
             lineEdit.setStyle(QApplication.style())
             lineEdit.setText(g_data[row].value)
-            lineEdit.setValidator(QRegExpValidator(QRegExp("^[A-Za-z_][A-Za-z0-9_]+$")))
+            lineEdit.setValidator(QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")))
             return lineEdit
         elif g_data[row].typeof == "enum":
             comboBox = ComboBox(parent)

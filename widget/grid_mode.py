@@ -26,7 +26,7 @@
 
 from enum import Enum
 
-from PyQt5.QtWidgets import QWidget, QAbstractItemView, QHeaderView
+from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
 from .ui.Ui_grid_mode import Ui_GridMode
 from common import PROJECT, SETTINGS

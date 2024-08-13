@@ -26,9 +26,9 @@
 
 import os
 
-from PyQt5.QtCore import Qt, QRegExp
-from PyQt5.QtGui import (QRegExpValidator)
-from PyQt5.QtWidgets import QWidget
+from PySide6.QtCore import Qt, QRegularExpression
+from PySide6.QtGui import (QRegularExpressionValidator)
+from PySide6.QtWidgets import QWidget
 
 from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox)
 
@@ -42,8 +42,8 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.lineEdit_minHeapSize.setValidator(QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")))
-        self.lineEdit_minStackSize.setValidator(QRegExpValidator(QRegExp(R"(^0x[0-9A-Fa-f]+$)")))
+        self.lineEdit_minHeapSize.setValidator(QRegularExpressionValidator(QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
+        self.lineEdit_minStackSize.setValidator(QRegularExpressionValidator(QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
 
         # linker default heap size
         if Utils.isHex(PROJECT.defaultHeapSize):
@@ -242,7 +242,7 @@ class GenCodeDialog(MessageBoxBase):
             self.yesButton.setText(self.tr('Save'))
         self.cancelButton.setText(self.tr('Cancel'))
 
-        self.yesButton.disconnect()
+        self.yesButton.disconnect(self)
         self.yesButton.clicked.connect(self.__onYesButtonClicked)
 
     def __showError(self, message: str):

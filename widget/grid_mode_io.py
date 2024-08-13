@@ -24,9 +24,9 @@
 # 2024-07-02     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
-from PyQt5.QtWidgets import QWidget, QAbstractItemView, QHeaderView
+from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QFont
+from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
 from .ui.Ui_grid_mode_io import Ui_GridModeIo
 from common import PROJECT, SETTINGS

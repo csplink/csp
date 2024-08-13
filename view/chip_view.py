@@ -26,9 +26,9 @@
 
 import re
 
-from PyQt5.QtCore import QItemSelection
-from PyQt5.QtGui import QColor, QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QWidget, QGraphicsScene, QMessageBox
+from PySide6.QtCore import QItemSelection
+from PySide6.QtGui import QColor, QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
 
 from qfluentwidgets import (isDarkTheme)
 

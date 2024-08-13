@@ -26,9 +26,9 @@
 
 import sys, os, glob, getopt
 
-from PyQt5.QtCore import Qt, QTranslator
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtGui import QFontDatabase
+from PySide6.QtCore import Qt, QTranslator
+from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QFontDatabase
 
 # masking printing: 📢 Tips: QFluentWidgets Pro is now released. Click https://qfluentwidgets.com/pages/pro to learn more about it.
 stdout = sys.stdout
@@ -47,17 +47,15 @@ sys.path.append(f"{script_dir}/plugins")
 
 def main():
 
-    if SETTINGS.get(SETTINGS.dpiScale) == "Auto":
-        QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    else:
+    if SETTINGS.get(SETTINGS.dpiScale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpiScale))
 
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-
     app = QApplication(sys.argv)
-    app.setAttribute(Qt.AA_DontCreateNativeWidgetSiblings)
+    app.setAttribute(Qt.ApplicationAttribute.AA_DontCreateNativeWidgetSiblings)
+
+    if sys.platform == 'win32' and sys.getwindowsversion().build >= 22000:
+        app.setStyle("fusion")
 
     locale = SETTINGS.get(SETTINGS.language).value
     translator = FluentTranslator(locale, app)
@@ -77,12 +75,12 @@ def main():
 
     if PROJECT.path != "":
         view = MainView()
+        view.updateFrameless()
         view.show()
-        view.setMicaEffectEnabled(False)
     else:
         pass
 
-    app.exec_()
+    app.exec()
 
 
 def checkOpt():

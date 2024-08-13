@@ -24,9 +24,9 @@
 # 2024-07-20     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import Qt, QEasingCurve, QItemSelection
-from PyQt5.QtGui import QShowEvent
-from PyQt5.QtWidgets import QWidget, QTreeWidgetItem, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
+from PySide6.QtCore import Qt, QEasingCurve, QItemSelection
+from PySide6.QtGui import QShowEvent
+from PySide6.QtWidgets import QWidget, QTreeWidgetItem, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
 from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, ToolButton, ComboBox,
                             TabCloseButtonDisplayMode, BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget,
                             FluentIcon)

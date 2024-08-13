@@ -24,8 +24,8 @@
 # 2024-07-27     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import Qt, QRegExp, QSize
-from PyQt5.QtGui import QSyntaxHighlighter, QFont, QColor, QTextCharFormat, QTextDocument
+from PySide6.QtCore import Qt, QRegularExpression, QSize
+from PySide6.QtGui import QSyntaxHighlighter, QFont, QColor, QTextCharFormat, QTextDocument
 
 
 class BaseHighlighter(QSyntaxHighlighter):

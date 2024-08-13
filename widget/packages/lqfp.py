@@ -24,7 +24,7 @@
 # 2024-06-27     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import QPointF
+from PySide6.QtCore import QPointF
 
 from widget.graphics_item_pin import GraphicsItemPin
 from widget.graphics_item_chip_body import GraphicsItemChipBody

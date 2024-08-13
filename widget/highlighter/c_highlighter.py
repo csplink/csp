@@ -24,9 +24,9 @@
 # 2024-07-27     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import Qt, QRegExp, QSize
-from PyQt5.QtGui import QSyntaxHighlighter, QTextDocument, QColor, QPainter, QTextFormat
-from PyQt5.QtWidgets import QTextEdit
+from PySide6.QtCore import Qt, QRegularExpression, QSize
+from PySide6.QtGui import QSyntaxHighlighter, QTextDocument, QColor, QPainter, QTextFormat
+from PySide6.QtWidgets import QTextEdit
 
 from .base_highlighter import BaseHighlighter
 
@@ -50,7 +50,7 @@ class CHighlighter(BaseHighlighter):
     def __init__(self, document: QTextDocument):
         super().__init__(document)
 
-        self.multiline_comment = (QRegExp("/\*"), QRegExp("\*/"), 1, self.STYLES['comment'])
+        self.multiline_comment = (QRegularExpression("/\*"), QRegularExpression("\*/"), 1, self.STYLES['comment'])
 
         rules = []
 
@@ -68,7 +68,7 @@ class CHighlighter(BaseHighlighter):
             (r'//[^\n]*', 0, self.STYLES['comment']),
         ]
 
-        self.rules = [(QRegExp(pat), index, fmt) for (pat, index, fmt) in rules]
+        self.rules = [(QRegularExpression(pat), index, fmt) for (pat, index, fmt) in rules]
 
     def highlightBlock(self, text: str):
         for expression, nth, format in self.rules:

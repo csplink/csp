@@ -24,9 +24,9 @@
 # 2024-07-27     xqyjlj       initial version
 #
 
-from PyQt5.QtCore import Qt, QRect, QSize
-from PyQt5.QtGui import QPaintEvent, QFont, QColor, QPainter, QTextFormat
-from PyQt5.QtWidgets import QWidget, QTextEdit
+from PySide6.QtCore import Qt, QRect, QSize
+from PySide6.QtGui import QPaintEvent, QFont, QColor, QPainter, QTextFormat
+from PySide6.QtWidgets import QWidget, QTextEdit
 
 from qfluentwidgets import isDarkTheme, PlainTextEdit
 
@@ -38,7 +38,7 @@ class PlainTextEditCode(PlainTextEdit):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setTabStopWidth(40)
+        self.setTabStopDistance(40)
         self.m_lineNumberArea = LineNumberArea(self)
 
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
@@ -57,7 +57,7 @@ class PlainTextEditCode(PlainTextEdit):
             max_digs //= 10
             digits += 1
 
-        space = 3 + self.fontMetrics().width('9') * digits
+        space = 3 + self.fontMetrics().horizontalAdvance('9') * digits
         right_margin = self.m_lineNumberArea.RIGHT_MARGIN
 
         return space + right_margin
