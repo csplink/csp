@@ -18,8 +18,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
-from qfluentwidgets import (BodyLabel, CheckBox, ComboBox, LineEdit,
-    SimpleCardWidget, SubtitleLabel, TitleLabel, ToolButton)
+from qfluentwidgets import (BodyLabel, CaptionLabel, CheckBox, ComboBox,
+    LineEdit, SimpleCardWidget, SubtitleLabel, TitleLabel,
+    ToolButton)
 
 class Ui_GenCodeDialog(object):
     def setupUi(self, GenCodeDialog):
@@ -182,6 +183,12 @@ class Ui_GenCodeDialog(object):
 
         self.verticalLayout_3.addWidget(self.widget_toolchainsPackage)
 
+        self.label_toolchains_folder_invalid = CaptionLabel(self.frame_2)
+        self.label_toolchains_folder_invalid.setObjectName(u"label_toolchains_folder_invalid")
+        self.label_toolchains_folder_invalid.setStyleSheet(u"color: rgb(255, 0, 0);")
+
+        self.verticalLayout_3.addWidget(self.label_toolchains_folder_invalid)
+
 
         self.verticalLayout.addWidget(self.frame_2)
 
@@ -269,12 +276,12 @@ class Ui_GenCodeDialog(object):
 
         self.gridLayout_2.addWidget(self.comboBox_halVersion, 0, 1, 1, 1)
 
-        self.label_packagePath = BodyLabel(self.frame_3)
-        self.label_packagePath.setObjectName(u"label_packagePath")
-        sizePolicy2.setHeightForWidth(self.label_packagePath.sizePolicy().hasHeightForWidth())
-        self.label_packagePath.setSizePolicy(sizePolicy2)
+        self.label_halPath = BodyLabel(self.frame_3)
+        self.label_halPath.setObjectName(u"label_halPath")
+        sizePolicy2.setHeightForWidth(self.label_halPath.sizePolicy().hasHeightForWidth())
+        self.label_halPath.setSizePolicy(sizePolicy2)
 
-        self.gridLayout_2.addWidget(self.label_packagePath, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.label_halPath, 1, 0, 1, 1)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(20)
@@ -295,6 +302,12 @@ class Ui_GenCodeDialog(object):
 
 
         self.verticalLayout_2.addLayout(self.gridLayout_2)
+
+        self.label_hal_folder_invalid = CaptionLabel(self.frame_3)
+        self.label_hal_folder_invalid.setObjectName(u"label_hal_folder_invalid")
+        self.label_hal_folder_invalid.setStyleSheet(u"color: rgb(255, 0, 0);")
+
+        self.verticalLayout_2.addWidget(self.label_hal_folder_invalid)
 
 
         self.verticalLayout.addWidget(self.frame_3)
@@ -323,16 +336,18 @@ class Ui_GenCodeDialog(object):
         self.toolButton_toolchainsManager.setToolTip(QCoreApplication.translate("GenCodeDialog", u"Package Manager", None))
 #endif // QT_CONFIG(tooltip)
         self.toolButton_toolchainsManager.setText("")
+        self.label_toolchains_folder_invalid.setText(QCoreApplication.translate("GenCodeDialog", u"TextLabel", None))
         self.label_titleLinkerSettings.setText(QCoreApplication.translate("GenCodeDialog", u"Linker Settings", None))
         self.label_minStackSize.setText(QCoreApplication.translate("GenCodeDialog", u"Minimum Stack Size (Hex)", None))
         self.label_minHeapSize.setText(QCoreApplication.translate("GenCodeDialog", u"Minimum Heap Size (Hex)", None))
         self.label_titlePackageSettings.setText(QCoreApplication.translate("GenCodeDialog", u"Package Settings", None))
         self.checkBox_isCopyLibrary.setText(QCoreApplication.translate("GenCodeDialog", u"Copy the library files to the project directory", None))
         self.label_halVersion.setText(QCoreApplication.translate("GenCodeDialog", u"Package Version", None))
-        self.label_packagePath.setText(QCoreApplication.translate("GenCodeDialog", u"Package Path", None))
+        self.label_halPath.setText(QCoreApplication.translate("GenCodeDialog", u"Package Path", None))
 #if QT_CONFIG(tooltip)
         self.toolButton_packageManager.setToolTip(QCoreApplication.translate("GenCodeDialog", u"Package Manager", None))
 #endif // QT_CONFIG(tooltip)
         self.toolButton_packageManager.setText("")
+        self.label_hal_folder_invalid.setText(QCoreApplication.translate("GenCodeDialog", u"TextLabel", None))
     # retranslateUi
 

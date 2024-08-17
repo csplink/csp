@@ -24,7 +24,9 @@
 # 2024-07-20     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QEasingCurve, QItemSelection
+import os
+
+from PySide6.QtCore import Qt, Signal, QItemSelection
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
 from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, ToolButton, ComboBox,
@@ -32,7 +34,7 @@ from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, Too
                             FluentIcon)
 
 from .ui.Ui_code_view import Ui_CodeView
-from common import Style, Icon, Coder, Utils, PROJECT
+from common import Style, Icon, Coder, Utils, PROJECT, PACKAGE
 from widget import CHighlighter
 from dialogs import GenCodeDialog
 
@@ -64,14 +66,25 @@ class CodeView(Ui_CodeView, QWidget):
 
         Style.CODE_VIEW.apply(self)
 
-    def showEvent(self, event: QShowEvent):
-        super().showEvent(event)
+    def __check_gen_setting(self) -> bool:
+        if not os.path.isdir(PROJECT.toolchainsPath):
+            return False
+        elif not os.path.isdir(PROJECT.halPath):
+            return False
+        return True
+
+    def flush(self):
+        self.treeWidget_file.clear()
+        self.plainTextEdit.clear()
+
+        if not self.__check_gen_setting():
+            dialog = GenCodeDialog(self, False)
+            if not dialog.exec():
+                return
+
         coder = Coder()
         self.m_codes = coder.dump(PROJECT.halPath)
         tree = Utils.paths2Dict(self.m_codes)
-
-        self.treeWidget_file.clear()
-        self.plainTextEdit.clear()
 
         def traverse_tree(tree: dict, top_item: QTreeWidgetItem, path: str):
             for key, value in tree.items():

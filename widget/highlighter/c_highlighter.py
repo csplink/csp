@@ -72,36 +72,35 @@ class CHighlighter(BaseHighlighter):
 
     def highlightBlock(self, text: str):
         for expression, nth, format in self.rules:
-            index = expression.indexIn(text, 0)
-            while index >= 0:
-                index = expression.pos(nth)
-                length = len(expression.cap(nth))
-                self.setFormat(index, length, format)
-                index = expression.indexIn(text, index + length)
+            match_iterator = expression.globalMatch(text)
+            while match_iterator.hasNext():
+                match = match_iterator.next()
+                self.setFormat(match.capturedStart(), match.capturedLength(), format)
 
         self.setCurrentBlockState(0)
 
         self.match_multiline(text, *self.multiline_comment)
 
-    def match_multiline(self, text, delimiter_start, delimiter_end, in_state, style):
-        if self.previousBlockState() == in_state:
-            start = 0
-            add = 0
-        else:
-            start = delimiter_start.indexIn(text)
-            add = delimiter_start.matchedLength()
+    def match_multiline(self, text: str, delimiter_start: QRegularExpression, delimiter_end: QRegularExpression,
+                        in_state, style):
+        start_index = 0
+        if self.previousBlockState() != 1:
+            start_index = delimiter_start.match(text, 0).capturedStart()
 
-        while start >= 0:
-            end = delimiter_end.indexIn(text, start + add)
-            if end >= add:
-                length = end - start + add + delimiter_end.matchedLength()
-                self.setCurrentBlockState(0)
+        while start_index >= 0:
+            match = delimiter_end.match(text, start_index)
+            captured_length = match.capturedLength()
+            end_index = match.capturedStart()
+            length = 0
+            if end_index == -1:
+                self.setCurrentBlockState(1)
+                length = len(text) - start_index
             else:
-                self.setCurrentBlockState(in_state)
-                length = len(text) - start + add
+                self.setCurrentBlockState(0)
+                length = end_index - start_index + captured_length
 
-            self.setFormat(start, length, style)
-            start = delimiter_start.indexIn(text, start + length)
+            self.setFormat(start_index, length, style)
+            start_index = delimiter_start.match(text, start_index + length).capturedStart()
 
         if self.currentBlockState() == in_state:
             return True

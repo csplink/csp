@@ -125,11 +125,12 @@ class MainView(MSFluentWindow):
         self.__initNavigation()
         self.__initWindow()
 
-        self.showMaximized()
+        # self.showMaximized()
 
     def __initNavigation(self):
         self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)
-        self.addSubInterface(self.code_view, Icon.CODE, 'Code', Icon.CODE)
+        code_btn = self.addSubInterface(self.code_view, Icon.CODE, 'Code', Icon.CODE)
+        code_btn.clicked.connect(lambda: self.code_view.flush())
 
         self.navigationInterface.addItem(
             routeKey='Generate',

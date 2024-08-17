@@ -30,7 +30,7 @@ import os, sys
 
 from common.project import PROJECT
 
-from .settings import VERSION, ROOT_DIR
+from .settings import VERSION
 
 
 class Coder():
@@ -205,7 +205,7 @@ class Coder():
         }
 
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(
-            [f'{ROOT_DIR}/resource/templates', f'{packageDir}/tools/coder/templates']),
+            [f'{os.getcwd()}/resource/templates', f'{packageDir}/tools/coder/templates']),
                                  line_comment_prefix="//")
 
         filter_files = glob.glob(f"{packageDir}/tools/coder/filters/*.py")

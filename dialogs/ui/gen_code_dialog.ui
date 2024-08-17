@@ -238,6 +238,16 @@
         </layout>
        </widget>
       </item>
+      <item>
+       <widget class="CaptionLabel" name="label_toolchains_folder_invalid">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 0, 0);</string>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -362,7 +372,7 @@
          <widget class="ComboBox" name="comboBox_halVersion"/>
         </item>
         <item row="1" column="0">
-         <widget class="BodyLabel" name="label_packagePath">
+         <widget class="BodyLabel" name="label_halPath">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -399,6 +409,16 @@
          </layout>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="CaptionLabel" name="label_hal_folder_invalid">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 0, 0);</string>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -458,6 +478,11 @@
   <customwidget>
    <class>CheckBox</class>
    <extends>QCheckBox</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CaptionLabel</class>
+   <extends>QLabel</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

@@ -336,6 +336,10 @@ class Project(QObject):
     def halPath(self) -> str:
         return PACKAGE.path("hal", self.summary.hal, self.halVersion)
 
+    @property
+    def toolchainsPath(self) -> str:
+        return PACKAGE.path("toolchains", self.toolchains, self.toolchainsVersion)
+
     def load(self, path: str):
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
