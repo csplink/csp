@@ -202,7 +202,7 @@ class Project(QObject):
 
     @property
     def defaultHeapSize(self) -> str:
-        return self.m_data.get("gen", {}).get("linker", {}).get("linker", "")
+        return self.m_data.get("gen", {}).get("linker", {}).get("defaultHeapSize", "")
 
     @defaultHeapSize.setter
     def defaultHeapSize(self, defaultHeapSize: str):
@@ -211,7 +211,7 @@ class Project(QObject):
 
     @property
     def defaultStackSize(self) -> str:
-        return self.m_data.get("gen", {}).get("linker", {}).get("linker", "")
+        return self.m_data.get("gen", {}).get("linker", {}).get("defaultStackSize", "")
 
     @defaultStackSize.setter
     def defaultStackSize(self, defaultStackSize: str):

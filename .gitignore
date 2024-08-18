@@ -1,7 +1,7 @@
-#vscode
+# vscode
 .vscode
 
-#clion
+# clion
 .idea
 
 # python
@@ -12,7 +12,10 @@ csplink.config
 repository
 repository.index
 
-#other
+# qt
+*.qm
+
+# other
 *.bak
 build
 build-*

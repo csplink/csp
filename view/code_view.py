@@ -71,6 +71,16 @@ class CodeView(Ui_CodeView, QWidget):
             return False
         elif not os.path.isdir(PROJECT.halPath):
             return False
+        elif PROJECT.builder == "":
+            return False
+        elif PROJECT.builderVersion == "":
+            return False
+
+        if (not Utils.isHex(PROJECT.defaultHeapSize)) and Utils.isHex(PROJECT.summary.defaultHeapSize):
+            return False
+        elif not Utils.isHex(PROJECT.defaultStackSize) and Utils.isHex(PROJECT.summary.defaultStackSize):
+            return False
+
         return True
 
     def flush(self):

@@ -61,7 +61,7 @@ def main():
     translator = FluentTranslator(locale, app)
     app.installTranslator(translator)
 
-    files = glob.glob(f"resource/i18n/qm/*.{locale.name()}.qm")
+    files = glob.glob(f"resource/i18n/*.{locale.name()}.qm")
     for file in files:
         translator = QTranslator(app)
         translator.load(file)

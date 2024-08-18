@@ -55,31 +55,31 @@ class CustomTitleBar(MSFluentTitleBar):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.__initMenu()
+        self.__init_menu()
 
         # add buttons
-        self.layout_toolButton = QHBoxLayout()
+        self.layout_btn = QHBoxLayout()
 
-        self.button_file = TransparentPushButton(self.tr("File"), self)
-        self.button_file.clicked.connect(lambda: self.m_menus[MenuIndex.FILE_MENU.value].exec(
-            self.button_file.mapToGlobal(QPoint(0, self.button_file.height())), ani=True))
+        self.btn_file = TransparentPushButton(self.tr("File"), self)
+        self.btn_file.clicked.connect(lambda: self.m_menus[MenuIndex.FILE_MENU.value].exec(
+            self.btn_file.mapToGlobal(QPoint(0, self.btn_file.height())), ani=True))
 
-        self.button_project = TransparentPushButton(self.tr("Project"), self)
-        self.button_project.clicked.connect(lambda: self.m_menus[MenuIndex.PROJECT_MENU.value].exec(
-            self.button_project.mapToGlobal(QPoint(0, self.button_project.height())), ani=True))
+        self.btn_project = TransparentPushButton(self.tr("Project"), self)
+        self.btn_project.clicked.connect(lambda: self.m_menus[MenuIndex.PROJECT_MENU.value].exec(
+            self.btn_project.mapToGlobal(QPoint(0, self.btn_project.height())), ani=True))
 
-        self.layout_toolButton.setContentsMargins(20, 0, 20, 0)
-        self.layout_toolButton.setSpacing(15)
-        self.layout_toolButton.addWidget(self.button_file)
-        self.layout_toolButton.addWidget(self.button_project)
-        self.hBoxLayout.insertLayout(4, self.layout_toolButton)
+        self.layout_btn.setContentsMargins(20, 0, 20, 0)
+        self.layout_btn.setSpacing(15)
+        self.layout_btn.addWidget(self.btn_file)
+        self.layout_btn.addWidget(self.btn_project)
+        self.hBoxLayout.insertLayout(4, self.layout_btn)
         self.hBoxLayout.setStretch(6, 0)
 
-    def __initMenu(self):
-        self.m_menus.append(self.__createFileMenu())
-        self.m_menus.append(self.__createProjectMenu())
+    def __init_menu(self):
+        self.m_menus.append(self.__create_file_menu())
+        self.m_menus.append(self.__create_project_menu())
 
-    def __createFileMenu(self) -> RoundMenu:
+    def __create_file_menu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
         action = Action(self.tr('New'))
@@ -93,7 +93,7 @@ class CustomTitleBar(MSFluentTitleBar):
 
         return menu
 
-    def __createProjectMenu(self) -> RoundMenu:
+    def __create_project_menu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
         self.m_action_generate = Action(self.tr('Generate'))
@@ -122,12 +122,12 @@ class MainView(MSFluentWindow):
 
         title_bar.m_action_generate.triggered.connect(lambda: self.__generateCodeClick())
 
-        self.__initNavigation()
-        self.__initWindow()
+        self.__init_navigation()
+        self.__init_window()
 
         # self.showMaximized()
 
-    def __initNavigation(self):
+    def __init_navigation(self):
         self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)
         code_btn = self.addSubInterface(self.code_view, Icon.CODE, 'Code', Icon.CODE)
         code_btn.clicked.connect(lambda: self.code_view.flush())
@@ -153,7 +153,7 @@ class MainView(MSFluentWindow):
 
         self.navigationInterface.setCurrentItem(self.chip_view.objectName())
 
-    def __initWindow(self):
+    def __init_window(self):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon('resource/images/logo.svg'))
         self.setWindowTitle('CSPLink')

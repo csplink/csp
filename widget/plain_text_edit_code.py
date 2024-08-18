@@ -94,9 +94,7 @@ class PlainTextEditCode(PlainTextEdit):
     def lineNumberAreaPaintEvent(self, event):
         painter = QPainter(self.m_lineNumberArea)
         painter.setPen(QColor("#8d96a0" if isDarkTheme() else "#929292"))
-        font = painter.font()
-        font.setBold(True)
-        painter.setFont(font)
+        painter.font().setBold(True)
 
         block = self.firstVisibleBlock()
         blockNumber = block.blockNumber() + 1

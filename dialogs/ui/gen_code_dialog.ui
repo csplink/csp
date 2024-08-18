@@ -53,14 +53,14 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="CheckBox" name="checkBox_useToolchainsPackage">
+       <widget class="CheckBox" name="checkbox_use_toolchains_package">
         <property name="text">
-         <string>Use toolchains package</string>
+         <string>Use Toolchains Package</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget_toolchainsPackage" native="true">
+       <widget class="QWidget" name="widget_toolchains_package" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <property name="spacing">
           <number>9</number>
@@ -116,7 +116,7 @@
               </widget>
              </item>
              <item>
-              <widget class="ComboBox" name="comboBox_builder"/>
+              <widget class="ComboBox" name="combobox_builder"/>
              </item>
             </layout>
            </item>
@@ -139,7 +139,7 @@
               </widget>
              </item>
              <item>
-              <widget class="ComboBox" name="comboBox_builderVersion"/>
+              <widget class="ComboBox" name="combobox_builder_version"/>
              </item>
             </layout>
            </item>
@@ -162,7 +162,7 @@
               </widget>
              </item>
              <item>
-              <widget class="ComboBox" name="comboBox_toolchains"/>
+              <widget class="ComboBox" name="combobox_toolchains"/>
              </item>
             </layout>
            </item>
@@ -185,7 +185,7 @@
               </widget>
              </item>
              <item>
-              <widget class="ComboBox" name="comboBox_toolchainsVersion"/>
+              <widget class="ComboBox" name="combobox_toolchains_version"/>
              </item>
             </layout>
            </item>
@@ -215,14 +215,14 @@
               <number>20</number>
              </property>
              <item>
-              <widget class="LineEdit" name="lineEdit_toolchainsPath">
+              <widget class="LineEdit" name="lineedit_toolchains_path">
                <property name="readOnly">
                 <bool>true</bool>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="ToolButton" name="toolButton_toolchainsManager">
+              <widget class="ToolButton" name="btn_toolchains_manager">
                <property name="toolTip">
                 <string>Package Manager</string>
                </property>
@@ -244,7 +244,7 @@
          <string notr="true">color: rgb(255, 0, 0);</string>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>The Path is not directory</string>
         </property>
        </widget>
       </item>
@@ -280,7 +280,7 @@
        <number>9</number>
       </property>
       <item row="0" column="1">
-       <widget class="LineEdit" name="lineEdit_minHeapSize"/>
+       <widget class="LineEdit" name="lineedit_min_heap_size"/>
       </item>
       <item row="1" column="0">
        <widget class="BodyLabel" name="label_minStackSize">
@@ -309,7 +309,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="LineEdit" name="lineEdit_minStackSize"/>
+       <widget class="LineEdit" name="lineedit_min_stack_size"/>
       </item>
      </layout>
     </widget>
@@ -339,7 +339,7 @@
          <number>9</number>
         </property>
         <item>
-         <widget class="CheckBox" name="checkBox_isCopyLibrary">
+         <widget class="CheckBox" name="checkbox_is_copy_library">
           <property name="text">
            <string>Copy the library files to the project directory</string>
           </property>
@@ -369,7 +369,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="ComboBox" name="comboBox_halVersion"/>
+         <widget class="ComboBox" name="combobox_hal_version"/>
         </item>
         <item row="1" column="0">
          <widget class="BodyLabel" name="label_halPath">
@@ -390,14 +390,14 @@
            <number>20</number>
           </property>
           <item>
-           <widget class="LineEdit" name="lineEdit_halPath">
+           <widget class="LineEdit" name="lineedit_hal_path">
             <property name="readOnly">
              <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="ToolButton" name="toolButton_packageManager">
+           <widget class="ToolButton" name="btn_package_manager">
             <property name="toolTip">
              <string>Package Manager</string>
             </property>
@@ -416,7 +416,7 @@
          <string notr="true">color: rgb(255, 0, 0);</string>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>The Path is not directory</string>
         </property>
        </widget>
       </item>

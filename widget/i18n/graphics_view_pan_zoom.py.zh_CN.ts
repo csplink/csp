@@ -4,22 +4,22 @@
 <context>
     <name>LabelMessageBox</name>
     <message>
-        <location filename="../../../widget/graphics_view_pan_zoom.py" line="44"/>
+        <location filename="../graphics_view_pan_zoom.py" line="45"/>
         <source>Set label</source>
         <translation>设置标签</translation>
     </message>
     <message>
-        <location filename="../../../widget/graphics_view_pan_zoom.py" line="48"/>
+        <location filename="../graphics_view_pan_zoom.py" line="49"/>
         <source>Enter the user label</source>
         <translation>输入用户标签</translation>
     </message>
     <message>
-        <location filename="../../../widget/graphics_view_pan_zoom.py" line="55"/>
+        <location filename="../graphics_view_pan_zoom.py" line="56"/>
         <source>OK</source>
         <translation>确认</translation>
     </message>
     <message>
-        <location filename="../../../widget/graphics_view_pan_zoom.py" line="56"/>
+        <location filename="../graphics_view_pan_zoom.py" line="57"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

@@ -32,7 +32,7 @@ from PySide6.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurf
 from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
 
-from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit)
+from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
 
 from .graphics_item_pin import GraphicsItemPin
 from common import PROJECT
@@ -161,7 +161,7 @@ class GraphicsViewPanZoom(QGraphicsView):
             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
                 menu = item.data(GraphicsItemPin.Data.MENU_KEY.value)
                 if menu != None:
-                    menu.exec(event.globalPos())
+                    menu.exec(event.globalPos(), False, MenuAnimationType.FADE_IN_DROP_DOWN)
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
