@@ -24,36 +24,44 @@
 # 2024-08-18     xqyjlj       initial version
 #
 
-import subprocess, sys, os, glob, re
+import subprocess, sys, os, glob, re, platform
 
 languages = ['zh_CN']
 
 root_dir = os.path.join(os.path.dirname(__file__), "..")
-lupdate_exe = os.path.join(os.path.dirname(sys.executable), "Lib", "site-packages", "PySide6", "lupdate")
 
-py_files = glob.glob(f"{root_dir}/**/*.py", recursive=True)
-ui_files = glob.glob(f"{root_dir}/**/*.ui", recursive=True)
-src_files = []
+if platform.system() == 'Windows':
+    lupdate_exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate.exe", recursive=True)
+else:
+    lupdate_exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate", recursive=True)
 
-for file in py_files:
-    with open(file, "r", encoding="utf-8") as f:
-        text = f.read()
-        pattern = r'tr\((["\'])(.*?)\1\)'
-        if re.search(pattern, text):
-            src_files.append(file)
+if len(lupdate_exes) > 0:
+    lupdate_exe = lupdate_exes[0]
+    py_files = glob.glob(f"{root_dir}/**/*.py", recursive=True)
+    ui_files = glob.glob(f"{root_dir}/**/*.ui", recursive=True)
+    src_files = []
 
-for file in ui_files:
-    src_files.append(file)
+    for file in py_files:
+        with open(file, "r", encoding="utf-8") as f:
+            text = f.read()
+            pattern = r'tr\((["\'])(.*?)\1\)'
+            if re.search(pattern, text):
+                src_files.append(file)
 
-for lang in languages:
-    for file in src_files:
-        name = os.path.basename(file)
-        if name.endswith(".ui"):
-            folder = os.path.dirname(os.path.dirname(file))
-        else:
-            folder = os.path.dirname(file)
-        folder = os.path.join(folder, "i18n")
-        if not os.path.isdir(folder):
-            os.makedirs(folder)
-        ts_file = os.path.join(folder, f"{os.path.basename(file)}.{lang}.ts")
-        subprocess.call([lupdate_exe, file, '-ts', ts_file])
+    for file in ui_files:
+        src_files.append(file)
+
+    for lang in languages:
+        for file in src_files:
+            name = os.path.basename(file)
+            if name.endswith(".ui"):
+                folder = os.path.dirname(os.path.dirname(file))
+            else:
+                folder = os.path.dirname(file)
+            folder = os.path.join(folder, "i18n")
+            if not os.path.isdir(folder):
+                os.makedirs(folder)
+            ts_file = os.path.join(folder, f"{os.path.basename(file)}.{lang}.ts")
+            subprocess.call([lupdate_exe, file, '-ts', ts_file])
+else:
+    print("can not find lupdate")

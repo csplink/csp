@@ -24,14 +24,24 @@
 # 2024-08-18     xqyjlj       initial version
 #
 
-import subprocess, sys, os, glob
+import subprocess, sys, os, glob, platform
 
 languages = ['zh_CN']
 
 root_dir = os.path.join(os.path.dirname(__file__), "..")
-lrelease_exe = os.path.join(os.path.dirname(sys.executable), "Lib", "site-packages", "PySide6", "lrelease")
 
-for lang in languages:
-    ts_files = glob.glob(f"{root_dir}/**/*.{lang}.ts", recursive=True)
-    qm_file = os.path.join(root_dir, "resource", "i18n", f"csplink.{lang}.qm")
-    subprocess.call([lrelease_exe] + ts_files + ['-qm', qm_file])
+if platform.system() == 'Windows':
+    lrelease_exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease.exe", recursive=True)
+else:
+    lrelease_exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease", recursive=True)
+
+if len(lrelease_exes) > 0:
+    lrelease_exe = lrelease_exes[0]
+    for lang in languages:
+        ts_files = glob.glob(f"{root_dir}/**/*.{lang}.ts", recursive=True)
+        qm_file = os.path.join(root_dir, "resource", "i18n", f"csplink.{lang}.qm")
+        if not os.path.isdir(os.path.dirname(qm_file)):
+            os.makedirs(os.path.dirname(qm_file))
+        subprocess.call([lrelease_exe] + ts_files + ['-qm', qm_file])
+else:
+    print("can not find lrelease")
