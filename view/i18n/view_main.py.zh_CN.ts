@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>CustomTitleBar</name>
+    <name>custom_title_bar</name>
     <message>
         <location filename="../view_main.py" line="63"/>
         <source>File</source>

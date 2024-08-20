@@ -65,7 +65,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="GraphicsViewPanZoom" name="graphicsView">
+<widget class="GraphicsViewPanZoom" name="graphics_view">
           <property name="frameShape">
            <enum>QFrame::NoFrame</enum>
           </property>
@@ -91,7 +91,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="ToolButton" name="toolButton_zoomIn">
+<widget class="ToolButton" name="btn_zoom_in">
              <property name="cursor">
               <cursorShape>ArrowCursor</cursorShape>
              </property>
@@ -101,14 +101,14 @@
             </widget>
            </item>
            <item>
-            <widget class="ToolButton" name="toolButton_zoomReset">
+<widget class="ToolButton" name="btn_zoom_reset">
              <property name="text">
               <string/>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="ToolButton" name="toolButton_zoomOut">
+<widget class="ToolButton" name="btn_zoom_out">
              <property name="text">
               <string/>
              </property>

@@ -43,9 +43,9 @@ class view_chip(Ui_view_chip, QWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.toolButton_zoomIn.setIcon(Icon.ZOOM_IN)
-        self.toolButton_zoomReset.setIcon(Icon.REFRESH)
-        self.toolButton_zoomOut.setIcon(Icon.ZOOM_OUT)
+        self.btn_zoom_in.setIcon(Icon.ZOOM_IN)
+        self.btn_zoom_reset.setIcon(Icon.REFRESH)
+        self.btn_zoom_out.setIcon(Icon.ZOOM_OUT)
 
         self.splitter_1.setSizes([100, 300])
         self.splitter_1.setCollapsible(0, False)
@@ -54,11 +54,11 @@ class view_chip(Ui_view_chip, QWidget):
         self.splitter_2.setCollapsible(0, False)
         self.splitter_2.setCollapsible(1, False)
 
-        self.toolButton_zoomIn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
-        self.toolButton_zoomReset.pressed.connect(lambda: self.graphicsView.resize())
-        self.toolButton_zoomOut.pressed.connect(lambda: self.graphicsView.zoomOut(6))
+        self.btn_zoom_in.pressed.connect(lambda: self.graphics_view.zoomIn(6))
+        self.btn_zoom_reset.pressed.connect(lambda: self.graphics_view.resize())
+        self.btn_zoom_out.pressed.connect(lambda: self.graphics_view.zoomOut(6))
 
-        scene = QGraphicsScene(self.graphicsView)
+        scene = QGraphicsScene(self.graphics_view)
         scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
 
         if PROJECT.summary.package != "unknown":
@@ -70,7 +70,7 @@ class view_chip(Ui_view_chip, QWidget):
             if items != None:
                 for item in items:
                     scene.addItem(item)
-        self.graphicsView.setScene(scene)
-        self.graphicsView.resize()
+        self.graphics_view.setScene(scene)
+        self.graphics_view.resize()
 
         Style.VIEW_CHIP.apply(self)

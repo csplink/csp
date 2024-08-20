@@ -42,7 +42,7 @@ from common import Icon, Coder, PROJECT
 from dialogs import GenCodeDialog
 
 
-class menu_index(Enum):
+class menu_index_type(Enum):
     FILE_MENU = 0
     PROJECT_MENU = 1
 
@@ -61,11 +61,11 @@ class custom_title_bar(MSFluentTitleBar):
         self.layout_btn = QHBoxLayout()
 
         self.btn_file = TransparentPushButton(self.tr("File"), self)
-        self.btn_file.clicked.connect(lambda: self.m_menus[menu_index.FILE_MENU.value].exec(
+        self.btn_file.clicked.connect(lambda: self.m_menus[menu_index_type.FILE_MENU.value].exec(
             self.btn_file.mapToGlobal(QPoint(0, self.btn_file.height())), ani=True))
 
         self.btn_project = TransparentPushButton(self.tr("Project"), self)
-        self.btn_project.clicked.connect(lambda: self.m_menus[menu_index.PROJECT_MENU.value].exec(
+        self.btn_project.clicked.connect(lambda: self.m_menus[menu_index_type.PROJECT_MENU.value].exec(
             self.btn_project.mapToGlobal(QPoint(0, self.btn_project.height())), ani=True))
 
         self.layout_btn.setContentsMargins(20, 0, 20, 0)

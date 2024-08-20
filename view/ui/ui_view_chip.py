@@ -76,11 +76,11 @@ class Ui_view_chip(object):
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame_2)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.graphicsView = GraphicsViewPanZoom(self.frame_2)
-        self.graphicsView.setObjectName(u"graphicsView")
-        self.graphicsView.setFrameShape(QFrame.NoFrame)
+        self.graphics_view = GraphicsViewPanZoom(self.frame_2)
+        self.graphics_view.setObjectName(u"graphics_view")
+        self.graphics_view.setFrameShape(QFrame.NoFrame)
 
-        self.verticalLayout_2.addWidget(self.graphicsView)
+        self.verticalLayout_2.addWidget(self.graphics_view)
 
         self.widget_2 = QWidget(self.frame_2)
         self.widget_2.setObjectName(u"widget_2")
@@ -91,29 +91,27 @@ class Ui_view_chip(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.toolButton_zoomIn = ToolButton(self.widget_2)
-        self.toolButton_zoomIn.setObjectName(u"toolButton_zoomIn")
-        self.toolButton_zoomIn.setCursor(QCursor(Qt.ArrowCursor))
+        self.btn_zoom_in = ToolButton(self.widget_2)
+        self.btn_zoom_in.setObjectName(u"btn_zoom_in")
+        self.btn_zoom_in.setCursor(QCursor(Qt.ArrowCursor))
 
-        self.horizontalLayout.addWidget(self.toolButton_zoomIn)
+        self.horizontalLayout.addWidget(self.btn_zoom_in)
 
-        self.toolButton_zoomReset = ToolButton(self.widget_2)
-        self.toolButton_zoomReset.setObjectName(u"toolButton_zoomReset")
+        self.btn_zoom_reset = ToolButton(self.widget_2)
+        self.btn_zoom_reset.setObjectName(u"btn_zoom_reset")
 
-        self.horizontalLayout.addWidget(self.toolButton_zoomReset)
+        self.horizontalLayout.addWidget(self.btn_zoom_reset)
 
-        self.toolButton_zoomOut = ToolButton(self.widget_2)
-        self.toolButton_zoomOut.setObjectName(u"toolButton_zoomOut")
+        self.btn_zoom_out = ToolButton(self.widget_2)
+        self.btn_zoom_out.setObjectName(u"btn_zoom_out")
 
-        self.horizontalLayout.addWidget(self.toolButton_zoomOut)
+        self.horizontalLayout.addWidget(self.btn_zoom_out)
 
         self.horizontalSpacer_2 = QSpacerItem(462, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
-
         self.verticalLayout_2.addWidget(self.widget_2)
-
 
         self.horizontalLayout_3.addWidget(self.frame_2)
 
@@ -122,16 +120,16 @@ class Ui_view_chip(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
-
         self.retranslateUi(view_chip)
 
         QMetaObject.connectSlotsByName(view_chip)
+
     # setupUi
 
     def retranslateUi(self, view_chip):
         view_chip.setWindowTitle(QCoreApplication.translate("view_chip", u"view_chip", None))
-        self.toolButton_zoomIn.setText("")
-        self.toolButton_zoomReset.setText("")
-        self.toolButton_zoomOut.setText("")
-    # retranslateUi
+        self.btn_zoom_in.setText("")
+        self.btn_zoom_reset.setText("")
+        self.btn_zoom_out.setText("")
 
+    # retranslateUi
