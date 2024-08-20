@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        chip_view.py
+# @file        view_chip.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -32,12 +32,12 @@ from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
 
 from qfluentwidgets import (isDarkTheme)
 
-from .ui.Ui_chip_view import Ui_ChipView
+from .ui.ui_view_chip import Ui_view_chip
 from common import Style, Icon, PROJECT, SETTINGS
 from widget import LQFP
 
 
-class ChipView(Ui_ChipView, QWidget):
+class view_chip(Ui_view_chip, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -73,4 +73,4 @@ class ChipView(Ui_ChipView, QWidget):
         self.graphicsView.setScene(scene)
         self.graphicsView.resize()
 
-        Style.CHIP_VIEW.apply(self)
+        Style.VIEW_CHIP.apply(self)

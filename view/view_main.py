@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        main_view.py
+# @file        view_main.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -35,19 +35,19 @@ from PySide6.QtWidgets import QHBoxLayout, QApplication
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton)
 
-from .chip_view import ChipView
-from .setting_view import SettingView
-from .code_view import CodeView
+from .view_chip import view_chip
+from .view_setting import view_setting
+from .view_code import view_code
 from common import Icon, Coder, PROJECT
 from dialogs import GenCodeDialog
 
 
-class MenuIndex(Enum):
+class menu_index(Enum):
     FILE_MENU = 0
     PROJECT_MENU = 1
 
 
-class CustomTitleBar(MSFluentTitleBar):
+class custom_title_bar(MSFluentTitleBar):
     """ Title bar with icon and title """
 
     m_menus = []
@@ -61,11 +61,11 @@ class CustomTitleBar(MSFluentTitleBar):
         self.layout_btn = QHBoxLayout()
 
         self.btn_file = TransparentPushButton(self.tr("File"), self)
-        self.btn_file.clicked.connect(lambda: self.m_menus[MenuIndex.FILE_MENU.value].exec(
+        self.btn_file.clicked.connect(lambda: self.m_menus[menu_index.FILE_MENU.value].exec(
             self.btn_file.mapToGlobal(QPoint(0, self.btn_file.height())), ani=True))
 
         self.btn_project = TransparentPushButton(self.tr("Project"), self)
-        self.btn_project.clicked.connect(lambda: self.m_menus[MenuIndex.PROJECT_MENU.value].exec(
+        self.btn_project.clicked.connect(lambda: self.m_menus[menu_index.PROJECT_MENU.value].exec(
             self.btn_project.mapToGlobal(QPoint(0, self.btn_project.height())), ani=True))
 
         self.layout_btn.setContentsMargins(20, 0, 20, 0)
@@ -106,19 +106,19 @@ class CustomTitleBar(MSFluentTitleBar):
         dialog.exec()
 
 
-class MainView(MSFluentWindow):
+class view_main(MSFluentWindow):
 
     def __init__(self):
         super().__init__()
 
-        title_bar = CustomTitleBar(self)
+        title_bar = custom_title_bar(self)
 
         self.updateFrameless()
         self.setMicaEffectEnabled(False)
         self.setTitleBar(title_bar)
 
-        self.chip_view = ChipView(self)
-        self.code_view = CodeView(self)
+        self.view_chip = view_chip(self)
+        self.view_code = view_code(self)
 
         title_bar.m_action_generate.triggered.connect(lambda: self.__generateCodeClick())
 
@@ -128,9 +128,9 @@ class MainView(MSFluentWindow):
         # self.showMaximized()
 
     def __init_navigation(self):
-        self.addSubInterface(self.chip_view, Icon.CPU, 'Chip', Icon.CPU)
-        code_btn = self.addSubInterface(self.code_view, Icon.CODE, 'Code', Icon.CODE)
-        code_btn.clicked.connect(lambda: self.code_view.flush())
+        self.addSubInterface(self.view_chip, Icon.CPU, 'Chip', Icon.CPU)
+        code_btn = self.addSubInterface(self.view_code, Icon.CODE, 'Code', Icon.CODE)
+        code_btn.clicked.connect(lambda: self.view_code.flush())
 
         self.navigationInterface.addItem(
             routeKey='Generate',
@@ -148,10 +148,10 @@ class MainView(MSFluentWindow):
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
-        self.addSubInterface(SettingView(self), Icon.SETTING, self.tr('Settings'), Icon.SETTING,
+        self.addSubInterface(view_setting(self), Icon.SETTING, self.tr('Settings'), Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.chip_view.objectName())
+        self.navigationInterface.setCurrentItem(self.view_chip.objectName())
 
     def __init_window(self):
         self.resize(1100, 750)

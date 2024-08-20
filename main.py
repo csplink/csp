@@ -39,7 +39,7 @@ from qfluentwidgets import FluentTranslator
 sys.stdout = stdout
 
 from common import SETTINGS, PROJECT
-from view import MainView
+from view import view_main
 
 script_dir = os.path.dirname(__file__)
 sys.path.append(f"{script_dir}/plugins")
@@ -74,7 +74,7 @@ def main():
             QFontDatabase.addApplicationFont(file)
 
     if PROJECT.path != "":
-        view = MainView()
+        view = view_main()
         view.updateFrameless()
         view.show()
     else:

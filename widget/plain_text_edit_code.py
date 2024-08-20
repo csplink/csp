@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        plain_text_edit_code_view.py
+# @file        plain_text_edit_view_code.py
 #
 # Change Logs:
 # Date           Author       Notes

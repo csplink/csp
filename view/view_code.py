@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        code_view.py
+# @file        view_code.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -33,13 +33,13 @@ from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, Too
                             TabCloseButtonDisplayMode, BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget,
                             FluentIcon)
 
-from .ui.Ui_code_view import Ui_CodeView
+from .ui.ui_view_code import Ui_view_code
 from common import Style, Icon, Coder, Utils, PROJECT, PACKAGE
 from widget import CHighlighter
 from dialogs import GenCodeDialog
 
 
-class CodeView(Ui_CodeView, QWidget):
+class view_code(Ui_view_code, QWidget):
     """ Tab interface """
 
     m_codes = {}
@@ -64,7 +64,7 @@ class CodeView(Ui_CodeView, QWidget):
 
         self.verticalLayout_cardWidget_file.insertLayout(0, layout)
 
-        Style.CODE_VIEW.apply(self)
+        Style.view_code.apply(self)
 
     def __check_gen_setting(self) -> bool:
         if not os.path.isdir(PROJECT.toolchainsPath):

@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        setting_view.py
+# @file        view_setting.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -37,7 +37,7 @@ from qfluentwidgets import InfoBar
 from common import SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style
 
 
-class SettingView(ScrollArea):
+class view_setting(ScrollArea):
     """ Setting interface """
 
     def __init__(self, parent=None):
@@ -114,12 +114,12 @@ class SettingView(ScrollArea):
         self.setViewportMargins(0, 80, 0, 20)
         self.setWidget(self.widget_scroll)
         self.setWidgetResizable(True)
-        self.setObjectName('SettingView')
+        self.setObjectName('view_setting')
 
         # initialize style sheet
         self.widget_scroll.setObjectName('widget_scroll')
         self.label_setting.setObjectName('label_setting')
-        Style.SETTING_VIEW.apply(self)
+        Style.view_setting.apply(self)
 
         # self.micaCard.setEnabled(isWin11())
 

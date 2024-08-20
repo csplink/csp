@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'code_view.ui'
+## Form generated from reading UI file 'view_code.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -22,14 +22,14 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
 from qfluentwidgets import (SimpleCardWidget, TreeWidget)
 from widget.plain_text_edit_code import PlainTextEditCode
 
-class Ui_CodeView(object):
-    def setupUi(self, CodeView):
-        if not CodeView.objectName():
-            CodeView.setObjectName(u"CodeView")
-        CodeView.resize(790, 567)
-        self.horizontalLayout = QHBoxLayout(CodeView)
+class Ui_view_code(object):
+    def setupUi(self, view_code):
+        if not view_code.objectName():
+            view_code.setObjectName(u"view_code")
+        view_code.resize(790, 567)
+        self.horizontalLayout = QHBoxLayout(view_code)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.cardWidget_file = SimpleCardWidget(CodeView)
+        self.cardWidget_file = SimpleCardWidget(view_code)
         self.cardWidget_file.setObjectName(u"cardWidget_file")
         self.cardWidget_file.setFrameShape(QFrame.StyledPanel)
         self.cardWidget_file.setFrameShadow(QFrame.Raised)
@@ -46,7 +46,7 @@ class Ui_CodeView(object):
 
         self.horizontalLayout.addWidget(self.cardWidget_file)
 
-        self.frame_2 = SimpleCardWidget(CodeView)
+        self.frame_2 = SimpleCardWidget(view_code)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
@@ -80,12 +80,12 @@ class Ui_CodeView(object):
         self.horizontalLayout.addWidget(self.frame_2)
 
 
-        self.retranslateUi(CodeView)
+        self.retranslateUi(view_code)
 
-        QMetaObject.connectSlotsByName(CodeView)
+        QMetaObject.connectSlotsByName(view_code)
     # setupUi
 
-    def retranslateUi(self, CodeView):
-        CodeView.setWindowTitle(QCoreApplication.translate("CodeView", u"CodeView", None))
+    def retranslateUi(self, view_code):
+        view_code.setWindowTitle(QCoreApplication.translate("view_code", u"view_code", None))
     # retranslateUi
 

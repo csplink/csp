@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'chip_view.ui'
+## Form generated from reading UI file 'view_chip.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -24,16 +24,16 @@ from widget.grid_mode import GridMode
 from widget.grid_property_ip import GridPropertyIp
 from widget.tree_module import TreeModule
 
-class Ui_ChipView(object):
-    def setupUi(self, ChipView):
-        if not ChipView.objectName():
-            ChipView.setObjectName(u"ChipView")
-        ChipView.resize(1219, 967)
-        self.verticalLayout_3 = QVBoxLayout(ChipView)
+class Ui_view_chip(object):
+    def setupUi(self, view_chip):
+        if not view_chip.objectName():
+            view_chip.setObjectName(u"view_chip")
+        view_chip.resize(1219, 967)
+        self.verticalLayout_3 = QVBoxLayout(view_chip)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.splitter_1 = QSplitter(ChipView)
+        self.splitter_1 = QSplitter(view_chip)
         self.splitter_1.setObjectName(u"splitter_1")
         self.splitter_1.setOrientation(Qt.Horizontal)
         self.frame = SimpleCardWidget(self.splitter_1)
@@ -70,7 +70,7 @@ class Ui_ChipView(object):
 
         self.horizontalLayout_3.addWidget(self.splitter_1)
 
-        self.frame_2 = SimpleCardWidget(ChipView)
+        self.frame_2 = SimpleCardWidget(view_chip)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
@@ -123,13 +123,13 @@ class Ui_ChipView(object):
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
 
-        self.retranslateUi(ChipView)
+        self.retranslateUi(view_chip)
 
-        QMetaObject.connectSlotsByName(ChipView)
+        QMetaObject.connectSlotsByName(view_chip)
     # setupUi
 
-    def retranslateUi(self, ChipView):
-        ChipView.setWindowTitle(QCoreApplication.translate("ChipView", u"ChipView", None))
+    def retranslateUi(self, view_chip):
+        view_chip.setWindowTitle(QCoreApplication.translate("view_chip", u"view_chip", None))
         self.toolButton_zoomIn.setText("")
         self.toolButton_zoomReset.setText("")
         self.toolButton_zoomOut.setText("")

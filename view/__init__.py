@@ -24,6 +24,6 @@
 # 2024-07-01     xqyjlj       initial version
 #
 
-from .chip_view import ChipView
-from .main_view import MainView
-from .setting_view import SettingView
+from .view_chip import view_chip
+from .view_main import view_main
+from .view_setting import view_setting
