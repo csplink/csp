@@ -29,52 +29,51 @@ from enum import Enum
 
 from PySide6.QtCore import QLocale
 from qfluentwidgets import (qconfig, QConfig, ConfigItem, OptionsConfigItem, BoolValidator, OptionsValidator,
-                            EnumSerializer, ColorConfigItem, FolderListValidator, Theme, FolderValidator,
-                            ConfigSerializer)
+                            EnumSerializer, ColorConfigItem, Theme, FolderValidator, ConfigSerializer)
 
 
-class Language(Enum):
+class language_type(Enum):
     """ Language enumeration """
 
-    CHINESE_SIMPLIFIED = QLocale(QLocale.Chinese, QLocale.China)
-    CHINESE_TRADITIONAL = QLocale(QLocale.Chinese, QLocale.HongKong)
-    ENGLISH = QLocale(QLocale.English)
+    CHINESE_SIMPLIFIED = QLocale(QLocale.Language.Chinese, QLocale.Country.China)
+    CHINESE_TRADITIONAL = QLocale(QLocale.Language.Chinese, QLocale.Country.HongKong)
+    ENGLISH = QLocale(QLocale.Language.English)
     AUTO = QLocale()
 
 
-class LanguageSerializer(ConfigSerializer):
+class language_serializer(ConfigSerializer):
     """ Language serializer """
 
     def serialize(self, language):
-        return language.value.name() if language != Language.AUTO else "Auto"
+        return language.value.name() if language != language_type.AUTO else "Auto"
 
     def deserialize(self, value: str):
-        return Language(QLocale(value)) if value != "Auto" else Language.AUTO
+        return language_type(QLocale(value)) if value != "Auto" else language_type.AUTO
 
 
 class Settings(QConfig):
     """ Config of application """
 
     # folders
-    databaseFolder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
+    database_folder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
 
     # system
     language = OptionsConfigItem("System",
-                                 "Language",
-                                 Language.AUTO,
-                                 OptionsValidator(Language),
-                                 LanguageSerializer(),
+                                 "language_type",
+                                 language_type.AUTO,
+                                 OptionsValidator(language_type),
+                                 language_serializer(),
                                  restart=True)
-    checkUpdateAtStartUp = ConfigItem("System", "CheckUpdateAtStartUp", True, BoolValidator())
-    dpiScale = OptionsConfigItem("System",
-                                 "DpiScale",
-                                 "Auto",
-                                 OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
-                                 restart=True)
+    check_update_at_startup = ConfigItem("System", "CheckUpdateAtStartup", True, BoolValidator())
+    dpi_scale = OptionsConfigItem("System",
+                                  "DpiScale",
+                                  "Auto",
+                                  OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
+                                  restart=True)
 
     # style
-    themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
-    themeColor = ColorConfigItem("Style", "ThemeColor", '#009faa')
+    theme_mode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
+    theme_color = ColorConfigItem("Style", "ThemeColor", '#009faa')
 
 
 YEAR = 2023

@@ -32,7 +32,7 @@ from functools import reduce
 class Utils():
 
     @staticmethod
-    def paths2Dict(paths: list[str], separator='/'):
+    def paths2dict(paths: list[str], separator='/'):
         path_dict = {}
         for path in paths:
             parts = path.strip().split(separator)
@@ -47,6 +47,6 @@ class Utils():
         return path_dict
 
     @staticmethod
-    def isHex(string: str) -> bool:
+    def ishex(string: str) -> bool:
         pattern = r'^0x[0-9A-Fa-f]+$'
         return bool(re.match(pattern, string))

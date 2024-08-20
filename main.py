@@ -47,9 +47,9 @@ sys.path.append(f"{script_dir}/plugins")
 
 def main():
 
-    if SETTINGS.get(SETTINGS.dpiScale) != "Auto":
+    if SETTINGS.get(SETTINGS.dpi_scale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
-        os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpiScale))
+        os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpi_scale))
 
     app = QApplication(sys.argv)
     app.setAttribute(Qt.ApplicationAttribute.AA_DontCreateNativeWidgetSiblings)

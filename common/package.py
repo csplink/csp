@@ -31,7 +31,7 @@ class Package():
     m_data = {}
 
     def __init__(self) -> None:
-        index = Database.getPackageIndex()
+        index = Database.get_package_index()
         if index is None:
             self.m_data = {}
         else:

@@ -73,7 +73,7 @@ class view_setting(ScrollArea):
         self.u_expand_layout.addWidget(self.u_group_update)
         self.u_expand_layout.addWidget(self.u_group_about)
 
-        Style.view_setting.apply(self)
+        Style.VIEW_SETTING.apply(self)
 
         SETTINGS.appRestartSig.connect(self.__show_restart_tooltip)
 
@@ -81,14 +81,14 @@ class view_setting(ScrollArea):
         group_folders = SettingCardGroup(self.tr("Folders Location"), self.u_widget_scroll)
         self.u_card_database_folder = PushSettingCard(self.tr('Choose folder'), FIF.FOLDER,
                                                       self.tr("Database directory"),
-                                                      SETTINGS.get(SETTINGS.databaseFolder), group_folders)
+                                                      SETTINGS.get(SETTINGS.database_folder), group_folders)
         self.u_card_database_folder.clicked.connect(self.__on__card_database_folder__clicked)
         group_folders.addSettingCard(self.u_card_database_folder)
         return group_folders
 
     def __create_personalization_group(self) -> SettingCardGroup:
         group_style = SettingCardGroup(self.tr('Personalization'), self.u_widget_scroll)
-        self.u_card_theme = OptionsSettingCard(SETTINGS.themeMode,
+        self.u_card_theme = OptionsSettingCard(SETTINGS.theme_mode,
                                                FIF.BRUSH,
                                                self.tr('Application theme'),
                                                self.tr("Change the appearance of your application"),
@@ -96,7 +96,7 @@ class view_setting(ScrollArea):
                                                       self.tr('Dark'),
                                                       self.tr('Use system setting')],
                                                parent=group_style)
-        self.u_card_theme_color = CustomColorSettingCard(SETTINGS.themeColor, FIF.PALETTE, self.tr('Theme color'),
+        self.u_card_theme_color = CustomColorSettingCard(SETTINGS.theme_color, FIF.PALETTE, self.tr('Theme color'),
                                                          self.tr('Change the theme color of you application'),
                                                          group_style)
         self.u_card_theme.optionChanged.connect(lambda ci: setTheme(SETTINGS.get(ci)))
@@ -115,7 +115,7 @@ class view_setting(ScrollArea):
                                                           self.tr('Use system setting')],
                                                    parent=group_system)
         self.u_card_zoom = OptionsSettingCard(
-            SETTINGS.dpiScale,
+            SETTINGS.dpi_scale,
             FIF.ZOOM,
             self.tr("Interface zoom"),
             self.tr("Change the size of widgets and fonts"),
@@ -132,7 +132,7 @@ class view_setting(ScrollArea):
             FIF.UPDATE,
             self.tr('Check for updates when the application starts'),
             self.tr('The new version will be more stable and have more features'),
-            configItem=SETTINGS.checkUpdateAtStartUp,
+            configItem=SETTINGS.check_update_at_startup,
             parent=group_update)
         group_update.addSettingCard(self.u_card_update_on_startup)
         return group_update
@@ -163,8 +163,8 @@ class view_setting(ScrollArea):
     def __on__card_database_folder__clicked(self):
         """ download folder card clicked slot """
         folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
-        if not folder or SETTINGS.get(SETTINGS.databaseFolder) == folder:
+        if not folder or SETTINGS.get(SETTINGS.database_folder) == folder:
             return
 
-        SETTINGS.set(SETTINGS.databaseFolder, folder)
+        SETTINGS.set(SETTINGS.database_folder, folder)
         self.u_card_database_folder.setContent(folder)

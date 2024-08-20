@@ -33,7 +33,7 @@ from .settings import REPOSITORY_INDEX_FILE
 class Database():
 
     @staticmethod
-    def checkRepository(repository: dict, path: str) -> bool:
+    def check_repository(repository: dict, path: str) -> bool:
         with open("resource/database/schema/repository.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -44,23 +44,23 @@ class Database():
             raise exception
 
     @staticmethod
-    def getRepositoryByPath(path: str) -> dict:
+    def get_repository_by_path(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            Database.checkRepository(repository, path)
+            Database.check_repository(repository, path)
             return repository
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def getRepository() -> dict:
-        return Database.getRepositoryByPath(f"resource/database/repository.yml")
+    def get_repository() -> dict:
+        return Database.get_repository_by_path(f"resource/database/repository.yml")
 
     @staticmethod
-    def checkSummary(summary: dict, path: str) -> bool:
+    def check_summary(summary: dict, path: str) -> bool:
         with open("resource/database/schema/summary.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -71,23 +71,23 @@ class Database():
             raise exception
 
     @staticmethod
-    def getSummaryByPath(path: str) -> dict:
+    def get_summary_by_path(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            Database.checkSummary(summary, path)
+            Database.check_summary(summary, path)
             return summary
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def getSummary(vendor: str, name: str) -> dict:
-        return Database.getSummaryByPath(f"resource/database/summary/{vendor.lower()}/{name.lower()}.yml")
+    def get_summary(vendor: str, name: str) -> dict:
+        return Database.get_summary_by_path(f"resource/database/summary/{vendor.lower()}/{name.lower()}.yml")
 
     @staticmethod
-    def checkIp(ip: dict, path: str) -> bool:
+    def check_ip(ip: dict, path: str) -> bool:
         with open("resource/database/schema/ip.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -98,23 +98,23 @@ class Database():
             raise exception
 
     @staticmethod
-    def getIpByPath(path: str) -> dict:
+    def get_ip_by_path(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 ip = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            Database.checkIp(ip, path)
+            Database.check_ip(ip, path)
             return ip
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def getIp(vendor: str, name: str) -> dict:
-        return Database.getIpByPath(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
+    def get_ip(vendor: str, name: str) -> dict:
+        return Database.get_ip_by_path(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
 
     @staticmethod
-    def checkSdp(sdp: dict, path: str) -> bool:
+    def check_sdp(sdp: dict, path: str) -> bool:
         with open("resource/database/schema/sdp.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -125,18 +125,18 @@ class Database():
             raise exception
 
     @staticmethod
-    def getSdp(path: str) -> dict:
+    def get_sdp(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 sdp = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkSdp(sdp, path)
+            Database.check_sdp(sdp, path)
             return sdp
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def checkPackageIndex(index: dict, path: str) -> bool:
+    def check_package_index(index: dict, path: str) -> bool:
         with open("resource/database/schema/package_index.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -147,11 +147,11 @@ class Database():
             raise exception
 
     @staticmethod
-    def getPackageIndex() -> dict:
+    def get_package_index() -> dict:
         if os.path.isfile(REPOSITORY_INDEX_FILE):
             with open(REPOSITORY_INDEX_FILE, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkPackageIndex(index, REPOSITORY_INDEX_FILE)
+            Database.check_package_index(index, REPOSITORY_INDEX_FILE)
             return index
         else:
             with open(REPOSITORY_INDEX_FILE, 'w') as f:
@@ -160,6 +160,6 @@ class Database():
 
 
 if __name__ == '__main__':
-    Database.getRepository()
-    Database.getSummary("geehy", "apm32f103zet6")
-    Database.getIp("geehy", "apm32f103_gpio")
+    Database.get_repository()
+    Database.get_summary("geehy", "apm32f103zet6")
+    Database.get_ip("geehy", "apm32f103_gpio")

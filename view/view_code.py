@@ -64,7 +64,7 @@ class view_code(Ui_view_code, QWidget):
 
         self.verticalLayout_cardWidget_file.insertLayout(0, layout)
 
-        Style.view_code.apply(self)
+        Style.VIEW_CODE.apply(self)
 
     def __check_gen_setting(self) -> bool:
         if not os.path.isdir(PROJECT.toolchainsPath):
@@ -76,9 +76,9 @@ class view_code(Ui_view_code, QWidget):
         elif PROJECT.builderVersion == "":
             return False
 
-        if (not Utils.isHex(PROJECT.defaultHeapSize)) and Utils.isHex(PROJECT.summary.defaultHeapSize):
+        if (not Utils.ishex(PROJECT.defaultHeapSize)) and Utils.ishex(PROJECT.summary.defaultHeapSize):
             return False
-        elif not Utils.isHex(PROJECT.defaultStackSize) and Utils.isHex(PROJECT.summary.defaultStackSize):
+        elif not Utils.ishex(PROJECT.defaultStackSize) and Utils.ishex(PROJECT.summary.defaultStackSize):
             return False
 
         return True
@@ -94,7 +94,7 @@ class view_code(Ui_view_code, QWidget):
 
         coder = Coder()
         self.m_codes = coder.dump(PROJECT.halPath)
-        tree = Utils.paths2Dict(self.m_codes)
+        tree = Utils.paths2dict(self.m_codes)
 
         def traverse_tree(tree: dict, top_item: QTreeWidgetItem, path: str):
             for key, value in tree.items():

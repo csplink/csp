@@ -353,13 +353,13 @@ class Project(QObject):
                 print(f"invalid yaml {path}")
                 print(exception)
 
-            self.summary.origin = Database.getSummary(self.vendor, self.targetChip)
+            self.summary.origin = Database.get_summary(self.vendor, self.targetChip)
 
             ip = {}
             for _, module_group in self.summary.modules.items():
                 for name, module in module_group.items():
                     if "ip" in module:
-                        ip[name] = Database.getIp(self.vendor, module["ip"])
+                        ip[name] = Database.get_ip(self.vendor, module["ip"])
             self.ip.origin = ip
 
         else:

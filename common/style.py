@@ -31,9 +31,9 @@ from qfluentwidgets import StyleSheetBase, Theme, qconfig
 class Style(StyleSheetBase, Enum):
     """ Style sheet  """
 
-    view_setting = "view_setting"
+    VIEW_SETTING = "view_setting"
     VIEW_CHIP = "view_chip"
-    view_code = "view_code"
+    VIEW_CODE = "view_code"
     GRID_PROPERTY_IP_COMBOBOX = "grid_property_ip.ComboBox"
     PLAIN_TEXT_EDIT_CODE = "plain_text_edit_code"
 
