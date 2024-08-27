@@ -67,18 +67,18 @@ class view_code(Ui_view_code, QWidget):
         Style.VIEW_CODE.apply(self)
 
     def __check_gen_setting(self) -> bool:
-        if not os.path.isdir(PROJECT.toolchainsPath):
+        if not os.path.isdir(PROJECT.toolchains_path):
             return False
-        elif not os.path.isdir(PROJECT.halPath):
+        elif not os.path.isdir(PROJECT.hal_path):
             return False
         elif PROJECT.builder == "":
             return False
-        elif PROJECT.builderVersion == "":
+        elif PROJECT.builder_version == "":
             return False
 
-        if (not Utils.ishex(PROJECT.defaultHeapSize)) and Utils.ishex(PROJECT.summary.defaultHeapSize):
+        if (not Utils.ishex(PROJECT.default_heap_size)) and Utils.ishex(PROJECT.summary.default_heap_size):
             return False
-        elif not Utils.ishex(PROJECT.defaultStackSize) and Utils.ishex(PROJECT.summary.defaultStackSize):
+        elif not Utils.ishex(PROJECT.default_stack_size) and Utils.ishex(PROJECT.summary.default_stack_size):
             return False
 
         return True
@@ -93,7 +93,7 @@ class view_code(Ui_view_code, QWidget):
                 return
 
         coder = Coder()
-        self.m_codes = coder.dump(PROJECT.halPath)
+        self.m_codes = coder.dump(PROJECT.hal_path)
         tree = Utils.paths2dict(self.m_codes)
 
         def traverse_tree(tree: dict, top_item: QTreeWidgetItem, path: str):

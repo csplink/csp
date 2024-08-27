@@ -113,7 +113,7 @@ class GraphicsItemPin(QGraphicsObject):
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
 
-        PROJECT.pinConfigChanged.connect(self.projectPinConfigChanged)
+        PROJECT.sig_pin_config_changed.connect(self.projectPinConfigChanged)
 
     def boundingRect(self) -> QRectF:
         return QRectF(0, 0, self.m_width, self.m_height)
@@ -218,18 +218,18 @@ class GraphicsItemPin(QGraphicsObject):
             if self.m_previous_checked_action != None and self.m_previous_checked_action != action:
                 self.m_previous_checked_action.setChecked(False)
             if action.isChecked():
-                PROJECT.setConfig(self.locked_key, True)
-                PROJECT.setConfig(self.signal_key, action.text())
+                PROJECT.set_config(self.locked_key, True)
+                PROJECT.set_config(self.signal_key, action.text())
             else:
-                PROJECT.setConfig(self.locked_key, False)
-                PROJECT.setConfig(self.signal_key, "")
+                PROJECT.set_config(self.locked_key, False)
+                PROJECT.set_config(self.signal_key, "")
         else:
             if self.m_previous_checked_action != None:
                 self.m_previous_checked_action.setChecked(False)
             self.m_previous_checked_action = None
-            PROJECT.setConfig(self.locked_key, False)
-            PROJECT.setConfig(self.signal_key, "")
-            PROJECT.setConfig(self.label_key, "")
+            PROJECT.set_config(self.locked_key, False)
+            PROJECT.set_config(self.signal_key, "")
+            PROJECT.set_config(self.label_key, "")
 
         if self.m_previous_checked_action != action:
             self.m_previous_checked_action = action
@@ -238,7 +238,7 @@ class GraphicsItemPin(QGraphicsObject):
         if keys[1] == self.m_name:
             if keys[-1] == "label":
                 self.m_label = newvalue
-                PROJECT.triggerGridPropertyIp(PROJECT.summary.pinIp, self.m_name)
+                PROJECT.trigger_grid_property_ip(PROJECT.summary.pinIp, self.m_name)
             elif keys[-1] == "locked":
                 self.m_locked = newvalue
             elif keys[-1] == "signal":
@@ -252,22 +252,22 @@ class GraphicsItemPin(QGraphicsObject):
                         ip = PROJECT.ip.ip(instance)
                         ip_modes = ip["modes"][mode]
                         path = f"{instance}/{self.m_name}"
-                        PROJECT.setConfig(path, {})
+                        PROJECT.set_config(path, {})
                         for key, info in ip_modes.items():
                             path = f"{instance}/{self.m_name}/{key}"
-                            PROJECT.setConfig(path, info["default"])
+                            PROJECT.set_config(path, info["default"])
                     elif oldValue != "" and oldValue != None:
                         instance = oldValue.split("-")[0]
                         info = pin["signals"][oldValue]
                         if info != None and "mode" in info:
                             path = f"{instance}/{self.m_name}"
-                            PROJECT.setConfig(path, {})
-                    PROJECT.triggerGridPropertyIp(instance, self.m_name)
+                            PROJECT.set_config(path, {})
+                    PROJECT.trigger_grid_property_ip(instance, self.m_name)
                 elif oldValue != "" and oldValue != None:
                     instance = oldValue.split("-")[0]
                     info = pin["signals"][oldValue]
                     if info != None and "mode" in info:
                         path = f"{instance}/{self.m_name}"
-                        PROJECT.setConfig(path, {})
-                    PROJECT.triggerGridPropertyIp(instance, self.m_name)
+                        PROJECT.set_config(path, {})
+                    PROJECT.trigger_grid_property_ip(instance, self.m_name)
             self.update()

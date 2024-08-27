@@ -27,6 +27,7 @@
 import xml.etree.ElementTree as etree
 import re, copy, time, json, jinja2, importlib.util, glob
 import os, sys
+import hashlib
 
 from common.project import PROJECT
 
@@ -181,8 +182,14 @@ class Coder():
 
         data = self.dump(packageDir)
         for path, context in data.items():
-            with open(f"{outputDir}/{path}", "w", encoding='utf-8') as file:
-                file.write(context)
+            time_pattern = r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'  # YYYY-MM-DD HH:MM:SS
+            gen_md5 = hashlib.md5(re.sub(time_pattern, '', context).encode('utf-8')).hexdigest()
+            with open(f"{outputDir}/{path}", "r", encoding='utf-8') as file:
+                file_context = file.read()
+                file_md5 = hashlib.md5(re.sub(time_pattern, '', file_context).encode('utf-8')).hexdigest()
+            if gen_md5 == file_md5:
+                with open(f"{outputDir}/{path}", "w", encoding='utf-8') as file:
+                    file.write(context)
 
     def dump(self, packageDir: str) -> dict:
         """

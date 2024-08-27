@@ -73,8 +73,8 @@ class EditorDelegate(TableItemDelegate):
             Style.GRID_PROPERTY_IP_COMBOBOX.apply(comboBox)
             comboBox.setStyle(QApplication.style())
             for value in g_data[index.row()].possibleValues:
-                comboBox.addItem(PROJECT.ip.ipTr(value))
-            comboBox.setCurrentText(PROJECT.ip.ipTr(g_data[index.row()].value))
+                comboBox.addItem(PROJECT.ip.iptr(value))
+            comboBox.setCurrentText(PROJECT.ip.iptr(g_data[index.row()].value))
             return comboBox
         else:
             return None
@@ -103,7 +103,7 @@ class GridPropertyIpModel(QAbstractTableModel):
         self.m_headers = [self.tr("Property"), self.tr("Value")]
         self.m_pin_instance = PROJECT.summary.pinIp
 
-        PROJECT.gridPropertyIpTriggered.connect(self.projectGridPropertyIpTriggered)
+        PROJECT.sig_grid_property_ip_triggered.connect(self.projectGridPropertyIpTriggered)
 
     def rowCount(self, parent: QModelIndex) -> int:
         return len(g_data)
@@ -116,7 +116,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             if index.column() == 0:
                 return g_data[index.row()].property
             elif index.column() == 1:
-                return PROJECT.ip.ipTr(g_data[index.row()].value)
+                return PROJECT.ip.iptr(g_data[index.row()].value)
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
@@ -146,10 +146,10 @@ class GridPropertyIpModel(QAbstractTableModel):
         if role == Qt.ItemDataRole.EditRole:
             if g_data[index.row()].typeof == "string":
                 path = g_data[index.row()].path
-                PROJECT.setConfig(path, value)
+                PROJECT.set_config(path, value)
             elif g_data[index.row()].typeof == "enum":
                 path = g_data[index.row()].path
-                PROJECT.setConfig(path, PROJECT.ip.ipTrR(value))
+                PROJECT.set_config(path, PROJECT.ip.iptr2(value))
                 g_data[index.row()].value = value
             return True
         else:

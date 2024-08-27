@@ -37,7 +37,7 @@ from .package import PACKAGE
 class Summary(QObject):
 
     m_summary = {}
-    m_modulesList = []
+    m_modules_list = []
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -71,16 +71,16 @@ class Summary(QObject):
         return self.m_summary.get("linker", {})
 
     @property
-    def defaultHeapSize(self) -> str:
+    def default_heap_size(self) -> str:
         return self.linker.get("defaultHeapSize", "")
 
     @property
-    def defaultStackSize(self) -> str:
+    def default_stack_size(self) -> str:
         return self.linker.get("defaultStackSize", "")
 
     @property
-    def modulesList(self) -> list:
-        return self.m_modulesList
+    def modules_list(self) -> list:
+        return self.m_modules_list
 
     @property
     def origin(self) -> dict:
@@ -92,7 +92,7 @@ class Summary(QObject):
 
         for _, module_group in self.modules.items():
             for name, _ in module_group.items():
-                self.m_modulesList.append(name)
+                self.m_modules_list.append(name)
 
 
 class Ip(QObject):
@@ -109,13 +109,13 @@ class Ip(QObject):
             return {}
         return self.m_ip[name]
 
-    def ipTr(self, name: str) -> str:
+    def iptr(self, name: str) -> str:
         if name in self.m_ip_total:
             return self.m_ip_total[name]
         else:
             return name
 
-    def ipTrR(self, name: str) -> str:
+    def iptr2(self, name: str) -> str:
         if name in self.m_ip_reverse_total:
             return self.m_ip_reverse_total[name]
         else:
@@ -163,16 +163,16 @@ class Project(QObject):
     @vendor.setter
     def vendor(self, vendor: str):
         self.m_data["vendor"] = vendor
-        self.saveTmp()
+        self.save_tmp()
 
     @property
-    def targetChip(self) -> str:
+    def target_chip(self) -> str:
         return self.m_data.get("targetChip", "")
 
-    @targetChip.setter
-    def targetChip(self, targetChip: str):
-        self.m_data["targetChip"] = targetChip
-        self.saveTmp()
+    @target_chip.setter
+    def target_chip(self, chip: str):
+        self.m_data["targetChip"] = chip
+        self.save_tmp()
 
     @property
     def name(self) -> str:
@@ -181,60 +181,60 @@ class Project(QObject):
     @name.setter
     def name(self, name: str):
         self.m_data["name"] = name
-        self.saveTmp()
+        self.save_tmp()
 
     # gen
 
     # gen/copyLibrary
-    copyLibraryChanged = Signal(bool)
+    sig_copy_library_changed = Signal(bool)
 
     @property
-    def copyLibrary(self) -> bool:
+    def copy_library(self) -> bool:
         return self.m_data.get("gen", {}).get("copyLibrary", True)
 
-    @copyLibrary.setter
-    def copyLibrary(self, copyLibrary: bool):
-        if self.copyLibrary == copyLibrary:
+    @copy_library.setter
+    def copy_library(self, is_copy_library: bool):
+        if self.copy_library == is_copy_library:
             return
-        self.m_data.setdefault("gen", {})["copyLibrary"] = copyLibrary
-        self.copyLibraryChanged.emit(copyLibrary)
-        self.saveTmp()
+        self.m_data.setdefault("gen", {})["copyLibrary"] = is_copy_library
+        self.sig_copy_library_changed.emit(is_copy_library)
+        self.save_tmp()
 
     @property
-    def defaultHeapSize(self) -> str:
+    def default_heap_size(self) -> str:
         return self.m_data.get("gen", {}).get("linker", {}).get("defaultHeapSize", "")
 
-    @defaultHeapSize.setter
-    def defaultHeapSize(self, defaultHeapSize: str):
-        self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultHeapSize"] = defaultHeapSize
-        self.saveTmp()
+    @default_heap_size.setter
+    def default_heap_size(self, size: str):
+        self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultHeapSize"] = size
+        self.save_tmp()
 
     @property
-    def defaultStackSize(self) -> str:
+    def default_stack_size(self) -> str:
         return self.m_data.get("gen", {}).get("linker", {}).get("defaultStackSize", "")
 
-    @defaultStackSize.setter
-    def defaultStackSize(self, defaultStackSize: str):
-        self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultStackSize"] = defaultStackSize
-        self.saveTmp()
+    @default_stack_size.setter
+    def default_stack_size(self, size: str):
+        self.m_data.setdefault("gen", {}).setdefault("linker", {})["defaultStackSize"] = size
+        self.save_tmp()
 
     # gen/useToolchainsPackage
-    useToolchainsPackageChanged = Signal(bool)
+    sig_use_toolchains_package_changed = Signal(bool)
 
     @property
-    def useToolchainsPackage(self) -> bool:
+    def use_toolchains_package(self) -> bool:
         return self.m_data.get("gen", {}).get("useToolchainsPackage", False)
 
-    @useToolchainsPackage.setter
-    def useToolchainsPackage(self, useToolchainsPackage: bool):
-        if self.useToolchainsPackage == useToolchainsPackage:
+    @use_toolchains_package.setter
+    def use_toolchains_package(self, is_use_toolchains_package: bool):
+        if self.use_toolchains_package == is_use_toolchains_package:
             return
-        self.m_data.setdefault("gen", {})["useToolchainsPackage"] = useToolchainsPackage
-        self.useToolchainsPackageChanged.emit(useToolchainsPackage)
-        self.saveTmp()
+        self.m_data.setdefault("gen", {})["useToolchainsPackage"] = is_use_toolchains_package
+        self.sig_use_toolchains_package_changed.emit(is_use_toolchains_package)
+        self.save_tmp()
 
     # gen/toolchains
-    toolchainsChanged = Signal(str)
+    sig_toolchains_changed = Signal(str)
 
     @property
     def toolchains(self) -> str:
@@ -245,11 +245,11 @@ class Project(QObject):
         if self.toolchains == toolchains:
             return
         self.m_data.setdefault("gen", {})["toolchains"] = toolchains
-        self.toolchainsChanged.emit(toolchains)
-        self.saveTmp()
+        self.sig_toolchains_changed.emit(toolchains)
+        self.save_tmp()
 
     # gen/builder
-    builderChanged = Signal(str)
+    sig_builder_changed = Signal(str)
 
     @property
     def builder(self) -> str:
@@ -260,58 +260,58 @@ class Project(QObject):
         if self.builder == builder:
             return
         self.m_data.setdefault("gen", {})["builder"] = builder
-        self.builderChanged.emit(builder)
-        self.saveTmp()
+        self.sig_builder_changed.emit(builder)
+        self.save_tmp()
 
     # gen/builderVersion
-    builderVersionChanged = Signal(str)
+    sig_builder_version_changed = Signal(str)
 
     @property
-    def builderVersion(self) -> str:
+    def builder_version(self) -> str:
         return self.m_data.get("gen", {}).get("builderVersion", "")
 
-    @builderVersion.setter
-    def builderVersion(self, builderVersion: str):
-        if self.builderVersion == builderVersion:
+    @builder_version.setter
+    def builder_version(self, version: str):
+        if self.builder_version == version:
             return
-        self.m_data.setdefault("gen", {})["builderVersion"] = builderVersion
-        self.builderVersionChanged.emit(builderVersion)
-        self.saveTmp()
+        self.m_data.setdefault("gen", {})["builderVersion"] = version
+        self.sig_builder_version_changed.emit(version)
+        self.save_tmp()
 
     # gen/toolchainsVersion
-    toolchainsVersionChanged = Signal(str)
+    sig_toolchains_version_changed = Signal(str)
 
     @property
     def toolchainsVersion(self) -> str:
         return self.m_data.get("gen", {}).get("toolchainsVersion", "")
 
     @toolchainsVersion.setter
-    def toolchainsVersion(self, toolchainsVersion: str):
-        if self.toolchainsVersion == toolchainsVersion:
+    def toolchainsVersion(self, version: str):
+        if self.toolchainsVersion == version:
             return
-        self.m_data.setdefault("gen", {})["toolchainsVersion"] = toolchainsVersion
-        self.toolchainsVersionChanged.emit(toolchainsVersion)
-        self.saveTmp()
+        self.m_data.setdefault("gen", {})["toolchainsVersion"] = version
+        self.sig_toolchains_version_changed.emit(version)
+        self.save_tmp()
 
     # gen/halVersion
-    halVersionChanged = Signal(str)
+    sig_hal_version_changed = Signal(str)
 
     @property
-    def halVersion(self) -> str:
+    def hal_version(self) -> str:
         return self.m_data.get("gen", {}).get("halVersion", "")
 
-    @halVersion.setter
-    def halVersion(self, halVersion: str):
-        if self.halVersion == halVersion:
+    @hal_version.setter
+    def hal_version(self, version: str):
+        if self.hal_version == version:
             return
-        self.m_data.setdefault("gen", {})["halVersion"] = halVersion
-        self.halVersionChanged.emit(halVersion)
-        self.saveTmp()
+        self.m_data.setdefault("gen", {})["halVersion"] = version
+        self.sig_hal_version_changed.emit(version)
+        self.save_tmp()
 
-    def isGenValid(self) -> bool:
+    def is_gen_valid(self) -> bool:
         pass
 
-    reloaded = Signal()
+    sig_reloaded = Signal()
 
     @property
     def path(self) -> str:
@@ -321,7 +321,7 @@ class Project(QObject):
     def path(self, path: str):
         if self.m_path != path:
             self.load(path)
-            self.reloaded.emit()
+            self.sig_reloaded.emit()
         self.m_path = path
 
     @property
@@ -333,11 +333,11 @@ class Project(QObject):
         return self.m_data.setdefault("modules", [])
 
     @property
-    def halPath(self) -> str:
-        return PACKAGE.path("hal", self.summary.hal, self.halVersion)
+    def hal_path(self) -> str:
+        return PACKAGE.path("hal", self.summary.hal, self.hal_version)
 
     @property
-    def toolchainsPath(self) -> str:
+    def toolchains_path(self) -> str:
         return PACKAGE.path("toolchains", self.toolchains, self.toolchainsVersion)
 
     def load(self, path: str):
@@ -353,7 +353,7 @@ class Project(QObject):
                 print(f"invalid yaml {path}")
                 print(exception)
 
-            self.summary.origin = Database.get_summary(self.vendor, self.targetChip)
+            self.summary.origin = Database.get_summary(self.vendor, self.target_chip)
 
             ip = {}
             for _, module_group in self.summary.modules.items():
@@ -368,15 +368,15 @@ class Project(QObject):
     def dump(self):
         return yaml.dump(self.m_data)
 
-    def saveTmp(self):
+    def save_tmp(self):
         if self.m_path != "":
             path = f"{self.m_path}.tmp" if self.m_path.endswith(".csp") else self.m_path
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(self.dump())
 
-    pinConfigChanged = Signal(list, object, object)
-    configChanged = Signal(list, object, object)
-    modulesChanged = Signal()
+    sig_pin_config_changed = Signal(list, object, object)
+    sig_config_changed = Signal(list, object, object)
+    sig_modules_changed = Signal()
 
     def config(self, path: str, default=None):
         map = self.m_data.get("config", {})
@@ -387,7 +387,7 @@ class Project(QObject):
             map = map[key]
         return map
 
-    def setConfig(self, path: str, value: object):
+    def set_config(self, path: str, value: object):
         map = self.m_data.setdefault("config", {})
         keys = path.split("/")
         for key in keys[:-1]:
@@ -404,29 +404,29 @@ class Project(QObject):
 
             if len(keys) >= 2:
                 if keys[0] == "pin":
-                    self.pinConfigChanged.emit(keys, old, value)
+                    self.sig_pin_config_changed.emit(keys, old, value)
                 else:
-                    self.configChanged.emit(keys, old, value)
+                    self.sig_config_changed.emit(keys, old, value)
 
             modules = set()
             for name, cfg in self.m_data["config"].items():
-                if name in self.summary.m_modulesList and cfg != None and len(cfg) > 0:
+                if name in self.summary.m_modules_list and cfg != None and len(cfg) > 0:
                     modules.add(name)
             if set(self.modules) != modules:
                 self.m_data["modules"] = list(modules)
-                self.modulesChanged.emit()
+                self.sig_modules_changed.emit()
 
-            self.saveTmp()
+            self.save_tmp()
 
-    gridPropertyIpTriggered = Signal(str, str)
+    sig_grid_property_ip_triggered = Signal(str, str)
 
-    def triggerGridPropertyIp(self, instance: str, name: str):
-        self.gridPropertyIpTriggered.emit(instance, name)
+    def trigger_grid_property_ip(self, instance: str, name: str):
+        self.sig_grid_property_ip_triggered.emit(instance, name)
 
-    gridModeTriggered = Signal(str, str)
+    sig_grid_mode_triggered = Signal(str, str)
 
-    def triggerGridMode(self, module: str, widget: str):
-        self.gridModeTriggered.emit(module, widget)
+    def trigger_grid_mode(self, module: str, widget: str):
+        self.sig_grid_mode_triggered.emit(module, widget)
 
 
 PROJECT = Project()

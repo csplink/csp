@@ -47,8 +47,8 @@ class GridModeIoModel(QAbstractTableModel):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        PROJECT.configChanged.connect(self.projectConfigChanged)
-        PROJECT.pinConfigChanged.connect(self.pinProjectConfigChanged)
+        PROJECT.sig_config_changed.connect(self.projectConfigChanged)
+        PROJECT.sig_pin_config_changed.connect(self.pinProjectConfigChanged)
 
     def rowCount(self, parent: QModelIndex) -> int:
         return len(self.m_data)
@@ -137,7 +137,7 @@ class GridModeIoModel(QAbstractTableModel):
                             if path != "":
                                 path = path.replace("(name)", name)
                                 value = PROJECT.config(path, "")
-                                l.append({"display": PROJECT.ip.ipTr(self.__value2str(value)), "tooltip": value})
+                                l.append({"display": PROJECT.ip.iptr(self.__value2str(value)), "tooltip": value})
                             else:
                                 l.append({"display": name, "tooltip": name})
                         self.m_data.append(l)
@@ -201,7 +201,7 @@ class GridModeIoModel(QAbstractTableModel):
                     param = self.m_ip["parameters"][keys[2]]["displayName"][locale.name()]
                     column = self.m_headers_list.index(param)
                     self.m_data[index][column] = {
-                        "display": PROJECT.ip.ipTr(self.__value2str(newvalue)),
+                        "display": PROJECT.ip.iptr(self.__value2str(newvalue)),
                         "tooltip": newvalue
                     }
                     index = self.createIndex(index, column)
@@ -248,4 +248,4 @@ class GridModeIo(Ui_GridModeIo, QWidget):
         if len(indexes) > 0:
             index = indexes[0]
             name = str(index.data())
-            PROJECT.triggerGridPropertyIp(self.m_instance, name)
+            PROJECT.trigger_grid_property_ip(self.m_instance, name)

@@ -63,7 +63,7 @@ class view_chip(Ui_view_chip, QWidget):
 
         if PROJECT.summary.package != "unknown":
             if re.match("^LQFP\d+$", PROJECT.summary.package):
-                items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
+                items = LQFP().getItems(PROJECT.vendor, PROJECT.target_chip)
             else:
                 QMessageBox.critical(self, self.tr("critical"),
                                      self.tr(f"The package '{PROJECT.summary.package}' is not supported at this time"))

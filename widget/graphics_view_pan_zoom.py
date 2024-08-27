@@ -60,7 +60,7 @@ class LabelMessageBox(MessageBoxBase):
 
 
 class GraphicsViewPanZoom(QGraphicsView):
-    selectedItemClicked = Signal(QGraphicsItem)
+    sig_selected_item_clicked = Signal(QGraphicsItem)
     m_resize_cnt = 0
     m_key = 0
 
@@ -117,11 +117,11 @@ class GraphicsViewPanZoom(QGraphicsView):
                         key = item.data(GraphicsItemPin.Data.LABEL_KEY.value)
                         w = LabelMessageBox(PROJECT.config(key, ""), self.window())
                         if w.exec():
-                            PROJECT.setConfig(key, w.lineEdit_label.text())
+                            PROJECT.set_config(key, w.lineEdit_label.text())
                 else:
                     ip = PROJECT.summary.pinIp
                     name = item.data(GraphicsItemPin.Data.NAME.value)
-                    PROJECT.triggerGridPropertyIp(ip, name)
+                    PROJECT.trigger_grid_property_ip(ip, name)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         super().mouseMoveEvent(event)

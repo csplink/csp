@@ -71,9 +71,11 @@ class Settings(QConfig):
                                   OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
                                   restart=True)
 
-    # style
-    theme_mode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
-    theme_color = ColorConfigItem("Style", "ThemeColor", '#009faa')
+    # style. overloading the parent class
+    themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
+    themeColor = ColorConfigItem("Style", "ThemeColor", '#009faa')
+    theme_mode = themeMode
+    theme_color = themeColor
 
 
 YEAR = 2023
