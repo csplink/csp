@@ -72,8 +72,10 @@ class custom_title_bar(MSFluentTitleBar):
         self.layout_btn.setSpacing(15)
         self.layout_btn.addWidget(self.btn_file)
         self.layout_btn.addWidget(self.btn_project)
-        self.hBoxLayout.insertLayout(4, self.layout_btn)
-        self.hBoxLayout.setStretch(6, 0)
+
+        self.layout_header = self.hBoxLayout
+        self.layout_header.insertLayout(4, self.layout_btn)
+        self.layout_header.setStretch(6, 0)
 
     def __init_menu(self):
         self.m_menus.append(self.__create_file_menu())

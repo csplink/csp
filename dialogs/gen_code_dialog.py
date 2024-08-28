@@ -83,7 +83,7 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         # builder choose
         self.__builder_init()
 
-        self.setMinimumWidth(900)
+        self.setMinimumWidth(600)
 
     def __hal_init(self):
         hal = PROJECT.summary.hal
