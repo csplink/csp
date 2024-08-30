@@ -39,6 +39,11 @@ class ui_view_startup(Ui_view_startup, QWidget):
         super().__init__(parent=parent)
         self.setupUi(self)
 
+        self.card_command.setTitle(self.tr("Command"))
+        self.card_developer.setTitle(self.tr("Developer"))
+        self.card_project_list.setTitle(self.tr("Project List"))
+        self.card_more.setTitle(self.tr("More"))
+
 
 class view_startup(FramelessWindow):
 
