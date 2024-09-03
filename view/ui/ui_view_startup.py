@@ -34,12 +34,17 @@ class Ui_view_startup(object):
 
         self.gridLayout.addWidget(self.card_command, 0, 0, 1, 1)
 
-        self.card_developer = HeaderCardWidget(view_startup)
-        self.card_developer.setObjectName(u"card_developer")
-        self.card_developer.setFrameShape(QFrame.StyledPanel)
-        self.card_developer.setFrameShadow(QFrame.Raised)
+        self.card_contributors = HeaderCardWidget(view_startup)
+        self.card_contributors.setObjectName(u"card_contributors")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.card_contributors.sizePolicy().hasHeightForWidth())
+        self.card_contributors.setSizePolicy(sizePolicy)
+        self.card_contributors.setFrameShape(QFrame.StyledPanel)
+        self.card_contributors.setFrameShadow(QFrame.Raised)
 
-        self.gridLayout.addWidget(self.card_developer, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.card_contributors, 0, 1, 1, 1)
 
         self.card_project_list = HeaderCardWidget(view_startup)
         self.card_project_list.setObjectName(u"card_project_list")
@@ -55,6 +60,10 @@ class Ui_view_startup(object):
 
         self.gridLayout.addWidget(self.card_more, 1, 1, 1, 1)
 
+        self.gridLayout.setRowStretch(0, 1)
+        self.gridLayout.setRowStretch(1, 1)
+        self.gridLayout.setColumnStretch(0, 1)
+        self.gridLayout.setColumnStretch(1, 1)
 
         self.retranslateUi(view_startup)
 

@@ -32,7 +32,8 @@ from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOp
 
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
-from .ui.Ui_grid_property_ip import Ui_GridPropertyIp
+from .ui.ui_grid_property_ip import Ui_GridPropertyIp
+
 from common import PROJECT, SETTINGS, Style
 
 

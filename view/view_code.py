@@ -34,9 +34,10 @@ from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, Too
                             FluentIcon)
 
 from .ui.ui_view_code import Ui_view_code
-from common import Style, Icon, Coder, Utils, PROJECT, PACKAGE
+from common import Style, Icon, Coder, PROJECT, PACKAGE
 from widget import CHighlighter
 from dialogs import GenCodeDialog
+from utils import converters
 
 
 class view_code(Ui_view_code, QWidget):
@@ -76,9 +77,9 @@ class view_code(Ui_view_code, QWidget):
         elif PROJECT.builder_version == "":
             return False
 
-        if (not Utils.ishex(PROJECT.default_heap_size)) and Utils.ishex(PROJECT.summary.default_heap_size):
+        if (not converters.ishex(PROJECT.default_heap_size)) and converters.ishex(PROJECT.summary.default_heap_size):
             return False
-        elif not Utils.ishex(PROJECT.default_stack_size) and Utils.ishex(PROJECT.summary.default_stack_size):
+        elif not converters.ishex(PROJECT.default_stack_size) and converters.ishex(PROJECT.summary.default_stack_size):
             return False
 
         return True
@@ -94,7 +95,7 @@ class view_code(Ui_view_code, QWidget):
 
         coder = Coder()
         self.m_codes = coder.dump(PROJECT.hal_path)
-        tree = Utils.paths2dict(self.m_codes)
+        tree = converters.paths2dict(self.m_codes)
 
         def traverse_tree(tree: dict, top_item: QTreeWidgetItem, path: str):
             for key, value in tree.items():

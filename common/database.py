@@ -27,7 +27,7 @@
 import jsonschema
 import yaml, os
 
-from .settings import REPOSITORY_INDEX_FILE
+from .settings import REPOSITORY_INDEX_FILE, CONTRIBUTORS_FILE
 
 
 class Database():
@@ -157,6 +157,27 @@ class Database():
             with open(REPOSITORY_INDEX_FILE, 'w') as f:
                 pass
             return {}
+
+    @staticmethod
+    def check_contributors(contributors: list, path: str) -> bool:
+        with open("resource/database/schema/contributors.yml", 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+        try:
+            jsonschema.validate(instance=contributors, schema=schema)
+        except jsonschema.exceptions.ValidationError as exception:
+            print(f"invalid yaml {path}")
+            print(exception)
+            raise exception
+
+    @staticmethod
+    def get_contributors() -> dict:
+        if os.path.isfile(CONTRIBUTORS_FILE):
+            with open(CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
+                contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
+            Database.check_contributors(contributors, CONTRIBUTORS_FILE)
+            return contributors
+        else:
+            return []
 
 
 if __name__ == '__main__':

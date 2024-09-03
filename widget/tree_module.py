@@ -30,7 +30,7 @@ from PySide6.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxy
 from PySide6.QtGui import QFont, QBrush, QColor
 from PySide6.QtWidgets import (QWidget)
 
-from .ui.Ui_tree_module import Ui_TreeModule
+from .ui.ui_tree_module import Ui_TreeModule
 from common import PROJECT, SETTINGS
 
 

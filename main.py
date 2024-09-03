@@ -81,7 +81,6 @@ def main():
         view = view_startup()
         view.updateFrameless()
         view.show()
-        pass
 
     app.exec()
 

@@ -33,7 +33,8 @@ from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox)
 
 from .ui.Ui_gen_code_dialog import Ui_GenCodeDialog
-from common import PROJECT, PACKAGE, Coder, Utils, Icon
+from common import PROJECT, PACKAGE, Coder, Icon
+from utils import converters
 
 
 class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
@@ -47,15 +48,15 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
             QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
 
         # linker default heap size
-        if Utils.ishex(PROJECT.default_heap_size):
+        if converters.ishex(PROJECT.default_heap_size):
             self.lineedit_min_heap_size.setText(PROJECT.default_heap_size)
-        elif Utils.ishex(PROJECT.summary.default_heap_size):
+        elif converters.ishex(PROJECT.summary.default_heap_size):
             self.lineedit_min_heap_size.setText(PROJECT.summary.default_heap_size)
         else:
             self.lineedit_min_heap_size.setEnabled(False)
 
         # linker default stack size
-        if Utils.ishex(PROJECT.default_stack_size):
+        if converters.ishex(PROJECT.default_stack_size):
             self.lineedit_min_stack_size.setText(PROJECT.default_stack_size)
         elif PROJECT.summary.default_stack_size != "":
             self.lineedit_min_stack_size.setText(PROJECT.summary.default_stack_size)
@@ -279,10 +280,10 @@ class GenCodeDialog(MessageBoxBase):
         isCopyLibrary = self.main_widget.checkbox_is_copy_library.isChecked()
         packagePath = self.main_widget.lineedit_hal_path.text()
 
-        if not (self.main_widget.lineedit_min_heap_size.isEnabled() and Utils.ishex(defaultHeapSize)):
+        if not (self.main_widget.lineedit_min_heap_size.isEnabled() and converters.ishex(defaultHeapSize)):
             self.__showError(self.tr("The minimum heap size data is invalid"))
             return
-        elif not (self.main_widget.lineedit_min_stack_size.isEnabled() and Utils.ishex(defaultStackSize)):
+        elif not (self.main_widget.lineedit_min_stack_size.isEnabled() and converters.ishex(defaultStackSize)):
             self.__showError(self.tr("The minimum stack size data is invalid"))
             return
         elif self.main_widget.combobox_hal_version.currentText() == "":

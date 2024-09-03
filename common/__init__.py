@@ -30,6 +30,5 @@ from .icon import Icon
 from .package import PACKAGE
 from .project import Project, PROJECT
 from .settings import (YEAR, AUTHOR, VERSION, HELP_URL, REPO_URL, FEEDBACK_URL, RELEASE_URL, REPOSITORY_FOLDER,
-                       REPOSITORY_INDEX_FILE, SETTINGS)
+                       REPOSITORY_INDEX_FILE, CONTRIBUTORS_FILE, SETTINGS)
 from .style import Style
-from .utils import Utils

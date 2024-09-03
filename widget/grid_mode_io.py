@@ -28,7 +28,7 @@ from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QMode
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
-from .ui.Ui_grid_mode_io import Ui_GridModeIo
+from .ui.ui_grid_mode_io import Ui_GridModeIo
 from common import PROJECT, SETTINGS
 
 

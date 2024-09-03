@@ -87,6 +87,7 @@ FEEDBACK_URL = "https://github.com/csplink/csp/issues"
 RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
 REPOSITORY_FOLDER = f"{os.getcwd()}/repository"
 REPOSITORY_INDEX_FILE = f"{os.getcwd()}/repository.index"
+CONTRIBUTORS_FILE = f"{os.getcwd()}/resource/contributors/contributors"
 
 SETTINGS = Settings()
 qconfig.load('csplink.config', SETTINGS)

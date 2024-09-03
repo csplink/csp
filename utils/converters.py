@@ -16,37 +16,32 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        utils.py
+# @file        converters.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-24     xqyjlj       initial version
-#
+# 2024-08-31     xqyjlj       initial version
 
 import re
-
 from functools import reduce
 
 
-class Utils():
+def ishex(string: str) -> bool:
+    pattern = r'^0x[0-9A-Fa-f]+$'
+    return bool(re.match(pattern, string))
 
-    @staticmethod
-    def paths2dict(paths: list[str], separator='/'):
-        path_dict = {}
-        for path in paths:
-            parts = path.strip().split(separator)
 
-            def update_dict(current_dict, key):
-                if key not in current_dict:
-                    current_dict[key] = {}
-                return current_dict[key]
+def paths2dict(paths: list[str], separator='/'):
+    path_dict = {}
+    for path in paths:
+        parts = path.strip().split(separator)
 
-            current_dict = reduce(update_dict, parts[:-1], path_dict)
-            current_dict[parts[-1]] = ""
-        return path_dict
+        def update_dict(current_dict, key):
+            if key not in current_dict:
+                current_dict[key] = {}
+            return current_dict[key]
 
-    @staticmethod
-    def ishex(string: str) -> bool:
-        pattern = r'^0x[0-9A-Fa-f]+$'
-        return bool(re.match(pattern, string))
+        current_dict = reduce(update_dict, parts[:-1], path_dict)
+        current_dict[parts[-1]] = ""
+    return path_dict

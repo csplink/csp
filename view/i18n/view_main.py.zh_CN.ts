@@ -14,22 +14,22 @@
         <translation>项目</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="85"/>
+        <location filename="../view_main.py" line="87"/>
         <source>New</source>
         <translation>新建</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="88"/>
+        <location filename="../view_main.py" line="90"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="91"/>
+        <location filename="../view_main.py" line="93"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="99"/>
+        <location filename="../view_main.py" line="101"/>
         <source>Generate</source>
         <translation>生成</translation>
     </message>
@@ -37,35 +37,35 @@
 <context>
     <name>view_main</name>
     <message>
-        <location filename="../view_main.py" line="138"/>
+        <location filename="../view_main.py" line="140"/>
         <source>Generate</source>
         <translation>生成</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="146"/>
-        <location filename="../view_main.py" line="167"/>
+        <location filename="../view_main.py" line="148"/>
+        <location filename="../view_main.py" line="169"/>
         <source>Sponsor</source>
         <translation>赞助</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="151"/>
+        <location filename="../view_main.py" line="153"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="169"/>
+        <location filename="../view_main.py" line="171"/>
         <source>The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!</source>
         <translation>csplink项目是个人开源项目，它们的开发需要您的帮助。
 如果你想支持csplink的发展，欢迎为其捐赠，支持它的发展！</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="170"/>
+        <location filename="../view_main.py" line="172"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../view_main.py" line="171"/>
+        <location filename="../view_main.py" line="173"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

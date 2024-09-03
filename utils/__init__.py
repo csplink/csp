@@ -16,35 +16,16 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        grid_mode.py
+# @file        __init__.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-16     xqyjlj       initial version
+# 2024-08-31     xqyjlj       initial version
 #
 
-from enum import Enum
+from . import (converters)
 
-from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
-
-from .ui.ui_grid_mode import Ui_GridMode
-from common import PROJECT, SETTINGS
-
-
-class StackedWidgetIndex(Enum):
-    GRID_MODE_IO = 0
-
-
-class GridMode(Ui_GridMode, QWidget):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setupUi(self)
-
-        PROJECT.sig_grid_mode_triggered.connect(self.projectGridModeTriggered)
-
-    def projectGridModeTriggered(self, module: str, widget: str):
-        if widget == "grid_mode_io":
-            self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.GRID_MODE_IO.value))
-            self.widget_gridModeIo.setInstance(module)
+__all__ = [
+    'converters',
+]
