@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'view_chip.ui'
+## Form generated from reading UI file 'chip_view.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -24,16 +24,16 @@ from widget.grid_mode import GridMode
 from widget.grid_property_ip import GridPropertyIp
 from widget.tree_module import TreeModule
 
-class Ui_view_chip(object):
-    def setupUi(self, view_chip):
-        if not view_chip.objectName():
-            view_chip.setObjectName(u"view_chip")
-        view_chip.resize(1219, 967)
-        self.verticalLayout_3 = QVBoxLayout(view_chip)
+class Ui_ChipView(object):
+    def setupUi(self, ChipView):
+        if not ChipView.objectName():
+            ChipView.setObjectName(u"ChipView")
+        ChipView.resize(1219, 967)
+        self.verticalLayout_3 = QVBoxLayout(ChipView)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.splitter_1 = QSplitter(view_chip)
+        self.splitter_1 = QSplitter(ChipView)
         self.splitter_1.setObjectName(u"splitter_1")
         self.splitter_1.setOrientation(Qt.Horizontal)
         self.frame = SimpleCardWidget(self.splitter_1)
@@ -57,12 +57,12 @@ class Ui_view_chip(object):
         self.splitter_2 = QSplitter(self.frame_3)
         self.splitter_2.setObjectName(u"splitter_2")
         self.splitter_2.setOrientation(Qt.Vertical)
-        self.widget_gridMode = GridMode(self.splitter_2)
-        self.widget_gridMode.setObjectName(u"widget_gridMode")
-        self.splitter_2.addWidget(self.widget_gridMode)
-        self.widget_gridPropertyIp = GridPropertyIp(self.splitter_2)
-        self.widget_gridPropertyIp.setObjectName(u"widget_gridPropertyIp")
-        self.splitter_2.addWidget(self.widget_gridPropertyIp)
+        self.gridModeWidget = GridMode(self.splitter_2)
+        self.gridModeWidget.setObjectName(u"gridModeWidget")
+        self.splitter_2.addWidget(self.gridModeWidget)
+        self.gridPropertyIpWidget = GridPropertyIp(self.splitter_2)
+        self.gridPropertyIpWidget.setObjectName(u"gridPropertyIpWidget")
+        self.splitter_2.addWidget(self.gridPropertyIpWidget)
 
         self.verticalLayout.addWidget(self.splitter_2)
 
@@ -70,17 +70,17 @@ class Ui_view_chip(object):
 
         self.horizontalLayout_3.addWidget(self.splitter_1)
 
-        self.frame_2 = SimpleCardWidget(view_chip)
+        self.frame_2 = SimpleCardWidget(ChipView)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame_2)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.graphics_view = GraphicsViewPanZoom(self.frame_2)
-        self.graphics_view.setObjectName(u"graphics_view")
-        self.graphics_view.setFrameShape(QFrame.NoFrame)
+        self.graphicsView = GraphicsViewPanZoom(self.frame_2)
+        self.graphicsView.setObjectName(u"graphicsView")
+        self.graphicsView.setFrameShape(QFrame.NoFrame)
 
-        self.verticalLayout_2.addWidget(self.graphics_view)
+        self.verticalLayout_2.addWidget(self.graphicsView)
 
         self.widget_2 = QWidget(self.frame_2)
         self.widget_2.setObjectName(u"widget_2")
@@ -91,27 +91,29 @@ class Ui_view_chip(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.btn_zoom_in = ToolButton(self.widget_2)
-        self.btn_zoom_in.setObjectName(u"btn_zoom_in")
-        self.btn_zoom_in.setCursor(QCursor(Qt.ArrowCursor))
+        self.zoomInBtn = ToolButton(self.widget_2)
+        self.zoomInBtn.setObjectName(u"zoomInBtn")
+        self.zoomInBtn.setCursor(QCursor(Qt.ArrowCursor))
 
-        self.horizontalLayout.addWidget(self.btn_zoom_in)
+        self.horizontalLayout.addWidget(self.zoomInBtn)
 
-        self.btn_zoom_reset = ToolButton(self.widget_2)
-        self.btn_zoom_reset.setObjectName(u"btn_zoom_reset")
+        self.zoomResetBtn = ToolButton(self.widget_2)
+        self.zoomResetBtn.setObjectName(u"zoomResetBtn")
 
-        self.horizontalLayout.addWidget(self.btn_zoom_reset)
+        self.horizontalLayout.addWidget(self.zoomResetBtn)
 
-        self.btn_zoom_out = ToolButton(self.widget_2)
-        self.btn_zoom_out.setObjectName(u"btn_zoom_out")
+        self.zoomOutBtn = ToolButton(self.widget_2)
+        self.zoomOutBtn.setObjectName(u"zoomOutBtn")
 
-        self.horizontalLayout.addWidget(self.btn_zoom_out)
+        self.horizontalLayout.addWidget(self.zoomOutBtn)
 
         self.horizontalSpacer_2 = QSpacerItem(462, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
+
         self.verticalLayout_2.addWidget(self.widget_2)
+
 
         self.horizontalLayout_3.addWidget(self.frame_2)
 
@@ -120,16 +122,16 @@ class Ui_view_chip(object):
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
-        self.retranslateUi(view_chip)
 
-        QMetaObject.connectSlotsByName(view_chip)
+        self.retranslateUi(ChipView)
 
+        QMetaObject.connectSlotsByName(ChipView)
     # setupUi
 
-    def retranslateUi(self, view_chip):
-        view_chip.setWindowTitle(QCoreApplication.translate("view_chip", u"view_chip", None))
-        self.btn_zoom_in.setText("")
-        self.btn_zoom_reset.setText("")
-        self.btn_zoom_out.setText("")
-
+    def retranslateUi(self, ChipView):
+        ChipView.setWindowTitle(QCoreApplication.translate("ChipView", u"ChipView", None))
+        self.zoomInBtn.setText("")
+        self.zoomResetBtn.setText("")
+        self.zoomOutBtn.setText("")
     # retranslateUi
+

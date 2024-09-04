@@ -33,41 +33,41 @@ from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, Too
                             TabCloseButtonDisplayMode, BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget,
                             FluentIcon)
 
-from .ui.ui_view_code import Ui_view_code
+from .ui.ui_code_view import Ui_CodeView
 from common import Style, Icon, Coder, PROJECT, PACKAGE
 from widget import CHighlighter
 from dialogs import GenCodeDialog
 from utils import converters
 
 
-class view_code(Ui_view_code, QWidget):
+class CodeView(Ui_CodeView, QWidget):
     """ Tab interface """
 
-    m_codes = {}
+    codes = {}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.cardWidget_file.setFixedWidth(300)
-        self.treeWidget_file.header().setVisible(False)
-        self.treeWidget_file.selectionModel().selectionChanged.connect(self.__on__treeWidget_file__selectionChanged)
+        self.fileCard.setFixedWidth(300)
+        self.fileTree.header().setVisible(False)
+        self.fileTree.selectionModel().selectionChanged.connect(self.__on_fileTree_selectionChanged)
 
         layout = FlowLayout(None, False)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setVerticalSpacing(20)
         layout.setHorizontalSpacing(10)
 
-        self.tb_gen_settings = ToolButton()
-        self.tb_gen_settings.setIcon(Icon.EQUALIZER)
-        self.tb_gen_settings.pressed.connect(self.__on__tb_gen_settings__pressed)
-        layout.addWidget(self.tb_gen_settings)
+        self.genSettingsBtn = ToolButton()
+        self.genSettingsBtn.setIcon(Icon.EQUALIZER)
+        self.genSettingsBtn.pressed.connect(self.__on_genSettingsBtn_pressed)
+        layout.addWidget(self.genSettingsBtn)
 
         self.verticalLayout_cardWidget_file.insertLayout(0, layout)
 
         Style.VIEW_CODE.apply(self)
 
-    def __check_gen_setting(self) -> bool:
+    def __checkGenSetting(self) -> bool:
         if not os.path.isdir(PROJECT.toolchains_path):
             return False
         elif not os.path.isdir(PROJECT.hal_path):
@@ -85,24 +85,24 @@ class view_code(Ui_view_code, QWidget):
         return True
 
     def flush(self):
-        self.treeWidget_file.clear()
+        self.fileTree.clear()
         self.plainTextEdit.clear()
 
-        if not self.__check_gen_setting():
+        if not self.__checkGenSetting():
             dialog = GenCodeDialog(self, False)
             if not dialog.exec():
                 return
 
         coder = Coder()
-        self.m_codes = coder.dump(PROJECT.hal_path)
-        tree = converters.paths2dict(self.m_codes)
+        self.codes = coder.dump(PROJECT.hal_path)
+        tree = converters.paths2dict(self.codes)
 
-        def traverse_tree(tree: dict, top_item: QTreeWidgetItem, path: str):
+        def traverseTree(tree: dict, top_item: QTreeWidgetItem, path: str):
             for key, value in tree.items():
                 if isinstance(value, dict):
                     item = QTreeWidgetItem(top_item, [key])
                     item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
-                    traverse_tree(value, item, f"{path}/{key}")
+                    traverseTree(value, item, f"{path}/{key}")
                     item.setExpanded(True)
                 else:
                     item = QTreeWidgetItem(top_item, [key])
@@ -116,19 +116,19 @@ class view_code(Ui_view_code, QWidget):
             top_level_item = QTreeWidgetItem([key])
             top_level_item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
             top_level_item.setExpanded(True)
-            self.treeWidget_file.addTopLevelItem(top_level_item)
-            traverse_tree(di, top_level_item, f"core/{key}")
+            self.fileTree.addTopLevelItem(top_level_item)
+            traverseTree(di, top_level_item, f"core/{key}")
             top_level_item.setExpanded(True)
 
-    def __on__treeWidget_file__selectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+    def __on_fileTree_selectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
             path = str(index.data(Qt.ItemDataRole.StatusTipRole))
             if path != "None":
-                self.plainTextEdit.setPlainText(self.m_codes.get(path, ""))
+                self.plainTextEdit.setPlainText(self.codes.get(path, ""))
                 self.highlighter = CHighlighter(self.plainTextEdit.document())
 
-    def __on__tb_gen_settings__pressed(self):
+    def __on_genSettingsBtn_pressed(self):
         dialog = GenCodeDialog(self, False)
         dialog.exec()

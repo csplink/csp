@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        view_main.py
+# @file        main_window.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -35,14 +35,14 @@ from PySide6.QtWidgets import QHBoxLayout, QApplication
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton)
 
-from .view_chip import view_chip
-from .view_setting import view_setting
-from .view_code import view_code
-from common import Icon, Coder, PROJECT
+from .chip_view import ChipView
+from .setting_view import SettingView
+from .code_view import CodeView
+from common import Icon
 from dialogs import GenCodeDialog
 
 
-class menu_index_type(Enum):
+class MenuIndexType(Enum):
     FILE_MENU = 0
     PROJECT_MENU = 1
 
@@ -58,24 +58,24 @@ class CustomTitleBar(MSFluentTitleBar):
         self.__initMenu()
 
         # add buttons
-        self.layout_btn = QHBoxLayout()
+        self.layoutBtn = QHBoxLayout()
 
-        self.btn_file = TransparentPushButton(self.tr("File"), self)
-        self.btn_file.clicked.connect(lambda: self.menus[menu_index_type.FILE_MENU.value].exec(
-            self.btn_file.mapToGlobal(QPoint(0, self.btn_file.height())), ani=True))
+        self.btnFile = TransparentPushButton(self.tr("File"), self)
+        self.btnFile.clicked.connect(lambda: self.menus[MenuIndexType.FILE_MENU.value].exec(
+            self.btnFile.mapToGlobal(QPoint(0, self.btnFile.height())), ani=True))
 
-        self.btn_project = TransparentPushButton(self.tr("Project"), self)
-        self.btn_project.clicked.connect(lambda: self.menus[menu_index_type.PROJECT_MENU.value].exec(
-            self.btn_project.mapToGlobal(QPoint(0, self.btn_project.height())), ani=True))
+        self.btnProject = TransparentPushButton(self.tr("Project"), self)
+        self.btnProject.clicked.connect(lambda: self.menus[MenuIndexType.PROJECT_MENU.value].exec(
+            self.btnProject.mapToGlobal(QPoint(0, self.btnProject.height())), ani=True))
 
-        self.layout_btn.setContentsMargins(20, 0, 20, 0)
-        self.layout_btn.setSpacing(15)
-        self.layout_btn.addWidget(self.btn_file)
-        self.layout_btn.addWidget(self.btn_project)
+        self.layoutBtn.setContentsMargins(20, 0, 20, 0)
+        self.layoutBtn.setSpacing(15)
+        self.layoutBtn.addWidget(self.btnFile)
+        self.layoutBtn.addWidget(self.btnProject)
 
-        self.layout_header = self.hBoxLayout
-        self.layout_header.insertLayout(4, self.layout_btn)
-        self.layout_header.setStretch(6, 0)
+        self.layoutHeader = self.hBoxLayout
+        self.layoutHeader.insertLayout(4, self.layoutBtn)
+        self.layoutHeader.setStretch(6, 0)
 
     def __initMenu(self):
         self.menus.append(self.__createFileMenu())
@@ -98,8 +98,8 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createProjectMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.m_action_generate = Action(self.tr('Generate'))
-        menu.addAction(self.m_action_generate)
+        self.actionGenerate = Action(self.tr('Generate'))
+        menu.addAction(self.actionGenerate)
 
         return menu
 
@@ -108,37 +108,37 @@ class CustomTitleBar(MSFluentTitleBar):
         dialog.exec()
 
 
-class view_main(MSFluentWindow):
+class MainWindow(MSFluentWindow):
 
     def __init__(self):
         super().__init__()
 
-        title_bar = CustomTitleBar(self)
+        barTitle = CustomTitleBar(self)
 
         self.updateFrameless()
         self.setMicaEffectEnabled(False)
-        self.setTitleBar(title_bar)
+        self.setTitleBar(barTitle)
 
-        self.view_chip = view_chip(self)
-        self.view_code = view_code(self)
+        self.viewChip = ChipView(self)
+        self.viewCode = CodeView(self)
 
-        title_bar.m_action_generate.triggered.connect(lambda: self.__generateCodeClick())
+        barTitle.actionGenerate.triggered.connect(lambda: self.__on_generate_clicked())
 
-        self.__init_navigation()
-        self.__init_window()
+        self.__initNavigation()
+        self.__initWindow()
 
         # self.showMaximized()
 
-    def __init_navigation(self):
-        self.addSubInterface(self.view_chip, Icon.CPU, 'Chip', Icon.CPU)
-        code_btn = self.addSubInterface(self.view_code, Icon.CODE, 'Code', Icon.CODE)
-        code_btn.clicked.connect(lambda: self.view_code.flush())
+    def __initNavigation(self):
+        self.addSubInterface(self.viewChip, Icon.CPU, 'Chip', Icon.CPU)
+        btnCode = self.addSubInterface(self.viewCode, Icon.CODE, 'Code', Icon.CODE)
+        btnCode.clicked.connect(lambda: self.viewCode.flush())
 
         self.navigationInterface.addItem(
             routeKey='Generate',
             icon=Icon.GENERATE,
             text=self.tr('Generate'),
-            onClick=self.__generateCodeClick,
+            onClick=self.__on_generate_clicked,
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
@@ -146,16 +146,16 @@ class view_main(MSFluentWindow):
             routeKey='Sponsor',
             icon=Icon.MONEY,
             text=self.tr('Sponsor'),
-            onClick=self.__showMessageBox,
+            onClick=self.__on_sponsorKey_clicked,
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
-        self.addSubInterface(view_setting(self), Icon.SETTING, self.tr('Settings'), Icon.SETTING,
+        self.addSubInterface(SettingView(self), Icon.SETTING, self.tr('Settings'), Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.view_chip.objectName())
+        self.navigationInterface.setCurrentItem(self.viewChip.objectName())
 
-    def __init_window(self):
+    def __initWindow(self):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon('resource/images/logo.svg'))
         self.setWindowTitle('CSPLink')
@@ -164,7 +164,7 @@ class view_main(MSFluentWindow):
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
-    def __showMessageBox(self):
+    def __on_sponsorKey_clicked(self):
         w = MessageBox(
             self.tr('Sponsor'),
             self.tr("""The csplink projects are personal open-source projects, their development need your help.
@@ -175,6 +175,6 @@ If you would like to support the development of csplink, you are encouraged to d
         if w.exec():
             QDesktopServices.openUrl(QUrl("https://xqyjlj.github.io/"))
 
-    def __generateCodeClick(self):
+    def __on_generate_clicked(self):
         dialog = GenCodeDialog(self, True)
         dialog.exec()

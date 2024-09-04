@@ -44,6 +44,7 @@ class Icon(FluentIconBase, Enum):
     CODE = "code-line"
     FOLDER_LIB_OPEN = "folder-lib-open"
     FOLDER_LIB = "folder-lib"
+    GITHUB = "github-fill"
     BOX = "box-3-line"
     EQUALIZER = "equalizer-line"
 

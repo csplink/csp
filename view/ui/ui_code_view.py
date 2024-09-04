@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'view_code.ui'
+## Form generated from reading UI file 'code_view.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -22,39 +22,39 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
 from qfluentwidgets import (SimpleCardWidget, TreeWidget)
 from widget.plain_text_edit_code import PlainTextEditCode
 
-class Ui_view_code(object):
-    def setupUi(self, view_code):
-        if not view_code.objectName():
-            view_code.setObjectName(u"view_code")
-        view_code.resize(790, 567)
-        self.horizontalLayout = QHBoxLayout(view_code)
+class Ui_CodeView(object):
+    def setupUi(self, CodeView):
+        if not CodeView.objectName():
+            CodeView.setObjectName(u"CodeView")
+        CodeView.resize(790, 567)
+        self.horizontalLayout = QHBoxLayout(CodeView)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.cardWidget_file = SimpleCardWidget(view_code)
-        self.cardWidget_file.setObjectName(u"cardWidget_file")
-        self.cardWidget_file.setFrameShape(QFrame.StyledPanel)
-        self.cardWidget_file.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_cardWidget_file = QVBoxLayout(self.cardWidget_file)
+        self.fileCard = SimpleCardWidget(CodeView)
+        self.fileCard.setObjectName(u"fileCard")
+        self.fileCard.setFrameShape(QFrame.StyledPanel)
+        self.fileCard.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_cardWidget_file = QVBoxLayout(self.fileCard)
         self.verticalLayout_cardWidget_file.setObjectName(u"verticalLayout_cardWidget_file")
-        self.treeWidget_file = TreeWidget(self.cardWidget_file)
+        self.fileTree = TreeWidget(self.fileCard)
         __qtreewidgetitem = QTreeWidgetItem()
         __qtreewidgetitem.setText(0, u"1");
-        self.treeWidget_file.setHeaderItem(__qtreewidgetitem)
-        self.treeWidget_file.setObjectName(u"treeWidget_file")
+        self.fileTree.setHeaderItem(__qtreewidgetitem)
+        self.fileTree.setObjectName(u"fileTree")
 
-        self.verticalLayout_cardWidget_file.addWidget(self.treeWidget_file)
+        self.verticalLayout_cardWidget_file.addWidget(self.fileTree)
 
 
-        self.horizontalLayout.addWidget(self.cardWidget_file)
+        self.horizontalLayout.addWidget(self.fileCard)
 
-        self.frame_2 = SimpleCardWidget(view_code)
+        self.frame_2 = SimpleCardWidget(CodeView)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.frame_2)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.stackedWidget_code = QStackedWidget(self.frame_2)
-        self.stackedWidget_code.setObjectName(u"stackedWidget_code")
+        self.codeStackedWidget = QStackedWidget(self.frame_2)
+        self.codeStackedWidget.setObjectName(u"codeStackedWidget")
         self.page = QWidget()
         self.page.setObjectName(u"page")
         self.verticalLayout_3 = QVBoxLayout(self.page)
@@ -72,20 +72,20 @@ class Ui_view_code(object):
 
         self.verticalLayout_3.addWidget(self.plainTextEdit)
 
-        self.stackedWidget_code.addWidget(self.page)
+        self.codeStackedWidget.addWidget(self.page)
 
-        self.verticalLayout.addWidget(self.stackedWidget_code)
+        self.verticalLayout.addWidget(self.codeStackedWidget)
 
 
         self.horizontalLayout.addWidget(self.frame_2)
 
 
-        self.retranslateUi(view_code)
+        self.retranslateUi(CodeView)
 
-        QMetaObject.connectSlotsByName(view_code)
+        QMetaObject.connectSlotsByName(CodeView)
     # setupUi
 
-    def retranslateUi(self, view_code):
-        view_code.setWindowTitle(QCoreApplication.translate("view_code", u"view_code", None))
+    def retranslateUi(self, CodeView):
+        CodeView.setWindowTitle(QCoreApplication.translate("CodeView", u"CodeView", None))
     # retranslateUi
 

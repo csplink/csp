@@ -24,8 +24,16 @@
 # 2024-07-01     xqyjlj       initial version
 #
 
-from .view_chip import view_chip
-from .view_code import view_code
-from .view_main import view_main
-from .view_setting import view_setting
-from .view_startup import ViewStartup
+from .chip_view import ChipView
+from .code_view import CodeView
+from .main_window import MainWindow
+from .setting_view import SettingView
+from .startup_window import StartupWindow
+
+__all__ = [
+    'ChipView',
+    'CodeView',
+    'MainWindow',
+    'SettingView',
+    'StartupWindow',
+]

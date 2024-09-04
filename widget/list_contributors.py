@@ -26,16 +26,15 @@
 
 import os
 
-from PySide6.QtCore import Qt, Signal, QPoint, QObject, QEvent, QUrl
-from PySide6.QtGui import QShowEvent, QPixmap, QCursor, QColor
-from PySide6.QtWidgets import QWidget, QHBoxLayout
+from PySide6.QtCore import Qt, QPoint, QObject, QEvent, QUrl
+from PySide6.QtGui import QColor, QDesktopServices
+from PySide6.QtWidgets import QWidget
 
-from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, BodyLabel, CaptionLabel, HyperlinkButton,
-                            HyperlinkLabel, isDarkTheme, setFont)
+from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, CaptionLabel, HyperlinkLabel, isDarkTheme)
 
 from .ui.ui_list_contributors import Ui_ListContributors
 
-from common import Database, CONTRIBUTORS_FILE
+from common import Database, CONTRIBUTORS_FILE, Icon
 
 AVATAR_SIZE = 32
 CONTRIBUTORS_DIR = os.path.dirname(CONTRIBUTORS_FILE)
@@ -52,9 +51,6 @@ class CardProfile(QWidget):
 
         color = QColor(206, 206, 206) if isDarkTheme() else QColor(96, 96, 96)
         self.urlLabel.setStyleSheet('QLabel{color: ' + color.name() + '}')
-
-        # color = QColor(255, 255, 255) if isDarkTheme() else QColor(0, 0, 0)
-        # self.nameLabel.setStyleSheet('QLabel{color: ' + color.name() + '}')
 
         self.setFixedSize(307, 82)
         self.avatar.setRadius(24)
@@ -93,15 +89,15 @@ class ListContributors(Ui_ListContributors, QWidget):
                            menu)
         menu.addWidget(card, selectable=False)
 
-        # menu.addSeparator()
-        # menu.addActions([
-        #     Action(FIF.PEOPLE, self.tr('Manage account profile')),
-        #     Action(FIF.SHOPPING_CART, self.tr('Payment method')),
-        #     Action(FIF.CODE, self.tr('Redemption code and gift card')),
-        # ])
-        # menu.addSeparator()
-        # menu.addAction(Action(FIF.SETTING, self.tr('Settings')))
+        menu.addSeparator()
+        action = Action(Icon.GITHUB, self.tr('Open github url'))
+        action.setProperty("url", contributor["html_url"])
+        action.triggered.connect(self.__on_githubAction_triggered)
+        menu.addAction(action)
         menu.exec(pos)
+
+    def __on_githubAction_triggered(self):
+        QDesktopServices.openUrl(QUrl(self.sender().property("url")))
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         if isinstance(watched, AvatarWidget):

@@ -32,20 +32,20 @@ from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
 
 from qfluentwidgets import (isDarkTheme)
 
-from .ui.ui_view_chip import Ui_view_chip
+from .ui.ui_chip_view import Ui_ChipView
 from common import Style, Icon, PROJECT, SETTINGS
 from widget import LQFP
 
 
-class view_chip(Ui_view_chip, QWidget):
+class ChipView(Ui_ChipView, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.btn_zoom_in.setIcon(Icon.ZOOM_IN)
-        self.btn_zoom_reset.setIcon(Icon.REFRESH)
-        self.btn_zoom_out.setIcon(Icon.ZOOM_OUT)
+        self.zoomInBtn.setIcon(Icon.ZOOM_IN)
+        self.zoomResetBtn.setIcon(Icon.REFRESH)
+        self.zoomOutBtn.setIcon(Icon.ZOOM_OUT)
 
         self.splitter_1.setSizes([100, 300])
         self.splitter_1.setCollapsible(0, False)
@@ -54,11 +54,11 @@ class view_chip(Ui_view_chip, QWidget):
         self.splitter_2.setCollapsible(0, False)
         self.splitter_2.setCollapsible(1, False)
 
-        self.btn_zoom_in.pressed.connect(lambda: self.graphics_view.zoomIn(6))
-        self.btn_zoom_reset.pressed.connect(lambda: self.graphics_view.resize())
-        self.btn_zoom_out.pressed.connect(lambda: self.graphics_view.zoomOut(6))
+        self.zoomInBtn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
+        self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.resize())
+        self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoomOut(6))
 
-        scene = QGraphicsScene(self.graphics_view)
+        scene = QGraphicsScene(self.graphicsView)
         scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
 
         if PROJECT.summary.package != "unknown":
@@ -70,7 +70,7 @@ class view_chip(Ui_view_chip, QWidget):
             if items != None:
                 for item in items:
                     scene.addItem(item)
-        self.graphics_view.setScene(scene)
-        self.graphics_view.resize()
+        self.graphicsView.setScene(scene)
+        self.graphicsView.resize()
 
         Style.VIEW_CHIP.apply(self)

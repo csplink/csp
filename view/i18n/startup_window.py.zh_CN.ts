@@ -2,34 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>ui_ViewStartup</name>
+    <name>WidgetViewStartup</name>
     <message>
-        <location filename="../view_startup.py" line="52"/>
+        <location filename="../startup_window.py" line="49"/>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view_startup.py" line="53"/>
+        <location filename="../startup_window.py" line="50"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view_startup.py" line="54"/>
+        <location filename="../startup_window.py" line="51"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view_startup.py" line="61"/>
+        <location filename="../startup_window.py" line="58"/>
         <source>Contributors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view_startup.py" line="66"/>
+        <location filename="../startup_window.py" line="63"/>
         <source>Project List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view_startup.py" line="69"/>
+        <location filename="../startup_window.py" line="66"/>
         <source>More</source>
         <translation type="unfinished"></translation>
     </message>

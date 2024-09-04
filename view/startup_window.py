@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        view_startup.py
+# @file        startup_window.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -24,20 +24,17 @@
 # 2024-08-28     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, Signal, QItemSelection
-from PySide6.QtGui import QShowEvent
-from PySide6.QtWidgets import QWidget, QBoxLayout, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
+from PySide6.QtWidgets import QWidget, QBoxLayout, QHBoxLayout
 
 from qfluentwidgets import (PushButton, FluentTitleBar)
-from qframelesswindow import (FramelessWindow, StandardTitleBar)
+from qframelesswindow import (FramelessWindow)
 
-from .ui.ui_view_startup import Ui_ViewStartup
+from .ui.ui_startup_view import Ui_StartupView
 
-from common import Database
 from widget import ListContributors
 
 
-class WidgetViewStartup(Ui_ViewStartup, QWidget):
+class StartupView(Ui_StartupView, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -69,7 +66,7 @@ class WidgetViewStartup(Ui_ViewStartup, QWidget):
         self.cardMore.setTitle(self.tr("More"))
 
 
-class ViewStartup(FramelessWindow):
+class StartupWindow(FramelessWindow):
 
     def __init__(self):
         super().__init__()
@@ -77,5 +74,5 @@ class ViewStartup(FramelessWindow):
         self.resize(800, 600)
         self.vBoxLayout = QHBoxLayout(self)
         self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
-        self.view = WidgetViewStartup()
+        self.view = StartupView()
         self.vBoxLayout.addWidget(self.view)

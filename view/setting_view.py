@@ -37,7 +37,7 @@ from qfluentwidgets import InfoBar
 from common import SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style
 
 
-class view_setting(ScrollArea):
+class SettingView(ScrollArea):
     """ Setting interface """
 
     def __init__(self, parent=None):
