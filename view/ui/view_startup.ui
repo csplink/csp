@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-<class>viewStartup</class>
-<widget class="QWidget" name="viewStartup">
+<class>ViewStartup</class>
+<widget class="QWidget" name="ViewStartup">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-<string>viewStartup</string>
+<string>ViewStartup</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="1,1" columnstretch="1,1">
    <item row="0" column="0">

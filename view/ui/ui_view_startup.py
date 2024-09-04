@@ -20,21 +20,23 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QSizePolicy,
 
 from qfluentwidgets import HeaderCardWidget
 
-class Ui_viewStartup(object):
-    def setupUi(self, viewStartup):
-        if not viewStartup.objectName():
-            viewStartup.setObjectName(u"viewStartup")
-        viewStartup.resize(800, 600)
-        self.gridLayout = QGridLayout(viewStartup)
+
+class Ui_ViewStartup(object):
+
+    def setupUi(self, ViewStartup):
+        if not ViewStartup.objectName():
+            ViewStartup.setObjectName(u"ViewStartup")
+        ViewStartup.resize(800, 600)
+        self.gridLayout = QGridLayout(ViewStartup)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.cardCommand = HeaderCardWidget(viewStartup)
+        self.cardCommand = HeaderCardWidget(ViewStartup)
         self.cardCommand.setObjectName(u"cardCommand")
         self.cardCommand.setFrameShape(QFrame.StyledPanel)
         self.cardCommand.setFrameShadow(QFrame.Raised)
 
         self.gridLayout.addWidget(self.cardCommand, 0, 0, 1, 1)
 
-        self.cardContributors = HeaderCardWidget(viewStartup)
+        self.cardContributors = HeaderCardWidget(ViewStartup)
         self.cardContributors.setObjectName(u"cardContributors")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -46,14 +48,14 @@ class Ui_viewStartup(object):
 
         self.gridLayout.addWidget(self.cardContributors, 0, 1, 1, 1)
 
-        self.cardProjectList = HeaderCardWidget(viewStartup)
+        self.cardProjectList = HeaderCardWidget(ViewStartup)
         self.cardProjectList.setObjectName(u"cardProjectList")
         self.cardProjectList.setFrameShape(QFrame.StyledPanel)
         self.cardProjectList.setFrameShadow(QFrame.Raised)
 
         self.gridLayout.addWidget(self.cardProjectList, 1, 0, 1, 1)
 
-        self.cardMore = HeaderCardWidget(viewStartup)
+        self.cardMore = HeaderCardWidget(ViewStartup)
         self.cardMore.setObjectName(u"cardMore")
         self.cardMore.setFrameShape(QFrame.StyledPanel)
         self.cardMore.setFrameShadow(QFrame.Raised)
@@ -65,12 +67,12 @@ class Ui_viewStartup(object):
         self.gridLayout.setColumnStretch(0, 1)
         self.gridLayout.setColumnStretch(1, 1)
 
-        self.retranslateUi(viewStartup)
+        self.retranslateUi(ViewStartup)
 
-        QMetaObject.connectSlotsByName(viewStartup)
+        QMetaObject.connectSlotsByName(ViewStartup)
+
     # setupUi
 
-    def retranslateUi(self, viewStartup):
-        viewStartup.setWindowTitle(QCoreApplication.translate("viewStartup", u"viewStartup", None))
+    def retranslateUi(self, ViewStartup):
+        ViewStartup.setWindowTitle(QCoreApplication.translate("ViewStartup", u"ViewStartup", None))
     # retranslateUi
-

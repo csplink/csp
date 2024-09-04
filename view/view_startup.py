@@ -28,16 +28,16 @@ from PySide6.QtCore import Qt, Signal, QItemSelection
 from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QWidget, QBoxLayout, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
 
-from qfluentwidgets import (PushButton, FlowLayout)
+from qfluentwidgets import (PushButton, FluentTitleBar)
 from qframelesswindow import (FramelessWindow, StandardTitleBar)
 
-from .ui.ui_view_startup import Ui_viewStartup
+from .ui.ui_view_startup import Ui_ViewStartup
 
 from common import Database
 from widget import ListContributors
 
 
-class ui_viewStartup(Ui_viewStartup, QWidget):
+class WidgetViewStartup(Ui_ViewStartup, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -69,13 +69,13 @@ class ui_viewStartup(Ui_viewStartup, QWidget):
         self.cardMore.setTitle(self.tr("More"))
 
 
-class viewStartup(FramelessWindow):
+class ViewStartup(FramelessWindow):
 
     def __init__(self):
         super().__init__()
-        self.setTitleBar(StandardTitleBar(self))
+        self.setTitleBar(FluentTitleBar(self))
         self.resize(800, 600)
         self.vBoxLayout = QHBoxLayout(self)
         self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
-        self.view = ui_viewStartup()
+        self.view = WidgetViewStartup()
         self.vBoxLayout.addWidget(self.view)

@@ -28,4 +28,4 @@ from .view_chip import view_chip
 from .view_code import view_code
 from .view_main import view_main
 from .view_setting import view_setting
-from .view_startup import viewStartup
+from .view_startup import ViewStartup

@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>ui_viewStartup</name>
+    <name>ui_ViewStartup</name>
     <message>
         <location filename="../view_startup.py" line="52"/>
         <source>Command</source>

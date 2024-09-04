@@ -47,25 +47,25 @@ class menu_index_type(Enum):
     PROJECT_MENU = 1
 
 
-class custom_title_bar(MSFluentTitleBar):
+class CustomTitleBar(MSFluentTitleBar):
     """ Title bar with icon and title """
 
-    m_menus = []
+    menus = []
 
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.__init_menu()
+        self.__initMenu()
 
         # add buttons
         self.layout_btn = QHBoxLayout()
 
         self.btn_file = TransparentPushButton(self.tr("File"), self)
-        self.btn_file.clicked.connect(lambda: self.m_menus[menu_index_type.FILE_MENU.value].exec(
+        self.btn_file.clicked.connect(lambda: self.menus[menu_index_type.FILE_MENU.value].exec(
             self.btn_file.mapToGlobal(QPoint(0, self.btn_file.height())), ani=True))
 
         self.btn_project = TransparentPushButton(self.tr("Project"), self)
-        self.btn_project.clicked.connect(lambda: self.m_menus[menu_index_type.PROJECT_MENU.value].exec(
+        self.btn_project.clicked.connect(lambda: self.menus[menu_index_type.PROJECT_MENU.value].exec(
             self.btn_project.mapToGlobal(QPoint(0, self.btn_project.height())), ani=True))
 
         self.layout_btn.setContentsMargins(20, 0, 20, 0)
@@ -77,11 +77,11 @@ class custom_title_bar(MSFluentTitleBar):
         self.layout_header.insertLayout(4, self.layout_btn)
         self.layout_header.setStretch(6, 0)
 
-    def __init_menu(self):
-        self.m_menus.append(self.__create_file_menu())
-        self.m_menus.append(self.__create_project_menu())
+    def __initMenu(self):
+        self.menus.append(self.__createFileMenu())
+        self.menus.append(self.__createProjectMenu())
 
-    def __create_file_menu(self) -> RoundMenu:
+    def __createFileMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
         action = Action(self.tr('New'))
@@ -95,7 +95,7 @@ class custom_title_bar(MSFluentTitleBar):
 
         return menu
 
-    def __create_project_menu(self) -> RoundMenu:
+    def __createProjectMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
         self.m_action_generate = Action(self.tr('Generate'))
@@ -113,7 +113,7 @@ class view_main(MSFluentWindow):
     def __init__(self):
         super().__init__()
 
-        title_bar = custom_title_bar(self)
+        title_bar = CustomTitleBar(self)
 
         self.updateFrameless()
         self.setMicaEffectEnabled(False)
