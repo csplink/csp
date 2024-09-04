@@ -19,31 +19,31 @@ from PySide6.QtWidgets import (QApplication, QSizePolicy, QVBoxLayout, QWidget)
 
 from qfluentwidgets import ScrollArea
 
-class Ui_list_contributors(object):
-    def setupUi(self, list_contributors):
-        if not list_contributors.objectName():
-            list_contributors.setObjectName(u"list_contributors")
-        list_contributors.resize(400, 300)
-        self.verticalLayout = QVBoxLayout(list_contributors)
+class Ui_ListContributors(object):
+    def setupUi(self, ListContributors):
+        if not ListContributors.objectName():
+            ListContributors.setObjectName(u"ListContributors")
+        ListContributors.resize(400, 300)
+        self.verticalLayout = QVBoxLayout(ListContributors)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.scroll_area = ScrollArea(list_contributors)
-        self.scroll_area.setObjectName(u"scroll_area")
-        self.scroll_area.setWidgetResizable(True)
+        self.scrollArea = ScrollArea(ListContributors)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
         self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 398, 298))
-        self.scroll_area.setWidget(self.scrollAreaWidgetContents)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
-        self.verticalLayout.addWidget(self.scroll_area)
+        self.verticalLayout.addWidget(self.scrollArea)
 
 
-        self.retranslateUi(list_contributors)
+        self.retranslateUi(ListContributors)
 
-        QMetaObject.connectSlotsByName(list_contributors)
+        QMetaObject.connectSlotsByName(ListContributors)
     # setupUi
 
-    def retranslateUi(self, list_contributors):
-        list_contributors.setWindowTitle(QCoreApplication.translate("list_contributors", u"list_contributors", None))
+    def retranslateUi(self, ListContributors):
+        ListContributors.setWindowTitle(QCoreApplication.translate("ListContributors", u"ListContributors", None))
     # retranslateUi
 

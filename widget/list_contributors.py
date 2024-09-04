@@ -26,45 +26,85 @@
 
 import os
 
-from PySide6.QtCore import Qt, Signal, QItemSelection, QObject, QEvent
-from PySide6.QtGui import QShowEvent, QPixmap
+from PySide6.QtCore import Qt, Signal, QPoint, QObject, QEvent, QUrl
+from PySide6.QtGui import QShowEvent, QPixmap, QCursor, QColor
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 
-from qfluentwidgets import (PixmapLabel, FlowLayout, ScrollArea)
+from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, BodyLabel, CaptionLabel, HyperlinkButton,
+                            HyperlinkLabel, isDarkTheme, setFont)
 
-from .ui.ui_list_contributors import Ui_list_contributors
+from .ui.ui_list_contributors import Ui_ListContributors
 
 from common import Database, CONTRIBUTORS_FILE
 
+AVATAR_SIZE = 32
+CONTRIBUTORS_DIR = os.path.dirname(CONTRIBUTORS_FILE)
 
-class list_contributors(Ui_list_contributors, QWidget):
+
+class CardProfile(QWidget):
+    """ Profile card """
+
+    def __init__(self, avatarPath: str, name: str, url: str, parent=None):
+        super().__init__(parent=parent)
+        self.avatar = AvatarWidget(avatarPath, self)
+        self.nameLabel = HyperlinkLabel(QUrl(url), name, self)
+        self.urlLabel = CaptionLabel(url, self)
+
+        color = QColor(206, 206, 206) if isDarkTheme() else QColor(96, 96, 96)
+        self.urlLabel.setStyleSheet('QLabel{color: ' + color.name() + '}')
+
+        # color = QColor(255, 255, 255) if isDarkTheme() else QColor(0, 0, 0)
+        # self.nameLabel.setStyleSheet('QLabel{color: ' + color.name() + '}')
+
+        self.setFixedSize(307, 82)
+        self.avatar.setRadius(24)
+        self.avatar.move(2, 6)
+        self.nameLabel.move(64, 13)
+        self.urlLabel.move(64, 32)
+
+
+class ListContributors(Ui_ListContributors, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.flow_widget = QWidget(self)
-        self.flow_layout = FlowLayout(self.flow_widget, needAni=True)
-        self.flow_layout.setContentsMargins(0, 0, 0, 0)
-        self.flow_layout.setVerticalSpacing(20)
-        self.flow_layout.setHorizontalSpacing(10)
-        self.scroll_area.setWidget(self.flow_widget)
-        self.scroll_area.enableTransparentBackground()
+        self.flowWidget = QWidget(self)
+        self.flowLayout = FlowLayout(self.flowWidget, needAni=True)
+        self.flowLayout.setContentsMargins(0, 0, 0, 0)
+        self.flowLayout.setVerticalSpacing(20)
+        self.flowLayout.setHorizontalSpacing(10)
+        self.scrollArea.setWidget(self.flowWidget)
+        self.scrollArea.enableTransparentBackground()
 
         contributors = Database.get_contributors()
 
         for contributor in contributors:
-            label = PixmapLabel()
+            label = AvatarWidget(f'{CONTRIBUTORS_DIR}/{contributor["avatar"]}', self)
+            label.setCursor(Qt.CursorShape.PointingHandCursor)
             label.installEventFilter(self)
-            label.setFixedSize(40, 40)
-            label.setPixmap(
-                QPixmap(f'{os.path.dirname(CONTRIBUTORS_FILE)}/{contributor["avatar"]}').scaled(
-                    40, 40, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
-            self.flow_layout.addWidget(label)
+            label.setRadius(AVATAR_SIZE // 2)
+            label.setProperty("info", contributor)
+            self.flowLayout.addWidget(label)
 
-    def eventFilter(self, watched: QObject, event: QEvent):
-        if isinstance(watched, PixmapLabel):
+    def createCustomWidgetMenu(self, contributor: dict, pos: int):
+        menu = RoundMenu(parent=self)
+        card = CardProfile(f'{CONTRIBUTORS_DIR}/{contributor["avatar"]}', contributor["name"], contributor["html_url"],
+                           menu)
+        menu.addWidget(card, selectable=False)
+
+        # menu.addSeparator()
+        # menu.addActions([
+        #     Action(FIF.PEOPLE, self.tr('Manage account profile')),
+        #     Action(FIF.SHOPPING_CART, self.tr('Payment method')),
+        #     Action(FIF.CODE, self.tr('Redemption code and gift card')),
+        # ])
+        # menu.addSeparator()
+        # menu.addAction(Action(FIF.SETTING, self.tr('Settings')))
+        menu.exec(pos)
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        if isinstance(watched, AvatarWidget):
             if event.type() == QEvent.Type.MouseButtonRelease:
-                print(111)
-
+                self.createCustomWidgetMenu(watched.property("info"), watched.mapToGlobal(QPoint(watched.width(), 0)))
         return super().eventFilter(watched, event)

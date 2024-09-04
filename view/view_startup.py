@@ -31,50 +31,51 @@ from PySide6.QtWidgets import QWidget, QBoxLayout, QFrame, QLabel, QHBoxLayout, 
 from qfluentwidgets import (PushButton, FlowLayout)
 from qframelesswindow import (FramelessWindow, StandardTitleBar)
 
-from .ui.ui_view_startup import Ui_view_startup
+from .ui.ui_view_startup import Ui_viewStartup
 
 from common import Database
-from widget import list_contributors
+from widget import ListContributors
 
 
-class ui_view_startup(Ui_view_startup, QWidget):
+class ui_viewStartup(Ui_viewStartup, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.__init_card_command()
-        self.__init_contributors()
-        self.__init_project_list()
-        self.__init_more()
+        self.__initCardCommand()
+        self.__initContributors()
+        self.__initProjectList()
+        self.__initMore()
 
-    def __init_card_command(self):
-        self.card_command.setTitle(self.tr("Command"))
-        self.btn_new_chip_project = PushButton(self.tr("New Chip Project"))
-        self.btn_open_project = PushButton(self.tr("Open Project"))
-        self.card_command.viewLayout.setContentsMargins(30, 30, 30, 30)
-        self.card_command.viewLayout.setDirection(QBoxLayout.Direction.TopToBottom)
-        self.card_command.viewLayout.addWidget(self.btn_new_chip_project)
-        self.card_command.viewLayout.addWidget(self.btn_open_project)
+    def __initCardCommand(self):
+        self.cardCommand.setTitle(self.tr("Command"))
+        self.btnNewChipProject = PushButton(self.tr("New Chip Project"))
+        self.btnOpenProject = PushButton(self.tr("Open Project"))
+        self.cardCommand.viewLayout.setContentsMargins(30, 30, 30, 30)
+        self.cardCommand.viewLayout.setDirection(QBoxLayout.Direction.TopToBottom)
+        self.cardCommand.viewLayout.addWidget(self.btnNewChipProject)
+        self.cardCommand.viewLayout.addWidget(self.btnOpenProject)
 
-    def __init_contributors(self):
-        self.card_contributors.setTitle(self.tr("Contributors"))
-        self.m_list_contributors = list_contributors(self)
-        self.card_contributors.viewLayout.addWidget(self.m_list_contributors)
+    def __initContributors(self):
+        self.cardContributors.setTitle(self.tr("Contributors"))
+        self.listContributors = ListContributors(self)
+        self.cardContributors.viewLayout.addWidget(self.listContributors)
 
-    def __init_project_list(self):
-        self.card_project_list.setTitle(self.tr("Project List"))
+    def __initProjectList(self):
+        self.cardProjectList.setTitle(self.tr("Project List"))
 
-    def __init_more(self):
-        self.card_more.setTitle(self.tr("More"))
+    def __initMore(self):
+        self.cardMore.setTitle(self.tr("More"))
 
 
-class view_startup(FramelessWindow):
+class viewStartup(FramelessWindow):
 
     def __init__(self):
         super().__init__()
         self.setTitleBar(StandardTitleBar(self))
+        self.resize(800, 600)
         self.vBoxLayout = QHBoxLayout(self)
         self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
-        self.view = ui_view_startup()
+        self.view = ui_viewStartup()
         self.vBoxLayout.addWidget(self.view)

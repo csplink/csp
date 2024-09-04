@@ -20,57 +20,57 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QSizePolicy,
 
 from qfluentwidgets import HeaderCardWidget
 
-class Ui_view_startup(object):
-    def setupUi(self, view_startup):
-        if not view_startup.objectName():
-            view_startup.setObjectName(u"view_startup")
-        view_startup.resize(400, 300)
-        self.gridLayout = QGridLayout(view_startup)
+class Ui_viewStartup(object):
+    def setupUi(self, viewStartup):
+        if not viewStartup.objectName():
+            viewStartup.setObjectName(u"viewStartup")
+        viewStartup.resize(800, 600)
+        self.gridLayout = QGridLayout(viewStartup)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.card_command = HeaderCardWidget(view_startup)
-        self.card_command.setObjectName(u"card_command")
-        self.card_command.setFrameShape(QFrame.StyledPanel)
-        self.card_command.setFrameShadow(QFrame.Raised)
+        self.cardCommand = HeaderCardWidget(viewStartup)
+        self.cardCommand.setObjectName(u"cardCommand")
+        self.cardCommand.setFrameShape(QFrame.StyledPanel)
+        self.cardCommand.setFrameShadow(QFrame.Raised)
 
-        self.gridLayout.addWidget(self.card_command, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.cardCommand, 0, 0, 1, 1)
 
-        self.card_contributors = HeaderCardWidget(view_startup)
-        self.card_contributors.setObjectName(u"card_contributors")
+        self.cardContributors = HeaderCardWidget(viewStartup)
+        self.cardContributors.setObjectName(u"cardContributors")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.card_contributors.sizePolicy().hasHeightForWidth())
-        self.card_contributors.setSizePolicy(sizePolicy)
-        self.card_contributors.setFrameShape(QFrame.StyledPanel)
-        self.card_contributors.setFrameShadow(QFrame.Raised)
+        sizePolicy.setHeightForWidth(self.cardContributors.sizePolicy().hasHeightForWidth())
+        self.cardContributors.setSizePolicy(sizePolicy)
+        self.cardContributors.setFrameShape(QFrame.StyledPanel)
+        self.cardContributors.setFrameShadow(QFrame.Raised)
 
-        self.gridLayout.addWidget(self.card_contributors, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.cardContributors, 0, 1, 1, 1)
 
-        self.card_project_list = HeaderCardWidget(view_startup)
-        self.card_project_list.setObjectName(u"card_project_list")
-        self.card_project_list.setFrameShape(QFrame.StyledPanel)
-        self.card_project_list.setFrameShadow(QFrame.Raised)
+        self.cardProjectList = HeaderCardWidget(viewStartup)
+        self.cardProjectList.setObjectName(u"cardProjectList")
+        self.cardProjectList.setFrameShape(QFrame.StyledPanel)
+        self.cardProjectList.setFrameShadow(QFrame.Raised)
 
-        self.gridLayout.addWidget(self.card_project_list, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.cardProjectList, 1, 0, 1, 1)
 
-        self.card_more = HeaderCardWidget(view_startup)
-        self.card_more.setObjectName(u"card_more")
-        self.card_more.setFrameShape(QFrame.StyledPanel)
-        self.card_more.setFrameShadow(QFrame.Raised)
+        self.cardMore = HeaderCardWidget(viewStartup)
+        self.cardMore.setObjectName(u"cardMore")
+        self.cardMore.setFrameShape(QFrame.StyledPanel)
+        self.cardMore.setFrameShadow(QFrame.Raised)
 
-        self.gridLayout.addWidget(self.card_more, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.cardMore, 1, 1, 1, 1)
 
         self.gridLayout.setRowStretch(0, 1)
         self.gridLayout.setRowStretch(1, 1)
         self.gridLayout.setColumnStretch(0, 1)
         self.gridLayout.setColumnStretch(1, 1)
 
-        self.retranslateUi(view_startup)
+        self.retranslateUi(viewStartup)
 
-        QMetaObject.connectSlotsByName(view_startup)
+        QMetaObject.connectSlotsByName(viewStartup)
     # setupUi
 
-    def retranslateUi(self, view_startup):
-        view_startup.setWindowTitle(QCoreApplication.translate("view_startup", u"view_startup", None))
+    def retranslateUi(self, viewStartup):
+        viewStartup.setWindowTitle(QCoreApplication.translate("viewStartup", u"viewStartup", None))
     # retranslateUi
 

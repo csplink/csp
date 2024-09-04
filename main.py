@@ -39,7 +39,7 @@ from qfluentwidgets import FluentTranslator
 sys.stdout = stdout
 
 from common import SETTINGS, PROJECT
-from view import view_main, view_startup
+from view import view_main, viewStartup
 
 script_dir = os.path.dirname(__file__)
 sys.path.append(f"{script_dir}/plugins")
@@ -78,7 +78,7 @@ def main():
         view.updateFrameless()
         view.show()
     else:
-        view = view_startup()
+        view = viewStartup()
         view.updateFrameless()
         view.show()
 

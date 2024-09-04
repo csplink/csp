@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>view_startup</class>
- <widget class="QWidget" name="view_startup">
+<class>viewStartup</class>
+<widget class="QWidget" name="viewStartup">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+<width>800</width>
+<height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>view_startup</string>
+<string>viewStartup</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="1,1" columnstretch="1,1">
    <item row="0" column="0">
-    <widget class="HeaderCardWidget" name="card_command">
+<widget class="HeaderCardWidget" name="cardCommand">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -25,7 +25,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="HeaderCardWidget" name="card_contributors">
+<widget class="HeaderCardWidget" name="cardContributors">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -41,7 +41,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="HeaderCardWidget" name="card_project_list">
+<widget class="HeaderCardWidget" name="cardProjectList">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -51,7 +51,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="HeaderCardWidget" name="card_more">
+<widget class="HeaderCardWidget" name="cardMore">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>

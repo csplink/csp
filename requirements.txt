@@ -5,3 +5,4 @@ jinja2
 pyyaml
 jsonschema
 requests
+filetype

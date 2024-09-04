@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>list_contributors</class>
- <widget class="QWidget" name="list_contributors">
+<class>ListContributors</class>
+<widget class="QWidget" name="ListContributors">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>list_contributors</string>
+<string>ListContributors</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="ScrollArea" name="scroll_area">
+<widget class="ScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
      </property>
