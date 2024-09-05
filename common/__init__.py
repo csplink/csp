@@ -32,3 +32,24 @@ from .project import Project, PROJECT
 from .settings import (YEAR, AUTHOR, VERSION, HELP_URL, REPO_URL, FEEDBACK_URL, RELEASE_URL, REPOSITORY_FOLDER,
                        REPOSITORY_INDEX_FILE, CONTRIBUTORS_FILE, SETTINGS)
 from .style import Style
+
+__all__ = [
+    'Coder',
+    'Database',
+    'Icon',
+    'PACKAGE',
+    'Project',
+    'PROJECT',
+    'YEAR',
+    'AUTHOR',
+    'VERSION',
+    'HELP_URL',
+    'REPO_URL',
+    'FEEDBACK_URL',
+    'RELEASE_URL',
+    'REPOSITORY_FOLDER',
+    'REPOSITORY_INDEX_FILE',
+    'CONTRIBUTORS_FILE',
+    'SETTINGS',
+    'Style',
+]

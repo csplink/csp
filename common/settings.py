@@ -27,7 +27,7 @@
 import os
 from enum import Enum
 
-from PySide6.QtCore import QLocale
+from PySide6.QtCore import QLocale, QStandardPaths
 from qfluentwidgets import (qconfig, QConfig, ConfigItem, OptionsConfigItem, BoolValidator, OptionsValidator,
                             EnumSerializer, ColorConfigItem, Theme, FolderValidator, ConfigSerializer)
 
@@ -74,6 +74,11 @@ class Settings(QConfig):
     # style. overloading the parent class
     themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
     themeColor = ColorConfigItem("Style", "ThemeColor", '#009faa')
+
+    # misc
+    lastOpenProjectFolder = ConfigItem(
+        "Misc", "LastOpenProjectFolder",
+        QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation), FolderValidator())
 
 
 YEAR = 2023

@@ -351,12 +351,14 @@ class Project(QObject):
                 map = yaml.load(f.read(), Loader=yaml.FullLoader)
             with open("resource/database/schema/project.yml", 'r', encoding='utf-8') as f:
                 schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+
             try:
                 jsonschema.validate(instance=map, schema=schema)
                 self.__data = map
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)
+                return
 
             self.__summary.origin = Database.getSummary(self.vendor, self.targetChip)
 

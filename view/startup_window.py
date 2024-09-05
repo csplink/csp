@@ -24,12 +24,16 @@
 # 2024-08-28     xqyjlj       initial version
 #
 
-from PySide6.QtCore import QUrl
+import os
+
+from PySide6.QtCore import QStandardPaths
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QBoxLayout, QHBoxLayout
+from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QBoxLayout, QHBoxLayout, QFileDialog
 
 from qfluentwidgets import (PushButton, FluentTitleBar)
 from qframelesswindow import (FramelessWindow)
+
+from common import SETTINGS, PROJECT
 
 from .ui.ui_startup_view import Ui_StartupView
 
@@ -49,12 +53,15 @@ class StartupView(Ui_StartupView, QWidget):
 
     def __initCardCommand(self):
         self.cardCommand.setTitle(self.tr("Command"))
-        self.btnNewChipProject = PushButton(self.tr("New Chip Project"))
-        self.btnOpenProject = PushButton(self.tr("Open Project"))
+        self.newChipProjectBtn = PushButton(self.tr("New Chip Project"))
+        self.openProjectBtn = PushButton(self.tr("Open Project"))
         self.cardCommand.viewLayout.setContentsMargins(30, 30, 30, 30)
         self.cardCommand.viewLayout.setDirection(QBoxLayout.Direction.TopToBottom)
-        self.cardCommand.viewLayout.addWidget(self.btnNewChipProject)
-        self.cardCommand.viewLayout.addWidget(self.btnOpenProject)
+        self.cardCommand.viewLayout.addWidget(self.newChipProjectBtn)
+        self.cardCommand.viewLayout.addWidget(self.openProjectBtn)
+
+        self.newChipProjectBtn.pressed.connect(self.__on_newChipProjectBtn_pressed)
+        self.openProjectBtn.pressed.connect(self.__on_openProjectBtn_pressed)
 
     def __initContributors(self):
         self.cardContributors.setTitle(self.tr("Contributors"))
@@ -66,6 +73,17 @@ class StartupView(Ui_StartupView, QWidget):
 
     def __initMore(self):
         self.cardMore.setTitle(self.tr("More"))
+
+    def __on_newChipProjectBtn_pressed(self):
+        pass
+
+    def __on_openProjectBtn_pressed(self):
+        path, ok = QFileDialog.getOpenFileName(self,
+                                               self.tr('Open CSP project file'), SETTINGS.lastOpenProjectFolder.value,
+                                               self.tr('CSP project file (*.csp)'))
+        if ok:
+            SETTINGS.set(SETTINGS.lastOpenProjectFolder, os.path.dirname(path))
+            PROJECT.path = path
 
 
 class StartupWindow(FramelessWindow):
