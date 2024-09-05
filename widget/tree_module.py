@@ -34,7 +34,7 @@ from .ui.ui_tree_module import Ui_TreeModule
 from common import PROJECT, SETTINGS
 
 
-def is_private_model_or_none(instance, attribute, value):
+def isPrivateModelOrNone(instance, attribute, value):
     if value is not None and not isinstance(value, PModel):
         raise ValueError(f"{attribute.name} must be a PModel instance or None")
 
@@ -62,22 +62,22 @@ class PModel():
 
 class TreeModuleModel(QAbstractItemModel):
 
-    m_model = PModel()
+    __model = PModel()
 
-    m_selected_color = QColor(0, 204, 68)
-    m_brush = QBrush()
-    m_brush.setColor(QColor(0, 204, 68))
+    SELECTED_COLOR = QColor(0, 204, 68)
+    __brush = QBrush()
+    __brush.setColor(SELECTED_COLOR)
 
-    m_font = QFont('JetBrains Mono')
-    m_font.setPixelSize(12)
+    __font = QFont('JetBrains Mono')
+    __font.setPixelSize(12)
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.__load_module()
+        self.__loadModule()
 
     def rowCount(self, parent: QModelIndex) -> int:
         if not parent.isValid():
-            return len(self.m_model.children)
+            return len(self.__model.children)
         else:
             model = parent.internalPointer()
             return len(model.children)
@@ -97,7 +97,7 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
-            return self.m_font
+            return self.__font
         elif role == Qt.ItemDataRole.TextAlignmentRole:  # 7
             return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
@@ -105,7 +105,7 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.ForegroundRole:  # 9
             model = index.internalPointer()
             if model.displayName in PROJECT.modules:
-                return self.m_brush
+                return self.__brush
             return None
         elif role == Qt.ItemDataRole.CheckStateRole:  # 10
             return None
@@ -122,7 +122,7 @@ class TreeModuleModel(QAbstractItemModel):
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
         if not parent.isValid():
-            parentModel = self.m_model
+            parentModel = self.__model
         else:
             parentModel = parent.internalPointer()
 
@@ -139,19 +139,19 @@ class TreeModuleModel(QAbstractItemModel):
         childModel = index.internalPointer()
         parentModel = childModel.parent
 
-        if parentModel == self.m_model:
+        if parentModel == self.__model:
             return QModelIndex()
 
         return self.createIndex(parentModel.row(), 0, parentModel)
 
-    def __load_module(self):
+    def __loadModule(self):
         locale = SETTINGS.get(SETTINGS.language).value.name()
         for group, module_group in PROJECT.summary.modules.items():
-            model = PModel(group, "", [], self.m_model)
+            model = PModel(group, "", [], self.__model)
             for name, module in module_group.items():
                 model_child = PModel(name, module["description"][locale], [], model)
                 model.append(model_child)
-            self.m_model.append(model)
+            self.__model.append(model)
         self.modelReset.emit()
 
 
@@ -163,10 +163,10 @@ class TreeModule(Ui_TreeModule, QWidget):
 
         self.treeView_modules.header().hide()
 
-        self.m_treeView_modulesProxyModel = QSortFilterProxyModel(self)
-        self.m_model = TreeModuleModel(self)
-        self.m_treeView_modulesProxyModel.setSourceModel(self.m_model)
-        self.treeView_modules.setModel(self.m_treeView_modulesProxyModel)
+        proxyModel = QSortFilterProxyModel(self)
+        model = TreeModuleModel(self)
+        proxyModel.setSourceModel(model)
+        self.treeView_modules.setModel(proxyModel)
         self.treeView_modules.expandAll()
         self.treeView_modules.selectionModel().selectionChanged.connect(self.treeView_modulesSelectionChanged)
 
@@ -178,4 +178,4 @@ class TreeModule(Ui_TreeModule, QWidget):
                 module = str(index.data())
                 ip = PROJECT.ip.ip(module)
                 if "modeGrid" in ip:
-                    PROJECT.trigger_grid_mode(module, ip["modeGrid"])
+                    PROJECT.triggerGridMode(module, ip["modeGrid"])

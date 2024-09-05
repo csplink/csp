@@ -32,7 +32,7 @@ from qfluentwidgets import (qconfig, QConfig, ConfigItem, OptionsConfigItem, Boo
                             EnumSerializer, ColorConfigItem, Theme, FolderValidator, ConfigSerializer)
 
 
-class language_type(Enum):
+class LanguageType(Enum):
     """ Language enumeration """
 
     CHINESE_SIMPLIFIED = QLocale(QLocale.Language.Chinese, QLocale.Country.China)
@@ -41,41 +41,39 @@ class language_type(Enum):
     AUTO = QLocale()
 
 
-class language_serializer(ConfigSerializer):
+class LanguageSerializer(ConfigSerializer):
     """ Language serializer """
 
     def serialize(self, language):
-        return language.value.name() if language != language_type.AUTO else "Auto"
+        return language.value.name() if language != LanguageType.AUTO else "Auto"
 
     def deserialize(self, value: str):
-        return language_type(QLocale(value)) if value != "Auto" else language_type.AUTO
+        return LanguageType(QLocale(value)) if value != "Auto" else LanguageType.AUTO
 
 
 class Settings(QConfig):
     """ Config of application """
 
     # folders
-    database_folder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
+    databaseFolder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
 
     # system
     language = OptionsConfigItem("System",
                                  "language_type",
-                                 language_type.AUTO,
-                                 OptionsValidator(language_type),
-                                 language_serializer(),
+                                 LanguageType.AUTO,
+                                 OptionsValidator(LanguageType),
+                                 LanguageSerializer(),
                                  restart=True)
-    check_update_at_startup = ConfigItem("System", "CheckUpdateAtStartup", True, BoolValidator())
-    dpi_scale = OptionsConfigItem("System",
-                                  "DpiScale",
-                                  "Auto",
-                                  OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
-                                  restart=True)
+    checkUpdateAtStartup = ConfigItem("System", "CheckUpdateAtStartup", True, BoolValidator())
+    dpiScale = OptionsConfigItem("System",
+                                 "DpiScale",
+                                 "Auto",
+                                 OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
+                                 restart=True)
 
     # style. overloading the parent class
     themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
     themeColor = ColorConfigItem("Style", "ThemeColor", '#009faa')
-    theme_mode = themeMode
-    theme_color = themeColor
 
 
 YEAR = 2023

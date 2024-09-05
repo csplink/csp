@@ -42,7 +42,7 @@ class GridMode(Ui_GridMode, QWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        PROJECT.sig_grid_mode_triggered.connect(self.projectGridModeTriggered)
+        PROJECT.gridModeTriggered.connect(self.projectGridModeTriggered)
 
     def projectGridModeTriggered(self, module: str, widget: str):
         if widget == "grid_mode_io":

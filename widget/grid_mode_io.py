@@ -34,42 +34,42 @@ from common import PROJECT, SETTINGS
 
 class GridModeIoModel(QAbstractTableModel):
 
-    m_font = QFont('JetBrains Mono')
-    m_font.setPixelSize(12)
+    __font = QFont('JetBrains Mono')
+    __font.setPixelSize(12)
 
-    m_instance = ""
-    m_ip = {}
-    m_headers_map = {}
-    m_headers_list = []
-    m_config = {}
-    m_data = []
+    __instance = ""
+    __ip = {}
+    __headersMap = {}
+    __headersList = []
+    __config = {}
+    __data = []
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        PROJECT.sig_config_changed.connect(self.projectConfigChanged)
-        PROJECT.sig_pin_config_changed.connect(self.pinProjectConfigChanged)
+        PROJECT.configChanged.connect(self.projectConfigChanged)
+        PROJECT.pinConfigChanged.connect(self.pinProjectConfigChanged)
 
     def rowCount(self, parent: QModelIndex) -> int:
-        return len(self.m_data)
+        return len(self.__data)
 
     def columnCount(self, parent: QModelIndex) -> int:
-        if len(self.m_headers_list) > 0:
-            return len(self.m_headers_list)
+        if len(self.__headersList) > 0:
+            return len(self.__headersList)
         else:
             return 0
 
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
-            return self.m_data[index.row()][index.column()]["display"]
+            return self.__data[index.row()][index.column()]["display"]
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
-            return self.m_data[index.row()][index.column()]["tooltip"]
+            return self.__data[index.row()][index.column()]["tooltip"]
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
-            return self.m_font
+            return self.__font
         elif role == Qt.ItemDataRole.TextAlignmentRole:  # 7
             return Qt.AlignmentFlag.AlignCenter
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
@@ -90,22 +90,22 @@ class GridModeIoModel(QAbstractTableModel):
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
             if orientation == Qt.Orientation.Horizontal:
-                return self.m_headers_list[section]
+                return self.__headersList[section]
             else:
                 return f"{section + 1}"
         else:
             return None
 
     def setInstance(self, instance: str):
-        if self.m_instance != instance:
-            self.m_instance = instance
+        if self.__instance != instance:
+            self.__instance = instance
 
             locale = SETTINGS.get(SETTINGS.language).value
 
-            self.m_ip = PROJECT.ip.ip(instance)
-            self.m_headers_map.clear()
+            self.__ip = PROJECT.ip.ip(instance)
+            self.__headersMap.clear()
 
-            self.m_headers_map = {
+            self.__headersMap = {
                 self.tr("Name"): {
                     "path": "",
                     "index": 0
@@ -117,22 +117,22 @@ class GridModeIoModel(QAbstractTableModel):
             }
 
             index = 2
-            for key, info in self.m_ip["parameters"].items():
-                self.m_headers_map[info["displayName"][locale.name()]] = {
+            for key, info in self.__ip["parameters"].items():
+                self.__headersMap[info["displayName"][locale.name()]] = {
                     "path": f"{instance}/(name)/{key}",
                     "index": index
                 }
                 index += 1
-            self.m_headers_list = list(self.m_headers_map.keys())
+            self.__headersList = list(self.__headersMap.keys())
 
-            self.m_config = PROJECT.config(instance)
-            self.m_data.clear()
+            self.__config = PROJECT.config(instance)
+            self.__data.clear()
 
-            if self.m_config != None:
-                for name in self.m_config.keys():
+            if self.__config != None:
+                for name in self.__config.keys():
                     if PROJECT.config(f"pin/{name}/locked"):
                         l = []
-                        for _, item in self.m_headers_map.items():
+                        for _, item in self.__headersMap.items():
                             path = item["path"]
                             if path != "":
                                 path = path.replace("(name)", name)
@@ -140,7 +140,7 @@ class GridModeIoModel(QAbstractTableModel):
                                 l.append({"display": PROJECT.ip.iptr(self.__value2str(value)), "tooltip": value})
                             else:
                                 l.append({"display": name, "tooltip": name})
-                        self.m_data.append(l)
+                        self.__data.append(l)
 
             self.modelReset.emit()
 
@@ -151,32 +151,32 @@ class GridModeIoModel(QAbstractTableModel):
 
     def __removeModelData(self, name: str):
         row = 0
-        for item in self.m_data:
+        for item in self.__data:
             if item[0]["display"] == name:
                 break
             row += 1
-        if row < len(self.m_data):
+        if row < len(self.__data):
             self.beginRemoveRows(QModelIndex(), row, row)
-            self.m_data.pop(row)
+            self.__data.pop(row)
             self.endRemoveRows()
 
     def __insertModelData(self, row: int, name: str):
         self.beginInsertRows(QModelIndex(), row, row)
 
         li = [{"display": name, "tooltip": name}]
-        for _ in range(len(self.m_headers_list) - 1):
+        for _ in range(len(self.__headersList) - 1):
             li.append({"display": "", "tooltip": ""})
-        self.m_data.insert(row, li)
+        self.__data.insert(row, li)
 
         self.endInsertRows()
 
     def __getModelDataIndex(self, name: str) -> int:
-        li = sorted(list(self.m_config.keys()))
+        li = sorted(list(self.__config.keys()))
         if not name in li:
             return -1
         index = li.index(name)
-        if index < len(self.m_data):
-            if self.m_data[index][0]["display"] == name:
+        if index < len(self.__data):
+            if self.__data[index][0]["display"] == name:
                 exists = True
             else:
                 exists = False
@@ -189,7 +189,7 @@ class GridModeIoModel(QAbstractTableModel):
         return index
 
     def projectConfigChanged(self, keys: list[str], oldValue: str, newvalue: str):
-        if keys[0] == self.m_instance:
+        if keys[0] == self.__instance:
             name = keys[1]
 
             if len(keys) == 2:
@@ -198,9 +198,9 @@ class GridModeIoModel(QAbstractTableModel):
                 index = self.__getModelDataIndex(name)
                 if index >= 0:
                     locale = SETTINGS.get(SETTINGS.language).value
-                    param = self.m_ip["parameters"][keys[2]]["displayName"][locale.name()]
-                    column = self.m_headers_list.index(param)
-                    self.m_data[index][column] = {
+                    param = self.__ip["parameters"][keys[2]]["displayName"][locale.name()]
+                    column = self.__headersList.index(param)
+                    self.__data[index][column] = {
                         "display": PROJECT.ip.iptr(self.__value2str(newvalue)),
                         "tooltip": newvalue
                     }
@@ -208,18 +208,18 @@ class GridModeIoModel(QAbstractTableModel):
                     self.dataChanged.emit(index, index)
 
     def pinProjectConfigChanged(self, keys: list[str], oldValue: str, newvalue: str):
-        if "" != self.m_instance:
+        if "" != self.__instance:
             if len(keys) == 3 and keys[2] == "label":
                 name = keys[1]
                 index = self.__getModelDataIndex(name)
                 if index >= 0:
-                    self.m_data[index][1] = {"display": newvalue, "tooltip": newvalue}
+                    self.__data[index][1] = {"display": newvalue, "tooltip": newvalue}
                     index = self.createIndex(index, 1)
                     self.dataChanged.emit(index, index)
 
 
 class GridModeIo(Ui_GridModeIo, QWidget):
-    m_instance = ""
+    __instance = ""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -239,8 +239,8 @@ class GridModeIo(Ui_GridModeIo, QWidget):
         self.tableView_io.selectionModel().selectionChanged.connect(self.tableView_ioSelectionChanged)
 
     def setInstance(self, instance: str):
-        if self.m_instance != instance:
-            self.m_instance = instance
+        if self.__instance != instance:
+            self.__instance = instance
             self.m_model.setInstance(instance)
 
     def tableView_ioSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
@@ -248,4 +248,4 @@ class GridModeIo(Ui_GridModeIo, QWidget):
         if len(indexes) > 0:
             index = indexes[0]
             name = str(index.data())
-            PROJECT.trigger_grid_property_ip(self.m_instance, name)
+            PROJECT.triggerGridPropertyIp(self.__instance, name)

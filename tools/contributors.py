@@ -25,12 +25,12 @@
 #
 import requests, os, filetype, shutil, yaml
 
-root_dir = os.path.join(os.path.dirname(__file__), "..")
+rootDir = os.path.join(os.path.dirname(__file__), "..")
 
 
-def get_contributors(owner, repo, access_token):
+def getContributors(owner, repo, token):
     url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
-    headers = {"Authorization": f"token {access_token}"}
+    headers = {"Authorization": f"token {token}"}
     response = requests.get(url, headers=headers)
     contributors = response.json()
     return sorted(contributors, key=lambda x: x['contributions'], reverse=True)
@@ -38,30 +38,30 @@ def get_contributors(owner, repo, access_token):
 
 owner = "csplink"
 repo = "csp"
-access_token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
-contributors = get_contributors(owner, repo, access_token)
+token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
+contributors = getContributors(owner, repo, token)
 
-avatar_folder = os.path.join(root_dir, "resource", "contributors", "avatar")
-if os.path.isdir(avatar_folder):
-    shutil.rmtree(avatar_folder)
-os.makedirs(avatar_folder)
+avatarFolder = os.path.join(rootDir, "resource", "contributors", "avatar")
+if os.path.isdir(avatarFolder):
+    shutil.rmtree(avatarFolder)
+os.makedirs(avatarFolder)
 
-contributor_list = []
+contributorList = []
 
 for contributor in contributors:
     response = requests.get(contributor["avatar_url"])
-    path = os.path.join(avatar_folder, f"resource", "contributors", "avatar")
+    path = os.path.join(avatarFolder, f"resource", "contributors", "avatar")
     extension = filetype.guess_extension(response.content)
     extension = f".{extension}" if extension else ""
-    file = f"{avatar_folder}/{contributor['id']}{extension}"
+    file = f"{avatarFolder}/{contributor['id']}{extension}"
     with open(file, 'wb') as fp:
         fp.write(response.content)
-    contributor_list.append({
+    contributorList.append({
         "name": contributor["login"],
         "avatar": f"avatar/{os.path.basename(file)}",
         "html_url": contributor["html_url"],
         "contributions": contributor["contributions"],
     })
 
-with open(f"{os.path.join(os.path.dirname(avatar_folder), 'contributors')}", 'w', encoding='utf-8') as f:
-    f.write(yaml.dump(contributor_list))
+with open(f"{os.path.join(os.path.dirname(avatarFolder), 'contributors')}", 'w', encoding='utf-8') as f:
+    f.write(yaml.dump(contributorList))

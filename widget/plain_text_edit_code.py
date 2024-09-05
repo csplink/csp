@@ -34,65 +34,45 @@ from common import Style
 
 
 class PlainTextEditCode(PlainTextEdit):
-    m_lineNumberArea = None
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setTabStopDistance(40)
-        self.m_lineNumberArea = LineNumberArea(self)
+        self.lineNumberArea = LineNumberArea(self)
 
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
         self.updateRequest.connect(self.updateLineNumberArea)
-        self.cursorPositionChanged.connect(self.highlightCurrentLine)
 
         self.updateLineNumberAreaWidth(0)
-        self.highlightCurrentLine()
 
         Style.PLAIN_TEXT_EDIT_CODE.apply(self)
 
-    def lineNumberAreaWidth(self):
+    def updateLineNumberAreaWidth(self, count: int):
         digits = 1
-        max_digs = max(1, self.blockCount())
-        while max_digs >= 10:
-            max_digs //= 10
+        maxDigs = max(1, count)
+        while maxDigs >= 10:
+            maxDigs //= 10
             digits += 1
 
         space = 3 + self.fontMetrics().horizontalAdvance('9') * digits
-        right_margin = self.m_lineNumberArea.RIGHT_MARGIN
+        rightMargin = self.lineNumberArea.RIGHT_MARGIN
+        self.lineNumberAreaWidth = space + rightMargin
 
-        return space + right_margin
-
-    def updateLineNumberAreaWidth(self, newBlockCount):
-        self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
+        self.setViewportMargins(self.lineNumberAreaWidth, 0, 0, 0)
 
     def updateLineNumberArea(self, rect, dy):
         if dy:
-            self.m_lineNumberArea.scroll(0, dy)
+            self.lineNumberArea.scroll(0, dy)
         else:
-            self.m_lineNumberArea.update(0, rect.y(), self.m_lineNumberArea.width(), rect.height())
-
-        if rect.contains(self.viewport().rect()):
-            self.updateLineNumberAreaWidth(0)
+            self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
         cr = self.contentsRect()
-        self.m_lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height()))
-
-    def highlightCurrentLine(self):
-        if not self.isReadOnly():
-            extraSelections = []
-
-            selection = QTextEdit.ExtraSelection()
-            selection.format.setProperty(QTextFormat.Property.FullWidthSelection, True)
-            selection.cursor = self.textCursor()
-            selection.cursor.clearSelection()
-            extraSelections.append(selection)
-
-            self.setExtraSelections(extraSelections)
+        self.lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.lineNumberAreaWidth, cr.height()))
 
     def lineNumberAreaPaintEvent(self, event):
-        painter = QPainter(self.m_lineNumberArea)
+        painter = QPainter(self.lineNumberArea)
         painter.setPen(QColor("#8d96a0" if isDarkTheme() else "#929292"))
         painter.font().setBold(True)
 
@@ -101,8 +81,8 @@ class PlainTextEditCode(PlainTextEdit):
         top = self.blockBoundingGeometry(block).translated(self.contentOffset()).top()
         bottom = top + self.blockBoundingRect(block).height()
 
-        areaWidth = self.m_lineNumberArea.width()
-        rightMargin = self.m_lineNumberArea.RIGHT_MARGIN
+        areaWidth = self.lineNumberArea.width()
+        rightMargin = self.lineNumberArea.RIGHT_MARGIN
 
         while block.isValid() and top <= event.rect().bottom():
             if block.isVisible() and bottom >= event.rect().top():
@@ -120,8 +100,8 @@ class LineNumberArea(QWidget):
     RIGHT_MARGIN = 10
     codeEditor = None
 
-    def __init__(self, editor):
-        super(LineNumberArea, self).__init__(editor)
+    def __init__(self, editor: PlainTextEditCode):
+        super().__init__(editor)
         self.codeEditor = editor
         font = QFont()
         font.setFamily("JetBrains Mono")
@@ -130,7 +110,8 @@ class LineNumberArea(QWidget):
         self.setFont(font)
 
     def sizeHint(self):
-        return QSize(self.codeEditor.lineNumberAreaWidth(), 0)
+        return QSize(self.codeEditor.lineNumberAreaWidth, 0)
 
     def paintEvent(self, event: QPaintEvent):
+        super().paintEvent(event)
         self.codeEditor.lineNumberAreaPaintEvent(event)

@@ -24,7 +24,9 @@
 # 2024-08-28     xqyjlj       initial version
 #
 
-from PySide6.QtWidgets import QWidget, QBoxLayout, QHBoxLayout
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QBoxLayout, QHBoxLayout
 
 from qfluentwidgets import (PushButton, FluentTitleBar)
 from qframelesswindow import (FramelessWindow)
@@ -71,8 +73,20 @@ class StartupWindow(FramelessWindow):
     def __init__(self):
         super().__init__()
         self.setTitleBar(FluentTitleBar(self))
-        self.resize(800, 600)
         self.vBoxLayout = QHBoxLayout(self)
         self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
         self.view = StartupView()
         self.vBoxLayout.addWidget(self.view)
+
+        self.__initWindow()
+
+    def __initWindow(self):
+        self.resize(1100, 750)
+        self.setWindowIcon(QIcon('resource/images/logo.svg'))
+        self.setWindowTitle('CSPLink')
+        self.titleBar.hBoxLayout.insertSpacing(0, 20)
+        self.titleBar.hBoxLayout.insertSpacing(2, 2)
+
+        desktop = QApplication.screens()[0].availableGeometry()
+        w, h = desktop.width(), desktop.height()
+        self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)

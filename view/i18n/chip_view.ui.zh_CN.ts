@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>view_code</name>
+    <name>ChipView</name>
     <message>
-        <location filename="../ui/view_code.ui" line="14"/>
-        <source>view_code</source>
+        <location filename="../ui/chip_view.ui" line="14"/>
+        <source>ChipView</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

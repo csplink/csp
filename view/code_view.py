@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        view_code.py
+# @file        code_view.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -26,12 +26,10 @@
 
 import os
 
-from PySide6.QtCore import Qt, Signal, QItemSelection
-from PySide6.QtGui import QShowEvent
-from PySide6.QtWidgets import QWidget, QTreeWidgetItem, QFrame, QLabel, QHBoxLayout, QFrame, QSizePolicy
-from qfluentwidgets import (FluentIconBase, qrouter, FlowLayout, PushButton, ToolButton, ComboBox,
-                            TabCloseButtonDisplayMode, BodyLabel, SpinBox, BreadcrumbBar, SegmentedToggleToolWidget,
-                            FluentIcon)
+from PySide6.QtCore import Qt, QItemSelection
+# from PySide6.QtGui import QShowEvent
+from PySide6.QtWidgets import QWidget, QTreeWidgetItem
+from qfluentwidgets import (FluentIconBase, FlowLayout, ToolButton)
 
 from .ui.ui_code_view import Ui_CodeView
 from common import Style, Icon, Coder, PROJECT, PACKAGE
@@ -68,18 +66,18 @@ class CodeView(Ui_CodeView, QWidget):
         Style.VIEW_CODE.apply(self)
 
     def __checkGenSetting(self) -> bool:
-        if not os.path.isdir(PROJECT.toolchains_path):
+        if not os.path.isdir(PROJECT.toolchainsDir):
             return False
-        elif not os.path.isdir(PROJECT.hal_path):
+        elif not os.path.isdir(PROJECT.halDir):
             return False
         elif PROJECT.builder == "":
             return False
-        elif PROJECT.builder_version == "":
+        elif PROJECT.builderVersion == "":
             return False
 
-        if (not converters.ishex(PROJECT.default_heap_size)) and converters.ishex(PROJECT.summary.default_heap_size):
+        if (not converters.ishex(PROJECT.defaultHeapSize)) and converters.ishex(PROJECT.summary.defaultHeapSize):
             return False
-        elif not converters.ishex(PROJECT.default_stack_size) and converters.ishex(PROJECT.summary.default_stack_size):
+        elif not converters.ishex(PROJECT.defaultStackSize) and converters.ishex(PROJECT.summary.defaultStackSize):
             return False
 
         return True
@@ -94,7 +92,7 @@ class CodeView(Ui_CodeView, QWidget):
                 return
 
         coder = Coder()
-        self.codes = coder.dump(PROJECT.hal_path)
+        self.codes = coder.dump(PROJECT.halDir)
         tree = converters.paths2dict(self.codes)
 
         def traverseTree(tree: dict, top_item: QTreeWidgetItem, path: str):

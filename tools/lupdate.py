@@ -28,31 +28,31 @@ import subprocess, sys, os, glob, re, platform
 
 languages = ['zh_CN']
 
-root_dir = os.path.join(os.path.dirname(__file__), "..")
+rootDir = os.path.join(os.path.dirname(__file__), "..")
 
 if platform.system() == 'Windows':
-    lupdate_exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate.exe", recursive=True)
+    exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate.exe", recursive=True)
 else:
-    lupdate_exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate", recursive=True)
+    exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate", recursive=True)
 
-if len(lupdate_exes) > 0:
-    lupdate_exe = lupdate_exes[0]
-    py_files = glob.glob(f"{root_dir}/**/*.py", recursive=True)
-    ui_files = glob.glob(f"{root_dir}/**/*.ui", recursive=True)
-    src_files = []
+if len(exes) > 0:
+    exe = exes[0]
+    pyFiles = glob.glob(f"{rootDir}/**/*.py", recursive=True)
+    uiFiles = glob.glob(f"{rootDir}/**/*.ui", recursive=True)
+    srcFiles = []
 
-    for file in py_files:
+    for file in pyFiles:
         with open(file, "r", encoding="utf-8") as f:
             text = f.read()
             pattern = r'tr\((["\'])(.*?)\1\)'
             if re.search(pattern, text):
-                src_files.append(file)
+                srcFiles.append(file)
 
-    for file in ui_files:
-        src_files.append(file)
+    for file in uiFiles:
+        srcFiles.append(file)
 
     for lang in languages:
-        for file in src_files:
+        for file in srcFiles:
             name = os.path.basename(file)
             if name.endswith(".ui"):
                 folder = os.path.dirname(os.path.dirname(file))
@@ -61,7 +61,7 @@ if len(lupdate_exes) > 0:
             folder = os.path.join(folder, "i18n")
             if not os.path.isdir(folder):
                 os.makedirs(folder)
-            ts_file = os.path.join(folder, f"{os.path.basename(file)}.{lang}.ts")
-            subprocess.call([lupdate_exe, file, '-ts', ts_file])
+            tsFile = os.path.join(folder, f"{os.path.basename(file)}.{lang}.ts")
+            subprocess.call([exe, file, '-ts', tsFile])
 else:
     print("can not find lupdate")

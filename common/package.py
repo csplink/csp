@@ -28,29 +28,29 @@ from .database import Database
 
 
 class Package():
-    m_data = {}
+    __data = {}
 
     def __init__(self) -> None:
-        index = Database.get_package_index()
+        index = Database.getPackageIndex()
         if index is None:
-            self.m_data = {}
+            self.__data = {}
         else:
-            self.m_data = index
+            self.__data = index
 
     @property
     def hal(self) -> dict:
-        return self.m_data.get("hal", {})
+        return self.__data.get("hal", {})
 
     @property
     def toolchains(self) -> dict:
-        return self.m_data.get("toolchains", {})
+        return self.__data.get("toolchains", {})
 
     def path(self, type: str, name: str, version: str):
-        return self.m_data.get(type, {}).get(name, {}).get(version, "")
+        return self.__data.get(type, {}).get(name, {}).get(version, "")
 
     @property
     def origin(self) -> dict:
-        return self.m_data
+        return self.__data
 
 
 PACKAGE = Package()

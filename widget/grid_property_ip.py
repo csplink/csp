@@ -94,17 +94,17 @@ class EditorDelegate(TableItemDelegate):
 
 class GridPropertyIpModel(QAbstractTableModel):
 
-    m_pin_instance = ""
+    __pinInstance = ""
 
-    m_font = QFont('JetBrains Mono')
-    m_font.setPixelSize(12)
+    __font = QFont('JetBrains Mono')
+    __font.setPixelSize(12)
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.m_headers = [self.tr("Property"), self.tr("Value")]
-        self.m_pin_instance = PROJECT.summary.pinIp
+        self.__headers = [self.tr("Property"), self.tr("Value")]
+        self.__pinInstance = PROJECT.summary.pinIp
 
-        PROJECT.sig_grid_property_ip_triggered.connect(self.projectGridPropertyIpTriggered)
+        PROJECT.gridPropertyIpTriggered.connect(self.__on_project_gridPropertyIpTriggered)
 
     def rowCount(self, parent: QModelIndex) -> int:
         return len(g_data)
@@ -128,7 +128,7 @@ class GridPropertyIpModel(QAbstractTableModel):
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
-            return self.m_font
+            return self.__font
         elif role == Qt.ItemDataRole.TextAlignmentRole:  # 7
             return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
@@ -147,10 +147,10 @@ class GridPropertyIpModel(QAbstractTableModel):
         if role == Qt.ItemDataRole.EditRole:
             if g_data[index.row()].typeof == "string":
                 path = g_data[index.row()].path
-                PROJECT.set_config(path, value)
+                PROJECT.setConfig(path, value)
             elif g_data[index.row()].typeof == "enum":
                 path = g_data[index.row()].path
-                PROJECT.set_config(path, PROJECT.ip.iptr2(value))
+                PROJECT.setConfig(path, PROJECT.ip.iptr2(value))
                 g_data[index.row()].value = value
             return True
         else:
@@ -167,11 +167,11 @@ class GridPropertyIpModel(QAbstractTableModel):
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
-            return self.m_headers[section]
+            return self.__headers[section]
         else:
             return None
 
-    def projectGridPropertyIpTriggered(self, instance: str, value: str):
+    def __on_project_gridPropertyIpTriggered(self, instance: str, value: str):
         g_data.clear()
         signal = PROJECT.config(f"pin/{value}/signal", "")
         if signal == "":
@@ -188,7 +188,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             mode = cfg["mode"]
             mode_cfg = ip["modes"][mode]
 
-            if self.m_pin_instance == instance:
+            if self.__pinInstance == instance:
                 g_data.append(
                     PModel(property=self.tr("Name"),
                            path="",
@@ -227,16 +227,14 @@ class GridPropertyIpModel(QAbstractTableModel):
 
 class GridPropertyIp(Ui_GridPropertyIp, QWidget):
 
-    m_pin_instance = ""
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.m_tableView_propertyProxyModel = QSortFilterProxyModel(self)
-        self.m_model = GridPropertyIpModel(self)
-        self.m_tableView_propertyProxyModel.setSourceModel(self.m_model)
-        self.tableView_property.setModel(self.m_tableView_propertyProxyModel)
+        proxyModel = QSortFilterProxyModel(self)
+        model = GridPropertyIpModel(self)
+        proxyModel.setSourceModel(model)
+        self.tableView_property.setModel(proxyModel)
         self.tableView_property.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.tableView_property.verticalHeader().setVisible(False)
         self.tableView_property.setBorderVisible(True)

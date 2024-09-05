@@ -33,15 +33,15 @@ def ishex(string: str) -> bool:
 
 
 def paths2dict(paths: list[str], separator='/'):
-    path_dict = {}
+    pathDict = {}
     for path in paths:
         parts = path.strip().split(separator)
 
-        def update_dict(current_dict, key):
-            if key not in current_dict:
-                current_dict[key] = {}
-            return current_dict[key]
+        def updateDict(currentDict, key):
+            if key not in currentDict:
+                currentDict[key] = {}
+            return currentDict[key]
 
-        current_dict = reduce(update_dict, parts[:-1], path_dict)
-        current_dict[parts[-1]] = ""
-    return path_dict
+        currentDict = reduce(updateDict, parts[:-1], pathDict)
+        currentDict[parts[-1]] = ""
+    return pathDict

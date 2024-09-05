@@ -33,7 +33,7 @@ from .settings import REPOSITORY_INDEX_FILE, CONTRIBUTORS_FILE
 class Database():
 
     @staticmethod
-    def check_repository(repository: dict, path: str) -> bool:
+    def checkRepository(repository: dict, path: str) -> bool:
         with open("resource/database/schema/repository.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -44,23 +44,23 @@ class Database():
             raise exception
 
     @staticmethod
-    def get_repository_by_path(path: str) -> dict:
+    def getRepositoryByPath(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            Database.check_repository(repository, path)
+            Database.checkRepository(repository, path)
             return repository
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def get_repository() -> dict:
-        return Database.get_repository_by_path(f"resource/database/repository.yml")
+    def getRepository() -> dict:
+        return Database.getRepositoryByPath(f"resource/database/repository.yml")
 
     @staticmethod
-    def check_summary(summary: dict, path: str) -> bool:
+    def checkSummary(summary: dict, path: str) -> bool:
         with open("resource/database/schema/summary.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -71,23 +71,23 @@ class Database():
             raise exception
 
     @staticmethod
-    def get_summary_by_path(path: str) -> dict:
+    def getSummaryByPath(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            Database.check_summary(summary, path)
+            Database.checkSummary(summary, path)
             return summary
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def get_summary(vendor: str, name: str) -> dict:
-        return Database.get_summary_by_path(f"resource/database/summary/{vendor.lower()}/{name.lower()}.yml")
+    def getSummary(vendor: str, name: str) -> dict:
+        return Database.getSummaryByPath(f"resource/database/summary/{vendor.lower()}/{name.lower()}.yml")
 
     @staticmethod
-    def check_ip(ip: dict, path: str) -> bool:
+    def checkIp(ip: dict, path: str) -> bool:
         with open("resource/database/schema/ip.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -98,23 +98,23 @@ class Database():
             raise exception
 
     @staticmethod
-    def get_ip_by_path(path: str) -> dict:
+    def getIpByPath(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 ip = yaml.load(f.read(), Loader=yaml.FullLoader)
 
-            Database.check_ip(ip, path)
+            Database.checkIp(ip, path)
             return ip
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def get_ip(vendor: str, name: str) -> dict:
-        return Database.get_ip_by_path(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
+    def getIp(vendor: str, name: str) -> dict:
+        return Database.getIpByPath(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
 
     @staticmethod
-    def check_sdp(sdp: dict, path: str) -> bool:
+    def checkSdp(sdp: dict, path: str) -> bool:
         with open("resource/database/schema/sdp.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -125,18 +125,18 @@ class Database():
             raise exception
 
     @staticmethod
-    def get_sdp(path: str) -> dict:
+    def getSdp(path: str) -> dict:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 sdp = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.check_sdp(sdp, path)
+            Database.checkSdp(sdp, path)
             return sdp
         else:
             print(f"{path} is not file!")
             return {}
 
     @staticmethod
-    def check_package_index(index: dict, path: str) -> bool:
+    def checkPackageIndex(index: dict, path: str) -> bool:
         with open("resource/database/schema/package_index.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -147,11 +147,11 @@ class Database():
             raise exception
 
     @staticmethod
-    def get_package_index() -> dict:
+    def getPackageIndex() -> dict:
         if os.path.isfile(REPOSITORY_INDEX_FILE):
             with open(REPOSITORY_INDEX_FILE, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.check_package_index(index, REPOSITORY_INDEX_FILE)
+            Database.checkPackageIndex(index, REPOSITORY_INDEX_FILE)
             return index
         else:
             with open(REPOSITORY_INDEX_FILE, 'w') as f:
@@ -159,7 +159,7 @@ class Database():
             return {}
 
     @staticmethod
-    def check_contributors(contributors: list, path: str) -> bool:
+    def checkContributors(contributors: list, path: str) -> bool:
         with open("resource/database/schema/contributors.yml", 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
@@ -170,17 +170,17 @@ class Database():
             raise exception
 
     @staticmethod
-    def get_contributors() -> dict:
+    def getContributors() -> dict:
         if os.path.isfile(CONTRIBUTORS_FILE):
             with open(CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
                 contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.check_contributors(contributors, CONTRIBUTORS_FILE)
+            Database.checkContributors(contributors, CONTRIBUTORS_FILE)
             return contributors
         else:
             return []
 
 
 if __name__ == '__main__':
-    Database.get_repository()
-    Database.get_summary("geehy", "apm32f103zet6")
-    Database.get_ip("geehy", "apm32f103_gpio")
+    Database.getRepository()
+    Database.getSummary("geehy", "apm32f103zet6")
+    Database.getIp("geehy", "apm32f103_gpio")

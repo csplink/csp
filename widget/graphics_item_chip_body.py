@@ -34,18 +34,18 @@ class GraphicsItemChipBody(QGraphicsObject):
     def __init__(self, width: int, height: int, name: str, vendor: str, package: str, parent=None):
         super().__init__(parent=parent)
 
-        self.m_width = int(width)
-        self.m_height = int(height)
-        self.m_name = name.upper()
-        self.m_vendor = vendor
-        self.m_package = package.upper()
-        self.m_margin = 6
+        self.width = int(width)
+        self.height = int(height)
+        self.name = name.upper()
+        self.vendor = vendor
+        self.package = package.upper()
+        self.margin = 6
 
-        self.m_font = QFont("JetBrains Mono", QFont.Weight.ExtraBold)
-        self.m_font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
+        self.font = QFont("JetBrains Mono", QFont.Weight.ExtraBold)
+        self.font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
 
     def boundingRect(self) -> QRectF:
-        return QRectF(0, 0, self.m_width, self.m_height)
+        return QRectF(0, 0, self.width, self.height)
 
     def shape(self) -> QPainterPath:
         path = QPainterPath()
@@ -58,40 +58,38 @@ class GraphicsItemChipBody(QGraphicsObject):
         # draw background
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setBrush(QColor(50, 50, 50))
-        painter.drawRect(0, 0, self.m_width, self.m_height)
+        painter.drawRect(0, 0, self.width, self.height)
 
         # draw pin1 circle
         painter.setBrush(QColor(220, 230, 240))
-        painter.drawEllipse(QRectF(self.m_margin * 2, self.m_margin * 2, 20.0, 20.0))
+        painter.drawEllipse(QRectF(self.margin * 2, self.margin * 2, 20.0, 20.0))
 
         # draw text
-        self.m_font.setStyle(QFont.Style.StyleNormal)
-        self.m_font.setPointSize(int(self.m_width / 20))
+        self.font.setStyle(QFont.Style.StyleNormal)
+        self.font.setPointSize(int(self.width / 20))
         painter.setPen(QPen(QColor(255, 255, 255), 1))
-        painter.setFont(self.m_font)
-        fm = QFontMetrics(self.m_font)
-        pixels = fm.horizontalAdvance(self.m_name)
-        painter.drawText(QPointF((self.m_width - pixels) / 2, self.m_height / 2), self.m_name)
+        painter.setFont(self.font)
+        fm = QFontMetrics(self.font)
+        pixels = fm.horizontalAdvance(self.name)
+        painter.drawText(QPointF((self.width - pixels) / 2, self.height / 2), self.name)
 
-        self.m_font.setPointSize(int(self.m_width / 30))
-        self.m_font.setStyle(QFont.Style.StyleItalic)
-        painter.setFont(self.m_font)
+        self.font.setPointSize(int(self.width / 30))
+        self.font.setStyle(QFont.Style.StyleItalic)
+        painter.setFont(self.font)
 
-        pixels = int(fm.horizontalAdvance(self.m_package) * 0.8)
-        painter.drawText(QPointF((self.m_width - pixels) / 2, self.m_height * (0.9)), self.m_package)
+        pixels = int(fm.horizontalAdvance(self.package) * 0.8)
+        painter.drawText(QPointF((self.width - pixels) / 2, self.height * (0.9)), self.package)
 
         height = fm.height()
-        pixels = int(fm.horizontalAdvance(self.m_vendor) * 0.8)
-        painter.drawText(QPointF((self.m_width - pixels) / 2, self.m_height * (0.9) - height - 10), self.m_vendor)
+        pixels = int(fm.horizontalAdvance(self.vendor) * 0.8)
+        painter.drawText(QPointF((self.width - pixels) / 2, self.height * (0.9) - height - 10), self.vendor)
 
         # draw border (with margin)
-        painter.drawLine(QLineF(self.m_margin, self.m_margin, self.m_margin, self.m_height - self.m_margin))
-        painter.drawLine(QLineF(self.m_margin, self.m_margin, self.m_width - self.m_margin, self.m_margin))
+        painter.drawLine(QLineF(self.margin, self.margin, self.margin, self.height - self.margin))
+        painter.drawLine(QLineF(self.margin, self.margin, self.width - self.margin, self.margin))
         painter.drawLine(
-            QLineF(self.m_width - self.m_margin, self.m_height - self.m_margin, self.m_margin,
-                   self.m_height - self.m_margin))
+            QLineF(self.width - self.margin, self.height - self.margin, self.margin, self.height - self.margin))
         painter.drawLine(
-            QLineF(self.m_width - self.m_margin, self.m_height - self.m_margin, self.m_width - self.m_margin,
-                   self.m_margin))
+            QLineF(self.width - self.margin, self.height - self.margin, self.width - self.margin, self.margin))
 
         painter.setBrush(brush)

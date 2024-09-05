@@ -2,10 +2,10 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>view_chip</name>
+    <name>StartupView</name>
     <message>
-        <location filename="../ui/view_chip.ui" line="14"/>
-        <source>view_chip</source>
+        <location filename="../ui/startup_view.ui" line="14"/>
+        <source>StartupView</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
