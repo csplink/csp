@@ -55,7 +55,7 @@ class ChipView(Ui_ChipView, QWidget):
         self.splitter_2.setCollapsible(1, False)
 
         self.zoomInBtn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
-        self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.resize())
+        self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.rescale())
         self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoomOut(6))
 
         scene = QGraphicsScene(self.graphicsView)
@@ -71,6 +71,6 @@ class ChipView(Ui_ChipView, QWidget):
                 for item in items:
                     scene.addItem(item)
         self.graphicsView.setScene(scene)
-        self.graphicsView.resize()
+        self.graphicsView.rescale()
 
         Style.VIEW_CHIP.apply(self)

@@ -43,48 +43,52 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.lineedit_min_heap_size.setValidator(QRegularExpressionValidator(QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
-        self.lineedit_min_stack_size.setValidator(QRegularExpressionValidator(
-            QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
+        # self.fileCard.setFixedWidth(300)
+        # self.fileTree.header().setVisible(False)
+        # self.fileTree.selectionModel().selectionChanged.connect(self.__on_fileTree_selectionChanged)
 
-        # linker default heap size
-        if converters.ishex(PROJECT.defaultHeapSize):
-            self.lineedit_min_heap_size.setText(PROJECT.defaultHeapSize)
-        elif converters.ishex(PROJECT.summary.defaultHeapSize):
-            self.lineedit_min_heap_size.setText(PROJECT.summary.defaultHeapSize)
-        else:
-            self.lineedit_min_heap_size.setEnabled(False)
+        # self.lineedit_min_heap_size.setValidator(QRegularExpressionValidator(QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
+        # self.lineedit_min_stack_size.setValidator(QRegularExpressionValidator(
+        #     QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
 
-        # linker default stack size
-        if converters.ishex(PROJECT.defaultStackSize):
-            self.lineedit_min_stack_size.setText(PROJECT.defaultStackSize)
-        elif PROJECT.summary.defaultStackSize != "":
-            self.lineedit_min_stack_size.setText(PROJECT.summary.defaultStackSize)
-        else:
-            self.lineedit_min_stack_size.setEnabled(False)
+        # # linker default heap size
+        # if converters.ishex(PROJECT.defaultHeapSize):
+        #     self.lineedit_min_heap_size.setText(PROJECT.defaultHeapSize)
+        # elif converters.ishex(PROJECT.summary.defaultHeapSize):
+        #     self.lineedit_min_heap_size.setText(PROJECT.summary.defaultHeapSize)
+        # else:
+        #     self.lineedit_min_heap_size.setEnabled(False)
 
-        # isCopyLibrary checkBox
-        self.checkbox_is_copy_library.setChecked(PROJECT.copyLibrary)
+        # # linker default stack size
+        # if converters.ishex(PROJECT.defaultStackSize):
+        #     self.lineedit_min_stack_size.setText(PROJECT.defaultStackSize)
+        # elif PROJECT.summary.defaultStackSize != "":
+        #     self.lineedit_min_stack_size.setText(PROJECT.summary.defaultStackSize)
+        # else:
+        #     self.lineedit_min_stack_size.setEnabled(False)
 
-        # useToolchainsPackage checkBox
-        self.checkbox_use_toolchains_package.setChecked(PROJECT.useToolchainsPackage)
-        self.widget_toolchains_package.setEnabled(PROJECT.useToolchainsPackage)
-        self.checkbox_use_toolchains_package.stateChanged.connect(
-            self.__on_checkbox_use_toolchains_package_state_changed)
+        # # isCopyLibrary checkBox
+        # self.checkbox_is_copy_library.setChecked(PROJECT.copyLibrary)
 
-        self.btn_package_manager.setIcon(Icon.BOX)
-        self.btn_toolchains_manager.setIcon(Icon.BOX)
+        # # useToolchainsPackage checkBox
+        # self.checkbox_use_toolchains_package.setChecked(PROJECT.useToolchainsPackage)
+        # self.widget_toolchains_package.setEnabled(PROJECT.useToolchainsPackage)
+        # self.checkbox_use_toolchains_package.stateChanged.connect(
+        #     self.__on_checkbox_use_toolchains_package_state_changed)
 
-        self.lineedit_hal_path.textChanged.connect(self.__on_lineedit_hal_path_text_changed)
-        self.lineedit_toolchains_path.textChanged.connect(self.__on_lineedit_toolchains_path_text_changed)
+        # self.btn_package_manager.setIcon(Icon.BOX)
+        # self.btn_toolchains_manager.setIcon(Icon.BOX)
 
-        # hal choose
-        self.__hal_init()
+        # self.lineedit_hal_path.textChanged.connect(self.__on_lineedit_hal_path_text_changed)
+        # self.lineedit_toolchains_path.textChanged.connect(self.__on_lineedit_toolchains_path_text_changed)
 
-        # builder choose
-        self.__builder_init()
+        # # hal choose
+        # self.__hal_init()
 
-        self.setMinimumWidth(600)
+        # # builder choose
+        # self.__builder_init()
+
+        # self.setMinimumWidth(600)
 
     def __hal_init(self):
         hal = PROJECT.summary.hal
@@ -228,7 +232,7 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         self.lineedit_hal_path.setText(PACKAGE.path("hal", PROJECT.summary.hal, text))
 
     def __on_checkbox_use_toolchains_package_state_changed(self, state: int):
-        self.widget_toolchains_package.setEnabled(state == Qt.CheckState.Checked)
+        self.widget_toolchains_package.setEnabled(state == Qt.CheckState.Checked.value)
 
     def __on_lineedit_hal_path_text_changed(self, text: str):
         if not os.path.isdir(self.lineedit_hal_path.text()):

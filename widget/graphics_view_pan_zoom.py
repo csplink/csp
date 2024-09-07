@@ -60,13 +60,11 @@ class LabelMessageBox(MessageBoxBase):
 
 
 class GraphicsViewPanZoom(QGraphicsView):
-    sig_selected_item_clicked = Signal(QGraphicsItem)
-    __resizeCnt = 0
-    __key = 0
     MIN_SCALE = 0
     MAX_SCALE = 1000
     RESOLUTION = 50
     SCALE = (MIN_SCALE + MAX_SCALE) // 2
+    __key = 0
     pressed = False
 
     def __init__(self, parent=None):
@@ -93,7 +91,6 @@ class GraphicsViewPanZoom(QGraphicsView):
         INT_MAX = 2147483647
         INT_MIN = -2147483648
         self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
-        self.window().updateFrameless()
 
     def setupMatrix(self):
         scale = math.pow(2, (self.SCALE - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION)
@@ -164,9 +161,7 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
-        if self.__resizeCnt < 3:
-            self.__resizeCnt += 1
-            self.resize()
+        self.rescale()
 
     def keyPressEvent(self, event: QKeyEvent):
         super().keyPressEvent(event)
@@ -200,7 +195,7 @@ class GraphicsViewPanZoom(QGraphicsView):
 
         self.setupMatrix()
 
-    def resize(self):
+    def rescale(self):
         scene = self.scene()
 
         if scene != None:

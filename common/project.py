@@ -142,6 +142,7 @@ class Project(QObject):
     __path = ""
     __summary = None
     __ip = None
+    __valid = False
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -167,6 +168,10 @@ class Project(QObject):
     @property
     def ip(self) -> Summary:
         return self.__ip
+
+    @property
+    def valid(self) -> bool:
+        return self.__valid
 
     @vendor.setter
     def vendor(self, vendor: str):
@@ -345,7 +350,9 @@ class Project(QObject):
     def toolchainsDir(self) -> str:
         return PACKAGE.path("toolchains", self.toolchains, self.toolchainsVersion)
 
-    def load(self, path: str):
+    def load(self, path: str) -> bool:
+        self.__valid = False
+
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 map = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -358,19 +365,34 @@ class Project(QObject):
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)
-                return
+                return self.__valid
 
-            self.__summary.origin = Database.getSummary(self.vendor, self.targetChip)
+            try:
+                self.__summary.origin = Database.getSummary(self.vendor, self.targetChip)
+            except jsonschema.exceptions.ValidationError as exception:
+                print(f"invalid yaml {path}")
+                print(exception)
+                return self.__valid
 
-            ip = {}
-            for _, module_group in self.__summary.modules.items():
-                for name, module in module_group.items():
-                    if "ip" in module:
-                        ip[name] = Database.getIp(self.vendor, module["ip"])
-            self.__ip.origin = ip
+            try:
+                ip = {}
+                for _, module_group in self.__summary.modules.items():
+                    for name, module in module_group.items():
+                        if "ip" in module:
+                            ip[name] = Database.getIp(self.vendor, module["ip"])
+                self.__ip.origin = ip
+            except jsonschema.exceptions.ValidationError as exception:
+                print(f"invalid yaml {path}")
+                print(exception)
+                return self.__valid
+
+            self.__valid = True
+
+            return self.__valid
 
         else:
             print(f"{path} is not file!")
+            return self.__valid
 
     def dump(self):
         return yaml.dump(self.__data)

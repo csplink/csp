@@ -36,6 +36,7 @@ from qframelesswindow import (FramelessWindow)
 from common import SETTINGS, PROJECT
 
 from .ui.ui_startup_view import Ui_StartupView
+from .main_window import MainWindow
 
 from widget import ListContributors
 
@@ -60,9 +61,6 @@ class StartupView(Ui_StartupView, QWidget):
         self.cardCommand.viewLayout.addWidget(self.newChipProjectBtn)
         self.cardCommand.viewLayout.addWidget(self.openProjectBtn)
 
-        self.newChipProjectBtn.pressed.connect(self.__on_newChipProjectBtn_pressed)
-        self.openProjectBtn.pressed.connect(self.__on_openProjectBtn_pressed)
-
     def __initContributors(self):
         self.cardContributors.setTitle(self.tr("Contributors"))
         self.listContributors = ListContributors(self)
@@ -74,17 +72,6 @@ class StartupView(Ui_StartupView, QWidget):
     def __initMore(self):
         self.cardMore.setTitle(self.tr("More"))
 
-    def __on_newChipProjectBtn_pressed(self):
-        pass
-
-    def __on_openProjectBtn_pressed(self):
-        path, ok = QFileDialog.getOpenFileName(self,
-                                               self.tr('Open CSP project file'), SETTINGS.lastOpenProjectFolder.value,
-                                               self.tr('CSP project file (*.csp)'))
-        if ok:
-            SETTINGS.set(SETTINGS.lastOpenProjectFolder, os.path.dirname(path))
-            PROJECT.path = path
-
 
 class StartupWindow(FramelessWindow):
 
@@ -95,6 +82,9 @@ class StartupWindow(FramelessWindow):
         self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
         self.view = StartupView()
         self.vBoxLayout.addWidget(self.view)
+
+        self.view.newChipProjectBtn.pressed.connect(self.__on_newChipProjectBtn_pressed)
+        self.view.openProjectBtn.pressed.connect(self.__on_openProjectBtn_pressed)
 
         self.__initWindow()
 
@@ -108,3 +98,20 @@ class StartupWindow(FramelessWindow):
         desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
+
+    def __on_newChipProjectBtn_pressed(self):
+        pass
+
+    def __on_openProjectBtn_pressed(self):
+        path, ok = QFileDialog.getOpenFileName(self,
+                                               self.tr('Open CSP project file'), SETTINGS.lastOpenProjectFolder.value,
+                                               self.tr('CSP project file (*.csp)'))
+        if ok:
+            SETTINGS.set(SETTINGS.lastOpenProjectFolder, os.path.dirname(path))
+            PROJECT.path = path
+            if PROJECT.valid:
+                self.deleteLater()
+                self.hide()
+                window = MainWindow()
+                window.updateFrameless()
+                window.show()

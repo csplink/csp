@@ -28,12 +28,12 @@ import os
 
 from enum import Enum
 
-from PySide6.QtCore import QUrl, QPoint
+from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer
 from PySide6.QtGui import QIcon, QDesktopServices
 from PySide6.QtWidgets import QHBoxLayout, QApplication
 
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
-                            TransparentPushButton)
+                            TransparentPushButton, SplashScreen)
 
 from .chip_view import ChipView
 from .setting_view import SettingView
@@ -98,8 +98,8 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createProjectMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.actionGenerate = Action(self.tr('Generate'))
-        menu.addAction(self.actionGenerate)
+        self.generateAction = Action(self.tr('Generate'))
+        menu.addAction(self.generateAction)
 
         return menu
 
@@ -113,19 +113,24 @@ class MainWindow(MSFluentWindow):
     def __init__(self):
         super().__init__()
 
-        barTitle = CustomTitleBar(self)
-
-        self.updateFrameless()
-        self.setMicaEffectEnabled(False)
-        self.setTitleBar(barTitle)
+        self.__initWindow()
 
         self.viewChip = ChipView(self)
+
+        # ugly, because when opengl is created, the window will automatically hide
+        self.show()
+        loop = QEventLoop(self)
+        QTimer.singleShot(3000, loop.quit)  # splashScreen show at least 3s
+        QApplication.processEvents()
+
         self.viewCode = CodeView(self)
 
-        barTitle.actionGenerate.triggered.connect(lambda: self.__on_generate_clicked())
-
         self.__initNavigation()
-        self.__initWindow()
+
+        self.barTitle.generateAction.triggered.connect(lambda: self.__on_generate_clicked())
+
+        # loop.exec()
+        self.splashScreen.finish()
 
         # self.showMaximized()
 
@@ -159,6 +164,16 @@ class MainWindow(MSFluentWindow):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon('resource/images/logo.svg'))
         self.setWindowTitle('CSPLink')
+
+        self.barTitle = CustomTitleBar(self)
+        self.setTitleBar(self.barTitle)
+
+        self.updateFrameless()
+        self.setMicaEffectEnabled(False)
+
+        self.splashScreen = SplashScreen(self.windowIcon(), self)
+        self.splashScreen.setIconSize(QSize(106, 106))
+        self.splashScreen.raise_()
 
         desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()

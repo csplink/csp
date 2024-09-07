@@ -22,3 +22,9 @@ build-*
 
 # csplink
 resource/contributors
+
+#Nuitka-Scons
+*.dist
+*.onefile-build
+*.build
+*.exe
