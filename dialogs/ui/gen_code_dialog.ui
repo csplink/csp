@@ -43,21 +43,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <item>
-         <property name="text">
-          <string>Builder Settings</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Linker Settings</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Package Settings</string>
-         </property>
-        </item>
        </widget>
       </item>
      </layout>
@@ -121,7 +106,7 @@
                <number>9</number>
               </property>
               <item>
-               <widget class="BodyLabel" name="label_builder">
+               <widget class="BodyLabel" name="builderLabel">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -134,7 +119,7 @@
                </widget>
               </item>
               <item>
-               <widget class="ComboBox" name="combobox_builder"/>
+               <widget class="ComboBox" name="builderComboBox"/>
               </item>
              </layout>
             </item>
@@ -144,7 +129,7 @@
                <number>9</number>
               </property>
               <item>
-               <widget class="BodyLabel" name="label_builderVersion">
+               <widget class="BodyLabel" name="builderVersionLabel">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -157,7 +142,7 @@
                </widget>
               </item>
               <item>
-               <widget class="ComboBox" name="combobox_builder_version"/>
+               <widget class="ComboBox" name="builderVersionComboBox"/>
               </item>
              </layout>
             </item>
@@ -167,7 +152,7 @@
                <number>9</number>
               </property>
               <item>
-               <widget class="BodyLabel" name="label_toolchains">
+               <widget class="BodyLabel" name="toolchainsLabel">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -180,7 +165,7 @@
                </widget>
               </item>
               <item>
-               <widget class="ComboBox" name="combobox_toolchains"/>
+               <widget class="ComboBox" name="toolchainsCombobox"/>
               </item>
              </layout>
             </item>
@@ -190,7 +175,7 @@
                <number>9</number>
               </property>
               <item>
-               <widget class="BodyLabel" name="label_toolchainsVersion">
+               <widget class="BodyLabel" name="toolchainsVersionLabel">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -203,7 +188,7 @@
                </widget>
               </item>
               <item>
-               <widget class="ComboBox" name="combobox_toolchains_version"/>
+               <widget class="ComboBox" name="toolchainsVersionComboBox"/>
               </item>
              </layout>
             </item>

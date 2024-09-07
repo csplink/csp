@@ -43,9 +43,6 @@ class Ui_GenCodeDialog(object):
         self.verticalLayout_cardWidget_file = QVBoxLayout(self.settingListCard)
         self.verticalLayout_cardWidget_file.setObjectName(u"verticalLayout_cardWidget_file")
         self.settingList = ListWidget(self.settingListCard)
-        QListWidgetItem(self.settingList)
-        QListWidgetItem(self.settingList)
-        QListWidgetItem(self.settingList)
         self.settingList.setObjectName(u"settingList")
         sizePolicy.setHeightForWidth(self.settingList.sizePolicy().hasHeightForWidth())
         self.settingList.setSizePolicy(sizePolicy)
@@ -81,20 +78,20 @@ class Ui_GenCodeDialog(object):
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setSpacing(9)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_builder = BodyLabel(self.builderPage)
-        self.label_builder.setObjectName(u"label_builder")
+        self.builderLabel = BodyLabel(self.builderPage)
+        self.builderLabel.setObjectName(u"builderLabel")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.label_builder.sizePolicy().hasHeightForWidth())
-        self.label_builder.setSizePolicy(sizePolicy1)
+        sizePolicy1.setHeightForWidth(self.builderLabel.sizePolicy().hasHeightForWidth())
+        self.builderLabel.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_3.addWidget(self.label_builder)
+        self.horizontalLayout_3.addWidget(self.builderLabel)
 
-        self.combobox_builder = ComboBox(self.builderPage)
-        self.combobox_builder.setObjectName(u"combobox_builder")
+        self.builderComboBox = ComboBox(self.builderPage)
+        self.builderComboBox.setObjectName(u"builderComboBox")
 
-        self.horizontalLayout_3.addWidget(self.combobox_builder)
+        self.horizontalLayout_3.addWidget(self.builderComboBox)
 
 
         self.gridLayout_3.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
@@ -102,17 +99,17 @@ class Ui_GenCodeDialog(object):
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setSpacing(9)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.label_builderVersion = BodyLabel(self.builderPage)
-        self.label_builderVersion.setObjectName(u"label_builderVersion")
-        sizePolicy1.setHeightForWidth(self.label_builderVersion.sizePolicy().hasHeightForWidth())
-        self.label_builderVersion.setSizePolicy(sizePolicy1)
+        self.builderVersionLabel = BodyLabel(self.builderPage)
+        self.builderVersionLabel.setObjectName(u"builderVersionLabel")
+        sizePolicy1.setHeightForWidth(self.builderVersionLabel.sizePolicy().hasHeightForWidth())
+        self.builderVersionLabel.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_6.addWidget(self.label_builderVersion)
+        self.horizontalLayout_6.addWidget(self.builderVersionLabel)
 
-        self.combobox_builder_version = ComboBox(self.builderPage)
-        self.combobox_builder_version.setObjectName(u"combobox_builder_version")
+        self.builderVersionComboBox = ComboBox(self.builderPage)
+        self.builderVersionComboBox.setObjectName(u"builderVersionComboBox")
 
-        self.horizontalLayout_6.addWidget(self.combobox_builder_version)
+        self.horizontalLayout_6.addWidget(self.builderVersionComboBox)
 
 
         self.gridLayout_3.addLayout(self.horizontalLayout_6, 0, 1, 1, 1)
@@ -120,17 +117,17 @@ class Ui_GenCodeDialog(object):
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setSpacing(9)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.label_toolchains = BodyLabel(self.builderPage)
-        self.label_toolchains.setObjectName(u"label_toolchains")
-        sizePolicy1.setHeightForWidth(self.label_toolchains.sizePolicy().hasHeightForWidth())
-        self.label_toolchains.setSizePolicy(sizePolicy1)
+        self.toolchainsLabel = BodyLabel(self.builderPage)
+        self.toolchainsLabel.setObjectName(u"toolchainsLabel")
+        sizePolicy1.setHeightForWidth(self.toolchainsLabel.sizePolicy().hasHeightForWidth())
+        self.toolchainsLabel.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_5.addWidget(self.label_toolchains)
+        self.horizontalLayout_5.addWidget(self.toolchainsLabel)
 
-        self.combobox_toolchains = ComboBox(self.builderPage)
-        self.combobox_toolchains.setObjectName(u"combobox_toolchains")
+        self.toolchainsCombobox = ComboBox(self.builderPage)
+        self.toolchainsCombobox.setObjectName(u"toolchainsCombobox")
 
-        self.horizontalLayout_5.addWidget(self.combobox_toolchains)
+        self.horizontalLayout_5.addWidget(self.toolchainsCombobox)
 
 
         self.gridLayout_3.addLayout(self.horizontalLayout_5, 1, 0, 1, 1)
@@ -138,17 +135,17 @@ class Ui_GenCodeDialog(object):
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setSpacing(9)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.label_toolchainsVersion = BodyLabel(self.builderPage)
-        self.label_toolchainsVersion.setObjectName(u"label_toolchainsVersion")
-        sizePolicy1.setHeightForWidth(self.label_toolchainsVersion.sizePolicy().hasHeightForWidth())
-        self.label_toolchainsVersion.setSizePolicy(sizePolicy1)
+        self.toolchainsVersionLabel = BodyLabel(self.builderPage)
+        self.toolchainsVersionLabel.setObjectName(u"toolchainsVersionLabel")
+        sizePolicy1.setHeightForWidth(self.toolchainsVersionLabel.sizePolicy().hasHeightForWidth())
+        self.toolchainsVersionLabel.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_7.addWidget(self.label_toolchainsVersion)
+        self.horizontalLayout_7.addWidget(self.toolchainsVersionLabel)
 
-        self.combobox_toolchains_version = ComboBox(self.builderPage)
-        self.combobox_toolchains_version.setObjectName(u"combobox_toolchains_version")
+        self.toolchainsVersionComboBox = ComboBox(self.builderPage)
+        self.toolchainsVersionComboBox.setObjectName(u"toolchainsVersionComboBox")
 
-        self.horizontalLayout_7.addWidget(self.combobox_toolchains_version)
+        self.horizontalLayout_7.addWidget(self.toolchainsVersionComboBox)
 
 
         self.gridLayout_3.addLayout(self.horizontalLayout_7, 1, 1, 1, 1)
@@ -307,22 +304,11 @@ class Ui_GenCodeDialog(object):
 
     def retranslateUi(self, GenCodeDialog):
         GenCodeDialog.setWindowTitle(QCoreApplication.translate("GenCodeDialog", u"GenCodeDialog", None))
-
-        __sortingEnabled = self.settingList.isSortingEnabled()
-        self.settingList.setSortingEnabled(False)
-        ___qlistwidgetitem = self.settingList.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("GenCodeDialog", u"Builder Settings", None));
-        ___qlistwidgetitem1 = self.settingList.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("GenCodeDialog", u"Linker Settings", None));
-        ___qlistwidgetitem2 = self.settingList.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("GenCodeDialog", u"Package Settings", None));
-        self.settingList.setSortingEnabled(__sortingEnabled)
-
         self.useToolchainsPackageCheckbox.setText(QCoreApplication.translate("GenCodeDialog", u"Use Toolchains Package", None))
-        self.label_builder.setText(QCoreApplication.translate("GenCodeDialog", u"Builder", None))
-        self.label_builderVersion.setText(QCoreApplication.translate("GenCodeDialog", u"Builder Version", None))
-        self.label_toolchains.setText(QCoreApplication.translate("GenCodeDialog", u"Toolchains", None))
-        self.label_toolchainsVersion.setText(QCoreApplication.translate("GenCodeDialog", u"Toolchains Version", None))
+        self.builderLabel.setText(QCoreApplication.translate("GenCodeDialog", u"Builder", None))
+        self.builderVersionLabel.setText(QCoreApplication.translate("GenCodeDialog", u"Builder Version", None))
+        self.toolchainsLabel.setText(QCoreApplication.translate("GenCodeDialog", u"Toolchains", None))
+        self.toolchainsVersionLabel.setText(QCoreApplication.translate("GenCodeDialog", u"Toolchains Version", None))
         self.toolchainsPathLabel.setText(QCoreApplication.translate("GenCodeDialog", u"Toolchains Path", None))
 #if QT_CONFIG(tooltip)
         self.toolchainsManagerBtn.setToolTip(QCoreApplication.translate("GenCodeDialog", u"Package Manager", None))
