@@ -40,6 +40,7 @@ class Icon(FluentIconBase, Enum):
     SETTING = "settings-line"
     GENERATE = "ai-generate"
     C = "c"
+    CLOSE_LINE = "close-line"
     H = "h"
     CODE = "code-line"
     FOLDER_LIB_OPEN = "folder-lib-open"

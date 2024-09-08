@@ -30,7 +30,9 @@ from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtGui import (QRegularExpressionValidator)
 from PySide6.QtWidgets import QWidget, QListWidgetItem
 
-from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox)
+from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox, IconInfoBadge, InfoBadgePosition,
+                            CaptionLabel)
+from qfluentwidgets import FluentIcon as FIF
 
 from .ui.ui_gen_code_dialog import Ui_GenCodeDialog
 from common import PROJECT, PACKAGE, Coder, Icon
@@ -39,9 +41,21 @@ from utils import converters
 
 class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
 
+    __toolchainsPathLineEditIconInfoBadge = None
+    __halPathLineEditIconInfoBadge = None
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+
+        self.splitter.setSizes([100, 300])
+
+        self.__toolchainsPathLineEditIconInfoBadge = self.__setErrorState(self.__toolchainsPathLineEditIconInfoBadge,
+                                                                          self.toolchainsPathLineEdit,
+                                                                          self.tr("The Path is not directory"))
+        self.__halPathLineEditIconInfoBadge = self.__setErrorState(self.__halPathLineEditIconInfoBadge,
+                                                                   self.halPathLineEdit,
+                                                                   self.tr("The Path is not directory"))
 
         self.__settingListInit()
         self.__builderSettingInit()
@@ -50,18 +64,26 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
 
     def __settingListInit(self):
         self.settingStackedMap = {
-            self.tr("Builder Settings"): 0,
-            self.tr("Linker Settings"): 1,
-            self.tr("Package Settings"): 2
+            self.tr("Builder Settings"): {
+                "index": 0,
+                "errorCount": 0,
+            },
+            self.tr("Linker Settings"): {
+                "index": 1,
+                "errorCount": 0,
+            },
+            self.tr("Package Settings"): {
+                "index": 2,
+                "errorCount": 0,
+            },
         }
-
-        self.settingListCard.setFixedWidth(300)
 
         for key in self.settingStackedMap.keys():
             item = QListWidgetItem(key)
             self.settingList.addItem(item)
+        item.setIcon(FIF.CANCEL_MEDIUM.icon())
 
-        self.settingList.currentTextChanged.connect(self.__on_settingList_currentTextChanged)
+        # self.settingList.currentTextChanged.connect(self.__on_settingList_currentTextChanged)
 
         self.settingList.setCurrentRow(0)
 
@@ -242,19 +264,38 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
         self.widget_toolchains_package.setEnabled(state == Qt.CheckState.Checked.value)
 
     def __on_halPathLineEdit_textChanged(self, text: str):
-        if not os.path.isdir(self.halPathLineEdit.text()):
-            self.halFolderInvalidLabel.show()
+        if not os.path.isdir(text):
+            message = self.tr("The Path is not directory")
         else:
-            self.halFolderInvalidLabel.hide()
+            message = ""
+        self.__halPathLineEditIconInfoBadge = self.__setErrorState(self.__halPathLineEditIconInfoBadge,
+                                                                   self.halPathLineEdit, message)
 
     def __on_toolchainsPathLineEdit_text_changed(self, text: str):
-        if not os.path.isdir(self.toolchainsPathLineEdit.text()):
-            self.toolchainsFolderInvalidLabel.show()
+        if not os.path.isdir(text):
+            message = self.tr("The Path is not directory")
         else:
-            self.toolchainsFolderInvalidLabel.hide()
+            message = ""
+        self.__toolchainsPathLineEditIconInfoBadge = self.__setErrorState(self.__toolchainsPathLineEditIconInfoBadge,
+                                                                          self.toolchainsPathLineEdit, message)
 
     def __on_settingList_currentTextChanged(self, text: str):
-        self.settingStackedWidget.setCurrentIndex(self.settingStackedMap.get(text, -1))
+        self.settingStackedWidget.setCurrentIndex(self.settingStackedMap[text]["index"])
+
+    def __setErrorState(self, infoBadge, target: QWidget, message: str):
+        if message != "":
+            if infoBadge == None:
+                infoBadge = IconInfoBadge.error(icon=FIF.CANCEL_MEDIUM,
+                                                parent=target.parent(),
+                                                target=target,
+                                                position=InfoBadgePosition.TOP_RIGHT)
+                target.setToolTip(message)
+        else:
+            if infoBadge != None:
+                infoBadge.deleteLater()
+                infoBadge.hide()
+                infoBadge = None
+        return infoBadge
 
 
 class GenCodeDialog(MessageBoxBase):

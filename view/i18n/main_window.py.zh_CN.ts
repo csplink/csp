@@ -37,35 +37,35 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main_window.py" line="140"/>
+        <location filename="../main_window.py" line="145"/>
         <source>Generate</source>
         <translation>生成</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="148"/>
-        <location filename="../main_window.py" line="169"/>
+        <location filename="../main_window.py" line="153"/>
+        <location filename="../main_window.py" line="184"/>
         <source>Sponsor</source>
         <translation>赞助</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="153"/>
+        <location filename="../main_window.py" line="158"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="171"/>
+        <location filename="../main_window.py" line="186"/>
         <source>The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!</source>
         <translation>csplink项目是个人开源项目，它们的开发需要您的帮助。
 如果你想支持csplink的发展，欢迎为其捐赠，支持它的发展！</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="172"/>
+        <location filename="../main_window.py" line="187"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="173"/>
+        <location filename="../main_window.py" line="188"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
