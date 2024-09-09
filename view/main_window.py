@@ -115,7 +115,7 @@ class MainWindow(MSFluentWindow):
 
         self.__initWindow()
 
-        self.viewChip = ChipView(self)
+        self.chipView = ChipView(self)
 
         # ugly, because when opengl is created, the window will automatically hide
         self.show()
@@ -123,7 +123,8 @@ class MainWindow(MSFluentWindow):
         QTimer.singleShot(3000, loop.quit)  # splashScreen show at least 3s
         QApplication.processEvents()
 
-        self.viewCode = CodeView(self)
+        self.codeView = CodeView(self)
+        self.settingView = SettingView(self)
 
         self.__initNavigation()
 
@@ -135,9 +136,9 @@ class MainWindow(MSFluentWindow):
         # self.showMaximized()
 
     def __initNavigation(self):
-        self.addSubInterface(self.viewChip, Icon.CPU, 'Chip', Icon.CPU)
-        btnCode = self.addSubInterface(self.viewCode, Icon.CODE, 'Code', Icon.CODE)
-        btnCode.clicked.connect(lambda: self.viewCode.flush())
+        self.addSubInterface(self.chipView, Icon.CPU, 'Chip', Icon.CPU)
+        btnCode = self.addSubInterface(self.codeView, Icon.CODE, 'Code', Icon.CODE)
+        btnCode.clicked.connect(lambda: self.codeView.flush())
 
         self.navigationInterface.addItem(
             routeKey='Generate',
@@ -155,18 +156,18 @@ class MainWindow(MSFluentWindow):
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
-        self.addSubInterface(SettingView(self), Icon.SETTING, self.tr('Settings'), Icon.SETTING,
+        self.addSubInterface(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.viewChip.objectName())
+        self.navigationInterface.setCurrentItem(self.chipView.objectName())
 
     def __initWindow(self):
+        self.barTitle = CustomTitleBar(self)
+        self.setTitleBar(self.barTitle)
+
         self.resize(1100, 750)
         self.setWindowIcon(QIcon('resource/images/logo.svg'))
         self.setWindowTitle('CSPLink')
-
-        self.barTitle = CustomTitleBar(self)
-        self.setTitleBar(self.barTitle)
 
         self.updateFrameless()
         self.setMicaEffectEnabled(False)

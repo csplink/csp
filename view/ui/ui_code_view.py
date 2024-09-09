@@ -36,9 +36,6 @@ class Ui_CodeView(object):
         self.verticalLayout_cardWidget_file = QVBoxLayout(self.fileCard)
         self.verticalLayout_cardWidget_file.setObjectName(u"verticalLayout_cardWidget_file")
         self.fileTree = TreeWidget(self.fileCard)
-        __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setText(0, u"1");
-        self.fileTree.setHeaderItem(__qtreewidgetitem)
         self.fileTree.setObjectName(u"fileTree")
 
         self.verticalLayout_cardWidget_file.addWidget(self.fileTree)

@@ -74,6 +74,7 @@ class Settings(QConfig):
     # style. overloading the parent class
     themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
     themeColor = ColorConfigItem("Style", "ThemeColor", '#009faa')
+    alertColor = ColorConfigItem("Style", "AlertColor", '#c04851')
 
     # misc
     lastOpenProjectFolder = ConfigItem(

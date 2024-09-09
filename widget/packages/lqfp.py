@@ -44,7 +44,7 @@ class LQFP():
         pins = PROJECT.summary.pins
         pins = dict(sorted(pins.items(), key=lambda d: d[1]["position"], reverse=False))
         count = len(pins)
-        num = count / 4
+        num = count // 4
         items = []
 
         item = GraphicsItemChipBody(self.getBodyLength(num), self.getBodyLength(num), name, vendor, f"LQFP{count}")

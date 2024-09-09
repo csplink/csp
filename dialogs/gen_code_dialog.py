@@ -83,7 +83,7 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
             self.settingList.addItem(item)
         item.setIcon(FIF.CANCEL_MEDIUM.icon())
 
-        # self.settingList.currentTextChanged.connect(self.__on_settingList_currentTextChanged)
+        self.settingList.currentTextChanged.connect(self.__on_settingList_currentTextChanged)
 
         self.settingList.setCurrentRow(0)
 

@@ -32,6 +32,7 @@ from PySide6.QtWidgets import QWidget, QTreeWidgetItem
 from qfluentwidgets import (FluentIconBase, FlowLayout, ToolButton)
 
 from .ui.ui_code_view import Ui_CodeView
+
 from common import Style, Icon, Coder, PROJECT, PACKAGE
 from widget import CHighlighter
 from dialogs import GenCodeDialog

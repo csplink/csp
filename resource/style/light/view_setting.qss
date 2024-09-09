@@ -1,13 +1,8 @@
-SettingInterface, #widget_scroll {
-    background-color: transparent;
+QWidget#widgetScroll {
+  background-color: transparent;
 }
 
-QScrollArea {
-    background-color: transparent;
-    border: none;
-}
-
-QLabel#label_setting {
-    font: 33px 'Microsoft YaHei Light';
-    background-color: transparent;
+QLabel#settingLabel {
+  font: 33px "Microsoft YaHei Light";
+  background-color: transparent;
 }
