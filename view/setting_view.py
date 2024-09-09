@@ -26,8 +26,8 @@
 
 from typing import Union
 
-from PySide6.QtCore import Qt, QUrl, QItemSelection
-from PySide6.QtGui import QDesktopServices
+from PySide6.QtCore import Qt, QUrl, QItemSelection, QRegularExpression
+from PySide6.QtGui import QDesktopServices, QRegularExpressionValidator
 from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
 
 from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
@@ -37,6 +37,7 @@ from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingC
 from .ui.ui_setting_view import Ui_SettingView
 
 from common import (SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style, Icon, PROJECT)
+from utils import converters
 
 
 class SystemSettingView(ScrollArea):
@@ -213,24 +214,43 @@ class GenerateSettingView(ScrollArea):
         self.expandLayout = ExpandLayout(self.widgetScroll)
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(36, 10, 36, 0)
-        self.expandLayout.addWidget(self.groupLinker)
+
+        if self.groupLinker != None: self.expandLayout.addWidget(self.groupLinker)
 
         self.enableTransparentBackground()
 
     def __createLinkerGroup(self) -> SettingCardGroup:
+        if converters.ishex(PROJECT.defaultHeapSize):
+            defaultHeapSize = PROJECT.defaultHeapSize
+        elif converters.ishex(PROJECT.summary.defaultHeapSize):
+            defaultHeapSize = PROJECT.summary.defaultHeapSize
+        else:
+            return None
+
+        if converters.ishex(PROJECT.defaultStackSize):
+            defaultStackSize = PROJECT.defaultStackSize
+        elif converters.ishex(PROJECT.summary.defaultStackSize):
+            defaultStackSize = PROJECT.summary.defaultStackSize
+        else:
+            return None
+
         group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
 
-        self.minHeapLineEditCard = SettingCard(Icon.FOLDER, self.tr("Minimum heap size"), PROJECT.defaultHeapSize,
-                                               group)
-        self.minHeapLineEdit = LineEdit()
-        self.minHeapLineEditCard.hBoxLayout.addWidget(self.minHeapLineEdit, 0, Qt.AlignmentFlag.AlignRight)
-        self.minHeapLineEditCard.hBoxLayout.addSpacing(16)
-        # self.button.clicked.connect(self.clicked)
-        # self.databaseFolderCard.clicked.connect(self.__on_cardDatabaseFolder_clicked)
+        self.defaultHeapLineEditCard = SettingCard(Icon.FOLDER, self.tr("Minimum heap size"), defaultHeapSize, group)
+        self.defaultHeapLineEdit = LineEdit()
+        self.defaultHeapLineEdit.setValidator(QRegularExpressionValidator(QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
+        self.defaultHeapLineEdit.setText(defaultHeapSize)
+        self.defaultHeapLineEdit.textChanged.connect(self.__on_defaultHeapLineEdit_textChanged)
+        PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
+        self.defaultHeapLineEditCard.hBoxLayout.addWidget(self.defaultHeapLineEdit, 0, Qt.AlignmentFlag.AlignRight)
+        self.defaultHeapLineEditCard.hBoxLayout.addSpacing(16)
 
-        group.addSettingCard(self.minHeapLineEditCard)
+        group.addSettingCard(self.defaultHeapLineEditCard)
 
         return group
+
+    def __on_defaultHeapLineEdit_textChanged(self, text: str):
+        PROJECT.defaultHeapSize = text
 
 
 class SettingView(Ui_SettingView, QWidget):

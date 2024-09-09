@@ -196,9 +196,8 @@ class Project(QObject):
         self.__data["name"] = name
         self.saveTmp()
 
-    # gen
-
-    # gen/copyLibrary
+    # gen --------------------------------------------------------------------------------------------------------------
+    # gen/copyLibrary ----------------------------------------------------------
     copyLibraryChanged = Signal(bool)
 
     @property
@@ -213,14 +212,25 @@ class Project(QObject):
         self.copyLibraryChanged.emit(is_copy_library)
         self.saveTmp()
 
+    # gen/defaultHeapSize ------------------------------------------------------
+
+    defaultHeapSizeChanged = Signal(str)
+
     @property
     def defaultHeapSize(self) -> str:
         return self.__data.get("gen", {}).get("linker", {}).get("defaultHeapSize", "")
 
     @defaultHeapSize.setter
     def defaultHeapSize(self, size: str):
+        if self.defaultHeapSize == size:
+            return
         self.__data.setdefault("gen", {}).setdefault("linker", {})["defaultHeapSize"] = size
+        self.defaultHeapSizeChanged.emit(size)
         self.saveTmp()
+
+    # gen/defaultStackSize -----------------------------------------------------
+
+    defaultStackSizeChanged = Signal(str)
 
     @property
     def defaultStackSize(self) -> str:
@@ -228,7 +238,10 @@ class Project(QObject):
 
     @defaultStackSize.setter
     def defaultStackSize(self, size: str):
+        if self.defaultStackSize == size:
+            return
         self.__data.setdefault("gen", {}).setdefault("linker", {})["defaultStackSize"] = size
+        self.defaultStackSizeChanged.emit(size)
         self.saveTmp()
 
     # gen/useToolchainsPackage
