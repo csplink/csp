@@ -25,3 +25,5 @@
 #
 
 from .lqfp import LQFP
+
+__all__ = ["LQFP"]

@@ -24,20 +24,20 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
-from typing import Union
-
 from PySide6.QtCore import Qt, QUrl, QItemSelection, QRegularExpression
 from PySide6.QtGui import QDesktopServices, QRegularExpressionValidator
-from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
+from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem, QHBoxLayout
 
 from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
                             PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
-                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, SettingCard, LineEdit)
+                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, BodyLabel, ComboBox,
+                            ExpandGroupSettingCard)
 
 from .ui.ui_setting_view import Ui_SettingView
 
 from common import (SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style, Icon, PROJECT)
 from utils import converters
+from widget import LineEditPropertySettingCard, ComboBoxPropertySettingCard
 
 
 class SystemSettingView(ScrollArea):
@@ -190,6 +190,53 @@ class SystemSettingView(ScrollArea):
         self.databaseFolderCard.setContent(folder)
 
 
+class BuilderExpandGroupSettingCard(ExpandGroupSettingCard):
+
+    def __init__(self, parent=None):
+        super().__init__(Icon.HAMMER, self.tr("Builder"), self.tr("Builder Tools"), parent)
+
+        builder = PROJECT.summary.builder
+        builderList = builder.keys()
+        if len(builderList) == 0:
+            return None
+
+        if PROJECT.builder == "":
+            PROJECT.builder = builderList[0]
+        else:
+            if PROJECT.builder not in builderList:
+                title = self.tr('Warning')
+                content = self.tr("The builder %1 is not supported. Use default value '%2'").replace(
+                    "%1", PROJECT.builder).replace("%2", builderList[0])
+                message = MessageBox(title, content, self.window())
+                message.setContentCopyable(True)
+                message.exec()
+                PROJECT.builder = builderList[0]
+        #---------------------------------------------------------------------------------------------------------------
+        builderVersion = builder.get(self.builderComboBox.currentText(), {})
+        builderVersionList = builderVersion.keys()
+        # if len(builderVersionList) != 0:
+
+        #---------------------------------------------------------------------------------------------------------------
+        self.builderComboBox = ComboBox(self)
+        for v in builderList:
+            self.builderComboBox.addItem(v)
+        self.builderComboBox.setCurrentText(PROJECT.builder)
+        self.add(BodyLabel(self.tr("Builder")), self.builderComboBox)
+
+    def add(self, label, widget):
+        w = QWidget()
+        w.setFixedHeight(60)
+
+        layout = QHBoxLayout(w)
+        layout.setContentsMargins(48, 12, 48, 12)
+
+        layout.addWidget(label)
+        layout.addStretch(1)
+        layout.addWidget(widget)
+
+        self.addGroupWidget(w)
+
+
 class GenerateSettingView(ScrollArea):
 
     def __init__(self, parent=None):
@@ -210,14 +257,72 @@ class GenerateSettingView(ScrollArea):
         self.setWidgetResizable(True)
 
         self.groupLinker = self.__createLinkerGroup()
+        self.groupBuilder = self.__createBuilderGroup()
 
         self.expandLayout = ExpandLayout(self.widgetScroll)
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(36, 10, 36, 0)
 
         if self.groupLinker != None: self.expandLayout.addWidget(self.groupLinker)
+        if self.groupBuilder != None: self.expandLayout.addWidget(self.groupBuilder)
 
         self.enableTransparentBackground()
+
+    def __createBuilderGroup(self) -> SettingCardGroup:
+        builder = PROJECT.summary.builder
+        builderList = builder.keys()
+        if len(builderList) == 0:
+            return None
+
+        if PROJECT.builder == "":
+            PROJECT.builder = builderList[0]
+        else:
+            if PROJECT.builder not in builderList:
+                title = self.tr('Warning')
+                content = self.tr("The builder %1 is not supported. Use default value '%2'").replace(
+                    "%1", PROJECT.builder).replace("%2", builderList[0])
+                message = MessageBox(title, content, self.window())
+                message.setContentCopyable(True)
+                message.exec()
+                PROJECT.builder = builderList[0]
+        #---------------------------------------------------------------------------------------------------------------
+        builderVersion = builder.get(PROJECT.builder, {})
+        builderVersionList = builderVersion.keys()
+
+        if PROJECT.builderVersion == "":
+            PROJECT.builderVersion = builderVersionList[0]
+        else:
+            if PROJECT.builderVersion not in builderVersionList:
+                title = self.tr('Warning')
+                content = self.tr("The builder %1 is not supported. Use default value '%2'").replace(
+                    "%1", f"{PROJECT.builderVersion}@{PROJECT.builderVersion}").replace(
+                        "%2", f"{PROJECT.builderVersion}@{builderVersionList[0]}")
+                message = MessageBox(title, content, self.window())
+                message.setContentCopyable(True)
+                message.exec()
+                PROJECT.builderVersion = builderVersionList[0]
+
+        group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
+
+        #---------------------------------------------------------------------------------------------------------------
+        self.builderComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
+                                                                           title=self.tr("Builder Tools"),
+                                                                           value=PROJECT.builder,
+                                                                           values=builderList,
+                                                                           content=PROJECT.builder,
+                                                                           parent=group)
+        #---------------------------------------------------------------------------------------------------------------
+        self.builderVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
+                                                                                  title=self.tr("Builder Version"),
+                                                                                  value=PROJECT.builder,
+                                                                                  values=builderVersionList,
+                                                                                  content=PROJECT.builder,
+                                                                                  parent=group)
+
+        group.addSettingCard(self.builderComboBoxGroupSettingCard)
+        group.addSettingCard(self.builderVersionComboBoxGroupSettingCard)
+
+        return group
 
     def __createLinkerGroup(self) -> SettingCardGroup:
         if converters.ishex(PROJECT.defaultHeapSize):
@@ -226,31 +331,53 @@ class GenerateSettingView(ScrollArea):
             defaultHeapSize = PROJECT.summary.defaultHeapSize
         else:
             return None
-
+        #---------------------------------------------------------------------------------------------------------------
         if converters.ishex(PROJECT.defaultStackSize):
             defaultStackSize = PROJECT.defaultStackSize
         elif converters.ishex(PROJECT.summary.defaultStackSize):
             defaultStackSize = PROJECT.summary.defaultStackSize
         else:
             return None
+        #---------------------------------------------------------------------------------------------------------------
 
-        group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)
 
-        self.defaultHeapLineEditCard = SettingCard(Icon.FOLDER, self.tr("Minimum heap size"), defaultHeapSize, group)
-        self.defaultHeapLineEdit = LineEdit()
-        self.defaultHeapLineEdit.setValidator(QRegularExpressionValidator(QRegularExpression(R"(^0x[0-9A-Fa-f]+$)")))
-        self.defaultHeapLineEdit.setText(defaultHeapSize)
-        self.defaultHeapLineEdit.textChanged.connect(self.__on_defaultHeapLineEdit_textChanged)
+        #---------------------------------------------------------------------------------------------------------------
+        self.defaultHeapLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
+                                                                   title=self.tr("Default heap size"),
+                                                                   value=defaultHeapSize,
+                                                                   content=defaultHeapSize,
+                                                                   validator=R"(^0x[0-9A-Fa-f]+$)",
+                                                                   parent=group)
+        self.defaultHeapLineEditCard.textChanged.connect(self.__on_defaultHeapLineEditCard_textChanged)
         PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
-        self.defaultHeapLineEditCard.hBoxLayout.addWidget(self.defaultHeapLineEdit, 0, Qt.AlignmentFlag.AlignRight)
-        self.defaultHeapLineEditCard.hBoxLayout.addSpacing(16)
+        #---------------------------------------------------------------------------------------------------------------
+        self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
+                                                                    title=self.tr("Default stack size"),
+                                                                    value=defaultStackSize,
+                                                                    content=defaultStackSize,
+                                                                    validator=R"(^0x[0-9A-Fa-f]+$)",
+                                                                    parent=group)
+        self.defaultStackLineEditCard.textChanged.connect(self.__on_defaultStackLineEditCard_textChanged)
+        PROJECT.defaultStackSizeChanged.connect(lambda t: self.defaultStackLineEditCard.setContent(t))
+        #---------------------------------------------------------------------------------------------------------------
 
         group.addSettingCard(self.defaultHeapLineEditCard)
+        group.addSettingCard(self.defaultStackLineEditCard)
 
         return group
 
-    def __on_defaultHeapLineEdit_textChanged(self, text: str):
-        PROJECT.defaultHeapSize = text
+    def __on_defaultHeapLineEditCard_textChanged(self, text: str):
+        ishex = converters.ishex(text)
+        if ishex:
+            PROJECT.defaultHeapSize = text
+        self.defaultHeapLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
+
+    def __on_defaultStackLineEditCard_textChanged(self, text: str):
+        ishex = converters.ishex(text)
+        if ishex:
+            PROJECT.defaultStackSize = text
+        self.defaultStackLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
 
 
 class SettingView(Ui_SettingView, QWidget):

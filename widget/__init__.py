@@ -24,8 +24,20 @@
 # 2024-07-01     xqyjlj        initial version
 #
 
-from .highlighter import *
-from .packages import *
+__all__ = []
+
+from .highlighter import BaseHighlighter, CHighlighter
+
+__all__ += ["BaseHighlighter", "CHighlighter"]
+
+from .packages import LQFP
+
+__all__ += ["LQFP"]
+
+from .settings import ComboBoxPropertySettingCard, LineEditPropertySettingCard
+
+__all__ += ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard"]
+
 from .graphics_item_chip_body import GraphicsItemChipBody
 from .graphics_item_pin import GraphicsItemPin
 from .graphics_view_pan_zoom import GraphicsViewPanZoom
@@ -35,3 +47,14 @@ from .grid_property_ip import GridPropertyIp
 from .plain_text_edit_code import PlainTextEditCode
 from .tree_module import TreeModule
 from .list_contributors import ListContributors
+
+__all__ += [
+    "GraphicsItemChipBody",
+    "GraphicsItemPin",
+    "GraphicsViewPanZoom",
+    "GridModeIo",
+    "GridPropertyIp",
+    "PlainTextEditCode",
+    "TreeModule",
+    "ListContributors",
+]

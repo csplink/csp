@@ -159,7 +159,8 @@ class MainWindow(MSFluentWindow):
         self.addSubInterface(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.chipView.objectName())
+        self.navigationInterface.setCurrentItem(self.settingView.objectName())
+        self.switchTo(self.settingView)
 
     def __initWindow(self):
         self.barTitle = CustomTitleBar(self)

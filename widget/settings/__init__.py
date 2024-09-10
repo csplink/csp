@@ -21,10 +21,10 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-27     xqyjlj       initial version
+# 2024-09-10     xqyjlj       initial version
 #
 
-from .base_highlighter import BaseHighlighter
-from .c_highlighter import CHighlighter
+from .combo_box_property_setting_card import ComboBoxPropertySettingCard
+from .line_edit_property_setting_card import LineEditPropertySettingCard
 
-__all__ = ["BaseHighlighter", "CHighlighter"]
+__all__ = ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard"]
