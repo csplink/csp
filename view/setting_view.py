@@ -314,9 +314,9 @@ class GenerateSettingView(ScrollArea):
         #---------------------------------------------------------------------------------------------------------------
         self.builderVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
                                                                                   title=self.tr("Builder Version"),
-                                                                                  value=PROJECT.builder,
+                                                                                  value=PROJECT.builderVersion,
                                                                                   values=builderVersionList,
-                                                                                  content=PROJECT.builder,
+                                                                                  content=PROJECT.builderVersion,
                                                                                   parent=group)
 
         group.addSettingCard(self.builderComboBoxGroupSettingCard)
