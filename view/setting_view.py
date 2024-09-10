@@ -31,13 +31,13 @@ from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem, QHB
 from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
                             PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
                             CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, BodyLabel, ComboBox,
-                            ExpandGroupSettingCard)
+                            ExpandGroupSettingCard, ToolButton)
 
 from .ui.ui_setting_view import Ui_SettingView
 
 from common import (SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style, Icon, PROJECT)
 from utils import converters
-from widget import LineEditPropertySettingCard, ComboBoxPropertySettingCard
+from widget import LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard
 
 
 class SystemSettingView(ScrollArea):
@@ -190,53 +190,6 @@ class SystemSettingView(ScrollArea):
         self.databaseFolderCard.setContent(folder)
 
 
-class BuilderExpandGroupSettingCard(ExpandGroupSettingCard):
-
-    def __init__(self, parent=None):
-        super().__init__(Icon.HAMMER, self.tr("Builder"), self.tr("Builder Tools"), parent)
-
-        builder = PROJECT.summary.builder
-        builderList = builder.keys()
-        if len(builderList) == 0:
-            return None
-
-        if PROJECT.builder == "":
-            PROJECT.builder = builderList[0]
-        else:
-            if PROJECT.builder not in builderList:
-                title = self.tr('Warning')
-                content = self.tr("The builder %1 is not supported. Use default value '%2'").replace(
-                    "%1", PROJECT.builder).replace("%2", builderList[0])
-                message = MessageBox(title, content, self.window())
-                message.setContentCopyable(True)
-                message.exec()
-                PROJECT.builder = builderList[0]
-        #---------------------------------------------------------------------------------------------------------------
-        builderVersion = builder.get(self.builderComboBox.currentText(), {})
-        builderVersionList = builderVersion.keys()
-        # if len(builderVersionList) != 0:
-
-        #---------------------------------------------------------------------------------------------------------------
-        self.builderComboBox = ComboBox(self)
-        for v in builderList:
-            self.builderComboBox.addItem(v)
-        self.builderComboBox.setCurrentText(PROJECT.builder)
-        self.add(BodyLabel(self.tr("Builder")), self.builderComboBox)
-
-    def add(self, label, widget):
-        w = QWidget()
-        w.setFixedHeight(60)
-
-        layout = QHBoxLayout(w)
-        layout.setContentsMargins(48, 12, 48, 12)
-
-        layout.addWidget(label)
-        layout.addStretch(1)
-        layout.addWidget(widget)
-
-        self.addGroupWidget(w)
-
-
 class GenerateSettingView(ScrollArea):
 
     def __init__(self, parent=None):
@@ -258,6 +211,7 @@ class GenerateSettingView(ScrollArea):
 
         self.groupLinker = self.__createLinkerGroup()
         self.groupBuilder = self.__createBuilderGroup()
+        self.groupToolchains = self.__createToolchainsGroup()
 
         self.expandLayout = ExpandLayout(self.widgetScroll)
         self.expandLayout.setSpacing(28)
@@ -265,6 +219,7 @@ class GenerateSettingView(ScrollArea):
 
         if self.groupLinker != None: self.expandLayout.addWidget(self.groupLinker)
         if self.groupBuilder != None: self.expandLayout.addWidget(self.groupBuilder)
+        if self.groupToolchains != None: self.expandLayout.addWidget(self.groupToolchains)
 
         self.enableTransparentBackground()
 
@@ -301,6 +256,7 @@ class GenerateSettingView(ScrollArea):
                 message.setContentCopyable(True)
                 message.exec()
                 PROJECT.builderVersion = builderVersionList[0]
+        #---------------------------------------------------------------------------------------------------------------
 
         group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
 
@@ -364,6 +320,42 @@ class GenerateSettingView(ScrollArea):
 
         group.addSettingCard(self.defaultHeapLineEditCard)
         group.addSettingCard(self.defaultStackLineEditCard)
+
+        return group
+
+    def __createToolchainsGroup(self) -> SettingCardGroup:
+
+        group = SettingCardGroup(self.tr("Toolchains Settings"), self.widgetScroll)
+
+        #---------------------------------------------------------------------------------------------------------------
+        self.useToolchainsPackageSwitchSettingCard = SwitchPropertySettingCard(icon=Icon.FOLDER,
+                                                                               title=self.tr("Use Toolchains Package"),
+                                                                               value=PROJECT.useToolchainsPackage,
+                                                                               content="1111",
+                                                                               parent=group)
+
+        #---------------------------------------------------------------------------------------------------------------
+        self.toolchainsComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
+                                                                              title=self.tr("Toolchains"),
+                                                                              value=PROJECT.toolchains,
+                                                                              values=["2", "3"],
+                                                                              content=PROJECT.toolchains,
+                                                                              parent=group)
+        #---------------------------------------------------------------------------------------------------------------
+        self.toolchainsVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
+                                                                                     title=self.tr("Toolchains"),
+                                                                                     value=PROJECT.toolchains,
+                                                                                     values=["2", "3"],
+                                                                                     content=PROJECT.toolchains,
+                                                                                     parent=group)
+        self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.insertWidget(5, ToolButton())
+        self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.insertSpacing(6, 16)
+
+        #---------------------------------------------------------------------------------------------------------------
+
+        group.addSettingCard(self.useToolchainsPackageSwitchSettingCard)
+        group.addSettingCard(self.toolchainsComboBoxGroupSettingCard)
+        group.addSettingCard(self.toolchainsVersionComboBoxGroupSettingCard)
 
         return group
 

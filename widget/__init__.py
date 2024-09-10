@@ -34,9 +34,9 @@ from .packages import LQFP
 
 __all__ += ["LQFP"]
 
-from .settings import ComboBoxPropertySettingCard, LineEditPropertySettingCard
+from .settings import ComboBoxPropertySettingCard, LineEditPropertySettingCard, SwitchPropertySettingCard
 
-__all__ += ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard"]
+__all__ += ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard", "SwitchPropertySettingCard"]
 
 from .graphics_item_chip_body import GraphicsItemChipBody
 from .graphics_item_pin import GraphicsItemPin

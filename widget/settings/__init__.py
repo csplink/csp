@@ -26,5 +26,6 @@
 
 from .combo_box_property_setting_card import ComboBoxPropertySettingCard
 from .line_edit_property_setting_card import LineEditPropertySettingCard
+from .switch_property_setting_card import SwitchPropertySettingCard
 
-__all__ = ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard"]
+__all__ = ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard", "SwitchPropertySettingCard"]
