@@ -6,3 +6,4 @@ pyyaml
 jsonschema
 requests
 filetype
+py7zr

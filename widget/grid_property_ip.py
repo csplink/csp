@@ -34,7 +34,7 @@ from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
 from .ui.ui_grid_property_ip import Ui_GridPropertyIp
 
-from common import PROJECT, SETTINGS, Style
+from common import PROJECT, SETTINGS, Style, SIGNAL_BUS
 
 
 @attr.s
@@ -104,7 +104,7 @@ class GridPropertyIpModel(QAbstractTableModel):
         self.__headers = [self.tr("Property"), self.tr("Value")]
         self.__pinInstance = PROJECT.summary.pinIp
 
-        PROJECT.gridPropertyIpTriggered.connect(self.__on_project_gridPropertyIpTriggered)
+        SIGNAL_BUS.gridPropertyIpTriggered.connect(self.changePropertyIp)
 
     def rowCount(self, parent: QModelIndex) -> int:
         return len(g_data)
@@ -171,7 +171,7 @@ class GridPropertyIpModel(QAbstractTableModel):
         else:
             return None
 
-    def __on_project_gridPropertyIpTriggered(self, instance: str, value: str):
+    def changePropertyIp(self, instance: str, value: str):
         g_data.clear()
         signal = PROJECT.config(f"pin/{value}/signal", "")
         if signal == "":

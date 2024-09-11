@@ -25,11 +25,11 @@
 #
 
 from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QFont
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
 from .ui.ui_grid_mode_io import Ui_GridModeIo
-from common import PROJECT, SETTINGS
+from common import PROJECT, SETTINGS, SIGNAL_BUS
 
 
 class GridModeIoModel(QAbstractTableModel):
@@ -248,4 +248,4 @@ class GridModeIo(Ui_GridModeIo, QWidget):
         if len(indexes) > 0:
             index = indexes[0]
             name = str(index.data())
-            PROJECT.triggerGridPropertyIp(self.__instance, name)
+            SIGNAL_BUS.gridPropertyIpTriggered.emit(self.__instance, name)

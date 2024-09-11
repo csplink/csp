@@ -56,6 +56,8 @@ class Settings(QConfig):
 
     # folders
     databaseFolder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
+    repositoryFolder = ConfigItem("Folders", "Repository", "resource/repository", FolderValidator())
+    print(repositoryFolder.value)
 
     # system
     language = OptionsConfigItem("System",
@@ -90,9 +92,8 @@ HELP_URL = "https://csplink.top"
 REPO_URL = "https://github.com/csplink/csp"
 FEEDBACK_URL = "https://github.com/csplink/csp/issues"
 RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
-REPOSITORY_FOLDER = f"{os.getcwd()}/repository"
-REPOSITORY_INDEX_FILE = f"{os.getcwd()}/repository.index"
-CONTRIBUTORS_FILE = f"{os.getcwd()}/resource/contributors/contributors"
+REPOSITORY_INDEX_FILE = f"repository.index"
+CONTRIBUTORS_FILE = f"resource/contributors/contributors"
 PACKAGE_LIST_URL = "https://csplink.top"
 
 SETTINGS = Settings()

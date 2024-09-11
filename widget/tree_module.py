@@ -178,4 +178,4 @@ class TreeModule(Ui_TreeModule, QWidget):
                 module = str(index.data())
                 ip = PROJECT.ip.ip(module)
                 if "modeGrid" in ip:
-                    PROJECT.triggerGridMode(module, ip["modeGrid"])
+                    SIGNAL_BUS.gridModeTriggered.emit(module, ip["modeGrid"])

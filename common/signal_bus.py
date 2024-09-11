@@ -16,35 +16,22 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        grid_mode.py
+# @file        signal_bus.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-16     xqyjlj       initial version
+# 2024-09-11     xqyjlj       initial version
 #
 
-from enum import Enum
-
-from PySide6.QtWidgets import QWidget
-
-from .ui.ui_grid_mode import Ui_GridMode
-from common import SIGNAL_BUS
+from PySide6.QtCore import QObject, Signal
 
 
-class StackedWidgetIndex(Enum):
-    GRID_MODE_IO = 0
+class SignalBus(QObject):
+    """ Signal bus """
+
+    gridPropertyIpTriggered = Signal(str, str)
+    gridModeTriggered = Signal(str, str)
 
 
-class GridMode(Ui_GridMode, QWidget):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setupUi(self)
-
-        SIGNAL_BUS.gridModeTriggered.connect(self.changeModuleWidget)
-
-    def changeModuleWidget(self, module: str, widget: str):
-        if widget == "grid_mode_io":
-            self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.GRID_MODE_IO.value))
-            self.widget_gridModeIo.setInstance(module)
+SIGNAL_BUS = SignalBus()

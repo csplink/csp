@@ -81,11 +81,19 @@ class SystemSettingView(ScrollArea):
     def __createFoldersGroup(self) -> SettingCardGroup:
         group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
 
+        #---------------------------------------------------------------------------------------------------------------
         self.databaseFolderCard = PushSettingCard(self.tr('Choose folder'), Icon.FOLDER, self.tr("Database directory"),
                                                   SETTINGS.get(SETTINGS.databaseFolder), group)
-        self.databaseFolderCard.clicked.connect(self.__on_cardDatabaseFolder_clicked)
+        self.databaseFolderCard.clicked.connect(self.__on_databaseFolderCard_clicked)
+        #---------------------------------------------------------------------------------------------------------------
+        self.repositoryFolderCard = PushSettingCard(self.tr('Choose folder'), Icon.FOLDER,
+                                                    self.tr("Repository directory"),
+                                                    SETTINGS.get(SETTINGS.repositoryFolder), group)
+        self.repositoryFolderCard.clicked.connect(self.__on_repositoryFolderCard_clicked)
+        #---------------------------------------------------------------------------------------------------------------
 
         group.addSettingCard(self.databaseFolderCard)
+        group.addSettingCard(self.repositoryFolderCard)
 
         return group
 
@@ -181,7 +189,7 @@ class SystemSettingView(ScrollArea):
                         duration=1500,
                         parent=self)
 
-    def __on_cardDatabaseFolder_clicked(self):
+    def __on_databaseFolderCard_clicked(self):
         """ download folder card clicked slot """
         folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
         if not folder or SETTINGS.get(SETTINGS.databaseFolder) == folder:
@@ -189,6 +197,15 @@ class SystemSettingView(ScrollArea):
 
         SETTINGS.set(SETTINGS.databaseFolder, folder)
         self.databaseFolderCard.setContent(folder)
+
+    def __on_repositoryFolderCard_clicked(self):
+        """ download folder card clicked slot """
+        folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
+        if not folder or SETTINGS.get(SETTINGS.repositoryFolder) == folder:
+            return
+
+        SETTINGS.set(SETTINGS.repositoryFolder, folder)
+        self.repositoryFolderCard.setContent(folder)
 
 
 class GenerateSettingView(ScrollArea):
@@ -238,6 +255,7 @@ class GenerateSettingView(ScrollArea):
                     "%1", PROJECT.builder).replace("%2", builderList[0])
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
+                message.raise_()
                 message.exec()
                 PROJECT.builder = builderList[0]
         #-----------------------------------------------------------------------
@@ -254,6 +272,7 @@ class GenerateSettingView(ScrollArea):
                         "%2", f"{PROJECT.builderVersion}@{builderVersionList[0]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
+                message.raise_()
                 message.exec()
                 PROJECT.builderVersion = builderVersionList[0]
         #-----------------------------------------------------------------------
@@ -267,6 +286,7 @@ class GenerateSettingView(ScrollArea):
                     "%1", f"{PROJECT.builder}@{PROJECT.toolchains}").replace("%2", f"{PROJECT.builder}@{toolchains[0]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
+                message.raise_()
                 message.exec()
                 PROJECT.toolchains = toolchains[0]
         #-----------------------------------------------------------------------
@@ -282,15 +302,17 @@ class GenerateSettingView(ScrollArea):
                             "%2", f"{PROJECT.toolchains}@{toolchainsVersions[0]}")
                     message = MessageBox(title, content, self.window())
                     message.setContentCopyable(True)
+                    message.raise_()
                     message.exec()
                     PROJECT.toolchainsVersion = toolchainsVersions[0]
         else:
             title = self.tr('Error')
             content = self.tr(
                 "The toolchains %1 is not installed. Please install and then restart this software.").replace(
-                    "%1", toolchains)
+                    "%1", PROJECT.toolchains)
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
+            message.raise_()
             if message.exec():
                 QDesktopServices.openUrl(QUrl(PACKAGE_LIST_URL))
 

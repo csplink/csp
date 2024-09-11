@@ -182,14 +182,14 @@ class MainWindow(MSFluentWindow):
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
     def __on_sponsorKey_clicked(self):
-        w = MessageBox(
+        message = MessageBox(
             self.tr('Sponsor'),
             self.tr("""The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!"""), self)
-        w.yesButton.setText(self.tr('OK'))
-        w.cancelButton.setText(self.tr('Cancel'))
+        message.yesButton.setText(self.tr('OK'))
+        message.cancelButton.setText(self.tr('Cancel'))
 
-        if w.exec():
+        if message.exec():
             QDesktopServices.openUrl(QUrl(AUTHOR_BLOG_URL))
 
     def __on_generate_clicked(self):

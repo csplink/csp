@@ -31,7 +31,7 @@ from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetr
 from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
-from common import PROJECT
+from common import PROJECT, SIGNAL_BUS
 
 
 class GraphicsItemPin(QGraphicsObject):
@@ -238,7 +238,7 @@ class GraphicsItemPin(QGraphicsObject):
         if keys[1] == self.name:
             if keys[-1] == "label":
                 self.label = newvalue
-                PROJECT.triggerGridPropertyIp(PROJECT.summary.pinIp, self.name)
+                SIGNAL_BUS.gridPropertyIpTriggered.emit(PROJECT.summary.pinIp, self.name)
             elif keys[-1] == "locked":
                 self.locked = newvalue
             elif keys[-1] == "signal":
@@ -262,12 +262,12 @@ class GraphicsItemPin(QGraphicsObject):
                         if info != None and "mode" in info:
                             path = f"{instance}/{self.name}"
                             PROJECT.setConfig(path, {})
-                    PROJECT.triggerGridPropertyIp(instance, self.name)
+                    SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
                 elif oldValue != "" and oldValue != None:
                     instance = oldValue.split("-")[0]
                     info = pin["signals"][oldValue]
                     if info != None and "mode" in info:
                         path = f"{instance}/{self.name}"
                         PROJECT.setConfig(path, {})
-                    PROJECT.triggerGridPropertyIp(instance, self.name)
+                    SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
             self.update()

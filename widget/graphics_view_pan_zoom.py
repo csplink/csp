@@ -26,7 +26,7 @@
 
 import math
 
-from PySide6.QtCore import Qt, Signal, QRegularExpression
+from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
                            QResizeEvent, QRegularExpressionValidator)
 from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
@@ -35,7 +35,7 @@ from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
 
 from .graphics_item_pin import GraphicsItemPin
-from common import PROJECT
+from common import PROJECT, SIGNAL_BUS
 
 
 class LabelMessageBox(MessageBoxBase):
@@ -117,7 +117,7 @@ class GraphicsViewPanZoom(QGraphicsView):
                 else:
                     ip = PROJECT.summary.pinIp
                     name = item.data(GraphicsItemPin.Data.NAME.value)
-                    PROJECT.triggerGridPropertyIp(ip, name)
+                    SIGNAL_BUS.gridPropertyIpTriggered.emit(ip, name)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         super().mouseMoveEvent(event)

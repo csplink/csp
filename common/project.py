@@ -460,15 +460,5 @@ class Project(QObject):
 
             self.saveTmp()
 
-    gridPropertyIpTriggered = Signal(str, str)
-
-    def triggerGridPropertyIp(self, instance: str, name: str):
-        self.gridPropertyIpTriggered.emit(instance, name)
-
-    gridModeTriggered = Signal(str, str)
-
-    def triggerGridMode(self, module: str, widget: str):
-        self.gridModeTriggered.emit(module, widget)
-
 
 PROJECT = Project()
