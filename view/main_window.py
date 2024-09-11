@@ -38,7 +38,7 @@ from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar
 from .chip_view import ChipView
 from .setting_view import SettingView
 from .code_view import CodeView
-from common import Icon
+from common import Icon, AUTHOR_BLOG_URL
 from dialogs import GenCodeDialog
 
 
@@ -190,7 +190,7 @@ If you would like to support the development of csplink, you are encouraged to d
         w.cancelButton.setText(self.tr('Cancel'))
 
         if w.exec():
-            QDesktopServices.openUrl(QUrl("https://xqyjlj.github.io/"))
+            QDesktopServices.openUrl(QUrl(AUTHOR_BLOG_URL))
 
     def __on_generate_clicked(self):
         dialog = GenCodeDialog(self, True)

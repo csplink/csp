@@ -35,6 +35,7 @@ class Icon(FluentIconBase, Enum):
     GENERATE = "ai-generate"
     BOX = "box-3-line"
     C = "c"
+    CHECKBOX_MULTIPLE = "checkbox-multiple-line"
     CLOSE_LARGE = "close-large-line"
     CODE = "code-line"
     CPU = "cpu-line"

@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        switch_property_setting_card.py
+# @file        tool_button_property_setting_card.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -28,21 +28,19 @@ from PySide6.QtCore import Qt, Signal
 # from PySide6.QtGui import QRegularExpressionValidator
 # from PySide6.QtWidgets import QWidget
 
-from qfluentwidgets import (FluentIconBase, SettingCard, SwitchButton, IconInfoBadge, InfoBadgePosition,
-                            IndicatorPosition)
+from qfluentwidgets import (FluentIconBase, SettingCard, TransparentToolButton, IconInfoBadge, InfoBadgePosition)
 
 from common import Icon
 
 
-class SwitchPropertySettingCard(SettingCard):
+class ToolButtonPropertySettingCard(SettingCard):
 
-    checkedChanged = Signal(bool)
+    clicked = Signal()
 
-    def __init__(self, icon: FluentIconBase, title: str, value: bool, content=None, parent=None):
+    def __init__(self, icon: FluentIconBase, title: str, btnIcon: FluentIconBase, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.btn = SwitchButton(self, indicatorPos=IndicatorPosition.RIGHT)
-        self.btn.setChecked(value)
-        self.btn.checkedChanged.connect(self.checkedChanged)
+        self.btn = TransparentToolButton(btnIcon, self)
+        self.btn.clicked.connect(self.clicked)
 
         self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
                                          parent=self.btn.parent(),

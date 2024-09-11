@@ -27,5 +27,11 @@
 from .combo_box_property_setting_card import ComboBoxPropertySettingCard
 from .line_edit_property_setting_card import LineEditPropertySettingCard
 from .switch_property_setting_card import SwitchPropertySettingCard
+from .tool_button_property_setting_card import ToolButtonPropertySettingCard
 
-__all__ = ["ComboBoxPropertySettingCard", "LineEditPropertySettingCard", "SwitchPropertySettingCard"]
+__all__ = [
+    "ComboBoxPropertySettingCard",
+    "LineEditPropertySettingCard",
+    "SwitchPropertySettingCard",
+    "ToolButtonPropertySettingCard",
+]

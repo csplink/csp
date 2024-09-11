@@ -84,6 +84,7 @@ class Settings(QConfig):
 
 YEAR = 2023
 AUTHOR = "xqyjlj"
+AUTHOR_BLOG_URL = "https://xqyjlj.github.io/"
 VERSION = "0.1.0"
 HELP_URL = "https://csplink.top"
 REPO_URL = "https://github.com/csplink/csp"
@@ -92,6 +93,7 @@ RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
 REPOSITORY_FOLDER = f"{os.getcwd()}/repository"
 REPOSITORY_INDEX_FILE = f"{os.getcwd()}/repository.index"
 CONTRIBUTORS_FILE = f"{os.getcwd()}/resource/contributors/contributors"
+PACKAGE_LIST_URL = "https://csplink.top"
 
 SETTINGS = Settings()
 qconfig.load('csplink.config', SETTINGS)
