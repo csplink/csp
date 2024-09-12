@@ -34,10 +34,10 @@ from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, Caption
 
 from .ui.ui_list_contributors import Ui_ListContributors
 
-from common import Database, CONTRIBUTORS_FILE, Icon
+from common import Database, SETTINGS, Icon
 
 AVATAR_SIZE = 32
-CONTRIBUTORS_DIR = os.path.dirname(CONTRIBUTORS_FILE)
+CONTRIBUTORS_DIR = os.path.dirname(SETTINGS.CONTRIBUTORS_FILE)
 
 
 class CardProfile(QWidget):

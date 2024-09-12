@@ -90,19 +90,15 @@ class Settings(QConfig):
     # const data -------------------------------------------------------------------------------------------------------
     REPOSITORY_INDEX_FILE = Path(repositoryFolder.value).joinpath("repository.index")
     CONTRIBUTORS_FILE = EXE_FOLDER.joinpath("resource", "contributors", "contributors")
-
-
-YEAR = 2023
-AUTHOR = "xqyjlj"
-AUTHOR_BLOG_URL = "https://xqyjlj.github.io/"
-VERSION = "0.1.0"
-HELP_URL = "https://csplink.top"
-REPO_URL = "https://github.com/csplink/csp"
-FEEDBACK_URL = "https://github.com/csplink/csp/issues"
-RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
-REPOSITORY_INDEX_FILE = "repository.index"
-CONTRIBUTORS_FILE = "resource/contributors/contributors"
-PACKAGE_LIST_URL = "https://csplink.top"
+    YEAR = 2023
+    AUTHOR = "xqyjlj"
+    AUTHOR_BLOG_URL = "https://xqyjlj.github.io/"
+    VERSION = "0.1.0"
+    HELP_URL = "https://csplink.top"
+    REPO_URL = "https://github.com/csplink/csp"
+    FEEDBACK_URL = "https://github.com/csplink/csp/issues"
+    RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
+    PACKAGE_LIST_URL = "https://csplink.top"
 
 SETTINGS = Settings()
 qconfig.load('csplink.config', SETTINGS)

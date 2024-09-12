@@ -27,14 +27,14 @@
 import jsonschema
 import yaml, os
 
-from .settings import REPOSITORY_INDEX_FILE, CONTRIBUTORS_FILE
+from .settings import SETTINGS
 
 
 class Database():
 
     @staticmethod
     def checkRepository(repository: dict, path: str) -> bool:
-        with open("resource/database/schema/repository.yml", 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
             jsonschema.validate(instance=repository, schema=schema)
@@ -57,11 +57,11 @@ class Database():
 
     @staticmethod
     def getRepository() -> dict:
-        return Database.getRepositoryByPath(f"resource/database/repository.yml")
+        return Database.getRepositoryByPath(os.path.join(SETTINGS.databaseFolder.value, "repository.yml"))
 
     @staticmethod
     def checkSummary(summary: dict, path: str) -> bool:
-        with open("resource/database/schema/summary.yml", 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
             jsonschema.validate(instance=summary, schema=schema)
@@ -84,11 +84,12 @@ class Database():
 
     @staticmethod
     def getSummary(vendor: str, name: str) -> dict:
-        return Database.getSummaryByPath(f"resource/database/summary/{vendor.lower()}/{name.lower()}.yml")
+        return Database.getSummaryByPath(
+            os.path.join(SETTINGS.databaseFolder.value, "summary", vendor.lower(), f"{name.lower()}.yml"))
 
     @staticmethod
     def checkIp(ip: dict, path: str) -> bool:
-        with open("resource/database/schema/ip.yml", 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "ip.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
             jsonschema.validate(instance=ip, schema=schema)
@@ -111,11 +112,12 @@ class Database():
 
     @staticmethod
     def getIp(vendor: str, name: str) -> dict:
-        return Database.getIpByPath(f"resource/database/ip/{vendor.lower()}/{name.lower()}.yml")
+        return Database.getIpByPath(
+            os.path.join(SETTINGS.databaseFolder.value, "ip", vendor.lower(), f"{name.lower()}.yml"))
 
     @staticmethod
     def checkSdp(sdp: dict, path: str) -> bool:
-        with open("resource/database/schema/sdp.yml", 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "sdp.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
             jsonschema.validate(instance=sdp, schema=schema)
@@ -137,7 +139,8 @@ class Database():
 
     @staticmethod
     def checkPackageIndex(index: dict, path: str) -> bool:
-        with open("resource/database/schema/package_index.yml", 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "package_index.yml"), 'r',
+                  encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
             jsonschema.validate(instance=index, schema=schema)
@@ -148,19 +151,20 @@ class Database():
 
     @staticmethod
     def getPackageIndex() -> dict:
-        if os.path.isfile(REPOSITORY_INDEX_FILE):
-            with open(REPOSITORY_INDEX_FILE, 'r', encoding='utf-8') as f:
+        if os.path.isfile(SETTINGS.REPOSITORY_INDEX_FILE):
+            with open(SETTINGS.REPOSITORY_INDEX_FILE, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkPackageIndex(index, REPOSITORY_INDEX_FILE)
+            Database.checkPackageIndex(index, SETTINGS.REPOSITORY_INDEX_FILE)
             return index
         else:
-            with open(REPOSITORY_INDEX_FILE, 'w') as f:
+            with open(SETTINGS.REPOSITORY_INDEX_FILE, 'w') as f:
                 pass
             return {}
 
     @staticmethod
     def checkContributors(contributors: list, path: str) -> bool:
-        with open("resource/database/schema/contributors.yml", 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "contributors.yml"), 'r',
+                  encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
         try:
             jsonschema.validate(instance=contributors, schema=schema)
@@ -171,10 +175,10 @@ class Database():
 
     @staticmethod
     def getContributors() -> dict:
-        if os.path.isfile(CONTRIBUTORS_FILE):
-            with open(CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
+        if os.path.isfile(SETTINGS.CONTRIBUTORS_FILE):
+            with open(SETTINGS.CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
                 contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkContributors(contributors, CONTRIBUTORS_FILE)
+            Database.checkContributors(contributors, SETTINGS.CONTRIBUTORS_FILE)
             return contributors
         else:
             return []

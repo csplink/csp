@@ -34,8 +34,7 @@ from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingC
 
 from .ui.ui_setting_view import Ui_SettingView
 
-from common import (SETTINGS, HELP_URL, FEEDBACK_URL, AUTHOR, VERSION, YEAR, Style, Icon, PROJECT, PACKAGE,
-                    PACKAGE_LIST_URL)
+from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE)
 from utils import converters
 from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
                     ToolButtonPropertySettingCard)
@@ -164,17 +163,18 @@ class SystemSettingView(ScrollArea):
     def __createAboutGroup(self) -> SettingCardGroup:
         group = SettingCardGroup(self.tr('About'), self.widgetScroll)
 
-        self.helpCard = HyperlinkCard(HELP_URL, self.tr('Open help page'), Icon.QUESTION, self.tr('Help'),
+        self.helpCard = HyperlinkCard(SETTINGS.HELP_URL, self.tr('Open help page'), Icon.QUESTION, self.tr('Help'),
                                       self.tr('Discover new features and learn useful tips about csp'), group)
 
         self.feedbackCard = PrimaryPushSettingCard(self.tr('Provide feedback'), Icon.FEEDBACK,
                                                    self.tr('Provide feedback'),
                                                    self.tr('Help us improve csp by providing feedback'), group)
-        self.feedbackCard.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(FEEDBACK_URL)))
+        self.feedbackCard.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(SETTINGS.FEEDBACK_URL)))
 
         self.aboutCard = PrimaryPushSettingCard(
             self.tr('Check update'), Icon.INFORMATION, self.tr('About'),
-            f"© {self.tr('Copyright')} {YEAR}, {AUTHOR}. {self.tr('Version')} {VERSION}", group)
+            f"© {self.tr('Copyright')} {SETTINGS.YEAR}, {SETTINGS.AUTHOR}. {self.tr('Version')} {SETTINGS.VERSION}",
+            group)
 
         group.addSettingCard(self.helpCard)
         group.addSettingCard(self.feedbackCard)
@@ -314,7 +314,7 @@ class GenerateSettingView(ScrollArea):
             message.setContentCopyable(True)
             message.raise_()
             if message.exec():
-                QDesktopServices.openUrl(QUrl(PACKAGE_LIST_URL))
+                QDesktopServices.openUrl(QUrl(SETTINGS.PACKAGE_LIST_URL))
 
         #---------------------------------------------------------------------------------------------------------------
 

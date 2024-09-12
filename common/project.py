@@ -29,7 +29,7 @@ import yaml, os
 
 from PySide6.QtCore import Signal, QObject
 
-from .settings import SETTINGS, VERSION
+from .settings import SETTINGS
 from .database import Database
 from .package import PACKAGE
 
@@ -452,7 +452,7 @@ class Project(QObject):
 
             modules = set()
             for name, cfg in self.__data["config"].items():
-                if name in self.__summary.__modulesList and cfg != None and len(cfg) > 0:
+                if name in self.__summary.modulesList and cfg != None and len(cfg) > 0:
                     modules.add(name)
             if set(self.modules) != modules:
                 self.__data["modules"] = list(modules)

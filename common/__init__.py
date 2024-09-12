@@ -29,8 +29,7 @@ from .database import Database
 from .icon import Icon
 from .package import PACKAGE
 from .project import Project, PROJECT
-from .settings import (YEAR, AUTHOR, AUTHOR_BLOG_URL, VERSION, HELP_URL, REPO_URL, FEEDBACK_URL, RELEASE_URL,
-                       REPOSITORY_INDEX_FILE, CONTRIBUTORS_FILE, SETTINGS, PACKAGE_LIST_URL)
+from .settings import Settings, SETTINGS
 from .signal_bus import SignalBus, SIGNAL_BUS
 from .style import Style
 
@@ -41,18 +40,8 @@ __all__ = [
     'PACKAGE',
     'Project',
     'PROJECT',
-    'YEAR',
-    'AUTHOR',
-    "AUTHOR_BLOG_URL",
-    'VERSION',
-    'HELP_URL',
-    'REPO_URL',
-    'FEEDBACK_URL',
-    'RELEASE_URL',
-    'REPOSITORY_INDEX_FILE',
-    'CONTRIBUTORS_FILE',
+    'Settings',
     'SETTINGS',
-    "PACKAGE_LIST_URL",
     "SignalBus",
     "SIGNAL_BUS",
     'Style',

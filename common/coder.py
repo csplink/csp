@@ -31,7 +31,7 @@ import hashlib
 
 from common.project import PROJECT
 
-from .settings import VERSION
+from .settings import SETTINGS
 
 
 class Coder():
@@ -205,7 +205,7 @@ class Coder():
 
         data = {
             "author": "csplink coder",
-            "version": VERSION,
+            "version": SETTINGS.VERSION,
             "project": PROJECT.origin,
             "time": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
             "year": time.strftime('%Y', time.localtime())
