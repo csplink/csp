@@ -41,7 +41,7 @@ class Package():
         else:
             self.__data = index
 
-        self._tmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp")
+        self.__tmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp")
 
     @property
     def hal(self) -> dict:
@@ -90,7 +90,7 @@ class Package():
         with py7zr.SevenZipFile(file, 'r') as archive:
             info = archive.archiveinfo()
             callback = Package.callback(info.uncompressed)
-            archive.extractall(path=self._tmpFolder, callback=callback)
+            archive.extractall(path=self.__tmpFolder, callback=callback)
 
 
 PACKAGE = Package()
