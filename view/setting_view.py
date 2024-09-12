@@ -83,12 +83,12 @@ class SystemSettingView(ScrollArea):
 
         #---------------------------------------------------------------------------------------------------------------
         self.databaseFolderCard = PushSettingCard(self.tr('Choose folder'), Icon.FOLDER, self.tr("Database directory"),
-                                                  SETTINGS.get(SETTINGS.databaseFolder), group)
+                                                  SETTINGS.databaseFolder.value, group)
         self.databaseFolderCard.clicked.connect(self.__on_databaseFolderCard_clicked)
         #---------------------------------------------------------------------------------------------------------------
         self.repositoryFolderCard = PushSettingCard(self.tr('Choose folder'), Icon.FOLDER,
-                                                    self.tr("Repository directory"),
-                                                    SETTINGS.get(SETTINGS.repositoryFolder), group)
+                                                    self.tr("Repository directory"), SETTINGS.repositoryFolder.value,
+                                                    group)
         self.repositoryFolderCard.clicked.connect(self.__on_repositoryFolderCard_clicked)
         #---------------------------------------------------------------------------------------------------------------
 

@@ -24,6 +24,8 @@
 # 2024-07-28     xqyjlj       initial version
 #
 
+import py7zr
+
 from .database import Database
 
 

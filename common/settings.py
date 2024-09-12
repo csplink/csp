@@ -24,7 +24,9 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
-import os
+import sys
+
+from pathlib import Path
 from enum import Enum
 
 from PySide6.QtCore import QLocale, QStandardPaths
@@ -54,14 +56,16 @@ class LanguageSerializer(ConfigSerializer):
 class Settings(QConfig):
     """ Config of application """
 
-    # folders
-    databaseFolder = ConfigItem("Folders", "Database", "resource/database", FolderValidator())
-    repositoryFolder = ConfigItem("Folders", "Repository", "resource/repository", FolderValidator())
-    print(repositoryFolder.value)
+    EXE_FOLDER = Path(sys.argv[0]).parent
 
-    # system
+    # folders ----------------------------------------------------------------------------------------------------------
+    databaseFolder = ConfigItem("Folders", "Database", EXE_FOLDER.joinpath("resource", "database"), FolderValidator())
+    repositoryFolder = ConfigItem("Folders", "Repository", EXE_FOLDER.joinpath("resource", "repository"),
+                                  FolderValidator())
+
+    # system -----------------------------------------------------------------------------------------------------------
     language = OptionsConfigItem("System",
-                                 "language_type",
+                                 "languageType",
                                  LanguageType.AUTO,
                                  OptionsValidator(LanguageType),
                                  LanguageSerializer(),
@@ -73,15 +77,19 @@ class Settings(QConfig):
                                  OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
                                  restart=True)
 
-    # style. overloading the parent class
+    # style ------------------------------------------------------------------------------------------------------------
     themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
     themeColor = ColorConfigItem("Style", "ThemeColor", '#009faa')
     alertColor = ColorConfigItem("Style", "AlertColor", '#c04851')
 
-    # misc
+    # misc -------------------------------------------------------------------------------------------------------------
     lastOpenProjectFolder = ConfigItem(
         "Misc", "LastOpenProjectFolder",
         QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation), FolderValidator())
+
+    # const data -------------------------------------------------------------------------------------------------------
+    REPOSITORY_INDEX_FILE = Path(repositoryFolder.value).joinpath("repository.index")
+    CONTRIBUTORS_FILE = EXE_FOLDER.joinpath("resource", "contributors", "contributors")
 
 
 YEAR = 2023
@@ -92,8 +100,8 @@ HELP_URL = "https://csplink.top"
 REPO_URL = "https://github.com/csplink/csp"
 FEEDBACK_URL = "https://github.com/csplink/csp/issues"
 RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
-REPOSITORY_INDEX_FILE = f"repository.index"
-CONTRIBUTORS_FILE = f"resource/contributors/contributors"
+REPOSITORY_INDEX_FILE = "repository.index"
+CONTRIBUTORS_FILE = "resource/contributors/contributors"
 PACKAGE_LIST_URL = "https://csplink.top"
 
 SETTINGS = Settings()
