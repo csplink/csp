@@ -16,34 +16,25 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        __init__.py
+# @file        tc_package.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-01     xqyjlj       initial version
+# 2024-09-13     xqyjlj       initial version
 #
 
-from .coder import Coder
-from .database import Database
-from .icon import Icon
-from .package import Package, PACKAGE
-from .project import Project, PROJECT
-from .settings import Settings, SETTINGS
-from .signal_bus import SignalBus, SIGNAL_BUS
-from .style import Style
+import sys
+import unittest
 
-__all__ = [
-    'Coder',
-    'Database',
-    'Icon',
-    'Package',
-    'PACKAGE',
-    'Project',
-    'PROJECT',
-    'Settings',
-    'SETTINGS',
-    "SignalBus",
-    "SIGNAL_BUS",
-    'Style',
-]
+
+class PackageTest(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_1111111(self):
+        pass
+
+    def tearDown(self):
+        pass

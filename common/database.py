@@ -56,7 +56,7 @@ class Database():
             return {}
 
     @staticmethod
-    def getRepository() -> dict:
+    def getRepository() -> dict[str, dict[str, dict[str, dict[str, dict[str, dict]]]]]:
         return Database.getRepositoryByPath(os.path.join(SETTINGS.databaseFolder.value, "repository.yml"))
 
     @staticmethod
@@ -182,9 +182,3 @@ class Database():
             return contributors
         else:
             return []
-
-
-if __name__ == '__main__':
-    Database.getRepository()
-    Database.getSummary("geehy", "apm32f103zet6")
-    Database.getIp("geehy", "apm32f103_gpio")

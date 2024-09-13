@@ -29,8 +29,7 @@ import re, copy, time, json, jinja2, importlib.util, glob
 import os, sys
 import hashlib
 
-from common.project import PROJECT
-
+from .project import PROJECT
 from .settings import SETTINGS
 
 

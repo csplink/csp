@@ -38,7 +38,7 @@ from qfluentwidgets import FluentTranslator
 
 sys.stdout = stdout
 
-from common import SETTINGS, PROJECT, PACKAGE
+from common import SETTINGS, PROJECT
 from view import MainWindow, StartupWindow
 
 script_dir = os.path.dirname(__file__)
@@ -50,9 +50,6 @@ def main():
     if SETTINGS.get(SETTINGS.dpiScale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpiScale))
-
-    PACKAGE.install("C:/Users/xqyjl/Documents/git/github/csplink/csp/build/gcc-arm-none-eabi-10-2020-q4-major.7z")
-    return
 
     app = QApplication(sys.argv)
     app.setAttribute(Qt.ApplicationAttribute.AA_DontCreateNativeWidgetSiblings)

@@ -16,34 +16,39 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        __init__.py
+# @file        tester.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-01     xqyjlj       initial version
+# 2024-09-13     xqyjlj       initial version
 #
 
-from .coder import Coder
-from .database import Database
-from .icon import Icon
-from .package import Package, PACKAGE
-from .project import Project, PROJECT
-from .settings import Settings, SETTINGS
-from .signal_bus import SignalBus, SIGNAL_BUS
-from .style import Style
+import sys
+import unittest
 
-__all__ = [
-    'Coder',
-    'Database',
-    'Icon',
-    'Package',
-    'PACKAGE',
-    'Project',
-    'PROJECT',
-    'Settings',
-    'SETTINGS',
-    "SignalBus",
-    "SIGNAL_BUS",
-    'Style',
-]
+from PySide6.QtWidgets import QApplication
+
+
+def main(dir):
+
+    stdout = sys.stdout
+    sys.stdout = None
+
+    discover = unittest.defaultTestLoader.discover(start_dir=dir, pattern='tc_*.py', top_level_dir=".")
+
+    sys.stdout = stdout
+
+    app = QApplication(sys.argv)
+
+    print("find {count} testcases !!!".format(count=discover.countTestCases()))
+
+    suite = unittest.TestSuite()
+    suite.addTest(discover)
+
+    runner = unittest.TextTestRunner(verbosity=2)
+    runner.run(suite)
+
+
+if __name__ == '__main__':
+    main("./tests")
