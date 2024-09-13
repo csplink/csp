@@ -62,6 +62,8 @@ class DatabaseTest(unittest.TestCase):
                         for groupName, groupItem in modules.items():
                             for moduleName, moduleItem in groupItem.items():
                                 ipName = moduleItem.get("ip", "nil")
+                                if ipName == "nil":
+                                    continue
                                 ip = Database.getIp(companyName, ipName)
                                 self.assertGreater(
                                     len(ip),

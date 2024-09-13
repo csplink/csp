@@ -24,17 +24,33 @@
 # 2024-09-13     xqyjlj       initial version
 #
 
-import sys
+import os
 import unittest
+
+from common import PACKAGE, SETTINGS
 
 
 class PackageTest(unittest.TestCase):
 
+    def __init__(self, parent: None) -> None:
+        super().__init__(parent)
+
     def setUp(self):
         pass
 
-    def test_1111111(self):
-        pass
+    def test_install(self):
+        file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.7z")
+        succeed = 0
+
+        def callback(file: str, progress: float):
+            nonlocal succeed
+            succeed = progress
+
+        status = PACKAGE.install(
+            "C:/Users/xqyjl/Documents/git/github/csplink/csp/build/gcc-arm-none-eabi-10-2020-q4-major.7z", callback)
+
+        self.assertTrue(status, msg='load failed.')
+        self.assertGreater(succeed, 0, msg='load failed.')
 
     def tearDown(self):
         pass

@@ -24,7 +24,9 @@
 # 2024-07-28     xqyjlj       initial version
 #
 
-import py7zr, os
+import py7zr, os, shutil, glob
+
+from typing import Callable
 
 from .database import Database
 from .settings import SETTINGS
@@ -32,7 +34,6 @@ from .settings import SETTINGS
 
 class Package():
     __data = {}
-    __tmpFolder = ""
 
     def __init__(self) -> None:
         index = Database.getPackageIndex()
@@ -40,8 +41,6 @@ class Package():
             self.__data = {}
         else:
             self.__data = index
-
-        self.__tmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp")
 
     @property
     def hal(self) -> dict:
@@ -58,39 +57,66 @@ class Package():
     def path(self, type: str, name: str, version: str) -> str:
         return self.__data.get(type, {}).get(name, {}).get(version, "")
 
-    class callback(py7zr.callbacks.ExtractCallback):
+    def install(self, file: str, callback: Callable[[str, float], None]) -> bool:
+        if not os.path.isfile(file):
+            return False
 
-        __archiveTotal = 0
-        __totalBytes = 0
+        tmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp")
+        if os.path.isdir(tmpFolder):
+            shutil.rmtree(tmpFolder)
+        os.makedirs(tmpFolder)
 
-        def __init__(self, totalBytes):
-            self.__archiveTotal = totalBytes
-
-        def report_start_preparation(self):
-            print("report_start_preparation")
-
-        def report_start(self, processingFilePath, processingBytes):
-            pass
-
-        def report_update(self, decompressedBytes):
-            pass
-
-        def report_end(self, processingFilePath, wroteBytes):
-            self.__totalBytes += int(wroteBytes)
-            progress = self.__totalBytes / self.__archiveTotal
-            print(progress, self.__totalBytes, self.__archiveTotal)
-
-        def report_warning(self, message):
-            pass
-
-        def report_postprocess(self):
-            pass
-
-    def install(self, file):
         with py7zr.SevenZipFile(file, 'r') as archive:
             info = archive.archiveinfo()
-            callback = Package.callback(info.uncompressed)
-            archive.extractall(path=self.__tmpFolder, callback=callback)
+            cbk = Callback(info.uncompressed, callback)
+            archive.extractall(path=tmpFolder, callback=cbk)
+
+        dirs = os.listdir(tmpFolder)
+        count = len(dirs)
+
+        if count == 1:
+            dir = os.path.join(tmpFolder, dirs[0])
+            tmpTmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp.tmp")
+            shutil.move(dir, tmpTmpFolder)
+            shutil.rmtree(tmpFolder)
+            shutil.move(tmpTmpFolder, tmpFolder)
+
+        return True
+
+
+class Callback(py7zr.callbacks.ExtractCallback):
+
+    __archiveTotal = 0
+    __totalBytes = 0
+    __callback = None
+
+    def __init__(self, totalBytes, callback: Callable[[str, float], None]):
+        self.__archiveTotal = totalBytes
+        self.__callback = callback
+
+    def report_start_preparation(self):
+        pass
+
+    def report_start(self, processingFilePath, processingBytes):
+        pass
+
+    def report_update(self, decompressedBytes):
+        pass
+
+    def report_end(self, processingFilePath, wroteBytes):
+        if self.__archiveTotal == 0:
+            self.__callback(processingFilePath, 1.0)
+            return
+
+        self.__totalBytes += int(wroteBytes)
+        progress = self.__totalBytes / self.__archiveTotal
+        self.__callback(processingFilePath, progress)
+
+    def report_warning(self, message):
+        pass
+
+    def report_postprocess(self):
+        pass
 
 
 PACKAGE = Package()
