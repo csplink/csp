@@ -59,7 +59,7 @@ class Settings(QConfig):
     EXE_FOLDER = Path(sys.argv[0]).parent
 
     # folders ----------------------------------------------------------------------------------------------------------
-    databaseFolder = ConfigItem("Folders", "Database", EXE_FOLDER.joinpath("resource", "database"), FolderValidator())
+    databaseFolder = ConfigItem("Folders", "DATABASE", EXE_FOLDER.joinpath("resource", "database"), FolderValidator())
     repositoryFolder = ConfigItem("Folders", "Repository", EXE_FOLDER.joinpath("resource", "repository"),
                                   FolderValidator())
 

@@ -26,6 +26,8 @@
 
 import sys, os, glob, getopt
 
+from loguru import logger
+
 from PySide6.QtCore import Qt, QTranslator
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFontDatabase

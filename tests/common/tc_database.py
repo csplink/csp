@@ -26,7 +26,7 @@
 
 import unittest
 
-from common import Database
+from common import DATABASE
 
 
 class DatabaseTest(unittest.TestCase):
@@ -35,36 +35,36 @@ class DatabaseTest(unittest.TestCase):
         pass
 
     def test_getRepository(self):
-        repository = Database.getRepository()
+        repository = DATABASE.getRepository()
         self.assertGreater(len(repository), 0, msg='load failed.')
 
     def test_getSummary(self):
-        repository = Database.getRepository()
+        repository = DATABASE.getRepository()
         soc = repository["soc"]
         for companyName, companyItem in soc.items():
             for seriesName, seriesItem in companyItem.items():
                 for lineName, lineItem in seriesItem.items():
                     for socName, socItem in lineItem.items():
-                        summary = Database.getSummary(companyName, socName)
+                        summary = DATABASE.getSummary(companyName, socName)
                         self.assertGreater(len(summary),
                                            0,
                                            msg=f'load failed in {companyName}/{seriesName}/{lineName}/{socName}')
 
     def test_getIp(self):
-        repository = Database.getRepository()
+        repository = DATABASE.getRepository()
         soc = repository["soc"]
         for companyName, companyItem in soc.items():
             for seriesName, seriesItem in companyItem.items():
                 for lineName, lineItem in seriesItem.items():
                     for socName, socItem in lineItem.items():
-                        summary = Database.getSummary(companyName, socName)
+                        summary = DATABASE.getSummary(companyName, socName)
                         modules = summary["modules"]
                         for groupName, groupItem in modules.items():
                             for moduleName, moduleItem in groupItem.items():
                                 ipName = moduleItem.get("ip", "nil")
                                 if ipName == "nil":
                                     continue
-                                ip = Database.getIp(companyName, ipName)
+                                ip = DATABASE.getIp(companyName, ipName)
                                 self.assertGreater(
                                     len(ip),
                                     0,

@@ -27,158 +27,107 @@
 import jsonschema
 import yaml, os
 
+from loguru import logger
+
 from .settings import SETTINGS
 
 
 class Database():
 
-    @staticmethod
-    def checkRepository(repository: dict, path: str) -> bool:
+    @logger.catch(default=False)
+    def checkRepository(self, repository: dict) -> bool:
         with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
             jsonschema.validate(instance=repository, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-            raise exception
+        return True
 
-    @staticmethod
-    def getRepositoryByPath(path: str) -> dict:
+    def getRepositoryByPath(self, path: str) -> dict:
         if os.path.isfile(path):
+            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
-
-            Database.checkRepository(repository, path)
-            return repository
+                succeed = self.checkRepository(repository)
+            if succeed:
+                return repository
+            else:
+                return {}
         else:
-            print(f"{path} is not file!")
+            logger.error(f"{path} is not file!")
             return {}
 
-    @staticmethod
-    def getRepository() -> dict[str, dict[str, dict[str, dict[str, dict[str, dict]]]]]:
-        return Database.getRepositoryByPath(os.path.join(SETTINGS.databaseFolder.value, "repository.yml"))
+    def getRepository(self) -> dict[str, dict[str, dict[str, dict[str, dict[str, dict]]]]]:
+        return self.getRepositoryByPath(os.path.join(SETTINGS.databaseFolder.value, "repository.yml"))
 
-    @staticmethod
-    def checkSummary(summary: dict, path: str) -> bool:
+    @logger.catch(default=False)
+    def checkSummary(self, summary: dict) -> bool:
         with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
             jsonschema.validate(instance=summary, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-            raise exception
+        return True
 
-    @staticmethod
-    def getSummaryByPath(path: str) -> dict:
+    def getSummaryByPath(self, path: str) -> dict:
         if os.path.isfile(path):
+            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
-
-            Database.checkSummary(summary, path)
-            return summary
+                succeed = self.checkSummary(summary)
+            if succeed:
+                return summary
+            else:
+                return {}
         else:
-            print(f"{path} is not file!")
+            logger.error(f"{path} is not file!")
             return {}
 
-    @staticmethod
-    def getSummary(vendor: str, name: str) -> dict:
-        return Database.getSummaryByPath(
+    def getSummary(self, vendor: str, name: str) -> dict:
+        return self.getSummaryByPath(
             os.path.join(SETTINGS.databaseFolder.value, "summary", vendor.lower(), f"{name.lower()}.yml"))
 
-    @staticmethod
-    def checkIp(ip: dict, path: str) -> bool:
+    @logger.catch(default=False)
+    def checkIp(self, ip: dict) -> bool:
         with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "ip.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
             jsonschema.validate(instance=ip, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-            raise exception
+        return True
 
-    @staticmethod
-    def getIpByPath(path: str) -> dict:
+    def getIpByPath(self, path: str) -> dict:
         if os.path.isfile(path):
+            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 ip = yaml.load(f.read(), Loader=yaml.FullLoader)
-
-            Database.checkIp(ip, path)
-            return ip
+                succeed = self.checkIp(ip)
+            if succeed:
+                return ip
+            else:
+                return {}
         else:
-            print(f"{path} is not file!")
+            logger.error(f"{path} is not file!")
             return {}
 
-    @staticmethod
-    def getIp(vendor: str, name: str) -> dict:
-        return Database.getIpByPath(
-            os.path.join(SETTINGS.databaseFolder.value, "ip", vendor.lower(), f"{name.lower()}.yml"))
+    def getIp(self, vendor: str, name: str) -> dict:
+        return self.getIpByPath(os.path.join(SETTINGS.databaseFolder.value, "ip", vendor.lower(),
+                                             f"{name.lower()}.yml"))
 
-    @staticmethod
-    def checkSdp(sdp: dict, path: str) -> bool:
-        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "sdp.yml"), 'r', encoding='utf-8') as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
-            jsonschema.validate(instance=sdp, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-            raise exception
-
-    @staticmethod
-    def getSdp(path: str) -> dict:
-        if os.path.isfile(path):
-            with open(path, 'r', encoding='utf-8') as f:
-                sdp = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkSdp(sdp, path)
-            return sdp
-        else:
-            print(f"{path} is not file!")
-            return {}
-
-    @staticmethod
-    def checkPackageIndex(index: dict, path: str) -> bool:
-        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "package_index.yml"), 'r',
-                  encoding='utf-8') as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
-            jsonschema.validate(instance=index, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-            raise exception
-
-    @staticmethod
-    def getPackageIndex() -> dict:
-        if os.path.isfile(SETTINGS.REPOSITORY_INDEX_FILE):
-            with open(SETTINGS.REPOSITORY_INDEX_FILE, 'r', encoding='utf-8') as f:
-                index = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkPackageIndex(index, SETTINGS.REPOSITORY_INDEX_FILE)
-            return index
-        else:
-            with open(SETTINGS.REPOSITORY_INDEX_FILE, 'w') as f:
-                pass
-            return {}
-
-    @staticmethod
-    def checkContributors(contributors: list, path: str) -> bool:
+    @logger.catch(default=False)
+    def checkContributors(self, contributors: list) -> bool:
         with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "contributors.yml"), 'r',
                   encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-        try:
             jsonschema.validate(instance=contributors, schema=schema)
-        except jsonschema.exceptions.ValidationError as exception:
-            print(f"invalid yaml {path}")
-            print(exception)
-            raise exception
+        return True
 
-    @staticmethod
-    def getContributors() -> dict:
+    def getContributors(self) -> dict:
         if os.path.isfile(SETTINGS.CONTRIBUTORS_FILE):
+            succeed = False
             with open(SETTINGS.CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
                 contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
-            Database.checkContributors(contributors, SETTINGS.CONTRIBUTORS_FILE)
-            return contributors
+                succeed = self.checkContributors(contributors)
+            if succeed:
+                return contributors
+            else:
+                return {}
         else:
             return []
+
+
+DATABASE = Database()

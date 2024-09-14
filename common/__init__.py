@@ -25,7 +25,7 @@
 #
 
 from .coder import Coder
-from .database import Database
+from .database import Database, DATABASE
 from .icon import Icon
 from .package import Package, PACKAGE
 from .project import Project, PROJECT
@@ -36,6 +36,7 @@ from .style import Style
 __all__ = [
     'Coder',
     'Database',
+    'DATABASE',
     'Icon',
     'Package',
     'PACKAGE',

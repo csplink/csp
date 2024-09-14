@@ -46,11 +46,10 @@ class PackageTest(unittest.TestCase):
             nonlocal succeed
             succeed = progress
 
-        status = PACKAGE.install(
-            "C:/Users/xqyjl/Documents/git/github/csplink/csp/build/gcc-arm-none-eabi-10-2020-q4-major.7z", callback)
+        status = PACKAGE.install(file, callback)
 
-        self.assertTrue(status, msg='load failed.')
-        self.assertGreater(succeed, 0, msg='load failed.')
+        self.assertTrue(status, msg='install failed.')
+        self.assertGreater(succeed, 0, msg='install failed.')
 
     def tearDown(self):
         pass

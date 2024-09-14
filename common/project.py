@@ -30,7 +30,7 @@ import yaml, os
 from PySide6.QtCore import Signal, QObject
 
 from .settings import SETTINGS
-from .database import Database
+from .database import DATABASE
 from .package import PACKAGE
 
 
@@ -381,7 +381,7 @@ class Project(QObject):
                 return self.__valid
 
             try:
-                self.__summary.origin = Database.getSummary(self.vendor, self.targetChip)
+                self.__summary.origin = DATABASE.getSummary(self.vendor, self.targetChip)
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)
@@ -392,7 +392,7 @@ class Project(QObject):
                 for _, module_group in self.__summary.modules.items():
                     for name, module in module_group.items():
                         if "ip" in module:
-                            ip[name] = Database.getIp(self.vendor, module["ip"])
+                            ip[name] = DATABASE.getIp(self.vendor, module["ip"])
                 self.__ip.origin = ip
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")

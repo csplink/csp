@@ -24,11 +24,13 @@
 # 2024-07-28     xqyjlj       initial version
 #
 
+import jsonschema
+import yaml, os
 import py7zr, os, shutil, glob
 
+from loguru import logger
 from typing import Callable
 
-from .database import Database
 from .settings import SETTINGS
 
 
@@ -36,7 +38,7 @@ class Package():
     __data = {}
 
     def __init__(self) -> None:
-        index = Database.getPackageIndex()
+        index = self.__getPackageIndex()
         if index is None:
             self.__data = {}
         else:
@@ -54,6 +56,52 @@ class Package():
     def origin(self) -> dict:
         return self.__data
 
+    @logger.catch(default=False)
+    def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
+        with open(schemaPath, 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+            jsonschema.validate(instance=instance, schema=schema)
+        return True
+
+    def __getPackage(self, path: str) -> dict:
+        if os.path.isfile(path):
+            succeed = False
+            with open(path, 'r', encoding='utf-8') as f:
+                package = yaml.load(f.read(), Loader=yaml.FullLoader)
+                succeed = self.__checkYaml(os.path.join(SETTINGS.databaseFolder.value, "schema", "package.yml"),
+                                           package)
+            if succeed:
+                return package
+            else:
+                return {}
+        else:
+            logger.error(f"{path} is not file!")
+            return {}
+
+    def __getPackageIndex(self) -> dict:
+        file = SETTINGS.REPOSITORY_INDEX_FILE
+        if os.path.isfile(file):
+            succeed = False
+            with open(file, 'r', encoding='utf-8') as f:
+                index = yaml.load(f.read(), Loader=yaml.FullLoader)
+                succeed = self.__checkYaml(os.path.join(SETTINGS.databaseFolder.value, "schema", "package_index.yml"),
+                                           index)
+            if succeed:
+                return index
+            else:
+                return {}
+        else:
+            with open(file, 'w') as f:
+                pass
+            return {}
+
+    def dump(self):
+        return yaml.dump(self.__data)
+
+    def save(self):
+        with open(SETTINGS.REPOSITORY_INDEX_FILE, 'w', encoding='utf-8') as f:
+            f.write(self.dump())
+
     def path(self, type: str, name: str, version: str) -> str:
         return self.__data.get(type, {}).get(name, {}).get(version, "")
 
@@ -61,9 +109,13 @@ class Package():
         if not os.path.isfile(file):
             return False
 
-        tmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp")
+        repositoryFolder = SETTINGS.repositoryFolder.value
+
+        tmpFolder = os.path.join(repositoryFolder, "tmp")
         if os.path.isdir(tmpFolder):
             shutil.rmtree(tmpFolder)
+        elif os.path.isfile(tmpFolder):
+            os.remove(tmpFolder)
         os.makedirs(tmpFolder)
 
         with py7zr.SevenZipFile(file, 'r') as archive:
@@ -71,15 +123,51 @@ class Package():
             cbk = Callback(info.uncompressed, callback)
             archive.extractall(path=tmpFolder, callback=cbk)
 
+        # --------------------------------------------------------------------------------------------------------------
         dirs = os.listdir(tmpFolder)
         count = len(dirs)
 
-        if count == 1:
+        if count == 1 and os.path.isdir(os.path.join(tmpFolder, dirs[0])):
             dir = os.path.join(tmpFolder, dirs[0])
-            tmpTmpFolder = os.path.join(SETTINGS.repositoryFolder.value, "tmp.tmp")
+            tmpTmpFolder = os.path.join(repositoryFolder, "tmp.tmp")
             shutil.move(dir, tmpTmpFolder)
             shutil.rmtree(tmpFolder)
             shutil.move(tmpTmpFolder, tmpFolder)
+        # --------------------------------------------------------------------------------------------------------------
+        files = glob.glob(f"{tmpFolder}/*.csppack")
+        count = len(files)
+        if count != 1:
+            logger.error(f"invalid package {file}")
+            return False
+
+        packageFile = files[0]
+        package = self.__getPackage(packageFile)
+        if len(package) == 0:
+            logger.error(f"invalid package file {packageFile}")
+            return False
+
+        type = package["type"].lower()
+        vendor = package["vendor"]
+        name = package["name"]
+        version = package["version"].lower()
+
+        vendorFolder = os.path.join(repositoryFolder, type, vendor.lower(), name.lower())
+        folder = os.path.join(vendorFolder, version)
+        if os.path.isdir(folder):
+            shutil.rmtree(folder)
+        elif os.path.isfile(folder):
+            os.remove(folder)
+
+        if not os.path.isdir(vendorFolder):
+            os.makedirs(vendorFolder)
+        elif os.path.isfile(vendorFolder):
+            os.remove(vendorFolder)
+            os.makedirs(vendorFolder)
+
+        shutil.move(tmpFolder, folder)
+
+        self.__data.setdefault(type, {}).setdefault(vendor, {}).setdefault(name, {})[version] = folder
+        self.save()
 
         return True
 

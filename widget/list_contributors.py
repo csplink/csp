@@ -34,7 +34,7 @@ from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, Caption
 
 from .ui.ui_list_contributors import Ui_ListContributors
 
-from common import Database, SETTINGS, Icon
+from common import DATABASE, SETTINGS, Icon
 
 AVATAR_SIZE = 32
 CONTRIBUTORS_DIR = os.path.dirname(SETTINGS.CONTRIBUTORS_FILE)
@@ -73,7 +73,7 @@ class ListContributors(Ui_ListContributors, QWidget):
         self.scrollArea.setWidget(self.flowWidget)
         self.scrollArea.enableTransparentBackground()
 
-        contributors = Database.getContributors()
+        contributors = DATABASE.getContributors()
 
         for contributor in contributors:
             label = AvatarWidget(f'{CONTRIBUTORS_DIR}/{contributor["avatar"]}', self)
