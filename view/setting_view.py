@@ -81,17 +81,12 @@ class SystemSettingView(ScrollArea):
         group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
 
         #---------------------------------------------------------------------------------------------------------------
-        self.databaseFolderCard = PushSettingCard(self.tr('Choose folder'), Icon.FOLDER, self.tr("Database directory"),
-                                                  SETTINGS.databaseFolder.value, group)
-        self.databaseFolderCard.clicked.connect(self.__on_databaseFolderCard_clicked)
-        #---------------------------------------------------------------------------------------------------------------
         self.repositoryFolderCard = PushSettingCard(self.tr('Choose folder'), Icon.FOLDER,
                                                     self.tr("Repository directory"), SETTINGS.repositoryFolder.value,
                                                     group)
         self.repositoryFolderCard.clicked.connect(self.__on_repositoryFolderCard_clicked)
         #---------------------------------------------------------------------------------------------------------------
 
-        group.addSettingCard(self.databaseFolderCard)
         group.addSettingCard(self.repositoryFolderCard)
 
         return group
@@ -189,15 +184,6 @@ class SystemSettingView(ScrollArea):
                         duration=1500,
                         parent=self)
 
-    def __on_databaseFolderCard_clicked(self):
-        """ download folder card clicked slot """
-        folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
-        if not folder or SETTINGS.get(SETTINGS.databaseFolder) == folder:
-            return
-
-        SETTINGS.set(SETTINGS.databaseFolder, folder)
-        self.databaseFolderCard.setContent(folder)
-
     def __on_repositoryFolderCard_clicked(self):
         """ download folder card clicked slot """
         folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
@@ -242,7 +228,7 @@ class GenerateSettingView(ScrollArea):
     def __createBuilderGroup(self) -> SettingCardGroup:
         #---------------------------------------------------------------------------------------------------------------
         builder = PROJECT.summary.builder
-        builderList = builder.keys()
+        builderList = list(builder.keys())
         if len(builderList) == 0:
             return None
 
@@ -260,7 +246,7 @@ class GenerateSettingView(ScrollArea):
                 PROJECT.builder = builderList[0]
         #-----------------------------------------------------------------------
         builderVersion = builder.get(PROJECT.builder, {})
-        builderVersionList = builderVersion.keys()  # It must not be an empty array.
+        builderVersionList = list(builderVersion.keys())  # It must not be an empty array.
 
         if PROJECT.builderVersion == "":
             PROJECT.builderVersion = builderVersionList[0]
@@ -290,13 +276,14 @@ class GenerateSettingView(ScrollArea):
                 message.exec()
                 PROJECT.toolchains = toolchains[0]
         #-----------------------------------------------------------------------
-        toolchainsVersions = PACKAGE.toolchains.get(PROJECT.toolchains, {}).keys()
+        toolchainsVersions = list(PACKAGE.toolchains.get(PROJECT.toolchains, {}).keys())
         if len(toolchainsVersions) != 0:
             if PROJECT.toolchainsVersion == "":
                 PROJECT.toolchainsVersion = toolchainsVersions[0]
             else:
                 if PROJECT.toolchainsVersion not in toolchainsVersions:
                     title = self.tr('Warning')
+                    print(PROJECT.toolchains, PROJECT.toolchainsVersion, toolchainsVersions)
                     content = self.tr("The toolchains %1 is not supported. Use default value '%2'").replace(
                         "%1", f"{PROJECT.toolchains}@{PROJECT.toolchainsVersion}").replace(
                             "%2", f"{PROJECT.toolchains}@{toolchainsVersions[0]}")
@@ -308,7 +295,7 @@ class GenerateSettingView(ScrollArea):
         else:
             title = self.tr('Error')
             content = self.tr(
-                "The toolchains %1 is not installed. Please install and then restart this software.").replace(
+                "The toolchains %1 is not installed. Please install and then restart this software").replace(
                     "%1", PROJECT.toolchains)
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
@@ -339,7 +326,7 @@ class GenerateSettingView(ScrollArea):
             icon=Icon.CHECKBOX_MULTIPLE,
             title=self.tr("Use Toolchains Package"),
             value=PROJECT.useToolchainsPackage,
-            content=self.tr("Use the built-in toolchain of this software."),
+            content=self.tr("Use the built-in toolchain of this software"),
             parent=group)
         #---------------------------------------------------------------------------------------------------------------
         self.toolchainsComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.TOOLS,
@@ -450,12 +437,16 @@ class SettingView(Ui_SettingView, QWidget):
         self.systemSettingView = SystemSettingView(self)
         self.generateSettingView = GenerateSettingView(self)
 
-        self.__addView(self.systemSettingView, Icon.LIST_SETTINGS, self.tr("System Setting"))
-        self.__addView(self.generateSettingView, Icon.FOLDER_TRANSFER, self.tr("Generate Setting"))
+        self.systemSettingTreeWidgetItem = self.__addView(self.systemSettingView, Icon.LIST_SETTINGS,
+                                                          self.tr("System Setting"))
+        self.generateSettingTreeWidgetItem = self.__addView(self.generateSettingView, Icon.FOLDER_TRANSFER,
+                                                            self.tr("Generate Setting"))
 
         Style.VIEW_SETTING.apply(self)
 
-    def __addView(self, view: QWidget, icon: FluentIconBase, text: str):
+        self.settingTree.setCurrentItem(self.systemSettingTreeWidgetItem)
+
+    def __addView(self, view: QWidget, icon: FluentIconBase, text: str) -> QTreeWidgetItem:
         if text in self.__navigationViews:
             return
 
@@ -466,6 +457,8 @@ class SettingView(Ui_SettingView, QWidget):
         self.settingStackedWidget.addWidget(view)
 
         self.__navigationViews[text] = view
+
+        return item
 
     def __on_settingTree_selectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
         indexes = selected.indexes()

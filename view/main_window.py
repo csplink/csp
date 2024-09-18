@@ -159,15 +159,12 @@ class MainWindow(MSFluentWindow):
         self.addSubInterface(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.settingView.objectName())
-        self.switchTo(self.settingView)
-
     def __initWindow(self):
         self.barTitle = CustomTitleBar(self)
         self.setTitleBar(self.barTitle)
 
         self.resize(1100, 750)
-        self.setWindowIcon(QIcon('resource/images/logo.svg'))
+        self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))
         self.setWindowTitle('CSPLink')
 
         self.updateFrameless()

@@ -24,12 +24,16 @@
 # 2024-09-05     xqyjlj       initial version
 #
 
+import os
+
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QBoxLayout, QHBoxLayout
 
 from qfluentwidgets import (PushButton, FluentTitleBar)
 from qframelesswindow import (FramelessWindow)
+
+from common import SETTINGS
 
 from .ui.ui_new_project_view import Ui_NewProjectView
 
@@ -56,7 +60,7 @@ class NewProjectWindow(FramelessWindow):
 
     def __initWindow(self):
         self.resize(1100, 750)
-        self.setWindowIcon(QIcon('resource/images/logo.svg'))
+        self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))
         self.setWindowTitle('CSPLink')
         self.titleBar.hBoxLayout.insertSpacing(0, 20)
         self.titleBar.hBoxLayout.insertSpacing(2, 2)

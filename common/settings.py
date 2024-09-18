@@ -24,7 +24,7 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
-import sys
+import sys, os
 
 from pathlib import Path
 from enum import Enum
@@ -56,11 +56,10 @@ class LanguageSerializer(ConfigSerializer):
 class Settings(QConfig):
     """ Config of application """
 
-    EXE_FOLDER = Path(sys.argv[0]).parent
+    EXE_FOLDER = str(Path(sys.argv[0]).parent)
 
     # folders ----------------------------------------------------------------------------------------------------------
-    databaseFolder = ConfigItem("Folders", "DATABASE", EXE_FOLDER.joinpath("resource", "database"), FolderValidator())
-    repositoryFolder = ConfigItem("Folders", "Repository", EXE_FOLDER.joinpath("resource", "repository"),
+    repositoryFolder = ConfigItem("Folders", "Repository", os.path.join(EXE_FOLDER, "resource", "repository"),
                                   FolderValidator())
 
     # system -----------------------------------------------------------------------------------------------------------
@@ -88,8 +87,13 @@ class Settings(QConfig):
         QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation), FolderValidator())
 
     # const data -------------------------------------------------------------------------------------------------------
-    REPOSITORY_INDEX_FILE = Path(repositoryFolder.value).joinpath("repository.index")
-    CONTRIBUTORS_FILE = EXE_FOLDER.joinpath("resource", "contributors", "contributors")
+    DATABASE_FOLDER = os.path.join(EXE_FOLDER, "resource", "database")
+    STYLE_FOLDER = os.path.join(EXE_FOLDER, "resource", "style")
+    ICON_FOLDER = os.path.join(EXE_FOLDER, "resource", "icon")
+    I18N_FOLDER = os.path.join(EXE_FOLDER, "resource", "i18n")
+    FONTS_FOLDER = os.path.join(EXE_FOLDER, "resource", "fonts")
+    REPOSITORY_INDEX_FILE = os.path.join(repositoryFolder.value, "repository.index")
+    CONTRIBUTORS_FILE = os.path.join(EXE_FOLDER, "resource", "contributors", "contributors")
     YEAR = 2023
     AUTHOR = "xqyjlj"
     AUTHOR_BLOG_URL = "https://xqyjlj.github.io/"
@@ -99,6 +103,7 @@ class Settings(QConfig):
     FEEDBACK_URL = "https://github.com/csplink/csp/issues"
     RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
     PACKAGE_LIST_URL = "https://csplink.top"
+
 
 SETTINGS = Settings()
 qconfig.load('csplink.config', SETTINGS)

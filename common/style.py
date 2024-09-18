@@ -24,8 +24,12 @@
 # 2024-06-22     xqyjlj       initial version
 #
 
+import os
+
 from enum import Enum
 from qfluentwidgets import StyleSheetBase, Theme, qconfig
+
+from .settings import SETTINGS
 
 
 class Style(StyleSheetBase, Enum):
@@ -39,4 +43,4 @@ class Style(StyleSheetBase, Enum):
 
     def path(self, theme=Theme.AUTO):
         theme = qconfig.theme if theme == Theme.AUTO else theme
-        return f"resource/style/{theme.value.lower()}/{self.value}.qss"
+        return os.path.join(SETTINGS.STYLE_FOLDER, theme.value.lower(), f"{self.value}.qss")

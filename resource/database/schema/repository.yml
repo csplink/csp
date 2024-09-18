@@ -28,19 +28,19 @@ properties:
     type: object
     additionalProperties: false
     patternProperties:
-      "^[A-Za-z0-9_]+$": # Vendor
+      "^[A-Za-z0-9_-]+$": # Vendor
         type: object
         additionalProperties: false
         patternProperties:
-          "^[A-Za-z0-9_]+$": # Series
+          "^[A-Za-z0-9_-]+$": # Series
             type: object
             additionalProperties: false
             patternProperties:
-              "^[A-Za-z0-9_]+$": # Line
+              "^[A-Za-z0-9_-]+$": # Line
                 type: object
                 additionalProperties: false
                 patternProperties:
-                  "^[A-Za-z0-9_]+$": # Name
+                  "^[A-Za-z0-9_-]+$": # Name
                     type: object
                     properties:
                       core:

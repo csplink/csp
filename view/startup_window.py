@@ -90,7 +90,7 @@ class StartupWindow(FramelessWindow):
 
     def __initWindow(self):
         self.resize(1100, 750)
-        self.setWindowIcon(QIcon('resource/images/logo.svg'))
+        self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))
         self.setWindowTitle('CSPLink')
         self.titleBar.hBoxLayout.insertSpacing(0, 20)
         self.titleBar.hBoxLayout.insertSpacing(2, 2)

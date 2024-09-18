@@ -28,15 +28,13 @@ class Ui_ChipView(object):
     def setupUi(self, ChipView):
         if not ChipView.objectName():
             ChipView.setObjectName(u"ChipView")
-        ChipView.resize(1219, 967)
+        ChipView.resize(836, 547)
         self.verticalLayout_3 = QVBoxLayout(ChipView)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.horizontalLayout_3 = QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.splitter_1 = QSplitter(ChipView)
-        self.splitter_1.setObjectName(u"splitter_1")
-        self.splitter_1.setOrientation(Qt.Horizontal)
-        self.frame = SimpleCardWidget(self.splitter_1)
+        self.splitter = QSplitter(ChipView)
+        self.splitter.setObjectName(u"splitter")
+        self.splitter.setOrientation(Qt.Horizontal)
+        self.frame = SimpleCardWidget(self.splitter)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Raised)
@@ -47,8 +45,8 @@ class Ui_ChipView(object):
 
         self.horizontalLayout_2.addWidget(self.widget)
 
-        self.splitter_1.addWidget(self.frame)
-        self.frame_3 = SimpleCardWidget(self.splitter_1)
+        self.splitter.addWidget(self.frame)
+        self.frame_3 = SimpleCardWidget(self.splitter)
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setFrameShape(QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QFrame.Raised)
@@ -66,11 +64,8 @@ class Ui_ChipView(object):
 
         self.verticalLayout.addWidget(self.splitter_2)
 
-        self.splitter_1.addWidget(self.frame_3)
-
-        self.horizontalLayout_3.addWidget(self.splitter_1)
-
-        self.frame_2 = SimpleCardWidget(ChipView)
+        self.splitter.addWidget(self.frame_3)
+        self.frame_2 = SimpleCardWidget(self.splitter)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
@@ -114,13 +109,9 @@ class Ui_ChipView(object):
 
         self.verticalLayout_2.addWidget(self.widget_2)
 
+        self.splitter.addWidget(self.frame_2)
 
-        self.horizontalLayout_3.addWidget(self.frame_2)
-
-        self.horizontalLayout_3.setStretch(0, 4)
-        self.horizontalLayout_3.setStretch(1, 6)
-
-        self.verticalLayout_3.addLayout(self.horizontalLayout_3)
+        self.verticalLayout_3.addWidget(self.splitter)
 
 
         self.retranslateUi(ChipView)

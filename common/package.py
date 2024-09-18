@@ -68,8 +68,7 @@ class Package():
             succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 package = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkYaml(os.path.join(SETTINGS.databaseFolder.value, "schema", "package.yml"),
-                                           package)
+                succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package.yml"), package)
             if succeed:
                 return package
             else:
@@ -84,8 +83,7 @@ class Package():
             succeed = False
             with open(file, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkYaml(os.path.join(SETTINGS.databaseFolder.value, "schema", "package_index.yml"),
-                                           index)
+                succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"), index)
             if succeed:
                 return index
             else:
@@ -134,7 +132,7 @@ class Package():
             shutil.rmtree(tmpFolder)
             shutil.move(tmpTmpFolder, tmpFolder)
         # --------------------------------------------------------------------------------------------------------------
-        files = glob.glob(f"{tmpFolder}/*.csppack")
+        files = glob.glob(f"{tmpFolder}/*.csppdsc")
         count = len(files)
         if count != 1:
             logger.error(f"invalid package {file}")
@@ -166,7 +164,7 @@ class Package():
 
         shutil.move(tmpFolder, folder)
 
-        self.__data.setdefault(type, {}).setdefault(vendor, {}).setdefault(name, {})[version] = folder
+        self.__data.setdefault(type, {}).setdefault(name, {})[version] = folder
         self.save()
 
         return True

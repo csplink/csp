@@ -57,7 +57,7 @@ properties:
     type: string
     minLength: 1
   type:
-    enum: ["hal"]
+    enum: ["hal", "toolchains"]
   vendor:
     type: string
     minLength: 1

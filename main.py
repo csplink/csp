@@ -63,13 +63,13 @@ def main():
     translator = FluentTranslator(locale, app)
     app.installTranslator(translator)
 
-    files = glob.glob(f"resource/i18n/*.{locale.name()}.qm")
+    files = glob.glob(os.path.join(SETTINGS.I18N_FOLDER, f"*.{locale.name()}.qm"))
     for file in files:
         translator = QTranslator(app)
         translator.load(file)
         app.installTranslator(translator)
 
-    dirs = glob.glob(f"resource/fonts/*")
+    dirs = glob.glob(os.path.join(SETTINGS.FONTS_FOLDER, "*"))
     for dir in dirs:
         files = glob.glob(f"{dir}/*.ttf")
         for file in files:

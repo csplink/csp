@@ -369,7 +369,7 @@ class Project(QObject):
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 map = yaml.load(f.read(), Loader=yaml.FullLoader)
-            with open("resource/database/schema/project.yml", 'r', encoding='utf-8') as f:
+            with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "project.yml"), 'r', encoding='utf-8') as f:
                 schema = yaml.load(f.read(), Loader=yaml.FullLoader)
 
             try:

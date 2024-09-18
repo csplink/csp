@@ -36,7 +36,7 @@ class Database():
 
     @logger.catch(default=False)
     def checkRepository(self, repository: dict) -> bool:
-        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=repository, schema=schema)
         return True
@@ -56,11 +56,11 @@ class Database():
             return {}
 
     def getRepository(self) -> dict[str, dict[str, dict[str, dict[str, dict[str, dict]]]]]:
-        return self.getRepositoryByPath(os.path.join(SETTINGS.databaseFolder.value, "repository.yml"))
+        return self.getRepositoryByPath(os.path.join(SETTINGS.DATABASE_FOLDER, "repository.yml"))
 
     @logger.catch(default=False)
     def checkSummary(self, summary: dict) -> bool:
-        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=summary, schema=schema)
         return True
@@ -81,11 +81,11 @@ class Database():
 
     def getSummary(self, vendor: str, name: str) -> dict:
         return self.getSummaryByPath(
-            os.path.join(SETTINGS.databaseFolder.value, "summary", vendor.lower(), f"{name.lower()}.yml"))
+            os.path.join(SETTINGS.DATABASE_FOLDER, "summary", vendor.lower(), f"{name.lower()}.yml"))
 
     @logger.catch(default=False)
     def checkIp(self, ip: dict) -> bool:
-        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "ip.yml"), 'r', encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "ip.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=ip, schema=schema)
         return True
@@ -105,13 +105,11 @@ class Database():
             return {}
 
     def getIp(self, vendor: str, name: str) -> dict:
-        return self.getIpByPath(os.path.join(SETTINGS.databaseFolder.value, "ip", vendor.lower(),
-                                             f"{name.lower()}.yml"))
+        return self.getIpByPath(os.path.join(SETTINGS.DATABASE_FOLDER, "ip", vendor.lower(), f"{name.lower()}.yml"))
 
     @logger.catch(default=False)
     def checkContributors(self, contributors: list) -> bool:
-        with open(os.path.join(SETTINGS.databaseFolder.value, "schema", "contributors.yml"), 'r',
-                  encoding='utf-8') as f:
+        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "contributors.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=contributors, schema=schema)
         return True

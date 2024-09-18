@@ -47,9 +47,9 @@ class ChipView(Ui_ChipView, QWidget):
         self.zoomResetBtn.setIcon(Icon.REFRESH)
         self.zoomOutBtn.setIcon(Icon.ZOOM_OUT)
 
-        self.splitter_1.setSizes([100, 300])
-        self.splitter_1.setCollapsible(0, False)
-        self.splitter_1.setCollapsible(1, False)
+        # self.splitter_1.setSizes([100, 300])
+        # self.splitter_1.setCollapsible(0, False)
+        # self.splitter_1.setCollapsible(1, False)
         self.splitter_2.setSizes([300, 100])
         self.splitter_2.setCollapsible(0, False)
         self.splitter_2.setCollapsible(1, False)

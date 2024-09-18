@@ -27,11 +27,13 @@ additionalProperties: false
 properties:
   hal:
     type: object
-    properties:
-      "^[A-Za-z0-9_]+$":
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_-]+$":
         type: object
-        properties:
-          "^v\\d+\\.\\d+\\.\\d+$":
+        additionalProperties: false
+        patternProperties:
+          "^\\d+\\.\\d+\\.\\d+$":
             type: string
   toolchains:
     $ref: "#/properties/hal"

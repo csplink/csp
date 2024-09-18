@@ -24,9 +24,13 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
+import os
+
 from enum import Enum
 
 from qfluentwidgets import getIconColor, Theme, FluentIconBase
+
+from .settings import SETTINGS
 
 
 class Icon(FluentIconBase, Enum):
@@ -65,4 +69,4 @@ class Icon(FluentIconBase, Enum):
     ZOOM_OUT = "zoom-out-line"
 
     def path(self, theme=Theme.AUTO):
-        return f'resource/icon/{getIconColor(theme)}/{self.value}.svg'
+        return os.path.join(SETTINGS.ICON_FOLDER, getIconColor(theme), f"{self.value}.svg")

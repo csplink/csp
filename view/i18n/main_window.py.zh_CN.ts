@@ -43,7 +43,7 @@
     </message>
     <message>
         <location filename="../main_window.py" line="154"/>
-        <location filename="../main_window.py" line="185"/>
+        <location filename="../main_window.py" line="183"/>
         <source>Sponsor</source>
         <translation>赞助</translation>
     </message>
@@ -53,19 +53,19 @@
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="187"/>
+        <location filename="../main_window.py" line="185"/>
         <source>The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!</source>
         <translation>csplink项目是个人开源项目，它们的开发需要您的帮助。
 如果你想支持csplink的发展，欢迎为其捐赠，支持它的发展！</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="188"/>
+        <location filename="../main_window.py" line="186"/>
         <source>OK</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="189"/>
+        <location filename="../main_window.py" line="187"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
