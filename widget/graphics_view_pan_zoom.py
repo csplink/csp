@@ -161,7 +161,9 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
-        # self.rescale()
+        xHeight = event.size().height() - event.oldSize().height()
+        if xHeight != 0:
+            self.rescale()
 
     def keyPressEvent(self, event: QKeyEvent):
         super().keyPressEvent(event)

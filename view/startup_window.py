@@ -104,10 +104,10 @@ class StartupWindow(FramelessWindow):
 
     def __on_openProjectBtn_pressed(self):
         path, ok = QFileDialog.getOpenFileName(self,
-                                               self.tr('Open CSP project file'), SETTINGS.lastOpenProjectFolder.value,
+                                               self.tr('Open CSP project file'), SETTINGS.lastPackageFileFolder.value,
                                                self.tr('CSP project file (*.csp)'))
         if ok:
-            SETTINGS.set(SETTINGS.lastOpenProjectFolder, os.path.dirname(path))
+            SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             PROJECT.path = path
             if PROJECT.valid:
                 self.deleteLater()

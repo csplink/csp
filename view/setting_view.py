@@ -283,7 +283,6 @@ class GenerateSettingView(ScrollArea):
             else:
                 if PROJECT.toolchainsVersion not in toolchainsVersions:
                     title = self.tr('Warning')
-                    print(PROJECT.toolchains, PROJECT.toolchainsVersion, toolchainsVersions)
                     content = self.tr("The toolchains %1 is not supported. Use default value '%2'").replace(
                         "%1", f"{PROJECT.toolchains}@{PROJECT.toolchainsVersion}").replace(
                             "%2", f"{PROJECT.toolchains}@{toolchainsVersions[0]}")

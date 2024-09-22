@@ -85,6 +85,9 @@ class Settings(QConfig):
     lastOpenProjectFolder = ConfigItem(
         "Misc", "LastOpenProjectFolder",
         QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation), FolderValidator())
+    lastPackageFileFolder = ConfigItem(
+        "Misc", "LastPackageFileFolder",
+        QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DownloadLocation), FolderValidator())
 
     # const data -------------------------------------------------------------------------------------------------------
     DATABASE_FOLDER = os.path.join(EXE_FOLDER, "resource", "database")

@@ -103,12 +103,12 @@
 <context>
     <name>SettingView</name>
     <message>
-        <location filename="../setting_view.py" line="440"/>
+        <location filename="../setting_view.py" line="441"/>
         <source>System Setting</source>
         <translation>系统设置</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="441"/>
+        <location filename="../setting_view.py" line="443"/>
         <source>Generate Setting</source>
         <translation>生成设置</translation>
     </message>

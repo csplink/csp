@@ -39,7 +39,7 @@ from .chip_view import ChipView
 from .setting_view import SettingView
 from .code_view import CodeView
 from common import Icon, SETTINGS
-from dialogs import GenCodeDialog
+from dialogs import GenCodeDialog, PackageInstallDialog
 
 
 class MenuIndexType(Enum):
@@ -133,7 +133,7 @@ class MainWindow(MSFluentWindow):
         # loop.exec()
         self.splashScreen.finish()
 
-        # self.showMaximized()
+        self.showMaximized()
 
     def __initNavigation(self):
         self.addSubInterface(self.chipView, Icon.CPU, 'Chip', Icon.CPU)
@@ -190,5 +190,5 @@ If you would like to support the development of csplink, you are encouraged to d
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))
 
     def __on_generate_clicked(self):
-        dialog = GenCodeDialog(self, True)
+        dialog = PackageInstallDialog(self)
         dialog.exec()
