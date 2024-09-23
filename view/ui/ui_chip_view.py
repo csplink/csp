@@ -31,10 +31,10 @@ class Ui_ChipView(object):
         ChipView.resize(836, 547)
         self.verticalLayout_3 = QVBoxLayout(ChipView)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.splitter = QSplitter(ChipView)
-        self.splitter.setObjectName(u"splitter")
-        self.splitter.setOrientation(Qt.Horizontal)
-        self.frame = SimpleCardWidget(self.splitter)
+        self.modulePropertySocSplitter = QSplitter(ChipView)
+        self.modulePropertySocSplitter.setObjectName(u"modulePropertySocSplitter")
+        self.modulePropertySocSplitter.setOrientation(Qt.Horizontal)
+        self.frame = SimpleCardWidget(self.modulePropertySocSplitter)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Raised)
@@ -45,27 +45,27 @@ class Ui_ChipView(object):
 
         self.horizontalLayout_2.addWidget(self.widget)
 
-        self.splitter.addWidget(self.frame)
-        self.frame_3 = SimpleCardWidget(self.splitter)
+        self.modulePropertySocSplitter.addWidget(self.frame)
+        self.frame_3 = SimpleCardWidget(self.modulePropertySocSplitter)
         self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setFrameShape(QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QFrame.Raised)
         self.verticalLayout = QVBoxLayout(self.frame_3)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.splitter_2 = QSplitter(self.frame_3)
-        self.splitter_2.setObjectName(u"splitter_2")
-        self.splitter_2.setOrientation(Qt.Vertical)
-        self.gridModeWidget = GridMode(self.splitter_2)
+        self.modePropertySplitter = QSplitter(self.frame_3)
+        self.modePropertySplitter.setObjectName(u"modePropertySplitter")
+        self.modePropertySplitter.setOrientation(Qt.Vertical)
+        self.gridModeWidget = GridMode(self.modePropertySplitter)
         self.gridModeWidget.setObjectName(u"gridModeWidget")
-        self.splitter_2.addWidget(self.gridModeWidget)
-        self.gridPropertyIpWidget = GridPropertyIp(self.splitter_2)
+        self.modePropertySplitter.addWidget(self.gridModeWidget)
+        self.gridPropertyIpWidget = GridPropertyIp(self.modePropertySplitter)
         self.gridPropertyIpWidget.setObjectName(u"gridPropertyIpWidget")
-        self.splitter_2.addWidget(self.gridPropertyIpWidget)
+        self.modePropertySplitter.addWidget(self.gridPropertyIpWidget)
 
-        self.verticalLayout.addWidget(self.splitter_2)
+        self.verticalLayout.addWidget(self.modePropertySplitter)
 
-        self.splitter.addWidget(self.frame_3)
-        self.frame_2 = SimpleCardWidget(self.splitter)
+        self.modulePropertySocSplitter.addWidget(self.frame_3)
+        self.frame_2 = SimpleCardWidget(self.modulePropertySocSplitter)
         self.frame_2.setObjectName(u"frame_2")
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
@@ -106,17 +106,16 @@ class Ui_ChipView(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
-
         self.verticalLayout_2.addWidget(self.widget_2)
 
-        self.splitter.addWidget(self.frame_2)
+        self.modulePropertySocSplitter.addWidget(self.frame_2)
 
-        self.verticalLayout_3.addWidget(self.splitter)
-
+        self.verticalLayout_3.addWidget(self.modulePropertySocSplitter)
 
         self.retranslateUi(ChipView)
 
         QMetaObject.connectSlotsByName(ChipView)
+
     # setupUi
 
     def retranslateUi(self, ChipView):
@@ -124,5 +123,5 @@ class Ui_ChipView(object):
         self.zoomInBtn.setText("")
         self.zoomResetBtn.setText("")
         self.zoomOutBtn.setText("")
-    # retranslateUi
 
+    # retranslateUi

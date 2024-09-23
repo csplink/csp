@@ -36,7 +36,8 @@ from .settings import SETTINGS
 class Icon(FluentIconBase, Enum):
     """ Custom icons """
 
-    GENERATE = "ai-generate"
+    AI_GENERATE = "ai-generate"
+    BOOK_SHELF = "book-shelf-line"
     BOX = "box-3-line"
     C = "c"
     CHECKBOX_MULTIPLE = "checkbox-multiple-line"

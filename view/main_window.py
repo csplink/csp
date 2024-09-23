@@ -36,6 +36,7 @@ from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar
                             TransparentPushButton, SplashScreen)
 
 from .chip_view import ChipView
+from .package_view import PackageView
 from .setting_view import SettingView
 from .code_view import CodeView
 from common import Icon, SETTINGS
@@ -124,6 +125,7 @@ class MainWindow(MSFluentWindow):
         QApplication.processEvents()
 
         self.codeView = CodeView(self)
+        self.packageView = PackageView(self)
         self.settingView = SettingView(self)
 
         self.__initNavigation()
@@ -136,18 +138,12 @@ class MainWindow(MSFluentWindow):
         self.showMaximized()
 
     def __initNavigation(self):
-        self.addSubInterface(self.chipView, Icon.CPU, 'Chip', Icon.CPU)
-        btnCode = self.addSubInterface(self.codeView, Icon.CODE, 'Code', Icon.CODE)
+        self.addSubInterface(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
+        btnCode = self.addSubInterface(self.codeView, Icon.CODE, self.tr('Code'), Icon.CODE)
         btnCode.clicked.connect(lambda: self.codeView.flush())
 
-        self.navigationInterface.addItem(
-            routeKey='Generate',
-            icon=Icon.GENERATE,
-            text=self.tr('Generate'),
-            onClick=self.__on_generate_clicked,
-            selectable=False,
-            position=NavigationItemPosition.BOTTOM,
-        )
+        self.addSubInterface(self.packageView, Icon.BOOK_SHELF, self.tr('Package'), Icon.BOOK_SHELF,
+                             NavigationItemPosition.BOTTOM)
         self.navigationInterface.addItem(
             routeKey='Sponsor',
             icon=Icon.MONEY,

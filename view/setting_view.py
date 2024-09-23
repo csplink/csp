@@ -438,7 +438,7 @@ class SettingView(Ui_SettingView, QWidget):
 
         self.systemSettingTreeWidgetItem = self.__addView(self.systemSettingView, Icon.LIST_SETTINGS,
                                                           self.tr("System Setting"))
-        self.generateSettingTreeWidgetItem = self.__addView(self.generateSettingView, Icon.FOLDER_TRANSFER,
+        self.generateSettingTreeWidgetItem = self.__addView(self.generateSettingView, Icon.AI_GENERATE,
                                                             self.tr("Generate Setting"))
 
         Style.VIEW_SETTING.apply(self)
