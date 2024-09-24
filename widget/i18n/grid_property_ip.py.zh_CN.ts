@@ -4,7 +4,7 @@
 <context>
     <name>GridPropertyIpModel</name>
     <message>
-        <location filename="../grid_property_ip.py" line="104"/>
+        <location filename="../grid_property_ip.py" line="103"/>
         <source>Property</source>
         <translation>属性</translation>
     </message>

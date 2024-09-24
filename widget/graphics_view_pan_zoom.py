@@ -26,35 +26,34 @@
 
 import math
 
-from PySide6.QtCore import Qt, QRegularExpression
+from PySide6.QtCore import Qt, QRegularExpression, QCoreApplication
 from PySide6.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
                            QResizeEvent, QRegularExpressionValidator)
-from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
-
+from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
 
-from .graphics_item_pin import GraphicsItemPin
 from common import PROJECT, SIGNAL_BUS
+from .graphics_item_pin import GraphicsItemPin
 
 
 class LabelMessageBox(MessageBoxBase):
 
     def __init__(self, text: str, parent=None):
         super().__init__(parent)
-        self.titleLabel = SubtitleLabel(self.tr('Set label'), self)
+        self.titleLabel = SubtitleLabel(QCoreApplication.translate('LabelMessageBox', 'Set label'), self)
         self.labelLineEdit = LineEdit(self)
 
         self.labelLineEdit.setText(text)
-        self.labelLineEdit.setPlaceholderText(self.tr('Enter the user label'))
+        self.labelLineEdit.setPlaceholderText(QCoreApplication.translate('LabelMessageBox', 'Enter the user label'))
         self.labelLineEdit.setClearButtonEnabled(True)
         self.labelLineEdit.setValidator(QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")))
 
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.labelLineEdit)
 
-        self.yesButton.setText(self.tr('OK'))
-        self.cancelButton.setText(self.tr('Cancel'))
+        self.yesButton.setText(QCoreApplication.translate('LabelMessageBox', 'OK'))
+        self.cancelButton.setText(QCoreApplication.translate('LabelMessageBox', 'Cancel'))
 
         self.widget.setMinimumWidth(360)
 
@@ -106,7 +105,7 @@ class GraphicsViewPanZoom(QGraphicsView):
             self.pressed = True
             self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
             item = self.itemAt(event.pos())
-            if item != None and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
+            if item is not None and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
                 if self.__key != 0:
                     if self.__key == Qt.Key.Key_Control:
                         self.__key = 0
@@ -153,10 +152,10 @@ class GraphicsViewPanZoom(QGraphicsView):
     def contextMenuEvent(self, event: QContextMenuEvent):
         super().contextMenuEvent(event)
         item = self.itemAt(event.pos())
-        if item != None and item.flags():
+        if item is not None and item.flags():
             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
                 menu = item.data(GraphicsItemPin.Data.MENU_KEY.value)
-                if menu != None:
+                if menu is not None:
                     menu.exec(event.globalPos(), False, MenuAnimationType.FADE_IN_DROP_DOWN)
 
     def resizeEvent(self, event: QResizeEvent):
@@ -189,10 +188,10 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def zoom(self, value):
         self.SCALE = math.log(value, 2) * self.RESOLUTION + (self.MIN_SCALE + self.MAX_SCALE / 2)
-        if (self.SCALE >= self.MAX_SCALE):
+        if self.SCALE >= self.MAX_SCALE:
             self.SCALE = self.MAX_SCALE
 
-        if (self.SCALE <= self.MIN_SCALE):
+        if self.SCALE <= self.MIN_SCALE:
             self.SCALE = self.MIN_SCALE
 
         self.setupMatrix()
@@ -200,7 +199,7 @@ class GraphicsViewPanZoom(QGraphicsView):
     def rescale(self):
         scene = self.scene()
 
-        if scene != None:
+        if scene is not None:
             sceneWidth = scene.itemsBoundingRect().width()
             sceneHeight = scene.itemsBoundingRect().height()
             viewWidth = self.width()

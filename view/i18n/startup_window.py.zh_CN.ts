@@ -4,32 +4,32 @@
 <context>
     <name>StartupView</name>
     <message>
-        <location filename="../startup_window.py" line="56"/>
+        <location filename="../startup_window.py" line="53"/>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../startup_window.py" line="57"/>
+        <location filename="../startup_window.py" line="54"/>
         <source>New Chip Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../startup_window.py" line="58"/>
+        <location filename="../startup_window.py" line="55"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../startup_window.py" line="65"/>
+        <location filename="../startup_window.py" line="62"/>
         <source>Contributors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../startup_window.py" line="70"/>
+        <location filename="../startup_window.py" line="67"/>
         <source>Project List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../startup_window.py" line="73"/>
+        <location filename="../startup_window.py" line="70"/>
         <source>More</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37,12 +37,12 @@
 <context>
     <name>StartupWindow</name>
     <message>
-        <location filename="../startup_window.py" line="107"/>
+        <location filename="../startup_window.py" line="104"/>
         <source>Open CSP project file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../startup_window.py" line="108"/>
+        <location filename="../startup_window.py" line="106"/>
         <source>CSP project file (*.csp)</source>
         <translation type="unfinished"></translation>
     </message>

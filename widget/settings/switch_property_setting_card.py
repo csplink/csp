@@ -25,17 +25,17 @@
 #
 
 from PySide6.QtCore import Qt, Signal
-# from PySide6.QtGui import QRegularExpressionValidator
-# from PySide6.QtWidgets import QWidget
-
 from qfluentwidgets import (FluentIconBase, SettingCard, SwitchButton, IconInfoBadge, InfoBadgePosition,
                             IndicatorPosition)
 
 from common import Icon
 
 
-class SwitchPropertySettingCard(SettingCard):
+# from PySide6.QtGui import QRegularExpressionValidator
+# from PySide6.QtWidgets import QWidget
 
+
+class SwitchPropertySettingCard(SettingCard):
     checkedChanged = Signal(bool)
 
     def __init__(self, icon: FluentIconBase, title: str, value: bool, content=None, parent=None):

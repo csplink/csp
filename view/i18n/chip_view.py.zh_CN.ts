@@ -9,8 +9,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chip_view.py" line="69"/>
-        <source>The package &apos;{PROJECT.summary.package}&apos; is not supported at this time</source>
+        <location filename="../chip_view.py" line="70"/>
+        <source>The package &quot;{PROJECT.summary.package}&quot; is not supported at this time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

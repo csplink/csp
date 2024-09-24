@@ -25,16 +25,16 @@
 #
 
 from PySide6.QtCore import Qt, Signal
-# from PySide6.QtGui import QRegularExpressionValidator
-# from PySide6.QtWidgets import QWidget
-
 from qfluentwidgets import (FluentIconBase, SettingCard, TransparentToolButton, IconInfoBadge, InfoBadgePosition)
 
 from common import Icon
 
 
-class ToolButtonPropertySettingCard(SettingCard):
+# from PySide6.QtGui import QRegularExpressionValidator
+# from PySide6.QtWidgets import QWidget
 
+
+class ToolButtonPropertySettingCard(SettingCard):
     clicked = Signal()
 
     def __init__(self, icon: FluentIconBase, title: str, btnIcon: FluentIconBase, content=None, parent=None):

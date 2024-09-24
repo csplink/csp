@@ -24,7 +24,12 @@
 # 2024-08-18     xqyjlj       initial version
 #
 
-import subprocess, sys, os, glob, re, platform
+import glob
+import os
+import platform
+import re
+import subprocess
+import sys
 
 languages = ['zh_CN']
 
@@ -44,8 +49,8 @@ if len(exes) > 0:
     for file in pyFiles:
         with open(file, "r", encoding="utf-8") as f:
             text = f.read()
-            pattern = r'tr\((["\'])(.*?)\1\)'
-            if re.search(pattern, text):
+            if re.search(r'.tr\((["\'])(.*?)\1\)', text) or re.search(r'QCoreApplication.translate\((["\'])(.*?)\1\)',
+                                                                      text):
                 srcFiles.append(file)
 
     for file in uiFiles:

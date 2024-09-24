@@ -25,22 +25,20 @@
 #
 
 import os
-
 from enum import Enum
 
-from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer
+from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer, QCoreApplication
 from PySide6.QtGui import QIcon, QDesktopServices
 from PySide6.QtWidgets import QHBoxLayout, QApplication
-
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton, SplashScreen)
 
-from .chip_view import ChipView
-from .package_view import PackageView
-from .setting_view import SettingView
-from .code_view import CodeView
 from common import Icon, SETTINGS
 from dialogs import GenCodeDialog, PackageInstallDialog
+from .chip_view import ChipView
+from .code_view import CodeView
+from .package_view import PackageView
+from .setting_view import SettingView
 
 
 class MenuIndexType(Enum):
@@ -61,11 +59,11 @@ class CustomTitleBar(MSFluentTitleBar):
         # add buttons
         self.layoutBtn = QHBoxLayout()
 
-        self.btnFile = TransparentPushButton(self.tr("File"), self)
+        self.btnFile = TransparentPushButton(QCoreApplication.translate("CustomTitleBar", "File"), self)
         self.btnFile.clicked.connect(lambda: self.menus[MenuIndexType.FILE_MENU.value].exec(
             self.btnFile.mapToGlobal(QPoint(0, self.btnFile.height())), ani=True))
 
-        self.btnProject = TransparentPushButton(self.tr("Project"), self)
+        self.btnProject = TransparentPushButton(QCoreApplication.translate("CustomTitleBar", "Project"), self)
         self.btnProject.clicked.connect(lambda: self.menus[MenuIndexType.PROJECT_MENU.value].exec(
             self.btnProject.mapToGlobal(QPoint(0, self.btnProject.height())), ani=True))
 
@@ -85,13 +83,13 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createFileMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        action = Action(self.tr('New'))
+        action = Action(QCoreApplication.translate("CustomTitleBar", 'New'))
         menu.addAction(action)
 
-        action = Action(self.tr('Open'))
+        action = Action(QCoreApplication.translate("CustomTitleBar", 'Open'))
         menu.addAction(action)
 
-        action = Action(self.tr('Save'))
+        action = Action(QCoreApplication.translate("CustomTitleBar", 'Save'))
         menu.addAction(action)
 
         return menu
@@ -99,7 +97,7 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createProjectMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.generateAction = Action(self.tr('Generate'))
+        self.generateAction = Action(QCoreApplication.translate("CustomTitleBar", 'Generate'))
         menu.addAction(self.generateAction)
 
         return menu
@@ -138,21 +136,24 @@ class MainWindow(MSFluentWindow):
         self.showMaximized()
 
     def __initNavigation(self):
-        self.addSubInterface(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
-        btnCode = self.addSubInterface(self.codeView, Icon.CODE, self.tr('Code'), Icon.CODE)
+        self.addSubInterface(self.chipView, Icon.CPU, QCoreApplication.translate("MainWindow", 'Chip'), Icon.CPU)
+        btnCode = self.addSubInterface(self.codeView, Icon.CODE, QCoreApplication.translate("MainWindow", 'Code'),
+                                       Icon.CODE)
         btnCode.clicked.connect(lambda: self.codeView.flush())
 
-        self.addSubInterface(self.packageView, Icon.BOOK_SHELF, self.tr('Package'), Icon.BOOK_SHELF,
+        self.addSubInterface(self.packageView, Icon.BOOK_SHELF, QCoreApplication.translate("MainWindow", 'Package'),
+                             Icon.BOOK_SHELF,
                              NavigationItemPosition.BOTTOM)
         self.navigationInterface.addItem(
             routeKey='Sponsor',
             icon=Icon.MONEY,
-            text=self.tr('Sponsor'),
+            text=QCoreApplication.translate("MainWindow", 'Sponsor'),
             onClick=self.__on_sponsorKey_clicked,
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
-        self.addSubInterface(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING,
+        self.addSubInterface(self.settingView, Icon.SETTING, QCoreApplication.translate("MainWindow", 'Settings'),
+                             Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
     def __initWindow(self):
@@ -176,11 +177,11 @@ class MainWindow(MSFluentWindow):
 
     def __on_sponsorKey_clicked(self):
         message = MessageBox(
-            self.tr('Sponsor'),
-            self.tr("""The csplink projects are personal open-source projects, their development need your help.
+            QCoreApplication.translate("MainWindow", 'Sponsor'),
+            QCoreApplication.translate("MainWindow", """The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!"""), self)
-        message.yesButton.setText(self.tr('OK'))
-        message.cancelButton.setText(self.tr('Cancel'))
+        message.yesButton.setText(QCoreApplication.translate("MainWindow", 'OK'))
+        message.cancelButton.setText(QCoreApplication.translate("MainWindow", 'Cancel'))
 
         if message.exec():
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))

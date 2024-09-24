@@ -24,17 +24,21 @@
 # 2024-07-11     xqyjlj       initial version
 #
 
-import xml.etree.ElementTree as etree
-import re, copy, time, json, jinja2, importlib.util, glob
-import os, sys
+import copy
+import glob
 import hashlib
+import importlib.util
+import jinja2
+import os
+import re
+import time
+import xml.etree.ElementTree as etree
 
 from .project import PROJECT
 from .settings import SETTINGS
 
 
-class Coder():
-
+class Coder:
     m_data = {}
 
     def __match_user(self, path: str, prefix1: str, suffix1: str, prefix2: str, suffix2: str) -> dict:
@@ -212,7 +216,7 @@ class Coder():
 
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(
             [f'{os.getcwd()}/resource/templates', f'{packageDir}/tools/coder/templates']),
-                                 line_comment_prefix="//")
+            line_comment_prefix="//")
 
         filter_files = glob.glob(f"{packageDir}/tools/coder/filters/*.py")
         for file in filter_files:

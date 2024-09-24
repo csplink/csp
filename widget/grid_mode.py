@@ -28,8 +28,8 @@ from enum import Enum
 
 from PySide6.QtWidgets import QWidget
 
-from .ui.ui_grid_mode import Ui_GridMode
 from common import SIGNAL_BUS
+from .ui.ui_grid_mode import Ui_GridMode
 
 
 class StackedWidgetIndex(Enum):

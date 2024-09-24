@@ -24,16 +24,15 @@
 # 2024-07-02     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
+from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection, QCoreApplication
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
-from .ui.ui_grid_mode_io import Ui_GridModeIo
 from common import PROJECT, SETTINGS, SIGNAL_BUS
+from .ui.ui_grid_mode_io import Ui_GridModeIo
 
 
 class GridModeIoModel(QAbstractTableModel):
-
     __font = QFont('JetBrains Mono')
     __font.setPixelSize(12)
 
@@ -106,11 +105,11 @@ class GridModeIoModel(QAbstractTableModel):
             self.__headersMap.clear()
 
             self.__headersMap = {
-                self.tr("Name"): {
+                QCoreApplication.translate("GridModeIoModel", "Name"): {
                     "path": "",
                     "index": 0
                 },
-                self.tr("Label"): {
+                QCoreApplication.translate("GridModeIoModel", "Label"): {
                     "path": "pin/(name)/label",
                     "index": 1
                 },
@@ -128,7 +127,7 @@ class GridModeIoModel(QAbstractTableModel):
             self.__config = PROJECT.config(instance)
             self.__data.clear()
 
-            if self.__config != None:
+            if self.__config is not None:
                 for name in self.__config.keys():
                     if PROJECT.config(f"pin/{name}/locked"):
                         l = []
@@ -146,7 +145,8 @@ class GridModeIoModel(QAbstractTableModel):
 
     def __value2str(self, value):
         if isinstance(value, bool):
-            return self.tr("Locked") if value else self.tr("Unlocked")
+            return QCoreApplication.translate("GridModeIoModel", "Locked") if value else QCoreApplication.translate(
+                "GridModeIoModel", "Unlocked")
         return value
 
     def __removeModelData(self, name: str):
@@ -188,7 +188,7 @@ class GridModeIoModel(QAbstractTableModel):
 
         return index
 
-    def projectConfigChanged(self, keys: list[str], oldValue: str, newvalue: str):
+    def projectConfigChanged(self, keys: list[str], _: str, newvalue: str):
         if keys[0] == self.__instance:
             name = keys[1]
 
@@ -207,13 +207,13 @@ class GridModeIoModel(QAbstractTableModel):
                     index = self.createIndex(index, column)
                     self.dataChanged.emit(index, index)
 
-    def pinProjectConfigChanged(self, keys: list[str], oldValue: str, newvalue: str):
+    def pinProjectConfigChanged(self, keys: list[str], _: str, newValue: str):
         if "" != self.__instance:
             if len(keys) == 3 and keys[2] == "label":
                 name = keys[1]
                 index = self.__getModelDataIndex(name)
                 if index >= 0:
-                    self.__data[index][1] = {"display": newvalue, "tooltip": newvalue}
+                    self.__data[index][1] = {"display": newValue, "tooltip": newValue}
                     index = self.createIndex(index, 1)
                     self.dataChanged.emit(index, index)
 
@@ -243,7 +243,7 @@ class GridModeIo(Ui_GridModeIo, QWidget):
             self.__instance = instance
             self.m_model.setInstance(instance)
 
-    def tableView_ioSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+    def tableView_ioSelectionChanged(self, selected: QItemSelection, _: QItemSelection):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]

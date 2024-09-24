@@ -25,20 +25,18 @@
 #
 
 import attr
-
-from PySide6.QtCore import Qt, QRegularExpression, QModelIndex, QAbstractTableModel, QSortFilterProxyModel, QAbstractItemModel
+from PySide6.QtCore import Qt, QRegularExpression, QModelIndex, QAbstractTableModel, QSortFilterProxyModel, \
+    QAbstractItemModel, QCoreApplication
 from PySide6.QtGui import QRegularExpressionValidator, QFont
 from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication)
-
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
-from .ui.ui_grid_property_ip import Ui_GridPropertyIp
-
 from common import PROJECT, SETTINGS, Style, SIGNAL_BUS
+from .ui.ui_grid_property_ip import Ui_GridPropertyIp
 
 
 @attr.s
-class PModel():
+class PModel:
     property = attr.ib(default="", validator=attr.validators.instance_of(str))
     path = attr.ib(default="", validator=attr.validators.instance_of(str))
     value = attr.ib(default="", validator=attr.validators.instance_of(str))
@@ -56,7 +54,7 @@ class EditorDelegate(TableItemDelegate):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def createEditor(self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> QWidget:
+    def createEditor(self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> QWidget | None:
         column = index.column()
         row = index.row()
         if column == 0:
@@ -87,13 +85,14 @@ class EditorDelegate(TableItemDelegate):
             return None
 
         if g_data[row].typeof == "string":
+            editor: LineEdit
             model.setData(index, editor.text(), Qt.ItemDataRole.EditRole)
         elif g_data[row].typeof == "enum":
+            editor: ComboBox
             model.setData(index, editor.currentText(), Qt.ItemDataRole.EditRole)
 
 
 class GridPropertyIpModel(QAbstractTableModel):
-
     __pinInstance = ""
 
     __font = QFont('JetBrains Mono')
@@ -101,7 +100,8 @@ class GridPropertyIpModel(QAbstractTableModel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.__headers = [self.tr("Property"), self.tr("Value")]
+        self.__headers = [QCoreApplication.translate("GridPropertyIpModel", "Property"),
+                          QCoreApplication.translate("GridPropertyIpModel", "Value")]
         self.__pinInstance = PROJECT.summary.pinIp
 
         SIGNAL_BUS.gridPropertyIpTriggered.connect(self.changePropertyIp)
@@ -184,13 +184,13 @@ class GridPropertyIpModel(QAbstractTableModel):
             self.modelReset.emit()
             return
 
-        if cfg != None and "mode" in cfg:
+        if cfg is not None and "mode" in cfg:
             mode = cfg["mode"]
             mode_cfg = ip["modes"][mode]
 
             if self.__pinInstance == instance:
                 g_data.append(
-                    PModel(property=self.tr("Name"),
+                    PModel(property=QCoreApplication.translate("GridPropertyIpModel", "Name"),
                            path="",
                            value=value,
                            typeof="string",
@@ -199,7 +199,7 @@ class GridPropertyIpModel(QAbstractTableModel):
                            description=""))
                 path = f"pin/{value}/label"
                 g_data.append(
-                    PModel(property=self.tr("Label"),
+                    PModel(property=QCoreApplication.translate("GridPropertyIpModel", "Label"),
                            path=path,
                            value=PROJECT.config(path, ""),
                            typeof="string",

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+import os
+import shutil
+
 # Licensed under the GNU General Public License v. 3 (the "License")
 # You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -23,7 +26,9 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-08-31     xqyjlj       initial version
 #
-import requests, os, filetype, shutil, yaml
+import filetype
+import requests
+import yaml
 
 rootDir = os.path.join(os.path.dirname(__file__), "..")
 
@@ -31,15 +36,15 @@ rootDir = os.path.join(os.path.dirname(__file__), "..")
 def getContributors(owner, repo, token):
     url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
     headers = {"Authorization": f"token {token}"}
-    response = requests.get(url, headers=headers)
-    contributors = response.json()
-    return sorted(contributors, key=lambda x: x['contributions'], reverse=True)
+    resp = requests.get(url, headers=headers)
+    json = resp.json()
+    return sorted(json, key=lambda x: x['contributions'], reverse=True)
 
 
-owner = "csplink"
-repo = "csp"
-token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
-contributors = getContributors(owner, repo, token)
+OWNER = "csplink"
+REPO = "csp"
+TOKEN = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
+contributors = getContributors(OWNER, REPO, TOKEN)
 
 avatarFolder = os.path.join(rootDir, "resource", "contributors", "avatar")
 if os.path.isdir(avatarFolder):

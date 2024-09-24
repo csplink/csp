@@ -25,9 +25,8 @@
 #
 
 from PySide6.QtCore import Qt, QRect, QSize
-from PySide6.QtGui import QPaintEvent, QFont, QColor, QPainter, QTextFormat
-from PySide6.QtWidgets import QWidget, QTextEdit
-
+from PySide6.QtGui import QPaintEvent, QFont, QColor, QPainter
+from PySide6.QtWidgets import QWidget
 from qfluentwidgets import isDarkTheme, PlainTextEdit
 
 from common import Style

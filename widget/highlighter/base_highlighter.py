@@ -24,7 +24,6 @@
 # 2024-07-27     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QRegularExpression, QSize
 from PySide6.QtGui import QSyntaxHighlighter, QFont, QColor, QTextCharFormat, QTextDocument
 
 

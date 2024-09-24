@@ -24,7 +24,11 @@
 # 2024-08-18     xqyjlj       initial version
 #
 
-import subprocess, sys, os, glob, platform
+import glob
+import os
+import platform
+import subprocess
+import sys
 
 languages = ['zh_CN']
 

@@ -25,23 +25,21 @@
 #
 
 import attr
-
 from PySide6.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
 from PySide6.QtGui import QFont, QBrush, QColor
 from PySide6.QtWidgets import (QWidget)
 
+from common import PROJECT, SETTINGS, SIGNAL_BUS
 from .ui.ui_tree_module import Ui_TreeModule
 
-from common import PROJECT, SETTINGS, SIGNAL_BUS
 
-
-def isPrivateModelOrNone(instance, attribute, value):
+def isPrivateModelOrNone(_, attribute, value):
     if value is not None and not isinstance(value, PModel):
         raise ValueError(f"{attribute.name} must be a PModel instance or None")
 
 
 @attr.s
-class PModel():
+class PModel:
     displayName = attr.ib(default="", validator=attr.validators.instance_of(str))
     description = attr.ib(default="", validator=attr.validators.instance_of(str))
     children = attr.ib(default=[], validator=attr.validators.instance_of(list))
@@ -56,13 +54,12 @@ class PModel():
         return self.children[row]
 
     def row(self) -> int:
-        if self.parent != None:
+        if self.parent is not None:
             return self.parent.children.index(self)
         return 0
 
 
 class TreeModuleModel(QAbstractItemModel):
-
     __model = PModel()
 
     SELECTED_COLOR = QColor(0, 204, 68)
@@ -128,7 +125,7 @@ class TreeModuleModel(QAbstractItemModel):
             parentModel = parent.internalPointer()
 
         childModel = parentModel.child(row)
-        if childModel != None:
+        if childModel is not None:
             return self.createIndex(row, column, childModel)
         else:
             return QModelIndex()
@@ -171,7 +168,7 @@ class TreeModule(Ui_TreeModule, QWidget):
         self.treeView_modules.expandAll()
         self.treeView_modules.selectionModel().selectionChanged.connect(self.treeView_modulesSelectionChanged)
 
-    def treeView_modulesSelectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+    def treeView_modulesSelectionChanged(self, selected: QItemSelection, _: QItemSelection):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]

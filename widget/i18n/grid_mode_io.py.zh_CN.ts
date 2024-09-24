@@ -4,17 +4,17 @@
 <context>
     <name>GridModeIoModel</name>
     <message>
-        <location filename="../grid_mode_io.py" line="110"/>
+        <location filename="../grid_mode_io.py" line="109"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../grid_mode_io.py" line="114"/>
+        <location filename="../grid_mode_io.py" line="113"/>
         <source>Label</source>
         <translation>标签</translation>
     </message>
     <message>
-        <location filename="../grid_mode_io.py" line="149"/>
+        <location filename="../grid_mode_io.py" line="148"/>
         <source>Locked</source>
         <translation>锁定</translation>
     </message>

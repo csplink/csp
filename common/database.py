@@ -24,15 +24,16 @@
 # 2024-06-24     xqyjlj       initial version
 #
 
-import jsonschema
-import yaml, os
+import os
 
+import jsonschema
+import yaml
 from loguru import logger
 
 from .settings import SETTINGS
 
 
-class Database():
+class Database:
 
     @logger.catch(default=False)
     def checkRepository(self, repository: dict) -> bool:
@@ -43,7 +44,6 @@ class Database():
 
     def getRepositoryByPath(self, path: str) -> dict:
         if os.path.isfile(path):
-            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.checkRepository(repository)
@@ -67,7 +67,6 @@ class Database():
 
     def getSummaryByPath(self, path: str) -> dict:
         if os.path.isfile(path):
-            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.checkSummary(summary)
@@ -92,7 +91,6 @@ class Database():
 
     def getIpByPath(self, path: str) -> dict:
         if os.path.isfile(path):
-            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
                 ip = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.checkIp(ip)
@@ -116,7 +114,6 @@ class Database():
 
     def getContributors(self) -> dict:
         if os.path.isfile(SETTINGS.CONTRIBUTORS_FILE):
-            succeed = False
             with open(SETTINGS.CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
                 contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.checkContributors(contributors)
@@ -125,7 +122,7 @@ class Database():
             else:
                 return {}
         else:
-            return []
+            return {}
 
 
 DATABASE = Database()

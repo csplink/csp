@@ -26,15 +26,14 @@
 
 import re
 
-# from PySide6.QtCore import QItemSelection
+from PySide6.QtCore import QCoreApplication
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
-
 from qfluentwidgets import (isDarkTheme)
 
-from .ui.ui_chip_view import Ui_ChipView
 from common import Style, Icon, PROJECT
 from widget import LQFP
+from .ui.ui_chip_view import Ui_ChipView
 
 
 class ChipView(Ui_ChipView, QWidget):
@@ -65,9 +64,11 @@ class ChipView(Ui_ChipView, QWidget):
             if re.match("^LQFP\d+$", PROJECT.summary.package):
                 items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
             else:
-                QMessageBox.critical(self, self.tr("critical"),
-                                     self.tr(f"The package '{PROJECT.summary.package}' is not supported at this time"))
-            if items != None:
+                items = None
+                QMessageBox.critical(self, QCoreApplication.translate('ChipView', 'critical'),
+                                     QCoreApplication.translate('ChipView',
+                                                                f'The package "{PROJECT.summary.package}" is not supported at this time'))
+            if items is not None:
                 for item in items:
                     scene.addItem(item)
         self.graphicsView.setScene(scene)

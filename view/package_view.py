@@ -23,18 +23,10 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-09-23     xqyjlj       initial version
 #
-from PySide6.QtCore import Qt, QUrl, QItemSelection
-from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
+from PySide6.QtCore import Qt, QCoreApplication
+from PySide6.QtWidgets import QWidget, QLabel
 
-from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
-                            PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
-                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
-
-from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE)
-from utils import converters
-from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
-                    ToolButtonPropertySettingCard)
+from qfluentwidgets import (ScrollArea)
 
 
 class PackageView(ScrollArea):
@@ -44,7 +36,7 @@ class PackageView(ScrollArea):
         self.setObjectName("PackageView")
 
         # setting label
-        self.settingLabel = QLabel(self.tr("System Setting"), self)
+        self.settingLabel = QLabel(QCoreApplication.translate("PackageView", "System Setting"), self)
         self.settingLabel.setObjectName('settingLabel')
         self.settingLabel.move(36, 30)
 

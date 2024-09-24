@@ -27,13 +27,10 @@
 import os
 import unittest
 
-from common import PACKAGE, SETTINGS
+from common import PACKAGE
 
 
 class PackageTest(unittest.TestCase):
-
-    def __init__(self, parent: None) -> None:
-        super().__init__(parent)
 
     def setUp(self):
         pass
@@ -42,7 +39,7 @@ class PackageTest(unittest.TestCase):
         file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.7z")
         succeed = 0
 
-        def callback(file: str, progress: float):
+        def callback(_: str, progress: float):
             nonlocal succeed
             succeed = progress
 

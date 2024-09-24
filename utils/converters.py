@@ -37,10 +37,10 @@ def paths2dict(paths: list[str], separator='/'):
     for path in paths:
         parts = path.strip().split(separator)
 
-        def updateDict(currentDict, key):
-            if key not in currentDict:
-                currentDict[key] = {}
-            return currentDict[key]
+        def updateDict(dt, key):
+            if key not in dt:
+                dt[key] = {}
+            return dt[key]
 
         currentDict = reduce(updateDict, parts[:-1], pathDict)
         currentDict[parts[-1]] = ""

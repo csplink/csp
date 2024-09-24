@@ -24,9 +24,8 @@
 # 2024-07-27     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QRegularExpression, QSize
-from PySide6.QtGui import QSyntaxHighlighter, QTextDocument, QColor, QPainter, QTextFormat
-from PySide6.QtWidgets import QTextEdit
+from PySide6.QtCore import QRegularExpression
+from PySide6.QtGui import QTextDocument
 
 from .base_highlighter import BaseHighlighter
 

@@ -24,13 +24,14 @@
 # 2024-06-17     xqyjlj       initial version
 #
 
-import sys, os, glob, getopt
-
-from loguru import logger
+import getopt
+import glob
+import os
+import sys
 
 from PySide6.QtCore import Qt, QTranslator
-from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFontDatabase
+from PySide6.QtWidgets import QApplication
 
 # masking printing: 📢 Tips: QFluentWidgets Pro is now released. Click https://qfluentwidgets.com/pages/pro to learn more about it.
 stdout = sys.stdout
@@ -48,7 +49,6 @@ sys.path.append(f"{script_dir}/plugins")
 
 
 def main():
-
     if SETTINGS.get(SETTINGS.dpiScale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
         os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpiScale))

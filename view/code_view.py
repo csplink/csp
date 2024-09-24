@@ -31,12 +31,11 @@ from PySide6.QtCore import Qt, QItemSelection
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
 from qfluentwidgets import (FluentIconBase, FlowLayout, ToolButton)
 
-from .ui.ui_code_view import Ui_CodeView
-
-from common import Style, Icon, Coder, PROJECT, PACKAGE
-from widget import CHighlighter
+from common import Style, Icon, Coder, PROJECT
 from dialogs import GenCodeDialog
 from utils import converters
+from widget import CHighlighter
+from .ui.ui_code_view import Ui_CodeView
 
 
 class CodeView(Ui_CodeView, QWidget):
@@ -96,19 +95,19 @@ class CodeView(Ui_CodeView, QWidget):
         self.codes = coder.dump(PROJECT.halDir)
         tree = converters.paths2dict(self.codes)
 
-        def traverseTree(tree: dict, top_item: QTreeWidgetItem, path: str):
-            for key, value in tree.items():
-                if isinstance(value, dict):
-                    item = QTreeWidgetItem(top_item, [key])
+        def traverseTree(treeItem: dict, top_item: QTreeWidgetItem, path: str):
+            for k, v in treeItem.items():
+                if isinstance(v, dict):
+                    item = QTreeWidgetItem(top_item, [k])
                     item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
-                    traverseTree(value, item, f"{path}/{key}")
+                    traverseTree(v, item, f"{path}/{k}")
                     item.setExpanded(True)
                 else:
-                    item = QTreeWidgetItem(top_item, [key])
-                    item.setData(0, Qt.ItemDataRole.StatusTipRole, f"{path}/{key}")
-                    if key.lower().endswith(".h"):
+                    item = QTreeWidgetItem(top_item, [k])
+                    item.setData(0, Qt.ItemDataRole.StatusTipRole, f"{path}/{k}")
+                    if k.lower().endswith(".h"):
                         item.setIcon(0, FluentIconBase.qicon(Icon.H))
-                    elif key.lower().endswith(".c"):
+                    elif k.lower().endswith(".c"):
                         item.setIcon(0, FluentIconBase.qicon(Icon.C))
 
         for key, di in tree.get("core", {}).items():

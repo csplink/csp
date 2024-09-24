@@ -30,12 +30,11 @@ import unittest
 from PySide6.QtWidgets import QApplication
 
 
-def main(dir):
-
+def main(folder):
     stdout = sys.stdout
     sys.stdout = None
 
-    discover = unittest.defaultTestLoader.discover(start_dir=dir, pattern='tc_*.py', top_level_dir=".")
+    discover = unittest.defaultTestLoader.discover(start_dir=folder, pattern='tc_*.py', top_level_dir=".")
 
     sys.stdout = stdout
 

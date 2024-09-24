@@ -8,3 +8,4 @@ requests
 filetype
 py7zr
 loguru
+attrs

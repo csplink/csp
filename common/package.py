@@ -24,17 +24,21 @@
 # 2024-07-28     xqyjlj       initial version
 #
 
-import jsonschema
-import yaml, os
-import py7zr, os, shutil, glob
-
-from loguru import logger
+import glob
+import os
+import shutil
 from typing import Callable
+
+import jsonschema
+import py7zr
+import yaml
+from loguru import logger
+from py7zr import callbacks as py7zr_callbacks
 
 from .settings import SETTINGS
 
 
-class Package():
+class Package:
     __data = {}
 
     def __init__(self) -> None:
@@ -65,10 +69,10 @@ class Package():
 
     def __getPackage(self, path: str) -> dict:
         if os.path.isfile(path):
-            succeed = False
             with open(path, 'r', encoding='utf-8') as f:
-                package = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package.yml"), package)
+                package: dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+                path = os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package.yml")
+                succeed = self.__checkYaml(path, package)
             if succeed:
                 return package
             else:
@@ -80,7 +84,6 @@ class Package():
     def __getPackageIndex(self) -> dict:
         file = SETTINGS.REPOSITORY_INDEX_FILE
         if os.path.isfile(file):
-            succeed = False
             with open(file, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"), index)
@@ -89,7 +92,7 @@ class Package():
             else:
                 return {}
         else:
-            with open(file, 'w') as f:
+            with open(file, 'w'):
                 pass
             return {}
 
@@ -100,8 +103,8 @@ class Package():
         with open(SETTINGS.REPOSITORY_INDEX_FILE, 'w', encoding='utf-8') as f:
             f.write(self.dump())
 
-    def path(self, type: str, name: str, version: str) -> str:
-        return self.__data.get(type, {}).get(name, {}).get(version, "")
+    def path(self, kind: str, name: str, version: str) -> str:
+        return self.__data.get(kind, {}).get(name, {}).get(version, "")
 
     def install(self, file: str, callback: Callable[[str, float], None]) -> bool:
         if not os.path.isfile(file):
@@ -126,9 +129,9 @@ class Package():
         count = len(dirs)
 
         if count == 1 and os.path.isdir(os.path.join(tmpFolder, dirs[0])):
-            dir = os.path.join(tmpFolder, dirs[0])
+            d = os.path.join(tmpFolder, dirs[0])
             tmpTmpFolder = os.path.join(repositoryFolder, "tmp.tmp")
-            shutil.move(dir, tmpTmpFolder)
+            shutil.move(d, tmpTmpFolder)
             shutil.rmtree(tmpFolder)
             shutil.move(tmpTmpFolder, tmpFolder)
         # --------------------------------------------------------------------------------------------------------------
@@ -144,12 +147,12 @@ class Package():
             logger.error(f"invalid package file {packageFile}")
             return False
 
-        type = package["type"].lower()
-        vendor = package["vendor"]
-        name = package["name"]
-        version = package["version"].lower()
+        kind = str(package["type"]).lower()
+        vendor = str(package["vendor"])
+        name = str(package["name"])
+        version = str(package["version"]).lower()
 
-        vendorFolder = os.path.join(repositoryFolder, type, vendor.lower(), name.lower())
+        vendorFolder = os.path.join(repositoryFolder, kind, vendor.lower(), name.lower())
         folder = os.path.join(vendorFolder, version)
         if os.path.isdir(folder):
             shutil.rmtree(folder)
@@ -164,14 +167,13 @@ class Package():
 
         shutil.move(tmpFolder, folder)
 
-        self.__data.setdefault(type, {}).setdefault(name, {})[version] = folder
+        self.__data.setdefault(kind, {}).setdefault(name, {})[version] = folder
         self.save()
 
         return True
 
 
-class Callback(py7zr.callbacks.ExtractCallback):
-
+class Callback(py7zr_callbacks.ExtractCallback):
     __archiveTotal = 0
     __totalBytes = 0
     __callback = None

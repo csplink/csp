@@ -26,13 +26,12 @@
 
 from PySide6.QtCore import QPointF
 
-from widget.graphics_item_pin import GraphicsItemPin
-from widget.graphics_item_chip_body import GraphicsItemChipBody
-
 from common import PROJECT
+from widget.graphics_item_chip_body import GraphicsItemChipBody
+from widget.graphics_item_pin import GraphicsItemPin
 
 
-class LQFP():
+class LQFP:
     pin_width = 500
     pin_height = 50
     pin_spacing = 6
@@ -53,7 +52,7 @@ class LQFP():
 
         for name, pin in pins.items():
             position = pin["position"] - 1
-            if (position < num):
+            if position < num:
                 index = position
                 direction = GraphicsItemPin.Direction.LEFT
                 w = self.pin_width
@@ -61,7 +60,7 @@ class LQFP():
                 x = 0
                 y = index * (self.pin_height + self.pin_spacing) + self.pin_width + self.pin_spacing
 
-            elif (position >= num and position < 2 * num):
+            elif num <= position < 2 * num:
                 index = position - num
                 direction = GraphicsItemPin.Direction.BOTTOM
                 w = self.pin_height
@@ -69,7 +68,7 @@ class LQFP():
                 x = index * (self.pin_height + self.pin_spacing) + self.pin_width + self.pin_spacing
                 y = self.pin_width + self.getBodyLength(num)
 
-            elif (position >= 2 * num and position < 3 * num):
+            elif 2 * num <= position < 3 * num:
                 index = 3 * num - position
                 direction = GraphicsItemPin.Direction.RIGHT
                 w = self.pin_width

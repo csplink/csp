@@ -24,18 +24,18 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
-import jsonschema
-import yaml, os
+import os
 
+import jsonschema
+import yaml
 from PySide6.QtCore import Signal, QObject
 
-from .settings import SETTINGS
 from .database import DATABASE
 from .package import PACKAGE
+from .settings import SETTINGS
 
 
 class Summary(QObject):
-
     __summary = {}
     __modulesList = []
 
@@ -96,7 +96,6 @@ class Summary(QObject):
 
 
 class Ip(QObject):
-
     __ip = {}
     __ipTotal = {}
     __ipReverseTotal = {}
@@ -151,7 +150,7 @@ class Project(QObject):
 
     @property
     def version(self) -> str:
-        return self.__data.setdefault("version", VERSION)
+        return self.__data.setdefault("version", SETTINGS.VERSION)
 
     @property
     def vendor(self) -> str:
@@ -166,7 +165,7 @@ class Project(QObject):
         return self.__summary
 
     @property
-    def ip(self) -> Summary:
+    def ip(self) -> Ip:
         return self.__ip
 
     @property
@@ -368,13 +367,13 @@ class Project(QObject):
 
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
-                map = yaml.load(f.read(), Loader=yaml.FullLoader)
+                data = yaml.load(f.read(), Loader=yaml.FullLoader)
             with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "project.yml"), 'r', encoding='utf-8') as f:
                 schema = yaml.load(f.read(), Loader=yaml.FullLoader)
 
             try:
-                jsonschema.validate(instance=map, schema=schema)
-                self.__data = map
+                jsonschema.validate(instance=data, schema=schema)
+                self.__data = data
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)
@@ -421,28 +420,28 @@ class Project(QObject):
     modulesChanged = Signal()
 
     def config(self, path: str, default=None):
-        map = self.__data.get("config", {})
+        item = self.__data.get("config", {})
         keys = path.split("/")
         for key in keys:
-            if key not in map:
+            if key not in item:
                 return default
-            map = map[key]
-        return map
+            item = item[key]
+        return item
 
     def setConfig(self, path: str, value: object):
-        map = self.__data.setdefault("config", {})
+        item = self.__data.setdefault("config", {})
         keys = path.split("/")
         for key in keys[:-1]:
-            if key not in map:
-                map[key] = {}
-            map = map[key]
-        if map.get(keys[-1], None) != value:
-            old = map.get(keys[-1], None)
-            map[keys[-1]] = value
+            if key not in item:
+                item[key] = {}
+            item = item[key]
+        if item.get(keys[-1], None) != value:
+            old = item.get(keys[-1], None)
+            item[keys[-1]] = value
 
             if ((isinstance(value, dict) or isinstance(value, str) or isinstance(value, list))
-                    and len(value) == 0) or value == None:
-                map.pop(keys[-1])
+                and len(value) == 0) or value is None:
+                item.pop(keys[-1])
 
             if len(keys) >= 2:
                 if keys[0] == "pin":
@@ -452,7 +451,7 @@ class Project(QObject):
 
             modules = set()
             for name, cfg in self.__data["config"].items():
-                if name in self.__summary.modulesList and cfg != None and len(cfg) > 0:
+                if name in self.__summary.modulesList and cfg is not None and len(cfg) > 0:
                     modules.add(name)
             if set(self.modules) != modules:
                 self.__data["modules"] = list(modules)

@@ -78,11 +78,11 @@ class GraphicsItemChipBody(QGraphicsObject):
         painter.setFont(self.font)
 
         pixels = int(fm.horizontalAdvance(self.package) * 0.8)
-        painter.drawText(QPointF((self.width - pixels) / 2, self.height * (0.9)), self.package)
+        painter.drawText(QPointF((self.width - pixels) / 2, self.height * 0.9), self.package)
 
         height = fm.height()
         pixels = int(fm.horizontalAdvance(self.vendor) * 0.8)
-        painter.drawText(QPointF((self.width - pixels) / 2, self.height * (0.9) - height - 10), self.vendor)
+        painter.drawText(QPointF((self.width - pixels) / 2, self.height * 0.9 - height - 10), self.vendor)
 
         # draw border (with margin)
         painter.drawLine(QLineF(self.margin, self.margin, self.margin, self.height - self.margin))

@@ -25,16 +25,16 @@
 #
 
 from PySide6.QtCore import Qt, Signal
-# from PySide6.QtGui import QRegularExpressionValidator
-# from PySide6.QtWidgets import QWidget
-
 from qfluentwidgets import (FluentIconBase, SettingCard, ComboBox, IconInfoBadge, InfoBadgePosition)
 
 from common import Icon
 
 
-class ComboBoxPropertySettingCard(SettingCard):
+# from PySide6.QtGui import QRegularExpressionValidator
+# from PySide6.QtWidgets import QWidget
 
+
+class ComboBoxPropertySettingCard(SettingCard):
     currentIndexChanged = Signal(int)
     currentTextChanged = Signal(str)
 

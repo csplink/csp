@@ -26,21 +26,21 @@
 
 from PySide6.QtCore import Qt, QRegularExpression, Signal
 from PySide6.QtGui import QRegularExpressionValidator
-# from PySide6.QtWidgets import QWidget
-
-from qfluentwidgets import (FluentIconBase, SettingCard, LineEdit, IconInfoBadge, InfoBadgePosition, ToolTipFilter)
+from qfluentwidgets import (FluentIconBase, SettingCard, LineEdit, IconInfoBadge, InfoBadgePosition)
 
 from common import Icon
 
 
-class LineEditPropertySettingCard(SettingCard):
+# from PySide6.QtWidgets import QWidget
 
+
+class LineEditPropertySettingCard(SettingCard):
     textChanged = Signal(str)
 
     def __init__(self, icon: FluentIconBase, title: str, value: str, content=None, validator=None, parent=None):
         super().__init__(icon, title, content, parent)
         self.edit = LineEdit(self)
-        if validator != None:
+        if validator is not None:
             self.edit.setValidator(QRegularExpressionValidator(QRegularExpression(validator)))
         self.edit.setText(value)
         self.edit.textChanged.connect(self.textChanged)

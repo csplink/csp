@@ -24,10 +24,10 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
-import sys, os
-
-from pathlib import Path
+import os
+import sys
 from enum import Enum
+from pathlib import Path
 
 from PySide6.QtCore import QLocale, QStandardPaths
 from qfluentwidgets import (qconfig, QConfig, ConfigItem, OptionsConfigItem, BoolValidator, OptionsValidator,

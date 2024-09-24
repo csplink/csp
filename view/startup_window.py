@@ -26,19 +26,16 @@
 
 import os
 
-from PySide6.QtCore import QStandardPaths
+from PySide6.QtCore import QCoreApplication
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QBoxLayout, QHBoxLayout, QFileDialog
-
+from PySide6.QtWidgets import QApplication, QWidget, QBoxLayout, QHBoxLayout, QFileDialog
 from qfluentwidgets import (PushButton, FluentTitleBar)
 from qframelesswindow import (FramelessWindow)
 
 from common import SETTINGS, PROJECT
-
-from .ui.ui_startup_view import Ui_StartupView
-from .main_window import MainWindow
-
 from widget import ListContributors
+from .main_window import MainWindow
+from .ui.ui_startup_view import Ui_StartupView
 
 
 class StartupView(Ui_StartupView, QWidget):
@@ -53,24 +50,24 @@ class StartupView(Ui_StartupView, QWidget):
         self.__initMore()
 
     def __initCardCommand(self):
-        self.cardCommand.setTitle(self.tr("Command"))
-        self.newChipProjectBtn = PushButton(self.tr("New Chip Project"))
-        self.openProjectBtn = PushButton(self.tr("Open Project"))
+        self.cardCommand.setTitle(QCoreApplication.translate("StartupView", "Command"))
+        self.newChipProjectBtn = PushButton(QCoreApplication.translate("StartupView", "New Chip Project"))
+        self.openProjectBtn = PushButton(QCoreApplication.translate("StartupView", "Open Project"))
         self.cardCommand.viewLayout.setContentsMargins(30, 30, 30, 30)
         self.cardCommand.viewLayout.setDirection(QBoxLayout.Direction.TopToBottom)
         self.cardCommand.viewLayout.addWidget(self.newChipProjectBtn)
         self.cardCommand.viewLayout.addWidget(self.openProjectBtn)
 
     def __initContributors(self):
-        self.cardContributors.setTitle(self.tr("Contributors"))
+        self.cardContributors.setTitle(QCoreApplication.translate("StartupView", "Contributors"))
         self.listContributors = ListContributors(self)
         self.cardContributors.viewLayout.addWidget(self.listContributors)
 
     def __initProjectList(self):
-        self.cardProjectList.setTitle(self.tr("Project List"))
+        self.cardProjectList.setTitle(QCoreApplication.translate("StartupView", "Project List"))
 
     def __initMore(self):
-        self.cardMore.setTitle(self.tr("More"))
+        self.cardMore.setTitle(QCoreApplication.translate("StartupView", "More"))
 
 
 class StartupWindow(FramelessWindow):
@@ -104,8 +101,9 @@ class StartupWindow(FramelessWindow):
 
     def __on_openProjectBtn_pressed(self):
         path, ok = QFileDialog.getOpenFileName(self,
-                                               self.tr('Open CSP project file'), SETTINGS.lastPackageFileFolder.value,
-                                               self.tr('CSP project file (*.csp)'))
+                                               QCoreApplication.translate("StartupWindow", 'Open CSP project file'),
+                                               SETTINGS.lastPackageFileFolder.value,
+                                               QCoreApplication.translate("StartupWindow", 'CSP project file (*.csp)'))
         if ok:
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             PROJECT.path = path

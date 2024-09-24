@@ -26,7 +26,7 @@
 
 from enum import Enum
 
-from PySide6.QtCore import QRectF, Qt
+from PySide6.QtCore import QRectF, Qt, QCoreApplication
 from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics, QAction
 from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
@@ -95,7 +95,7 @@ class GraphicsItemPin(QGraphicsObject):
                 }''')
             self.menu.clear()
             self.menu.triggered.connect(self.menuTriggered)
-            self.menu.addAction(Action(self.tr("Reset State")))
+            self.menu.addAction(Action(QCoreApplication.translate("GraphicsItemPin", "Reset State")))
             self.menu.addSeparator()
             if "signals" in pinConfig:
                 for name, signal in pinConfig["signals"].items():
@@ -129,7 +129,7 @@ class GraphicsItemPin(QGraphicsObject):
         # draw background
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         if self.pinConfig["type"] == "I/O":
-            if (self.locked):
+            if self.locked:
                 painter.setBrush(self.SELECTED_COLOR)
             else:
                 painter.setBrush(self.DEFAULT_COLOR)
@@ -139,17 +139,17 @@ class GraphicsItemPin(QGraphicsObject):
             painter.setBrush(self.OTHER_COLOR)
 
         # draw body
-        if (self.direction == GraphicsItemPin.Direction.LEFT):
+        if self.direction == GraphicsItemPin.Direction.LEFT:
             x = self.width - 100
             y = 0
             width = self.PIN_LENGTH
             height = self.height
-        elif (self.direction == GraphicsItemPin.Direction.BOTTOM):
+        elif self.direction == GraphicsItemPin.Direction.BOTTOM:
             x = 0
             y = 0
             width = self.width
             height = self.PIN_LENGTH
-        elif (self.direction == GraphicsItemPin.Direction.RIGHT):
+        elif self.direction == GraphicsItemPin.Direction.RIGHT:
             x = 0
             y = 0
             width = self.PIN_LENGTH
@@ -185,17 +185,17 @@ class GraphicsItemPin(QGraphicsObject):
                     text = f"{self.label}({self.signal})"
 
             if text != "":
-                if (self.direction == GraphicsItemPin.Direction.LEFT):
+                if self.direction == GraphicsItemPin.Direction.LEFT:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
                                                        self.width - self.PIN_LENGTH - 20)
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
-                elif (self.direction == GraphicsItemPin.Direction.BOTTOM):
+                elif self.direction == GraphicsItemPin.Direction.BOTTOM:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
                                                        self.height - self.PIN_LENGTH - 20)
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
-                elif (self.direction == GraphicsItemPin.Direction.RIGHT):
+                elif self.direction == GraphicsItemPin.Direction.RIGHT:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
                                                        self.width - self.PIN_LENGTH - 20)
                     painter.translate(self.PIN_LENGTH, 0)
@@ -215,7 +215,7 @@ class GraphicsItemPin(QGraphicsObject):
     def menuTriggered(self, action: QAction):
         self.currentCheckedAction = action
         if action.isCheckable():
-            if self.previousCheckedAction != None and self.previousCheckedAction != action:
+            if self.previousCheckedAction is not None and self.previousCheckedAction != action:
                 self.previousCheckedAction.setChecked(False)
             if action.isChecked():
                 PROJECT.setConfig(self.lockedKey, True)
@@ -224,7 +224,7 @@ class GraphicsItemPin(QGraphicsObject):
                 PROJECT.setConfig(self.lockedKey, False)
                 PROJECT.setConfig(self.signalKey, "")
         else:
-            if self.previousCheckedAction != None:
+            if self.previousCheckedAction is not None:
                 self.previousCheckedAction.setChecked(False)
             self.previousCheckedAction = None
             PROJECT.setConfig(self.lockedKey, False)
@@ -234,20 +234,20 @@ class GraphicsItemPin(QGraphicsObject):
         if self.previousCheckedAction != action:
             self.previousCheckedAction = action
 
-    def __on_project_pinConfigChanged(self, keys: list[str], oldValue: str, newvalue: str):
+    def __on_project_pinConfigChanged(self, keys: list[str], oldValue: str, newValue: str):
         if keys[1] == self.name:
             if keys[-1] == "label":
-                self.label = newvalue
+                self.label = newValue
                 SIGNAL_BUS.gridPropertyIpTriggered.emit(PROJECT.summary.pinIp, self.name)
             elif keys[-1] == "locked":
-                self.locked = newvalue
+                self.locked = newValue
             elif keys[-1] == "signal":
-                self.signal = newvalue
+                self.signal = newValue
                 pin = PROJECT.summary.pins[self.name]
-                if newvalue != "":
-                    instance = newvalue.split("-")[0]
-                    info = pin["signals"][newvalue]
-                    if info != None and "mode" in info:
+                if newValue != "":
+                    instance = newValue.split("-")[0]
+                    info = pin["signals"][newValue]
+                    if info is not None and "mode" in info:
                         mode = info["mode"]
                         ip = PROJECT.ip.ip(instance)
                         ip_modes = ip["modes"][mode]
@@ -256,17 +256,17 @@ class GraphicsItemPin(QGraphicsObject):
                         for key, info in ip_modes.items():
                             path = f"{instance}/{self.name}/{key}"
                             PROJECT.setConfig(path, info["default"])
-                    elif oldValue != "" and oldValue != None:
+                    elif oldValue != "" and oldValue is not None:
                         instance = oldValue.split("-")[0]
                         info = pin["signals"][oldValue]
-                        if info != None and "mode" in info:
+                        if info is not None and "mode" in info:
                             path = f"{instance}/{self.name}"
                             PROJECT.setConfig(path, {})
                     SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
-                elif oldValue != "" and oldValue != None:
+                elif oldValue != "" and oldValue is not None:
                     instance = oldValue.split("-")[0]
                     info = pin["signals"][oldValue]
-                    if info != None and "mode" in info:
+                    if info is not None and "mode" in info:
                         path = f"{instance}/{self.name}"
                         PROJECT.setConfig(path, {})
                     SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
