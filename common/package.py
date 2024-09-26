@@ -38,6 +38,99 @@ from py7zr import callbacks as py7zr_callbacks
 from .settings import SETTINGS
 
 
+class PackageDescriptionType:
+    class AuthorType:
+        class WebsiteType:
+            def __init__(self, data: dict):
+                self.__data = data
+
+            @property
+            def origin(self) -> dict:
+                return self.__data
+
+            @property
+            def blog(self) -> str:
+                return self.__data.get("blog", "")
+
+            @property
+            def github(self) -> str:
+                return self.__data.get("github", "")
+
+        # ----------------------------------------------------------------------
+        def __init__(self, data: dict):
+            self.__data = data
+            self.__website = None
+
+        @property
+        def origin(self) -> dict:
+            return self.__data
+
+        @property
+        def name(self) -> str:
+            return self.__data.get("name", "")
+
+        @property
+        def email(self) -> str:
+            return self.__data.get("email", "")
+
+        @property
+        def website(self) -> WebsiteType:
+            if self.__website is None:
+                self.__website = PackageDescriptionType.AuthorType.WebsiteType(self.__data.get("website", {}))
+            return self.__website
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def __init__(self, data: dict):
+        self.__data = data
+        self.__author = None
+
+    @property
+    def origin(self) -> dict:
+        return self.__data
+
+    @property
+    def author(self) -> AuthorType:
+        if self.__author is None:
+            self.__author = PackageDescriptionType.AuthorType(self.__data.get("author", {}))
+        return self.__author
+
+    @property
+    def name(self) -> str:
+        return self.__data.get("name", "")
+
+    @property
+    def version(self) -> str:
+        return self.__data.get("version", "")
+
+    @property
+    def license(self) -> str:
+        return self.__data.get("license", "")
+
+    @property
+    def type(self) -> str:
+        return self.__data.get("type", "")
+
+    @property
+    def vendor(self) -> str:
+        return self.__data.get("vendor", "")
+
+    @property
+    def vendorUrl(self) -> dict[str, str]:
+        return self.__data.get("vendorUrl", {})
+
+    @property
+    def description(self) -> dict[str, str]:
+        return self.__data.get("description", {})
+
+    @property
+    def url(self) -> dict[str, str]:
+        return self.__data.get("url", {})
+
+    @property
+    def support(self) -> str:
+        return self.__data.get("support", "")
+
+
 class Package:
     __data = {}
 
@@ -67,19 +160,23 @@ class Package:
             jsonschema.validate(instance=instance, schema=schema)
         return True
 
-    def __getPackage(self, path: str) -> dict:
+    @logger.catch(default=None)
+    def __getPackageDescription(self, path: str) -> PackageDescriptionType | None:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 package: dict = yaml.load(f.read(), Loader=yaml.FullLoader)
                 path = os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package.yml")
                 succeed = self.__checkYaml(path, package)
             if succeed:
-                return package
+                return PackageDescriptionType(package)
             else:
-                return {}
+                return None
         else:
             logger.error(f"{path} is not file!")
-            return {}
+            return None
+
+    def getPackageDescription(self, path: str) -> PackageDescriptionType:
+        return self.__getPackageDescription(path)
 
     def __getPackageIndex(self) -> dict:
         file = SETTINGS.REPOSITORY_INDEX_FILE
@@ -142,15 +239,15 @@ class Package:
             return False
 
         packageFile = files[0]
-        package = self.__getPackage(packageFile)
-        if len(package) == 0:
+        package = self.getPackageDescription(packageFile)
+        if package is None:
             logger.error(f"invalid package file {packageFile}")
             return False
 
-        kind = str(package["type"]).lower()
-        vendor = str(package["vendor"])
-        name = str(package["name"])
-        version = str(package["version"]).lower()
+        kind = package.type.lower()
+        vendor = package.vendor
+        name = package.name
+        version = package.version.lower()
 
         vendorFolder = os.path.join(repositoryFolder, kind, vendor.lower(), name.lower())
         folder = os.path.join(vendorFolder, version)

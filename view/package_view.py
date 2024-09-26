@@ -25,7 +25,7 @@
 #
 from PySide6.QtCore import Qt, QCoreApplication, Signal
 from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
-from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard)
+from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard, PushButton, TransparentToolButton)
 
 from common import Style, Icon, PACKAGE
 
@@ -33,17 +33,21 @@ from common import Style, Icon, PACKAGE
 class VersionInfoWidget(QWidget):
     textChanged = Signal(str)
 
-    def __init__(self, version: str, path: str | None, value: str, content=None, validator=None, parent=None):
+    def __init__(self, version: str, path: str | None, date: str | None, parent=None):
         super().__init__(parent=parent)
         self.versionLabel = QLabel(version, self)
         self.pathLabel = QLabel(path or '', self)
+        self.pathLabel.setObjectName('pathLabel')
+        self.dateLabel = QLabel(date or '', self)
+        self.detailBtn = PushButton(QCoreApplication.translate("VersionInfoWidget", "Detail"), self)
+        self.menuBtn = TransparentToolButton(Icon.MORE, self)
         self.hBoxLayout = QHBoxLayout(self)
         self.vBoxLayout = QVBoxLayout()
 
-        if not content:
+        if not path:
             self.pathLabel.hide()
 
-        self.setFixedHeight(70 if content else 50)
+        self.setFixedHeight(70 if path else 50)
 
         # initialize layout
         self.hBoxLayout.setSpacing(0)
@@ -60,6 +64,19 @@ class VersionInfoWidget(QWidget):
         self.hBoxLayout.addSpacing(16)
         self.hBoxLayout.addStretch(1)
 
+        self.hBoxLayout.addWidget(self.dateLabel, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addSpacing(16)
+
+        self.hBoxLayout.addWidget(self.detailBtn, 1, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addSpacing(16)
+
+        self.hBoxLayout.addWidget(self.menuBtn, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addSpacing(16)
+
+        # self.detailBtn.hide()
+
+        Style.PACKAGE_VIEW.apply(self)
+
 
 class PackageView(ScrollArea):
 
@@ -68,9 +85,9 @@ class PackageView(ScrollArea):
         self.setObjectName("PackageView")
 
         # setting label
-        self.settingLabel = QLabel(QCoreApplication.translate("PackageView", "System Setting"), self)
-        self.settingLabel.setObjectName('settingLabel')
-        self.settingLabel.move(36, 30)
+        self.titleLabel = QLabel(QCoreApplication.translate("PackageView", "Package"), self)
+        self.titleLabel.setObjectName('titleLabel')
+        self.titleLabel.move(36, 30)
 
         self.widgetScroll = QWidget()
         self.widgetScroll.setObjectName('widgetScroll')
@@ -99,7 +116,7 @@ class PackageView(ScrollArea):
         for k, v in package.items():
             group = ExpandGroupSettingCard(Icon.FOLDER.icon(), k, "", self.widgetScroll)
             for version, path in v.items():
-                info = VersionInfoSettingCard(Icon.FOLDER, version, "", path, group)
+                info = VersionInfoWidget(version, path, "eeeeeeeee", group)
                 group.addGroupWidget(info)
             groups.append(group)
         return groups

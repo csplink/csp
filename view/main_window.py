@@ -133,7 +133,7 @@ class MainWindow(MSFluentWindow):
         # loop.exec()
         self.splashScreen.finish()
 
-        self.showMaximized()
+        # self.showMaximized()
 
     def __initNavigation(self):
         self.addSubInterface(self.chipView, Icon.CPU, QCoreApplication.translate("MainWindow", 'Chip'), Icon.CPU)

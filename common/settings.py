@@ -56,7 +56,10 @@ class LanguageSerializer(ConfigSerializer):
 class Settings(QConfig):
     """ Config of application """
 
-    EXE_FOLDER = str(Path(sys.argv[0]).parent)
+    if os.getenv('__CSPLINK_UNIT_TEST_TESTING', '0') == '1':
+        EXE_FOLDER = os.getcwd()
+    else:
+        EXE_FOLDER = str(Path(sys.argv[0]).parent)
 
     # folders ----------------------------------------------------------------------------------------------------------
     repositoryFolder = ConfigItem("Folders", "Repository", os.path.join(EXE_FOLDER, "resource", "repository"),

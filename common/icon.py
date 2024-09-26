@@ -57,6 +57,7 @@ class Icon(FluentIconBase, Enum):
     INFORMATION = "information-line"
     LIST_SETTINGS = "list-settings-line"
     MONEY = "money-cny-circle-line"
+    MORE = "more-line"
     PAINT = "paint-brush-line"
     PALETTE = "palette-line"
     PICTURE_IN_PICTURE = "picture-in-picture-line"

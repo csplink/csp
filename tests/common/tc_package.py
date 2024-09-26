@@ -25,7 +25,10 @@
 #
 
 import os
+import sys
 import unittest
+
+from PySide6.QtWidgets import QApplication
 
 from common import PACKAGE
 
@@ -33,7 +36,12 @@ from common import PACKAGE
 class PackageTest(unittest.TestCase):
 
     def setUp(self):
+        app = QApplication(sys.argv)
         pass
+
+    def test_getPackageDescription(self):
+        file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.csppdsc")
+        print(PACKAGE.getPackageDescription(file))
 
     def test_install(self):
         file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.7z")

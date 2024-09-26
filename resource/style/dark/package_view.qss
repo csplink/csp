@@ -7,8 +7,14 @@ QWidget#widgetScroll {
   background: transparent;
 }
 
-#settingLabel {
+QLabel#titleLabel {
   font: 33px "Microsoft YaHei Light";
   background: transparent;
   color: white;
+}
+
+#pathLabel {
+    font: 11px 'Segoe UI', 'Microsoft YaHei', 'PingFang SC';
+    color: rgb(96, 96, 96);
+    padding: 0;
 }

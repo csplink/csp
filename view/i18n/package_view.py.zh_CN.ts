@@ -4,8 +4,16 @@
 <context>
     <name>PackageView</name>
     <message>
-        <location filename="../package_view.py" line="39"/>
-        <source>System Setting</source>
+        <location filename="../package_view.py" line="88"/>
+        <source>Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>VersionInfoWidget</name>
+    <message>
+        <location filename="../package_view.py" line="42"/>
+        <source>Detail</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
