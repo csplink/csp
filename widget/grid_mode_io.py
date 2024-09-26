@@ -188,7 +188,7 @@ class GridModeIoModel(QAbstractTableModel):
 
         return index
 
-    def projectConfigChanged(self, keys: list[str], _: str, newvalue: str):
+    def projectConfigChanged(self, keys: list[str], _: str, newValue: str):
         if keys[0] == self.__instance:
             name = keys[1]
 
@@ -201,8 +201,8 @@ class GridModeIoModel(QAbstractTableModel):
                     param = self.__ip["parameters"][keys[2]]["displayName"][locale.name()]
                     column = self.__headersList.index(param)
                     self.__data[index][column] = {
-                        "display": PROJECT.ip.iptr(self.__value2str(newvalue)),
-                        "tooltip": newvalue
+                        "display": PROJECT.ip.iptr(self.__value2str(newValue)),
+                        "tooltip": newValue
                     }
                     index = self.createIndex(index, column)
                     self.dataChanged.emit(index, index)

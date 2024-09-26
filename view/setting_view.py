@@ -477,7 +477,7 @@ class SettingView(Ui_SettingView, QWidget):
                                                             QCoreApplication.translate("SettingView",
                                                                                        "Generate Setting"))
 
-        Style.VIEW_SETTING.apply(self)
+        Style.SETTING_VIEW.apply(self)
 
         self.settingTree.setCurrentItem(self.systemSettingTreeWidgetItem)
 

@@ -38,6 +38,7 @@ class PlainTextEditCode(PlainTextEdit):
         super().__init__(parent)
         self.setTabStopDistance(40)
         self.lineNumberArea = LineNumberArea(self)
+        self.lineNumberAreaWidth = 0
 
         self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
         self.updateRequest.connect(self.updateLineNumberArea)

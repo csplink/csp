@@ -1,0 +1,13 @@
+QScrollArea {
+  border: none;
+  background: transparent;
+}
+
+QWidget#widgetScroll {
+  background: transparent;
+}
+
+#settingLabel {
+  font: 33px "Microsoft YaHei Light";
+  background: transparent;
+}

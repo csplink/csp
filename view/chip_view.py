@@ -65,13 +65,14 @@ class ChipView(Ui_ChipView, QWidget):
                 items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
             else:
                 items = None
-                QMessageBox.critical(self, QCoreApplication.translate('ChipView', 'critical'),
-                                     QCoreApplication.translate('ChipView',
-                                                                f'The package "{PROJECT.summary.package}" is not supported at this time'))
+                QMessageBox.critical(
+                    self, QCoreApplication.translate('ChipView', 'critical'),
+                    QCoreApplication.translate(
+                        'ChipView', f'The package "{PROJECT.summary.package}" is not supported at this time'))
             if items is not None:
                 for item in items:
                     scene.addItem(item)
         self.graphicsView.setScene(scene)
         self.graphicsView.rescale()
 
-        Style.VIEW_CHIP.apply(self)
+        Style.CHIP_VIEW.apply(self)

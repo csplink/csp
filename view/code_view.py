@@ -63,7 +63,7 @@ class CodeView(Ui_CodeView, QWidget):
 
         self.verticalLayout_cardWidget_file.insertLayout(0, layout)
 
-        Style.VIEW_CODE.apply(self)
+        Style.CODE_VIEW.apply(self)
 
     def __checkGenSetting(self) -> bool:
         if not os.path.isdir(PROJECT.toolchainsDir):
@@ -118,7 +118,7 @@ class CodeView(Ui_CodeView, QWidget):
             traverseTree(di, top_level_item, f"core/{key}")
             top_level_item.setExpanded(True)
 
-    def __on_fileTree_selectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+    def __on_fileTree_selectionChanged(self, selected: QItemSelection, _: QItemSelection):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]

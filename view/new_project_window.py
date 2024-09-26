@@ -26,15 +26,12 @@
 
 import os
 
-from PySide6.QtCore import QUrl
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QBoxLayout, QHBoxLayout
-
-from qfluentwidgets import (PushButton, FluentTitleBar)
+from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout
+from qfluentwidgets import (FluentTitleBar)
 from qframelesswindow import (FramelessWindow)
 
 from common import SETTINGS
-
 from .ui.ui_new_project_view import Ui_NewProjectView
 
 

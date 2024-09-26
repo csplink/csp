@@ -23,10 +23,42 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-09-23     xqyjlj       initial version
 #
-from PySide6.QtCore import Qt, QCoreApplication
-from PySide6.QtWidgets import QWidget, QLabel
+from PySide6.QtCore import Qt, QCoreApplication, Signal
+from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
+from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard)
 
-from qfluentwidgets import (ScrollArea)
+from common import Style, Icon, PACKAGE
+
+
+class VersionInfoWidget(QWidget):
+    textChanged = Signal(str)
+
+    def __init__(self, version: str, path: str | None, value: str, content=None, validator=None, parent=None):
+        super().__init__(parent=parent)
+        self.versionLabel = QLabel(version, self)
+        self.pathLabel = QLabel(path or '', self)
+        self.hBoxLayout = QHBoxLayout(self)
+        self.vBoxLayout = QVBoxLayout()
+
+        if not content:
+            self.pathLabel.hide()
+
+        self.setFixedHeight(70 if content else 50)
+
+        # initialize layout
+        self.hBoxLayout.setSpacing(0)
+        self.hBoxLayout.setContentsMargins(16, 0, 0, 0)
+        self.hBoxLayout.setAlignment(Qt.AlignVCenter)
+        self.vBoxLayout.setSpacing(0)
+        self.vBoxLayout.setContentsMargins(0, 0, 0, 0)
+        self.vBoxLayout.setAlignment(Qt.AlignVCenter)
+
+        self.hBoxLayout.addLayout(self.vBoxLayout)
+        self.vBoxLayout.addWidget(self.versionLabel, 0, Qt.AlignLeft)
+        self.vBoxLayout.addWidget(self.pathLabel, 0, Qt.AlignLeft)
+
+        self.hBoxLayout.addSpacing(16)
+        self.hBoxLayout.addStretch(1)
 
 
 class PackageView(ScrollArea):
@@ -49,4 +81,25 @@ class PackageView(ScrollArea):
         self.setWidget(self.widgetScroll)
         self.setWidgetResizable(True)
 
+        self.expandLayout = ExpandLayout(self.widgetScroll)
+        self.expandLayout.setSpacing(28)
+        self.expandLayout.setContentsMargins(36, 10, 36, 0)
+
+        groups = self.__createGroups("toolchains")
+        for group in groups:
+            self.expandLayout.addWidget(group)
+
         self.enableTransparentBackground()
+
+        Style.PACKAGE_VIEW.apply(self)
+
+    def __createGroups(self, kind: str):
+        groups = []
+        package = PACKAGE.origin.get(kind, {})
+        for k, v in package.items():
+            group = ExpandGroupSettingCard(Icon.FOLDER.icon(), k, "", self.widgetScroll)
+            for version, path in v.items():
+                info = VersionInfoSettingCard(Icon.FOLDER, version, "", path, group)
+                group.addGroupWidget(info)
+            groups.append(group)
+        return groups
