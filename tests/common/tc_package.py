@@ -25,23 +25,39 @@
 #
 
 import os
-import sys
 import unittest
 
-from PySide6.QtWidgets import QApplication
-
-from common import PACKAGE
+from common import PACKAGE, PackageDescriptionType
 
 
 class PackageTest(unittest.TestCase):
 
     def setUp(self):
-        app = QApplication(sys.argv)
         pass
+
+    def check_getPackageDescription(self, sc: PackageDescriptionType):
+        self.assertNotEqual(sc.author.name, "", msg='failed.')
+        self.assertNotEqual(sc.author.email, "", msg='failed.')
+        self.assertNotEqual(sc.author.website.blog, "", msg='failed.')
+        self.assertNotEqual(sc.author.website.github, "", msg='failed.')
+        self.assertNotEqual(sc.name, "", msg='failed.')
+        self.assertNotEqual(sc.version, "", msg='failed.')
+        self.assertNotEqual(sc.license, "", msg='failed.')
+        self.assertNotEqual(sc.type, "", msg='failed.')
+        self.assertNotEqual(sc.vendor, "", msg='failed.')
+        self.assertGreater(len(sc.vendorUrl), 0, msg='install failed.')
+        self.assertGreater(len(sc.description), 0, msg='install failed.')
+        self.assertGreater(len(sc.url), 0, msg='install failed.')
+        self.assertNotEqual(sc.support, "", msg='failed.')
 
     def test_getPackageDescription(self):
         file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.csppdsc")
-        print(PACKAGE.getPackageDescription(file))
+        sc = PACKAGE.getPackageDescription(file)
+        self.check_getPackageDescription(sc)
+
+        folder = os.path.join(os.path.dirname(__file__), "resource", "package")
+        sc = PACKAGE.getPackageDescription(folder)
+        self.check_getPackageDescription(sc)
 
     def test_install(self):
         file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.7z")

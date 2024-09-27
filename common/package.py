@@ -25,6 +25,7 @@
 #
 
 import glob
+import json
 import os
 import shutil
 from typing import Callable
@@ -44,6 +45,9 @@ class PackageDescriptionType:
             def __init__(self, data: dict):
                 self.__data = data
 
+            def __str__(self) -> str:
+                return json.dumps(self.__data, indent=2)
+
             @property
             def origin(self) -> dict:
                 return self.__data
@@ -60,6 +64,9 @@ class PackageDescriptionType:
         def __init__(self, data: dict):
             self.__data = data
             self.__website = None
+
+        def __str__(self) -> str:
+            return json.dumps(self.__data, indent=2)
 
         @property
         def origin(self) -> dict:
@@ -83,6 +90,9 @@ class PackageDescriptionType:
     def __init__(self, data: dict):
         self.__data = data
         self.__author = None
+
+    def __str__(self) -> str:
+        return json.dumps(self.__data, indent=2)
 
     @property
     def origin(self) -> dict:
@@ -175,8 +185,19 @@ class Package:
             logger.error(f"{path} is not file!")
             return None
 
-    def getPackageDescription(self, path: str) -> PackageDescriptionType:
-        return self.__getPackageDescription(path)
+    def getPackageDescription(self, path: str) -> PackageDescriptionType | None:
+        if os.path.isfile(path):
+            return self.__getPackageDescription(path)
+        elif os.path.isdir(path):
+            files = glob.glob(f"{path}/*.csppdsc")
+            count = len(files)
+            if count != 1:
+                logger.error(f"invalid package")
+                return None
+            packageFile = files[0]
+            return self.__getPackageDescription(packageFile)
+        else:
+            return None
 
     def __getPackageIndex(self) -> dict:
         file = SETTINGS.REPOSITORY_INDEX_FILE

@@ -27,7 +27,7 @@
 from .coder import Coder
 from .database import Database, DATABASE
 from .icon import Icon
-from .package import Package, PACKAGE
+from .package import Package, PACKAGE, PackageDescriptionType
 from .project import Project, PROJECT
 from .settings import Settings, SETTINGS
 from .signal_bus import SignalBus, SIGNAL_BUS
@@ -40,6 +40,7 @@ __all__ = [
     'Icon',
     'Package',
     'PACKAGE',
+    'PackageDescriptionType',
     'Project',
     'PROJECT',
     'Settings',

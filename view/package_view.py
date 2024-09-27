@@ -23,6 +23,10 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-09-23     xqyjlj       initial version
 #
+
+import datetime
+from pathlib import Path
+
 from PySide6.QtCore import Qt, QCoreApplication, Signal
 from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
 from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard, PushButton, TransparentToolButton)
@@ -36,7 +40,9 @@ class VersionInfoWidget(QWidget):
     def __init__(self, version: str, path: str | None, date: str | None, parent=None):
         super().__init__(parent=parent)
         self.versionLabel = QLabel(version, self)
-        self.pathLabel = QLabel(path or '', self)
+        self.pathLabel = QLabel('', self)
+        if path is not None:
+            self.pathLabel.setText(path)
         self.pathLabel.setObjectName('pathLabel')
         self.dateLabel = QLabel(date or '', self)
         self.detailBtn = PushButton(QCoreApplication.translate("VersionInfoWidget", "Detail"), self)
@@ -48,6 +54,11 @@ class VersionInfoWidget(QWidget):
             self.pathLabel.hide()
 
         self.setFixedHeight(70 if path else 50)
+
+        Style.PACKAGE_VIEW.apply(self)
+
+        path = self.pathLabel.fontMetrics().elidedText(path, Qt.TextElideMode.ElideRight, 600)
+        self.pathLabel.setText(path)
 
         # initialize layout
         self.hBoxLayout.setSpacing(0)
@@ -74,8 +85,6 @@ class VersionInfoWidget(QWidget):
         self.hBoxLayout.addSpacing(16)
 
         # self.detailBtn.hide()
-
-        Style.PACKAGE_VIEW.apply(self)
 
 
 class PackageView(ScrollArea):
@@ -116,7 +125,14 @@ class PackageView(ScrollArea):
         for k, v in package.items():
             group = ExpandGroupSettingCard(Icon.FOLDER.icon(), k, "", self.widgetScroll)
             for version, path in v.items():
-                info = VersionInfoWidget(version, path, "eeeeeeeee", group)
+                pdsc = PACKAGE.getPackageDescription(path)
+                if pdsc is not None:
+                    path_info = Path(path)
+                    time = datetime.datetime.fromtimestamp(path_info.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
+                    time = QCoreApplication.translate("PackageView", "Install time: %1").replace("%1", time)
+                    info = VersionInfoWidget(version, path, time, group)
+                else:
+                    info = VersionInfoWidget(version, path, None, group)
                 group.addGroupWidget(info)
             groups.append(group)
         return groups
