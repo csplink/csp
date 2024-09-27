@@ -66,6 +66,7 @@ class Icon(FluentIconBase, Enum):
     SETTING = "settings-line"
     STACK = "stack-line"
     TOOLS = "tools-line"
+    UNINSTALL = "uninstall-line"
     ZOOM_IN = "zoom-in-line"
     ZOOM_OUT = "zoom-out-line"
 

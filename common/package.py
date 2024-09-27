@@ -141,27 +141,38 @@ class PackageDescriptionType:
         return self.__data.get("support", "")
 
 
-class Package:
-    __data = {}
+class PackageIndexType:
+    def __init__(self, data: dict):
+        self.__data = data
 
-    def __init__(self) -> None:
-        index = self.__getPackageIndex()
-        if index is None:
-            self.__data = {}
-        else:
-            self.__data = index
+    def __str__(self) -> str:
+        return json.dumps(self.__data, indent=2)
 
     @property
-    def hal(self) -> dict:
-        return self.__data.get("hal", {})
-
-    @property
-    def toolchains(self) -> dict:
-        return self.__data.get("toolchains", {})
-
-    @property
-    def origin(self) -> dict:
+    def origin(self) -> dict[str, dict[str, dict[str, str]]]:
         return self.__data
+
+
+class Package:
+    def __init__(self) -> None:
+        self.__index = self.getPackageIndex()
+
+    @property
+    def types(self) -> list[str]:
+        return list(self.__index.origin.keys())
+
+    @property
+    def index(self) -> PackageIndexType:
+        return self.__index
+
+    def items(self, kind: str) -> list[str]:
+        return list(self.__index.origin.get(kind, {}).keys())
+
+    def versions(self, kind: str, name: str) -> list[str]:
+        return list(self.__index.origin.get(kind, {}).get(name, {}).keys())
+
+    def path(self, kind: str, name: str, version: str) -> str:
+        return self.__index.origin.get(kind, {}).get(name, {}).get(version, "")
 
     @logger.catch(default=False)
     def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
@@ -199,30 +210,31 @@ class Package:
         else:
             return None
 
-    def __getPackageIndex(self) -> dict:
+    @logger.catch(default=None)
+    def __getPackageIndex(self) -> PackageIndexType:
         file = SETTINGS.REPOSITORY_INDEX_FILE
         if os.path.isfile(file):
             with open(file, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"), index)
             if succeed:
-                return index
+                return PackageIndexType(index)
             else:
-                return {}
+                return PackageIndexType({})
         else:
             with open(file, 'w'):
                 pass
-            return {}
+            return PackageIndexType({})
+
+    def getPackageIndex(self) -> PackageIndexType:
+        return self.__getPackageIndex()
 
     def dump(self):
-        return yaml.dump(self.__data)
+        return yaml.dump(self.__index.origin)
 
     def save(self):
         with open(SETTINGS.REPOSITORY_INDEX_FILE, 'w', encoding='utf-8') as f:
             f.write(self.dump())
-
-    def path(self, kind: str, name: str, version: str) -> str:
-        return self.__data.get(kind, {}).get(name, {}).get(version, "")
 
     def install(self, file: str, callback: Callable[[str, float], None]) -> bool:
         if not os.path.isfile(file):
@@ -253,16 +265,9 @@ class Package:
             shutil.rmtree(tmpFolder)
             shutil.move(tmpTmpFolder, tmpFolder)
         # --------------------------------------------------------------------------------------------------------------
-        files = glob.glob(f"{tmpFolder}/*.csppdsc")
-        count = len(files)
-        if count != 1:
-            logger.error(f"invalid package {file}")
-            return False
-
-        packageFile = files[0]
-        package = self.getPackageDescription(packageFile)
+        package = self.getPackageDescription(tmpFolder)
         if package is None:
-            logger.error(f"invalid package file {packageFile}")
+            logger.error(f"invalid package {tmpFolder}")
             return False
 
         kind = package.type.lower()
@@ -271,7 +276,7 @@ class Package:
         version = package.version.lower()
 
         vendorFolder = os.path.join(repositoryFolder, kind, vendor.lower(), name.lower())
-        folder = os.path.join(vendorFolder, version)
+        folder = os.path.join(vendorFolder, version).replace("\\", "/")
         if os.path.isdir(folder):
             shutil.rmtree(folder)
         elif os.path.isfile(folder):
@@ -285,9 +290,22 @@ class Package:
 
         shutil.move(tmpFolder, folder)
 
-        self.__data.setdefault(kind, {}).setdefault(name, {})[version] = folder
+        self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = folder
         self.save()
 
+        return True
+
+    def uninstall(self, kind: str, name: str, version: str) -> bool:
+        path = self.path(kind, name, version)
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+        elif os.path.isfile(path):
+            os.remove(path)
+        else:
+            logger.error(f"uninstall failed {kind}@{name}-{version}")
+            return False
+        self.__index.origin[kind][name].pop(version)
+        self.save()
         return True
 
 

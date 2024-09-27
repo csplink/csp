@@ -439,6 +439,7 @@ class Project(QObject):
             old = item.get(keys[-1], None)
             item[keys[-1]] = value
 
+            # remove node
             if ((isinstance(value, dict) or isinstance(value, str) or isinstance(value, list))
                 and len(value) == 0) or value is None:
                 item.pop(keys[-1])

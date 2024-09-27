@@ -27,9 +27,10 @@
 import datetime
 from pathlib import Path
 
-from PySide6.QtCore import Qt, QCoreApplication, Signal
+from PySide6.QtCore import Qt, QCoreApplication, Signal, QPoint
 from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
-from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard, PushButton, TransparentToolButton)
+from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard, PushButton, TransparentToolButton,
+                            IconInfoBadge, InfoBadgePosition, RoundMenu, Action)
 
 from common import Style, Icon, PACKAGE
 
@@ -37,16 +38,18 @@ from common import Style, Icon, PACKAGE
 class VersionInfoWidget(QWidget):
     textChanged = Signal(str)
 
-    def __init__(self, version: str, path: str | None, date: str | None, parent=None):
+    def __init__(self, version: str, path: str | None, date: str | None, existed: bool, parent=None):
         super().__init__(parent=parent)
         self.versionLabel = QLabel(version, self)
-        self.pathLabel = QLabel('', self)
+        self.pathLabel = QLabel(path or '', self)
         if path is not None:
-            self.pathLabel.setText(path)
+            self.pathLabel.setToolTip(path)
         self.pathLabel.setObjectName('pathLabel')
         self.dateLabel = QLabel(date or '', self)
         self.detailBtn = PushButton(QCoreApplication.translate("VersionInfoWidget", "Detail"), self)
         self.menuBtn = TransparentToolButton(Icon.MORE, self)
+        self.menuBtn.clicked.connect(lambda: self.__createMenu().exec(
+            self.menuBtn.mapToGlobal(QPoint(0, self.menuBtn.height())), ani=True))
         self.hBoxLayout = QHBoxLayout(self)
         self.vBoxLayout = QVBoxLayout()
 
@@ -75,16 +78,35 @@ class VersionInfoWidget(QWidget):
         self.hBoxLayout.addSpacing(16)
         self.hBoxLayout.addStretch(1)
 
-        self.hBoxLayout.addWidget(self.dateLabel, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.dateLabel, 1, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
+        self.hBoxLayout.addStretch(1)
 
-        self.hBoxLayout.addWidget(self.detailBtn, 1, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.detailBtn, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
         self.hBoxLayout.addWidget(self.menuBtn, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
-        # self.detailBtn.hide()
+        self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
+                                         parent=self.pathLabel.parent(),
+                                         target=self.pathLabel,
+                                         position=InfoBadgePosition.TOP_RIGHT)
+        if not existed:
+            self.detailBtn.hide()
+            self.dateLabel.hide()
+            self.menuBtn.hide()
+            self.setToolTip(QCoreApplication.translate('VersionInfoWidget', 'The package not found'))
+        else:
+            self.badge.hide()
+
+    def __createMenu(self) -> RoundMenu:
+        menu = RoundMenu(parent=self)
+
+        self.uninstallAction = Action(Icon.UNINSTALL, QCoreApplication.translate("VersionInfoWidget", 'Uninstall'))
+        menu.addAction(self.uninstallAction)
+
+        return menu
 
 
 class PackageView(ScrollArea):
@@ -121,7 +143,7 @@ class PackageView(ScrollArea):
 
     def __createGroups(self, kind: str):
         groups = []
-        package = PACKAGE.origin.get(kind, {})
+        package = PACKAGE.index.origin.get(kind, {})
         for k, v in package.items():
             group = ExpandGroupSettingCard(Icon.FOLDER.icon(), k, "", self.widgetScroll)
             for version, path in v.items():
@@ -130,9 +152,9 @@ class PackageView(ScrollArea):
                     path_info = Path(path)
                     time = datetime.datetime.fromtimestamp(path_info.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
                     time = QCoreApplication.translate("PackageView", "Install time: %1").replace("%1", time)
-                    info = VersionInfoWidget(version, path, time, group)
+                    info = VersionInfoWidget(version, path, time, True, group)
                 else:
-                    info = VersionInfoWidget(version, path, None, group)
+                    info = VersionInfoWidget(version, path, None, False, group)
                 group.addGroupWidget(info)
             groups.append(group)
         return groups

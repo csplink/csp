@@ -300,7 +300,7 @@ class GenerateSettingView(ScrollArea):
                 message.exec()
                 PROJECT.toolchains = toolchains[0]
         # -----------------------------------------------------------------------
-        toolchainsVersions = list(PACKAGE.toolchains.get(PROJECT.toolchains, {}).keys())
+        toolchainsVersions = PACKAGE.versions('toolchains', PROJECT.toolchains)
         if len(toolchainsVersions) != 0:
             if PROJECT.toolchainsVersion == "":
                 PROJECT.toolchainsVersion = toolchainsVersions[0]

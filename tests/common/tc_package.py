@@ -59,6 +59,10 @@ class PackageTest(unittest.TestCase):
         sc = PACKAGE.getPackageDescription(folder)
         self.check_getPackageDescription(sc)
 
+    def test_getPackageIndex(self):
+        index = PACKAGE.getPackageIndex()
+        self.assertGreater(len(index.origin), 0, msg='install failed.')
+
     def test_install(self):
         file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.7z")
         succeed = 0
@@ -71,6 +75,11 @@ class PackageTest(unittest.TestCase):
 
         self.assertTrue(status, msg='install failed.')
         self.assertGreater(succeed, 0, msg='install failed.')
+
+    def test_uninstall(self):
+        self.test_install()
+        status = PACKAGE.uninstall('hal', 'test', '0.0.2')
+        self.assertTrue(status, msg='uninstall failed.')
 
     def tearDown(self):
         pass
