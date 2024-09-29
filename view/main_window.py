@@ -137,13 +137,16 @@ class MainWindow(MSFluentWindow):
 
     def __initNavigation(self):
         self.addSubInterface(self.chipView, Icon.CPU, QCoreApplication.translate("MainWindow", 'Chip'), Icon.CPU)
-        btnCode = self.addSubInterface(self.codeView, Icon.CODE, QCoreApplication.translate("MainWindow", 'Code'),
+        codeBtn = self.addSubInterface(self.codeView, Icon.CODE, QCoreApplication.translate("MainWindow", 'Code'),
                                        Icon.CODE)
-        btnCode.clicked.connect(lambda: self.codeView.flush())
+        codeBtn.clicked.connect(lambda: self.codeView.flush())
 
-        self.addSubInterface(self.packageView, Icon.BOOK_SHELF, QCoreApplication.translate("MainWindow", 'Package'),
-                             Icon.BOOK_SHELF,
-                             NavigationItemPosition.BOTTOM)
+        packageBtn = self.addSubInterface(self.packageView, Icon.BOOK_SHELF,
+                                          QCoreApplication.translate("MainWindow", 'Package'),
+                                          Icon.BOOK_SHELF,
+                                          NavigationItemPosition.BOTTOM)
+        packageBtn.clicked.connect(lambda: self.packageView.flush())
+
         self.navigationInterface.addItem(
             routeKey='Sponsor',
             icon=Icon.MONEY,

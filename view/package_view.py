@@ -27,23 +27,123 @@
 import datetime
 from pathlib import Path
 
-from PySide6.QtCore import Qt, QCoreApplication, Signal, QPoint
-from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
-from qfluentwidgets import (ScrollArea, ExpandLayout, ExpandGroupSettingCard, PushButton, TransparentToolButton,
+from PySide6.QtCore import Qt, QCoreApplication, Signal, QPoint, QRect, QSize, QEvent, QObject
+from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QLayout, QLayoutItem
+from qfluentwidgets import (ScrollArea, ExpandGroupSettingCard, PushButton, TransparentToolButton,
                             IconInfoBadge, InfoBadgePosition, RoundMenu, Action)
 
 from common import Style, Icon, PACKAGE
 
 
-class VersionInfoWidget(QWidget):
-    textChanged = Signal(str)
+class ExpandLayout(QLayout):
+    """ Expand layout """
 
-    def __init__(self, version: str, path: str | None, date: str | None, existed: bool, parent=None):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.__items = []
+        self.__widgets = []
+
+    def addWidget(self, widget: QWidget):
+        if widget in self.__widgets:
+            return
+        self.__widgets.append(widget)
+        widget.installEventFilter(self)
+
+    def clear(self):
+        while len(self.__widgets) > 0:
+            widget: QWidget = self.__widgets.pop()
+            widget.hide()
+            widget.deleteLater()
+
+    def addItem(self, item: QLayoutItem):
+        self.__items.append(item)
+
+    def count(self) -> int:
+        return len(self.__items)
+
+    def itemAt(self, index: int) -> QLayoutItem:
+        if 0 <= index < len(self.__items):
+            return self.__items[index]
+
+        return None
+
+    def takeAt(self, index) -> QLayoutItem:
+        if 0 <= index < len(self.__items):
+            self.__widgets.pop(index)
+            return self.__items.pop(index)
+
+        return None
+
+    def expandingDirections(self) -> Qt.Orientation:
+        return Qt.Orientation.Vertical
+
+    def hasHeightForWidth(self) -> bool:
+        return True
+
+    def heightForWidth(self, width) -> int:
+        """ get the minimal height according to width """
+        return self.__doLayout(QRect(0, 0, width, 0), False)
+
+    def setGeometry(self, rect: QRect):
+        super().setGeometry(rect)
+        self.__doLayout(rect, True)
+
+    def sizeHint(self) -> QSize:
+        return self.minimumSize()
+
+    def minimumSize(self) -> QSize:
+        size = QSize()
+
+        for w in self.__widgets:
+            size = size.expandedTo(w.minimumSize())
+
+        m = self.contentsMargins()
+        size += QSize(m.left() + m.right(), m.top() + m.bottom())
+
+        return size
+
+    def __doLayout(self, rect: QRect, move: bool) -> int:
+        """ adjust widgets position according to the window size """
+        margin = self.contentsMargins()
+        x = rect.x() + margin.left()
+        y = rect.y() + margin.top()
+        width = rect.width() - margin.left() - margin.right()
+
+        for i, w in enumerate(self.__widgets):
+            if w.isHidden():
+                continue
+
+            y += (i > 0) * self.spacing()
+            if move:
+                w.setGeometry(QRect(QPoint(x, y), QSize(width, w.height())))
+
+            y += w.height()
+
+        return y - rect.y()
+
+    def eventFilter(self, obj: QObject, e: QEvent):
+        if obj in self.__widgets:
+            if e.type() == QEvent.Resize:
+                ds = e.size() - e.oldSize()  # type:QSize
+                if ds.height() != 0 and ds.width() == 0:
+                    w = self.parentWidget()
+                    w.resize(w.width(), w.height() + ds.height())
+
+        return super().eventFilter(obj, e)
+
+
+class VersionInfoWidget(QWidget):
+    flushed = Signal()
+
+    def __init__(self, kind: str, name: str, version: str, date: str | None, existed: bool, parent=None):
         super().__init__(parent=parent)
+        self.__path = PACKAGE.path(kind, name, version)
+        self.__version = version
+        self.__kind = kind
+        self.__name = name
         self.versionLabel = QLabel(version, self)
-        self.pathLabel = QLabel(path or '', self)
-        if path is not None:
-            self.pathLabel.setToolTip(path)
+        self.pathLabel = QLabel(self.__path or '', self)
+        self.pathLabel.setToolTip(self.__path)
         self.pathLabel.setObjectName('pathLabel')
         self.dateLabel = QLabel(date or '', self)
         self.detailBtn = PushButton(QCoreApplication.translate("VersionInfoWidget", "Detail"), self)
@@ -53,14 +153,11 @@ class VersionInfoWidget(QWidget):
         self.hBoxLayout = QHBoxLayout(self)
         self.vBoxLayout = QVBoxLayout()
 
-        if not path:
-            self.pathLabel.hide()
-
-        self.setFixedHeight(70 if path else 50)
+        self.setFixedHeight(70)
 
         Style.PACKAGE_VIEW.apply(self)
 
-        path = self.pathLabel.fontMetrics().elidedText(path, Qt.TextElideMode.ElideRight, 600)
+        path = self.pathLabel.fontMetrics().elidedText(self.__path, Qt.TextElideMode.ElideRight, 600)
         self.pathLabel.setText(path)
 
         # initialize layout
@@ -104,9 +201,16 @@ class VersionInfoWidget(QWidget):
         menu = RoundMenu(parent=self)
 
         self.uninstallAction = Action(Icon.UNINSTALL, QCoreApplication.translate("VersionInfoWidget", 'Uninstall'))
+        self.uninstallAction.triggered.connect(self.__uninstallPackage)
         menu.addAction(self.uninstallAction)
 
         return menu
+
+    def __uninstallPackage(self):
+        status = PACKAGE.uninstall(self.__kind, self.__name, self.__version)
+        if not status:
+            pass
+        self.flushed.emit()
 
 
 class PackageView(ScrollArea):
@@ -133,28 +237,33 @@ class PackageView(ScrollArea):
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(36, 10, 36, 0)
 
-        groups = self.__createGroups("toolchains")
-        for group in groups:
-            self.expandLayout.addWidget(group)
+        # self.flush()
 
         self.enableTransparentBackground()
 
         Style.PACKAGE_VIEW.apply(self)
 
+    def flush(self):
+        self.expandLayout.clear()
+        groups = self.__createGroups("toolchains")
+        for group in groups:
+            self.expandLayout.addWidget(group)
+        self.widgetScroll.setLayout(self.expandLayout)
+
     def __createGroups(self, kind: str):
         groups = []
         package = PACKAGE.index.origin.get(kind, {})
-        for k, v in package.items():
-            group = ExpandGroupSettingCard(Icon.FOLDER.icon(), k, "", self.widgetScroll)
-            for version, path in v.items():
+        for name, value in package.items():
+            group = ExpandGroupSettingCard(Icon.FOLDER.icon(), name, "", self.widgetScroll)
+            for version, path in value.items():
                 pdsc = PACKAGE.getPackageDescription(path)
                 if pdsc is not None:
                     path_info = Path(path)
-                    time = datetime.datetime.fromtimestamp(path_info.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
+                    time = datetime.datetime.fromtimestamp(path_info.stat().st_mtime).strftime('%Y/%m/%d')
                     time = QCoreApplication.translate("PackageView", "Install time: %1").replace("%1", time)
-                    info = VersionInfoWidget(version, path, time, True, group)
+                    info = VersionInfoWidget(kind, name, version, time, True, group)
                 else:
-                    info = VersionInfoWidget(version, path, None, False, group)
+                    info = VersionInfoWidget(kind, name, version, None, False, group)
                 group.addGroupWidget(info)
             groups.append(group)
         return groups

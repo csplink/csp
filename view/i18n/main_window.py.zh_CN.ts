@@ -43,17 +43,17 @@
     <message>
         <location filename="../main_window.py" line="139"/>
         <source>Chip</source>
-        <translation type="unfinished"></translation>
+        <translation>芯片</translation>
     </message>
     <message>
         <location filename="../main_window.py" line="140"/>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>代码</translation>
     </message>
     <message>
         <location filename="../main_window.py" line="144"/>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>软件包</translation>
     </message>
     <message>
         <location filename="../main_window.py" line="150"/>

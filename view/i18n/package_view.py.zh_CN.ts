@@ -29,7 +29,7 @@
     <message>
         <location filename="../package_view.py" line="106"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>卸载</translation>
     </message>
 </context>
 </TS>
