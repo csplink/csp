@@ -29,13 +29,13 @@ import os
 from PySide6.QtCore import Qt, QItemSelection
 # from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
-from qfluentwidgets import (FluentIconBase, FlowLayout, ToolButton)
+from qfluentwidgets import (FlowLayout, ToolButton)
 
 from common import Style, Icon, Coder, PROJECT
 from dialogs import GenCodeDialog
 from utils import converters
 from widget import CHighlighter
-from .ui.ui_code_view import Ui_CodeView
+from .ui.code_view_ui import Ui_CodeView
 
 
 class CodeView(Ui_CodeView, QWidget):
@@ -99,20 +99,20 @@ class CodeView(Ui_CodeView, QWidget):
             for k, v in treeItem.items():
                 if isinstance(v, dict):
                     item = QTreeWidgetItem(top_item, [k])
-                    item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
+                    item.setIcon(0, Icon.M_FOLDER_LIB.qicon())
                     traverseTree(v, item, f"{path}/{k}")
                     item.setExpanded(True)
                 else:
                     item = QTreeWidgetItem(top_item, [k])
                     item.setData(0, Qt.ItemDataRole.StatusTipRole, f"{path}/{k}")
                     if k.lower().endswith(".h"):
-                        item.setIcon(0, FluentIconBase.qicon(Icon.H))
+                        item.setIcon(0, Icon.M_H.qicon())
                     elif k.lower().endswith(".c"):
-                        item.setIcon(0, FluentIconBase.qicon(Icon.C))
+                        item.setIcon(0, Icon.M_C.qicon())
 
         for key, di in tree.get("core", {}).items():
             top_level_item = QTreeWidgetItem([key])
-            top_level_item.setIcon(0, FluentIconBase.qicon(Icon.FOLDER_LIB))
+            top_level_item.setIcon(0, Icon.M_FOLDER_LIB.qicon())
             top_level_item.setExpanded(True)
             self.fileTree.addTopLevelItem(top_level_item)
             traverseTree(di, top_level_item, f"core/{key}")

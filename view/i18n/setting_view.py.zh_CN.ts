@@ -44,58 +44,58 @@
         <translation>构建器设置</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="338"/>
+        <location filename="../setting_view.py" line="336"/>
         <source>Builder Tools</source>
         <translation>构建器工具</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="347"/>
+        <location filename="../setting_view.py" line="344"/>
         <source>Builder Version</source>
         <translation>构建器版本</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="355"/>
+        <location filename="../setting_view.py" line="352"/>
         <source>Use Toolchains Package</source>
         <translation>使用工具链软件包</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="357"/>
+        <location filename="../setting_view.py" line="354"/>
         <source>Use the built-in toolchain of this software</source>
         <translation type="unfinished">使用本软件的内置工具链</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="362"/>
+        <location filename="../setting_view.py" line="358"/>
         <source>Toolchains</source>
         <translation type="unfinished">工具链</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="370"/>
+        <location filename="../setting_view.py" line="366"/>
         <source>Toolchains Version</source>
         <translation type="unfinished">工具链版本</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="384"/>
+        <location filename="../setting_view.py" line="379"/>
         <source>Toolchains Path</source>
         <translation type="unfinished">工具链路径</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="415"/>
+        <location filename="../setting_view.py" line="410"/>
         <source>Linker Settings</source>
         <translation type="unfinished">连接器设置</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="421"/>
+        <location filename="../setting_view.py" line="414"/>
         <source>Default heap size</source>
         <translation type="unfinished">默认堆大小</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="431"/>
+        <location filename="../setting_view.py" line="423"/>
         <source>Default stack size</source>
         <translation type="unfinished">默认栈大小</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="450"/>
-        <location filename="../setting_view.py" line="457"/>
+        <location filename="../setting_view.py" line="441"/>
+        <location filename="../setting_view.py" line="447"/>
         <source>The Path is not directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -103,12 +103,12 @@
 <context>
     <name>SettingView</name>
     <message>
-        <location filename="../setting_view.py" line="475"/>
+        <location filename="../setting_view.py" line="465"/>
         <source>System Setting</source>
         <translation>系统设置</translation>
     </message>
     <message>
-        <location filename="../setting_view.py" line="478"/>
+        <location filename="../setting_view.py" line="467"/>
         <source>Generate Setting</source>
         <translation>生成设置</translation>
     </message>

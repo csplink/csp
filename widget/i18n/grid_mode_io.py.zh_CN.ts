@@ -19,7 +19,7 @@
         <translation>锁定</translation>
     </message>
     <message>
-        <location filename="../grid_mode_io.py" line="150"/>
+        <location filename="../grid_mode_io.py" line="149"/>
         <source>Unlocked</source>
         <translation>未锁定</translation>
     </message>

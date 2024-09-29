@@ -26,13 +26,13 @@
 
 import attr
 from PySide6.QtCore import Qt, QRegularExpression, QModelIndex, QAbstractTableModel, QSortFilterProxyModel, \
-    QAbstractItemModel, QCoreApplication
+    QAbstractItemModel
 from PySide6.QtGui import QRegularExpressionValidator, QFont
 from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication)
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
 from common import PROJECT, SETTINGS, Style, SIGNAL_BUS
-from .ui.ui_grid_property_ip import Ui_GridPropertyIp
+from .ui.grid_property_ip_ui import Ui_GridPropertyIp
 
 
 @attr.s
@@ -100,8 +100,7 @@ class GridPropertyIpModel(QAbstractTableModel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.__headers = [QCoreApplication.translate("GridPropertyIpModel", "Property"),
-                          QCoreApplication.translate("GridPropertyIpModel", "Value")]
+        self.__headers = [self.tr("Property"), self.tr("Value")]
         self.__pinInstance = PROJECT.summary.pinIp
 
         SIGNAL_BUS.gridPropertyIpTriggered.connect(self.changePropertyIp)
@@ -190,7 +189,7 @@ class GridPropertyIpModel(QAbstractTableModel):
 
             if self.__pinInstance == instance:
                 g_data.append(
-                    PModel(property=QCoreApplication.translate("GridPropertyIpModel", "Name"),
+                    PModel(property=self.tr("Name"),
                            path="",
                            value=value,
                            typeof="string",
@@ -199,7 +198,7 @@ class GridPropertyIpModel(QAbstractTableModel):
                            description=""))
                 path = f"pin/{value}/label"
                 g_data.append(
-                    PModel(property=QCoreApplication.translate("GridPropertyIpModel", "Label"),
+                    PModel(property=self.tr("Label"),
                            path=path,
                            value=PROJECT.config(path, ""),
                            typeof="string",

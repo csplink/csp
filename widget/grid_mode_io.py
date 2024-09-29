@@ -24,12 +24,12 @@
 # 2024-07-02     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection, QCoreApplication
+from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
 
 from common import PROJECT, SETTINGS, SIGNAL_BUS
-from .ui.ui_grid_mode_io import Ui_GridModeIo
+from .ui.grid_mode_io_ui import Ui_GridModeIo
 
 
 class GridModeIoModel(QAbstractTableModel):
@@ -105,11 +105,11 @@ class GridModeIoModel(QAbstractTableModel):
             self.__headersMap.clear()
 
             self.__headersMap = {
-                QCoreApplication.translate("GridModeIoModel", "Name"): {
+                self.tr("Name"): {
                     "path": "",
                     "index": 0
                 },
-                QCoreApplication.translate("GridModeIoModel", "Label"): {
+                self.tr("Label"): {
                     "path": "pin/(name)/label",
                     "index": 1
                 },
@@ -145,8 +145,7 @@ class GridModeIoModel(QAbstractTableModel):
 
     def __value2str(self, value):
         if isinstance(value, bool):
-            return QCoreApplication.translate("GridModeIoModel", "Locked") if value else QCoreApplication.translate(
-                "GridModeIoModel", "Unlocked")
+            return self.tr("Locked") if value else self.tr("Unlocked")
         return value
 
     def __removeModelData(self, name: str):

@@ -26,7 +26,7 @@
 
 import math
 
-from PySide6.QtCore import Qt, QRegularExpression, QCoreApplication
+from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
                            QResizeEvent, QRegularExpressionValidator)
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
@@ -41,19 +41,19 @@ class LabelMessageBox(MessageBoxBase):
 
     def __init__(self, text: str, parent=None):
         super().__init__(parent)
-        self.titleLabel = SubtitleLabel(QCoreApplication.translate('LabelMessageBox', 'Set label'), self)
+        self.titleLabel = SubtitleLabel(self.tr('Set label'), self)
         self.labelLineEdit = LineEdit(self)
 
         self.labelLineEdit.setText(text)
-        self.labelLineEdit.setPlaceholderText(QCoreApplication.translate('LabelMessageBox', 'Enter the user label'))
+        self.labelLineEdit.setPlaceholderText(self.tr('Enter the user label'))
         self.labelLineEdit.setClearButtonEnabled(True)
         self.labelLineEdit.setValidator(QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")))
 
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.labelLineEdit)
 
-        self.yesButton.setText(QCoreApplication.translate('LabelMessageBox', 'OK'))
-        self.cancelButton.setText(QCoreApplication.translate('LabelMessageBox', 'Cancel'))
+        self.yesButton.setText(self.tr('OK'))
+        self.cancelButton.setText(self.tr('Cancel'))
 
         self.widget.setMinimumWidth(360)
 

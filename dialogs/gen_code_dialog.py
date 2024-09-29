@@ -29,18 +29,15 @@ import os
 from PySide6.QtCore import Qt, QRegularExpression
 from PySide6.QtGui import (QRegularExpressionValidator)
 from PySide6.QtWidgets import QWidget, QListWidgetItem
-
-from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox, IconInfoBadge, InfoBadgePosition,
-                            CaptionLabel)
 from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import (MessageBoxBase, Flyout, InfoBarIcon, MessageBox, IconInfoBadge, InfoBadgePosition)
 
-from .ui.ui_gen_code_dialog import Ui_GenCodeDialog
 from common import PROJECT, PACKAGE, Coder, Icon
 from utils import converters
+from .ui.gen_code_dialog_ui import Ui_GenCodeDialog
 
 
 class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
-
     __toolchainsPathLineEditIconInfoBadge = None
     __halPathLineEditIconInfoBadge = None
 
@@ -299,7 +296,6 @@ class GenCodeDialogWidget(Ui_GenCodeDialog, QWidget):
 
 
 class GenCodeDialog(MessageBoxBase):
-
     m_gen = False
 
     def __init__(self, parent=None, gen=False):

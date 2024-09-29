@@ -106,16 +106,17 @@ class Ui_ChipView(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
+
         self.verticalLayout_2.addWidget(self.widget_2)
 
         self.modulePropertySocSplitter.addWidget(self.frame_2)
 
         self.verticalLayout_3.addWidget(self.modulePropertySocSplitter)
 
+
         self.retranslateUi(ChipView)
 
         QMetaObject.connectSlotsByName(ChipView)
-
     # setupUi
 
     def retranslateUi(self, ChipView):
@@ -123,5 +124,5 @@ class Ui_ChipView(object):
         self.zoomInBtn.setText("")
         self.zoomResetBtn.setText("")
         self.zoomOutBtn.setText("")
-
     # retranslateUi
+

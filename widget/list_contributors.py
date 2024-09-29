@@ -26,13 +26,13 @@
 
 import os
 
-from PySide6.QtCore import Qt, QPoint, QObject, QEvent, QUrl, QCoreApplication
+from PySide6.QtCore import Qt, QPoint, QObject, QEvent, QUrl
 from PySide6.QtGui import QColor, QDesktopServices
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, CaptionLabel, HyperlinkLabel, isDarkTheme)
 
 from common import DATABASE, SETTINGS, Icon
-from .ui.ui_list_contributors import Ui_ListContributors
+from .ui.list_contributors_ui import Ui_ListContributors
 
 AVATAR_SIZE = 32
 CONTRIBUTORS_DIR = os.path.dirname(SETTINGS.CONTRIBUTORS_FILE)
@@ -88,7 +88,7 @@ class ListContributors(Ui_ListContributors, QWidget):
         menu.addWidget(card, selectable=False)
 
         menu.addSeparator()
-        action = Action(Icon.GITHUB, QCoreApplication.translate("ListContributors", 'Open github url'))
+        action = Action(Icon.GITHUB, self.tr('Open github url'))
         action.setProperty("url", contributor["html_url"])
         action.triggered.connect(self.__on_githubAction_triggered)
         menu.addAction(action)

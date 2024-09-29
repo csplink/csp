@@ -34,11 +34,20 @@ from .settings import SETTINGS
 
 class Icon(FluentIconBase, Enum):
     """ Custom icons """
-
+    M_C = "material/c"
+    M_FOLDER_BASE = "material/folder-base"
+    M_FOLDER_BASE_OPEN = "material/folder-base-open"
+    M_FOLDER_DIST = "material/folder-dist"
+    M_FOLDER_DIST_OPEN = "material/folder-dist-open"
+    M_FOLDER_LIB = "material/folder-lib"
+    M_FOLDER_LIB_OPEN = "material/folder-lib-open"
+    M_FOLDER_PACKAGES = "material/folder-packages"
+    M_FOLDER_PACKAGES_OPEN = "material/folder-packages-open"
+    M_H = "material/h"
+    # ------------------------------------------------------------------------------------------------------------------
     AI_GENERATE = "ai-generate"
     BOOK_SHELF = "book-shelf-line"
     BOX = "box-3-line"
-    C = "c"
     CHECKBOX_MULTIPLE = "checkbox-multiple-line"
     CLOSE_LARGE = "close-large-line"
     CODE = "code-line"
@@ -47,12 +56,9 @@ class Icon(FluentIconBase, Enum):
     EQUALIZER = "equalizer-line"
     FEEDBACK = "feedback-line"
     FOLDER = "folder-6-line"
-    FOLDER_LIB_OPEN = "folder-lib-open"
-    FOLDER_LIB = "folder-lib"
     FOLDER_TRANSFER = "folder-transfer-line"
     GITHUB = "github-fill"
     GLOBAL = "global-line"
-    H = "h"
     HAMMER = "hammer-line"
     INFORMATION = "information-line"
     LIST_SETTINGS = "list-settings-line"
@@ -71,4 +77,6 @@ class Icon(FluentIconBase, Enum):
     ZOOM_OUT = "zoom-out-line"
 
     def path(self, theme=Theme.AUTO):
-        return os.path.join(SETTINGS.ICON_FOLDER, getIconColor(theme), f"{self.value}.svg")
+        if self.value.startswith("material/"):
+            return os.path.join(SETTINGS.ICON_FOLDER, f"{self.value}.svg")
+        return os.path.join(SETTINGS.ICON_FOLDER, 'remix', getIconColor(theme), f"{self.value}.svg")

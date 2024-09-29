@@ -26,7 +26,7 @@
 
 import os
 
-from PySide6.QtCore import QThread, Signal, QObject, QCoreApplication
+from PySide6.QtCore import QThread, Signal, QObject
 from PySide6.QtWidgets import (QFileDialog, QHBoxLayout)
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, ToolButton, ProgressBar, CaptionLabel, BodyLabel)
 
@@ -54,14 +54,13 @@ class PackageInstallDialog(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.titleLabel = SubtitleLabel(QCoreApplication.translate('PackageInstallDialog', 'Install package'), self)
+        self.titleLabel = SubtitleLabel(self.tr('Install package'), self)
         # ----------------------------------------------------------------------
         self.pathLayout = QHBoxLayout()
 
         self.pathLineEdit = LineEdit(self)
         self.pathLineEdit.setReadOnly(True)
-        self.pathLineEdit.setPlaceholderText(
-            QCoreApplication.translate('PackageInstallDialog', 'Choose package (*.csppack) path'))
+        self.pathLineEdit.setPlaceholderText(self.tr('Choose package (*.csppack) path'))
         self.pathLineEdit.textChanged.connect(self.__on_pathLineEdit_textChanged)
 
         self.folderBtn = ToolButton()
@@ -92,7 +91,7 @@ class PackageInstallDialog(MessageBoxBase):
         self.viewLayout.addLayout(self.progressLayout)
         self.viewLayout.addWidget(self.fileLabel)
         # ----------------------------------------------------------------------
-        self.yesButton.setText(QCoreApplication.translate('PackageInstallDialog', 'Install'))
+        self.yesButton.setText(self.tr('Install'))
         self.yesButton.clicked.disconnect()  # self._MessageBoxBase__onYesButtonClicked
         self.yesButton.clicked.connect(self.__on_yesButton_clicked)
         self.yesButton.setEnabled(False)
@@ -106,11 +105,9 @@ class PackageInstallDialog(MessageBoxBase):
             self.yesButton.setEnabled(False)
 
     def __on_folderBtn_pressed(self):
-        path, ok = QFileDialog.getOpenFileName(self, QCoreApplication.translate('PackageInstallDialog',
-                                                                                'Choose CSP package file'),
+        path, ok = QFileDialog.getOpenFileName(self, self.tr('Choose CSP package file'),
                                                SETTINGS.lastPackageFileFolder.value,
-                                               QCoreApplication.translate('PackageInstallDialog',
-                                                                          'CSP package file (*.csppack)'))
+                                               self.tr('CSP package file (*.csppack)'))
         if ok:
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             self.pathLineEdit.setText(path)

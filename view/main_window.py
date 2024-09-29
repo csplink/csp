@@ -25,11 +25,10 @@
 #
 
 import os
-from enum import Enum
 
-from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer, QCoreApplication
+from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer
 from PySide6.QtGui import QIcon, QDesktopServices
-from PySide6.QtWidgets import QHBoxLayout, QApplication
+from PySide6.QtWidgets import QHBoxLayout, QApplication, QMessageBox
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton, SplashScreen)
 
@@ -41,55 +40,51 @@ from .package_view import PackageView
 from .setting_view import SettingView
 
 
-class MenuIndexType(Enum):
-    FILE_MENU = 0
-    PROJECT_MENU = 1
-
-
 class CustomTitleBar(MSFluentTitleBar):
     """ Title bar with icon and title """
-
-    menus = []
 
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.__initMenu()
-
         # add buttons
-        self.layoutBtn = QHBoxLayout()
+        self.btnLayout = QHBoxLayout()
 
-        self.btnFile = TransparentPushButton(QCoreApplication.translate("CustomTitleBar", "File"), self)
-        self.btnFile.clicked.connect(lambda: self.menus[MenuIndexType.FILE_MENU.value].exec(
-            self.btnFile.mapToGlobal(QPoint(0, self.btnFile.height())), ani=True))
-
-        self.btnProject = TransparentPushButton(QCoreApplication.translate("CustomTitleBar", "Project"), self)
-        self.btnProject.clicked.connect(lambda: self.menus[MenuIndexType.PROJECT_MENU.value].exec(
-            self.btnProject.mapToGlobal(QPoint(0, self.btnProject.height())), ani=True))
-
-        self.layoutBtn.setContentsMargins(20, 0, 20, 0)
-        self.layoutBtn.setSpacing(15)
-        self.layoutBtn.addWidget(self.btnFile)
-        self.layoutBtn.addWidget(self.btnProject)
+        # ----------------------------------------------------------------------
+        self.fileBtn = TransparentPushButton(self.tr("File"), self)
+        self.fileMenu = self.__createFileMenu()
+        self.fileBtn.clicked.connect(
+            lambda: self.fileMenu.exec(self.fileBtn.mapToGlobal(QPoint(0, self.fileBtn.height())), ani=True))
+        # ----------------------------------------------------------------------
+        self.projectBtn = TransparentPushButton(self.tr("Project"), self)
+        self.projectMenu = self.__createProjectMenu()
+        self.projectBtn.clicked.connect(
+            lambda: self.projectMenu.exec(self.projectBtn.mapToGlobal(QPoint(0, self.projectBtn.height())), ani=True))
+        # ----------------------------------------------------------------------
+        self.helpBtn = TransparentPushButton(self.tr("Help"), self)
+        self.helpMenu = self.__createHelpMenu()
+        self.helpBtn.clicked.connect(
+            lambda: self.helpMenu.exec(self.helpBtn.mapToGlobal(QPoint(0, self.helpBtn.height())), ani=True))
+        # ----------------------------------------------------------------------
+        self.btnLayout.setContentsMargins(20, 0, 20, 0)
+        self.btnLayout.setSpacing(15)
+        self.btnLayout.addWidget(self.fileBtn)
+        self.btnLayout.addWidget(self.projectBtn)
+        self.btnLayout.addWidget(self.helpBtn)
 
         self.layoutHeader = self.hBoxLayout
-        self.layoutHeader.insertLayout(4, self.layoutBtn)
+        self.layoutHeader.insertLayout(4, self.btnLayout)
         self.layoutHeader.setStretch(6, 0)
-
-    def __initMenu(self):
-        self.menus.append(self.__createFileMenu())
-        self.menus.append(self.__createProjectMenu())
 
     def __createFileMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        action = Action(QCoreApplication.translate("CustomTitleBar", 'New'))
+        action = Action(self.tr('New'))
         menu.addAction(action)
 
-        action = Action(QCoreApplication.translate("CustomTitleBar", 'Open'))
+        action = Action(self.tr('Open'))
         menu.addAction(action)
 
-        action = Action(QCoreApplication.translate("CustomTitleBar", 'Save'))
+        action = Action(self.tr('Save'))
         menu.addAction(action)
 
         return menu
@@ -97,8 +92,21 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createProjectMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.generateAction = Action(QCoreApplication.translate("CustomTitleBar", 'Generate'))
+        self.generateAction = Action(self.tr('Generate'))
         menu.addAction(self.generateAction)
+
+        return menu
+
+    def __createHelpMenu(self) -> RoundMenu:
+        menu = RoundMenu(parent=self)
+
+        self.aboutQtAction = Action(self.tr('About Qt'))
+        self.aboutAction = Action(self.tr('About'))
+        self.openSourceLicenseAction = Action(self.tr('Open source license'))
+        menu.addAction(self.aboutQtAction)
+        menu.addAction(self.aboutAction)
+        menu.addSeparator()
+        menu.addAction(self.openSourceLicenseAction)
 
         return menu
 
@@ -129,6 +137,7 @@ class MainWindow(MSFluentWindow):
         self.__initNavigation()
 
         self.barTitle.generateAction.triggered.connect(lambda: self.__on_generate_clicked())
+        self.barTitle.aboutQtAction.triggered.connect(lambda: QMessageBox.aboutQt(self.window(), self.tr('About Qt')))
 
         # loop.exec()
         self.splashScreen.finish()
@@ -136,13 +145,13 @@ class MainWindow(MSFluentWindow):
         # self.showMaximized()
 
     def __initNavigation(self):
-        self.addSubInterface(self.chipView, Icon.CPU, QCoreApplication.translate("MainWindow", 'Chip'), Icon.CPU)
-        codeBtn = self.addSubInterface(self.codeView, Icon.CODE, QCoreApplication.translate("MainWindow", 'Code'),
+        self.addSubInterface(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
+        codeBtn = self.addSubInterface(self.codeView, Icon.CODE, self.tr('Code'),
                                        Icon.CODE)
         codeBtn.clicked.connect(lambda: self.codeView.flush())
 
         packageBtn = self.addSubInterface(self.packageView, Icon.BOOK_SHELF,
-                                          QCoreApplication.translate("MainWindow", 'Package'),
+                                          self.tr('Package'),
                                           Icon.BOOK_SHELF,
                                           NavigationItemPosition.BOTTOM)
         packageBtn.clicked.connect(lambda: self.packageView.flush())
@@ -150,12 +159,12 @@ class MainWindow(MSFluentWindow):
         self.navigationInterface.addItem(
             routeKey='Sponsor',
             icon=Icon.MONEY,
-            text=QCoreApplication.translate("MainWindow", 'Sponsor'),
+            text=self.tr('Sponsor'),
             onClick=self.__on_sponsorKey_clicked,
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
-        self.addSubInterface(self.settingView, Icon.SETTING, QCoreApplication.translate("MainWindow", 'Settings'),
+        self.addSubInterface(self.settingView, Icon.SETTING, self.tr('Settings'),
                              Icon.SETTING,
                              NavigationItemPosition.BOTTOM)
 
@@ -179,12 +188,11 @@ class MainWindow(MSFluentWindow):
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
     def __on_sponsorKey_clicked(self):
-        message = MessageBox(
-            QCoreApplication.translate("MainWindow", 'Sponsor'),
-            QCoreApplication.translate("MainWindow", """The csplink projects are personal open-source projects, their development need your help.
+        message = MessageBox(self.tr('Sponsor'),
+                             self.tr("""The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!"""), self)
-        message.yesButton.setText(QCoreApplication.translate("MainWindow", 'OK'))
-        message.cancelButton.setText(QCoreApplication.translate("MainWindow", 'Cancel'))
+        message.yesButton.setText(self.tr('OK'))
+        message.cancelButton.setText(self.tr('Cancel'))
 
         if message.exec():
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))

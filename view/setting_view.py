@@ -24,7 +24,7 @@
 # 2024-06-23     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QUrl, QItemSelection, QCoreApplication
+from PySide6.QtCore import Qt, QUrl, QItemSelection
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
 from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
@@ -35,7 +35,7 @@ from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE)
 from utils import converters
 from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
                     ToolButtonPropertySettingCard)
-from .ui.ui_setting_view import Ui_SettingView
+from .ui.setting_view_ui import Ui_SettingView
 
 
 class SystemSettingView(ScrollArea):
@@ -44,7 +44,7 @@ class SystemSettingView(ScrollArea):
         super().__init__(parent=parent)
 
         # setting label
-        self.settingLabel = QLabel(QCoreApplication.translate("SystemSettingView", "System Setting"), self)
+        self.settingLabel = QLabel(self.tr("System Setting"), self)
         self.settingLabel.setObjectName('settingLabel')
         self.settingLabel.move(36, 30)
 
@@ -76,13 +76,13 @@ class SystemSettingView(ScrollArea):
         self.enableTransparentBackground()
 
     def __createFoldersGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(QCoreApplication.translate("SystemSettingView", "Folders Location"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
 
         # ---------------------------------------------------------------------------------------------------------------
-        self.repositoryFolderCard = PushSettingCard(QCoreApplication.translate("SystemSettingView", 'Choose folder'),
+        self.repositoryFolderCard = PushSettingCard(self.tr('Choose folder'),
                                                     Icon.FOLDER,
-                                                    QCoreApplication.translate("SystemSettingView",
-                                                                               "Repository directory"),
+                                                    self.tr(
+                                                        "Repository directory"),
                                                     SETTINGS.repositoryFolder.value,
                                                     group)
         self.repositoryFolderCard.clicked.connect(self.__on_repositoryFolderCard_clicked)
@@ -93,31 +93,31 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createPersonalizationGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(QCoreApplication.translate("SystemSettingView", 'Personalization'), self.widgetScroll)
+        group = SettingCardGroup(self.tr('Personalization'), self.widgetScroll)
 
         self.themeCard = OptionsSettingCard(SETTINGS.themeMode,
                                             Icon.PAINT,
-                                            QCoreApplication.translate("SystemSettingView", 'Application theme'),
-                                            QCoreApplication.translate("SystemSettingView",
-                                                                       "Change the appearance of your application"),
-                                            texts=[QCoreApplication.translate("SystemSettingView", 'Light'),
-                                                   QCoreApplication.translate("SystemSettingView", 'Dark'),
-                                                   QCoreApplication.translate("SystemSettingView",
-                                                                              'Use system setting')],
+                                            self.tr('Application theme'),
+                                            self.tr(
+                                                "Change the appearance of your application"),
+                                            texts=[self.tr('Light'),
+                                                   self.tr('Dark'),
+                                                   self.tr(
+                                                       'Use system setting')],
                                             parent=group)
         self.themeCard.optionChanged.connect(lambda ci: setTheme(SETTINGS.get(ci)))
 
         self.themeColorCard = CustomColorSettingCard(SETTINGS.themeColor, Icon.PALETTE,
-                                                     QCoreApplication.translate("SystemSettingView", 'Theme color'),
-                                                     QCoreApplication.translate("SystemSettingView",
-                                                                                'Change the theme color of you application'),
+                                                     self.tr('Theme color'),
+                                                     self.tr(
+                                                         'Change the theme color of you application'),
                                                      group)
         self.themeColorCard.colorChanged.connect(lambda c: setThemeColor(c))
 
         self.alertColorCard = CustomColorSettingCard(SETTINGS.alertColor, Icon.PALETTE,
-                                                     QCoreApplication.translate("SystemSettingView", 'Alert color'),
-                                                     QCoreApplication.translate("SystemSettingView",
-                                                                                'Change the alert color of you application'),
+                                                     self.tr('Alert color'),
+                                                     self.tr(
+                                                         'Change the alert color of you application'),
                                                      group)
 
         group.addSettingCard(self.themeCard)
@@ -127,24 +127,24 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createSystemGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(QCoreApplication.translate("SystemSettingView", 'System'), self.widgetScroll)
+        group = SettingCardGroup(self.tr('System'), self.widgetScroll)
 
         self.languageCard = ComboBoxSettingCard(SETTINGS.language,
                                                 Icon.GLOBAL,
-                                                QCoreApplication.translate("SystemSettingView", 'Language'),
-                                                QCoreApplication.translate("SystemSettingView",
-                                                                           'Set your preferred language for UI'),
+                                                self.tr('Language'),
+                                                self.tr(
+                                                    'Set your preferred language for UI'),
                                                 texts=['简体中文', '繁體中文', 'English',
-                                                       QCoreApplication.translate("SystemSettingView",
-                                                                                  'Use system setting')],
+                                                       self.tr(
+                                                           'Use system setting')],
                                                 parent=group)
         self.zoomCard = OptionsSettingCard(
             SETTINGS.dpiScale,
             Icon.PICTURE_IN_PICTURE,
-            QCoreApplication.translate("SystemSettingView", "Interface zoom"),
-            QCoreApplication.translate("SystemSettingView", "Change the size of widgets and fonts"),
+            self.tr("Interface zoom"),
+            self.tr("Change the size of widgets and fonts"),
             texts=["100%", "125%", "150%", "175%", "200%",
-                   QCoreApplication.translate("SystemSettingView", "Use system setting")],
+                   self.tr("Use system setting")],
             parent=group)
 
         group.addSettingCard(self.languageCard)
@@ -153,13 +153,13 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createUpdateGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(QCoreApplication.translate("SystemSettingView", "Software update"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Software update"), self.widgetScroll)
 
         self.updateAtStartupCard = SwitchSettingCard(
             Icon.REFRESH,
-            QCoreApplication.translate("SystemSettingView", 'Check for updates when the application starts'),
-            QCoreApplication.translate("SystemSettingView",
-                                       'The new version will be more stable and have more features'),
+            self.tr('Check for updates when the application starts'),
+            self.tr(
+                'The new version will be more stable and have more features'),
             configItem=SETTINGS.checkUpdateAtStartup,
             parent=group)
 
@@ -168,27 +168,27 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createAboutGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(QCoreApplication.translate("SystemSettingView", 'About'), self.widgetScroll)
+        group = SettingCardGroup(self.tr('About'), self.widgetScroll)
 
         self.helpCard = HyperlinkCard(SETTINGS.HELP_URL,
-                                      QCoreApplication.translate("SystemSettingView", 'Open help page'), Icon.QUESTION,
-                                      QCoreApplication.translate("SystemSettingView", 'Help'),
-                                      QCoreApplication.translate("SystemSettingView",
-                                                                 'Discover new features and learn useful tips about csp'),
+                                      self.tr('Open help page'), Icon.QUESTION,
+                                      self.tr('Help'),
+                                      self.tr(
+                                          'Discover new features and learn useful tips about csp'),
                                       group)
 
-        self.feedbackCard = PrimaryPushSettingCard(QCoreApplication.translate("SystemSettingView", 'Provide feedback'),
+        self.feedbackCard = PrimaryPushSettingCard(self.tr('Provide feedback'),
                                                    Icon.FEEDBACK,
-                                                   QCoreApplication.translate("SystemSettingView", 'Provide feedback'),
-                                                   QCoreApplication.translate("SystemSettingView",
-                                                                              'Help us improve csp by providing feedback'),
+                                                   self.tr('Provide feedback'),
+                                                   self.tr(
+                                                       'Help us improve csp by providing feedback'),
                                                    group)
         self.feedbackCard.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(SETTINGS.FEEDBACK_URL)))
 
         self.aboutCard = PrimaryPushSettingCard(
-            QCoreApplication.translate("SystemSettingView", 'Check update'), Icon.INFORMATION,
-            QCoreApplication.translate("SystemSettingView", 'About'),
-            f"© {QCoreApplication.translate('SystemSettingView', 'Copyright')} {SETTINGS.YEAR}, {SETTINGS.AUTHOR}. {QCoreApplication.translate('SystemSettingView', 'Version')} {SETTINGS.VERSION}",
+            self.tr('Check update'), Icon.INFORMATION,
+            self.tr('About'),
+            f"© {self.tr('Copyright')} {SETTINGS.YEAR}, {SETTINGS.AUTHOR}. {self.tr('Version')} {SETTINGS.VERSION}",
             group)
 
         group.addSettingCard(self.helpCard)
@@ -199,15 +199,15 @@ class SystemSettingView(ScrollArea):
 
     def __showRestartTooltip(self):
         """ show restart tooltip """
-        InfoBar.success(QCoreApplication.translate("SystemSettingView", 'Updated successfully'),
-                        QCoreApplication.translate("SystemSettingView", 'Configuration takes effect after restart'),
+        InfoBar.success(self.tr('Updated successfully'),
+                        self.tr('Configuration takes effect after restart'),
                         duration=1500,
                         parent=self)
 
     def __on_repositoryFolderCard_clicked(self):
         """ download folder card clicked slot """
         folder = QFileDialog.getExistingDirectory(self,
-                                                  QCoreApplication.translate("SystemSettingView", "Choose folder"))
+                                                  self.tr("Choose folder"))
         if not folder or SETTINGS.get(SETTINGS.repositoryFolder) == folder:
             return
 
@@ -221,7 +221,7 @@ class GenerateSettingView(ScrollArea):
         super().__init__(parent=parent)
 
         # setting label
-        self.settingLabel = QLabel(QCoreApplication.translate("GenerateSettingView", "Generate Setting"), self)
+        self.settingLabel = QLabel(self.tr("Generate Setting"), self)
         self.settingLabel.setObjectName('settingLabel')
         self.settingLabel.move(36, 30)
 
@@ -257,9 +257,9 @@ class GenerateSettingView(ScrollArea):
             PROJECT.builder = builderList[0]
         else:
             if PROJECT.builder not in builderList:
-                title = QCoreApplication.translate("GenerateSettingView", 'Warning')
-                content = QCoreApplication.translate("GenerateSettingView",
-                                                     "The builder %1 is not supported. Use default value '%2'").replace(
+                title = self.tr('Warning')
+                content = self.tr(
+                    "The builder %1 is not supported. Use default value '%2'").replace(
                     "%1", PROJECT.builder).replace("%2", builderList[0])
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
@@ -274,9 +274,9 @@ class GenerateSettingView(ScrollArea):
             PROJECT.builderVersion = builderVersionList[0]
         else:
             if PROJECT.builderVersion not in builderVersionList:
-                title = QCoreApplication.translate("GenerateSettingView", 'Warning')
-                content = QCoreApplication.translate("GenerateSettingView",
-                                                     "The builder %1 is not supported. Use default value '%2'").replace(
+                title = self.tr('Warning')
+                content = self.tr(
+                    "The builder %1 is not supported. Use default value '%2'").replace(
                     "%1", f"{PROJECT.builderVersion}@{PROJECT.builderVersion}").replace(
                     "%2", f"{PROJECT.builderVersion}@{builderVersionList[0]}")
                 message = MessageBox(title, content, self.window())
@@ -290,9 +290,9 @@ class GenerateSettingView(ScrollArea):
             PROJECT.toolchains = toolchains[0]
         else:
             if PROJECT.toolchains not in toolchains:
-                title = QCoreApplication.translate("GenerateSettingView", 'Warning')
-                content = QCoreApplication.translate("GenerateSettingView",
-                                                     "The builder %1 is not supported. Use default value '%2'").replace(
+                title = self.tr('Warning')
+                content = self.tr(
+                    "The builder %1 is not supported. Use default value '%2'").replace(
                     "%1", f"{PROJECT.builder}@{PROJECT.toolchains}").replace("%2", f"{PROJECT.builder}@{toolchains[0]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
@@ -306,9 +306,9 @@ class GenerateSettingView(ScrollArea):
                 PROJECT.toolchainsVersion = toolchainsVersions[0]
             else:
                 if PROJECT.toolchainsVersion not in toolchainsVersions:
-                    title = QCoreApplication.translate("GenerateSettingView", 'Warning')
-                    content = QCoreApplication.translate("GenerateSettingView",
-                                                         "The toolchains %1 is not supported. Use default value '%2'").replace(
+                    title = self.tr('Warning')
+                    content = self.tr(
+                        "The toolchains %1 is not supported. Use default value '%2'").replace(
                         "%1", f"{PROJECT.toolchains}@{PROJECT.toolchainsVersion}").replace(
                         "%2", f"{PROJECT.toolchains}@{toolchainsVersions[0]}")
                     message = MessageBox(title, content, self.window())
@@ -317,9 +317,9 @@ class GenerateSettingView(ScrollArea):
                     message.exec()
                     PROJECT.toolchainsVersion = toolchainsVersions[0]
         else:
-            title = QCoreApplication.translate("GenerateSettingView", 'Error')
-            content = QCoreApplication.translate("GenerateSettingView",
-                                                 "The toolchains %1 is not installed. Please install and then restart this software").replace(
+            title = self.tr('Error')
+            content = self.tr(
+                "The toolchains %1 is not installed. Please install and then restart this software").replace(
                 "%1", PROJECT.toolchains)
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
@@ -329,21 +329,18 @@ class GenerateSettingView(ScrollArea):
 
         # ---------------------------------------------------------------------------------------------------------------
 
-        group = SettingCardGroup(QCoreApplication.translate("GenerateSettingView", "Builder Settings"),
-                                 self.widgetScroll)
+        group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
 
         # ---------------------------------------------------------------------------------------------------------------
         self.builderComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
-                                                                           title=QCoreApplication.translate(
-                                                                               "GenerateSettingView", "Builder Tools"),
+                                                                           title=self.tr("Builder Tools"),
                                                                            value=PROJECT.builder,
                                                                            values=builderList,
                                                                            content=PROJECT.builder,
                                                                            parent=group)
         # ---------------------------------------------------------------------------------------------------------------
         self.builderVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
-                                                                                  title=QCoreApplication.translate(
-                                                                                      "GenerateSettingView",
+                                                                                  title=self.tr(
                                                                                       "Builder Version"),
                                                                                   value=PROJECT.builderVersion,
                                                                                   values=builderVersionList,
@@ -352,14 +349,13 @@ class GenerateSettingView(ScrollArea):
         # ---------------------------------------------------------------------------------------------------------------
         self.useToolchainsPackageSwitchSettingCard = SwitchPropertySettingCard(
             icon=Icon.CHECKBOX_MULTIPLE,
-            title=QCoreApplication.translate("GenerateSettingView", "Use Toolchains Package"),
+            title=self.tr("Use Toolchains Package"),
             value=PROJECT.useToolchainsPackage,
-            content=QCoreApplication.translate("GenerateSettingView", "Use the built-in toolchain of this software"),
+            content=self.tr("Use the built-in toolchain of this software"),
             parent=group)
         # ---------------------------------------------------------------------------------------------------------------
         self.toolchainsComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.TOOLS,
-                                                                              title=QCoreApplication.translate(
-                                                                                  "GenerateSettingView", "Toolchains"),
+                                                                              title=self.tr("Toolchains"),
                                                                               value=PROJECT.toolchains,
                                                                               values=toolchains,
                                                                               content=PROJECT.toolchains,
@@ -367,7 +363,7 @@ class GenerateSettingView(ScrollArea):
         # ---------------------------------------------------------------------------------------------------------------
         self.toolchainsVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.DATABASE_2,
-            title=QCoreApplication.translate("GenerateSettingView", "Toolchains Version"),
+            title=self.tr("Toolchains Version"),
             value=PROJECT.toolchainsVersion,
             values=toolchainsVersions,
             content=PROJECT.toolchainsVersion,
@@ -380,8 +376,7 @@ class GenerateSettingView(ScrollArea):
         # ---------------------------------------------------------------------------------------------------------------
         toolchainsPath = PACKAGE.path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
         self.toolchainsPathToolButtonCard = ToolButtonPropertySettingCard(icon=Icon.FOLDER,
-                                                                          title=QCoreApplication.translate(
-                                                                              "GenerateSettingView", "Toolchains Path"),
+                                                                          title=self.tr("Toolchains Path"),
                                                                           btnIcon=Icon.BOX,
                                                                           content=toolchainsPath,
                                                                           parent=group)
@@ -412,13 +407,11 @@ class GenerateSettingView(ScrollArea):
             return None
         # ---------------------------------------------------------------------------------------------------------------
 
-        group = SettingCardGroup(QCoreApplication.translate("GenerateSettingView", "Linker Settings"),
-                                 self.widgetScroll)
+        group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)
 
         # ---------------------------------------------------------------------------------------------------------------
         self.defaultHeapLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
-                                                                   title=QCoreApplication.translate(
-                                                                       "GenerateSettingView", "Default heap size"),
+                                                                   title=self.tr("Default heap size"),
                                                                    value=defaultHeapSize,
                                                                    content=defaultHeapSize,
                                                                    validator=R"(^0x[0-9A-Fa-f]+$)",
@@ -427,8 +420,7 @@ class GenerateSettingView(ScrollArea):
         PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
         # ---------------------------------------------------------------------------------------------------------------
         self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
-                                                                    title=QCoreApplication.translate(
-                                                                        "GenerateSettingView", "Default stack size"),
+                                                                    title=self.tr("Default stack size"),
                                                                     value=defaultStackSize,
                                                                     content=defaultStackSize,
                                                                     validator=R"(^0x[0-9A-Fa-f]+$)",
@@ -446,15 +438,13 @@ class GenerateSettingView(ScrollArea):
         ishex = converters.ishex(text)
         if ishex:
             PROJECT.defaultHeapSize = text
-        self.defaultHeapLineEditCard.setStatusInfo(not ishex, QCoreApplication.translate("GenerateSettingView",
-                                                                                         "The Path is not directory"))
+        self.defaultHeapLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
 
     def __on_defaultStackLineEditCard_textChanged(self, text: str):
         ishex = converters.ishex(text)
         if ishex:
             PROJECT.defaultStackSize = text
-        self.defaultStackLineEditCard.setStatusInfo(not ishex, QCoreApplication.translate("GenerateSettingView",
-                                                                                          "The Path is not directory"))
+        self.defaultStackLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
 
 
 class SettingView(Ui_SettingView, QWidget):
@@ -472,10 +462,9 @@ class SettingView(Ui_SettingView, QWidget):
         self.generateSettingView = GenerateSettingView(self)
 
         self.systemSettingTreeWidgetItem = self.__addView(self.systemSettingView, Icon.LIST_SETTINGS,
-                                                          QCoreApplication.translate("SettingView", "System Setting"))
+                                                          self.tr("System Setting"))
         self.generateSettingTreeWidgetItem = self.__addView(self.generateSettingView, Icon.AI_GENERATE,
-                                                            QCoreApplication.translate("SettingView",
-                                                                                       "Generate Setting"))
+                                                            self.tr("Generate Setting"))
 
         Style.SETTING_VIEW.apply(self)
 

@@ -32,7 +32,7 @@ from qfluentwidgets import (FluentTitleBar)
 from qframelesswindow import (FramelessWindow)
 
 from common import SETTINGS
-from .ui.ui_new_project_view import Ui_NewProjectView
+from .ui.new_project_view_ui import Ui_NewProjectView
 
 
 class NewProjectView(Ui_NewProjectView, QWidget):

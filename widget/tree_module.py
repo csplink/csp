@@ -30,7 +30,7 @@ from PySide6.QtGui import QFont, QBrush, QColor
 from PySide6.QtWidgets import (QWidget)
 
 from common import PROJECT, SETTINGS, SIGNAL_BUS
-from .ui.ui_tree_module import Ui_TreeModule
+from .ui.tree_module_ui import Ui_TreeModule
 
 
 def isPrivateModelOrNone(_, attribute, value):

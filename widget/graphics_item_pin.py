@@ -26,7 +26,7 @@
 
 from enum import Enum
 
-from PySide6.QtCore import QRectF, Qt, QCoreApplication
+from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics, QAction
 from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
@@ -95,7 +95,7 @@ class GraphicsItemPin(QGraphicsObject):
                 }''')
             self.menu.clear()
             self.menu.triggered.connect(self.menuTriggered)
-            self.menu.addAction(Action(QCoreApplication.translate("GraphicsItemPin", "Reset State")))
+            self.menu.addAction(Action(self.tr("Reset State")))
             self.menu.addSeparator()
             if "signals" in pinConfig:
                 for name, signal in pinConfig["signals"].items():
