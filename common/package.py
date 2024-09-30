@@ -186,7 +186,8 @@ class Package:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 package: dict = yaml.load(f.read(), Loader=yaml.FullLoader)
-                path = os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package.yml")
+                path = os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_description.yml")
+                # noinspection PyArgumentList
                 succeed = self.__checkYaml(path, package)
             if succeed:
                 return PackageDescriptionType(package)
@@ -198,6 +199,7 @@ class Package:
 
     def getPackageDescription(self, path: str) -> PackageDescriptionType | None:
         if os.path.isfile(path):
+            # noinspection PyTypeChecker
             return self.__getPackageDescription(path)
         elif os.path.isdir(path):
             files = glob.glob(f"{path}/*.csppdsc")
@@ -206,6 +208,7 @@ class Package:
                 logger.error(f"invalid package")
                 return None
             packageFile = files[0]
+            # noinspection PyTypeChecker
             return self.__getPackageDescription(packageFile)
         else:
             return None
@@ -216,6 +219,7 @@ class Package:
         if os.path.isfile(file):
             with open(file, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
+                # noinspection PyArgumentList
                 succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"), index)
             if succeed:
                 return PackageIndexType(index)
@@ -227,6 +231,7 @@ class Package:
             return PackageIndexType({})
 
     def getPackageIndex(self) -> PackageIndexType:
+        # noinspection PyTypeChecker,PyArgumentList
         return self.__getPackageIndex()
 
     def dump(self):
@@ -304,7 +309,12 @@ class Package:
         else:
             logger.error(f"uninstall failed {kind}@{name}-{version}")
             return False
+        # clear index tree
         self.__index.origin[kind][name].pop(version)
+        if len(self.__index.origin[kind][name]) == 0:
+            self.__index.origin[kind].pop(name)
+            if len(self.__index.origin[kind]) == 0:
+                self.__index.origin.pop(kind)
         self.save()
         return True
 

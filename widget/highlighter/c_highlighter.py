@@ -70,11 +70,11 @@ class CHighlighter(BaseHighlighter):
         self.rules = [(QRegularExpression(pat), index, fmt) for (pat, index, fmt) in rules]
 
     def highlightBlock(self, text: str):
-        for expression, nth, format in self.rules:
+        for expression, nth, fm in self.rules:
             match_iterator = expression.globalMatch(text)
             while match_iterator.hasNext():
                 match = match_iterator.next()
-                self.setFormat(match.capturedStart(), match.capturedLength(), format)
+                self.setFormat(match.capturedStart(), match.capturedLength(), fm)
 
         self.setCurrentBlockState(0)
 
@@ -90,7 +90,6 @@ class CHighlighter(BaseHighlighter):
             match = delimiter_end.match(text, start_index)
             captured_length = match.capturedLength()
             end_index = match.capturedStart()
-            length = 0
             if end_index == -1:
                 self.setCurrentBlockState(1)
                 length = len(text) - start_index

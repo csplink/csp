@@ -31,7 +31,7 @@ from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingC
                             PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
                             CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
 
-from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE)
+from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS)
 from utils import converters
 from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
                     ToolButtonPropertySettingCard)
@@ -228,7 +228,6 @@ class GenerateSettingView(ScrollArea):
         self.widgetScroll = QWidget()
         self.widgetScroll.setObjectName('widgetScroll')
 
-        self.resize(1000, 800)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setViewportMargins(0, 80, 0, 20)
         self.setWidget(self.widgetScroll)
@@ -244,14 +243,194 @@ class GenerateSettingView(ScrollArea):
         if self.groupLinker is not None: self.expandLayout.addWidget(self.groupLinker)
         if self.groupBuilder is not None: self.expandLayout.addWidget(self.groupBuilder)
 
+        PROJECT.builderChanged.connect(self.__on_project_builderChanged)
+        PROJECT.builderVersionChanged.connect(self.__on_project_builderVersionChanged)
+        PROJECT.useToolchainsPackageChanged.connect(self.__on_project_useToolchainsPackageChanged)
+        PROJECT.toolchainsChanged.connect(self.__on_project_toolchainsChanged)
+        PROJECT.toolchainsVersionChanged.connect(self.__on_project_toolchainsVersionChanged)
+
+        SIGNAL_BUS.packageUpdated.connect(self.updateSettings)
+
+        self.updateSettings()
+
         self.enableTransparentBackground()
 
     def __createBuilderGroup(self) -> SettingCardGroup | None:
+        # --------------------------------------------------------------------------------------------------------------
+        if len(PROJECT.summary.builder.keys()) == 0:
+            return None
+
+        group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
+
+        # --------------------------------------------------------------------------------------------------------------
+        self.builderComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
+                                                                           title=self.tr("Builder Tools"),
+                                                                           value='',
+                                                                           values=[],
+                                                                           content='',
+                                                                           parent=group)
+        self.builderComboBoxGroupSettingCard.currentTextChanged.connect(
+            self.__on_builderComboBoxGroupSettingCard_currentTextChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.builderVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
+                                                                                  title=self.tr("Builder Version"),
+                                                                                  value='',
+                                                                                  values=[],
+                                                                                  content='',
+                                                                                  parent=group)
+        self.builderVersionComboBoxGroupSettingCard.currentTextChanged.connect(
+            self.__on_builderVersionComboBoxGroupSettingCard_currentTextChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.useToolchainsPackageSwitchSettingCard = SwitchPropertySettingCard(
+            icon=Icon.CHECKBOX_MULTIPLE,
+            title=self.tr("Use Toolchains Package"),
+            value=PROJECT.useToolchainsPackage,
+            content=self.tr("Use the built-in toolchain of this software"),
+            parent=group)
+        self.useToolchainsPackageSwitchSettingCard.checkedChanged.connect(
+            self.__on_useToolchainsPackageSwitchSettingCard_checkedChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.toolchainsComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.TOOLS,
+                                                                              title=self.tr("Toolchains"),
+                                                                              value='',
+                                                                              values=[],
+                                                                              content='',
+                                                                              parent=group)
+        self.toolchainsComboBoxGroupSettingCard.currentTextChanged.connect(
+            self.__on_toolchainsComboBoxGroupSettingCard_currentTextChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.toolchainsVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
+                                                                                     title=self.tr(
+                                                                                         "Toolchains Version"),
+                                                                                     value='',
+                                                                                     values=[],
+                                                                                     content='',
+                                                                                     parent=group)
+        count = self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.count()
+        self.toolchainsManagerBtn = ToolButton()
+        self.toolchainsManagerBtn.setIcon(Icon.BOX)
+        self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.insertWidget(count - 2, self.toolchainsManagerBtn)
+        self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.insertSpacing(count - 1, 16)
+        self.toolchainsVersionComboBoxGroupSettingCard.currentTextChanged.connect(
+            self.__on_toolchainsVersionComboBoxGroupSettingCard_currentTextChanged)
+        self.toolchainsManagerBtn.clicked.connect(self.__on_toolchainsManagerBtn_clicked)
+        # --------------------------------------------------------------------------------------------------------------
+        self.toolchainsPathToolButtonSettingCard = ToolButtonPropertySettingCard(icon=Icon.FOLDER,
+                                                                                 title=self.tr("Toolchains Path"),
+                                                                                 btnIcon=Icon.BOX,
+                                                                                 content='',
+                                                                                 parent=group)
+        self.toolchainsPathToolButtonSettingCard.clicked.connect(self.__on_toolchainsPathToolButtonSettingCard_clicked)
+        # --------------------------------------------------------------------------------------------------------------
+
+        group.addSettingCard(self.builderComboBoxGroupSettingCard)
+        group.addSettingCard(self.builderVersionComboBoxGroupSettingCard)
+        group.addSettingCard(self.useToolchainsPackageSwitchSettingCard)
+        group.addSettingCard(self.toolchainsComboBoxGroupSettingCard)
+        group.addSettingCard(self.toolchainsVersionComboBoxGroupSettingCard)
+        group.addSettingCard(self.toolchainsPathToolButtonSettingCard)
+
+        return group
+
+    def __createLinkerGroup(self) -> SettingCardGroup | None:
+        if converters.ishex(PROJECT.defaultHeapSize):
+            defaultHeapSize = PROJECT.defaultHeapSize
+        elif converters.ishex(PROJECT.summary.defaultHeapSize):
+            defaultHeapSize = PROJECT.summary.defaultHeapSize
+        else:
+            return None
         # ---------------------------------------------------------------------------------------------------------------
+        if converters.ishex(PROJECT.defaultStackSize):
+            defaultStackSize = PROJECT.defaultStackSize
+        elif converters.ishex(PROJECT.summary.defaultStackSize):
+            defaultStackSize = PROJECT.summary.defaultStackSize
+        else:
+            return None
+        # ---------------------------------------------------------------------------------------------------------------
+
+        group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)
+
+        # ---------------------------------------------------------------------------------------------------------------
+        self.defaultHeapLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
+                                                                   title=self.tr("Default heap size"),
+                                                                   value=defaultHeapSize,
+                                                                   content=defaultHeapSize,
+                                                                   validator=R"(^0x[0-9A-Fa-f]+$)",
+                                                                   parent=group)
+        self.defaultHeapLineEditCard.textChanged.connect(self.__on_defaultHeapLineEditCard_textChanged)
+        PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
+        # ---------------------------------------------------------------------------------------------------------------
+        self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
+                                                                    title=self.tr("Default stack size"),
+                                                                    value=defaultStackSize,
+                                                                    content=defaultStackSize,
+                                                                    validator=R"(^0x[0-9A-Fa-f]+$)",
+                                                                    parent=group)
+        self.defaultStackLineEditCard.textChanged.connect(self.__on_defaultStackLineEditCard_textChanged)
+        PROJECT.defaultStackSizeChanged.connect(lambda t: self.defaultStackLineEditCard.setContent(t))
+        # ---------------------------------------------------------------------------------------------------------------
+
+        group.addSettingCard(self.defaultHeapLineEditCard)
+        group.addSettingCard(self.defaultStackLineEditCard)
+
+        return group
+
+    def __on_defaultHeapLineEditCard_textChanged(self, text: str):
+        ishex = converters.ishex(text)
+        if ishex:
+            PROJECT.defaultHeapSize = text
+        self.defaultHeapLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
+
+    def __on_defaultStackLineEditCard_textChanged(self, text: str):
+        ishex = converters.ishex(text)
+        if ishex:
+            PROJECT.defaultStackSize = text
+        self.defaultStackLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
+
+    def __on_builderComboBoxGroupSettingCard_currentTextChanged(self, text: str):
+        PROJECT.builder = text
+
+    def __on_project_builderChanged(self, value: str):
+        pass
+
+    def __on_builderVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
+        PROJECT.builderVersion = text
+
+    def __on_project_builderVersionChanged(self, value: str):
+        pass
+
+    def __on_useToolchainsPackageSwitchSettingCard_checkedChanged(self, checked: bool):
+        PROJECT.useToolchainsPackage = checked
+
+    def __on_project_useToolchainsPackageChanged(self, used: bool):
+        pass
+
+    def __on_toolchainsComboBoxGroupSettingCard_currentTextChanged(self, text: str):
+        PROJECT.toolchains = text
+
+    def __on_project_toolchainsChanged(self, value: str):
+        pass
+
+    def __on_toolchainsVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
+        PROJECT.toolchainsVersion = text
+
+    def __on_project_toolchainsVersionChanged(self, value: str):
+        pass
+
+    def __on_toolchainsManagerBtn_clicked(self):
+        pass
+
+    def __on_toolchainsPathToolButtonSettingCard_clicked(self):
+        pass
+
+    def updateSettings(self):
+        if self.groupBuilder is None:
+            return
+
         builder = PROJECT.summary.builder
         builderList = list(builder.keys())
         if len(builderList) == 0:
-            return None
+            return
 
         if PROJECT.builder == "":
             PROJECT.builder = builderList[0]
@@ -327,124 +506,13 @@ class GenerateSettingView(ScrollArea):
             if message.exec():
                 QDesktopServices.openUrl(QUrl(SETTINGS.PACKAGE_LIST_URL))
 
-        # ---------------------------------------------------------------------------------------------------------------
-
-        group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
-
-        # ---------------------------------------------------------------------------------------------------------------
-        self.builderComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
-                                                                           title=self.tr("Builder Tools"),
-                                                                           value=PROJECT.builder,
-                                                                           values=builderList,
-                                                                           content=PROJECT.builder,
-                                                                           parent=group)
-        # ---------------------------------------------------------------------------------------------------------------
-        self.builderVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
-                                                                                  title=self.tr(
-                                                                                      "Builder Version"),
-                                                                                  value=PROJECT.builderVersion,
-                                                                                  values=builderVersionList,
-                                                                                  content=PROJECT.builderVersion,
-                                                                                  parent=group)
-        # ---------------------------------------------------------------------------------------------------------------
-        self.useToolchainsPackageSwitchSettingCard = SwitchPropertySettingCard(
-            icon=Icon.CHECKBOX_MULTIPLE,
-            title=self.tr("Use Toolchains Package"),
-            value=PROJECT.useToolchainsPackage,
-            content=self.tr("Use the built-in toolchain of this software"),
-            parent=group)
-        # ---------------------------------------------------------------------------------------------------------------
-        self.toolchainsComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.TOOLS,
-                                                                              title=self.tr("Toolchains"),
-                                                                              value=PROJECT.toolchains,
-                                                                              values=toolchains,
-                                                                              content=PROJECT.toolchains,
-                                                                              parent=group)
-        # ---------------------------------------------------------------------------------------------------------------
-        self.toolchainsVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
-            icon=Icon.DATABASE_2,
-            title=self.tr("Toolchains Version"),
-            value=PROJECT.toolchainsVersion,
-            values=toolchainsVersions,
-            content=PROJECT.toolchainsVersion,
-            parent=group)
-        count = self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.count()
-        self.toolchainsManagerBtn = ToolButton()
-        self.toolchainsManagerBtn.setIcon(Icon.BOX)
-        self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.insertWidget(count - 2, self.toolchainsManagerBtn)
-        self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.insertSpacing(count - 1, 16)
-        # ---------------------------------------------------------------------------------------------------------------
         toolchainsPath = PACKAGE.path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
-        self.toolchainsPathToolButtonCard = ToolButtonPropertySettingCard(icon=Icon.FOLDER,
-                                                                          title=self.tr("Toolchains Path"),
-                                                                          btnIcon=Icon.BOX,
-                                                                          content=toolchainsPath,
-                                                                          parent=group)
-        # ---------------------------------------------------------------------------------------------------------------
 
-        group.addSettingCard(self.builderComboBoxGroupSettingCard)
-        group.addSettingCard(self.builderVersionComboBoxGroupSettingCard)
-        group.addSettingCard(self.useToolchainsPackageSwitchSettingCard)
-        group.addSettingCard(self.toolchainsComboBoxGroupSettingCard)
-        group.addSettingCard(self.toolchainsVersionComboBoxGroupSettingCard)
-        group.addSettingCard(self.toolchainsPathToolButtonCard)
-
-        return group
-
-    def __createLinkerGroup(self) -> SettingCardGroup | None:
-        if converters.ishex(PROJECT.defaultHeapSize):
-            defaultHeapSize = PROJECT.defaultHeapSize
-        elif converters.ishex(PROJECT.summary.defaultHeapSize):
-            defaultHeapSize = PROJECT.summary.defaultHeapSize
-        else:
-            return None
-        # ---------------------------------------------------------------------------------------------------------------
-        if converters.ishex(PROJECT.defaultStackSize):
-            defaultStackSize = PROJECT.defaultStackSize
-        elif converters.ishex(PROJECT.summary.defaultStackSize):
-            defaultStackSize = PROJECT.summary.defaultStackSize
-        else:
-            return None
-        # ---------------------------------------------------------------------------------------------------------------
-
-        group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)
-
-        # ---------------------------------------------------------------------------------------------------------------
-        self.defaultHeapLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
-                                                                   title=self.tr("Default heap size"),
-                                                                   value=defaultHeapSize,
-                                                                   content=defaultHeapSize,
-                                                                   validator=R"(^0x[0-9A-Fa-f]+$)",
-                                                                   parent=group)
-        self.defaultHeapLineEditCard.textChanged.connect(self.__on_defaultHeapLineEditCard_textChanged)
-        PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
-        # ---------------------------------------------------------------------------------------------------------------
-        self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
-                                                                    title=self.tr("Default stack size"),
-                                                                    value=defaultStackSize,
-                                                                    content=defaultStackSize,
-                                                                    validator=R"(^0x[0-9A-Fa-f]+$)",
-                                                                    parent=group)
-        self.defaultStackLineEditCard.textChanged.connect(self.__on_defaultStackLineEditCard_textChanged)
-        PROJECT.defaultStackSizeChanged.connect(lambda t: self.defaultStackLineEditCard.setContent(t))
-        # ---------------------------------------------------------------------------------------------------------------
-
-        group.addSettingCard(self.defaultHeapLineEditCard)
-        group.addSettingCard(self.defaultStackLineEditCard)
-
-        return group
-
-    def __on_defaultHeapLineEditCard_textChanged(self, text: str):
-        ishex = converters.ishex(text)
-        if ishex:
-            PROJECT.defaultHeapSize = text
-        self.defaultHeapLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
-
-    def __on_defaultStackLineEditCard_textChanged(self, text: str):
-        ishex = converters.ishex(text)
-        if ishex:
-            PROJECT.defaultStackSize = text
-        self.defaultStackLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
+        self.builderComboBoxGroupSettingCard.setSource(PROJECT.builder, builderList)
+        self.builderVersionComboBoxGroupSettingCard.setSource(PROJECT.builderVersion, builderVersionList)
+        self.toolchainsComboBoxGroupSettingCard.setSource(PROJECT.toolchains, toolchains)
+        self.toolchainsVersionComboBoxGroupSettingCard.setSource(PROJECT.toolchainsVersion, toolchainsVersions)
+        self.toolchainsPathToolButtonSettingCard.setContent(toolchainsPath)
 
 
 class SettingView(Ui_SettingView, QWidget):

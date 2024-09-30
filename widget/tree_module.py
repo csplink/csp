@@ -73,6 +73,7 @@ class TreeModuleModel(QAbstractItemModel):
         super().__init__(parent)
         self.__loadModule()
 
+    # noinspection PyMethodOverriding
     def rowCount(self, parent: QModelIndex) -> int:
         if not parent.isValid():
             return len(self.__model.children)
@@ -80,9 +81,11 @@ class TreeModuleModel(QAbstractItemModel):
             model = parent.internalPointer()
             return len(model.children)
 
+    # noinspection PyMethodOverriding
     def columnCount(self, parent: QModelIndex) -> int:
         return 1
 
+    # noinspection PyMethodOverriding
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:  # 0, 2
             model = index.internalPointer()
@@ -116,6 +119,7 @@ class TreeModuleModel(QAbstractItemModel):
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
         return super().flags(index)
 
+    # noinspection PyMethodOverriding
     def index(self, row: int, column: int, parent: QModelIndex) -> QModelIndex:
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
@@ -130,6 +134,7 @@ class TreeModuleModel(QAbstractItemModel):
         else:
             return QModelIndex()
 
+    # noinspection PyMethodOverriding
     def parent(self, index: QModelIndex) -> QModelIndex:
         if not index.isValid():
             return QModelIndex()

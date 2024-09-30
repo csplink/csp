@@ -25,34 +25,48 @@ class Ui_PackageView(object):
         if not PackageView.objectName():
             PackageView.setObjectName(u"PackageView")
         PackageView.resize(400, 300)
-        self.horizontalLayout = QHBoxLayout(PackageView)
+        self.horizontalLayout_2 = QHBoxLayout(PackageView)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.packageToolBtnCard = SimpleCardWidget(PackageView)
+        self.packageToolBtnCard.setObjectName(u"packageToolBtnCard")
+        self.packageToolBtnCard.setFrameShape(QFrame.StyledPanel)
+        self.packageToolBtnCard.setFrameShadow(QFrame.Raised)
+        self.packageToolBtnCardVerticalLayout = QVBoxLayout(self.packageToolBtnCard)
+        self.packageToolBtnCardVerticalLayout.setObjectName(u"packageToolBtnCardVerticalLayout")
+
+        self.horizontalLayout.addWidget(self.packageToolBtnCard)
+
         self.packageTreeCard = SimpleCardWidget(PackageView)
         self.packageTreeCard.setObjectName(u"packageTreeCard")
         self.packageTreeCard.setFrameShape(QFrame.StyledPanel)
         self.packageTreeCard.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_cardWidget_file = QVBoxLayout(self.packageTreeCard)
-        self.verticalLayout_cardWidget_file.setObjectName(u"verticalLayout_cardWidget_file")
+        self.packageTreeCardVerticalLayout = QVBoxLayout(self.packageTreeCard)
+        self.packageTreeCardVerticalLayout.setObjectName(u"packageTreeCardVerticalLayout")
         self.packageTree = TreeWidget(self.packageTreeCard)
         __qtreewidgetitem = QTreeWidgetItem()
         __qtreewidgetitem.setText(0, u"1");
         self.packageTree.setHeaderItem(__qtreewidgetitem)
         self.packageTree.setObjectName(u"packageTree")
 
-        self.verticalLayout_cardWidget_file.addWidget(self.packageTree)
+        self.packageTreeCardVerticalLayout.addWidget(self.packageTree)
 
 
         self.horizontalLayout.addWidget(self.packageTreeCard)
+
+
+        self.horizontalLayout_2.addLayout(self.horizontalLayout)
 
         self.packageInfoCard = SimpleCardWidget(PackageView)
         self.packageInfoCard.setObjectName(u"packageInfoCard")
         self.packageInfoCard.setFrameShape(QFrame.StyledPanel)
         self.packageInfoCard.setFrameShadow(QFrame.Raised)
-        self.verticalLayout = QVBoxLayout(self.packageInfoCard)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.packageInfoCardVerticalLayout = QVBoxLayout(self.packageInfoCard)
+        self.packageInfoCardVerticalLayout.setObjectName(u"packageInfoCardVerticalLayout")
+        self.packageInfoCardVerticalLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.horizontalLayout.addWidget(self.packageInfoCard)
+        self.horizontalLayout_2.addWidget(self.packageInfoCard)
 
 
         self.retranslateUi(PackageView)

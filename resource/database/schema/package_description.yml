@@ -13,7 +13,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        sdp.yml
+# @file        package_description.yml
 #
 # Change Logs:
 # Date           Author       Notes
@@ -46,18 +46,18 @@ properties:
             pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
           github:
             $ref: "#/properties/author/properties/website/properties/blog"
-    required: ["name", "email", "website"]
+    required: [ "name", "email", "website" ]
   name:
     type: string
     minLength: 1
   version:
     type: string
-    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    pattern: "^(?:v|V)?\\d+\\.\\d+\\.\\d+$"
   license:
     type: string
     minLength: 1
   type:
-    enum: ["hal", "toolchains"]
+    enum: [ "hal", "toolchains" ]
   vendor:
     type: string
     minLength: 1
@@ -68,7 +68,7 @@ properties:
         $ref: "#/properties/author/properties/website/properties/blog"
       zh_CN:
         $ref: "#/properties/author/properties/website/properties/blog"
-    required: ["en", "zh_CN"]
+    required: [ "en", "zh_CN" ]
   vendorUrl:
     $ref: "#/properties/url"
   description:
@@ -80,7 +80,7 @@ properties:
       zh_CN:
         type: string
         minLength: 1
-    required: ["en", "zh_CN"]
+    required: [ "en", "zh_CN" ]
   support:
     $ref: "#/properties/author/properties/email"
 required:

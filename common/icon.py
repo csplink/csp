@@ -61,6 +61,7 @@ class Icon(FluentIconBase, Enum):
     GLOBAL = "global-line"
     HAMMER = "hammer-line"
     INFORMATION = "information-line"
+    INSTALL = "install-line"
     LIST_SETTINGS = "list-settings-line"
     MONEY = "money-cny-circle-line"
     MORE = "more-line"

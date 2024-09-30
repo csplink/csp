@@ -52,6 +52,7 @@ class GraphicsItemChipBody(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
+    # noinspection PyMethodOverriding
     def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
         brush = painter.brush()
 

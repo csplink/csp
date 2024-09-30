@@ -30,7 +30,7 @@ from PySide6.QtCore import QThread, Signal, QObject
 from PySide6.QtWidgets import (QFileDialog, QHBoxLayout)
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, ToolButton, ProgressBar, CaptionLabel, BodyLabel)
 
-from common import Icon, SETTINGS, PACKAGE
+from common import Icon, SETTINGS, PACKAGE, SIGNAL_BUS
 
 
 # from qframelesswindow import (FramelessDialog)
@@ -116,9 +116,10 @@ class PackageInstallDialog(MessageBoxBase):
         thread = PackageInstallThread(self.pathLineEdit.text(), self)
         thread.progressUpdated.connect(self.__updateProgress)
         thread.started.connect(self.__showProgress)
-        thread.finished.connect(lambda: self.accept())
+        thread.finished.connect(self.__finish)
         thread.start()
         self.yesButton.setEnabled(False)
+        self.cancelButton.setEnabled(False)
 
     def __showProgress(self):
         self.progressBar.show()
@@ -129,3 +130,7 @@ class PackageInstallDialog(MessageBoxBase):
         self.progressBar.setVal(progress * 100)
         self.progressLabel.setText(self.progressBar.valText())
         self.fileLabel.setText(file)
+
+    def __finish(self):
+        SIGNAL_BUS.packageUpdated.emit()
+        self.accept()

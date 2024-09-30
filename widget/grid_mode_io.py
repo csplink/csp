@@ -49,15 +49,18 @@ class GridModeIoModel(QAbstractTableModel):
         PROJECT.configChanged.connect(self.projectConfigChanged)
         PROJECT.pinConfigChanged.connect(self.pinProjectConfigChanged)
 
+    # noinspection PyMethodOverriding
     def rowCount(self, parent: QModelIndex) -> int:
         return len(self.__data)
 
+    # noinspection PyMethodOverriding
     def columnCount(self, parent: QModelIndex) -> int:
         if len(self.__headersList) > 0:
             return len(self.__headersList)
         else:
             return 0
 
+    # noinspection PyMethodOverriding
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
             return self.__data[index.row()][index.column()]["display"]
@@ -86,6 +89,7 @@ class GridModeIoModel(QAbstractTableModel):
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
         return super().flags(index)
 
+    # noinspection PyMethodOverriding
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
             if orientation == Qt.Orientation.Horizontal:

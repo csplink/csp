@@ -105,12 +105,15 @@ class GridPropertyIpModel(QAbstractTableModel):
 
         SIGNAL_BUS.gridPropertyIpTriggered.connect(self.changePropertyIp)
 
+    # noinspection PyMethodOverriding
     def rowCount(self, parent: QModelIndex) -> int:
         return len(g_data)
 
+    # noinspection PyMethodOverriding
     def columnCount(self, parent: QModelIndex) -> int:
         return 2
 
+    # noinspection PyMethodOverriding
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:  # 0, 2
             if index.column() == 0:
@@ -142,6 +145,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             print(index, role)
             return None
 
+    # noinspection PyMethodOverriding
     def setData(self, index: QModelIndex, value: object, role: int) -> bool:
         if role == Qt.ItemDataRole.EditRole:
             if g_data[index.row()].typeof == "string":
@@ -164,6 +168,7 @@ class GridPropertyIpModel(QAbstractTableModel):
         else:
             return super().flags(index)
 
+    # noinspection PyMethodOverriding
     def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
             return self.__headers[section]

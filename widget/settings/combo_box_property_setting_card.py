@@ -64,3 +64,11 @@ class ComboBoxPropertySettingCard(SettingCard):
             self.comboBox.setToolTip(message)
         else:
             self.comboBox.setToolTip("")
+
+    def setSource(self, value: str, values: list):
+        self.comboBox.clear()
+        
+        for v in values:
+            self.comboBox.addItem(v)
+
+        self.comboBox.setCurrentText(value)

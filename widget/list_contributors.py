@@ -81,7 +81,7 @@ class ListContributors(Ui_ListContributors, QWidget):
             label.setProperty("info", contributor)
             self.flowLayout.addWidget(label)
 
-    def createCustomWidgetMenu(self, contributor: dict, pos: int):
+    def createCustomWidgetMenu(self, contributor: dict, pos: QPoint):
         menu = RoundMenu(parent=self)
         card = CardProfile(f'{CONTRIBUTORS_DIR}/{contributor["avatar"]}', contributor["name"], contributor["html_url"],
                            menu)

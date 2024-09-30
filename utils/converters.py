@@ -32,6 +32,16 @@ def ishex(string: str) -> bool:
     return bool(re.match(pattern, string))
 
 
+def isurl(string: str) -> bool:
+    pattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    return bool(re.match(pattern, string))
+
+
+def isemail(string: str) -> bool:
+    pattern = r'^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$'
+    return bool(re.match(pattern, string))
+
+
 def paths2dict(paths: list[str], separator='/'):
     pathDict = {}
     for path in paths:

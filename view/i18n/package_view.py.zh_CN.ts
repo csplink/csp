@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>PackageInfoWidget</name>
+    <message>
+        <location filename="../package_view.py" line="61"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package_view.py" line="64"/>
+        <source>Author name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package_view.py" line="67"/>
+        <source>Author email</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PackageView</name>
     <message>
         <source>Package</source>
@@ -15,19 +33,16 @@
 <context>
     <name>VersionInfoWidget</name>
     <message>
-        <location filename="../package_view.py" line="49"/>
         <source>Detail</source>
-        <translation>详情</translation>
+        <translation type="vanished">详情</translation>
     </message>
     <message>
-        <location filename="../package_view.py" line="96"/>
         <source>The package not found</source>
-        <translation>软件包未找到</translation>
+        <translation type="vanished">软件包未找到</translation>
     </message>
     <message>
-        <location filename="../package_view.py" line="103"/>
         <source>Uninstall</source>
-        <translation>卸载</translation>
+        <translation type="vanished">卸载</translation>
     </message>
 </context>
 </TS>
