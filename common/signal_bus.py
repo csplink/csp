@@ -33,6 +33,7 @@ class SignalBus(QObject):
     gridPropertyIpTriggered = Signal(str, str)
     gridModeTriggered = Signal(str, str)
     packageUpdated = Signal()
+    navigationRequested = Signal(str, str)
 
 
 SIGNAL_BUS = SignalBus()

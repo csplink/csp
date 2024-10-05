@@ -39,24 +39,29 @@ class LineEditPropertySettingCard(SettingCard):
 
     def __init__(self, icon: FluentIconBase, title: str, value: str, content=None, validator=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.edit = LineEdit(self)
+        self.lineEdit = LineEdit(self)
         if validator is not None:
-            self.edit.setValidator(QRegularExpressionValidator(QRegularExpression(validator)))
-        self.edit.setText(value)
-        self.edit.textChanged.connect(self.textChanged)
+            self.lineEdit.setValidator(QRegularExpressionValidator(QRegularExpression(validator)))
+        self.lineEdit.setText(value)
+        self.lineEdit.textChanged.connect(self.textChanged)
 
         self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
-                                         parent=self.edit.parent(),
-                                         target=self.edit,
+                                         parent=self.lineEdit.parent(),
+                                         target=self.lineEdit,
                                          position=InfoBadgePosition.TOP_RIGHT)
         self.badge.hide()
 
-        self.hBoxLayout.addWidget(self.edit, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.lineEdit, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
     def setStatusInfo(self, error: bool, message: str):
         self.badge.setVisible(error)
         if error:
-            self.edit.setToolTip(message)
+            self.lineEdit.setToolTip(message)
         else:
-            self.edit.setToolTip("")
+            self.lineEdit.setToolTip("")
+
+    def clear(self):
+        self.lineEdit.clear()
+        self.setStatusInfo(False, '')
+        self.setContent('')

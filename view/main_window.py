@@ -28,11 +28,11 @@ import os
 
 from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer
 from PySide6.QtGui import QIcon, QDesktopServices
-from PySide6.QtWidgets import QHBoxLayout, QApplication, QMessageBox
+from PySide6.QtWidgets import QHBoxLayout, QApplication, QMessageBox, QWidget
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
-                            TransparentPushButton, SplashScreen)
+                            TransparentPushButton, SplashScreen, FluentIconBase, NavigationBarPushButton)
 
-from common import Icon, SETTINGS
+from common import Icon, SETTINGS, SIGNAL_BUS
 from dialogs import GenCodeDialog, PackageInstallDialog
 from .chip_view import ChipView
 from .code_view import CodeView
@@ -116,6 +116,7 @@ class CustomTitleBar(MSFluentTitleBar):
 
 
 class MainWindow(MSFluentWindow):
+    __viewMap = {}
 
     def __init__(self):
         super().__init__()
@@ -138,6 +139,8 @@ class MainWindow(MSFluentWindow):
 
         self.barTitle.generateAction.triggered.connect(lambda: self.__on_generate_clicked())
         self.barTitle.aboutQtAction.triggered.connect(lambda: QMessageBox.aboutQt(self.window(), self.tr('About Qt')))
+        SIGNAL_BUS.navigationRequested.connect(self.__on_x_navigationRequested)
+        self.stackedWidget.currentChanged.connect(self.__on_stackedWidget_currentChanged)
 
         # loop.exec()
         self.splashScreen.finish()
@@ -145,28 +148,18 @@ class MainWindow(MSFluentWindow):
         # self.showMaximized()
 
     def __initNavigation(self):
-        self.addSubInterface(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
-        codeBtn = self.addSubInterface(self.codeView, Icon.CODE, self.tr('Code'),
-                                       Icon.CODE)
-        codeBtn.clicked.connect(lambda: self.codeView.flush())
+        self.__addView(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
+        self.__addView(self.codeView, Icon.CODE, self.tr('Code'), Icon.CODE)
 
-        packageBtn = self.addSubInterface(self.packageView, Icon.BOOK_SHELF,
-                                          self.tr('Package'),
-                                          Icon.BOOK_SHELF,
-                                          NavigationItemPosition.BOTTOM)
-        packageBtn.clicked.connect(lambda: self.packageView.flush())
+        self.__addView(self.packageView, Icon.BOOK_SHELF, self.tr('Package'), Icon.BOOK_SHELF,
+                       NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.addItem(
-            routeKey='Sponsor',
-            icon=Icon.MONEY,
-            text=self.tr('Sponsor'),
-            onClick=self.__on_sponsorKey_clicked,
-            selectable=False,
-            position=NavigationItemPosition.BOTTOM,
-        )
-        self.addSubInterface(self.settingView, Icon.SETTING, self.tr('Settings'),
-                             Icon.SETTING,
-                             NavigationItemPosition.BOTTOM)
+        self.navigationInterface.addItem(routeKey='Sponsor', icon=Icon.MONEY, text=self.tr('Sponsor'),
+                                         onClick=self.__on_sponsorKey_clicked,
+                                         selectable=False,
+                                         position=NavigationItemPosition.BOTTOM)
+        self.__addView(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING, NavigationItemPosition.BOTTOM)
+        self.navigationInterface.setCurrentItem(self.chipView.objectName())
 
     def __initWindow(self):
         self.barTitle = CustomTitleBar(self)
@@ -187,6 +180,12 @@ class MainWindow(MSFluentWindow):
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
+    def __addView(self, interface: QWidget, icon: FluentIconBase, text: str,
+                  selectedIcon=None, position=NavigationItemPosition.TOP,
+                  isTransparent=False) -> NavigationBarPushButton:
+        self.__viewMap[interface.objectName()] = interface
+        return self.addSubInterface(interface, icon, text, selectedIcon, position, isTransparent)
+
     def __on_sponsorKey_clicked(self):
         message = MessageBox(self.tr('Sponsor'),
                              self.tr("""The csplink projects are personal open-source projects, their development need your help.
@@ -200,3 +199,15 @@ If you would like to support the development of csplink, you are encouraged to d
     def __on_generate_clicked(self):
         dialog = PackageInstallDialog(self)
         dialog.exec()
+
+    def __on_x_navigationRequested(self, routeKey: str, _: str):
+        if routeKey in self.navigationInterface.items.keys():
+            self.navigationInterface.setCurrentItem(routeKey)
+            self.switchTo(self.__viewMap[routeKey])
+
+    def __on_stackedWidget_currentChanged(self, index: int):
+        view = self.stackedWidget.widget(index)
+        if view == self.codeView:
+            self.codeView.flush()
+        elif view == self.packageView:
+            self.packageView.flush()

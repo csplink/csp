@@ -67,8 +67,13 @@ class ComboBoxPropertySettingCard(SettingCard):
 
     def setSource(self, value: str, values: list):
         self.comboBox.clear()
-        
+
         for v in values:
             self.comboBox.addItem(v)
 
         self.comboBox.setCurrentText(value)
+
+    def clear(self):
+        self.comboBox.clear()
+        self.setStatusInfo(False, '')
+        self.setContent('')

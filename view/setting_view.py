@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
+import os.path
+
+from PySide6.QtCore import Qt, QUrl, QItemSelection
+from PySide6.QtGui import QDesktopServices
+from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
+from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
+                            PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
+                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
+
+from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS)
+from utils import converters
+from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
+                    ToolButtonPropertySettingCard)
+from .ui.setting_view_ui import Ui_SettingView
+
 
 # Licensed under the GNU General Public License v. 3 (the "License")
 # You may not use this file except in compliance with the License.
@@ -23,19 +38,6 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-06-23     xqyjlj       initial version
 #
-
-from PySide6.QtCore import Qt, QUrl, QItemSelection
-from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
-from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
-                            PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
-                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
-
-from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS)
-from utils import converters
-from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
-                    ToolButtonPropertySettingCard)
-from .ui.setting_view_ui import Ui_SettingView
 
 
 class SystemSettingView(ScrollArea):
@@ -233,25 +235,18 @@ class GenerateSettingView(ScrollArea):
         self.setWidget(self.widgetScroll)
         self.setWidgetResizable(True)
 
-        self.groupLinker = self.__createLinkerGroup()
-        self.groupBuilder = self.__createBuilderGroup()
+        self.linkerGroup = self.__createLinkerGroup()
+        self.builderGroup = self.__createBuilderGroup()
 
         self.expandLayout = ExpandLayout(self.widgetScroll)
         self.expandLayout.setSpacing(28)
         self.expandLayout.setContentsMargins(36, 10, 36, 0)
 
-        if self.groupLinker is not None: self.expandLayout.addWidget(self.groupLinker)
-        if self.groupBuilder is not None: self.expandLayout.addWidget(self.groupBuilder)
-
-        PROJECT.builderChanged.connect(self.__on_project_builderChanged)
-        PROJECT.builderVersionChanged.connect(self.__on_project_builderVersionChanged)
-        PROJECT.useToolchainsPackageChanged.connect(self.__on_project_useToolchainsPackageChanged)
-        PROJECT.toolchainsChanged.connect(self.__on_project_toolchainsChanged)
-        PROJECT.toolchainsVersionChanged.connect(self.__on_project_toolchainsVersionChanged)
-
-        SIGNAL_BUS.packageUpdated.connect(self.updateSettings)
-
-        self.updateSettings()
+        if self.linkerGroup is not None: self.expandLayout.addWidget(self.linkerGroup)
+        if self.builderGroup is not None:
+            self.expandLayout.addWidget(self.builderGroup)
+            SIGNAL_BUS.packageUpdated.connect(self.__updateBuilderSettings)
+            self.__updateBuilderSettings()
 
         self.enableTransparentBackground()
 
@@ -267,7 +262,7 @@ class GenerateSettingView(ScrollArea):
                                                                            title=self.tr("Builder Tools"),
                                                                            value='',
                                                                            values=[],
-                                                                           content='',
+                                                                           content=' ',
                                                                            parent=group)
         self.builderComboBoxGroupSettingCard.currentTextChanged.connect(
             self.__on_builderComboBoxGroupSettingCard_currentTextChanged)
@@ -276,7 +271,7 @@ class GenerateSettingView(ScrollArea):
                                                                                   title=self.tr("Builder Version"),
                                                                                   value='',
                                                                                   values=[],
-                                                                                  content='',
+                                                                                  content=' ',
                                                                                   parent=group)
         self.builderVersionComboBoxGroupSettingCard.currentTextChanged.connect(
             self.__on_builderVersionComboBoxGroupSettingCard_currentTextChanged)
@@ -294,7 +289,7 @@ class GenerateSettingView(ScrollArea):
                                                                               title=self.tr("Toolchains"),
                                                                               value='',
                                                                               values=[],
-                                                                              content='',
+                                                                              content=' ',
                                                                               parent=group)
         self.toolchainsComboBoxGroupSettingCard.currentTextChanged.connect(
             self.__on_toolchainsComboBoxGroupSettingCard_currentTextChanged)
@@ -304,7 +299,7 @@ class GenerateSettingView(ScrollArea):
                                                                                          "Toolchains Version"),
                                                                                      value='',
                                                                                      values=[],
-                                                                                     content='',
+                                                                                     content=' ',
                                                                                      parent=group)
         count = self.toolchainsVersionComboBoxGroupSettingCard.hBoxLayout.count()
         self.toolchainsManagerBtn = ToolButton()
@@ -318,7 +313,7 @@ class GenerateSettingView(ScrollArea):
         self.toolchainsPathToolButtonSettingCard = ToolButtonPropertySettingCard(icon=Icon.FOLDER,
                                                                                  title=self.tr("Toolchains Path"),
                                                                                  btnIcon=Icon.BOX,
-                                                                                 content='',
+                                                                                 content=' ',
                                                                                  parent=group)
         self.toolchainsPathToolButtonSettingCard.clicked.connect(self.__on_toolchainsPathToolButtonSettingCard_clicked)
         # --------------------------------------------------------------------------------------------------------------
@@ -329,6 +324,11 @@ class GenerateSettingView(ScrollArea):
         group.addSettingCard(self.toolchainsComboBoxGroupSettingCard)
         group.addSettingCard(self.toolchainsVersionComboBoxGroupSettingCard)
         group.addSettingCard(self.toolchainsPathToolButtonSettingCard)
+
+        if not PROJECT.useToolchainsPackage:
+            self.toolchainsComboBoxGroupSettingCard.setEnabled(False)
+            self.toolchainsVersionComboBoxGroupSettingCard.setEnabled(False)
+            self.toolchainsPathToolButtonSettingCard.setEnabled(False)
 
         return group
 
@@ -389,42 +389,43 @@ class GenerateSettingView(ScrollArea):
 
     def __on_builderComboBoxGroupSettingCard_currentTextChanged(self, text: str):
         PROJECT.builder = text
-
-    def __on_project_builderChanged(self, value: str):
-        pass
+        self.__updateBuilderVersionSettings()
 
     def __on_builderVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
         PROJECT.builderVersion = text
-
-    def __on_project_builderVersionChanged(self, value: str):
-        pass
+        self.__updateToolchainsSettings()
 
     def __on_useToolchainsPackageSwitchSettingCard_checkedChanged(self, checked: bool):
         PROJECT.useToolchainsPackage = checked
-
-    def __on_project_useToolchainsPackageChanged(self, used: bool):
-        pass
+        self.toolchainsComboBoxGroupSettingCard.setEnabled(checked)
+        self.toolchainsVersionComboBoxGroupSettingCard.setEnabled(checked)
+        self.toolchainsPathToolButtonSettingCard.setEnabled(checked)
+        if checked:
+            self.__updateToolchainsSettings()
+        else:
+            self.toolchainsComboBoxGroupSettingCard.clear()
+            self.toolchainsVersionComboBoxGroupSettingCard.clear()
+            self.toolchainsPathToolButtonSettingCard.clear()
 
     def __on_toolchainsComboBoxGroupSettingCard_currentTextChanged(self, text: str):
         PROJECT.toolchains = text
-
-    def __on_project_toolchainsChanged(self, value: str):
-        pass
+        self.__updateToolchainsVersionSettings()
 
     def __on_toolchainsVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
         PROJECT.toolchainsVersion = text
-
-    def __on_project_toolchainsVersionChanged(self, value: str):
-        pass
+        self.__updateToolchainsPathSettings()
 
     def __on_toolchainsManagerBtn_clicked(self):
-        pass
+        self.__navigationToPackageView()
 
     def __on_toolchainsPathToolButtonSettingCard_clicked(self):
-        pass
+        self.__navigationToPackageView()
 
-    def updateSettings(self):
-        if self.groupBuilder is None:
+    def __navigationToPackageView(self):
+        SIGNAL_BUS.navigationRequested.emit('PackageView', "")
+
+    def __updateBuilderSettings(self):
+        if self.builderGroup is None:
             return
 
         builder = PROJECT.summary.builder
@@ -445,8 +446,15 @@ class GenerateSettingView(ScrollArea):
                 message.raise_()
                 message.exec()
                 PROJECT.builder = builderList[0]
-        # -----------------------------------------------------------------------
-        builderVersion = builder.get(PROJECT.builder, {})
+
+        self.builderComboBoxGroupSettingCard.setSource(PROJECT.builder, builderList)
+        self.builderComboBoxGroupSettingCard.setContent(PROJECT.builder)
+
+    def __updateBuilderVersionSettings(self):
+        if self.builderGroup is None:
+            return
+
+        builderVersion = PROJECT.summary.builder.get(PROJECT.builder, {})
         builderVersionList = list(builderVersion.keys())  # It must not be an empty array.
 
         if PROJECT.builderVersion == "":
@@ -463,8 +471,16 @@ class GenerateSettingView(ScrollArea):
                 message.raise_()
                 message.exec()
                 PROJECT.builderVersion = builderVersionList[0]
-        # -----------------------------------------------------------------------
-        toolchains = builderVersion.get(PROJECT.builderVersion, {})  # It must not be an empty array.
+
+        self.builderVersionComboBoxGroupSettingCard.setSource(PROJECT.builderVersion, builderVersionList)
+        self.builderVersionComboBoxGroupSettingCard.setContent(PROJECT.builder)
+
+    def __updateToolchainsSettings(self):
+        if self.builderGroup is None or not PROJECT.useToolchainsPackage:
+            return
+
+        toolchains = PROJECT.summary.builder.get(PROJECT.builder, {}).get(PROJECT.builderVersion,
+                                                                          {})  # It must not be an empty array.
         if PROJECT.toolchains == "":
             PROJECT.toolchains = toolchains[0]
         else:
@@ -478,7 +494,14 @@ class GenerateSettingView(ScrollArea):
                 message.raise_()
                 message.exec()
                 PROJECT.toolchains = toolchains[0]
-        # -----------------------------------------------------------------------
+
+        self.toolchainsComboBoxGroupSettingCard.setSource(PROJECT.toolchains, toolchains)
+        self.toolchainsComboBoxGroupSettingCard.setContent(PROJECT.builder)
+
+    def __updateToolchainsVersionSettings(self):
+        if self.builderGroup is None or not PROJECT.useToolchainsPackage:
+            return
+
         toolchainsVersions = PACKAGE.versions('toolchains', PROJECT.toolchains)
         if len(toolchainsVersions) != 0:
             if PROJECT.toolchainsVersion == "":
@@ -506,13 +529,22 @@ class GenerateSettingView(ScrollArea):
             if message.exec():
                 QDesktopServices.openUrl(QUrl(SETTINGS.PACKAGE_LIST_URL))
 
+        self.toolchainsVersionComboBoxGroupSettingCard.setSource(PROJECT.toolchainsVersion, toolchainsVersions)
+        self.toolchainsVersionComboBoxGroupSettingCard.setContent(PROJECT.builder)
+
+    def __updateToolchainsPathSettings(self):
+        if self.builderGroup is None or not PROJECT.useToolchainsPackage:
+            return
+
         toolchainsPath = PACKAGE.path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
 
-        self.builderComboBoxGroupSettingCard.setSource(PROJECT.builder, builderList)
-        self.builderVersionComboBoxGroupSettingCard.setSource(PROJECT.builderVersion, builderVersionList)
-        self.toolchainsComboBoxGroupSettingCard.setSource(PROJECT.toolchains, toolchains)
-        self.toolchainsVersionComboBoxGroupSettingCard.setSource(PROJECT.toolchainsVersion, toolchainsVersions)
         self.toolchainsPathToolButtonSettingCard.setContent(toolchainsPath)
+        self.toolchainsPathToolButtonSettingCard.contentLabel.setToolTip(toolchainsPath)
+        if not os.path.isdir(toolchainsPath):
+            message = self.tr("The Path is not directory")
+            self.toolchainsPathToolButtonSettingCard.setStatusInfo(True, message)
+        else:
+            self.toolchainsPathToolButtonSettingCard.setStatusInfo(False, "")
 
 
 class SettingView(Ui_SettingView, QWidget):

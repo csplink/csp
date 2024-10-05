@@ -39,21 +39,25 @@ class ToolButtonPropertySettingCard(SettingCard):
 
     def __init__(self, icon: FluentIconBase, title: str, btnIcon: FluentIconBase, content=None, parent=None):
         super().__init__(icon, title, content, parent)
-        self.btn = TransparentToolButton(btnIcon, self)
-        self.btn.clicked.connect(self.clicked)
+        self.toolButton = TransparentToolButton(btnIcon, self)
+        self.toolButton.clicked.connect(self.clicked)
 
         self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
-                                         parent=self.btn.parent(),
-                                         target=self.btn,
+                                         parent=self.toolButton.parent(),
+                                         target=self.toolButton,
                                          position=InfoBadgePosition.TOP_RIGHT)
         self.badge.hide()
 
-        self.hBoxLayout.addWidget(self.btn, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.toolButton, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
     def setStatusInfo(self, error: bool, message: str):
         self.badge.setVisible(error)
         if error:
-            self.btn.setToolTip(message)
+            self.setToolTip(message)
         else:
-            self.btn.setToolTip("")
+            self.setToolTip("")
+
+    def clear(self):
+        self.setStatusInfo(False, '')
+        self.setContent('')
