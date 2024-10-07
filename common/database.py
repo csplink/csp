@@ -36,7 +36,7 @@ from .settings import SETTINGS
 class Database:
 
     @logger.catch(default=False)
-    def checkRepository(self, repository: dict) -> bool:
+    def __checkRepository(self, repository: dict) -> bool:
         with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=repository, schema=schema)
@@ -46,7 +46,7 @@ class Database:
         if os.path.isfile(path):
             with open(path, 'r', encoding='utf-8') as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.checkRepository(repository)
+                succeed = self.__checkRepository(repository)
             if succeed:
                 return repository
             else:

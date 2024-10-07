@@ -41,6 +41,13 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         super().__init__(parent=parent)
         self.setupUi(self)
 
+        self.treeView.setFixedWidth(300)
+        self.treeView.header().setVisible(False)
+
+        self.socSplitter.setSizes([200, 100])
+        self.socSplitter.setCollapsible(0, False)
+        self.socSplitter.setCollapsible(1, False)
+
 
 class NewProjectWindow(FramelessWindow):
 

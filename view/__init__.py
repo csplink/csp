@@ -27,6 +27,7 @@
 from .chip_view import ChipView
 from .code_view import CodeView
 from .main_window import MainWindow
+from .new_project_window import NewProjectWindow
 from .package_view import PackageView
 from .setting_view import SettingView
 from .startup_window import StartupWindow
@@ -35,6 +36,7 @@ __all__ = [
     'ChipView',
     'CodeView',
     'MainWindow',
+    'NewProjectWindow',
     'PackageView',
     'SettingView',
     'StartupWindow',

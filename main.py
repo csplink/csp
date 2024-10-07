@@ -42,10 +42,12 @@ from qfluentwidgets import FluentTranslator
 sys.stdout = stdout
 
 from common import SETTINGS, PROJECT
-from view import MainWindow, StartupWindow
+from view import MainWindow, StartupWindow, NewProjectWindow
 
 script_dir = os.path.dirname(__file__)
 sys.path.append(f"{script_dir}/plugins")
+
+isNewProjectRequested = False
 
 
 def main():
@@ -69,14 +71,18 @@ def main():
         translator.load(file)
         app.installTranslator(translator)
 
-    dirs = glob.glob(os.path.join(SETTINGS.FONTS_FOLDER, "*"))
-    for dir in dirs:
-        files = glob.glob(f"{dir}/*.ttf")
+    folders = glob.glob(os.path.join(SETTINGS.FONTS_FOLDER, "*"))
+    for folder in folders:
+        files = glob.glob(f"{folder}/*.ttf")
         for file in files:
             QFontDatabase.addApplicationFont(file)
 
     if PROJECT.path != "":
         view = MainWindow()
+        view.updateFrameless()
+        view.show()
+    elif isNewProjectRequested:
+        view = NewProjectWindow()
         view.updateFrameless()
         view.show()
     else:
@@ -88,17 +94,26 @@ def main():
 
 
 def checkOpt():
-    if len(sys.argv) == 2:
+    if len(sys.argv) >= 2:
         file = sys.argv[1]
         if os.path.isfile(file):
             PROJECT.path = file
-    elif len(sys.argv) > 2:
+            return
+
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "hf:o:r:d:t:",
-                                       ["help", "file=", "output=", "repository=", "package_dir=", "toolchains_dir="])
+            opts, args = getopt.getopt(sys.argv[1:], "hn", ["help", "new"])
         except getopt.GetoptError:
             # help()
             sys.exit(2)
+
+        for opt, arg in opts:
+            if opt in ("-h", "--help"):
+                help()
+                sys.exit(0)
+            elif opt in ("-n", "--new"):
+                global isNewProjectRequested
+                isNewProjectRequested = True
+                return
     else:
         return
 

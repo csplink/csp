@@ -15,13 +15,52 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialogButtonBox, QFrame,
+    QHeaderView, QSizePolicy, QSplitter, QVBoxLayout,
+    QWidget)
+
+from qfluentwidgets import (SimpleCardWidget, TreeView)
 
 class Ui_NewProjectView(object):
     def setupUi(self, NewProjectView):
         if not NewProjectView.objectName():
             NewProjectView.setObjectName(u"NewProjectView")
-        NewProjectView.resize(400, 300)
+        NewProjectView.resize(1098, 698)
+        self.verticalLayout = QVBoxLayout(NewProjectView)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.splitter_2 = QSplitter(NewProjectView)
+        self.splitter_2.setObjectName(u"splitter_2")
+        self.splitter_2.setOrientation(Qt.Horizontal)
+        self.treeView = TreeView(self.splitter_2)
+        self.treeView.setObjectName(u"treeView")
+        self.splitter_2.addWidget(self.treeView)
+        self.socSplitter = QSplitter(self.splitter_2)
+        self.socSplitter.setObjectName(u"socSplitter")
+        self.socSplitter.setOrientation(Qt.Vertical)
+        self.socInfoCard = SimpleCardWidget(self.socSplitter)
+        self.socInfoCard.setObjectName(u"socInfoCard")
+        self.socInfoCard.setFrameShape(QFrame.StyledPanel)
+        self.socInfoCard.setFrameShadow(QFrame.Raised)
+        self.socInfoCardVerticalLayout = QVBoxLayout(self.socInfoCard)
+        self.socInfoCardVerticalLayout.setObjectName(u"socInfoCardVerticalLayout")
+        self.socSplitter.addWidget(self.socInfoCard)
+        self.socTableCard = SimpleCardWidget(self.socSplitter)
+        self.socTableCard.setObjectName(u"socTableCard")
+        self.socTableCard.setFrameShape(QFrame.StyledPanel)
+        self.socTableCard.setFrameShadow(QFrame.Raised)
+        self.socTableCardVerticalLayout = QVBoxLayout(self.socTableCard)
+        self.socTableCardVerticalLayout.setObjectName(u"socTableCardVerticalLayout")
+        self.socSplitter.addWidget(self.socTableCard)
+        self.splitter_2.addWidget(self.socSplitter)
+
+        self.verticalLayout.addWidget(self.splitter_2)
+
+        self.buttonBox = QDialogButtonBox(NewProjectView)
+        self.buttonBox.setObjectName(u"buttonBox")
+        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
+
+        self.verticalLayout.addWidget(self.buttonBox)
+
 
         self.retranslateUi(NewProjectView)
 
