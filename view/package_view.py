@@ -73,13 +73,13 @@ class PackageInfoWidget(QWidget):
         # ----------------------------------------------------------------------
         QTreeWidgetItem(self.treeWidget, [self.tr('Name'), pdsc.name])
         QTreeWidgetItem(self.treeWidget, [self.tr('Version'), pdsc.version])
-        QTreeWidgetItem(self.treeWidget, [self.tr('license'), pdsc.license])
-        QTreeWidgetItem(self.treeWidget, [self.tr('type'), pdsc.type])
-        QTreeWidgetItem(self.treeWidget, [self.tr('vendor'), pdsc.vendor])
-        QTreeWidgetItem(self.treeWidget, [self.tr('vendor Url'), pdsc.vendorUrl[local]])
-        QTreeWidgetItem(self.treeWidget, [self.tr('description'), pdsc.description[local]])
-        QTreeWidgetItem(self.treeWidget, [self.tr('url'), pdsc.url[local]])
-        QTreeWidgetItem(self.treeWidget, [self.tr('support'), pdsc.support])
+        QTreeWidgetItem(self.treeWidget, [self.tr('License'), pdsc.license])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Type'), pdsc.type])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Vendor'), pdsc.vendor])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Vendor url'), pdsc.vendorUrl[local]])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Description'), pdsc.description[local]])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Url'), pdsc.url[local]])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Support'), pdsc.support])
         self.treeWidget.expandAll()
 
         # def setItems(tree: TreeWidget, parent=None):

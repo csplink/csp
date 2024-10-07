@@ -48,7 +48,7 @@ properties:
             properties:
               url:
                 $ref: "#/properties/url"
-            required: ["url"]
+            required: [ "url" ]
       errata:
         $ref: "#/properties/documents/properties/dataSheets"
       references:
@@ -57,10 +57,10 @@ properties:
     type: object
     properties:
       en:
-        type: ["string", "null"] #TODO: null
+        type: [ "string", "null" ] #TODO: null
       zh_CN:
-        type: ["string", "null"] #TODO: null
-    required: ["en", "zh_CN"]
+        type: [ "string", "null" ] #TODO: null
+    required: [ "en", "zh_CN" ]
   introduction:
     $ref: "#/properties/illustrate"
   modules:
@@ -91,7 +91,7 @@ properties:
       zh_CN:
         type: string
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-    required: ["en", "zh_CN"]
+    required: [ "en", "zh_CN" ]
   builder:
     type: object
     additionalProperties: false
@@ -123,9 +123,12 @@ properties:
             items:
               type: string
               minLength: 1
-  hal:
-    type: string
-    minLength: 1
+  hals:
+    type: array
+    items:
+      type: string
+      minLength: 1
+    minItems: 1
   hasPowerPad:
     type: boolean
   package:
@@ -140,7 +143,7 @@ properties:
       defaultStackSize:
         type: string
         pattern: "^0x[0-9A-Fa-f]+$"
-    required: ["defaultHeapSize", "defaultStackSize"]
+    required: [ "defaultHeapSize", "defaultStackSize" ]
   pins:
     type: object
     additionalProperties: false
@@ -151,25 +154,25 @@ properties:
           position:
             type: integer
           type:
-            enum: ["I/O", "Power", "Reset", "NC", "Boot"]
+            enum: [ "I/O", "Power", "Reset", "NC", "Boot" ]
           signals:
             type: object
             additionalProperties: false
             patternProperties:
               ^.+$:
-                type: ["object", "null"] #TODO: null
+                type: [ "object", "null" ] #TODO: null
                 properties:
                   mode:
                     type: string
                 # required:
                 #   - mode
-        required: ["position", "type"]
+        required: [ "position", "type" ]
         if:
           properties:
             type:
               const: "I/O"
         then:
-          required: ["signals"]
+          required: [ "signals" ]
   pinIp:
     type: string
     minLength: 1
@@ -184,7 +187,7 @@ required:
   - modules
   - url
   - builder
-  - hal
+  - hals
   - hasPowerPad
   - package
   - pins

@@ -36,14 +36,14 @@
     </widget>
    </item>
    <item>
-    <widget class="SimpleCardWidget" name="frame_2">
+    <widget class="SimpleCardWidget" name="settingStackedWidgetCard">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="settingStackedWidgetCardVerticalLayout">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -56,9 +56,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QStackedWidget" name="settingStackedWidget"/>
-      </item>
      </layout>
     </widget>
    </item>

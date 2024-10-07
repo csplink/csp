@@ -50,9 +50,10 @@ from .graphics_view_pan_zoom import GraphicsViewPanZoom
 from .grid_mode_io import GridModeIo
 # from .grid_mode_ip import GridModeIp
 from .grid_property_ip import GridPropertyIp
-from .plain_text_edit_code import PlainTextEditCode
-from .tree_module import TreeModule
 from .list_contributors import ListContributors
+from .plain_text_edit_code import PlainTextEditCode
+from .stacked_widget import StackedWidget
+from .tree_module import TreeModule
 
 __all__ += [
     "GraphicsItemChipBody",
@@ -60,7 +61,8 @@ __all__ += [
     "GraphicsViewPanZoom",
     "GridModeIo",
     "GridPropertyIp",
-    "PlainTextEditCode",
-    "TreeModule",
     "ListContributors",
+    "PlainTextEditCode",
+    "StackedWidget",
+    "TreeModule",
 ]

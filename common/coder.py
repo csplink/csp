@@ -28,24 +28,25 @@ import copy
 import glob
 import hashlib
 import importlib.util
-import jinja2
 import os
 import re
 import time
 import xml.etree.ElementTree as etree
+
+import jinja2
 
 from .project import PROJECT
 from .settings import SETTINGS
 
 
 class Coder:
-    m_data = {}
+    __data = {}
 
-    def __match_user(self, path: str, prefix1: str, suffix1: str, prefix2: str, suffix2: str) -> dict:
+    def __matchUser(self, path: str, prefix1: str, suffix1: str, prefix2: str, suffix2: str) -> dict:
         """
         match user code
         """
-        user_code = {}
+        code = {}
         if os.path.isfile(path):
             with open(path, "r", encoding='utf-8') as f:
                 data = f.read()
@@ -53,65 +54,63 @@ class Coder:
                     matcher = f"{prefix1} add user code begin {s}, do not change this comment!{suffix1}\n(.*){prefix2} add user code end {s}, do not change this comment!{suffix2}"
                     result = str.rstrip(re.findall(matcher, data, re.S)[0])
                     if result:
-                        user_code[s] = str.rstrip(result)
-                        if user_code[s] != "":
-                            user_code[s] = user_code[s] + "\n"
+                        code[s] = str.rstrip(result)
+                        if code[s] != "":
+                            code[s] = code[s] + "\n"
                     else:
-                        user_code[s] = ""
-        return user_code
+                        code[s] = ""
+        return code
 
-    def __match_xmake_user(self, path: str) -> dict:
+    def __matchXmakeUser(self, path: str) -> dict:
         """
         match user code in xmake.lua
         """
-        return self.__match_user(path, "----<", "\n", "----<", "\n")
+        return self.__matchUser(path, "----<", "\n", "----<", "\n")
 
-    def __match_cmake_user(self, path: str) -> dict:
+    def __matchCmakeUser(self, path: str) -> dict:
         """
         match user code in CMakeLists.txt
         """
-        return self.__match_user(path, "##==<", "\n", "##==>", "\n")
+        return self.__matchUser(path, "##==<", "\n", "##==>", "\n")
 
-    def __match_c_user(self, path: str) -> dict:
+    def __matchCUser(self, path: str) -> dict:
         """
         match user code in c file
         """
-        return self.__match_user(path, "/\*\*<", " \*/", "/\*\*>", " \*/")
+        return self.__matchUser(path, "/\*\*<", " \*/", "/\*\*>", " \*/")
 
-    def __generate_c(self, env: jinja2.Environment, module: str, args: dict):
+    def __dumpC(self, env: jinja2.Environment, module: str, args: dict):
         """
         generate c file
         """
         if module == "main":
             path = f"core/inc/main.h"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
-            main_h = tpl.render(args, file=os.path.basename(path), brief="main program body")
-            self.m_data[path] = main_h.strip() + "\n"
+            args["userCode"] = self.__matchCUser(f"{PROJECT.dir}/{path}")
+            h = tpl.render(args, file=os.path.basename(path), brief="main program body")
+            self.__data[path] = h.strip() + "\n"
 
             path = f"core/src/main.c"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
-            main_c = tpl.render(args, file=os.path.basename(path), brief="main program body")
-            self.m_data[path] = main_c.strip() + "\n"
+            args["userCode"] = self.__matchCUser(f"{PROJECT.dir}/{path}")
+            c = tpl.render(args, file=os.path.basename(path), brief="main program body")
+            self.__data[path] = c.strip() + "\n"
         else:
             path = f"core/inc/csplink/{module}.h"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
-            module_h = tpl.render(args,
-                                  file=os.path.basename(path),
-                                  brief=f"this file provides code for the {module} initialization")
-            self.m_data[path] = module_h.strip() + "\n"
+            args["userCode"] = self.__matchCUser(f"{PROJECT.dir}/{path}")
+            h = tpl.render(args, file=os.path.basename(path),
+                           brief=f"this file provides code for the {module} initialization")
+            self.__data[path] = h.strip() + "\n"
 
             path = f"core/src/{module}.c"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_c_user(f"{PROJECT.dir}/{path}")
-            module_c = tpl.render(args,
-                                  file=os.path.basename(path),
-                                  brief=f"this file provides code for the {module} initialization")
-            self.m_data[path] = module_c.strip() + "\n"
+            args["userCode"] = self.__matchCUser(f"{PROJECT.dir}/{path}")
+            c = tpl.render(args, file=os.path.basename(path),
+                           brief=f"this file provides code for the {module} initialization")
+            self.__data[path] = c.strip() + "\n"
 
-    def __generate_mdk_arm_project(self, project: dict, path: str, minVersion: str) -> str:
+    def __generateMdkArmProject(self, project: dict, path: str, minVersion: str) -> str:
         """
         generate mdk arm
         """
@@ -126,49 +125,49 @@ class Coder:
 
         return module.main(copy.deepcopy(project), copy.deepcopy(minVersion), copy.deepcopy(tree))
 
-    def __generate_project(self, env: jinja2.Environment, dir: str, args: dict):
+    def __generateProject(self, env: jinja2.Environment, folder: str, args: dict):
         """
         generate project file
         """
         if args["Project"]["TargetProject"] == "XMake":
-            path = f"{dir}/xmake.lua"
+            path = f"{folder}/xmake.lua"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_xmake_user(path)
+            args["userCode"] = self.__matchXmakeUser(path)
             output = tpl.render(args, file=os.path.basename(path), brief="file automatically-generated by tool: [csp]")
-            self.__file_write(path, output)
+            self.__data[path] = output
         elif args["Project"]["TargetProject"] == "CMake":
-            path = f"{dir}/CMakeLists.txt"
+            path = f"{folder}/CMakeLists.txt"
             tpl = env.get_template(f'{os.path.basename(path)}.j2')
-            args["userCode"] = self.__match_cmake_user(path)
+            args["userCode"] = self.__matchCmakeUser(path)
             output = tpl.render(args, file=os.path.basename(path), brief="file automatically-generated by tool: [csp]")
-            self.__file_write(path, output)
+            self.__data[path] = output
         elif args["Project"]["TargetProject"] == "MDK-Arm":
             if "TargetProjectMinVersion" in args["Project"].keys():
-                min_version = args["Project"]["TargetProjectMinVersion"]
+                minVersion = args["Project"]["TargetProjectMinVersion"]
             else:
-                min_version = "v5"
-            if min_version.lower().startswith("v5"):
-                path = f"{dir}/mdk-arm/{args['Project']['Name']}.uvprojx"
-            elif min_version.lower().startswith("v4"):
-                path = f"{dir}/mdk-arm/{args['Project']['Name']}.uvproj"
+                minVersion = "v5"
+            if minVersion.lower().startswith("v5"):
+                path = f"{folder}/mdk-arm/{args['Project']['Name']}.uvprojx"
+            elif minVersion.lower().startswith("v4"):
+                path = f"{folder}/mdk-arm/{args['Project']['Name']}.uvproj"
             else:
-                path = f"{dir}/mdk-arm/{args['Project']['Name']}.uvprojx"
+                path = f"{folder}/mdk-arm/{args['Project']['Name']}.uvprojx"
             if not os.path.isdir(os.path.dirname(path)):
                 os.makedirs(os.path.dirname(path))
-            output = self.__generate_mdk_arm_project(args["Project"], path, min_version)
-            self.__file_write(path, output)
+            output = self.__generateMdkArmProject(args["Project"], path, minVersion)
+            self.__data[path] = output
         else:
             pass
 
-    def __deploy(self, dir: str, project: dict, output_dir: str) -> dict:
+    def __deploy(self, folder: str, project: dict, outputFolder: str) -> dict:
         """
         deploy
         """
-        spec = importlib.util.spec_from_file_location("coder", f'{dir}/tools/coder/deploy.py')
+        spec = importlib.util.spec_from_file_location("coder", f'{folder}/tools/coder/deploy.py')
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        data = module.main(copy.deepcopy(project), copy.deepcopy(output_dir))
+        data = module.main(copy.deepcopy(project), copy.deepcopy(outputFolder))
         return data
 
     def generate(self, packageDir: str):
@@ -185,12 +184,15 @@ class Coder:
 
         data = self.dump(packageDir)
         for path, context in data.items():
-            time_pattern = r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'  # YYYY-MM-DD HH:MM:SS
-            gen_md5 = hashlib.md5(re.sub(time_pattern, '', context).encode('utf-8')).hexdigest()
-            with open(f"{outputDir}/{path}", "r", encoding='utf-8') as file:
-                file_context = file.read()
-                file_md5 = hashlib.md5(re.sub(time_pattern, '', file_context).encode('utf-8')).hexdigest()
-            if gen_md5 == file_md5:
+            timePattern = r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'  # YYYY-MM-DD HH:MM:SS
+            genMd5 = hashlib.md5(re.sub(timePattern, '', context).encode('utf-8')).hexdigest()
+            if os.path.isfile(path):
+                with open(f"{outputDir}/{path}", "r", encoding='utf-8') as file:
+                    fileContext = file.read()
+                    fileMd5 = hashlib.md5(re.sub(timePattern, '', fileContext).encode('utf-8')).hexdigest()
+            else:
+                fileMd5 = ""
+            if genMd5 != fileMd5:
                 with open(f"{outputDir}/{path}", "w", encoding='utf-8') as file:
                     file.write(context)
 
@@ -199,7 +201,7 @@ class Coder:
         dump
         """
 
-        hal = PROJECT.summary.hal
+        hal = PROJECT.hal
         modules = PROJECT.modules
 
         if not os.path.isdir(packageDir):
@@ -215,11 +217,10 @@ class Coder:
         }
 
         env = jinja2.Environment(loader=jinja2.FileSystemLoader(
-            [f'{os.getcwd()}/resource/templates', f'{packageDir}/tools/coder/templates']),
-            line_comment_prefix="//")
+            [f'{os.getcwd()}/resource/templates', f'{packageDir}/tools/coder/templates']), line_comment_prefix="//")
 
-        filter_files = glob.glob(f"{packageDir}/tools/coder/filters/*.py")
-        for file in filter_files:
+        files = glob.glob(f"{packageDir}/tools/coder/filters/*.py")
+        for file in files:
             spec = importlib.util.spec_from_file_location(os.path.basename(file).split(".")[0], file)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
@@ -229,8 +230,8 @@ class Coder:
                     function = getattr(module, fun)
                     env.filters[fun] = function
 
-        self.__generate_c(env, "main", data)
+        self.__dumpC(env, "main", data)
         for module in modules:
-            self.__generate_c(env, str.lower(module), data)
+            self.__dumpC(env, str.lower(module), data)
 
-        return self.m_data
+        return self.__data

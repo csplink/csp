@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-import os.path
-
-from PySide6.QtCore import Qt, QUrl, QItemSelection
-from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem
-from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
-                            PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
-                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
-
-from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS)
-from utils import converters
-from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
-                    ToolButtonPropertySettingCard)
-from .ui.setting_view_ui import Ui_SettingView
-
 
 # Licensed under the GNU General Public License v. 3 (the "License")
 # You may not use this file except in compliance with the License.
@@ -39,11 +24,27 @@ from .ui.setting_view_ui import Ui_SettingView
 # 2024-06-23     xqyjlj       initial version
 #
 
+import os.path
+
+from PySide6.QtCore import Qt, QUrl, QItemSelection
+from PySide6.QtGui import QDesktopServices
+from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QTreeWidgetItem, QStackedWidget
+from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingCard, PushSettingCard, HyperlinkCard,
+                            PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
+                            CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
+
+from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS)
+from utils import converters
+from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
+                    ToolButtonPropertySettingCard)
+from .ui.setting_view_ui import Ui_SettingView
+
 
 class SystemSettingView(ScrollArea):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.setObjectName('SystemSettingView')
 
         # setting label
         self.settingLabel = QLabel(self.tr("System Setting"), self)
@@ -221,6 +222,7 @@ class GenerateSettingView(ScrollArea):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.setObjectName('GenerateSettingView')
 
         # setting label
         self.settingLabel = QLabel(self.tr("Generate Setting"), self)
@@ -237,6 +239,7 @@ class GenerateSettingView(ScrollArea):
 
         self.linkerGroup = self.__createLinkerGroup()
         self.builderGroup = self.__createBuilderGroup()
+        self.halGroup = self.__createHalGroup()
 
         self.expandLayout = ExpandLayout(self.widgetScroll)
         self.expandLayout.setSpacing(28)
@@ -247,6 +250,9 @@ class GenerateSettingView(ScrollArea):
             self.expandLayout.addWidget(self.builderGroup)
             SIGNAL_BUS.packageUpdated.connect(self.__updateBuilderSettings)
             self.__updateBuilderSettings()
+        if self.halGroup is not None:
+            self.expandLayout.addWidget(self.halGroup)
+            self.__updateHalSettings()
 
         self.enableTransparentBackground()
 
@@ -339,18 +345,18 @@ class GenerateSettingView(ScrollArea):
             defaultHeapSize = PROJECT.summary.defaultHeapSize
         else:
             return None
-        # ---------------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         if converters.ishex(PROJECT.defaultStackSize):
             defaultStackSize = PROJECT.defaultStackSize
         elif converters.ishex(PROJECT.summary.defaultStackSize):
             defaultStackSize = PROJECT.summary.defaultStackSize
         else:
             return None
-        # ---------------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
 
         group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)
 
-        # ---------------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         self.defaultHeapLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
                                                                    title=self.tr("Default heap size"),
                                                                    value=defaultHeapSize,
@@ -359,7 +365,7 @@ class GenerateSettingView(ScrollArea):
                                                                    parent=group)
         self.defaultHeapLineEditCard.textChanged.connect(self.__on_defaultHeapLineEditCard_textChanged)
         PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
-        # ---------------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
         self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
                                                                     title=self.tr("Default stack size"),
                                                                     value=defaultStackSize,
@@ -368,10 +374,58 @@ class GenerateSettingView(ScrollArea):
                                                                     parent=group)
         self.defaultStackLineEditCard.textChanged.connect(self.__on_defaultStackLineEditCard_textChanged)
         PROJECT.defaultStackSizeChanged.connect(lambda t: self.defaultStackLineEditCard.setContent(t))
-        # ---------------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
 
         group.addSettingCard(self.defaultHeapLineEditCard)
         group.addSettingCard(self.defaultStackLineEditCard)
+
+        return group
+
+    def __createHalGroup(self) -> SettingCardGroup | None:
+        # --------------------------------------------------------------------------------------------------------------
+
+        group = SettingCardGroup(self.tr("Hal Settings"), self.widgetScroll)
+
+        # --------------------------------------------------------------------------------------------------------------
+        self.copyHalLibrarySwitchSettingCard = SwitchPropertySettingCard(icon=Icon.CHECKBOX_MULTIPLE,
+                                                                         title=self.tr("Copy hal library"),
+                                                                         value=PROJECT.copyHalLibrary,
+                                                                         content=self.tr(
+                                                                             "Copy the hal library files to the project directory"),
+                                                                         parent=group)
+        self.copyHalLibrarySwitchSettingCard.checkedChanged.connect(
+            self.__on_copyHalLibrarySwitchSettingCard_checkedChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.halComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.HAMMER,
+                                                                       title=self.tr("Hal Package"),
+                                                                       value='',
+                                                                       values=[],
+                                                                       content=' ',
+                                                                       parent=group)
+        self.halComboBoxGroupSettingCard.currentTextChanged.connect(
+            self.__on_halComboBoxGroupSettingCard_currentTextChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.halVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(icon=Icon.DATABASE_2,
+                                                                              title=self.tr("Hal Package Version"),
+                                                                              value='',
+                                                                              values=[],
+                                                                              content=' ',
+                                                                              parent=group)
+        self.halVersionComboBoxGroupSettingCard.currentTextChanged.connect(
+            self.__on_halVersionComboBoxGroupSettingCard_currentTextChanged)
+        # --------------------------------------------------------------------------------------------------------------
+        self.halPathToolButtonSettingCard = ToolButtonPropertySettingCard(icon=Icon.FOLDER,
+                                                                          title=self.tr("Hal Package Path"),
+                                                                          btnIcon=Icon.BOX,
+                                                                          content=' ',
+                                                                          parent=group)
+        self.halPathToolButtonSettingCard.clicked.connect(self.__on_halPathToolButtonSettingCard_clicked)
+        # --------------------------------------------------------------------------------------------------------------
+
+        group.addSettingCard(self.copyHalLibrarySwitchSettingCard)
+        group.addSettingCard(self.halComboBoxGroupSettingCard)
+        group.addSettingCard(self.halVersionComboBoxGroupSettingCard)
+        group.addSettingCard(self.halPathToolButtonSettingCard)
 
         return group
 
@@ -434,18 +488,18 @@ class GenerateSettingView(ScrollArea):
             return
 
         if PROJECT.builder == "":
-            PROJECT.builder = builderList[0]
+            PROJECT.builder = builderList[-1]
         else:
             if PROJECT.builder not in builderList:
                 title = self.tr('Warning')
                 content = self.tr(
-                    "The builder %1 is not supported. Use default value '%2'").replace(
-                    "%1", PROJECT.builder).replace("%2", builderList[0])
+                    "The builder %1 is not supported. Use default value '%2'").replace("%1", PROJECT.builder).replace(
+                    "%2", builderList[-1])
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.builder = builderList[0]
+                PROJECT.builder = builderList[-1]
 
         self.builderComboBoxGroupSettingCard.setSource(PROJECT.builder, builderList)
         self.builderComboBoxGroupSettingCard.setContent(PROJECT.builder)
@@ -458,19 +512,19 @@ class GenerateSettingView(ScrollArea):
         builderVersionList = list(builderVersion.keys())  # It must not be an empty array.
 
         if PROJECT.builderVersion == "":
-            PROJECT.builderVersion = builderVersionList[0]
+            PROJECT.builderVersion = builderVersionList[-1]
         else:
             if PROJECT.builderVersion not in builderVersionList:
                 title = self.tr('Warning')
                 content = self.tr(
                     "The builder %1 is not supported. Use default value '%2'").replace(
                     "%1", f"{PROJECT.builderVersion}@{PROJECT.builderVersion}").replace(
-                    "%2", f"{PROJECT.builderVersion}@{builderVersionList[0]}")
+                    "%2", f"{PROJECT.builderVersion}@{builderVersionList[-1]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.builderVersion = builderVersionList[0]
+                PROJECT.builderVersion = builderVersionList[-1]
 
         self.builderVersionComboBoxGroupSettingCard.setSource(PROJECT.builderVersion, builderVersionList)
         self.builderVersionComboBoxGroupSettingCard.setContent(PROJECT.builder)
@@ -479,21 +533,22 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None or not PROJECT.useToolchainsPackage:
             return
 
-        toolchains = PROJECT.summary.builder.get(PROJECT.builder, {}).get(PROJECT.builderVersion,
-                                                                          {})  # It must not be an empty array.
+        # It must not be an empty array.
+        toolchains = PROJECT.summary.builder.get(PROJECT.builder, {}).get(PROJECT.builderVersion, {})
         if PROJECT.toolchains == "":
-            PROJECT.toolchains = toolchains[0]
+            PROJECT.toolchains = toolchains[-1]
         else:
             if PROJECT.toolchains not in toolchains:
                 title = self.tr('Warning')
                 content = self.tr(
                     "The builder %1 is not supported. Use default value '%2'").replace(
-                    "%1", f"{PROJECT.builder}@{PROJECT.toolchains}").replace("%2", f"{PROJECT.builder}@{toolchains[0]}")
+                    "%1", f"{PROJECT.builder}@{PROJECT.toolchains}").replace("%2",
+                                                                             f"{PROJECT.builder}@{toolchains[-1]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.toolchains = toolchains[0]
+                PROJECT.toolchains = toolchains[-1]
 
         self.toolchainsComboBoxGroupSettingCard.setSource(PROJECT.toolchains, toolchains)
         self.toolchainsComboBoxGroupSettingCard.setContent(PROJECT.builder)
@@ -505,19 +560,19 @@ class GenerateSettingView(ScrollArea):
         toolchainsVersions = PACKAGE.versions('toolchains', PROJECT.toolchains)
         if len(toolchainsVersions) != 0:
             if PROJECT.toolchainsVersion == "":
-                PROJECT.toolchainsVersion = toolchainsVersions[0]
+                PROJECT.toolchainsVersion = toolchainsVersions[-1]
             else:
                 if PROJECT.toolchainsVersion not in toolchainsVersions:
                     title = self.tr('Warning')
                     content = self.tr(
                         "The toolchains %1 is not supported. Use default value '%2'").replace(
                         "%1", f"{PROJECT.toolchains}@{PROJECT.toolchainsVersion}").replace(
-                        "%2", f"{PROJECT.toolchains}@{toolchainsVersions[0]}")
+                        "%2", f"{PROJECT.toolchains}@{toolchainsVersions[-1]}")
                     message = MessageBox(title, content, self.window())
                     message.setContentCopyable(True)
                     message.raise_()
                     message.exec()
-                    PROJECT.toolchainsVersion = toolchainsVersions[0]
+                    PROJECT.toolchainsVersion = toolchainsVersions[-1]
         else:
             title = self.tr('Error')
             content = self.tr(
@@ -546,6 +601,93 @@ class GenerateSettingView(ScrollArea):
         else:
             self.toolchainsPathToolButtonSettingCard.setStatusInfo(False, "")
 
+    def __on_copyHalLibrarySwitchSettingCard_checkedChanged(self, checked: bool):
+        PROJECT.copyHalLibrary = checked
+
+    def __on_halComboBoxGroupSettingCard_currentTextChanged(self, text: str):
+        PROJECT.hal = text
+        self.__updateHalVersionSettings()
+
+    def __on_halVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
+        PROJECT.halVersion = text
+        self.__updateHalPathSettings()
+
+    def __on_halPathToolButtonSettingCard_clicked(self):
+        self.__navigationToPackageView()
+
+    def __updateHalSettings(self):
+        if self.halGroup is None:
+            return
+
+        hals = PROJECT.summary.hals
+        if len(hals) == 0:
+            return
+
+        if PROJECT.hal == "":
+            PROJECT.hal = hals[-1]
+        else:
+            if PROJECT.hal not in hals:
+                title = self.tr('Warning')
+                content = self.tr(
+                    "The hal %1 is not supported. Use default value '%2'").replace("%1", PROJECT.hal).replace("%2",
+                                                                                                              hals[-1])
+                message = MessageBox(title, content, self.window())
+                message.setContentCopyable(True)
+                message.raise_()
+                message.exec()
+                PROJECT.hal = hals[-1]
+
+        self.halComboBoxGroupSettingCard.setSource(PROJECT.hal, hals)
+        self.halComboBoxGroupSettingCard.setContent(PROJECT.hal)
+
+    def __updateHalVersionSettings(self):
+        if self.halGroup is None:
+            return
+
+        halVersions = PACKAGE.versions('hal', PROJECT.hal)
+        if len(halVersions) != 0:
+            if PROJECT.halVersion == "":
+                PROJECT.halVersion = halVersions[-1]
+            else:
+                if PROJECT.halVersion not in halVersions:
+                    title = self.tr('Warning')
+                    content = self.tr(
+                        "The hal %1 is not supported. Use default value '%2'").replace(
+                        "%1", f"{PROJECT.hal}@{PROJECT.halVersion}").replace(
+                        "%2", f"{PROJECT.hal}@{halVersions[-1]}")
+                    message = MessageBox(title, content, self.window())
+                    message.setContentCopyable(True)
+                    message.raise_()
+                    message.exec()
+                    PROJECT.halVersion = halVersions[-1]
+        else:
+            title = self.tr('Error')
+            content = self.tr(
+                "The hal %1 is not installed. Please install and then restart this software").replace(
+                "%1", PROJECT.hal)
+            message = MessageBox(title, content, self.window())
+            message.setContentCopyable(True)
+            message.raise_()
+            if message.exec():
+                QDesktopServices.openUrl(QUrl(SETTINGS.PACKAGE_LIST_URL))
+
+        self.halVersionComboBoxGroupSettingCard.setSource(PROJECT.halVersion, halVersions)
+        self.halVersionComboBoxGroupSettingCard.setContent(PROJECT.halVersion)
+
+    def __updateHalPathSettings(self):
+        if self.halGroup is None:
+            return
+
+        halPath = PACKAGE.path("hal", PROJECT.hal, PROJECT.halVersion)
+
+        self.halPathToolButtonSettingCard.setContent(halPath)
+        self.halPathToolButtonSettingCard.contentLabel.setToolTip(halPath)
+        if not os.path.isdir(halPath):
+            message = self.tr("The Path is not directory")
+            self.halPathToolButtonSettingCard.setStatusInfo(True, message)
+        else:
+            self.halPathToolButtonSettingCard.setStatusInfo(False, "")
+
 
 class SettingView(Ui_SettingView, QWidget):
     __navigationViews = {}
@@ -553,6 +695,9 @@ class SettingView(Ui_SettingView, QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+
+        self.settingStackedWidget = QStackedWidget(self)
+        self.settingStackedWidgetCardVerticalLayout.addWidget(self.settingStackedWidget)
 
         self.settingTreeCard.setFixedWidth(300)
         self.settingTree.header().setVisible(False)
@@ -570,17 +715,27 @@ class SettingView(Ui_SettingView, QWidget):
 
         self.settingTree.setCurrentItem(self.systemSettingTreeWidgetItem)
 
+    def switchTo(self, key: str):
+        if key not in self.__navigationViews:
+            return
+
+        self.settingTree.setCurrentItem(self.__navigationViews[key]['item'])
+
     def __addView(self, view: QWidget, icon: FluentIconBase, text: str) -> QTreeWidgetItem | None:
-        if text in self.__navigationViews:
+        if not view.objectName():
+            raise ValueError("The object name of `view` can't be empty string.")
+
+        if view.objectName() in self.__navigationViews:
             return None
 
         item = QTreeWidgetItem([text])
         item.setIcon(0, icon.icon())
+        item.setData(0, Qt.ItemDataRole.StatusTipRole, view.objectName())
         self.settingTree.addTopLevelItem(item)
 
         self.settingStackedWidget.addWidget(view)
 
-        self.__navigationViews[text] = view
+        self.__navigationViews[view.objectName()] = {'view': view, 'item': item}
 
         return item
 
@@ -588,5 +743,5 @@ class SettingView(Ui_SettingView, QWidget):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
-            key = index.data(Qt.ItemDataRole.DisplayRole)
-            self.settingStackedWidget.setCurrentWidget(self.__navigationViews[key])
+            key = index.data(Qt.ItemDataRole.StatusTipRole)
+            self.settingStackedWidget.setCurrentWidget(self.__navigationViews[key]['view'])

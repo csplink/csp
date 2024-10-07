@@ -22,7 +22,7 @@
 #
 
 $schema: "http://json-schema.org/draft-07/schema#"
-type: [object, "null"]
+type: [ object, "null" ]
 additionalProperties: false
 properties:
   hal:
@@ -33,7 +33,7 @@ properties:
         type: object
         additionalProperties: false
         patternProperties:
-          "^\\d+\\.\\d+\\.\\d+$":
+          "^(?:v|V)?\\d+\\.\\d+\\.\\d+$":
             type: string
   toolchains:
     $ref: "#/properties/hal"

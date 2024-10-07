@@ -43,7 +43,7 @@ documents:
       url:
         en:
         zh_CN: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
-hal: csp_hal_apm32f1
+hals: [ csp_hal_apm32f1 ]
 hasPowerPad: false
 illustrate:
   en:
@@ -216,11 +216,11 @@ url:
   zh_CN: https://geehy.com/product/fifth/APM32F103
 builder:
   XMake:
-    v2.8.1: ["arm-none-eabi"]
+    v2.8.1: [ "arm-none-eabi" ]
   CMake:
-    v3.7: ["arm-none-eabi"]
+    v3.7: [ "arm-none-eabi" ]
   MdkArm:
-    v5.27: ["armcc", "armclang"]
+    v5.27: [ "armcc", "armclang" ]
 linker:
   defaultHeapSize: "0x200"
   defaultStackSize: "0x400"
@@ -298,7 +298,7 @@ pins:
     position: 8
     type: I/O
     signals:
-      RCM-OSC32-IN: {}
+      RCM-OSC32-IN: { }
       GPIO-Input: { mode: geehy.input }
       GPIO-Output: { mode: geehy.output }
       GPIO-Analog: { mode: geehy.analog }
@@ -310,7 +310,7 @@ pins:
     signals:
       ADC1-EXTI15:
       ADC2-EXTI15:
-      RCM-OSC32-OUT: {}
+      RCM-OSC32-OUT: { }
       GPIO-Input: { mode: geehy.input }
       GPIO-Output: { mode: geehy.output }
       GPIO-Analog: { mode: geehy.analog }
@@ -431,12 +431,12 @@ pins:
     position: 23
     type: I/O
     signals:
-      RCM-OSC-IN: {}
+      RCM-OSC-IN: { }
   RCM-OSC-OUT:
     position: 24
     type: I/O
     signals:
-      RCM-OSC-OUT: {}
+      RCM-OSC-OUT: { }
   NRST:
     position: 25
     type: Reset
@@ -1192,7 +1192,7 @@ pins:
     position: 100
     type: I/O
     signals:
-      RCM-MCO: {}
+      RCM-MCO: { }
       TIM1-CH1:
       USART1-CK:
       GPIO-Input: { mode: geehy.input }

@@ -24,7 +24,6 @@
 # 2024-07-01     xqyjlj        initial version
 #
 
-from .gen_code_dialog import GenCodeDialog
 from .package_install_dialog import PackageInstallDialog
 
 __all__ = ['PackageInstallDialog']

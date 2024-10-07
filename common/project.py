@@ -30,6 +30,7 @@ import jsonschema
 import yaml
 from PySide6.QtCore import Signal, QObject
 
+from utils import converters
 from .database import DATABASE
 from .package import PACKAGE
 from .settings import SETTINGS
@@ -43,8 +44,8 @@ class Summary(QObject):
         super().__init__(parent=parent)
 
     @property
-    def hal(self) -> str:
-        return self.__summary.get("hal", "unknown")
+    def hals(self) -> list:
+        return self.__summary.get("hals", [])
 
     @property
     def package(self) -> str:
@@ -196,19 +197,19 @@ class Project(QObject):
         self.saveTmp()
 
     # gen --------------------------------------------------------------------------------------------------------------
-    # gen/copyLibrary ----------------------------------------------------------
-    copyLibraryChanged = Signal(bool)
+    # gen/copyHalLibrary ----------------------------------------------------------
+    copyHalLibraryChanged = Signal(bool)
 
     @property
-    def copyLibrary(self) -> bool:
-        return self.__data.get("gen", {}).get("copyLibrary", True)
+    def copyHalLibrary(self) -> bool:
+        return self.__data.get("gen", {}).get("copyHalLibrary", True)
 
-    @copyLibrary.setter
-    def copyLibrary(self, is_copy_library: bool):
-        if self.copyLibrary == is_copy_library:
+    @copyHalLibrary.setter
+    def copyHalLibrary(self, is_copy_library: bool):
+        if self.copyHalLibrary == is_copy_library:
             return
-        self.__data.setdefault("gen", {})["copyLibrary"] = is_copy_library
-        self.copyLibraryChanged.emit(is_copy_library)
+        self.__data.setdefault("gen", {})["copyHalLibrary"] = is_copy_library
+        self.copyHalLibraryChanged.emit(is_copy_library)
         self.saveTmp()
 
     # gen/defaultHeapSize ------------------------------------------------------
@@ -243,7 +244,7 @@ class Project(QObject):
         self.defaultStackSizeChanged.emit(size)
         self.saveTmp()
 
-    # gen/useToolchainsPackage
+    # gen/useToolchainsPackage -------------------------------------------------
     useToolchainsPackageChanged = Signal(bool)
 
     @property
@@ -258,7 +259,7 @@ class Project(QObject):
         self.useToolchainsPackageChanged.emit(is_use_toolchains_package)
         self.saveTmp()
 
-    # gen/toolchains
+    # gen/toolchains -----------------------------------------------------------
     toolchainsChanged = Signal(str)
 
     @property
@@ -273,7 +274,7 @@ class Project(QObject):
         self.toolchainsChanged.emit(toolchains)
         self.saveTmp()
 
-    # gen/builder
+    # gen/builder --------------------------------------------------------------
     builderChanged = Signal(str)
 
     @property
@@ -288,7 +289,7 @@ class Project(QObject):
         self.builderChanged.emit(builder)
         self.saveTmp()
 
-    # gen/builderVersion
+    # gen/builderVersion -------------------------------------------------------
     builderVersionChanged = Signal(str)
 
     @property
@@ -303,7 +304,7 @@ class Project(QObject):
         self.builderVersionChanged.emit(version)
         self.saveTmp()
 
-    # gen/toolchainsVersion
+    # gen/toolchainsVersion ----------------------------------------------------
     toolchainsVersionChanged = Signal(str)
 
     @property
@@ -318,7 +319,22 @@ class Project(QObject):
         self.toolchainsVersionChanged.emit(version)
         self.saveTmp()
 
-    # gen/halVersion
+    # gen/hal ------------------------------------------------------------------
+    halChanged = Signal(str)
+
+    @property
+    def hal(self) -> str:
+        return self.__data.get("gen", {}).get("hal", "")
+
+    @hal.setter
+    def hal(self, hal: str):
+        if self.hal == hal:
+            return
+        self.__data.setdefault("gen", {})["hal"] = hal
+        self.halChanged.emit(hal)
+        self.saveTmp()
+
+    # gen/halVersion -----------------------------------------------------------
     halVersionChanged = Signal(str)
 
     @property
@@ -333,6 +349,7 @@ class Project(QObject):
         self.halVersionChanged.emit(version)
         self.saveTmp()
 
+    # ------------------------------------------------------------------------------------------------------------------
     reloaded = Signal()
 
     @property
@@ -356,7 +373,7 @@ class Project(QObject):
 
     @property
     def halDir(self) -> str:
-        return PACKAGE.path("hal", self.__summary.hal, self.halVersion)
+        return PACKAGE.path("hal", self.hal, self.halVersion)
 
     @property
     def toolchainsDir(self) -> str:
@@ -459,6 +476,23 @@ class Project(QObject):
                 self.modulesChanged.emit()
 
             self.saveTmp()
+
+    def isGenerateSettingValid(self) -> bool:
+        if not os.path.isdir(self.toolchainsDir):
+            return False
+        elif not os.path.isdir(self.halDir):
+            return False
+        elif self.builder == "":
+            return False
+        elif self.builderVersion == "":
+            return False
+
+        if (not converters.ishex(self.defaultHeapSize)) and converters.ishex(self.summary.defaultHeapSize):
+            return False
+        elif not converters.ishex(self.defaultStackSize) and converters.ishex(self.summary.defaultStackSize):
+            return False
+
+        return True
 
 
 PROJECT = Project()

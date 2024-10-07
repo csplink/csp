@@ -27,7 +27,7 @@ additionalProperties: false
 properties:
   version:
     type: string
-    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    pattern: "^(?:v|V)?\\d+\\.\\d+\\.\\d+$"
   name:
     type: string
     minLength: 1
@@ -47,7 +47,7 @@ properties:
     type: object
     additionalProperties: false
     properties:
-      copyLibrary:
+      copyHalLibrary:
         type: boolean
       linker:
         type: object
@@ -61,9 +61,12 @@ properties:
             pattern: "^0x[0-9A-Fa-f]+$"
       useToolchainsPackage:
         type: boolean
+      hal:
+        type: string
+        minLength: 1
       halVersion:
         type: string
-        pattern: "^v\\d+\\.\\d+\\.\\d+$"
+        pattern: "^(?:v|V)?\\d+\\.\\d+\\.\\d+$"
       builder:
         type: string
       builderVersion:
@@ -72,4 +75,4 @@ properties:
         type: string
       toolchainsVersion:
         type: string
-required: ["version", "name", "vendor", "targetChip"]
+required: [ "version", "name", "vendor", "targetChip" ]

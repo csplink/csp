@@ -24,15 +24,11 @@
 # 2024-07-20     xqyjlj       initial version
 #
 
-import os
-
 from PySide6.QtCore import Qt, QItemSelection
-# from PySide6.QtGui import QShowEvent
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
-from qfluentwidgets import (FlowLayout, ToolButton)
+from qfluentwidgets import (FlowLayout, MessageBox)
 
-from common import Style, Icon, Coder, PROJECT
-from dialogs import GenCodeDialog
+from common import Style, Icon, Coder, PROJECT, SIGNAL_BUS
 from utils import converters
 from widget import CHighlighter
 from .ui.code_view_ui import Ui_CodeView
@@ -56,54 +52,38 @@ class CodeView(Ui_CodeView, QWidget):
         layout.setVerticalSpacing(20)
         layout.setHorizontalSpacing(10)
 
-        self.genSettingsBtn = ToolButton()
-        self.genSettingsBtn.setIcon(Icon.EQUALIZER)
-        self.genSettingsBtn.pressed.connect(self.__on_genSettingsBtn_pressed)
-        layout.addWidget(self.genSettingsBtn)
-
         self.verticalLayout_cardWidget_file.insertLayout(0, layout)
 
         Style.CODE_VIEW.apply(self)
-
-    def __checkGenSetting(self) -> bool:
-        if not os.path.isdir(PROJECT.toolchainsDir):
-            return False
-        elif not os.path.isdir(PROJECT.halDir):
-            return False
-        elif PROJECT.builder == "":
-            return False
-        elif PROJECT.builderVersion == "":
-            return False
-
-        if (not converters.ishex(PROJECT.defaultHeapSize)) and converters.ishex(PROJECT.summary.defaultHeapSize):
-            return False
-        elif not converters.ishex(PROJECT.defaultStackSize) and converters.ishex(PROJECT.summary.defaultStackSize):
-            return False
-
-        return True
 
     def flush(self):
         self.fileTree.clear()
         self.plainTextEdit.clear()
 
-        if not self.__checkGenSetting():
-            dialog = GenCodeDialog(self, False)
-            if not dialog.exec():
-                return
+        if not PROJECT.isGenerateSettingValid():
+            title = self.tr('Error')
+            content = self.tr("The coder settings is invalid. Please check it")
+            message = MessageBox(title, content, self.window())
+            message.setContentCopyable(True)
+            message.cancelButton.setDisabled(True)
+            message.raise_()
+            message.exec()
+            SIGNAL_BUS.navigationRequested.emit('SettingView', 'GenerateSettingView')
+            return
 
         coder = Coder()
         self.codes = coder.dump(PROJECT.halDir)
-        tree = converters.paths2dict(self.codes)
+        tree = converters.paths2dict(list(self.codes.keys()))
 
-        def traverseTree(treeItem: dict, top_item: QTreeWidgetItem, path: str):
+        def traverseTree(treeItem: dict, topItem: QTreeWidgetItem, path: str):
             for k, v in treeItem.items():
                 if isinstance(v, dict):
-                    item = QTreeWidgetItem(top_item, [k])
+                    item = QTreeWidgetItem(topItem, [k])
                     item.setIcon(0, Icon.M_FOLDER_LIB.qicon())
                     traverseTree(v, item, f"{path}/{k}")
                     item.setExpanded(True)
                 else:
-                    item = QTreeWidgetItem(top_item, [k])
+                    item = QTreeWidgetItem(topItem, [k])
                     item.setData(0, Qt.ItemDataRole.StatusTipRole, f"{path}/{k}")
                     if k.lower().endswith(".h"):
                         item.setIcon(0, Icon.M_H.qicon())
@@ -111,12 +91,12 @@ class CodeView(Ui_CodeView, QWidget):
                         item.setIcon(0, Icon.M_C.qicon())
 
         for key, di in tree.get("core", {}).items():
-            top_level_item = QTreeWidgetItem([key])
-            top_level_item.setIcon(0, Icon.M_FOLDER_LIB.qicon())
-            top_level_item.setExpanded(True)
-            self.fileTree.addTopLevelItem(top_level_item)
-            traverseTree(di, top_level_item, f"core/{key}")
-            top_level_item.setExpanded(True)
+            topLevelItem = QTreeWidgetItem([key])
+            topLevelItem.setIcon(0, Icon.M_FOLDER_LIB.qicon())
+            topLevelItem.setExpanded(True)
+            self.fileTree.addTopLevelItem(topLevelItem)
+            traverseTree(di, topLevelItem, f"core/{key}")
+            topLevelItem.setExpanded(True)
 
     def __on_fileTree_selectionChanged(self, selected: QItemSelection, _: QItemSelection):
         indexes = selected.indexes()
@@ -126,7 +106,3 @@ class CodeView(Ui_CodeView, QWidget):
             if path != "None":
                 self.plainTextEdit.setPlainText(self.codes.get(path, ""))
                 self.highlighter = CHighlighter(self.plainTextEdit.document())
-
-    def __on_genSettingsBtn_pressed(self):
-        dialog = GenCodeDialog(self, False)
-        dialog.exec()

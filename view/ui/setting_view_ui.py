@@ -16,8 +16,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
-    QSizePolicy, QStackedWidget, QTreeWidgetItem, QVBoxLayout,
-    QWidget)
+    QSizePolicy, QTreeWidgetItem, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (SimpleCardWidget, TreeWidget)
 
@@ -45,20 +44,15 @@ class Ui_SettingView(object):
 
         self.horizontalLayout.addWidget(self.settingTreeCard)
 
-        self.frame_2 = SimpleCardWidget(SettingView)
-        self.frame_2.setObjectName(u"frame_2")
-        self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
-        self.verticalLayout = QVBoxLayout(self.frame_2)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.settingStackedWidget = QStackedWidget(self.frame_2)
-        self.settingStackedWidget.setObjectName(u"settingStackedWidget")
+        self.settingStackedWidgetCard = SimpleCardWidget(SettingView)
+        self.settingStackedWidgetCard.setObjectName(u"settingStackedWidgetCard")
+        self.settingStackedWidgetCard.setFrameShape(QFrame.StyledPanel)
+        self.settingStackedWidgetCard.setFrameShadow(QFrame.Raised)
+        self.settingStackedWidgetCardVerticalLayout = QVBoxLayout(self.settingStackedWidgetCard)
+        self.settingStackedWidgetCardVerticalLayout.setObjectName(u"settingStackedWidgetCardVerticalLayout")
+        self.settingStackedWidgetCardVerticalLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.verticalLayout.addWidget(self.settingStackedWidget)
-
-
-        self.horizontalLayout.addWidget(self.frame_2)
+        self.horizontalLayout.addWidget(self.settingStackedWidgetCard)
 
 
         self.retranslateUi(SettingView)

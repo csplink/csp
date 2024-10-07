@@ -26,14 +26,13 @@
 
 import os
 
-from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer
+from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer, Qt
 from PySide6.QtGui import QIcon, QDesktopServices
 from PySide6.QtWidgets import QHBoxLayout, QApplication, QMessageBox, QWidget
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton, SplashScreen, FluentIconBase, NavigationBarPushButton)
 
-from common import Icon, SETTINGS, SIGNAL_BUS
-from dialogs import GenCodeDialog, PackageInstallDialog
+from common import Icon, SETTINGS, SIGNAL_BUS, PROJECT, Coder
 from .chip_view import ChipView
 from .code_view import CodeView
 from .package_view import PackageView
@@ -111,8 +110,7 @@ class CustomTitleBar(MSFluentTitleBar):
         return menu
 
     def action_generateTriggered(self):
-        dialog = GenCodeDialog(self)
-        dialog.exec()
+        pass
 
 
 class MainWindow(MSFluentWindow):
@@ -139,8 +137,9 @@ class MainWindow(MSFluentWindow):
 
         self.barTitle.generateAction.triggered.connect(lambda: self.__on_generate_clicked())
         self.barTitle.aboutQtAction.triggered.connect(lambda: QMessageBox.aboutQt(self.window(), self.tr('About Qt')))
-        SIGNAL_BUS.navigationRequested.connect(self.__on_x_navigationRequested)
-        self.stackedWidget.currentChanged.connect(self.__on_stackedWidget_currentChanged)
+        SIGNAL_BUS.navigationRequested.connect(self.__on_x_navigationRequested, Qt.ConnectionType.QueuedConnection)
+        self.stackedWidget.currentChanged.connect(self.__on_stackedWidget_currentChanged,
+                                                  Qt.ConnectionType.QueuedConnection)
 
         # loop.exec()
         self.splashScreen.finish()
@@ -151,13 +150,18 @@ class MainWindow(MSFluentWindow):
         self.__addView(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
         self.__addView(self.codeView, Icon.CODE, self.tr('Code'), Icon.CODE)
 
-        self.__addView(self.packageView, Icon.BOOK_SHELF, self.tr('Package'), Icon.BOOK_SHELF,
-                       NavigationItemPosition.BOTTOM)
+        self.navigationInterface.addItem(routeKey='Generate', icon=Icon.FOLDER_TRANSFER, text=self.tr('Generate'),
+                                         onClick=self.__on_generate_clicked,
+                                         selectable=False,
+                                         position=NavigationItemPosition.BOTTOM)
 
         self.navigationInterface.addItem(routeKey='Sponsor', icon=Icon.MONEY, text=self.tr('Sponsor'),
                                          onClick=self.__on_sponsorKey_clicked,
                                          selectable=False,
                                          position=NavigationItemPosition.BOTTOM)
+
+        self.__addView(self.packageView, Icon.BOOK_SHELF, self.tr('Package'), Icon.BOOK_SHELF,
+                       NavigationItemPosition.BOTTOM)
         self.__addView(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING, NavigationItemPosition.BOTTOM)
         self.navigationInterface.setCurrentItem(self.chipView.objectName())
 
@@ -197,13 +201,26 @@ If you would like to support the development of csplink, you are encouraged to d
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))
 
     def __on_generate_clicked(self):
-        dialog = PackageInstallDialog(self)
-        dialog.exec()
+        if not PROJECT.isGenerateSettingValid():
+            title = self.tr('Error')
+            content = self.tr("The coder settings is invalid. Please check it")
+            message = MessageBox(title, content, self.window())
+            message.setContentCopyable(True)
+            message.cancelButton.setDisabled(True)
+            message.raise_()
+            message.exec()
+            SIGNAL_BUS.navigationRequested.emit('SettingView', 'GenerateSettingView')
+            return
+    
+        coder = Coder()
+        coder.generate(PROJECT.halDir)
 
-    def __on_x_navigationRequested(self, routeKey: str, _: str):
+    def __on_x_navigationRequested(self, routeKey: str, subKey: str):
         if routeKey in self.navigationInterface.items.keys():
-            self.navigationInterface.setCurrentItem(routeKey)
             self.switchTo(self.__viewMap[routeKey])
+            self.navigationInterface.setCurrentItem(routeKey)
+            if routeKey == 'SettingView' and len(subKey) > 0:
+                self.settingView.switchTo(subKey)
 
     def __on_stackedWidget_currentChanged(self, index: int):
         view = self.stackedWidget.widget(index)
