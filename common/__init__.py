@@ -29,23 +29,19 @@ from .database import Database, DATABASE
 from .icon import Icon
 from .package import Package, PACKAGE, PackageDescriptionType
 from .project import Project, PROJECT
+from .repository import Repository, RepositoryType, RepositorySocType
 from .settings import Settings, SETTINGS
 from .signal_bus import SignalBus, SIGNAL_BUS
 from .style import Style
 
 __all__ = [
     'Coder',
-    'Database',
-    'DATABASE',
+    'Database', 'DATABASE',
     'Icon',
-    'Package',
-    'PACKAGE',
-    'PackageDescriptionType',
-    'Project',
-    'PROJECT',
-    'Settings',
-    'SETTINGS',
-    "SignalBus",
-    "SIGNAL_BUS",
+    'Package', 'PACKAGE', 'PackageDescriptionType',
+    'Project', 'PROJECT',
+    'Repository', 'RepositoryType', 'RepositorySocType',
+    'Settings', 'SETTINGS',
+    "SignalBus", "SIGNAL_BUS",
     'Style',
 ]

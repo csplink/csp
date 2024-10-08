@@ -36,29 +36,6 @@ from .settings import SETTINGS
 class Database:
 
     @logger.catch(default=False)
-    def __checkRepository(self, repository: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-            jsonschema.validate(instance=repository, schema=schema)
-        return True
-
-    def getRepositoryByPath(self, path: str) -> dict:
-        if os.path.isfile(path):
-            with open(path, 'r', encoding='utf-8') as f:
-                repository = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkRepository(repository)
-            if succeed:
-                return repository
-            else:
-                return {}
-        else:
-            logger.error(f"{path} is not file!")
-            return {}
-
-    def getRepository(self) -> dict[str, dict[str, dict[str, dict[str, dict[str, dict]]]]]:
-        return self.getRepositoryByPath(os.path.join(SETTINGS.DATABASE_FOLDER, "repository.yml"))
-
-    @logger.catch(default=False)
     def checkSummary(self, summary: dict) -> bool:
         with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)

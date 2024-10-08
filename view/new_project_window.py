@@ -26,9 +26,10 @@
 
 import os
 
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout
-from qfluentwidgets import (FluentTitleBar)
+from qfluentwidgets import (FluentTitleBar, PushButton)
 from qframelesswindow import (FramelessWindow)
 
 from common import SETTINGS
@@ -40,6 +41,9 @@ class NewProjectView(Ui_NewProjectView, QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+
+        self.createBtn = PushButton(self.tr('Create'), self)
+        self.btnGroupHorizontalLayout.addWidget(self.createBtn, 0, Qt.AlignmentFlag.AlignRight)
 
         self.treeView.setFixedWidth(300)
         self.treeView.header().setVisible(False)

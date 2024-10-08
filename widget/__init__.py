@@ -24,45 +24,34 @@
 # 2024-07-01     xqyjlj        initial version
 #
 
-__all__ = []
-
-from .highlighter import BaseHighlighter, CHighlighter
-
-__all__ += ["BaseHighlighter", "CHighlighter"]
-
-from .packages import LQFP
-
-__all__ += ["LQFP"]
-
-from .settings import (ComboBoxPropertySettingCard, LineEditPropertySettingCard, SwitchPropertySettingCard,
-                       ToolButtonPropertySettingCard)
-
-__all__ += [
-    "ComboBoxPropertySettingCard",
-    "LineEditPropertySettingCard",
-    "SwitchPropertySettingCard",
-    "ToolButtonPropertySettingCard",
-]
-
 from .graphics_item_chip_body import GraphicsItemChipBody
 from .graphics_item_pin import GraphicsItemPin
 from .graphics_view_pan_zoom import GraphicsViewPanZoom
 from .grid_mode_io import GridModeIo
-# from .grid_mode_ip import GridModeIp
 from .grid_property_ip import GridPropertyIp
+from .highlighter import BaseHighlighter, CHighlighter
 from .list_contributors import ListContributors
+from .packages import LQFP
 from .plain_text_edit_code import PlainTextEditCode
+from .settings import (ComboBoxPropertySettingCard, LineEditPropertySettingCard, SwitchPropertySettingCard,
+                       ToolButtonPropertySettingCard)
 from .stacked_widget import StackedWidget
 from .tree_module import TreeModule
 
-__all__ += [
+__all__ = [
     "GraphicsItemChipBody",
     "GraphicsItemPin",
     "GraphicsViewPanZoom",
     "GridModeIo",
     "GridPropertyIp",
+    "BaseHighlighter", "CHighlighter",
     "ListContributors",
+    "LQFP",
     "PlainTextEditCode",
+    
+    "ComboBoxPropertySettingCard", "LineEditPropertySettingCard", "SwitchPropertySettingCard",
+    "ToolButtonPropertySettingCard",
+
     "StackedWidget",
     "TreeModule",
 ]

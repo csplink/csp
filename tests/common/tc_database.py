@@ -65,12 +65,10 @@ class DatabaseTest(unittest.TestCase):
                                 if ipName == "nil":
                                     continue
                                 ip = DATABASE.getIp(companyName, ipName)
-                                self.assertGreater(
-                                    len(ip),
-                                    0,
-                                    msg=
-                                    f'load failed in {companyName}/{seriesName}/{lineName}/{socName}/{groupName}/{groupName}/{moduleName}/{ipName}'
-                                )
+                                self.assertGreater(len(ip), 0,
+                                                   msg=
+                                                   f'load failed in {companyName}/{seriesName}/{lineName}/{socName}/{groupName}/{groupName}/{moduleName}/{ipName}'
+                                                   )
 
     def tearDown(self):
         pass

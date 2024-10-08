@@ -152,27 +152,22 @@ class PackageIndexType:
     def origin(self) -> dict[str, dict[str, dict[str, str]]]:
         return self.__data
 
+    def types(self) -> list[str]:
+        return list(self.__data.keys())
+
+    def items(self, kind: str) -> list[str]:
+        return list(self.__data.get(kind, {}).keys())
+
+    def versions(self, kind: str, name: str) -> list[str]:
+        return list(self.__data.get(kind, {}).get(name, {}).keys())
+
+    def path(self, kind: str, name: str, version: str) -> str:
+        return self.__data.get(kind, {}).get(name, {}).get(version, "")
+
 
 class Package:
     def __init__(self) -> None:
         self.__index = self.getPackageIndex()
-
-    @property
-    def types(self) -> list[str]:
-        return list(self.__index.origin.keys())
-
-    @property
-    def index(self) -> PackageIndexType:
-        return self.__index
-
-    def items(self, kind: str) -> list[str]:
-        return list(self.__index.origin.get(kind, {}).keys())
-
-    def versions(self, kind: str, name: str) -> list[str]:
-        return list(self.__index.origin.get(kind, {}).get(name, {}).keys())
-
-    def path(self, kind: str, name: str, version: str) -> str:
-        return self.__index.origin.get(kind, {}).get(name, {}).get(version, "")
 
     @logger.catch(default=False)
     def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
@@ -233,6 +228,10 @@ class Package:
     def getPackageIndex(self) -> PackageIndexType:
         # noinspection PyTypeChecker,PyArgumentList
         return self.__getPackageIndex()
+
+    @property
+    def index(self) -> PackageIndexType:
+        return self.__index
 
     def dump(self):
         return yaml.dump(self.__index.origin)
@@ -301,7 +300,7 @@ class Package:
         return True
 
     def uninstall(self, kind: str, name: str, version: str) -> bool:
-        path = self.path(kind, name, version)
+        path = self.index.path(kind, name, version)
         if os.path.isdir(path):
             shutil.rmtree(path)
         elif os.path.isfile(path):

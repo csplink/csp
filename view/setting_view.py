@@ -557,7 +557,7 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None or not PROJECT.useToolchainsPackage:
             return
 
-        toolchainsVersions = PACKAGE.versions('toolchains', PROJECT.toolchains)
+        toolchainsVersions = PACKAGE.index.versions('toolchains', PROJECT.toolchains)
         if len(toolchainsVersions) != 0:
             if PROJECT.toolchainsVersion == "":
                 PROJECT.toolchainsVersion = toolchainsVersions[-1]
@@ -591,7 +591,7 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None or not PROJECT.useToolchainsPackage:
             return
 
-        toolchainsPath = PACKAGE.path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
+        toolchainsPath = PACKAGE.index.path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
 
         self.toolchainsPathToolButtonSettingCard.setContent(toolchainsPath)
         self.toolchainsPathToolButtonSettingCard.contentLabel.setToolTip(toolchainsPath)
@@ -644,7 +644,7 @@ class GenerateSettingView(ScrollArea):
         if self.halGroup is None:
             return
 
-        halVersions = PACKAGE.versions('hal', PROJECT.hal)
+        halVersions = PACKAGE.index.versions('hal', PROJECT.hal)
         if len(halVersions) != 0:
             if PROJECT.halVersion == "":
                 PROJECT.halVersion = halVersions[-1]
@@ -678,7 +678,7 @@ class GenerateSettingView(ScrollArea):
         if self.halGroup is None:
             return
 
-        halPath = PACKAGE.path("hal", PROJECT.hal, PROJECT.halVersion)
+        halPath = PACKAGE.index.path("hal", PROJECT.hal, PROJECT.halVersion)
 
         self.halPathToolButtonSettingCard.setContent(halPath)
         self.halPathToolButtonSettingCard.contentLabel.setToolTip(halPath)

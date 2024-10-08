@@ -15,9 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialogButtonBox, QFrame,
-    QHeaderView, QSizePolicy, QSplitter, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
+    QSizePolicy, QSplitter, QVBoxLayout, QWidget)
 
 from qfluentwidgets import (SimpleCardWidget, TreeView)
 
@@ -55,11 +54,20 @@ class Ui_NewProjectView(object):
 
         self.verticalLayout.addWidget(self.splitter_2)
 
-        self.buttonBox = QDialogButtonBox(NewProjectView)
-        self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
+        self.btnGroup = QFrame(NewProjectView)
+        self.btnGroup.setObjectName(u"btnGroup")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btnGroup.sizePolicy().hasHeightForWidth())
+        self.btnGroup.setSizePolicy(sizePolicy)
+        self.btnGroup.setFrameShape(QFrame.NoFrame)
+        self.btnGroup.setFrameShadow(QFrame.Raised)
+        self.btnGroupHorizontalLayout = QHBoxLayout(self.btnGroup)
+        self.btnGroupHorizontalLayout.setObjectName(u"btnGroupHorizontalLayout")
+        self.btnGroupHorizontalLayout.setContentsMargins(0, 9, 0, 9)
 
-        self.verticalLayout.addWidget(self.buttonBox)
+        self.verticalLayout.addWidget(self.btnGroup)
 
 
         self.retranslateUi(NewProjectView)

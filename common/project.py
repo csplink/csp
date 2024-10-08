@@ -373,11 +373,11 @@ class Project(QObject):
 
     @property
     def halDir(self) -> str:
-        return PACKAGE.path("hal", self.hal, self.halVersion)
+        return PACKAGE.index.path("hal", self.hal, self.halVersion)
 
     @property
     def toolchainsDir(self) -> str:
-        return PACKAGE.path("toolchains", self.toolchains, self.toolchainsVersion)
+        return PACKAGE.index.path("toolchains", self.toolchains, self.toolchainsVersion)
 
     def load(self, path: str) -> bool:
         self.__valid = False

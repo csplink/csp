@@ -186,14 +186,15 @@ class Coder:
         for path, context in data.items():
             timePattern = r'\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b'  # YYYY-MM-DD HH:MM:SS
             genMd5 = hashlib.md5(re.sub(timePattern, '', context).encode('utf-8')).hexdigest()
+            path = f"{outputDir}/{path}"
             if os.path.isfile(path):
-                with open(f"{outputDir}/{path}", "r", encoding='utf-8') as file:
+                with open(path, "r", encoding='utf-8') as file:
                     fileContext = file.read()
                     fileMd5 = hashlib.md5(re.sub(timePattern, '', fileContext).encode('utf-8')).hexdigest()
             else:
                 fileMd5 = ""
             if genMd5 != fileMd5:
-                with open(f"{outputDir}/{path}", "w", encoding='utf-8') as file:
+                with open(path, "w", encoding='utf-8') as file:
                     file.write(context)
 
     def dump(self, packageDir: str) -> dict:

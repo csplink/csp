@@ -31,10 +31,10 @@ import jsonschema
 import yaml
 from loguru import logger
 
-from common import SETTINGS
+from .settings import SETTINGS
 
 
-class RepositoryUnitType:
+class RepositorySocType:
     class CurrentType:
 
         def __init__(self, data: dict):
@@ -119,7 +119,7 @@ class RepositoryUnitType:
     @property
     def current(self) -> CurrentType:
         if self.__current is None:
-            self.__current = RepositoryUnitType.CurrentType(self.__data.get("current", {}))
+            self.__current = RepositorySocType.CurrentType(self.__data.get("current", {}))
         return self.__current
 
     @property
@@ -149,13 +149,13 @@ class RepositoryUnitType:
     @property
     def temperature(self) -> TemperatureType:
         if self.__temperature is None:
-            self.__temperature = RepositoryUnitType.TemperatureType(self.__data.get("temperature", {}))
+            self.__temperature = RepositorySocType.TemperatureType(self.__data.get("temperature", {}))
         return self.__temperature
 
     @property
     def voltage(self) -> VoltageType:
         if self.__voltage is None:
-            self.__voltage = RepositoryUnitType.VoltageType(self.__data.get("voltage", {}))
+            self.__voltage = RepositorySocType.VoltageType(self.__data.get("voltage", {}))
         return self.__voltage
 
 
@@ -170,8 +170,33 @@ class RepositoryType:
     def origin(self) -> dict[str, dict[str, dict[str, dict[str, dict[str, dict]]]]]:
         return self.__data
 
+    def types(self) -> list[str]:
+        return list(self.__data.keys())
+
+    def vendors(self, kind: str) -> list[str]:
+        return list(self.__data.get(kind, {}).keys())
+
+    def series(self, kind: str, vendor: str) -> list[str]:
+        return list(self.__data.get(kind, {}).get(vendor, {}).keys())
+
+    def lines(self, kind: str, vendor: str, series: str) -> list[str]:
+        return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).keys())
+
+    def names(self, kind: str, vendor: str, series: str, line: str) -> list[str]:
+        return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).get(line, {}).keys())
+
+    def __info(self, kind: str, vendor: str, series: str, line: str, name: str) -> dict:
+        return self.__data.get(kind, {}).get(vendor, {}).get(series, {}).get(line, {}).get(name, {})
+
+    def soc(self, kind: str, vendor: str, series: str, line: str, name: str) -> RepositorySocType:
+        return RepositorySocType(self.__info(kind, vendor, series, line, name))
+
 
 class Repository:
+
+    def __init__(self):
+        self.__repository = self.getRepository()
+
     @logger.catch(default=False)
     def __checkRepository(self, repository: dict) -> bool:
         with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
@@ -197,3 +222,7 @@ class Repository:
     def getRepository(self) -> RepositoryType:
         # noinspection PyTypeChecker,PyArgumentList
         return self.__getRepository()
+
+    @property
+    def repository(self) -> RepositoryType:
+        return self.__repository
