@@ -99,14 +99,39 @@ class RepositorySocType:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, data: dict):
+    def __init__(self, data: dict, kind: str, vendor: str, series: str, line: str, name: str):
         self.__data = data
         self.__current = None
         self.__temperature = None
         self.__voltage = None
+        self.__kind = kind
+        self.__vendor = vendor
+        self.__series = series
+        self.__line = line
+        self.__name = name
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2)
+
+    @property
+    def kind(self) -> str:
+        return self.__kind
+
+    @property
+    def vendor(self) -> str:
+        return self.__vendor
+
+    @property
+    def series(self) -> str:
+        return self.__series
+
+    @property
+    def line(self) -> str:
+        return self.__line
+
+    @property
+    def name(self) -> str:
+        return self.__name
 
     @property
     def origin(self) -> dict:
@@ -162,6 +187,7 @@ class RepositorySocType:
 class RepositoryType:
     def __init__(self, data: dict):
         self.__data = data
+        self.__socs = {}
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2)
@@ -189,7 +215,20 @@ class RepositoryType:
         return self.__data.get(kind, {}).get(vendor, {}).get(series, {}).get(line, {}).get(name, {})
 
     def soc(self, kind: str, vendor: str, series: str, line: str, name: str) -> RepositorySocType:
-        return RepositorySocType(self.__info(kind, vendor, series, line, name))
+        return RepositorySocType(self.__info(kind, vendor, series, line, name), kind, vendor, series, line, name)
+
+    def socs(self) -> dict[str, RepositorySocType]:
+        if len(self.__socs) != 0:
+            return self.__socs
+
+        vendors = self.__data.get('soc', {})
+        for vendor, vendorItem in vendors.items():
+            for series, seriesItem in vendorItem.items():
+                for line, lineItem in seriesItem.items():
+                    for soc, socItem in lineItem.items():
+                        self.__socs[soc] = RepositorySocType(socItem, 'soc', vendor, series, line, soc)
+
+        return self.__socs
 
 
 class Repository:
