@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
-import os
-import shutil
-
 # Licensed under the GNU General Public License v. 3 (the "License")
 # You may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -26,6 +23,10 @@ import shutil
 # ------------   ----------   -----------------------------------------------
 # 2024-08-31     xqyjlj       initial version
 #
+
+import os
+import shutil
+
 import filetype
 import requests
 import yaml
@@ -61,6 +62,7 @@ for contributor in contributors:
     file = f"{avatarFolder}/{contributor['id']}{extension}"
     with open(file, 'wb') as fp:
         fp.write(response.content)
+    print(f"Author: {contributor['login']}, Contributions: {contributor['contributions']}")
     contributorList.append({
         "name": contributor["login"],
         "avatar": f"avatar/{os.path.basename(file)}",

@@ -29,7 +29,7 @@ import os
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout
-from qfluentwidgets import (FluentTitleBar, PushButton)
+from qfluentwidgets import (FluentTitleBar, PushButton, TabCloseButtonDisplayMode, FluentIconBase)
 from qframelesswindow import (FramelessWindow)
 
 from common import SETTINGS
@@ -42,15 +42,33 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         super().__init__(parent=parent)
         self.setupUi(self)
 
+        self.tabBar.setAddButtonVisible(False)
+        self.tabBar.setCloseButtonDisplayMode(TabCloseButtonDisplayMode.NEVER)
+
         self.createBtn = PushButton(self.tr('Create'), self)
         self.btnGroupHorizontalLayout.addWidget(self.createBtn, 0, Qt.AlignmentFlag.AlignRight)
 
-        self.treeView.setFixedWidth(300)
         self.treeView.header().setVisible(False)
 
+        self.mainSplitter.setSizes([100, 600])
+        self.mainSplitter.setCollapsible(0, False)
+        self.mainSplitter.setCollapsible(1, False)
         self.socSplitter.setSizes([200, 100])
         self.socSplitter.setCollapsible(0, False)
         self.socSplitter.setCollapsible(1, False)
+
+        self.tableView.setBorderVisible(True)
+        self.tableView.setBorderRadius(8)
+        self.tableView.setSortingEnabled(True)
+
+    def addSubInterface(self, interface: QWidget, icon: FluentIconBase, text: str):
+        self.stackedWidget.addWidget(interface)
+        self.tabBar.addTab(
+            routeKey=interface.objectName(),
+            text=text,
+            icon=icon,
+            onClick=lambda: self.stackedWidget.setCurrentWidget(interface)
+        )
 
 
 class NewProjectWindow(FramelessWindow):

@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QSplitter" name="splitter_2">
+    <widget class="QSplitter" name="mainSplitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -24,23 +24,58 @@
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
-      <widget class="SimpleCardWidget" name="socInfoCard">
+      <widget class="QFrame" name="socInfoCard">
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="socInfoCardVerticalLayout"/>
+       <layout class="QVBoxLayout" name="socInfoCardVerticalLayout">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+        <item>
+         <widget class="TabBar" name="tabBar"/>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="stackedWidget"/>
+        </item>
+       </layout>
       </widget>
-      <widget class="SimpleCardWidget" name="socTableCard">
+      <widget class="QFrame" name="socTableCard">
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QVBoxLayout" name="socTableCardVerticalLayout"/>
+       <layout class="QVBoxLayout" name="socTableCardVerticalLayout">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
+        <item>
+         <widget class="TableView" name="tableView"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </widget>
@@ -84,8 +119,13 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>QFrame</extends>
+   <class>TableView</class>
+   <extends>QTableView</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>TabBar</class>
+   <extends>QScrollArea</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
   </customwidget>

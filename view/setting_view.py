@@ -177,14 +177,14 @@ class SystemSettingView(ScrollArea):
                                       self.tr('Open help page'), Icon.QUESTION,
                                       self.tr('Help'),
                                       self.tr(
-                                          'Discover new features and learn useful tips about csp'),
+                                          'Discover new features and learn useful tips about CSP'),
                                       group)
 
         self.feedbackCard = PrimaryPushSettingCard(self.tr('Provide feedback'),
                                                    Icon.FEEDBACK,
                                                    self.tr('Provide feedback'),
                                                    self.tr(
-                                                       'Help us improve csp by providing feedback'),
+                                                       'Help us improve CSP by providing feedback'),
                                                    group)
         self.feedbackCard.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(SETTINGS.FEEDBACK_URL)))
 
@@ -358,7 +358,7 @@ class GenerateSettingView(ScrollArea):
 
         # --------------------------------------------------------------------------------------------------------------
         self.defaultHeapLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
-                                                                   title=self.tr("Default heap size"),
+                                                                   title=self.tr("Default Heap Size"),
                                                                    value=defaultHeapSize,
                                                                    content=defaultHeapSize,
                                                                    validator=R"(^0x[0-9A-Fa-f]+$)",
@@ -367,7 +367,7 @@ class GenerateSettingView(ScrollArea):
         PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
         # --------------------------------------------------------------------------------------------------------------
         self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
-                                                                    title=self.tr("Default stack size"),
+                                                                    title=self.tr("Default Stack Size"),
                                                                     value=defaultStackSize,
                                                                     content=defaultStackSize,
                                                                     validator=R"(^0x[0-9A-Fa-f]+$)",
@@ -388,7 +388,7 @@ class GenerateSettingView(ScrollArea):
 
         # --------------------------------------------------------------------------------------------------------------
         self.copyHalLibrarySwitchSettingCard = SwitchPropertySettingCard(icon=Icon.CHECKBOX_MULTIPLE,
-                                                                         title=self.tr("Copy hal library"),
+                                                                         title=self.tr("Copy Hal Library"),
                                                                          value=PROJECT.copyHalLibrary,
                                                                          content=self.tr(
                                                                              "Copy the hal library files to the project directory"),

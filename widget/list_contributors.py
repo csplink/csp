@@ -88,7 +88,7 @@ class ListContributors(Ui_ListContributors, QWidget):
         menu.addWidget(card, selectable=False)
 
         menu.addSeparator()
-        action = Action(Icon.GITHUB, self.tr('Open github url'))
+        action = Action(Icon.GITHUB, self.tr('Open Github Url'))
         action.setProperty("url", contributor["html_url"])
         action.triggered.connect(self.__on_githubAction_triggered)
         menu.addAction(action)

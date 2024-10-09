@@ -101,7 +101,7 @@ class CustomTitleBar(MSFluentTitleBar):
 
         self.aboutQtAction = Action(self.tr('About Qt'))
         self.aboutAction = Action(self.tr('About'))
-        self.openSourceLicenseAction = Action(self.tr('Open source license'))
+        self.openSourceLicenseAction = Action(self.tr('Open Source License'))
         menu.addAction(self.aboutQtAction)
         menu.addAction(self.aboutAction)
         menu.addSeparator()
@@ -121,7 +121,7 @@ class MainWindow(MSFluentWindow):
 
         self.__initWindow()
 
-        self.chipView = ChipView(self)
+        self.socView = ChipView(self)
 
         # ugly, because when opengl is created, the window will automatically hide
         self.show()
@@ -147,7 +147,7 @@ class MainWindow(MSFluentWindow):
         # self.showMaximized()
 
     def __initNavigation(self):
-        self.__addView(self.chipView, Icon.CPU, self.tr('Chip'), Icon.CPU)
+        self.__addView(self.socView, Icon.CPU, self.tr('SOC'), Icon.CPU)
         self.__addView(self.codeView, Icon.CODE, self.tr('Code'), Icon.CODE)
 
         self.navigationInterface.addItem(routeKey='Generate', icon=Icon.FOLDER_TRANSFER, text=self.tr('Generate'),
@@ -163,7 +163,7 @@ class MainWindow(MSFluentWindow):
         self.__addView(self.packageView, Icon.BOOK_SHELF, self.tr('Package'), Icon.BOOK_SHELF,
                        NavigationItemPosition.BOTTOM)
         self.__addView(self.settingView, Icon.SETTING, self.tr('Settings'), Icon.SETTING, NavigationItemPosition.BOTTOM)
-        self.navigationInterface.setCurrentItem(self.chipView.objectName())
+        self.navigationInterface.setCurrentItem(self.socView.objectName())
 
     def __initWindow(self):
         self.barTitle = CustomTitleBar(self)
@@ -203,7 +203,7 @@ If you would like to support the development of csplink, you are encouraged to d
     def __on_generate_clicked(self):
         if not PROJECT.isGenerateSettingValid():
             title = self.tr('Error')
-            content = self.tr("The coder settings is invalid. Please check it")
+            content = self.tr("The coder settings is invalid. Please check it.")
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
             message.cancelButton.setDisabled(True)
@@ -211,7 +211,7 @@ If you would like to support the development of csplink, you are encouraged to d
             message.exec()
             SIGNAL_BUS.navigationRequested.emit('SettingView', 'GenerateSettingView')
             return
-    
+
         coder = Coder()
         coder.generate(PROJECT.halDir)
 

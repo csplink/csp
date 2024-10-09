@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
-    QSizePolicy, QSplitter, QVBoxLayout, QWidget)
+    QSizePolicy, QSplitter, QStackedWidget, QVBoxLayout,
+    QWidget)
 
-from qfluentwidgets import (SimpleCardWidget, TreeView)
+from qfluentwidgets import (TabBar, TableView, TreeView)
 
 class Ui_NewProjectView(object):
     def setupUi(self, NewProjectView):
@@ -27,32 +28,49 @@ class Ui_NewProjectView(object):
         NewProjectView.resize(1098, 698)
         self.verticalLayout = QVBoxLayout(NewProjectView)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.splitter_2 = QSplitter(NewProjectView)
-        self.splitter_2.setObjectName(u"splitter_2")
-        self.splitter_2.setOrientation(Qt.Horizontal)
-        self.treeView = TreeView(self.splitter_2)
+        self.mainSplitter = QSplitter(NewProjectView)
+        self.mainSplitter.setObjectName(u"mainSplitter")
+        self.mainSplitter.setOrientation(Qt.Horizontal)
+        self.treeView = TreeView(self.mainSplitter)
         self.treeView.setObjectName(u"treeView")
-        self.splitter_2.addWidget(self.treeView)
-        self.socSplitter = QSplitter(self.splitter_2)
+        self.mainSplitter.addWidget(self.treeView)
+        self.socSplitter = QSplitter(self.mainSplitter)
         self.socSplitter.setObjectName(u"socSplitter")
         self.socSplitter.setOrientation(Qt.Vertical)
-        self.socInfoCard = SimpleCardWidget(self.socSplitter)
+        self.socInfoCard = QFrame(self.socSplitter)
         self.socInfoCard.setObjectName(u"socInfoCard")
-        self.socInfoCard.setFrameShape(QFrame.StyledPanel)
+        self.socInfoCard.setFrameShape(QFrame.NoFrame)
         self.socInfoCard.setFrameShadow(QFrame.Raised)
         self.socInfoCardVerticalLayout = QVBoxLayout(self.socInfoCard)
         self.socInfoCardVerticalLayout.setObjectName(u"socInfoCardVerticalLayout")
+        self.socInfoCardVerticalLayout.setContentsMargins(9, 9, 9, 9)
+        self.tabBar = TabBar(self.socInfoCard)
+        self.tabBar.setObjectName(u"tabBar")
+
+        self.socInfoCardVerticalLayout.addWidget(self.tabBar)
+
+        self.stackedWidget = QStackedWidget(self.socInfoCard)
+        self.stackedWidget.setObjectName(u"stackedWidget")
+
+        self.socInfoCardVerticalLayout.addWidget(self.stackedWidget)
+
         self.socSplitter.addWidget(self.socInfoCard)
-        self.socTableCard = SimpleCardWidget(self.socSplitter)
+        self.socTableCard = QFrame(self.socSplitter)
         self.socTableCard.setObjectName(u"socTableCard")
-        self.socTableCard.setFrameShape(QFrame.StyledPanel)
+        self.socTableCard.setFrameShape(QFrame.NoFrame)
         self.socTableCard.setFrameShadow(QFrame.Raised)
         self.socTableCardVerticalLayout = QVBoxLayout(self.socTableCard)
         self.socTableCardVerticalLayout.setObjectName(u"socTableCardVerticalLayout")
-        self.socSplitter.addWidget(self.socTableCard)
-        self.splitter_2.addWidget(self.socSplitter)
+        self.socTableCardVerticalLayout.setContentsMargins(9, 9, 9, 9)
+        self.tableView = TableView(self.socTableCard)
+        self.tableView.setObjectName(u"tableView")
 
-        self.verticalLayout.addWidget(self.splitter_2)
+        self.socTableCardVerticalLayout.addWidget(self.tableView)
+
+        self.socSplitter.addWidget(self.socTableCard)
+        self.mainSplitter.addWidget(self.socSplitter)
+
+        self.verticalLayout.addWidget(self.mainSplitter)
 
         self.btnGroup = QFrame(NewProjectView)
         self.btnGroup.setObjectName(u"btnGroup")

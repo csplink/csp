@@ -57,16 +57,10 @@ if len(exes) > 0:
         srcFiles.append(file)
 
     for lang in languages:
-        for file in srcFiles:
-            name = os.path.basename(file)
-            if name.endswith(".ui"):
-                folder = os.path.dirname(os.path.dirname(file))
-            else:
-                folder = os.path.dirname(file)
-            folder = os.path.join(folder, "i18n")
-            if not os.path.isdir(folder):
-                os.makedirs(folder)
-            tsFile = os.path.join(folder, f"{os.path.basename(file)}.{lang}.ts")
-            subprocess.call([exe, file, '-ts', tsFile])
+        tsFile = os.path.join(rootDir, "resource", "i18n", f"csplink.{lang}.ts")
+        if not os.path.isdir(os.path.dirname(tsFile)):
+            os.makedirs(os.path.dirname(tsFile))
+        subprocess.call([exe, '-no-obsolete', '-source-language', 'en_US', '-target-language', lang] + srcFiles +
+                        ['-ts', tsFile])
 else:
     print("can not find lupdate")

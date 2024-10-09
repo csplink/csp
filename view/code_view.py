@@ -62,7 +62,7 @@ class CodeView(Ui_CodeView, QWidget):
 
         if not PROJECT.isGenerateSettingValid():
             title = self.tr('Error')
-            content = self.tr("The coder settings is invalid. Please check it")
+            content = self.tr("The coder settings is invalid. Please check it.")
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
             message.cancelButton.setDisabled(True)

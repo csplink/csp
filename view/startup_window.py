@@ -49,12 +49,12 @@ class StartupView(Ui_StartupView, QWidget):
         self.__initMore()
 
     def __initCardCommand(self):
-        self.cardCommand.setTitle(self.tr("Command"))
-        self.newChipProjectBtn = PushButton(self.tr("New Chip Project"))
+        self.cardCommand.setTitle(self.tr("I Need To:"))
+        self.newSocProjectBtn = PushButton(self.tr("New SOC Project"))
         self.openProjectBtn = PushButton(self.tr("Open Project"))
         self.cardCommand.viewLayout.setContentsMargins(30, 30, 30, 30)
         self.cardCommand.viewLayout.setDirection(QBoxLayout.Direction.TopToBottom)
-        self.cardCommand.viewLayout.addWidget(self.newChipProjectBtn)
+        self.cardCommand.viewLayout.addWidget(self.newSocProjectBtn)
         self.cardCommand.viewLayout.addWidget(self.openProjectBtn)
 
     def __initContributors(self):
@@ -63,7 +63,7 @@ class StartupView(Ui_StartupView, QWidget):
         self.cardContributors.viewLayout.addWidget(self.listContributors)
 
     def __initProjectList(self):
-        self.cardProjectList.setTitle(self.tr("Project List"))
+        self.cardProjectList.setTitle(self.tr("Recent Opened Projects"))
 
     def __initMore(self):
         self.cardMore.setTitle(self.tr("More"))
@@ -79,7 +79,7 @@ class StartupWindow(FramelessWindow):
         self.view = StartupView()
         self.vBoxLayout.addWidget(self.view)
 
-        self.view.newChipProjectBtn.pressed.connect(self.__on_newChipProjectBtn_pressed)
+        self.view.newSocProjectBtn.pressed.connect(self.__on_newSocProjectBtn_pressed)
         self.view.openProjectBtn.pressed.connect(self.__on_openProjectBtn_pressed)
 
         self.__initWindow()
@@ -95,7 +95,7 @@ class StartupWindow(FramelessWindow):
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
-    def __on_newChipProjectBtn_pressed(self):
+    def __on_newSocProjectBtn_pressed(self):
         pass
 
     def __on_openProjectBtn_pressed(self):

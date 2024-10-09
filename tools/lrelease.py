@@ -42,10 +42,11 @@ else:
 if len(exes) > 0:
     exe = exes[0]
     for lang in languages:
-        tsFiles = glob.glob(f"{rootDir}/**/*.{lang}.ts", recursive=True)
+        tsFile = os.path.join(rootDir, "resource", "i18n", f"csplink.{lang}.ts")
+        assert os.path.isfile(tsFile), f'{tsFile} is not exists'
         qmFile = os.path.join(rootDir, "resource", "i18n", f"csplink.{lang}.qm")
         if not os.path.isdir(os.path.dirname(qmFile)):
             os.makedirs(os.path.dirname(qmFile))
-        subprocess.call([exe] + tsFiles + ['-qm', qmFile])
+        subprocess.call([exe, tsFile, '-qm', qmFile])
 else:
     print("can not find lrelease")
