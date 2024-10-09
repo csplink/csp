@@ -27,9 +27,8 @@
 import os
 
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QWidget, QBoxLayout, QHBoxLayout, QFileDialog
-from qfluentwidgets import (PushButton, FluentTitleBar)
-from qframelesswindow import (FramelessWindow)
+from PySide6.QtWidgets import QApplication, QWidget, QBoxLayout, QFileDialog
+from qfluentwidgets import (PushButton, MSFluentWindow)
 
 from common import SETTINGS, PROJECT
 from widget import ListContributors
@@ -69,15 +68,16 @@ class StartupView(Ui_StartupView, QWidget):
         self.cardMore.setTitle(self.tr("More"))
 
 
-class StartupWindow(FramelessWindow):
+class StartupWindow(MSFluentWindow):
 
     def __init__(self):
         super().__init__()
-        self.setTitleBar(FluentTitleBar(self))
-        self.vBoxLayout = QHBoxLayout(self)
-        self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
+
+        self.navigationInterface.hide()
+        self.stackedWidget.hide()
+
         self.view = StartupView()
-        self.vBoxLayout.addWidget(self.view)
+        self.hBoxLayout.addWidget(self.view)
 
         self.view.newSocProjectBtn.pressed.connect(self.__on_newSocProjectBtn_pressed)
         self.view.openProjectBtn.pressed.connect(self.__on_openProjectBtn_pressed)
@@ -88,8 +88,9 @@ class StartupWindow(FramelessWindow):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))
         self.setWindowTitle('CSPLink')
-        self.titleBar.hBoxLayout.insertSpacing(0, 20)
-        self.titleBar.hBoxLayout.insertSpacing(2, 2)
+
+        self.updateFrameless()
+        self.setMicaEffectEnabled(False)
 
         desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()

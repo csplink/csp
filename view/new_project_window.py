@@ -28,12 +28,27 @@ import os
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout
-from qfluentwidgets import (FluentTitleBar, PushButton, TabCloseButtonDisplayMode, FluentIconBase)
-from qframelesswindow import (FramelessWindow)
+from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout
+from qfluentwidgets import (PushButton, TabCloseButtonDisplayMode, FluentIconBase, MSFluentWindow, TextEdit)
 
-from common import SETTINGS
+from common import SETTINGS, Icon
 from .ui.new_project_view_ui import Ui_NewProjectView
+
+
+class FeatureView(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+
+        self.Icon = None
+        self.mainVLayout = QVBoxLayout(self)
+        self.mainVLayout.setContentsMargins(0, 0, 0, 0)
+        self.infoHLayout = QHBoxLayout()
+
+        self.textBrowser = TextEdit(self)
+        self.textBrowser.setReadOnly(True)
+    
+        self.mainVLayout.addLayout(self.infoHLayout)
+        self.mainVLayout.addWidget(self.textBrowser)
 
 
 class NewProjectView(Ui_NewProjectView, QWidget):
@@ -61,25 +76,28 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         self.tableView.setBorderRadius(8)
         self.tableView.setSortingEnabled(True)
 
+        self.featureView = FeatureView(self)
+
+        self.addSubInterface(self.featureView, Icon.FOLDER, self.tr('Feature'))
+
     def addSubInterface(self, interface: QWidget, icon: FluentIconBase, text: str):
         self.stackedWidget.addWidget(interface)
-        self.tabBar.addTab(
-            routeKey=interface.objectName(),
-            text=text,
-            icon=icon,
-            onClick=lambda: self.stackedWidget.setCurrentWidget(interface)
-        )
+        self.tabBar.addTab(routeKey=interface.objectName(),
+                           text=text,
+                           icon=icon,
+                           onClick=lambda: self.stackedWidget.setCurrentWidget(interface))
 
 
-class NewProjectWindow(FramelessWindow):
+class NewProjectWindow(MSFluentWindow):
 
     def __init__(self):
         super().__init__()
-        self.setTitleBar(FluentTitleBar(self))
-        self.vBoxLayout = QHBoxLayout(self)
-        self.vBoxLayout.setContentsMargins(0, 48, 0, 0)
+
+        self.navigationInterface.hide()
+        self.stackedWidget.hide()
+
         self.view = NewProjectView()
-        self.vBoxLayout.addWidget(self.view)
+        self.hBoxLayout.addWidget(self.view)
 
         self.__initWindow()
         self.showMaximized()
@@ -88,8 +106,9 @@ class NewProjectWindow(FramelessWindow):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))
         self.setWindowTitle('CSPLink')
-        self.titleBar.hBoxLayout.insertSpacing(0, 20)
-        self.titleBar.hBoxLayout.insertSpacing(2, 2)
+
+        self.updateFrameless()
+        self.setMicaEffectEnabled(False)
 
         desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()

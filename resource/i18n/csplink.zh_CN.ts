@@ -418,7 +418,7 @@ If you would like to support the development of csplink, you are encouraged to d
 <context>
     <name>NewProjectView</name>
     <message>
-        <location filename="../../view/new_project_window.py" line="45"/>
+        <location filename="../../view/new_project_window.py" line="48"/>
         <source>Create</source>
         <translation>创建</translation>
     </message>
