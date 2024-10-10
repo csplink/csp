@@ -70,7 +70,7 @@ class RepositoryTest(unittest.TestCase):
                                 self.assertGreater(soc.voltage.max, 0, msg='load failed.')
                                 self.assertGreater(soc.voltage.min, 0, msg='load failed.')
 
-        self.assertGreater(len(repo.socs()), 0, msg='load failed.')
+        self.assertGreater(len(repo.allSoc()), 0, msg='load failed.')
 
     def tearDown(self):
         pass

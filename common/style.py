@@ -38,6 +38,7 @@ class Style(StyleSheetBase, Enum):
     CHIP_VIEW = "chip_view"
     CODE_VIEW = "code_view"
     GRID_PROPERTY_IP_COMBOBOX = "grid_property_ip.ComboBox"
+    NEW_PROJECT_WINDOW = "new_project_window"
     PACKAGE_VIEW = "package_view"
     PLAIN_TEXT_EDIT_CODE = "plain_text_edit_code"
     SETTING_VIEW = "setting_view"

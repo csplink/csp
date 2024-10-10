@@ -1,0 +1,11 @@
+TextBrowser#readmeTextBrowser {
+    background-color: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5442);
+    border-radius: 5px;
+    /* font: 14px "Segoe UI", "Microsoft YaHei"; */
+    padding: 2px 3px 2px 8px;
+    color: white;
+    selection-background-color: --ThemeColorPrimary;
+    selection-color: black;
+}

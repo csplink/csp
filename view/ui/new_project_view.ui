@@ -45,7 +45,7 @@
          <number>9</number>
         </property>
         <item>
-         <widget class="TabBar" name="tabBar"/>
+         <widget class="Pivot" name="tabBar"/>
         </item>
         <item>
          <widget class="QStackedWidget" name="stackedWidget"/>
@@ -124,8 +124,8 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>TabBar</class>
-   <extends>QScrollArea</extends>
+   <class>Pivot</class>
+   <extends>QWidget</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
   </customwidget>

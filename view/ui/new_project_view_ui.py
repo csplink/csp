@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QSizePolicy, QSplitter, QStackedWidget, QVBoxLayout,
     QWidget)
 
-from qfluentwidgets import (TabBar, TableView, TreeView)
+from qfluentwidgets import (Pivot, TableView, TreeView)
 
 class Ui_NewProjectView(object):
     def setupUi(self, NewProjectView):
@@ -44,7 +44,7 @@ class Ui_NewProjectView(object):
         self.socInfoCardVerticalLayout = QVBoxLayout(self.socInfoCard)
         self.socInfoCardVerticalLayout.setObjectName(u"socInfoCardVerticalLayout")
         self.socInfoCardVerticalLayout.setContentsMargins(9, 9, 9, 9)
-        self.tabBar = TabBar(self.socInfoCard)
+        self.tabBar = Pivot(self.socInfoCard)
         self.tabBar.setObjectName(u"tabBar")
 
         self.socInfoCardVerticalLayout.addWidget(self.tabBar)

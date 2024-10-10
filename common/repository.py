@@ -187,7 +187,30 @@ class RepositorySocType:
 class RepositoryType:
     def __init__(self, data: dict):
         self.__data = data
-        self.__socs = {}
+        self.__allTypes = []
+        self.__allVendors = []
+        self.__allSeries = []
+        self.__allLines = []
+        self.__allSoc = {}
+        self.__allCores = []
+        self.__allPackage = []
+
+        for kind, kindItem in self.__data.items():
+            self.__allTypes.append(kind)
+            for vendor, vendorItem in kindItem.items():
+                self.__allVendors.append(vendor)
+                for series, seriesItem in vendorItem.items():
+                    self.__allSeries.append(series)
+                    for line, lineItem in seriesItem.items():
+                        self.__allLines.append(line)
+                        for soc, socItem in lineItem.items():
+                            if kind == 'soc':
+                                self.__allSoc[soc] = RepositorySocType(socItem, kind, vendor, series, line, soc)
+                                self.__allCores.append(self.__allSoc[soc].core)
+                                self.__allPackage.append(self.__allSoc[soc].package)
+
+        self.__allCores = list(set(self.__allCores))
+        self.__allPackage = list(set(self.__allPackage))
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2)
@@ -197,16 +220,32 @@ class RepositoryType:
         return self.__data
 
     def types(self) -> list[str]:
-        return list(self.__data.keys())
+        return self.__allTypes
+
+    @property
+    def allTypes(self) -> list[str]:
+        return self.types()
 
     def vendors(self, kind: str) -> list[str]:
         return list(self.__data.get(kind, {}).keys())
 
+    @property
+    def allVendors(self) -> list[str]:
+        return self.__allVendors
+
     def series(self, kind: str, vendor: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).keys())
 
+    @property
+    def allSeries(self) -> list[str]:
+        return self.__allSeries
+
     def lines(self, kind: str, vendor: str, series: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).keys())
+
+    @property
+    def allLines(self) -> list[str]:
+        return self.__allLines
 
     def names(self, kind: str, vendor: str, series: str, line: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).get(line, {}).keys())
@@ -217,18 +256,17 @@ class RepositoryType:
     def soc(self, kind: str, vendor: str, series: str, line: str, name: str) -> RepositorySocType:
         return RepositorySocType(self.__info(kind, vendor, series, line, name), kind, vendor, series, line, name)
 
-    def socs(self) -> dict[str, RepositorySocType]:
-        if len(self.__socs) != 0:
-            return self.__socs
+    @property
+    def allSoc(self) -> dict[str, RepositorySocType]:
+        return self.__allSoc
 
-        vendors = self.__data.get('soc', {})
-        for vendor, vendorItem in vendors.items():
-            for series, seriesItem in vendorItem.items():
-                for line, lineItem in seriesItem.items():
-                    for soc, socItem in lineItem.items():
-                        self.__socs[soc] = RepositorySocType(socItem, 'soc', vendor, series, line, soc)
+    @property
+    def allCores(self) -> list[str]:
+        return self.__allCores
 
-        return self.__socs
+    @property
+    def allPackage(self) -> list[str]:
+        return self.__allPackage
 
 
 class Repository:
