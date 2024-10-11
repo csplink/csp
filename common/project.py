@@ -364,7 +364,7 @@ class Project(QObject):
         self.__path = path
 
     @property
-    def dir(self) -> str:
+    def folder(self) -> str:
         return os.path.dirname(self.__path)
 
     @property
