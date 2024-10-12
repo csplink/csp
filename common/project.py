@@ -372,7 +372,7 @@ class Project(QObject):
         return self.__data.setdefault("modules", [])
 
     @property
-    def halDir(self) -> str:
+    def halFolder(self) -> str:
         return PACKAGE.index.path("hal", self.hal, self.halVersion)
 
     @property
@@ -480,7 +480,7 @@ class Project(QObject):
     def isGenerateSettingValid(self) -> bool:
         if not os.path.isdir(self.toolchainsDir):
             return False
-        elif not os.path.isdir(self.halDir):
+        elif not os.path.isdir(self.halFolder):
             return False
         elif self.builder == "":
             return False

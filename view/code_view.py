@@ -72,7 +72,7 @@ class CodeView(Ui_CodeView, QWidget):
             return
 
         coder = Coder()
-        self.codes = coder.dump(PROJECT.halDir)
+        self.codes = coder.dump()
         tree = converters.paths2dict(list(self.codes.keys()))
 
         def traverseTree(treeItem: dict, topItem: QTreeWidgetItem, path: str):

@@ -180,6 +180,7 @@ class MainWindow(MSFluentWindow):
         self.splashScreen.setIconSize(QSize(106, 106))
         self.splashScreen.raise_()
 
+        # noinspection DuplicatedCode
         desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
@@ -213,7 +214,7 @@ If you would like to support the development of csplink, you are encouraged to d
             return
 
         coder = Coder()
-        coder.generate(PROJECT.halDir)
+        coder.generate()
 
     def __on_x_navigationRequested(self, routeKey: str, subKey: str):
         if routeKey in self.navigationInterface.items.keys():
