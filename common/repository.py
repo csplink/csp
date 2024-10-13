@@ -191,7 +191,7 @@ class RepositoryType:
         self.__allVendors = []
         self.__allSeries = []
         self.__allLines = []
-        self.__allSoc = {}
+        self.__allSoc = []
         self.__allCores = []
         self.__allPackage = []
 
@@ -205,9 +205,10 @@ class RepositoryType:
                         self.__allLines.append(line)
                         for soc, socItem in lineItem.items():
                             if kind == 'soc':
-                                self.__allSoc[soc] = RepositorySocType(socItem, kind, vendor, series, line, soc)
-                                self.__allCores.append(self.__allSoc[soc].core)
-                                self.__allPackage.append(self.__allSoc[soc].package)
+                                item = RepositorySocType(socItem, kind, vendor, series, line, soc)
+                                self.__allSoc.append(item)
+                                self.__allCores.append(item.core)
+                                self.__allPackage.append(item.package)
 
         self.__allCores = list(set(self.__allCores))
         self.__allPackage = list(set(self.__allPackage))
@@ -222,28 +223,24 @@ class RepositoryType:
     def types(self) -> list[str]:
         return self.__allTypes
 
-    @property
     def allTypes(self) -> list[str]:
         return self.types()
 
     def vendors(self, kind: str) -> list[str]:
         return list(self.__data.get(kind, {}).keys())
 
-    @property
     def allVendors(self) -> list[str]:
         return self.__allVendors
 
     def series(self, kind: str, vendor: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).keys())
 
-    @property
     def allSeries(self) -> list[str]:
         return self.__allSeries
 
     def lines(self, kind: str, vendor: str, series: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).keys())
 
-    @property
     def allLines(self) -> list[str]:
         return self.__allLines
 
@@ -256,15 +253,12 @@ class RepositoryType:
     def soc(self, kind: str, vendor: str, series: str, line: str, name: str) -> RepositorySocType:
         return RepositorySocType(self.__info(kind, vendor, series, line, name), kind, vendor, series, line, name)
 
-    @property
-    def allSoc(self) -> dict[str, RepositorySocType]:
+    def allSoc(self) -> list[RepositorySocType]:
         return self.__allSoc
 
-    @property
     def allCores(self) -> list[str]:
         return self.__allCores
 
-    @property
     def allPackage(self) -> list[str]:
         return self.__allPackage
 

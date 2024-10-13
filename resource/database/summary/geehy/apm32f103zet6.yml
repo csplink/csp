@@ -28,7 +28,7 @@ vendorUrl:
   en: https://global.geehy.com
   zh_CN: https://geehy.com
 documents:
-  dataSheets:
+  datasheets:
     APM32F103xDxE数据手册V1.7:
       url:
         en:

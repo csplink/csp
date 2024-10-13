@@ -97,6 +97,7 @@ class Settings(QConfig):
     STYLE_FOLDER = os.path.join(EXE_FOLDER, "resource", "style")
     ICON_FOLDER = os.path.join(EXE_FOLDER, "resource", "icon")
     I18N_FOLDER = os.path.join(EXE_FOLDER, "resource", "i18n")
+    PACKAGES_FOLDER = os.path.join(EXE_FOLDER, "resource", "packages")
     FONTS_FOLDER = os.path.join(EXE_FOLDER, "resource", "fonts")
     REPOSITORY_INDEX_FILE = os.path.join(repositoryFolder.value, "repository.index")
     CONTRIBUTORS_FILE = os.path.join(EXE_FOLDER, "resource", "contributors", "contributors")

@@ -1,0 +1,309 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        summary.py
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-10-12     xqyjlj       initial version
+#
+
+import json
+import os
+
+import jsonschema
+import yaml
+from loguru import logger
+
+from common import SETTINGS
+
+
+class SummaryType:
+    class DocumentType:
+        class DocumentUnitType:
+            def __init__(self, data: dict):
+                self.__data = data
+
+            def __str__(self) -> str:
+                return json.dumps(self.__data, indent=2)
+
+            @property
+            def origin(self) -> dict:
+                return self.__data
+
+            @property
+            def url(self) -> dict[str, str]:
+                return self.__data.get("url", {})
+
+        def __init__(self, data: dict):
+            self.__data = data
+            self.__datasheets = None
+            self.__errata = None
+            self.__references = None
+
+        def __str__(self) -> str:
+            return json.dumps(self.__data, indent=2)
+
+        @property
+        def origin(self) -> dict:
+            return self.__data
+
+        @property
+        def datasheets(self) -> dict[str, DocumentUnitType]:
+            if self.__datasheets is None:
+                self.__datasheets = {}
+                datasheets = self.__data.get("datasheets", {})
+                for name, unit in datasheets.items():
+                    self.__datasheets[name] = SummaryType.DocumentType.DocumentUnitType(
+                        unit if unit is not None else {})
+            return self.__datasheets
+
+        @property
+        def errata(self) -> dict[str, DocumentUnitType]:
+            if self.__errata is None:
+                self.__errata = {}
+                errata = self.__data.get("errata", {})
+                for name, unit in errata.items():
+                    self.__errata[name] = SummaryType.DocumentType.DocumentUnitType(unit if unit is not None else {})
+            return self.__errata
+
+        @property
+        def references(self) -> dict[str, DocumentUnitType]:
+            if self.__references is None:
+                self.__references = {}
+                references = self.__data.get("references", {})
+                for name, unit in references.items():
+                    self.__references[name] = SummaryType.DocumentType.DocumentUnitType(
+                        unit if unit is not None else {})
+            return self.__references
+
+    class ModuleType:
+        def __init__(self, data: dict):
+            self.__data = data
+
+        def __str__(self) -> str:
+            return json.dumps(self.__data, indent=2)
+
+        @property
+        def origin(self) -> dict:
+            return self.__data
+
+        @property
+        def description(self) -> dict[str, str]:
+            return self.__data.get("description", {})
+
+        @property
+        def ip(self) -> str:
+            return self.__data.get("ip", '')
+
+    class LinkerType:
+        def __init__(self, data: dict):
+            self.__data = data
+
+        def __str__(self) -> str:
+            return json.dumps(self.__data, indent=2)
+
+        @property
+        def origin(self) -> dict:
+            return self.__data
+
+        @property
+        def defaultHeapSize(self) -> str:
+            return self.__data.get("defaultHeapSize", "")
+
+        @property
+        def defaultStackSize(self) -> str:
+            return self.__data.get("defaultStackSize", "")
+
+    class PinType:
+        class SignalUnitType:
+            def __init__(self, data: dict):
+                self.__data = data
+
+            def __str__(self) -> str:
+                return json.dumps(self.__data, indent=2)
+
+            @property
+            def origin(self) -> dict:
+                return self.__data
+
+            @property
+            def mode(self) -> str:
+                return self.__data.get("mode", '')
+
+        def __init__(self, data: dict):
+            self.__data = data
+            self.__signals = None
+
+        def __str__(self) -> str:
+            return json.dumps(self.__data, indent=2)
+
+        @property
+        def origin(self) -> dict:
+            return self.__data
+
+        @property
+        def position(self) -> int:
+            return self.__data.get("position", -1)
+
+        @property
+        def type(self) -> str:
+            return self.__data.get("type", '')
+
+        @property
+        def signals(self) -> dict[str, SignalUnitType]:
+            if self.__signals is None:
+                self.__signals = {}
+                signals = self.__data.get("signals", {})
+                for name, unit in signals.items():
+                    self.__signals[name] = SummaryType.PinType.SignalUnitType(unit if unit is not None else {})
+            return self.__signals
+
+    def __init__(self, data: dict):
+        self.__data = data
+        self.__documents = None
+        self.__modules = None
+        self.__linker = None
+        self.__pins = None
+
+    def __str__(self) -> str:
+        return json.dumps(self.__data, indent=2)
+
+    @property
+    def origin(self) -> dict:
+        return self.__data
+
+    @property
+    def name(self) -> str:
+        return self.__data.get("name", "")
+
+    @property
+    def clockTree(self) -> str:
+        return self.__data.get("clockTree", "")
+
+    @property
+    def vendor(self) -> str:
+        return self.__data.get("vendor", "")
+
+    @property
+    def vendorUrl(self) -> dict[str, str]:
+        return self.__data.get("vendorUrl", {})
+
+    @property
+    def documents(self) -> DocumentType:
+        if self.__documents is None:
+            self.__documents = SummaryType.DocumentType(self.__data.get("documents", {}))
+        return self.__documents
+
+    @property
+    def hals(self) -> list[str]:
+        return self.__data.get("hals", [])
+
+    @property
+    def hasPowerPad(self) -> bool:
+        return self.__data.get("hasPowerPad", False)
+
+    @property
+    def illustrate(self) -> dict[str, str]:
+        return self.__data.get("illustrate", {})
+
+    @property
+    def introduction(self) -> dict[str, str]:
+        return self.__data.get("introduction", {})
+
+    @property
+    def modules(self) -> dict[str, dict[str, ModuleType]]:
+        if self.__modules is None:
+            self.__modules = {}
+            modules = self.__data.get("modules", {})
+            for groupName, group in modules.items():
+                groupUnit = {}
+                for name, unit in group.items():
+                    groupUnit[name] = SummaryType.ModuleType(unit if unit is not None else {})
+                self.__modules[groupName] = groupUnit
+        return self.__modules
+
+    @property
+    def package(self) -> str:
+        return self.__data.get("package", "")
+
+    @property
+    def url(self) -> dict[str, str]:
+        return self.__data.get("url", {})
+
+    @property
+    def builder(self) -> dict[str, dict[str, list[str]]]:
+        return self.__data.get("builder", {})
+
+    @property
+    def linker(self) -> LinkerType:
+        if self.__linker is None:
+            self.__linker = SummaryType.LinkerType(self.__data.get("linker", {}))
+        return self.__linker
+
+    @property
+    def pins(self) -> dict[str, PinType]:
+        if self.__pins is None:
+            self.__pins = {}
+            pins = self.__data.get("pins", {})
+            for name, unit in pins.items():
+                self.__pins[name] = SummaryType.PinType(unit if unit is not None else {})
+        return self.__pins
+
+    @property
+    def pinIp(self) -> str:
+        return self.__data.get("pinIp", '')
+
+
+class Summary:
+
+    def __init__(self, vendor: str, name: str):
+        self.__vendor = vendor
+        self.__name = name
+        self.__summary = self.getSummary()
+
+    @logger.catch(default=False)
+    def __checkSummary(self, summary: dict) -> bool:
+        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
+            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+            jsonschema.validate(instance=summary, schema=schema)
+        return True
+
+    @logger.catch(default=None)
+    def __getSummary(self) -> SummaryType:
+        file = os.path.join(SETTINGS.DATABASE_FOLDER, "summary", self.__vendor.lower(), f"{self.__name.lower()}.yml")
+        if os.path.isfile(file):
+            with open(file, 'r', encoding='utf-8') as f:
+                summary = yaml.load(f.read(), Loader=yaml.FullLoader)
+                succeed = self.__checkSummary(summary)
+            if succeed:
+                return SummaryType(summary)
+            else:
+                return SummaryType({})
+        else:
+            logger.error(f"{file} is not file!")
+            return SummaryType({})
+
+    def getSummary(self) -> SummaryType:
+        # noinspection PyTypeChecker,PyArgumentList
+        return self.__getSummary()
+
+    @property
+    def summary(self) -> SummaryType:
+        return self.__summary

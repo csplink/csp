@@ -26,17 +26,18 @@
 
 import os
 
-from PySide6.QtCore import Qt, QSortFilterProxyModel
-from PySide6.QtGui import QIcon, QPixmap, QStandardItem, QStandardItemModel
-from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
-from qfluentwidgets import (PushButton, FluentIconBase, MSFluentWindow, TextBrowser,
-                            BodyLabel, PixmapLabel, StrongBodyLabel)
+from PySide6.QtCore import Qt, QSortFilterProxyModel, QObject, QEvent, QUrl, QItemSelection
+from PySide6.QtGui import QIcon, QStandardItem, QStandardItemModel, QDesktopServices, QPixmap
+from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QAbstractItemView, \
+    QHeaderView
+from qfluentwidgets import (PushButton, FluentIconBase, MSFluentWindow, TextBrowser, BodyLabel, PixmapLabel,
+                            StrongBodyLabel)
 
-from common import SETTINGS, Icon, Style, Repository
+from common import SETTINGS, Icon, Style, Repository, Summary
 from .ui.new_project_view_ui import Ui_NewProjectView
 
 
-class FeatureView(QWidget):
+class SocFeatureView(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
@@ -53,6 +54,8 @@ class FeatureView(QWidget):
         self.urlBtnGroupLayout = QVBoxLayout()
         self.socNameLabel = StrongBodyLabel('SOC Name', self)
         self.vendorNameLabel = StrongBodyLabel('Vendor Name', self)
+        self.socNameLabel.installEventFilter(self)
+        self.vendorNameLabel.installEventFilter(self)
         self.urlBtnGroupLayout.addWidget(self.socNameLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.urlBtnGroupLayout.addWidget(self.vendorNameLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.infoHLayout.addLayout(self.urlBtnGroupLayout)
@@ -70,9 +73,6 @@ class FeatureView(QWidget):
         # ----------------------------------------------------------------------
         self.packagePixmapLabel = PixmapLabel(self)
         self.infoHLayout.addWidget(self.packagePixmapLabel, 0, Qt.AlignmentFlag.AlignLeft)
-        pixmap = QPixmap(r'C:\Users\xqyjl\Documents\git\github\csplink\csp\resource\packages\LQFP48.png')
-        pixmap = pixmap.scaled(80, 80, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-        self.packagePixmapLabel.setPixmap(pixmap)
         self.infoHLayout.addSpacing(20)
 
         # ----------------------------------------------------------------------
@@ -80,11 +80,9 @@ class FeatureView(QWidget):
         self.info2ChildLayout = QHBoxLayout()
         self.introductionLabel = StrongBodyLabel('Introduction', self)
         self.priceLabel = BodyLabel('Price', self)
-        self.versionLabel = BodyLabel('Version', self)
         self.introductionLabel.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
 
         self.info2ChildLayout.addWidget(self.priceLabel)
-        self.info2ChildLayout.addWidget(self.versionLabel)
         self.info2Layout.addWidget(self.introductionLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.info2Layout.addLayout(self.info2ChildLayout)
         self.infoHLayout.addLayout(self.info2Layout)
@@ -96,6 +94,35 @@ class FeatureView(QWidget):
 
         Style.NEW_PROJECT_WINDOW.apply(self.textBrowser)
 
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        if isinstance(watched, StrongBodyLabel):
+            if event.type() == QEvent.Type.MouseButtonRelease:
+                url = watched.property('url')
+                if url is not None and url != '':
+                    QDesktopServices.openUrl(QUrl(url))
+        return super().eventFilter(watched, event)
+
+    def setInfo(self, vendor: str, name: str):
+        summary = Summary(vendor, name).summary
+        locale = SETTINGS.get(SETTINGS.language).value.name()
+        self.socNameLabel.setText(name)
+        self.vendorNameLabel.setText(vendor)
+        self.packageNameLabel.setText(summary.package)
+        self.marketStatusLabel.setText('')
+        self.introductionLabel.setText(summary.introduction.get(locale, summary.introduction.get('en')))
+        self.textBrowser.setMarkdown(summary.illustrate.get(locale, summary.introduction.get('en')))
+        self.priceLabel.setText('')
+        packagePath = f'{SETTINGS.PACKAGES_FOLDER}/{summary.package.upper()}.png'
+        if os.path.exists(packagePath):
+            pixmap = QPixmap(packagePath)
+            pixmap = pixmap.scaled(80, 80, Qt.AspectRatioMode.KeepAspectRatio,
+                                   Qt.TransformationMode.SmoothTransformation)
+            self.packagePixmapLabel.setPixmap(pixmap)
+        else:
+            pass
+
+        self.show()
+
 
 class NewProjectView(Ui_NewProjectView, QWidget):
 
@@ -104,12 +131,6 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         self.setupUi(self)
 
         self.__repo = Repository().repository
-        self.__typeTreeViewItems = []
-        self.__vendorTreeViewItems = []
-        self.__seriesTreeViewItems = []
-        self.__lineTreeViewItems = []
-        self.__coreTreeViewItems = []
-        self.__packageTreeViewItems = []
 
         self.createBtn = PushButton(self.tr('Create'), self)
         self.btnGroupHorizontalLayout.addWidget(self.createBtn, 0, Qt.AlignmentFlag.AlignRight)
@@ -127,22 +148,22 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         self.tableView.setBorderRadius(8)
         self.tableView.setSortingEnabled(True)
 
-        self.__initTreeViewFilter()
+        self.__initTreeView()
+        self.__initTableView()
 
-        self.featureView = FeatureView(self)
+        self.socFeatureView = SocFeatureView(self)
 
-        self.addSubInterface(self.featureView, Icon.FOLDER, self.tr('Feature'))
+        self.addSubInterface(self.socFeatureView, Icon.FOLDER, self.tr('Feature'))
 
-        self.tabBar.setCurrentItem(self.featureView.objectName())
+        self.tabBar.setCurrentItem(self.socFeatureView.objectName())
+        self.socFeatureView.hide()
 
     def addSubInterface(self, interface: QWidget, icon: FluentIconBase, text: str):
         self.stackedWidget.addWidget(interface)
-        self.tabBar.addItem(routeKey=interface.objectName(),
-                            text=text,
-                            icon=icon,
+        self.tabBar.addItem(routeKey=interface.objectName(), text=text, icon=icon,
                             onClick=lambda: self.stackedWidget.setCurrentWidget(interface))
 
-    def __initTreeViewFilter(self):
+    def __initTreeView(self):
         self.__proxyModelTreeView = QSortFilterProxyModel(self)
         self.__modelTreeView = QStandardItemModel(self.treeView)
 
@@ -174,47 +195,41 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         self.__modelTreeView.appendRow(self.__coreTreeViewRootItem)
         self.__modelTreeView.appendRow(self.__packageTreeViewRootItem)
 
-        for kind in self.__repo.allTypes:
+        for kind in self.__repo.allTypes():
             item = QStandardItem(kind)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__typeTreeViewItems.append(item)
-        self.__typeTreeViewRootItem.appendRows(self.__typeTreeViewItems)
+            self.__typeTreeViewRootItem.appendRow(item)
 
-        for vendor in self.__repo.allVendors:
+        for vendor in self.__repo.allVendors():
             item = QStandardItem(vendor)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__vendorTreeViewItems.append(item)
-        self.__vendorTreeViewRootItem.appendRows(self.__vendorTreeViewItems)
+            self.__vendorTreeViewRootItem.appendRow(item)
 
-        for series in self.__repo.allSeries:
+        for series in self.__repo.allSeries():
             item = QStandardItem(series)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__seriesTreeViewItems.append(item)
-        self.__seriesTreeViewRootItem.appendRows(self.__seriesTreeViewItems)
+            self.__seriesTreeViewRootItem.appendRow(item)
 
-        for line in self.__repo.allLines:
+        for line in self.__repo.allLines():
             item = QStandardItem(line)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__lineTreeViewItems.append(item)
-        self.__lineTreeViewRootItem.appendRows(self.__lineTreeViewItems)
+            self.__lineTreeViewRootItem.appendRow(item)
 
-        for core in self.__repo.allCores:
+        for core in self.__repo.allCores():
             item = QStandardItem(core)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__coreTreeViewItems.append(item)
-        self.__coreTreeViewRootItem.appendRows(self.__coreTreeViewItems)
+            self.__coreTreeViewRootItem.appendRow(item)
 
-        for package in self.__repo.allPackage:
+        for package in self.__repo.allPackage():
             item = QStandardItem(package)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__packageTreeViewItems.append(item)
-        self.__packageTreeViewRootItem.appendRows(self.__packageTreeViewItems)
+            self.__packageTreeViewRootItem.appendRow(item)
 
         self.__proxyModelTreeView.setSourceModel(self.__modelTreeView)
         self.treeView.setModel(self.__proxyModelTreeView)
@@ -222,16 +237,57 @@ class NewProjectView(Ui_NewProjectView, QWidget):
 
         self.__modelTreeView.itemChanged.connect(self.__on_modelTreeView_itemChanged)
 
-    def __on_modelTreeView_itemChanged(self, item: QStandardItem):
-        if item is None:
-            return
+    def __initTableView(self):
+        self.__proxyModelTableView = QSortFilterProxyModel(self)
+        self.__modelTableView = QStandardItemModel(self.tableView)
 
+        self.__modelTableView.setColumnCount(11)
+        self.__modelTableView.setHeaderData(0, Qt.Orientation.Horizontal, self.tr("Name"))
+        self.__modelTableView.setHeaderData(1, Qt.Orientation.Horizontal, self.tr("Market status"))
+        self.__modelTableView.setHeaderData(2, Qt.Orientation.Horizontal, self.tr("Unit price for 10kU"))
+        self.__modelTableView.setHeaderData(3, Qt.Orientation.Horizontal, self.tr("Package"))
+        self.__modelTableView.setHeaderData(4, Qt.Orientation.Horizontal, self.tr("Flash"))
+        self.__modelTableView.setHeaderData(5, Qt.Orientation.Horizontal, self.tr("RAM"))
+        self.__modelTableView.setHeaderData(6, Qt.Orientation.Horizontal, self.tr("IO"))
+        self.__modelTableView.setHeaderData(7, Qt.Orientation.Horizontal, self.tr("Frequency"))
+        self.__modelTableView.setHeaderData(8, Qt.Orientation.Horizontal, self.tr("Vendor"))
+        self.__modelTableView.setHeaderData(9, Qt.Orientation.Horizontal, self.tr("Core"))
+        self.__modelTableView.setHeaderData(10, Qt.Orientation.Horizontal, self.tr("Type"))
+
+        for soc in self.__repo.allSoc():
+            items = [
+                QStandardItem(soc.name),
+                QStandardItem(self.tr("Unavailable")),
+                QStandardItem(self.tr("Unavailable")),
+                QStandardItem(soc.package),
+                QStandardItem("%.2f" % soc.flash),
+                QStandardItem("%.2f" % soc.ram),
+                QStandardItem(str(soc.io)),
+                QStandardItem("%.2f" % soc.frequency),
+                QStandardItem(soc.vendor),
+                QStandardItem(soc.core),
+                QStandardItem('SOC'),
+            ]
+            for item in items:
+                item.setEditable(False)
+            self.__modelTableView.appendRow(items)
+
+        self.__proxyModelTableView.setSourceModel(self.__modelTableView)
+        self.tableView.setModel(self.__proxyModelTableView)
+        self.tableView.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.tableView.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tableView.setSortingEnabled(True)
+        self.tableView.sortByColumn(0, Qt.AscendingOrder)
+        self.tableView.horizontalHeader().setMinimumSectionSize(10)
+        self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
+        self.tableView.selectionModel().selectionChanged.connect(self.__on_tableView_selectionChanged)
+
+    def __on_modelTreeView_itemChanged(self, item: QStandardItem):
         rowCount = item.rowCount()
         if rowCount > 0:  # root item
             for i in range(rowCount):
                 child = item.child(i)
-                if child is None:
-                    continue
                 if item.checkState() == Qt.CheckState.Checked:
                     child.setCheckState(Qt.CheckState.Checked)
                 elif item.checkState() == Qt.CheckState.Unchecked:
@@ -242,8 +298,6 @@ class NewProjectView(Ui_NewProjectView, QWidget):
             checkedCount = 0
             for i in range(count):
                 child = parent.child(i)
-                if child is None:
-                    continue
                 if child.checkState() == Qt.CheckState.Checked:
                     checkedCount += 1
 
@@ -253,6 +307,16 @@ class NewProjectView(Ui_NewProjectView, QWidget):
                 parent.setCheckState(Qt.CheckState.Unchecked)
             else:
                 parent.setCheckState(Qt.CheckState.PartiallyChecked)
+
+    # noinspection PyUnusedLocal
+    def __on_tableView_selectionChanged(self, selected: QItemSelection, deselected: QItemSelection):
+        indexes = selected.indexes()
+        name: str = indexes[0].data()
+        vendor: str = indexes[8].data()
+        kind: str = indexes[10].data()
+        if kind == 'SOC':
+            self.socFeatureView.setInfo(vendor, name)
+            pass
 
 
 class NewProjectWindow(MSFluentWindow):
@@ -269,6 +333,7 @@ class NewProjectWindow(MSFluentWindow):
         self.__initWindow()
         self.showMaximized()
 
+    # noinspection DuplicatedCode
     def __initWindow(self):
         self.resize(1100, 750)
         self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))

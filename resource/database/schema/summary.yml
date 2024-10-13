@@ -40,7 +40,7 @@ properties:
     type: object
     additionalProperties: false
     properties:
-      dataSheets:
+      datasheets:
         type: object
         properties:
           ".*":
@@ -50,16 +50,16 @@ properties:
                 $ref: "#/properties/url"
             required: [ "url" ]
       errata:
-        $ref: "#/properties/documents/properties/dataSheets"
+        $ref: "#/properties/documents/properties/datasheets"
       references:
-        $ref: "#/properties/documents/properties/dataSheets"
+        $ref: "#/properties/documents/properties/datasheets"
   illustrate:
     type: object
     properties:
       en:
-        type: [ "string", "null" ] #TODO: null
+        type: [ "string", "null" ] # TODO: null
       zh_CN:
-        type: [ "string", "null" ] #TODO: null
+        type: [ "string", "null" ] # TODO: null
     required: [ "en", "zh_CN" ]
   introduction:
     $ref: "#/properties/illustrate"
@@ -160,7 +160,7 @@ properties:
             additionalProperties: false
             patternProperties:
               ^.+$:
-                type: [ "object", "null" ] #TODO: null
+                type: [ "object", "null" ] # TODO: null
                 properties:
                   mode:
                     type: string

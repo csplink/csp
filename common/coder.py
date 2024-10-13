@@ -113,7 +113,7 @@ class Coder(QObject):
             elif suffix == '.uvprojx' or suffix == '.uvproj':
                 pass
 
-            self.dumped.emit(file)
+            # self.dumped.emit(file)
 
         return self.__contextTable
 
