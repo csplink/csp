@@ -31,7 +31,7 @@ import jsonschema
 import yaml
 from loguru import logger
 
-from common import SETTINGS
+from .settings import SETTINGS
 
 
 class SummaryType:
@@ -179,6 +179,7 @@ class SummaryType:
         self.__data = data
         self.__documents = None
         self.__modules = None
+        self.__moduleList = None
         self.__linker = None
         self.__pins = None
 
@@ -240,6 +241,16 @@ class SummaryType:
         return self.__modules
 
     @property
+    def moduleList(self) -> dict[str, ModuleType]:
+        if self.__moduleList is None:
+            self.__moduleList = {}
+            modules = self.modules
+            for groupName, group in modules.items():
+                for name, module in group.items():
+                    self.__moduleList[name] = module
+        return self.__moduleList
+
+    @property
     def package(self) -> str:
         return self.__data.get("package", "")
 
@@ -286,7 +297,7 @@ class Summary:
         return True
 
     @logger.catch(default=None)
-    def __getSummary(self) -> SummaryType:
+    def __getSummary(self) -> SummaryType | None:
         file = os.path.join(SETTINGS.DATABASE_FOLDER, "summary", self.__vendor.lower(), f"{self.__name.lower()}.yml")
         if os.path.isfile(file):
             with open(file, 'r', encoding='utf-8') as f:
@@ -295,12 +306,12 @@ class Summary:
             if succeed:
                 return SummaryType(summary)
             else:
-                return SummaryType({})
+                return None
         else:
             logger.error(f"{file} is not file!")
-            return SummaryType({})
+            return None
 
-    def getSummary(self) -> SummaryType:
+    def getSummary(self) -> SummaryType | None:
         # noinspection PyTypeChecker,PyArgumentList
         return self.__getSummary()
 

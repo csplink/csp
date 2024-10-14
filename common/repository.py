@@ -275,7 +275,7 @@ class Repository:
             jsonschema.validate(instance=repository, schema=schema)
         return True
 
-    @logger.catch(default=None)
+    @logger.catch(default=RepositoryType({}))
     def __getRepository(self) -> RepositoryType:
         file = os.path.join(SETTINGS.DATABASE_FOLDER, "repository.yml")
         if os.path.isfile(file):

@@ -66,7 +66,7 @@ for contributor in contributors:
     contributorList.append({
         "name": contributor["login"],
         "avatar": f"avatar/{os.path.basename(file)}",
-        "html_url": contributor["html_url"],
+        "htmlUrl": contributor["html_url"],
         "contributions": contributor["contributions"],
     })
 

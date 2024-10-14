@@ -34,31 +34,6 @@ from .settings import SETTINGS
 
 
 class Database:
-
-    @logger.catch(default=False)
-    def checkSummary(self, summary: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-            jsonschema.validate(instance=summary, schema=schema)
-        return True
-
-    def getSummaryByPath(self, path: str) -> dict:
-        if os.path.isfile(path):
-            with open(path, 'r', encoding='utf-8') as f:
-                summary = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.checkSummary(summary)
-            if succeed:
-                return summary
-            else:
-                return {}
-        else:
-            logger.error(f"{path} is not file!")
-            return {}
-
-    def getSummary(self, vendor: str, name: str) -> dict:
-        return self.getSummaryByPath(
-            os.path.join(SETTINGS.DATABASE_FOLDER, "summary", vendor.lower(), f"{name.lower()}.yml"))
-
     @logger.catch(default=False)
     def checkIp(self, ip: dict) -> bool:
         with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "ip.yml"), 'r', encoding='utf-8') as f:
@@ -81,25 +56,6 @@ class Database:
 
     def getIp(self, vendor: str, name: str) -> dict:
         return self.getIpByPath(os.path.join(SETTINGS.DATABASE_FOLDER, "ip", vendor.lower(), f"{name.lower()}.yml"))
-
-    @logger.catch(default=False)
-    def checkContributors(self, contributors: list) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "contributors.yml"), 'r', encoding='utf-8') as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-            jsonschema.validate(instance=contributors, schema=schema)
-        return True
-
-    def getContributors(self) -> dict:
-        if os.path.isfile(SETTINGS.CONTRIBUTORS_FILE):
-            with open(SETTINGS.CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
-                contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.checkContributors(contributors)
-            if succeed:
-                return contributors
-            else:
-                return {}
-        else:
-            return {}
 
 
 DATABASE = Database()

@@ -79,6 +79,12 @@ properties:
                 $ref: "#/properties/illustrate"
               ip:
                 type: string
+                minLength: 1
+              genType:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
             required:
               - description
               # - ip # TODO
@@ -100,29 +106,15 @@ properties:
         type: object
         additionalProperties: false
         patternProperties:
-          "^v\\d+\\.\\d+\\.\\d+$":
+          "^(?:v|V)?\\d+(?:\\.\\d+){1,2}$":
             type: array
             items:
               type: string
               minLength: 1
       CMake:
-        type: object
-        additionalProperties: false
-        patternProperties:
-          "^v\\d+\\.\\d+$":
-            type: array
-            items:
-              type: string
-              minLength: 1
+        $ref: "#/properties/builder/properties/XMake"
       MdkArm:
-        type: object
-        additionalProperties: false
-        patternProperties:
-          "^v\\d+\\.\\d+$":
-            type: array
-            items:
-              type: string
-              minLength: 1
+        $ref: "#/properties/builder/properties/XMake"
   hals:
     type: array
     items:

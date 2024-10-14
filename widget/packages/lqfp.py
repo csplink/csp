@@ -26,7 +26,7 @@
 
 from PySide6.QtCore import QPointF
 
-from common import PROJECT
+from common import PROJECT, SummaryType
 from widget.graphics_item_chip_body import GraphicsItemChipBody
 from widget.graphics_item_pin import GraphicsItemPin
 
@@ -41,7 +41,8 @@ class LQFP:
 
     def getItems(self, vendor: str, name: str):
         pins = PROJECT.summary.pins
-        pins = dict(sorted(pins.items(), key=lambda d: d[1]["position"], reverse=False))
+        pins = sorted(pins.items(), key=lambda d: d[1].position, reverse=False)
+        pins: dict[str, SummaryType.PinType] = {k: v for k, v in pins}
         count = len(pins)
         num = count // 4
         items = []
@@ -51,7 +52,7 @@ class LQFP:
         items.append(item)
 
         for name, pin in pins.items():
-            position = pin["position"] - 1
+            position = pin.position - 1
             if position < num:
                 index = position
                 direction = GraphicsItemPin.Direction.LEFT

@@ -29,71 +29,13 @@ import os
 import jsonschema
 import yaml
 from PySide6.QtCore import Signal, QObject
+from loguru import logger
 
 from utils import converters
 from .database import DATABASE
 from .package import PACKAGE
 from .settings import SETTINGS
-
-
-class Summary(QObject):
-    __summary = {}
-    __modulesList = []
-
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-
-    @property
-    def hals(self) -> list:
-        return self.__summary.get("hals", [])
-
-    @property
-    def package(self) -> str:
-        return self.__summary.get("package", "unknown")
-
-    @property
-    def pins(self) -> dict:
-        return self.__summary.get("pins", {})
-
-    @property
-    def modules(self) -> dict:
-        return self.__summary.get("modules", {})
-
-    @property
-    def pinIp(self) -> dict:
-        return self.__summary.get("pinIp", "")
-
-    @property
-    def builder(self) -> dict[str, dict[str, list[str]]]:
-        return self.__summary.get("builder", {})
-
-    @property
-    def linker(self) -> dict:
-        return self.__summary.get("linker", {})
-
-    @property
-    def defaultHeapSize(self) -> str:
-        return self.linker.get("defaultHeapSize", "")
-
-    @property
-    def defaultStackSize(self) -> str:
-        return self.linker.get("defaultStackSize", "")
-
-    @property
-    def modulesList(self) -> list:
-        return self.__modulesList
-
-    @property
-    def origin(self) -> dict:
-        return self.__summary
-
-    @origin.setter
-    def origin(self, summary: dict):
-        self.__summary = summary
-
-        for _, moduleGroup in self.modules.items():
-            for name, _ in moduleGroup.items():
-                self.__modulesList.append(name)
+from .summary import SummaryType, Summary
 
 
 class Ip(QObject):
@@ -146,7 +88,7 @@ class Project(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.__summary = Summary(self)
+        self.__summary = None
         self.__ip = Ip(self)
 
     @property
@@ -162,7 +104,10 @@ class Project(QObject):
         return self.__data
 
     @property
-    def summary(self) -> Summary:
+    def summary(self) -> SummaryType:
+        if self.__summary is None:
+            logger.error('summary is None')
+            return SummaryType({})
         return self.__summary
 
     @property
@@ -397,7 +342,7 @@ class Project(QObject):
                 return self.__valid
 
             try:
-                self.__summary.origin = DATABASE.getSummary(self.vendor, self.targetChip)
+                self.__summary = Summary(self.vendor, self.targetChip).summary
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)
@@ -405,10 +350,10 @@ class Project(QObject):
 
             try:
                 ip = {}
-                for _, module_group in self.__summary.modules.items():
+                for _, module_group in self.summary.modules.items():
                     for name, module in module_group.items():
-                        if "ip" in module:
-                            ip[name] = DATABASE.getIp(self.vendor, module["ip"])
+                        if module.ip != '':
+                            ip[name] = DATABASE.getIp(self.vendor, module.ip)
                 self.__ip.origin = ip
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
@@ -469,7 +414,7 @@ class Project(QObject):
 
             modules = set()
             for name, cfg in self.__data["config"].items():
-                if name in self.__summary.modulesList and cfg is not None and len(cfg) > 0:
+                if name in self.summary.moduleList and cfg is not None and len(cfg) > 0:
                     modules.add(name)
             if set(self.modules) != modules:
                 self.__data["modules"] = list(modules)
@@ -487,9 +432,9 @@ class Project(QObject):
         elif self.builderVersion == "":
             return False
 
-        if (not converters.ishex(self.defaultHeapSize)) and converters.ishex(self.summary.defaultHeapSize):
+        if (not converters.ishex(self.defaultHeapSize)) and converters.ishex(self.summary.linker.defaultHeapSize):
             return False
-        elif not converters.ishex(self.defaultStackSize) and converters.ishex(self.summary.defaultStackSize):
+        elif not converters.ishex(self.defaultStackSize) and converters.ishex(self.summary.linker.defaultStackSize):
             return False
 
         return True

@@ -341,15 +341,15 @@ class GenerateSettingView(ScrollArea):
     def __createLinkerGroup(self) -> SettingCardGroup | None:
         if converters.ishex(PROJECT.defaultHeapSize):
             defaultHeapSize = PROJECT.defaultHeapSize
-        elif converters.ishex(PROJECT.summary.defaultHeapSize):
-            defaultHeapSize = PROJECT.summary.defaultHeapSize
+        elif converters.ishex(PROJECT.summary.linker.defaultHeapSize):
+            defaultHeapSize = PROJECT.summary.linker.defaultHeapSize
         else:
             return None
         # --------------------------------------------------------------------------------------------------------------
         if converters.ishex(PROJECT.defaultStackSize):
             defaultStackSize = PROJECT.defaultStackSize
-        elif converters.ishex(PROJECT.summary.defaultStackSize):
-            defaultStackSize = PROJECT.summary.defaultStackSize
+        elif converters.ishex(PROJECT.summary.linker.defaultStackSize):
+            defaultStackSize = PROJECT.summary.linker.defaultStackSize
         else:
             return None
         # --------------------------------------------------------------------------------------------------------------
@@ -504,6 +504,7 @@ class GenerateSettingView(ScrollArea):
         self.builderComboBoxGroupSettingCard.setSource(PROJECT.builder, builderList)
         self.builderComboBoxGroupSettingCard.setContent(PROJECT.builder)
 
+    # noinspection DuplicatedCode
     def __updateBuilderVersionSettings(self):
         if self.builderGroup is None:
             return

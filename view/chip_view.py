@@ -59,7 +59,7 @@ class ChipView(Ui_ChipView, QWidget):
         scene = QGraphicsScene(self.graphicsView)
         scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
 
-        if PROJECT.summary.package != "unknown":
+        if PROJECT.summary.package != "":
             if re.match("^LQFP\d+$", PROJECT.summary.package):
                 items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
             else:

@@ -208,7 +208,7 @@ class Package:
         else:
             return None
 
-    @logger.catch(default=None)
+    @logger.catch(default=PackageIndexType({}))
     def __getPackageIndex(self) -> PackageIndexType:
         file = SETTINGS.REPOSITORY_INDEX_FILE
         if os.path.isfile(file):

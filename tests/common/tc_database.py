@@ -34,22 +34,6 @@ class DatabaseTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_getRepository(self):
-        repository = DATABASE.getRepository()
-        self.assertGreater(len(repository), 0, msg='load failed.')
-
-    def test_getSummary(self):
-        repository = DATABASE.getRepository()
-        soc = repository["soc"]
-        for companyName, companyItem in soc.items():
-            for seriesName, seriesItem in companyItem.items():
-                for lineName, lineItem in seriesItem.items():
-                    for socName, socItem in lineItem.items():
-                        summary = DATABASE.getSummary(companyName, socName)
-                        self.assertGreater(len(summary),
-                                           0,
-                                           msg=f'load failed in {companyName}/{seriesName}/{lineName}/{socName}')
-
     def test_getIp(self):
         repository = DATABASE.getRepository()
         soc = repository["soc"]

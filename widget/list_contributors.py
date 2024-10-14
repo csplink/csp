@@ -31,7 +31,7 @@ from PySide6.QtGui import QColor, QDesktopServices
 from PySide6.QtWidgets import QWidget
 from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, CaptionLabel, HyperlinkLabel, isDarkTheme)
 
-from common import DATABASE, SETTINGS, Icon
+from common import SETTINGS, Icon, Contributor, ContributorType
 from .ui.list_contributors_ui import Ui_ListContributors
 
 AVATAR_SIZE = 32
@@ -71,25 +71,24 @@ class ListContributors(Ui_ListContributors, QWidget):
         self.scrollArea.setWidget(self.flowWidget)
         self.scrollArea.enableTransparentBackground()
 
-        contributors = DATABASE.getContributors()
+        contributors = Contributor().contributors
 
         for contributor in contributors:
-            label = AvatarWidget(f'{CONTRIBUTORS_DIR}/{contributor["avatar"]}', self)
+            label = AvatarWidget(f'{CONTRIBUTORS_DIR}/{contributor.avatar}', self)
             label.setCursor(Qt.CursorShape.PointingHandCursor)
             label.installEventFilter(self)
             label.setRadius(AVATAR_SIZE // 2)
             label.setProperty("info", contributor)
             self.flowLayout.addWidget(label)
 
-    def createCustomWidgetMenu(self, contributor: dict, pos: QPoint):
+    def createCustomWidgetMenu(self, contributor: ContributorType, pos: QPoint):
         menu = RoundMenu(parent=self)
-        card = CardProfile(f'{CONTRIBUTORS_DIR}/{contributor["avatar"]}', contributor["name"], contributor["html_url"],
-                           menu)
+        card = CardProfile(f'{CONTRIBUTORS_DIR}/{contributor.avatar}', contributor.name, contributor.htmlUrl, menu)
         menu.addWidget(card, selectable=False)
 
         menu.addSeparator()
         action = Action(Icon.GITHUB, self.tr('Open Github Url'))
-        action.setProperty("url", contributor["html_url"])
+        action.setProperty("url", contributor.htmlUrl)
         action.triggered.connect(self.__on_githubAction_triggered)
         menu.addAction(action)
         menu.exec(pos)

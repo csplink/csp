@@ -149,10 +149,10 @@ class TreeModuleModel(QAbstractItemModel):
 
     def __loadModule(self):
         locale = SETTINGS.get(SETTINGS.language).value.name()
-        for group, module_group in PROJECT.summary.modules.items():
+        for group, moduleGroup in PROJECT.summary.modules.items():
             model = PModel(group, "", [], self.__model)
-            for name, module in module_group.items():
-                model_child = PModel(name, module["description"][locale], [], model)
+            for name, module in moduleGroup.items():
+                model_child = PModel(name, module.description.get(locale, module.description.get('en')), [], model)
                 model.append(model_child)
             self.__model.append(model)
         self.modelReset.emit()

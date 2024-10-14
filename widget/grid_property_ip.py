@@ -182,14 +182,14 @@ class GridPropertyIpModel(QAbstractTableModel):
             self.modelReset.emit()
             return
 
-        cfg = PROJECT.summary.pins[value]["signals"][signal]
+        cfg = PROJECT.summary.pins[value].signals.get(signal, None)
         ip = PROJECT.ip.ip(instance)
         if len(ip) == 0:
             self.modelReset.emit()
             return
 
-        if cfg is not None and "mode" in cfg:
-            mode = cfg["mode"]
+        if cfg is not None and cfg.mode != '':
+            mode = cfg.mode
             mode_cfg = ip["modes"][mode]
 
             if self.__pinInstance == instance:
