@@ -217,7 +217,7 @@ class Package:
                 # noinspection PyArgumentList
                 succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"), index)
             if succeed:
-                return PackageIndexType(index)
+                return PackageIndexType(index if index is not None else {})
             else:
                 return PackageIndexType({})
         else:

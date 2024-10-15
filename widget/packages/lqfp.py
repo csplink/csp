@@ -41,8 +41,8 @@ class LQFP:
 
     def getItems(self, vendor: str, name: str):
         pins = PROJECT.summary.pins
-        pins = sorted(pins.items(), key=lambda d: d[1].position, reverse=False)
-        pins: dict[str, SummaryType.PinType] = {k: v for k, v in pins}
+        _pins: list[tuple[str, SummaryType.PinType]] = sorted(pins.items(), key=lambda d: d[1].position, reverse=False)
+        pins: dict[str, SummaryType.PinType] = {k: v for k, v in _pins}
         count = len(pins)
         num = count // 4
         items = []
@@ -55,7 +55,7 @@ class LQFP:
             position = pin.position - 1
             if position < num:
                 index = position
-                direction = GraphicsItemPin.Direction.LEFT
+                direction = GraphicsItemPin.Direction.LEFT_DIRECTION
                 w = self.pin_width
                 h = self.pin_height
                 x = 0
@@ -63,7 +63,7 @@ class LQFP:
 
             elif num <= position < 2 * num:
                 index = position - num
-                direction = GraphicsItemPin.Direction.BOTTOM
+                direction = GraphicsItemPin.Direction.BOTTOM_DIRECTION
                 w = self.pin_height
                 h = self.pin_width
                 x = index * (self.pin_height + self.pin_spacing) + self.pin_width + self.pin_spacing
@@ -71,7 +71,7 @@ class LQFP:
 
             elif 2 * num <= position < 3 * num:
                 index = 3 * num - position
-                direction = GraphicsItemPin.Direction.RIGHT
+                direction = GraphicsItemPin.Direction.RIGHT_DIRECTION
                 w = self.pin_width
                 h = self.pin_height
                 x = self.pin_width + self.getBodyLength(num)
@@ -79,7 +79,7 @@ class LQFP:
 
             else:
                 index = 4 * num - position
-                direction = GraphicsItemPin.Direction.TOP
+                direction = GraphicsItemPin.Direction.TOP_DIRECTION
                 w = self.pin_height
                 h = self.pin_width
                 x = self.pin_width + self.getBodyLength(num) - index * (self.pin_height + self.pin_spacing)

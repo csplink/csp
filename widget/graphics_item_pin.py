@@ -49,19 +49,24 @@ class GraphicsItemPin(QGraphicsObject):
     previousCheckedAction = None
 
     class Direction(Enum):
-        TOP = 0
-        BOTTOM = 1
-        LEFT = 2
-        RIGHT = 3
+        TOP_DIRECTION = 0
+        BOTTOM_DIRECTION = 1
+        LEFT_DIRECTION = 2
+        RIGHT_DIRECTION = 3
 
     class Data(Enum):
-        MENU_KEY = 0
-        LABEL_KEY = 1
-        FUNCTION_KEY = 2
-        LOCKED_KEY = 3
-        NAME = 4
+        MENU_DATA = 0
+        LABEL_DATA = 1
+        FUNCTION_DATA = 2
+        LOCKED_DATA = 3
+        NAME_DATA = 4
 
-    def __init__(self, width: int, height: int, direction: Direction, name: str, pinConfig: SummaryType.PinType):
+    class Type(Enum):
+        RECTANGLE_TYPE = 0
+        CIRCLE_TYPE = 1
+
+    def __init__(self, width: int, height: int, direction: Direction, name: str, pinConfig: SummaryType.PinType,
+                 kind=Type.RECTANGLE_TYPE):
         super().__init__()
 
         self.width = int(width)
@@ -69,15 +74,16 @@ class GraphicsItemPin(QGraphicsObject):
         self.direction = direction
         self.name = name
         self.pinConfig = pinConfig
+        self.type = kind
 
         self.labelKey = f"pin/{self.name}/label"
         self.signalKey = f"pin/{self.name}/signal"
         self.lockedKey = f"pin/{self.name}/locked"
 
-        self.setData(GraphicsItemPin.Data.LABEL_KEY.value, self.labelKey)
-        self.setData(GraphicsItemPin.Data.FUNCTION_KEY.value, self.signalKey)
-        self.setData(GraphicsItemPin.Data.LOCKED_KEY.value, self.lockedKey)
-        self.setData(GraphicsItemPin.Data.NAME.value, name)
+        self.setData(GraphicsItemPin.Data.LABEL_DATA.value, self.labelKey)
+        self.setData(GraphicsItemPin.Data.FUNCTION_DATA.value, self.signalKey)
+        self.setData(GraphicsItemPin.Data.LOCKED_DATA.value, self.lockedKey)
+        self.setData(GraphicsItemPin.Data.NAME_DATA.value, name)
 
         self.label = PROJECT.config(self.labelKey, "")
         self.signal = PROJECT.config(self.signalKey, "")
@@ -99,6 +105,7 @@ class GraphicsItemPin(QGraphicsObject):
             self.menu.addSeparator()
 
             for signalName, signal in pinConfig.signals.items():
+                # noinspection PyTypeChecker
                 action = Action(signalName)
                 action.setCheckable(True)
                 if self.signal == signalName:
@@ -107,8 +114,7 @@ class GraphicsItemPin(QGraphicsObject):
                     self.previousCheckedAction = action
                 self.menu.addAction(action)
 
-            self.setData(GraphicsItemPin.Data.MENU_KEY.value, self.menu)
-
+            self.setData(GraphicsItemPin.Data.MENU_DATA.value, self.menu)
             self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
@@ -116,7 +122,10 @@ class GraphicsItemPin(QGraphicsObject):
         PROJECT.pinConfigChanged.connect(self.__on_project_pinConfigChanged)
 
     def boundingRect(self) -> QRectF:
-        return QRectF(0, 0, self.width, self.height)
+        if self.type == self.Type.RECTANGLE_TYPE:
+            return QRectF(0, 0, self.width, self.height)
+        elif self.type == self.Type.CIRCLE_TYPE:
+            return QRectF(-self.width // 2, -self.height // 2, self.width, self.height)
 
     def shape(self) -> QPainterPath:
         path = QPainterPath()
@@ -140,17 +149,17 @@ class GraphicsItemPin(QGraphicsObject):
             painter.setBrush(self.OTHER_COLOR)
 
         # draw body
-        if self.direction == GraphicsItemPin.Direction.LEFT:
+        if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
             x = self.width - 100
             y = 0
             width = self.PIN_LENGTH
             height = self.height
-        elif self.direction == GraphicsItemPin.Direction.BOTTOM:
+        elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
             x = 0
             y = 0
             width = self.width
             height = self.PIN_LENGTH
-        elif self.direction == GraphicsItemPin.Direction.RIGHT:
+        elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
             x = 0
             y = 0
             width = self.PIN_LENGTH
@@ -164,7 +173,7 @@ class GraphicsItemPin(QGraphicsObject):
         painter.drawRect(x, y, width, height)
 
         # draw text
-        if self.direction == GraphicsItemPin.Direction.LEFT or self.direction == GraphicsItemPin.Direction.RIGHT:
+        if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION or self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
             text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.PIN_LENGTH - 20)
             painter.translate(10 + x, (self.height / 2) + 8)
         else:
@@ -186,17 +195,17 @@ class GraphicsItemPin(QGraphicsObject):
                     text = f"{self.label}({self.signal})"
 
             if text != "":
-                if self.direction == GraphicsItemPin.Direction.LEFT:
+                if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
                                                        self.width - self.PIN_LENGTH - 20)
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
-                elif self.direction == GraphicsItemPin.Direction.BOTTOM:
+                elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
                                                        self.height - self.PIN_LENGTH - 20)
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
-                elif self.direction == GraphicsItemPin.Direction.RIGHT:
+                elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
                                                        self.width - self.PIN_LENGTH - 20)
                     painter.translate(self.PIN_LENGTH, 0)
