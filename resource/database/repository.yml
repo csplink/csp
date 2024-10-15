@@ -85,3 +85,60 @@ soc:
           voltage:
             max: 3.6
             min: 2.0
+  STMicroelectronics:
+    STM32H7:
+      STM32H750:
+        STM32H750XBHx:
+          core: Arm Cortex-M7
+          current:
+            lowest: 4.0
+            run: 270.0
+          flash: 128
+          frequency: 480
+          io: 172
+          package: TFBGA240
+          peripherals:
+            ADC 16-bit: 36
+            COMP: 2
+            CRYP: 1
+            DAC 12-bit: 2
+            DCMI: 1
+            DEBUG: 1
+            DFSDM: 1
+            Ethernet: 1
+            FDCAN: 2
+            FMC: 1
+            HASH: 1
+            HDMI CEC: 1
+            HRTIM: 1
+            I2C: 4
+            I2S: 3
+            JPEG: 1
+            LPTIM: 5
+            LPUART: 1
+            MDIOS: 1
+            OPAMP: 2
+            PWR: 1
+            QUADSPI: 1
+            RNG: 1
+            RTC: 1
+            SAI: 4
+            SDMMC: 2
+            SPDIFRX: 1
+            SPI: 6
+            SWPMI: 1
+            TFT LCD: 1
+            Timer 16-bit: 12
+            Timer 32-bit: 2
+            UART: 4
+            USART: 4
+            USB OTG_FS: 1
+            USB OTG_HS: 1
+            VREFBUF: 1
+          ram: 1024
+          temperature:
+            max: 85.0
+            min: -40.0
+          voltage:
+            max: 3.6
+            min: 1.62

@@ -296,8 +296,8 @@ class Summary:
             jsonschema.validate(instance=summary, schema=schema)
         return True
 
-    @logger.catch(default=None)
-    def __getSummary(self) -> SummaryType | None:
+    @logger.catch(default=SummaryType({}))
+    def __getSummary(self) -> SummaryType:
         file = os.path.join(SETTINGS.DATABASE_FOLDER, "summary", self.__vendor.lower(), f"{self.__name.lower()}.yml")
         if os.path.isfile(file):
             with open(file, 'r', encoding='utf-8') as f:
@@ -306,12 +306,12 @@ class Summary:
             if succeed:
                 return SummaryType(summary)
             else:
-                return None
+                return SummaryType({})
         else:
             logger.error(f"{file} is not file!")
-            return None
+            return SummaryType({})
 
-    def getSummary(self) -> SummaryType | None:
+    def getSummary(self) -> SummaryType:
         # noinspection PyTypeChecker,PyArgumentList
         return self.__getSummary()
 

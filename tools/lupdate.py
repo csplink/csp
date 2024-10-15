@@ -60,7 +60,6 @@ if len(exes) > 0:
         tsFile = os.path.join(rootDir, "resource", "i18n", f"csplink.{lang}.ts")
         if not os.path.isdir(os.path.dirname(tsFile)):
             os.makedirs(os.path.dirname(tsFile))
-        subprocess.call([exe, '-no-obsolete', '-source-language', 'en_US', '-target-language', lang] + srcFiles +
-                        ['-ts', tsFile])
+        subprocess.call([exe, '-source-language', 'en_US', '-target-language', lang] + srcFiles + ['-ts', tsFile])
 else:
     print("can not find lupdate")

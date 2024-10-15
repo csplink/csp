@@ -82,16 +82,15 @@ class SystemSettingView(ScrollArea):
         group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
 
         # ---------------------------------------------------------------------------------------------------------------
-        self.repositoryFolderCard = PushSettingCard(self.tr('Choose folder'),
-                                                    Icon.FOLDER,
-                                                    self.tr(
-                                                        "Repository directory"),
-                                                    SETTINGS.repositoryFolder.value,
-                                                    group)
-        self.repositoryFolderCard.clicked.connect(self.__on_repositoryFolderCard_clicked)
+        self.packageFolderCard = PushSettingCard(self.tr('Choose folder'),
+                                                 Icon.FOLDER,
+                                                 self.tr("Package directory"),
+                                                 SETTINGS.packageFolder.value,
+                                                 group)
+        self.packageFolderCard.clicked.connect(self.__on_repositoryFolderCard_clicked)
         # ---------------------------------------------------------------------------------------------------------------
 
-        group.addSettingCard(self.repositoryFolderCard)
+        group.addSettingCard(self.packageFolderCard)
 
         return group
 
@@ -211,11 +210,11 @@ class SystemSettingView(ScrollArea):
         """ download folder card clicked slot """
         folder = QFileDialog.getExistingDirectory(self,
                                                   self.tr("Choose folder"))
-        if not folder or SETTINGS.get(SETTINGS.repositoryFolder) == folder:
+        if not folder or SETTINGS.get(SETTINGS.packageFolder) == folder:
             return
 
-        SETTINGS.set(SETTINGS.repositoryFolder, folder)
-        self.repositoryFolderCard.setContent(folder)
+        SETTINGS.set(SETTINGS.packageFolder, folder)
+        self.packageFolderCard.setContent(folder)
 
 
 class GenerateSettingView(ScrollArea):

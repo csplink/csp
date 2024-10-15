@@ -23,6 +23,7 @@ build-*
 # csplink
 resource/contributors
 resource/repository
+resource/packages
 
 #Nuitka-Scons
 *.dist

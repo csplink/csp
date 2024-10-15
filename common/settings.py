@@ -62,8 +62,8 @@ class Settings(QConfig):
         EXE_FOLDER = str(Path(sys.argv[0]).parent)
 
     # folders ----------------------------------------------------------------------------------------------------------
-    repositoryFolder = ConfigItem("Folders", "Repository", os.path.join(EXE_FOLDER, "resource", "repository"),
-                                  FolderValidator())
+    packageFolder = ConfigItem("Folders", "Packages", os.path.join(EXE_FOLDER, "resource", "packages"),
+                               FolderValidator())
 
     # system -----------------------------------------------------------------------------------------------------------
     language = OptionsConfigItem("System",
@@ -95,11 +95,11 @@ class Settings(QConfig):
     # const data -------------------------------------------------------------------------------------------------------
     DATABASE_FOLDER = os.path.join(EXE_FOLDER, "resource", "database")
     STYLE_FOLDER = os.path.join(EXE_FOLDER, "resource", "style")
-    ICON_FOLDER = os.path.join(EXE_FOLDER, "resource", "icon")
+    ICON_FOLDER = os.path.join(EXE_FOLDER, "resource", "images", "icon")
     I18N_FOLDER = os.path.join(EXE_FOLDER, "resource", "i18n")
-    PACKAGES_FOLDER = os.path.join(EXE_FOLDER, "resource", "packages")
+    PACKAGES_IMAGE_FOLDER = os.path.join(EXE_FOLDER, "resource", "images", "packages")
     FONTS_FOLDER = os.path.join(EXE_FOLDER, "resource", "fonts")
-    REPOSITORY_INDEX_FILE = os.path.join(repositoryFolder.value, "repository.index")
+    PACKAGE_INDEX_FILE = os.path.join(packageFolder.value, "packages.index")
     CONTRIBUTORS_FILE = os.path.join(EXE_FOLDER, "resource", "contributors", "contributors")
     YEAR = 2023
     AUTHOR = "xqyjlj"

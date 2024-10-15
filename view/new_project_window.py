@@ -28,8 +28,8 @@ import os
 
 from PySide6.QtCore import Qt, QSortFilterProxyModel, QObject, QEvent, QUrl, QItemSelection
 from PySide6.QtGui import QIcon, QStandardItem, QStandardItemModel, QDesktopServices, QPixmap
-from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QAbstractItemView, \
-    QHeaderView
+from PySide6.QtWidgets import (QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QAbstractItemView,
+                               QHeaderView)
 from qfluentwidgets import (PushButton, FluentIconBase, MSFluentWindow, TextBrowser, BodyLabel, PixmapLabel,
                             StrongBodyLabel)
 
@@ -56,6 +56,8 @@ class SocFeatureView(QWidget):
         self.vendorNameLabel = StrongBodyLabel('Vendor Name', self)
         self.socNameLabel.installEventFilter(self)
         self.vendorNameLabel.installEventFilter(self)
+        self.socNameLabel.setFixedSize(200, 19)
+        self.vendorNameLabel.setFixedSize(200, 19)
         self.urlBtnGroupLayout.addWidget(self.socNameLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.urlBtnGroupLayout.addWidget(self.vendorNameLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.infoHLayout.addLayout(self.urlBtnGroupLayout)
@@ -65,6 +67,8 @@ class SocFeatureView(QWidget):
         self.info1Layout = QVBoxLayout()
         self.packageNameLabel = BodyLabel('Package Name', self)
         self.marketStatusLabel = BodyLabel('Market Name', self)
+        self.packageNameLabel.setFixedSize(100, 19)
+        self.marketStatusLabel.setFixedSize(100, 19)
         self.info1Layout.addWidget(self.packageNameLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.info1Layout.addWidget(self.marketStatusLabel, 0, Qt.AlignmentFlag.AlignTop)
         self.infoHLayout.addLayout(self.info1Layout)
@@ -72,6 +76,7 @@ class SocFeatureView(QWidget):
 
         # ----------------------------------------------------------------------
         self.packagePixmapLabel = PixmapLabel(self)
+        self.packagePixmapLabel.setFixedSize(80, 80)
         self.infoHLayout.addWidget(self.packagePixmapLabel, 0, Qt.AlignmentFlag.AlignLeft)
         self.infoHLayout.addSpacing(20)
 
@@ -112,15 +117,14 @@ class SocFeatureView(QWidget):
         self.introductionLabel.setText(summary.introduction.get(locale, summary.introduction.get('en')))
         self.textBrowser.setMarkdown(summary.illustrate.get(locale, summary.introduction.get('en')))
         self.priceLabel.setText('')
-        packagePath = f'{SETTINGS.PACKAGES_FOLDER}/{summary.package.upper()}.png'
+        packagePath = f'{SETTINGS.PACKAGES_IMAGE_FOLDER}/{summary.package.upper()}.png'
         if os.path.exists(packagePath):
             pixmap = QPixmap(packagePath)
-            pixmap = pixmap.scaled(80, 80, Qt.AspectRatioMode.KeepAspectRatio,
-                                   Qt.TransformationMode.SmoothTransformation)
-            self.packagePixmapLabel.setPixmap(pixmap)
         else:
-            pass
-
+            pixmap = QPixmap(f'{SETTINGS.PACKAGES_IMAGE_FOLDER}/unknown.png')
+        pixmap = pixmap.scaled(80, 80, Qt.AspectRatioMode.KeepAspectRatio,
+                               Qt.TransformationMode.SmoothTransformation)
+        self.packagePixmapLabel.setPixmap(pixmap)
         self.show()
 
 

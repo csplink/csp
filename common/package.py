@@ -210,7 +210,7 @@ class Package:
 
     @logger.catch(default=PackageIndexType({}))
     def __getPackageIndex(self) -> PackageIndexType:
-        file = SETTINGS.REPOSITORY_INDEX_FILE
+        file = SETTINGS.PACKAGE_INDEX_FILE
         if os.path.isfile(file):
             with open(file, 'r', encoding='utf-8') as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -237,14 +237,14 @@ class Package:
         return yaml.dump(self.__index.origin)
 
     def save(self):
-        with open(SETTINGS.REPOSITORY_INDEX_FILE, 'w', encoding='utf-8') as f:
+        with open(SETTINGS.PACKAGE_INDEX_FILE, 'w', encoding='utf-8') as f:
             f.write(self.dump())
 
     def install(self, file: str, callback: Callable[[str, float], None]) -> bool:
         if not os.path.isfile(file):
             return False
 
-        repositoryFolder = SETTINGS.repositoryFolder.value
+        repositoryFolder = SETTINGS.packageFolder.value
 
         tmpFolder = os.path.join(repositoryFolder, "tmp")
         if os.path.isdir(tmpFolder):
