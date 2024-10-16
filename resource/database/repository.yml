@@ -125,7 +125,7 @@ soc:
             min: 1.8
     STM32H7:
       STM32H750:
-        STM32H750XBHx:
+        STM32H750XBH6:
           core: Arm Cortex-M7
           current:
             lowest: 4.0

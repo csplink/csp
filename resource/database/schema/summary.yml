@@ -57,9 +57,9 @@ properties:
     type: object
     properties:
       en:
-        type: [ "string", "null" ] # TODO: null
+        type: [ "string" ]
       zh_CN:
-        type: [ "string", "null" ] # TODO: null
+        type: [ "string", "null" ]
     required: [ "en", "zh_CN" ]
   introduction:
     $ref: "#/properties/illustrate"
@@ -144,7 +144,7 @@ properties:
         type: object
         properties:
           position:
-            type: integer
+            type: [ integer, string ]
           type:
             enum: [ "I/O", "Power", "Reset", "NC", "Boot" ]
           signals:

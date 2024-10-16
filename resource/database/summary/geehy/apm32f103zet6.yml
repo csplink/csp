@@ -31,122 +31,122 @@ documents:
   datasheets:
     APM32F103xDxE数据手册V1.7:
       url:
-        en:
+        en: ''
         zh_CN: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
   errata:
     APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
       url:
-        en:
+        en: ''
         zh_CN: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
   references:
     APM32F103xCxDxE用户手册V1.5:
       url:
-        en:
+        en: ''
         zh_CN: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
 hals: [ csp_hal_apm32f1 ]
 hasPowerPad: false
 illustrate:
-  en:
+  en: ''
   zh_CN: |
     APM32F103xDxE系列MCU，基于32位Arm® Cortex®-M3内核，最高工作主频96MHz，支持FPU浮点运算单元，配置增强型外部存储控制器EMMC，
     支持USB和CAN接口同时使用；集成片上储存器、定时器以及数据转换器等多种外设接口，具有功耗低、容量大、可移植性好、Flash擦除/编程速度快等特点。
     目前已经通过中国IEC61508 SIL2认证和USB-IF测试，符合工业级高可靠性标准。适用于航模飞机、手持云台、扫码枪、报警器、密码锁、电子秤等领域。
 introduction:
-  en:
+  en: ''
   zh_CN: 具有 512KB Flash和 96MHz CPU的主流 Arm Cortex-M3 超值系列 MCU
 modules:
   Analog:
     ADC1:
       description:
-        en:
+        en: ''
         zh_CN: 模数转换器1
     ADC2:
       description:
-        en:
+        en: ''
         zh_CN: 模数转换器2
     ADC3:
       description:
-        en:
+        en: ''
         zh_CN: 模数转换器3
     DAC:
       description:
-        en:
+        en: ''
         zh_CN: 数模转换器
   Computing:
     CRC:
       description:
-        en:
+        en: ''
         zh_CN: 循环冗余校验计算单元
   Connectivity:
     CAN:
       description:
-        en:
+        en: ''
         zh_CN: 控制器局域网络
     EMMC:
       description:
-        en:
+        en: ''
         zh_CN: 外部存储器控制器
     I2C1:
       description:
-        en:
+        en: ''
         zh_CN: 内部集成电路接口1
     I2C2:
       description:
-        en:
+        en: ''
         zh_CN: 内部集成电路接口2
     SDIO:
       description:
-        en:
+        en: ''
         zh_CN: 安全数字输入输出接口
     SPI1:
       description:
-        en:
+        en: ''
         zh_CN: 串行外设接口1
     SPI2:
       description:
-        en:
+        en: ''
         zh_CN: 串行外设接口2
     SPI3:
       description:
-        en:
+        en: ''
         zh_CN: 串行外设接3
     UART4:
       description:
-        en:
+        en: ''
         zh_CN: 通用异步收发器4
     UART5:
       description:
-        en:
+        en: ''
         zh_CN: 通用异步收发器5
     USART1:
       description:
-        en:
+        en: ''
         zh_CN: 通用同步异步收发器1
     USART2:
       description:
-        en:
+        en: ''
         zh_CN: 通用同步异步收发器2
     USART3:
       description:
-        en:
+        en: ''
         zh_CN: 通用同步异步收发器3
     USBD:
       description:
-        en:
+        en: ''
         zh_CN: 全速 USBD 接口设备
   Multimedia:
     I2S2:
       description:
-        en:
+        en: ''
         zh_CN: 片上音频接口2
     I2S3:
       description:
-        en:
+        en: ''
         zh_CN: 片上音频接口3
   System Core:
     DMA:
       description:
-        en:
+        en: ''
         zh_CN: 直接存储器存取
     GPIO:
       description:
@@ -155,60 +155,60 @@ modules:
       ip: apm32f103_gpio
     IWDT:
       description:
-        en:
+        en: ''
         zh_CN: 独立看门狗定时器
     NVIC:
       description:
-        en:
+        en: ''
         zh_CN: 嵌套向量中断控制器
     RCM:
       description:
-        en:
+        en: ''
         zh_CN: 复位与时钟管理
     SYS:
       description:
-        en:
+        en: ''
         zh_CN: 系统模块
     WWDT:
       description:
-        en:
+        en: ''
         zh_CN: 窗口看门狗定时器
   Timers:
     RTC:
       description:
-        en:
+        en: ''
         zh_CN: 实时时钟
     TMR1:
       description:
-        en:
+        en: ''
         zh_CN: 高级定时器1
     TMR2:
       description:
-        en:
+        en: ''
         zh_CN: 通用定时器2
     TMR3:
       description:
-        en:
+        en: ''
         zh_CN: 通用定时器3
     TMR4:
       description:
-        en:
+        en: ''
         zh_CN: 通用定时器4
     TMR5:
       description:
-        en:
+        en: ''
         zh_CN: 通用定时器5
     TMR6:
       description:
-        en:
+        en: ''
         zh_CN: 基本定时器6
     TMR7:
       description:
-        en:
+        en: ''
         zh_CN: 基本定时器7
     TMR8:
       description:
-        en:
+        en: ''
         zh_CN: 高级定时器8
 package: LQFP144
 url:

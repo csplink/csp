@@ -35,7 +35,6 @@ from common import PROJECT, SIGNAL_BUS, SummaryType
 
 
 class GraphicsItemPin(QGraphicsObject):
-    PIN_LENGTH = 100
     DEFAULT_COLOR = QColor(185, 196, 202)
     POWER_COLOR = QColor(255, 246, 204)
     OTHER_COLOR = QColor(187, 204, 0)
@@ -65,12 +64,13 @@ class GraphicsItemPin(QGraphicsObject):
         RECTANGLE_TYPE = 0
         CIRCLE_TYPE = 1
 
-    def __init__(self, width: int, height: int, direction: Direction, name: str, pinConfig: SummaryType.PinType,
-                 kind=Type.RECTANGLE_TYPE):
+    def __init__(self, width: int, height: int, pinLength: int, direction: Direction, name: str, kind: Type,
+                 pinConfig: SummaryType.PinType):
         super().__init__()
 
         self.width = int(width)
         self.height = int(height)
+        self.pinLength = int(pinLength)
         self.direction = direction
         self.name = name
         self.pinConfig = pinConfig
@@ -132,11 +132,11 @@ class GraphicsItemPin(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
-    # noinspection PyMethodOverriding
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+    def paintRectangle(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
         brush = painter.brush()
 
         # draw background
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         if self.pinConfig.type == "I/O":
             if self.locked:
@@ -152,33 +152,33 @@ class GraphicsItemPin(QGraphicsObject):
         if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
             x = self.width - 100
             y = 0
-            width = self.PIN_LENGTH
+            width = self.pinLength
             height = self.height
         elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
             x = 0
             y = 0
             width = self.width
-            height = self.PIN_LENGTH
+            height = self.pinLength
         elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
             x = 0
             y = 0
-            width = self.PIN_LENGTH
+            width = self.pinLength
             height = self.height
         else:
             x = 0
-            y = self.height - self.PIN_LENGTH
+            y = self.height - self.pinLength
             width = self.width
-            height = self.PIN_LENGTH
+            height = self.pinLength
 
         painter.drawRect(x, y, width, height)
 
         # draw text
         if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION or self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
-            text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.PIN_LENGTH - 20)
+            text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20)
             painter.translate(10 + x, (self.height / 2) + 8)
         else:
-            text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.PIN_LENGTH - 20)
-            painter.translate((self.width / 2) + 8, self.PIN_LENGTH - 10 + y)
+            text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20)
+            painter.translate((self.width / 2) + 8, self.pinLength - 10 + y)
             painter.rotate(-90)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         painter.setFont(self.font)
@@ -197,22 +197,22 @@ class GraphicsItemPin(QGraphicsObject):
             if text != "":
                 if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.width - self.PIN_LENGTH - 20)
+                                                       self.width - self.pinLength - 20)
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
                 elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.height - self.PIN_LENGTH - 20)
+                                                       self.height - self.pinLength - 20)
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
                 elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.width - self.PIN_LENGTH - 20)
-                    painter.translate(self.PIN_LENGTH, 0)
+                                                       self.width - self.pinLength - 20)
+                    painter.translate(self.pinLength, 0)
                 else:
                     text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.height - self.PIN_LENGTH - 20)
-                    painter.translate(self.PIN_LENGTH, 0)
+                                                       self.height - self.pinLength - 20)
+                    painter.translate(self.pinLength, 0)
 
             if isDarkTheme():
                 painter.setPen(QPen(QColor(255, 255, 255), 1))
@@ -221,6 +221,22 @@ class GraphicsItemPin(QGraphicsObject):
 
         painter.resetTransform()
         painter.setBrush(brush)
+
+    def paintCircle(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+        brush = painter.brush()
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setPen(QPen(QColor(0, 0, 0), 1))
+        painter.drawEllipse(0, 0, self.width // 2, self.width // 2)
+
+    # noinspection PyMethodOverriding
+    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+        if self.type == self.Type.RECTANGLE_TYPE:
+            self.paintRectangle(painter, option, widget)
+        elif self.type == self.Type.CIRCLE_TYPE:
+            self.paintCircle(painter, option, widget)
+        else:
+            super().paint(painter, option, widget)
+        self.update()
 
     def menuTriggered(self, action: QAction):
         self.currentCheckedAction = action
@@ -280,4 +296,3 @@ class GraphicsItemPin(QGraphicsObject):
                         path = f"{instance}/{self.name}"
                         PROJECT.setConfig(path, {})
                     SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
-            self.update()
