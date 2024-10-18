@@ -34,7 +34,7 @@ from .repository import Repository, RepositoryType, RepositorySocType
 from .settings import Settings, SETTINGS
 from .signal_bus import SignalBus, SIGNAL_BUS
 from .style import Style
-from .summary import Summary, SummaryType
+from .summary import Summary, SummaryType, SUMMARY
 
 __all__ = [
     'Coder',
@@ -47,5 +47,5 @@ __all__ = [
     'Settings', 'SETTINGS',
     "SignalBus", "SIGNAL_BUS",
     'Style',
-    'Summary', 'SummaryType',
+    'Summary', 'SummaryType', 'SUMMARY'
 ]

@@ -284,10 +284,8 @@ class SummaryType:
 
 class Summary:
 
-    def __init__(self, vendor: str, name: str):
-        self.__vendor = vendor
-        self.__name = name
-        self.__summary = self.getSummary()
+    def __init__(self):
+        self.__summaries = {}
 
     @logger.catch(default=False)
     def __checkSummary(self, summary: dict) -> bool:
@@ -297,8 +295,8 @@ class Summary:
         return True
 
     @logger.catch(default=SummaryType({}))
-    def __getSummary(self) -> SummaryType:
-        file = os.path.join(SETTINGS.DATABASE_FOLDER, "summary", self.__vendor.lower(), f"{self.__name.lower()}.yml")
+    def __getSummary(self, vendor: str, name: str) -> SummaryType:
+        file = os.path.join(SETTINGS.DATABASE_FOLDER, "summary", vendor.lower(), f"{name.lower()}.yml")
         if os.path.isfile(file):
             with open(file, 'r', encoding='utf-8') as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -311,10 +309,21 @@ class Summary:
             logger.error(f"{file} is not file!")
             return SummaryType({})
 
-    def getSummary(self) -> SummaryType:
-        # noinspection PyTypeChecker,PyArgumentList
-        return self.__getSummary()
+    def getSummary(self, vendor: str, name: str) -> SummaryType:
+        if vendor in self.__summaries and name in self.__summaries[vendor]:
+            return self.__summaries[vendor][name]
+        else:
+            # noinspection PyTypeChecker,PyArgumentList
+            summary = self.__getSummary(vendor, name)
+            if vendor not in self.__summaries:
+                self.__summaries[vendor] = {}
+            self.__summaries[vendor][name] = summary
+            # noinspection PyTypeChecker
+            return summary
 
     @property
-    def summary(self) -> SummaryType:
-        return self.__summary
+    def summaries(self) -> dict[str, dict[str, SummaryType]]:
+        return self.__summaries
+
+
+SUMMARY = Summary()

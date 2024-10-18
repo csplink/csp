@@ -35,7 +35,7 @@ from utils import converters
 from .database import DATABASE
 from .package import PACKAGE
 from .settings import SETTINGS
-from .summary import SummaryType, Summary
+from .summary import SummaryType, SUMMARY
 
 
 class Ip(QObject):
@@ -342,7 +342,7 @@ class Project(QObject):
                 return self.__valid
 
             try:
-                self.__summary = Summary(self.vendor, self.targetChip).summary
+                self.__summary = SUMMARY.getSummary(self.vendor, self.targetChip)
             except jsonschema.exceptions.ValidationError as exception:
                 print(f"invalid yaml {path}")
                 print(exception)

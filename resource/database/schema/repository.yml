@@ -28,23 +28,24 @@ properties:
     type: object
     additionalProperties: false
     patternProperties:
-      "^[A-Za-z0-9_-]+$": # Vendor
+      "^[A-Za-z0-9_-]+$": # vendor
         type: object
         additionalProperties: false
         patternProperties:
-          "^[A-Za-z0-9_-]+$": # Series
+          "^[A-Za-z0-9_-]+$": # series
             type: object
             additionalProperties: false
             patternProperties:
-              "^[A-Za-z0-9_-]+$": # Line
+              "^[A-Za-z0-9_-]+$": # line
                 type: object
                 additionalProperties: false
                 patternProperties:
-                  "^[A-Za-z0-9_-]+$": # Name
+                  "^[A-Za-z0-9_-]+$": # name
                     type: object
                     properties:
                       core:
                         type: string
+                        minLength: 1
                       current:
                         type: object
                         properties:
@@ -52,7 +53,7 @@ properties:
                             type: number
                           run:
                             type: number
-                        required: ["lowest", "run"]
+                        required: [ "lowest", "run" ]
                       flash:
                         type: integer
                       frequency:
@@ -61,6 +62,7 @@ properties:
                         type: integer
                       package:
                         type: string
+                        minLength: 1
                       peripherals:
                         type: object
                         patternProperties:
@@ -75,7 +77,7 @@ properties:
                             type: number
                           min:
                             type: number
-                        required: ["max", "min"]
+                        required: [ "max", "min" ]
                       voltage:
                         type: object
                         properties:
@@ -83,7 +85,7 @@ properties:
                             type: number
                           min:
                             type: number
-                        required: ["max", "min"]
+                        required: [ "max", "min" ]
                     required:
                       - core
                       - current

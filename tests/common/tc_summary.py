@@ -26,7 +26,7 @@
 
 import unittest
 
-from common import Repository, Summary
+from common import Repository, SUMMARY
 
 
 class SummaryTest(unittest.TestCase):
@@ -38,7 +38,7 @@ class SummaryTest(unittest.TestCase):
         repository = Repository()
         socs = repository.repository.allSoc()
         for soc in socs:
-            summary = Summary(soc.vendor, soc.name).summary
+            summary = SUMMARY.getSummary(soc.vendor, soc.name)
             self.assertGreater(len(summary.name), 0, msg='load failed.')
             self.assertGreater(len(summary.clockTree), 0, msg='load failed.')
             self.assertGreater(len(summary.vendor), 0, msg='load failed.')

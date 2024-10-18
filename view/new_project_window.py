@@ -33,7 +33,7 @@ from PySide6.QtWidgets import (QApplication, QWidget, QHBoxLayout, QVBoxLayout, 
 from qfluentwidgets import (PushButton, FluentIconBase, MSFluentWindow, TextBrowser, BodyLabel, PixmapLabel,
                             StrongBodyLabel)
 
-from common import SETTINGS, Icon, Style, Repository, Summary
+from common import SETTINGS, Icon, Style, Repository, SUMMARY
 from .ui.new_project_view_ui import Ui_NewProjectView
 
 
@@ -108,7 +108,7 @@ class SocFeatureView(QWidget):
         return super().eventFilter(watched, event)
 
     def setInfo(self, vendor: str, name: str):
-        summary = Summary(vendor, name).summary
+        summary = SUMMARY.getSummary(vendor, name)
         locale = SETTINGS.get(SETTINGS.language).value.name()
         self.socNameLabel.setText(name)
         self.vendorNameLabel.setText(vendor)

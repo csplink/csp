@@ -38,7 +38,6 @@ properties:
     $ref: "#/properties/url"
   documents:
     type: object
-    additionalProperties: false
     properties:
       datasheets:
         type: object
@@ -48,7 +47,17 @@ properties:
             properties:
               url:
                 $ref: "#/properties/url"
-            required: [ "url" ]
+              type:
+                enum: [ "pdf" ]
+              description:
+                $ref: "#/properties/illustrate"
+              size:
+                type: string
+                minLength: 1
+              version:
+                type: string
+                pattern: "^(?:v|V)?\\d+(?:\\.\\d+){1,2}$"
+            required: [ "url", "type", "description", "size", "version" ]
       errata:
         $ref: "#/properties/documents/properties/datasheets"
       references:
@@ -95,7 +104,7 @@ properties:
         type: string
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
       zh_CN:
-        type: string
+        type: [ string, "null" ]
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
     required: [ "en", "zh_CN" ]
   builder:
@@ -140,13 +149,13 @@ properties:
     type: object
     additionalProperties: false
     patternProperties:
-      "^[A-Za-z0-9_+-]+$":
+      "^[A-Za-z0-9_+-]+(?:.*)?$":
         type: object
         properties:
           position:
             type: [ integer, string ]
           type:
-            enum: [ "I/O", "Power", "Reset", "NC", "Boot" ]
+            enum: [ "I/O", "Power", "Reset", "NC", "Boot", "MonoIO" ]
           signals:
             type: object
             additionalProperties: false

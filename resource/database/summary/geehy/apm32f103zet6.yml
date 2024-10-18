@@ -33,16 +33,34 @@ documents:
       url:
         en: ''
         zh_CN: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
+      type: pdf
+      description:
+        en: ''
+        zh_CN: null
+      size: 3.4 MB
+      version: '1.7'
   errata:
     APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
       url:
         en: ''
         zh_CN: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
+      type: pdf
+      description:
+        en: ''
+        zh_CN: null
+      size: 582 KB
+      version: '1.0'
   references:
     APM32F103xCxDxE用户手册V1.5:
       url:
         en: ''
         zh_CN: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
+      type: pdf
+      description:
+        en: ''
+        zh_CN: null
+      size: 9.4 MB
+      version: '1.5'
 hals: [ csp_hal_apm32f1 ]
 hasPowerPad: false
 illustrate:

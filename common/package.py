@@ -168,6 +168,7 @@ class PackageIndexType:
 class Package:
     def __init__(self) -> None:
         self.__index = self.getPackageIndex()
+        self.__pdscs = {}
 
     @logger.catch(default=False)
     def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
@@ -192,7 +193,7 @@ class Package:
             logger.error(f"{path} is not file!")
             return None
 
-    def getPackageDescription(self, path: str) -> PackageDescriptionType | None:
+    def __getPackageDescriptionAuto(self, path: str) -> PackageDescriptionType | None:
         if os.path.isfile(path):
             # noinspection PyTypeChecker
             return self.__getPackageDescription(path)
@@ -207,6 +208,14 @@ class Package:
             return self.__getPackageDescription(packageFile)
         else:
             return None
+
+    def getPackageDescription(self, path: str) -> PackageDescriptionType | None:
+        if path in self.__pdscs:
+            return self.__pdscs[path]
+        else:
+            pdsc = self.__getPackageDescriptionAuto(path)
+            self.__pdscs[path] = pdsc
+            return pdsc
 
     @logger.catch(default=PackageIndexType({}))
     def __getPackageIndex(self) -> PackageIndexType:
