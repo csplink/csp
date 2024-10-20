@@ -33,10 +33,11 @@ from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar
                             TransparentPushButton, SplashScreen, FluentIconBase, NavigationBarPushButton)
 
 from common import Icon, SETTINGS, SIGNAL_BUS, PROJECT, Coder
-from .chip_view import ChipView
+from .clock_tree_view import ClockTreeView
 from .code_view import CodeView
 from .package_view import PackageView
 from .setting_view import SettingView
+from .soc_view import SocView
 
 
 class CustomTitleBar(MSFluentTitleBar):
@@ -121,7 +122,8 @@ class MainWindow(MSFluentWindow):
 
         self.__initWindow()
 
-        self.socView = ChipView(self)
+        self.socView = SocView(self)
+        self.clockTreeView = ClockTreeView(self)
 
         # ugly, because when opengl is created, the window will automatically hide
         self.show()
@@ -148,6 +150,7 @@ class MainWindow(MSFluentWindow):
 
     def __initNavigation(self):
         self.__addView(self.socView, Icon.CPU, self.tr('SOC'), Icon.CPU)
+        self.__addView(self.clockTreeView, Icon.TIME, self.tr('Clock'), Icon.TIME)
         self.__addView(self.codeView, Icon.CODE, self.tr('Code'), Icon.CODE)
 
         self.navigationInterface.addItem(routeKey='Generate', icon=Icon.FOLDER_TRANSFER, text=self.tr('Generate'),

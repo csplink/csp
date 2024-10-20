@@ -25,8 +25,12 @@ resource/contributors
 resource/repository
 resource/packages
 
-#Nuitka-Scons
+# nuitka-scons
 *.dist
 *.onefile-build
 *.build
 *.exe
+
+# draw.io
+*.bkp
+*.drawio

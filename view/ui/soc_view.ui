@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ChipView</class>
- <widget class="QWidget" name="ChipView">
+ <class>SocView</class>
+ <widget class="QWidget" name="SocView">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ChipView</string>
+   <string>SocView</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-<widget class="QSplitter" name="modulePropertySocSplitter">
+    <widget class="QSplitter" name="modulePropertySocSplitter">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -41,7 +41,7 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-<widget class="QSplitter" name="modePropertySplitter">
+        <widget class="QSplitter" name="modePropertySplitter">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>

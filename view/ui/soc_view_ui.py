@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'chip_view.ui'
+## Form generated from reading UI file 'soc_view.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -24,14 +24,14 @@ from widget.grid_mode import GridMode
 from widget.grid_property_ip import GridPropertyIp
 from widget.tree_module import TreeModule
 
-class Ui_ChipView(object):
-    def setupUi(self, ChipView):
-        if not ChipView.objectName():
-            ChipView.setObjectName(u"ChipView")
-        ChipView.resize(836, 547)
-        self.verticalLayout_3 = QVBoxLayout(ChipView)
+class Ui_SocView(object):
+    def setupUi(self, SocView):
+        if not SocView.objectName():
+            SocView.setObjectName(u"SocView")
+        SocView.resize(836, 547)
+        self.verticalLayout_3 = QVBoxLayout(SocView)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.modulePropertySocSplitter = QSplitter(ChipView)
+        self.modulePropertySocSplitter = QSplitter(SocView)
         self.modulePropertySocSplitter.setObjectName(u"modulePropertySocSplitter")
         self.modulePropertySocSplitter.setOrientation(Qt.Horizontal)
         self.frame = SimpleCardWidget(self.modulePropertySocSplitter)
@@ -114,13 +114,13 @@ class Ui_ChipView(object):
         self.verticalLayout_3.addWidget(self.modulePropertySocSplitter)
 
 
-        self.retranslateUi(ChipView)
+        self.retranslateUi(SocView)
 
-        QMetaObject.connectSlotsByName(ChipView)
+        QMetaObject.connectSlotsByName(SocView)
     # setupUi
 
-    def retranslateUi(self, ChipView):
-        ChipView.setWindowTitle(QCoreApplication.translate("ChipView", u"ChipView", None))
+    def retranslateUi(self, SocView):
+        SocView.setWindowTitle(QCoreApplication.translate("SocView", u"SocView", None))
         self.zoomInBtn.setText("")
         self.zoomResetBtn.setText("")
         self.zoomOutBtn.setText("")

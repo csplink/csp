@@ -132,7 +132,7 @@ class GraphicsItemPin(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
-    def paintRectangle(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+    def paintRectangle(self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget):
         brush = painter.brush()
 
         # draw background
@@ -222,7 +222,7 @@ class GraphicsItemPin(QGraphicsObject):
         painter.resetTransform()
         painter.setBrush(brush)
 
-    def paintCircle(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+    def paintCircle(self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget):
         brush = painter.brush()
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
@@ -236,7 +236,6 @@ class GraphicsItemPin(QGraphicsObject):
             self.paintCircle(painter, option, widget)
         else:
             super().paint(painter, option, widget)
-        self.update()
 
     def menuTriggered(self, action: QAction):
         self.currentCheckedAction = action

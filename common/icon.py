@@ -72,6 +72,7 @@ class Icon(FluentIconBase, Enum):
     REFRESH = "refresh-line"
     SETTING = "settings-line"
     STACK = "stack-line"
+    TIME = "time-line"
     TOOLS = "tools-line"
     UNINSTALL = "uninstall-line"
     ZOOM_IN = "zoom-in-line"

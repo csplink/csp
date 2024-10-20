@@ -27,8 +27,8 @@
 import math
 
 from PySide6.QtCore import Qt, QRegularExpression
-from PySide6.QtGui import (QPainter, QTransform, QMouseEvent, QWheelEvent, QSurfaceFormat, QContextMenuEvent, QKeyEvent,
-                           QResizeEvent, QRegularExpressionValidator)
+from PySide6.QtGui import (QTransform, QMouseEvent, QWheelEvent, QContextMenuEvent, QKeyEvent,
+                           QResizeEvent, QRegularExpressionValidator, QPainter, QSurfaceFormat)
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
@@ -64,7 +64,6 @@ class GraphicsViewPanZoom(QGraphicsView):
     RESOLUTION = 50
     SCALE = (MIN_SCALE + MAX_SCALE) // 2
     __key = 0
-    pressed = False
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -82,7 +81,8 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setOptimizationFlags(QGraphicsView.OptimizationFlag.DontSavePainterState)
         self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.SmartViewportUpdate)
-        self.setRenderHints(QPainter.RenderHint.Antialiasing | QPainter.RenderHint.TextAntialiasing
+        self.setRenderHints(QPainter.RenderHint.Antialiasing
+                            | QPainter.RenderHint.TextAntialiasing
                             | QPainter.RenderHint.SmoothPixmapTransform
                             | QPainter.RenderHint.VerticalSubpixelPositioning
                             | QPainter.RenderHint.LosslessImageRendering)
@@ -102,7 +102,6 @@ class GraphicsViewPanZoom(QGraphicsView):
     def mousePressEvent(self, event: QMouseEvent):
         super().mousePressEvent(event)
         if event.button() & Qt.MouseButton.LeftButton:
-            self.pressed = True
             self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
             item = self.itemAt(event.pos())
             if item is not None and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
@@ -118,16 +117,9 @@ class GraphicsViewPanZoom(QGraphicsView):
                     name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
                     SIGNAL_BUS.gridPropertyIpTriggered.emit(ip, name)
 
-    def mouseMoveEvent(self, event: QMouseEvent):
-        super().mouseMoveEvent(event)
-        if event.button() & Qt.MouseButton.LeftButton:
-            if self.pressed:
-                self.viewport().setCursor(Qt.CursorShape.ClosedHandCursor)
-
     def mouseReleaseEvent(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
         if event.button() & Qt.MouseButton.LeftButton:
-            self.pressed = False
             self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
 
     def wheelEvent(self, event: QWheelEvent):
@@ -204,12 +196,9 @@ class GraphicsViewPanZoom(QGraphicsView):
             sceneHeight = scene.itemsBoundingRect().height()
             viewWidth = self.width()
             viewHeight = self.height()
-            sceneMax = sceneWidth if sceneWidth > sceneHeight else sceneHeight
-            viewMin = viewHeight if viewWidth > viewHeight else viewWidth
-            if sceneMax == 0:
-                return
 
-            scale = viewMin / sceneMax
+            scaleWidth = viewWidth / sceneWidth
+            scaleHeight = viewHeight / sceneHeight
 
             self.centerOn(sceneWidth / 2, sceneHeight / 2)
-            self.zoom(scale)
+            self.zoom(min(scaleWidth, scaleHeight))

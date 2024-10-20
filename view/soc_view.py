@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        chip_view.py
+# @file        soc_view.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -30,12 +30,12 @@ from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
 from qfluentwidgets import (isDarkTheme)
 
-from common import Style, Icon, PROJECT
+from common import Style, Icon, PROJECT, SETTINGS
 from widget import LQFP
-from .ui.chip_view_ui import Ui_ChipView
+from .ui.soc_view_ui import Ui_SocView
 
 
-class ChipView(Ui_ChipView, QWidget):
+class SocView(Ui_SocView, QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -56,8 +56,10 @@ class ChipView(Ui_ChipView, QWidget):
         self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.rescale())
         self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoomOut(6))
 
-        scene = QGraphicsScene(self.graphicsView)
-        scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
+        self.__scene = QGraphicsScene(self.graphicsView)
+        self.__updateGraphicsViewBackgroundColor()
+
+        SETTINGS.themeChanged.connect(lambda theme: self.__updateGraphicsViewBackgroundColor())
 
         if PROJECT.summary.package != "":
             if re.match("^LQFP\d+$", PROJECT.summary.package):
@@ -68,8 +70,11 @@ class ChipView(Ui_ChipView, QWidget):
                                      self.tr(f'The package "{PROJECT.summary.package}" is not supported at this time'))
             if items is not None:
                 for item in items:
-                    scene.addItem(item)
-        self.graphicsView.setScene(scene)
+                    self.__scene.addItem(item)
+        self.graphicsView.setScene(self.__scene)
         self.graphicsView.rescale()
 
-        Style.CHIP_VIEW.apply(self)
+        Style.SOC_VIEW.apply(self)
+
+    def __updateGraphicsViewBackgroundColor(self):
+        self.__scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))

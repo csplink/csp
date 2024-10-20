@@ -35,13 +35,13 @@ from .settings import SETTINGS
 class Style(StyleSheetBase, Enum):
     """ Style sheet  """
 
-    CHIP_VIEW = "chip_view"
     CODE_VIEW = "code_view"
     GRID_PROPERTY_IP_COMBOBOX = "grid_property_ip.ComboBox"
     NEW_PROJECT_WINDOW = "new_project_window"
     PACKAGE_VIEW = "package_view"
     PLAIN_TEXT_EDIT_CODE = "plain_text_edit_code"
     SETTING_VIEW = "setting_view"
+    SOC_VIEW = "soc_view"
 
     def path(self, theme=Theme.AUTO):
         theme = qconfig.theme if theme == Theme.AUTO else theme
