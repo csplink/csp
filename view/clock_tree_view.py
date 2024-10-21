@@ -35,7 +35,6 @@ from qfluentwidgets import isDarkTheme
 from common import Icon, SETTINGS, PROJECT
 from tools import Drawio
 from view.ui.clock_tree_view_ui import Ui_ClockTreeView
-from widget import GraphicsItemSvg
 
 
 class ClockTreeView(Ui_ClockTreeView, QWidget):
@@ -68,10 +67,11 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         drawio = Drawio(svgPath)
 
         renderer = QSvgRenderer(drawio.svg, self)
-        pixmapItem = GraphicsItemSvg()
-        pixmapItem.setSharedRenderer(renderer)
+        svgItem = QGraphicsSvgItem()
+        svgItem.setMaximumCacheSize(renderer.defaultSize() * 2)
+        svgItem.setSharedRenderer(renderer)
 
-        return pixmapItem
+        return svgItem
 
     def __updateGraphicsViewBackgroundColor(self):
         self.__scene.clear()

@@ -132,11 +132,10 @@ class GraphicsItemPin(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
-    def paintRectangle(self, painter: QPainter, option: QStyleOptionGraphicsItem, _widget: QWidget):
+    def paintRectangle(self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget):
         brush = painter.brush()
 
         # draw background
-        painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         if self.pinConfig.type == "I/O":

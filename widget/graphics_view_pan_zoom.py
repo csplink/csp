@@ -70,7 +70,7 @@ class GraphicsViewPanZoom(QGraphicsView):
 
         self.m_opengl = QOpenGLWidget(self)
         fmt = QSurfaceFormat()
-        fmt.setSamples(10)
+        fmt.setSamples(8)
         self.m_opengl.setFormat(fmt)
 
         self.setViewport(self.m_opengl)
