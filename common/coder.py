@@ -44,14 +44,14 @@ from .settings import SETTINGS
 
 
 class Coder(QObject):
-    __contextTable = {}
-    __filesTable = {}
-    __coder = None
-
     progressUpdated = Signal(str, int, int)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+
+        self.__contextTable = {}
+        self.__filesTable = {}
+        self.__coder = None
 
         self.__coder = self.__loadCoder()
         self.__filesTable = self.__getFilesTable()

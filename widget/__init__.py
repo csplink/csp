@@ -26,6 +26,7 @@
 
 from .graphics_item_chip_body import GraphicsItemChipBody
 from .graphics_item_pin import GraphicsItemPin
+from .graphics_item_svg import GraphicsItemSvg
 from .graphics_view_pan_zoom import GraphicsViewPanZoom
 from .grid_mode_io import GridModeIo
 from .grid_property_ip import GridPropertyIp
@@ -41,6 +42,7 @@ from .tree_module import TreeModule
 __all__ = [
     "GraphicsItemChipBody",
     "GraphicsItemPin",
+    "GraphicsItemSvg",
     "GraphicsViewPanZoom",
     "GridModeIo",
     "GridPropertyIp",
@@ -48,7 +50,7 @@ __all__ = [
     "ListContributors",
     "LQFP",
     "PlainTextEditCode",
-    
+
     "ComboBoxPropertySettingCard", "LineEditPropertySettingCard", "SwitchPropertySettingCard",
     "ToolButtonPropertySettingCard",
 

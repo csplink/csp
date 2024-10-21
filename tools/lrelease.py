@@ -30,23 +30,31 @@ import platform
 import subprocess
 import sys
 
-languages = ['zh_CN']
+__languages = ['zh_CN']
 
-rootDir = os.path.join(os.path.dirname(__file__), "..")
+__rootDir = os.path.join(os.path.dirname(__file__), "..")
 
-if platform.system() == 'Windows':
-    exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease.exe", recursive=True)
-else:
-    exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease", recursive=True)
 
-if len(exes) > 0:
-    exe = exes[0]
-    for lang in languages:
-        tsFile = os.path.join(rootDir, "resource", "i18n", f"csplink.{lang}.ts")
-        assert os.path.isfile(tsFile), f'{tsFile} is not exists'
-        qmFile = os.path.join(rootDir, "resource", "i18n", f"csplink.{lang}.qm")
-        if not os.path.isdir(os.path.dirname(qmFile)):
-            os.makedirs(os.path.dirname(qmFile))
-        subprocess.call([exe, tsFile, '-qm', qmFile])
-else:
-    print("can not find lrelease")
+class Lrelease:
+    @staticmethod
+    def run(root: str, languages: list[str]):
+        if platform.system() == 'Windows':
+            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease.exe", recursive=True)
+        else:
+            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease", recursive=True)
+
+        if len(exes) > 0:
+            exe = exes[0]
+            for lang in languages:
+                tsFile = os.path.join(root, "resource", "i18n", f"csplink.{lang}.ts")
+                assert os.path.isfile(tsFile), f'{tsFile} is not exists'
+                qmFile = os.path.join(root, "resource", "i18n", f"csplink.{lang}.qm")
+                if not os.path.isdir(os.path.dirname(qmFile)):
+                    os.makedirs(os.path.dirname(qmFile))
+                subprocess.call([exe, tsFile, '-qm', qmFile])
+        else:
+            print("can not find lrelease")
+
+
+if __name__ == '__main__':
+    Lrelease.run(__rootDir, __languages)

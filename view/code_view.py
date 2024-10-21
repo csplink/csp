@@ -37,11 +37,11 @@ from .ui.code_view_ui import Ui_CodeView
 class CodeView(Ui_CodeView, QWidget):
     """ Tab interface """
 
-    codes = {}
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+
+        self.codes = {}
 
         self.fileCard.setFixedWidth(300)
         self.fileTree.header().setVisible(False)

@@ -31,44 +31,50 @@ import filetype
 import requests
 import yaml
 
-rootDir = os.path.join(os.path.dirname(__file__), "..")
+__rootDir = os.path.join(os.path.dirname(__file__), "..")
+__owner = "csplink"
+__repo = "csp"
+__token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
 
 
-def getContributors(owner, repo, token):
-    url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
-    headers = {"Authorization": f"token {token}"}
-    resp = requests.get(url, headers=headers)
-    json = resp.json()
-    return sorted(json, key=lambda x: x['contributions'], reverse=True)
+class Contributors:
+    @staticmethod
+    def getContributors(owner: str, repo: str, token: str):
+        url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
+        headers = {"Authorization": f"token {token}"}
+        resp = requests.get(url, headers=headers)
+        json = resp.json()
+        return sorted(json, key=lambda x: x['contributions'], reverse=True)
+
+    @staticmethod
+    def generate(root: str, owner: str, repo: str, token: str):
+        contributors = Contributors.getContributors(owner, repo, token)
+
+        avatarFolder = os.path.join(root, "resource", "contributors", "avatar")
+        if os.path.isdir(avatarFolder):
+            shutil.rmtree(avatarFolder)
+        os.makedirs(avatarFolder)
+
+        contributorList = []
+
+        for contributor in contributors:
+            response = requests.get(contributor["avatar_url"])
+            extension = filetype.guess_extension(response.content)
+            extension = f".{extension}" if extension else ""
+            file = f"{avatarFolder}/{contributor['id']}{extension}"
+            with open(file, 'wb') as fp:
+                fp.write(response.content)
+            print(f"Author: {contributor['login']}, Contributions: {contributor['contributions']}")
+            contributorList.append({
+                "name": contributor["login"],
+                "avatar": f"avatar/{os.path.basename(file)}",
+                "htmlUrl": contributor["html_url"],
+                "contributions": contributor["contributions"],
+            })
+
+        with open(f"{os.path.join(os.path.dirname(avatarFolder), 'contributors')}", 'w', encoding='utf-8') as f:
+            f.write(yaml.dump(contributorList))
 
 
-OWNER = "csplink"
-REPO = "csp"
-TOKEN = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
-contributors = getContributors(OWNER, REPO, TOKEN)
-
-avatarFolder = os.path.join(rootDir, "resource", "contributors", "avatar")
-if os.path.isdir(avatarFolder):
-    shutil.rmtree(avatarFolder)
-os.makedirs(avatarFolder)
-
-contributorList = []
-
-for contributor in contributors:
-    response = requests.get(contributor["avatar_url"])
-    path = os.path.join(avatarFolder, f"resource", "contributors", "avatar")
-    extension = filetype.guess_extension(response.content)
-    extension = f".{extension}" if extension else ""
-    file = f"{avatarFolder}/{contributor['id']}{extension}"
-    with open(file, 'wb') as fp:
-        fp.write(response.content)
-    print(f"Author: {contributor['login']}, Contributions: {contributor['contributions']}")
-    contributorList.append({
-        "name": contributor["login"],
-        "avatar": f"avatar/{os.path.basename(file)}",
-        "htmlUrl": contributor["html_url"],
-        "contributions": contributor["contributions"],
-    })
-
-with open(f"{os.path.join(os.path.dirname(avatarFolder), 'contributors')}", 'w', encoding='utf-8') as f:
-    f.write(yaml.dump(contributorList))
+if __name__ == "__main__":
+    Contributors.generate(__rootDir, __owner, __repo, __token)

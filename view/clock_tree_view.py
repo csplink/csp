@@ -24,16 +24,18 @@
 # 2024-10-19     xqyjlj       initial version
 #
 
-import xml.etree.ElementTree as etree
 from pathlib import Path
 
-from PySide6.QtGui import QColor, QPainter, QPixmap, Qt
+from PySide6.QtGui import QColor
 from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtWidgets import QWidget, QGraphicsScene, QGraphicsPixmapItem
+from PySide6.QtSvgWidgets import QGraphicsSvgItem
+from PySide6.QtWidgets import QWidget, QGraphicsScene
 from qfluentwidgets import isDarkTheme
 
 from common import Icon, SETTINGS, PROJECT
+from tools import Drawio
 from view.ui.clock_tree_view_ui import Ui_ClockTreeView
+from widget import GraphicsItemSvg
 
 
 class ClockTreeView(Ui_ClockTreeView, QWidget):
@@ -59,29 +61,15 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.__updateGraphicsViewBackgroundColor()
         SETTINGS.themeChanged.connect(lambda theme: self.__updateGraphicsViewBackgroundColor())
 
-    def __getSvg(self) -> QGraphicsPixmapItem:
+    def __getSvg(self) -> QGraphicsSvgItem:
         svgPath = Path(
             SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.vendor.lower() / f'{PROJECT.summary.clockTree.lower()}.svg'
-        with open(svgPath, 'r', encoding='utf-8') as f:
-            svg = f.read()
 
-        root = etree.fromstring(svg)
-        print(root.attrib['content'])
+        drawio = Drawio(svgPath)
 
-        if isDarkTheme():  # TODO: 修改时钟树主题样式
-            svg = svg.replace('rgb(0, 0, 0)', 'rgb(0, 159, 170)')
-            svg = svg.replace('fill="#000000"', 'fill="#FDFDFD"')
-
-        renderer = QSvgRenderer(svg.encode('utf-8'))
-        pixmap = QPixmap(renderer.defaultSize() * 5)
-        pixmap.fill(Qt.GlobalColor.transparent)
-        painter = QPainter()
-        painter.begin(pixmap)
-        painter.setRenderHints(QPainter.RenderHint.Antialiasing)
-        renderer.render(painter)
-        painter.end()
-        pixmapItem = QGraphicsPixmapItem(pixmap)
-        pixmapItem.setTransformationMode(Qt.TransformationMode.SmoothTransformation)
+        renderer = QSvgRenderer(drawio.svg, self)
+        pixmapItem = GraphicsItemSvg()
+        pixmapItem.setSharedRenderer(renderer)
 
         return pixmapItem
 

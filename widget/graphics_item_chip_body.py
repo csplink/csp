@@ -57,6 +57,7 @@ class GraphicsItemChipBody(QGraphicsObject):
         brush = painter.brush()
 
         # draw background
+        painter.setClipRect(option.exposedRect)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setBrush(QColor(50, 50, 50))
         painter.drawRect(0, 0, self.width, self.height)

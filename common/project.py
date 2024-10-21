@@ -39,12 +39,12 @@ from .summary import SummaryType, SUMMARY
 
 
 class Ip(QObject):
-    __ip = {}
-    __ipTotal = {}
-    __ipReverseTotal = {}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.__ip = {}
+        self.__ipTotal = {}
+        self.__ipReverseTotal = {}
 
     def ip(self, name: str) -> dict:
         if name not in self.__ip:
@@ -80,15 +80,13 @@ class Ip(QObject):
 
 
 class Project(QObject):
-    __data = {}
-    __path = ""
-    __summary = None
-    __ip = None
-    __valid = False
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.__data = {}
+        self.__path = ""
         self.__summary = None
+        self.__valid = False
         self.__ip = Ip(self)
 
     @property
