@@ -100,8 +100,7 @@ class SystemSettingView(ScrollArea):
         self.themeCard = OptionsSettingCard(SETTINGS.themeMode,
                                             Icon.PAINT,
                                             self.tr('Application theme'),
-                                            self.tr(
-                                                "Change the appearance of your application"),
+                                            self.tr("Change the appearance of your application"),
                                             texts=[self.tr('Light'),
                                                    self.tr('Dark'),
                                                    self.tr(
@@ -111,15 +110,13 @@ class SystemSettingView(ScrollArea):
 
         self.themeColorCard = CustomColorSettingCard(SETTINGS.themeColor, Icon.PALETTE,
                                                      self.tr('Theme color'),
-                                                     self.tr(
-                                                         'Change the theme color of you application'),
+                                                     self.tr('Change the theme color of you application'),
                                                      group)
         self.themeColorCard.colorChanged.connect(lambda c: setThemeColor(c))
 
         self.alertColorCard = CustomColorSettingCard(SETTINGS.alertColor, Icon.PALETTE,
                                                      self.tr('Alert color'),
-                                                     self.tr(
-                                                         'Change the alert color of you application'),
+                                                     self.tr('Change the alert color of you application'),
                                                      group)
 
         group.addSettingCard(self.themeCard)
@@ -134,23 +131,43 @@ class SystemSettingView(ScrollArea):
         self.languageCard = ComboBoxSettingCard(SETTINGS.language,
                                                 Icon.GLOBAL,
                                                 self.tr('Language'),
-                                                self.tr(
-                                                    'Set your preferred language for UI'),
+                                                self.tr('Set your preferred language for UI'),
                                                 texts=['简体中文', '繁體中文', 'English',
-                                                       self.tr(
-                                                           'Use system setting')],
+                                                       self.tr('Use system setting')],
                                                 parent=group)
         self.zoomCard = OptionsSettingCard(
             SETTINGS.dpiScale,
             Icon.PICTURE_IN_PICTURE,
             self.tr("Interface zoom"),
             self.tr("Change the size of widgets and fonts"),
-            texts=["100%", "125%", "150%", "175%", "200%",
-                   self.tr("Use system setting")],
+            texts=["100%", "125%", "150%", "175%", "200%", self.tr("Use system setting")],
+            parent=group)
+        self.useOpenGLCard = SwitchSettingCard(
+            Icon.SPEED_UP,
+            self.tr('Using opengl for acceleration'),
+            self.tr('Hardware acceleration for your applications'),
+            configItem=SETTINGS.isUseOpenGL,
+            parent=group)
+        self.openGLSamplesCard = OptionsSettingCard(
+            icon=Icon.NUMBERS,
+            title=self.tr('OpenGL samples'),
+            content=self.tr('Set the preferred number of samples per pixel'),
+            configItem=SETTINGS.openGLSamples,
+            texts=['4', '8', '12', '16'],
+            parent=group)
+        self.clockTreeTypeCard = OptionsSettingCard(
+            configItem=SETTINGS.clockTreeType,
+            icon=Icon.LANDSCAPE,
+            title=self.tr("Clock tree type"),
+            content=self.tr("Choose the Clock tree type"),
+            texts=["Pixmap", "Svg"],
             parent=group)
 
         group.addSettingCard(self.languageCard)
         group.addSettingCard(self.zoomCard)
+        group.addSettingCard(self.useOpenGLCard)
+        group.addSettingCard(self.openGLSamplesCard)
+        group.addSettingCard(self.clockTreeTypeCard)
 
         return group
 
@@ -160,9 +177,8 @@ class SystemSettingView(ScrollArea):
         self.updateAtStartupCard = SwitchSettingCard(
             Icon.REFRESH,
             self.tr('Check for updates when the application starts'),
-            self.tr(
-                'The new version will be more stable and have more features'),
-            configItem=SETTINGS.checkUpdateAtStartup,
+            self.tr('The new version will be more stable and have more features'),
+            configItem=SETTINGS.isUpdateAtStartup,
             parent=group)
 
         group.addSettingCard(self.updateAtStartupCard)
@@ -175,15 +191,13 @@ class SystemSettingView(ScrollArea):
         self.helpCard = HyperlinkCard(SETTINGS.HELP_URL,
                                       self.tr('Open help page'), Icon.QUESTION,
                                       self.tr('Help'),
-                                      self.tr(
-                                          'Discover new features and learn useful tips about CSP'),
+                                      self.tr('Discover new features and learn useful tips about CSP'),
                                       group)
 
         self.feedbackCard = PrimaryPushSettingCard(self.tr('Provide feedback'),
                                                    Icon.FEEDBACK,
                                                    self.tr('Provide feedback'),
-                                                   self.tr(
-                                                       'Help us improve CSP by providing feedback'),
+                                                   self.tr('Help us improve CSP by providing feedback'),
                                                    group)
         self.feedbackCard.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(SETTINGS.FEEDBACK_URL)))
 

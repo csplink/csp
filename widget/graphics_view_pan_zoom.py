@@ -33,7 +33,7 @@ from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
 
-from common import PROJECT, SIGNAL_BUS
+from common import PROJECT, SIGNAL_BUS, SETTINGS
 from .graphics_item_pin import GraphicsItemPin
 
 
@@ -68,12 +68,13 @@ class GraphicsViewPanZoom(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
-        self.m_opengl = QOpenGLWidget(self)
-        fmt = QSurfaceFormat()
-        fmt.setSamples(8)
-        self.m_opengl.setFormat(fmt)
+        if SETTINGS.isUseOpenGL.value:
+            self.m_opengl = QOpenGLWidget(self)
+            fmt = QSurfaceFormat()
+            fmt.setSamples(SETTINGS.openGLSamples.value)
+            self.m_opengl.setFormat(fmt)
 
-        self.setViewport(self.m_opengl)
+            self.setViewport(self.m_opengl)
         self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
         self.setInteractive(False)
         self.setAcceptDrops(False)
@@ -81,11 +82,9 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setOptimizationFlags(QGraphicsView.OptimizationFlag.DontSavePainterState)
         self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.SmartViewportUpdate)
-        self.setRenderHints(QPainter.RenderHint.Antialiasing
-                            | QPainter.RenderHint.TextAntialiasing
-                            | QPainter.RenderHint.SmoothPixmapTransform
-                            | QPainter.RenderHint.VerticalSubpixelPositioning
-                            | QPainter.RenderHint.LosslessImageRendering)
+        self.setRenderHints(QPainter.RenderHint.Antialiasing |
+                            QPainter.RenderHint.TextAntialiasing |
+                            QPainter.RenderHint.SmoothPixmapTransform)
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
         INT_MAX = 2147483647
         INT_MIN = -2147483648

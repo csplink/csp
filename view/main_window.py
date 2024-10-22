@@ -122,14 +122,15 @@ class MainWindow(MSFluentWindow):
 
         self.__initWindow()
 
+        loop = QEventLoop(self)
+        QTimer.singleShot(3000, loop.quit)  # splashScreen show at least 3s
+        QApplication.processEvents()
+
         self.socView = SocView(self)
         self.clockTreeView = ClockTreeView(self)
 
         # ugly, because when opengl is created, the window will automatically hide
         self.show()
-        loop = QEventLoop(self)
-        QTimer.singleShot(3000, loop.quit)  # splashScreen show at least 3s
-        QApplication.processEvents()
 
         self.codeView = CodeView(self)
         self.packageView = PackageView(self)

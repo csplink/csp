@@ -26,10 +26,10 @@
 
 from pathlib import Path
 
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QColor, QPixmap, Qt, QPainter
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
-from PySide6.QtWidgets import QWidget, QGraphicsScene
+from PySide6.QtWidgets import QWidget, QGraphicsScene, QGraphicsPixmapItem
 from qfluentwidgets import isDarkTheme
 
 from common import Icon, SETTINGS, PROJECT
@@ -60,18 +60,32 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.__updateGraphicsViewBackgroundColor()
         SETTINGS.themeChanged.connect(lambda theme: self.__updateGraphicsViewBackgroundColor())
 
-    def __getSvg(self) -> QGraphicsSvgItem:
+    def __getSvg(self) -> QGraphicsSvgItem | QGraphicsPixmapItem:
         svgPath = Path(
             SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.vendor.lower() / f'{PROJECT.summary.clockTree.lower()}.svg'
 
         drawio = Drawio(svgPath)
 
         renderer = QSvgRenderer(drawio.svg, self)
-        svgItem = QGraphicsSvgItem()
-        svgItem.setMaximumCacheSize(renderer.defaultSize() * 2)
-        svgItem.setSharedRenderer(renderer)
 
-        return svgItem
+        if SETTINGS.clockTreeType.value == "Pixmap":
+            pixmap = QPixmap(renderer.defaultSize() * 5)
+            pixmap.fill(Qt.GlobalColor.transparent)
+            painter = QPainter()
+            painter.begin(pixmap)
+            painter.setRenderHints(QPainter.RenderHint.Antialiasing |
+                                   QPainter.RenderHint.TextAntialiasing |
+                                   QPainter.RenderHint.SmoothPixmapTransform)
+            renderer.render(painter)
+            painter.end()
+            item = QGraphicsPixmapItem(pixmap)
+            item.setTransformationMode(Qt.TransformationMode.SmoothTransformation)
+        else:
+            item = QGraphicsSvgItem()
+            item.setMaximumCacheSize(renderer.defaultSize() * 2)
+            item.setSharedRenderer(renderer)
+
+        return item
 
     def __updateGraphicsViewBackgroundColor(self):
         self.__scene.clear()

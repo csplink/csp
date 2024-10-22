@@ -35,30 +35,31 @@ class Drawio:
     def __init__(self, path: Path):
         self.__lines = []
         self.__widgets = []
-        self.__vertex = []
+        self.__texts = []
 
         with open(path, 'r', encoding='utf-8') as f:
             svg = f.read()
 
         self.__root = etree.fromstring(svg)
         self.__drawio = etree.fromstring(self.__root.attrib['content'])
-        version = self.__drawio.attrib['version']
-        print(f'version: {version}')
-        print(Version(f'V{version}'))
+        self.__namespace = {'ns': self.__root.tag.split('}')[0][1:] if '}' in self.__root.tag else ''}
+        version = Version(self.__drawio.attrib['version'])
 
         mxCells: list[etree.Element] = self.__drawio.find('diagram').findall('mxGraphModel/root/mxCell')
         for mxCell in mxCells:
             id_ = mxCell.attrib['id']
-            styles = mxCell.attrib.get('style', '').strip(';').split(';')
-            if len(styles) > 0:
-                if self.__isLineByStyles(styles):
-                    self.__lines.append(id_)
-                elif self.__isWidgetByStyles(styles):
-                    self.__widgets.append(id_)
-                elif mxCell.attrib.get('vertex', '0') == '1':
-                    self.__vertex.append(id_)
+            if self.__isLine(mxCell.attrib):
+                print('line')
+                self.__lines.append(id_)
+            elif self.__isWidget(mxCell.attrib):
+                print('widget')
+                self.__widgets.append(id_)
+            elif self.__isText(mxCell.attrib):
+                print('text')
+                self.__texts.append(id_)
 
-        self.__findSvgElementById('11')
+        self.__updateLine()
+        self.__updateText()
 
     @property
     def svg(self) -> bytes:
@@ -72,34 +73,84 @@ class Drawio:
     def widgetIds(self) -> list[str]:
         return self.__widgets
 
-    @property
-    def vertexIds(self) -> list[str]:
-        return self.__vertex
-
-    def __isLineByStyles(self, styles: list[str]) -> bool:
+    def __isWidget(self, attrib: dict[str, str]) -> bool:
+        times = 0
+        styles = attrib.get('style', '').strip(';').split(';')
         for style in styles:
-            if style == 'line' or style.startswith('endArrow='):
+            if style == 'text':
                 return True
-        return False
-
-    def __isWidgetByStyles(self, styles: list[str]) -> bool:
-        roundedFound = False
-        for style in styles:
-            if not roundedFound and style.startswith('rounded='):
-                roundedFound = True
+            if style.startswith('rounded='):
+                times += 1
                 continue
-            elif roundedFound and style == 'fillColor=none':
+            elif style == 'fillColor=none':
+                times += 1
+                continue
+
+            if times == 2:
                 return True
         return False
 
-    def __findSvgElementById(self, id_: str) -> etree.Element | None:
+    def __isLine(self, attrib: dict[str, str]) -> bool:
+        styles = attrib.get('style', '').strip(';').split(';')
+        for style in styles:
+            if style.startswith('strokeColor=') and style != 'strokeColor=none' and style != 'strokeColor=default':
+                return False
+            if style == 'line':
+                return True
+
+        if attrib.get('edge', '0') == '0':
+            return False
+
+        return True
+
+    def __isText(self, attrib: dict[str, str]) -> bool:
+        styles = attrib.get('style', '').strip(';').split(';')
+        for style in styles:
+            if style == 'text':
+                return True
+
+        return False
+
+    def __findSvgElement(self, id_: str) -> etree.Element:
         rtn = None
 
-        namespace = {'ns': self.__root.tag.split('}')[0][1:] if '}' in self.__root.tag else ''}
-        gs = self.__root.findall('ns:g/ns:g/ns:g/ns:g', namespace)
+        gs = self.__root.findall('ns:g/ns:g/ns:g/ns:g', self.__namespace)
         for g in gs:
             if g.attrib['data-cell-id'] == id_:
                 rtn = g
                 break
 
         return rtn
+
+    def __updateLine(self):
+        for id_ in self.__lines:
+            element = self.__findSvgElement(id_)
+            self.__updateLineElement(element, id_, 'rgb(255, 0, 0)')
+
+    def __updateText(self):
+        for id_ in self.__texts:
+            element = self.__findSvgElement(id_)
+            print(id_)
+            self.__updateTextElement(element, id_, 'rgb(0, 255, 255)')
+
+    def __updateLineElement(self, el: etree.Element, cellId: str, color: str):
+        for e in el:
+            if e.tag == '{http://www.w3.org/2000/svg}path':
+                e.attrib['stroke'] = color
+                if e.get('fill', 'none') != 'none':
+                    e.attrib['fill'] = color
+            elif e.tag == '{http://www.w3.org/2000/svg}ellipse':
+                e.attrib['fill'] = color
+                e.attrib['stroke'] = color
+
+            if len(e) > 0:
+                self.__updateLineElement(e, cellId, color)
+
+    def __updateTextElement(self, el: etree.Element, cellId: str, color: str):
+        for e in el:
+            if e.tag == '{http://www.w3.org/2000/svg}g':
+                if 'fill' in e.attrib:
+                    e.attrib['fill'] = color
+
+            if len(e) > 0:
+                self.__updateTextElement(e, cellId, color)

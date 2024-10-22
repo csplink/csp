@@ -72,12 +72,26 @@ class Settings(QConfig):
                                  OptionsValidator(LanguageType),
                                  LanguageSerializer(),
                                  restart=True)
-    checkUpdateAtStartup = ConfigItem("System", "CheckUpdateAtStartup", True, BoolValidator())
+
     dpiScale = OptionsConfigItem("System",
                                  "DpiScale",
                                  "Auto",
                                  OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
                                  restart=True)
+    isUseOpenGL = ConfigItem("System", "UseOpenGL", True, BoolValidator(), restart=True)
+    openGLSamples = OptionsConfigItem("System",
+                                      "OpenGLSamples",
+                                      4,
+                                      OptionsValidator([4, 8, 12, 16]),
+                                      restart=True)
+    clockTreeType = OptionsConfigItem("System",
+                                      "ClockTreeType",
+                                      "Pixmap",
+                                      OptionsValidator(["Pixmap", "Svg"]),
+                                      restart=True)
+
+    # update
+    isUpdateAtStartup = ConfigItem("Update", "CheckUpdateAtStartup", True, BoolValidator())
 
     # style ------------------------------------------------------------------------------------------------------------
     themeMode = OptionsConfigItem("Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme))
