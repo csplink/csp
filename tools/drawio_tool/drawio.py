@@ -49,13 +49,10 @@ class Drawio:
         for mxCell in mxCells:
             id_ = mxCell.attrib['id']
             if self.__isLine(mxCell.attrib):
-                print('line')
                 self.__lines.append(id_)
             elif self.__isWidget(mxCell.attrib):
-                print('widget')
                 self.__widgets.append(id_)
             elif self.__isText(mxCell.attrib):
-                print('text')
                 self.__texts.append(id_)
 
         self.__updateLine()
@@ -74,11 +71,14 @@ class Drawio:
         return self.__widgets
 
     def __isWidget(self, attrib: dict[str, str]) -> bool:
+        # value==none && shape!=text && rounded!=none && fillColor==none
         times = 0
+        if attrib.get('value', '') != '':
+            return False
         styles = attrib.get('style', '').strip(';').split(';')
         for style in styles:
             if style == 'text':
-                return True
+                return False
             if style.startswith('rounded='):
                 times += 1
                 continue
@@ -91,6 +91,7 @@ class Drawio:
         return False
 
     def __isLine(self, attrib: dict[str, str]) -> bool:
+        # shape==line; edge==1 && strokeColor!=none/default
         styles = attrib.get('style', '').strip(';').split(';')
         for style in styles:
             if style.startswith('strokeColor=') and style != 'strokeColor=none' and style != 'strokeColor=default':
@@ -104,6 +105,9 @@ class Drawio:
         return True
 
     def __isText(self, attrib: dict[str, str]) -> bool:
+        # value!=none; shape==text
+        if attrib.get('value', '') != '':
+            return True
         styles = attrib.get('style', '').strip(';').split(';')
         for style in styles:
             if style == 'text':
@@ -130,7 +134,6 @@ class Drawio:
     def __updateText(self):
         for id_ in self.__texts:
             element = self.__findSvgElement(id_)
-            print(id_)
             self.__updateTextElement(element, id_, 'rgb(0, 255, 255)')
 
     def __updateLineElement(self, el: etree.Element, cellId: str, color: str):
