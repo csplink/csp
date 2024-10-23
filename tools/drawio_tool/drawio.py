@@ -30,12 +30,45 @@ from pathlib import Path
 from packaging.version import Version
 
 
+class MxCellType:
+    class StyleType:
+        def __init__(self, value: str):
+            self.__origin = value
+            self.__shape = []
+            self.__style = {}
+            styles = value.strip(';').split(';')
+            for style in styles:
+                if '=' in style:
+                    ss = style.split('=')
+                    self.__style[ss[0]] = ss[1]
+                else:
+                    self.__shape.append(style)
+
+        @property
+        def origin(self) -> str:
+            return self.__origin
+
+        @property
+        def shape(self) -> list[str]:
+            return self.__shape
+
+        @property
+        def style(self) -> dict[str, str]:
+            return self.__style
+
+    def __init__(self, element: etree.Element):
+        self.__id = element.get('id')
+        self.__value = element.get('value')
+        self.__style = MxCellType.StyleType(element.get('style', ''))
+
+
 class Drawio:
 
     def __init__(self, path: Path):
         self.__lines = []
         self.__widgets = []
         self.__texts = []
+        self.__graphics = []
 
         with open(path, 'r', encoding='utf-8') as f:
             svg = f.read()
@@ -48,15 +81,23 @@ class Drawio:
         mxCells: list[etree.Element] = self.__drawio.find('diagram').findall('mxGraphModel/root/mxCell')
         for mxCell in mxCells:
             id_ = mxCell.attrib['id']
-            if self.__isLine(mxCell.attrib):
-                self.__lines.append(id_)
-            elif self.__isWidget(mxCell.attrib):
+            # if self.__isLine(mxCell.attrib):
+            #     self.__lines.append(id_)
+            if self.__isWidget(mxCell.attrib):
                 self.__widgets.append(id_)
-            elif self.__isText(mxCell.attrib):
-                self.__texts.append(id_)
+            # elif self.__isText(mxCell.attrib):
+            #     self.__texts.append(id_)
+            # elif self.__isGraphics(mxCell.attrib):
+            #     self.__graphics.append(id_)
 
-        self.__updateLine()
-        self.__updateText()
+        # TODO: 根据主题不同来变换不同的时钟树配置
+        # self.__updateLine()
+        # self.__updateText()
+        # self.__updateGraphics()
+
+        for id_ in self.__widgets:
+            element = self.__findSvgElement(id_)
+            self.__updateGraphicsElement(element, id_, 'rgb(0, 255, 0)')
 
     @property
     def svg(self) -> bytes:
@@ -79,10 +120,26 @@ class Drawio:
         for style in styles:
             if style == 'text':
                 return False
+            elif style.startswith('rounded='):
+                times += 1
+            elif style == 'fillColor=none':
+                times += 1
+            elif style == 'ellipse':
+                times += 1
+
+            if times >= 2:
+                return True
+        return False
+
+    def __isGraphics(self, attrib: dict[str, str]) -> bool:
+        # rounded!=none && fillColor!=none
+        times = 0
+        styles = attrib.get('style', '').strip(';').split(';')
+        for style in styles:
             if style.startswith('rounded='):
                 times += 1
                 continue
-            elif style == 'fillColor=none':
+            elif style.startswith('fillColor=') and style != 'fillColor=none' and style != 'fillColor=default':
                 times += 1
                 continue
 
@@ -139,6 +196,11 @@ class Drawio:
             element = self.__findSvgElement(id_)
             self.__updateTextElement(element, id_, 'rgb(0, 255, 255)')
 
+    def __updateGraphics(self):
+        for id_ in self.__graphics:
+            element = self.__findSvgElement(id_)
+            self.__updateGraphicsElement(element, id_, 'rgb(0, 255, 0)')
+
     def __updateLineElement(self, el: etree.Element, cellId: str, color: str):
         for e in el:
             if e.tag == '{http://www.w3.org/2000/svg}path':
@@ -160,3 +222,15 @@ class Drawio:
 
             if len(e) > 0:
                 self.__updateTextElement(e, cellId, color)
+
+    def __updateGraphicsElement(self, el: etree.Element, cellId: str, color: str):
+        for e in el:
+            if e.tag == '{http://www.w3.org/2000/svg}rect':
+                if 'stroke' in e.attrib:
+                    e.attrib['stroke'] = color
+            elif e.tag == '{http://www.w3.org/2000/svg}ellipse':
+                if 'stroke' in e.attrib:
+                    e.attrib['stroke'] = color
+
+            if len(e) > 0:
+                self.__updateGraphicsElement(e, cellId, color)

@@ -144,10 +144,10 @@ class MainWindow(MSFluentWindow):
         self.stackedWidget.currentChanged.connect(self.__on_stackedWidget_currentChanged,
                                                   Qt.ConnectionType.QueuedConnection)
 
-        # loop.exec()
+        loop.exec()
         self.splashScreen.finish()
 
-        # self.showMaximized()
+        self.showMaximized()
 
     def __initNavigation(self):
         self.__addView(self.socView, Icon.CPU, self.tr('SOC'), Icon.CPU)
