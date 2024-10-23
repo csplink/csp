@@ -105,15 +105,18 @@ class Drawio:
         return True
 
     def __isText(self, attrib: dict[str, str]) -> bool:
-        # value!=none; shape==text
+        # value!=none && shape==text && fillColor!=none/default
+        times = 0
         if attrib.get('value', '') != '':
-            return True
+            times += 1
         styles = attrib.get('style', '').strip(';').split(';')
         for style in styles:
             if style == 'text':
-                return True
+                times += 1
+            elif style.startswith('fillColor=') and style != 'fillColor=none' and style != 'fillColor=default':
+                return False
 
-        return False
+        return times > 0
 
     def __findSvgElement(self, id_: str) -> etree.Element:
         rtn = None
