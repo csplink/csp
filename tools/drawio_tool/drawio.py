@@ -31,35 +31,56 @@ from packaging.version import Version
 
 
 class MxCellType:
-    class StyleType:
-        def __init__(self, value: str):
-            self.__origin = value
-            self.__shape = []
-            self.__style = {}
-            styles = value.strip(';').split(';')
-            for style in styles:
-                if '=' in style:
-                    ss = style.split('=')
-                    self.__style[ss[0]] = ss[1]
-                else:
-                    self.__shape.append(style)
-
-        @property
-        def origin(self) -> str:
-            return self.__origin
-
-        @property
-        def shape(self) -> list[str]:
-            return self.__shape
-
-        @property
-        def style(self) -> dict[str, str]:
-            return self.__style
 
     def __init__(self, element: etree.Element):
-        self.__id = element.get('id')
-        self.__value = element.get('value')
-        self.__style = MxCellType.StyleType(element.get('style', ''))
+        self.__origin = element
+        self.__id = element.get('id', '')
+        self.__value = element.get('value', '')
+        self.__parent = int(element.get('parent', '0'))
+        self.__vertex = int(element.get('vertex', '0'))
+        self.__edge = int(element.get('edge', '0'))
+
+        self.__shape = []
+        self.__style = {}
+        styles = element.get('style', '').strip(';').split(';')
+        for style in styles:
+            if '=' in style:
+                ss = style.split('=')
+                self.__style[ss[0]] = ss[1]
+            else:
+                self.__shape.append(style)
+
+    @property
+    def origin(self) -> etree.Element:
+        return self.__origin
+
+    @property
+    def id(self) -> str:
+        return self.__id
+
+    @property
+    def value(self) -> str:
+        return self.__value
+
+    @property
+    def shape(self) -> list[str]:
+        return self.__shape
+
+    @property
+    def style(self) -> dict[str, str]:
+        return self.__style
+
+    @property
+    def parent(self) -> int:
+        return self.__parent
+
+    @property
+    def vertex(self) -> int:
+        return self.__vertex
+
+    @property
+    def edge(self) -> int:
+        return self.__edge
 
 
 class Drawio:
@@ -80,10 +101,11 @@ class Drawio:
 
         mxCells: list[etree.Element] = self.__drawio.find('diagram').findall('mxGraphModel/root/mxCell')
         for mxCell in mxCells:
+            cell = MxCellType(mxCell)
             id_ = mxCell.attrib['id']
             # if self.__isLine(mxCell.attrib):
             #     self.__lines.append(id_)
-            if self.__isWidget(mxCell.attrib):
+            if self.__isWidget(cell):
                 self.__widgets.append(id_)
             # elif self.__isText(mxCell.attrib):
             #     self.__texts.append(id_)
@@ -111,24 +133,20 @@ class Drawio:
     def widgetIds(self) -> list[str]:
         return self.__widgets
 
-    def __isWidget(self, attrib: dict[str, str]) -> bool:
-        # value==none && shape!=text && rounded!=none && fillColor==none
-        times = 0
-        if attrib.get('value', '') != '':
+    def __isWidget(self, mxCell: MxCellType) -> bool:
+        # widget 其背景必须为透明，edge属性为0，内部无文本（非文本图形），必须为无圆角矩形或者圆形，边框宽度等于1
+        fillColor = mxCell.style.get('fillColor', 'none')
+        if mxCell.value != '' or mxCell.shape == 'text':
             return False
-        styles = attrib.get('style', '').strip(';').split(';')
-        for style in styles:
-            if style == 'text':
+        elif mxCell.edge == 1:
+            return False
+        elif fillColor == 'none' or fillColor == 'default':
+            strokeWidth = int(mxCell.style.get('strokeWidth', '1'))
+            if strokeWidth != 1:
                 return False
-            elif style.startswith('rounded='):
-                times += 1
-            elif style == 'fillColor=none':
-                times += 1
-            elif style == 'ellipse':
-                times += 1
-
-            if times >= 2:
+            elif mxCell.style.get('rounded', '') == '0' or mxCell.shape == 'ellipse':
                 return True
+
         return False
 
     def __isGraphics(self, attrib: dict[str, str]) -> bool:
