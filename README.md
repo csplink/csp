@@ -1,6 +1,6 @@
 <div align="center">
     <a href="https://csplink.top">
-        <img width="160" heigth="160" src="apps/dev/resources/images/logo.png" alt="logo" />
+        <img width="160" heigth="160" src="resource/images/logo.png" alt="logo" />
     </a>
     <h1>CSP</h1>
     <div>
