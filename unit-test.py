@@ -40,13 +40,16 @@ def main(folder):
 
     app = QApplication(sys.argv)
 
-    print("find {count} testcases !!!".format(count=discover.countTestCases()))
+    print("find {count} testcases !!!".format(count=discover.countTestCases()), flush=True)
 
     suite = unittest.TestSuite()
     suite.addTest(discover)
 
     runner = unittest.TextTestRunner(verbosity=2)
-    runner.run(suite)
+    result = runner.run(suite)
+
+    if len(result.errors) + len(result.failures) != 0:
+        exit(1)
 
 
 if __name__ == '__main__':

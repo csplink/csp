@@ -60,7 +60,9 @@ class PackageTest(unittest.TestCase):
         self.check_getPackageDescription(sc)
 
     def test_getPackageIndex(self):
+        self.test_install()
         index = PACKAGE.getPackageIndex()
+        self.test_uninstall()
         self.assertGreater(len(index.origin), 0, msg='install failed.')
 
     def test_install(self):
