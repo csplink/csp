@@ -1,0 +1,21 @@
+author:
+  name: xqyjlj
+  email: xqyjlj@126.com
+  website:
+    blog: https://xqyjlj.github.io/
+    github: https://github.com/xqyjlj
+name: test
+version: 0.0.2
+license: Apache-2.0
+type: hal
+vendor: csplink
+vendorUrl:
+  en: https://csplink.top
+  zh_CN: https://csplink.top/#/zh-hans/
+description:
+  en: A fully open source chip configuration software system
+  zh_CN: A fully open source chip configuration software system
+url:
+  en: https://csplink.top
+  zh_CN: https://csplink.top/#/zh-hans/
+support: xqyjlj@126.com

@@ -1,0 +1,139 @@
+{#
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        csp-file-base.xmake.lua.j2
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-07-10     xqyjlj       initial version
+#
+#}
+--
+-- -----------------------------------------------------------------------------
+--  @author:            {{author}}
+--  @file:              {{file}}
+--  @brief:             {{brief}}
+--  @version:           {{version}}
+--  @hal:               {{project.vendor}}.{{project.gen.hal}}
+--  @halVersion:        {{project.gen.halVersion}}
+--  @project:           {{project.name}}
+--  @targetChip:        {{project.targetChip}}
+--  @time:              {{time}}
+--
+-- -----------------------------------------------------------------------------
+--  @attention
+--
+--  Copyright (C) {{Year}} csplink software.
+--  All rights reserved.
+--
+-- -----------------------------------------------------------------------------
+--
+set_xmakever("2.8.6")
+
+----< user code begin header, do not change this comment!
+{{userCode["header"]}}
+----> user code end header, do not change this comment!
+
+-------------------------------- project rules ---------------------------------
+{%- block project_rules %}
+{%- endblock %}
+----< user code begin project rules, do not change this comment!
+{%- if userCode["project rules"] %}
+{{userCode["project rules"]}}
+{%- else %}
+add_rules("mode.debug", "mode.release")
+add_rules("plugin.compile_commands.autoupdate", {outputdir = ".vscode"})
+{%- endif %}
+----> user code end project rules, do not change this comment!
+
+-------------------------------- project config --------------------------------
+----< user code begin project config, do not change this comment!
+{%- if userCode["project config"] %}
+{{userCode["project config"]}}
+{%- else %}
+    {%- block project_config %}
+    {%- endblock %}
+{%- endif %}
+----> user code end project config, do not change this comment!
+
+----------------------------------- includes -----------------------------------
+{%- block includes %}
+{%- endblock %}
+----< user code begin includes, do not change this comment!
+{{userCode["includes"]}}
+----> user code end includes, do not change this comment!
+
+---------------------------------- toolchains ----------------------------------
+----< user code begin toolchains, do not change this comment!
+{%- if userCode["toolchains"] %}
+{{userCode["toolchains"]}}
+{%- else %}
+    {%- block toolchains %}
+    {%- endblock %}
+{%- endif %}
+----> user code end toolchains, do not change this comment!
+
+------------------------------------- flags ------------------------------------
+{%- block flags %}
+{%- endblock %}
+----< user code begin flags, do not change this comment!
+{{userCode["flags"]}}
+----> user code end flags, do not change this comment!
+
+----< user code begin 0, do not change this comment!
+{{userCode["0"]}}
+----> user code end 0, do not change this comment!
+
+target("{{project.name}}")
+do
+    set_kind("binary")
+    ------------------------------ target configs ------------------------------
+    ----< user code begin target configs, do not change this comment!
+{%- if userCode["toolchains"] %}
+{{userCode["target configs"]}}
+{%- else %}
+{%- block target_configs %}
+{%- endblock %}
+{%- endif %}
+    ----> user code end target configs, do not change this comment!
+
+    ------------------------------- target files -------------------------------
+{%- block target_files %}
+{%- endblock %}
+    ----< user code begin target files, do not change this comment!
+{{userCode["target files"]}}
+    ----> user code end target files, do not change this comment!
+
+    ------------------------------- target script ------------------------------
+    ----< user code begin target script, do not change this comment!
+{%- if userCode["target script"] %}
+{{userCode["target script"]}}
+{%- else %}
+    {%- block target_script %}
+    {%- endblock %}
+{%- endif %}
+    ----> user code end target script, do not change this comment!
+
+    ----< user code begin 1, do not change this comment!
+{{userCode["1"]}}
+    ----> user code end 1, do not change this comment!
+end
+target_end()
+
+----< user code begin 2, do not change this comment!
+{{userCode["2"]}}
+----> user code end 2, do not change this comment!

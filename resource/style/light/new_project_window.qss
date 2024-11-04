@@ -1,0 +1,38 @@
+/**
+ * ****************************************************************************
+ *  @author      xqyjlj
+ *  @file        new_project_window.qss
+ *  @brief
+ *
+ * ****************************************************************************
+ *  @attention
+ *  Licensed under the GNU General Public License v. 3 (the "License");
+ *  You may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  Copyright (C) 2024-2024 xqyjlj<xqyjlj@126.com>
+ *
+ * ****************************************************************************
+ *  Change Logs:
+ *  Date           Author       Notes
+ *  ------------   ----------   -----------------------------------------------
+ */
+
+TextBrowser#readmeTextBrowser {
+    color: black;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 13);
+    border-bottom: 1px solid rgba(0, 0, 0, 100);
+    border-radius: 5px;
+    /* font: 14px "Segoe UI", "Microsoft YaHei"; */
+    padding: 0px 10px;
+    selection-background-color: --ThemeColorLight1;
+}

@@ -1,0 +1,101 @@
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        repository.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-06-26     xqyjlj       initial version
+#
+
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+properties:
+  soc:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_-]+$": # vendor
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^[A-Za-z0-9_-]+$": # series
+            type: object
+            additionalProperties: false
+            patternProperties:
+              "^[A-Za-z0-9_-]+$": # line
+                type: object
+                additionalProperties: false
+                patternProperties:
+                  "^[A-Za-z0-9_-]+$": # name
+                    type: object
+                    properties:
+                      core:
+                        type: string
+                        minLength: 1
+                      current:
+                        type: object
+                        properties:
+                          lowest:
+                            type: number
+                          run:
+                            type: number
+                        required: [ "lowest", "run" ]
+                      flash:
+                        type: integer
+                      frequency:
+                        type: integer
+                      io:
+                        type: integer
+                      package:
+                        type: string
+                        minLength: 1
+                      peripherals:
+                        type: object
+                        patternProperties:
+                          "^.+$":
+                            type: integer
+                      ram:
+                        type: integer
+                      temperature:
+                        type: object
+                        properties:
+                          max:
+                            type: number
+                          min:
+                            type: number
+                        required: [ "max", "min" ]
+                      voltage:
+                        type: object
+                        properties:
+                          max:
+                            type: number
+                          min:
+                            type: number
+                        required: [ "max", "min" ]
+                    required:
+                      - core
+                      - current
+                      - flash
+                      - frequency
+                      - io
+                      - package
+                      - peripherals
+                      - ram
+                      - temperature
+                      - voltage
+required:
+  - soc

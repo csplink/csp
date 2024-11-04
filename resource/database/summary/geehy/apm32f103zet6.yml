@@ -1,0 +1,1738 @@
+name: APM32F103ZET6
+clockTree: APM32F103
+vendor: Geehy
+vendorUrl:
+  en: https://global.geehy.com
+  zh_CN: https://geehy.com
+documents:
+  datasheets:
+    APM32F103xDxE数据手册V1.7:
+      url:
+        en: ''
+        zh_CN: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
+      type: pdf
+      description:
+        en: ''
+        zh_CN: null
+      size: 3.4 MB
+      version: '1.7'
+  errata:
+    APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
+      url:
+        en: ''
+        zh_CN: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
+      type: pdf
+      description:
+        en: ''
+        zh_CN: null
+      size: 582 KB
+      version: '1.0'
+  references:
+    APM32F103xCxDxE用户手册V1.5:
+      url:
+        en: ''
+        zh_CN: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
+      type: pdf
+      description:
+        en: ''
+        zh_CN: null
+      size: 9.4 MB
+      version: '1.5'
+hals: [ csp_hal_apm32f1 ]
+hasPowerPad: false
+illustrate:
+  en: ''
+  zh_CN: |
+    APM32F103xDxE系列MCU，基于32位Arm® Cortex®-M3内核，最高工作主频96MHz，支持FPU浮点运算单元，配置增强型外部存储控制器EMMC，
+    支持USB和CAN接口同时使用；集成片上储存器、定时器以及数据转换器等多种外设接口，具有功耗低、容量大、可移植性好、Flash擦除/编程速度快等特点。
+    目前已经通过中国IEC61508 SIL2认证和USB-IF测试，符合工业级高可靠性标准。适用于航模飞机、手持云台、扫码枪、报警器、密码锁、电子秤等领域。
+introduction:
+  en: ''
+  zh_CN: 具有 512KB Flash和 96MHz CPU的主流 Arm Cortex-M3 超值系列 MCU
+modules:
+  Analog:
+    ADC1:
+      description:
+        en: ''
+        zh_CN: 模数转换器1
+    ADC2:
+      description:
+        en: ''
+        zh_CN: 模数转换器2
+    ADC3:
+      description:
+        en: ''
+        zh_CN: 模数转换器3
+    DAC:
+      description:
+        en: ''
+        zh_CN: 数模转换器
+  Computing:
+    CRC:
+      description:
+        en: ''
+        zh_CN: 循环冗余校验计算单元
+  Connectivity:
+    CAN:
+      description:
+        en: ''
+        zh_CN: 控制器局域网络
+    EMMC:
+      description:
+        en: ''
+        zh_CN: 外部存储器控制器
+    I2C1:
+      description:
+        en: ''
+        zh_CN: 内部集成电路接口1
+    I2C2:
+      description:
+        en: ''
+        zh_CN: 内部集成电路接口2
+    SDIO:
+      description:
+        en: ''
+        zh_CN: 安全数字输入输出接口
+    SPI1:
+      description:
+        en: ''
+        zh_CN: 串行外设接口1
+    SPI2:
+      description:
+        en: ''
+        zh_CN: 串行外设接口2
+    SPI3:
+      description:
+        en: ''
+        zh_CN: 串行外设接3
+    UART4:
+      description:
+        en: ''
+        zh_CN: 通用异步收发器4
+    UART5:
+      description:
+        en: ''
+        zh_CN: 通用异步收发器5
+    USART1:
+      description:
+        en: ''
+        zh_CN: 通用同步异步收发器1
+    USART2:
+      description:
+        en: ''
+        zh_CN: 通用同步异步收发器2
+    USART3:
+      description:
+        en: ''
+        zh_CN: 通用同步异步收发器3
+    USBD:
+      description:
+        en: ''
+        zh_CN: 全速 USBD 接口设备
+  Multimedia:
+    I2S2:
+      description:
+        en: ''
+        zh_CN: 片上音频接口2
+    I2S3:
+      description:
+        en: ''
+        zh_CN: 片上音频接口3
+  System Core:
+    DMA:
+      description:
+        en: ''
+        zh_CN: 直接存储器存取
+    GPIO:
+      description:
+        en: General Purpose Input Output
+        zh_CN: 通用输入/输出引脚
+      ip: apm32f103_gpio
+    IWDT:
+      description:
+        en: ''
+        zh_CN: 独立看门狗定时器
+    NVIC:
+      description:
+        en: ''
+        zh_CN: 嵌套向量中断控制器
+    RCM:
+      description:
+        en: ''
+        zh_CN: 复位与时钟管理
+    SYS:
+      description:
+        en: ''
+        zh_CN: 系统模块
+    WWDT:
+      description:
+        en: ''
+        zh_CN: 窗口看门狗定时器
+  Timers:
+    RTC:
+      description:
+        en: ''
+        zh_CN: 实时时钟
+    TMR1:
+      description:
+        en: ''
+        zh_CN: 高级定时器1
+    TMR2:
+      description:
+        en: ''
+        zh_CN: 通用定时器2
+    TMR3:
+      description:
+        en: ''
+        zh_CN: 通用定时器3
+    TMR4:
+      description:
+        en: ''
+        zh_CN: 通用定时器4
+    TMR5:
+      description:
+        en: ''
+        zh_CN: 通用定时器5
+    TMR6:
+      description:
+        en: ''
+        zh_CN: 基本定时器6
+    TMR7:
+      description:
+        en: ''
+        zh_CN: 基本定时器7
+    TMR8:
+      description:
+        en: ''
+        zh_CN: 高级定时器8
+package: LQFP144
+url:
+  en: https://global.geehy.com/product/fifth/APM32F103
+  zh_CN: https://geehy.com/product/fifth/APM32F103
+builder:
+  XMake:
+    v2.8.1: [ "arm-none-eabi" ]
+  CMake:
+    v3.7: [ "arm-none-eabi" ]
+  MdkArm:
+    v5.27: [ "armcc", "armclang" ]
+linker:
+  defaultHeapSize: '0x200'
+  defaultStackSize: '0x400'
+pins:
+  PE2:
+    position: 1
+    type: I/O
+    signals:
+      - FSMC-A23
+      - SYS-TRACECLK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE3:
+    position: 2
+    type: I/O
+    signals:
+      - FSMC-A19
+      - SYS-TRACED0
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE4:
+    position: 3
+    type: I/O
+    signals:
+      - FSMC-A20
+      - SYS-TRACED1
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE5:
+    position: 4
+    type: I/O
+    signals:
+      - FSMC-A21
+      - SYS-TRACED2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE6:
+    position: 5
+    type: I/O
+    signals:
+      - FSMC-A22
+      - SYS-TRACED3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VBAT:
+    position: 6
+    type: Power
+  PC13:
+    position: 7
+    type: I/O
+    signals:
+      - RTC-OUT
+      - RTC-TAMPER
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC14:
+    position: 8
+    type: I/O
+    signals:
+      - RCM-OSC32-IN
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC15:
+    position: 9
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+      - RCM-OSC32-OUT
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PF0:
+    position: 10
+    type: I/O
+    signals:
+      - FSMC-A0
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF1:
+    position: 11
+    type: I/O
+    signals:
+      - FSMC-A1
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF2:
+    position: 12
+    type: I/O
+    signals:
+      - FSMC-A2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF3:
+    position: 13
+    type: I/O
+    signals:
+      - FSMC-A3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF4:
+    position: 14
+    type: I/O
+    signals:
+      - FSMC-A4
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF5:
+    position: 15
+    type: I/O
+    signals:
+      - FSMC-A5
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  VSS-5:
+    position: 16
+    type: Power
+  VDD-5:
+    position: 17
+    type: Power
+  PF6:
+    position: 18
+    type: I/O
+    signals:
+      - ADC3-IN4
+      - FSMC-NIORD
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF7:
+    position: 19
+    type: I/O
+    signals:
+      - ADC3-IN5
+      - FSMC-NREG
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF8:
+    position: 20
+    type: I/O
+    signals:
+      - ADC3-IN6
+      - FSMC-NIOWR
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF9:
+    position: 21
+    type: I/O
+    signals:
+      - ADC3-IN7
+      - DAC-EXTI9
+      - FSMC-CD
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF10:
+    position: 22
+    type: I/O
+    signals:
+      - ADC3-IN8
+      - FSMC-INTR
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  RCM-OSC-IN:
+    position: 23
+    type: I/O
+    signals:
+      - RCM-OSC-IN
+  RCM-OSC-OUT:
+    position: 24
+    type: I/O
+    signals:
+      - RCM-OSC-OUT
+  NRST:
+    position: 25
+    type: Reset
+  PC0:
+    position: 26
+    type: I/O
+    signals:
+      - ADC1-IN10
+      - ADC2-IN10
+      - ADC3-IN10
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC1:
+    position: 27
+    type: I/O
+    signals:
+      - ADC1-IN11
+      - ADC2-IN11
+      - ADC3-IN11
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC2:
+    position: 28
+    type: I/O
+    signals:
+      - ADC1-IN12
+      - ADC2-IN12
+      - ADC3-IN12
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC3:
+    position: 29
+    type: I/O
+    signals:
+      - ADC1-IN13
+      - ADC2-IN13
+      - ADC3-IN13
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSSA:
+    position: 30
+    type: Power
+  VREF-:
+    position: 31
+    type: Power
+  VREF+:
+    position: 32
+    type: Power
+  VDDA:
+    position: 33
+    type: Power
+  PA0:
+    position: 34
+    type: I/O
+    signals:
+      - ADC1-IN0
+      - ADC2-IN0
+      - ADC3-IN0
+      - SYS-WKUP
+      - TIM2-CH1
+      - TIM2-ETR
+      - TIM5-CH1
+      - TIM8-ETR
+      - USART2-CTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA1:
+    position: 35
+    type: I/O
+    signals:
+      - ADC1-IN1
+      - ADC2-IN1
+      - ADC3-IN1
+      - TIM2-CH2
+      - TIM5-CH2
+      - USART2-RTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA2:
+    position: 36
+    type: I/O
+    signals:
+      - ADC1-IN2
+      - ADC2-IN2
+      - ADC3-IN2
+      - TIM2-CH3
+      - TIM5-CH3
+      - USART2-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA3:
+    position: 37
+    type: I/O
+    signals:
+      - ADC1-IN3
+      - ADC2-IN3
+      - ADC3-IN3
+      - TIM2-CH4
+      - TIM5-CH4
+      - USART2-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSS-4:
+    position: 38
+    type: Power
+  VDD-4:
+    position: 39
+    type: Power
+  PA4:
+    position: 40
+    type: I/O
+    signals:
+      - ADC1-IN4
+      - ADC2-IN4
+      - DAC-OUT1
+      - SPI1-NSS
+      - USART2-CK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA5:
+    position: 41
+    type: I/O
+    signals:
+      - ADC1-IN5
+      - ADC2-IN5
+      - DAC-OUT2
+      - SPI1-SCK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA6:
+    position: 42
+    type: I/O
+    signals:
+      - ADC1-IN6
+      - ADC2-IN6
+      - SPI1-MISO
+      - TIM1-BKIN
+      - TIM3-CH1
+      - TIM8-BKIN
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA7:
+    position: 43
+    type: I/O
+    signals:
+      - ADC1-IN7
+      - ADC2-IN7
+      - SPI1-MOSI
+      - TIM1-CH1N
+      - TIM3-CH2
+      - TIM8-CH1N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC4:
+    position: 44
+    type: I/O
+    signals:
+      - ADC1-IN14
+      - ADC2-IN14
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC5:
+    position: 45
+    type: I/O
+    signals:
+      - ADC1-IN15
+      - ADC2-IN15
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB0:
+    position: 46
+    type: I/O
+    signals:
+      - ADC1-IN8
+      - ADC2-IN8
+      - TIM1-CH2N
+      - TIM3-CH3
+      - TIM8-CH2N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB1:
+    position: 47
+    type: I/O
+    signals:
+      - ADC1-IN9
+      - ADC2-IN9
+      - TIM1-CH3N
+      - TIM3-CH4
+      - TIM8-CH3N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB2:
+    position: 48
+    type: I/O
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PF11:
+    position: 49
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - FSMC-NIOS16
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF12:
+    position: 50
+    type: I/O
+    signals:
+      - FSMC-A6
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  VSS-6:
+    position: 51
+    type: Power
+  VDD-6:
+    position: 52
+    type: Power
+  PF13:
+    position: 53
+    type: I/O
+    signals:
+      - FSMC-A7
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF14:
+    position: 54
+    type: I/O
+    signals:
+      - FSMC-A8
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PF15:
+    position: 55
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+      - FSMC-A9
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG0:
+    position: 56
+    type: I/O
+    signals:
+      - FSMC-A10
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG1:
+    position: 57
+    type: I/O
+    signals:
+      - FSMC-A11
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PE7:
+    position: 58
+    type: I/O
+    signals:
+      - FSMC-D4
+      - FSMC-DA4
+      - TIM1-ETR
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE8:
+    position: 59
+    type: I/O
+    signals:
+      - FSMC-D5
+      - FSMC-DA5
+      - TIM1-CH1N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE9:
+    position: 60
+    type: I/O
+    signals:
+      - DAC-EXTI9
+      - FSMC-D6
+      - FSMC-DA6
+      - TIM1-CH1
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSS-7:
+    position: 61
+    type: Power
+  VDD-7:
+    position: 62
+    type: Power
+  PE10:
+    position: 63
+    type: I/O
+    signals:
+      - FSMC-D7
+      - FSMC-DA7
+      - TIM1-CH2N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE11:
+    position: 64
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - FSMC-D8
+      - FSMC-DA8
+      - TIM1-CH2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE12:
+    position: 65
+    type: I/O
+    signals:
+      - FSMC-D9
+      - FSMC-DA9
+      - TIM1-CH3N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE13:
+    position: 66
+    type: I/O
+    signals:
+      - FSMC-D10
+      - FSMC-DA10
+      - TIM1-CH3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE14:
+    position: 67
+    type: I/O
+    signals:
+      - FSMC-D11
+      - FSMC-DA11
+      - TIM1-CH4
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE15:
+    position: 68
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+      - FSMC-D12
+      - FSMC-DA12
+      - TIM1-BKIN
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB10:
+    position: 69
+    type: I/O
+    signals:
+      - I2C2-SCL
+      - TIM2-CH3
+      - USART3-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB11:
+    position: 70
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - I2C2-SDA
+      - TIM2-CH4
+      - USART3-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSS-1:
+    position: 71
+    type: Power
+  VDD-1:
+    position: 72
+    type: Power
+  PB12:
+    position: 73
+    type: I/O
+    signals:
+      - I2C2-SMBA
+      - I2S2-WS
+      - SPI2-NSS
+      - TIM1-BKIN
+      - USART3-CK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB13:
+    position: 74
+    type: I/O
+    signals:
+      - I2S2-CK
+      - SPI2-SCK
+      - TIM1-CH1N
+      - USART3-CTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB14:
+    position: 75
+    type: I/O
+    signals:
+      - SPI2-MISO
+      - TIM1-CH2N
+      - USART3-RTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB15:
+    position: 76
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+      - I2S2-SD
+      - SPI2-MOSI
+      - TIM1-CH3N
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD8:
+    position: 77
+    type: I/O
+    signals:
+      - FSMC-D13
+      - FSMC-DA13
+      - USART3-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD9:
+    position: 78
+    type: I/O
+    signals:
+      - DAC-EXTI9
+      - FSMC-D14
+      - FSMC-DA14
+      - USART3-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD10:
+    position: 79
+    type: I/O
+    signals:
+      - FSMC-D15
+      - FSMC-DA15
+      - USART3-CK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD11:
+    position: 80
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - FSMC-A16
+      - FSMC-CLE
+      - USART3-CTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD12:
+    position: 81
+    type: I/O
+    signals:
+      - FSMC-A17
+      - FSMC-ALE
+      - TIM4-CH1
+      - USART3-RTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD13:
+    position: 82
+    type: I/O
+    signals:
+      - FSMC-A18
+      - TIM4-CH2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSS-8:
+    position: 83
+    type: Power
+  VDD-8:
+    position: 84
+    type: Power
+  PD14:
+    position: 85
+    type: I/O
+    signals:
+      - FSMC-D0
+      - FSMC-DA0
+      - TIM4-CH3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD15:
+    position: 86
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+      - FSMC-D1
+      - FSMC-DA1
+      - TIM4-CH4
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PG2:
+    position: 87
+    type: I/O
+    signals:
+      - FSMC-A12
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG3:
+    position: 88
+    type: I/O
+    signals:
+      - FSMC-A13
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG4:
+    position: 89
+    type: I/O
+    signals:
+      - FSMC-A14
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG5:
+    position: 90
+    type: I/O
+    signals:
+      - FSMC-A15
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG6:
+    position: 91
+    type: I/O
+    signals:
+      - FSMC-INT2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG7:
+    position: 92
+    type: I/O
+    signals:
+      - FSMC-INT3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG8:
+    position: 93
+    type: I/O
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  VSS-9:
+    position: 94
+    type: Power
+  VDD-9:
+    position: 95
+    type: Power
+  PC6:
+    position: 96
+    type: I/O
+    signals:
+      - I2S2-MCK
+      - SDIO-D6
+      - TIM3-CH1
+      - TIM8-CH1
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC7:
+    position: 97
+    type: I/O
+    signals:
+      - I2S3-MCK
+      - SDIO-D7
+      - TIM3-CH2
+      - TIM8-CH2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC8:
+    position: 98
+    type: I/O
+    signals:
+      - SDIO-D0
+      - TIM3-CH3
+      - TIM8-CH3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC9:
+    position: 99
+    type: I/O
+    signals:
+      - DAC-EXTI9
+      - SDIO-D1
+      - TIM3-CH4
+      - TIM8-CH4
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA8:
+    position: 100
+    type: I/O
+    signals:
+      - RCM-MCO
+      - TIM1-CH1
+      - USART1-CK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA9:
+    position: 101
+    type: I/O
+    signals:
+      - DAC-EXTI9
+      - TIM1-CH2
+      - USART1-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA10:
+    position: 102
+    type: I/O
+    signals:
+      - TIM1-CH3
+      - USART1-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA11:
+    position: 103
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - CAN-RX
+      - TIM1-CH4
+      - USART1-CTS
+      - USB-DM
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA12:
+    position: 104
+    type: I/O
+    signals:
+      - CAN-TX
+      - TIM1-ETR
+      - USART1-RTS
+      - USB-DP
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA13:
+    position: 105
+    type: I/O
+    signals:
+      - SYS-JTMS-SWDIO
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  NC:
+    position: 106
+    type: NC
+  VSS-2:
+    position: 107
+    type: Power
+  VDD-2:
+    position: 108
+    type: Power
+  PA14:
+    position: 109
+    type: I/O
+    signals:
+      - SYS-JTCK-SWCLK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PA15:
+    position: 110
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+      - I2S3-WS
+      - SPI1-NSS
+      - SPI3-NSS
+      - SYS-JTDI
+      - TIM2-CH1
+      - TIM2-ETR
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC10:
+    position: 111
+    type: I/O
+    signals:
+      - SDIO-D2
+      - UART4-TX
+      - USART3-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC11:
+    position: 112
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - SDIO-D3
+      - UART4-RX
+      - USART3-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PC12:
+    position: 113
+    type: I/O
+    signals:
+      - SDIO-CK
+      - UART5-TX
+      - USART3-CK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD0:
+    position: 114
+    type: I/O
+    signals:
+      - CAN-RX
+      - FSMC-D2
+      - FSMC-DA2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD1:
+    position: 115
+    type: I/O
+    signals:
+      - CAN-TX
+      - FSMC-D3
+      - FSMC-DA3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD2:
+    position: 116
+    type: I/O
+    signals:
+      - SDIO-CMD
+      - TIM3-ETR
+      - UART5-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD3:
+    position: 117
+    type: I/O
+    signals:
+      - FSMC-CLK
+      - USART2-CTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD4:
+    position: 118
+    type: I/O
+    signals:
+      - FSMC-NOE
+      - USART2-RTS
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD5:
+    position: 119
+    type: I/O
+    signals:
+      - FSMC-NWE
+      - USART2-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSS-10:
+    position: 120
+    type: Power
+  VDD-10:
+    position: 121
+    type: Power
+  PD6:
+    position: 122
+    type: I/O
+    signals:
+      - FSMC-NWAIT
+      - USART2-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PD7:
+    position: 123
+    type: I/O
+    signals:
+      - FSMC-NCE2
+      - FSMC-NE1
+      - USART2-CK
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PG9:
+    position: 124
+    type: I/O
+    signals:
+      - DAC-EXTI9
+      - FSMC-NCE3
+      - FSMC-NE2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG10:
+    position: 125
+    type: I/O
+    signals:
+      - FSMC-NCE4-1
+      - FSMC-NE3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG11:
+    position: 126
+    type: I/O
+    signals:
+      - ADC1-EXTI11
+      - ADC2-EXTI11
+      - FSMC-NCE4-2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG12:
+    position: 127
+    type: I/O
+    signals:
+      - FSMC-NE4
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG13:
+    position: 128
+    type: I/O
+    signals:
+      - FSMC-A24
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PG14:
+    position: 129
+    type: I/O
+    signals:
+      - FSMC-A25
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  VSS-11:
+    position: 130
+    type: Power
+  VDD-11:
+    position: 131
+    type: Power
+  PG15:
+    position: 132
+    type: I/O
+    signals:
+      - ADC1-EXTI15
+      - ADC2-EXTI15
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EXTI
+  PB3:
+    position: 133
+    type: I/O
+    signals:
+      - I2S3-CK
+      - SPI1-SCK
+      - SPI3-SCK
+      - SYS-JTDO-TRACESWO
+      - TIM2-CH2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB4:
+    position: 134
+    type: I/O
+    signals:
+      - SPI1-MISO
+      - SPI3-MISO
+      - SYS-NJTRST
+      - TIM3-CH1
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB5:
+    position: 135
+    type: I/O
+    signals:
+      - I2C1-SMBA
+      - I2S3-SD
+      - SPI1-MOSI
+      - SPI3-MOSI
+      - TIM3-CH2
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB6:
+    position: 136
+    type: I/O
+    signals:
+      - I2C1-SCL
+      - TIM4-CH1
+      - USART1-TX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB7:
+    position: 137
+    type: I/O
+    signals:
+      - FSMC-NL
+      - I2C1-SDA
+      - TIM4-CH2
+      - USART1-RX
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  BOOT0:
+    position: 138
+    type: Boot
+  PB8:
+    position: 139
+    type: I/O
+    signals:
+      - CAN-RX
+      - I2C1-SCL
+      - SDIO-D4
+      - TIM4-CH3
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PB9:
+    position: 140
+    type: I/O
+    signals:
+      - CAN-TX
+      - DAC-EXTI9
+      - I2C1-SDA
+      - SDIO-D5
+      - TIM4-CH4
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE0:
+    position: 141
+    type: I/O
+    signals:
+      - FSMC-NBL0
+      - TIM4-ETR
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  PE1:
+    position: 142
+    type: I/O
+    signals:
+      - FSMC-NBL1
+    modes:
+      - GPIO-Input
+      - GPIO-Output
+      - GPIO-Analog
+      - GPIO-EVENTOUT
+      - GPIO-EXTI
+  VSS-3:
+    position: 143
+    type: Power
+  VDD-3:
+    position: 144
+    type: Power

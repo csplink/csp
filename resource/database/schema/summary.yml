@@ -1,0 +1,186 @@
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        summary.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2024-06-29     xqyjlj       initial version
+#
+
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    minLength: 1
+  clockTree:
+    type: string
+    minLength: 1
+  vendor:
+    type: string
+    minLength: 1
+  vendorUrl:
+    $ref: "#/properties/url"
+  documents:
+    type: object
+    properties:
+      datasheets:
+        type: object
+        properties:
+          ".*":
+            type: object
+            properties:
+              url:
+                $ref: "#/properties/url"
+              type:
+                enum: [ "pdf" ]
+              description:
+                $ref: "#/properties/illustrate"
+              size:
+                type: string
+                minLength: 1
+              version:
+                type: string
+                pattern: "^(?:v|V)?\\d+(?:\\.\\d+){1,2}$"
+            required: [ "url", "type", "description", "size", "version" ]
+      errata:
+        $ref: "#/properties/documents/properties/datasheets"
+      references:
+        $ref: "#/properties/documents/properties/datasheets"
+  illustrate:
+    type: object
+    properties:
+      en:
+        type: [ "string" ]
+      zh_CN:
+        type: [ "string", "null" ]
+    required: [ "en", "zh_CN" ]
+  introduction:
+    $ref: "#/properties/illustrate"
+  modules:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_\\s+-]+$":
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^[A-Za-z0-9_+-]+$":
+            type: object
+            additionalProperties: false
+            properties:
+              description:
+                $ref: "#/properties/illustrate"
+              ip:
+                type: string
+                minLength: 1
+              genType:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+            required:
+              - description
+              # - ip # TODO
+  url:
+    type: object
+    properties:
+      en:
+        type: string
+        pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+      zh_CN:
+        type: [ string, "null" ]
+        pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+    required: [ "en", "zh_CN" ]
+  builder:
+    type: object
+    additionalProperties: false
+    properties:
+      XMake:
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^(?:v|V)?\\d+(?:\\.\\d+){1,2}$":
+            type: array
+            items:
+              type: string
+              minLength: 1
+      CMake:
+        $ref: "#/properties/builder/properties/XMake"
+      MdkArm:
+        $ref: "#/properties/builder/properties/XMake"
+  hals:
+    type: array
+    items:
+      type: string
+      minLength: 1
+    minItems: 1
+  hasPowerPad:
+    type: boolean
+  package:
+    type: string
+    minLength: 1
+  linker:
+    type: object
+    properties:
+      defaultHeapSize:
+        type: string
+        pattern: "^0x[0-9A-Fa-f]+$"
+      defaultStackSize:
+        type: string
+        pattern: "^0x[0-9A-Fa-f]+$"
+    required: [ "defaultHeapSize", "defaultStackSize" ]
+  pins:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_+-]+(?:.*)?$":
+        type: object
+        properties:
+          position:
+            type: [ integer, string ]
+          type:
+            enum: [ "I/O", "Power", "Reset", "NC", "Boot", "MonoIO" ]
+          signals:
+            type: array
+            items:
+              type: string
+              minLength: 1
+            minItems: 1
+          modes:
+            type: array
+            items:
+              type: string
+              minLength: 1
+            minItems: 1
+        required: [ "position", "type" ]
+required:
+  - name
+  - clockTree
+  - vendor
+  - vendorUrl
+  - documents
+  - illustrate
+  - introduction
+  - modules
+  - url
+  - builder
+  - hals
+  - hasPowerPad
+  - package
+  - pins

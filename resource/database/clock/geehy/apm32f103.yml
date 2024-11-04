@@ -1,0 +1,94 @@
+widgets:
+  ADC-Clk-Psc: { }
+  ADC1,2,3-Timers-Out: { }
+  AHB-Psc: { }
+  APB1-Peripherals-Out: { }
+  APB1-Psc: { }
+  APB1-Timers-Mul: { }
+  APB1-Timers-Out: { }
+  APB2-Peripherals-Out: { }
+  APB2-Psc: { }
+  APB2-Timers-Mul: { }
+  APB2-Timers-Out: { }
+  CLK: { }
+  CSS: { }
+  EMMC-Clk-Out: { }
+  FCLK-Out: { }
+  FPU-Clk-Out: { }
+  Flash-Latency: { }
+  HCLK-Out: { }
+  HSE-Input:
+    widget: numberLineBox
+    refParameter: HSE_Value
+    refEnable: EnableHSE
+    output:
+      - signalId: HSE
+        to: SysClkSource
+      - signalId: HSE
+        to: HSERTCDevisor
+      - signalId: HSE
+        to: HSEDivPLL
+      - signalId: HSE
+        to: MCOMult
+  HSE-Is-Bypass: { }
+  HSE-Psc: { }
+  HSI-Calibration:
+    widget: numberLineBox
+    refValue: HSI_Calibration
+  I2S2-Clk-Out: { }
+  I2S3-Clk-Out: { }
+  LSE-Input:
+    widget: label
+    refParameter: LSE_Value
+    refEnable: EnableLSE
+    condition:
+      expression: '!VFQFPN36'
+    output:
+      - signalId: LSE
+        to: RTCClkSource
+  LSE-Is-Bypass:
+    widget: label
+    status:
+      - dependencies: [ CSP_USING_HAL_CLOCK_OSC32_DISABLE ]
+        property:
+          text:
+            en: Disable
+            zh_CN: 关闭
+          style: disable
+      - dependencies: [ CSP_USING_HAL_CLOCK_OSC32_BYPASS ]
+        property:
+          text:
+            en: BYPASS Clock Source
+            zh_CN: 旁路模式
+          style: enable
+      - dependencies: [ CSP_USING_HAL_CLOCK_OSC32_NO_BYPASS ]
+        property:
+          text:
+            en: Crystal/Ceramic Resonator
+            zh_CN: 晶体模式
+          style: enable
+
+  MCO-HSE: { }
+  MCO-HSI: { }
+  MCO-Out: { }
+  MCO-Output: { }
+  MCO-PLL/2: { }
+  MCO-System-Clk: { }
+  PLL: { }
+  PLL-HSE: { }
+  PLL-HSE-Mul: { }
+  PLL-HSI/2: { }
+  RTC-Clk-Out: { }
+  RTC-HSE/128: { }
+  RTC-LSE: { }
+  RTC-LSI: { }
+  SDIO-AHB-Clk-Out: { }
+  SDIO-Clk-Out: { }
+  SYS-Clk: { }
+  SysTick-Clk-Out: { }
+  SysTick-Clk-Psc: { }
+  System-HSE: { }
+  System-HSI: { }
+  System-PLL: { }
+  USB-Clk-Out: { }
+  USB-Clk-Psc: { }

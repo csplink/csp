@@ -1,0 +1,36 @@
+# vscode
+.vscode
+
+# clion, pycharm
+.idea
+
+# python
+__pycache__
+
+#project
+csplink.config
+repository
+repository.index
+
+# qt
+*.qm
+
+# other
+*.bak
+build
+build-*
+
+# csplink
+resource/contributors
+resource/repository
+resource/packages
+
+# nuitka-scons
+*.dist
+*.onefile-build
+*.build
+*.exe
+
+# draw.io
+*.bkp
+*.drawio
