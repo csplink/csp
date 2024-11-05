@@ -26,7 +26,7 @@
 
 from PySide6.QtCore import QPointF
 
-from common import PROJECT, SummaryType
+from common import SummaryType, SUMMARY
 from widget.graphics_item_chip_body import GraphicsItemChipBody
 from widget.graphics_item_pin import GraphicsItemPin
 
@@ -41,7 +41,7 @@ class LQFP:
         return self.PIN_SPACING + (self.PIN_HEIGHT + self.PIN_SPACING) * num
 
     def getItems(self, vendor: str, name: str):
-        pins = PROJECT.summary.pins
+        pins = SUMMARY.projectSummary().pins
         _pins: list[tuple[str, SummaryType.PinType]] = sorted(pins.items(), key=lambda d: d[1].position, reverse=False)
         pins: dict[str, SummaryType.PinType] = {k: v for k, v in _pins}
         count = len(pins)

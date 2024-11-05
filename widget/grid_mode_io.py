@@ -27,8 +27,9 @@
 from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
+from loguru import logger
 
-from common import PROJECT, SETTINGS, SIGNAL_BUS
+from common import PROJECT, SETTINGS, SIGNAL_BUS, IP
 from .ui.grid_mode_io_ui import Ui_GridModeIo
 
 
@@ -36,15 +37,15 @@ class GridModeIoModel(QAbstractTableModel):
     __font = QFont('JetBrains Mono')
     __font.setPixelSize(12)
 
-    __instance = ""
-    __ip = {}
-    __headersMap = {}
-    __headersList = []
-    __config = {}
-    __data = []
-
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.__instance = ""
+        self.__ip = {}
+        self.__headersMap = {}
+        self.__headersList = []
+        self.__config = {}
+        self.__data = []
 
         PROJECT.configChanged.connect(self.projectConfigChanged)
         PROJECT.pinConfigChanged.connect(self.pinProjectConfigChanged)
@@ -105,8 +106,12 @@ class GridModeIoModel(QAbstractTableModel):
 
             locale = SETTINGS.get(SETTINGS.language).value
 
-            self.__ip = PROJECT.ip.ip(instance)
+            self.__ip = IP.projectIps().get(instance)
             self.__headersMap.clear()
+
+            if self.__ip is None:
+                logger.error(f'the ip instance:"{instance}" is invalid.')
+                return
 
             self.__headersMap = {
                 self.tr("Name"): {
@@ -120,8 +125,8 @@ class GridModeIoModel(QAbstractTableModel):
             }
 
             index = 2
-            for key, info in self.__ip["parameters"].items():
-                self.__headersMap[info["displayName"][locale.name()]] = {
+            for key, info in self.__ip.parameters.items():
+                self.__headersMap[info.displayName[locale.name()]] = {
                     "path": f"{instance}/(name)/{key}",
                     "index": index
                 }
@@ -140,7 +145,7 @@ class GridModeIoModel(QAbstractTableModel):
                             if path != "":
                                 path = path.replace("(name)", name)
                                 value = PROJECT.config(path, "")
-                                l.append({"display": PROJECT.ip.iptr(self.__value2str(value)), "tooltip": value})
+                                l.append({"display": IP.iptr(self.__value2str(value)), "tooltip": value})
                             else:
                                 l.append({"display": name, "tooltip": name})
                         self.__data.append(l)
@@ -204,7 +209,7 @@ class GridModeIoModel(QAbstractTableModel):
                     param = self.__ip["parameters"][keys[2]]["displayName"][locale.name()]
                     column = self.__headersList.index(param)
                     self.__data[index][column] = {
-                        "display": PROJECT.ip.iptr(self.__value2str(newValue)),
+                        "display": IP.iptr(self.__value2str(newValue)),
                         "tooltip": newValue
                     }
                     index = self.createIndex(index, column)

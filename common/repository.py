@@ -294,6 +294,5 @@ class Repository:
         # noinspection PyTypeChecker,PyArgumentList
         return self.__getRepository()
 
-    @property
     def repository(self) -> RepositoryType:
         return self.__repository

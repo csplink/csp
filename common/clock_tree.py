@@ -77,6 +77,5 @@ class ClockTree:
             # noinspection PyTypeChecker
             return clockTree
 
-    @property
     def clockTrees(self) -> dict[str, ClockTreeType]:
         return self.__clockTrees

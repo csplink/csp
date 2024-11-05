@@ -36,7 +36,7 @@ class SummaryTest(unittest.TestCase):
 
     def test_getSummary(self):
         repository = Repository()
-        socs = repository.repository.allSoc()
+        socs = repository.repository().allSoc()
         for soc in socs:
             summary = SUMMARY.getSummary(soc.vendor, soc.name)
             self.assertGreater(len(summary.name), 0, msg='load failed.')

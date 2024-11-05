@@ -29,9 +29,10 @@ from PySide6.QtCore import Qt, QRegularExpression, QModelIndex, QAbstractTableMo
     QAbstractItemModel
 from PySide6.QtGui import QRegularExpressionValidator, QFont
 from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication)
+from loguru import logger
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
-from common import PROJECT, SETTINGS, Style, SIGNAL_BUS
+from common import PROJECT, SETTINGS, Style, SIGNAL_BUS, SUMMARY, IP
 from .ui.grid_property_ip_ui import Ui_GridPropertyIp
 
 
@@ -72,8 +73,8 @@ class EditorDelegate(TableItemDelegate):
             Style.GRID_PROPERTY_IP_COMBOBOX.apply(comboBox)
             comboBox.setStyle(QApplication.style())
             for value in g_data[index.row()].possibleValues:
-                comboBox.addItem(PROJECT.ip.iptr(value))
-            comboBox.setCurrentText(PROJECT.ip.iptr(g_data[index.row()].value))
+                comboBox.addItem(IP.iptr(value))
+            comboBox.setCurrentText(IP.iptr(g_data[index.row()].value))
             return comboBox
         else:
             return None
@@ -101,7 +102,7 @@ class GridPropertyIpModel(QAbstractTableModel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.__headers = [self.tr("Property"), self.tr("Value")]
-        # self.__pinInstance = PROJECT.summary.pinIp
+        self.__pinInstance = SUMMARY.projectSummary().pinIp()
 
         SIGNAL_BUS.gridPropertyIpTriggered.connect(self.changePropertyIp)
 
@@ -119,7 +120,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             if index.column() == 0:
                 return g_data[index.row()].property
             elif index.column() == 1:
-                return PROJECT.ip.iptr(g_data[index.row()].value)
+                return IP.iptr(g_data[index.row()].value)
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
@@ -153,7 +154,7 @@ class GridPropertyIpModel(QAbstractTableModel):
                 PROJECT.setConfig(path, value)
             elif g_data[index.row()].typeof == "enum":
                 path = g_data[index.row()].path
-                PROJECT.setConfig(path, PROJECT.ip.iptr2(value))
+                PROJECT.setConfig(path, IP.iptr2(value))
                 g_data[index.row()].value = value
             return True
         else:
@@ -178,18 +179,18 @@ class GridPropertyIpModel(QAbstractTableModel):
     def changePropertyIp(self, instance: str, value: str):
         g_data.clear()
         function: str = PROJECT.config(f"pin/{value}/function", "")
-        if function == "":
+        if len(function) == 0:
             self.modelReset.emit()
             return
 
-        # cfg = PROJECT.summary.pins[value].functions.get(function, None)
-        ip = PROJECT.ip.ip(instance)
-        if len(ip) == 0:
+        ip = IP.projectIps().get(instance)
+        if ip is None:
+            logger.error(f'the ip instance:"{instance}" is invalid.')
             self.modelReset.emit()
             return
 
         mode = function.split('-')[1]
-        mode_cfg = ip["modes"][mode]
+        mode_cfg = ip.modes[mode]
 
         if self.__pinInstance == instance:
             g_data.append(
@@ -210,20 +211,18 @@ class GridPropertyIpModel(QAbstractTableModel):
                        readonly=False,
                        description=""))
 
-        ip = PROJECT.ip.ip(instance)
-        if "parameters" in ip:
-            parameters = PROJECT.ip.ip(instance)["parameters"]
+        if len(ip.parameters) > 0:
             local = SETTINGS.get(SETTINGS.language).value.name()
             for mode, cfg in mode_cfg.items():
                 path = f"{instance}/{value}/{mode}"
                 g_data.append(
-                    PModel(property=parameters[mode]["displayName"][local],
+                    PModel(property=ip.parameters[mode].displayName[local],
                            path=path,
                            value=PROJECT.config(path, ""),
-                           typeof=parameters[mode]["type"],
-                           possibleValues=cfg["values"],
+                           typeof=ip.parameters[mode].type,
+                           possibleValues=cfg.values,
                            readonly=False,
-                           description=parameters[mode]["description"][local]))
+                           description=ip.parameters[mode].description[local]))
 
         self.modelReset.emit()
 

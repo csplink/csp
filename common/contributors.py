@@ -95,6 +95,5 @@ class Contributor:
             l.append(ContributorType(contributor))
         return l
 
-    @property
     def contributors(self) -> list[ContributorType]:
         return self.__contributors

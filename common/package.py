@@ -238,7 +238,6 @@ class Package:
         # noinspection PyTypeChecker,PyArgumentList
         return self.__getPackageIndex()
 
-    @property
     def index(self) -> PackageIndexType:
         return self.__index
 
@@ -309,7 +308,7 @@ class Package:
         return True
 
     def uninstall(self, kind: str, name: str, version: str) -> bool:
-        path = self.index.path(kind, name, version)
+        path = self.index().path(kind, name, version)
         if os.path.isdir(path):
             shutil.rmtree(path)
         elif os.path.isfile(path):

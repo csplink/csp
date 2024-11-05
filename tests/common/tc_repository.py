@@ -36,7 +36,7 @@ class RepositoryTest(unittest.TestCase):
 
     def test_getRepository(self):
         repository = Repository()
-        repo = repository.repository
+        repo = repository.repository()
         self.assertGreater(len(repo.origin), 0, msg='load failed.')
 
         types = repo.types()

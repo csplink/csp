@@ -28,8 +28,9 @@ import attr
 from PySide6.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
 from PySide6.QtGui import QFont, QBrush, QColor
 from PySide6.QtWidgets import (QWidget)
+from loguru import logger
 
-from common import PROJECT, SETTINGS, SIGNAL_BUS
+from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP
 from .ui.tree_module_ui import Ui_TreeModule
 
 
@@ -149,7 +150,7 @@ class TreeModuleModel(QAbstractItemModel):
 
     def __loadModule(self):
         locale = SETTINGS.get(SETTINGS.language).value.name()
-        for group, moduleGroup in PROJECT.summary.modules.items():
+        for group, moduleGroup in SUMMARY.projectSummary().modules.items():
             model = PModel(group, "", [], self.__model)
             for name, module in moduleGroup.items():
                 model_child = PModel(name, module.description.get(locale, module.description.get('en')), [], model)
@@ -178,7 +179,9 @@ class TreeModule(Ui_TreeModule, QWidget):
         if len(indexes) > 0:
             index = indexes[0]
             if str(index.parent().data()) != "None":
-                module = str(index.data())
-                ip = PROJECT.ip.ip(module)
-                if "modeGrid" in ip:
-                    SIGNAL_BUS.gridModeTriggered.emit(module, ip["modeGrid"])
+                instance = str(index.data())
+                ip = IP.projectIps().get(instance)
+                if ip is not None:
+                    logger.error(f'the ip instance:"{instance}" is invalid.')
+                    return
+                SIGNAL_BUS.gridModeTriggered.emit(instance, 'grid_mode_io')

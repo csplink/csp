@@ -29,14 +29,14 @@ import unittest
 from common import Repository, SUMMARY, IP
 
 
-class SummaryTest(unittest.TestCase):
+class IpTest(unittest.TestCase):
 
     def setUp(self):
         pass
 
     def test_getIp(self):
         repository = Repository()
-        socs = repository.repository.allSoc()
+        socs = repository.repository().allSoc()
         for soc in socs:
             summary = SUMMARY.getSummary(soc.vendor, soc.name)
             modules = summary.modules
@@ -44,8 +44,7 @@ class SummaryTest(unittest.TestCase):
                 for name, module in group.items():
                     if len(module.ip) == 0:
                         continue
-                    IP.loadIp(soc.vendor, name, module.ip)
-                    ip = IP.getIp(soc.vendor, name)
+                    ip = IP.getIp(soc.vendor, name, module.ip)
                     self.assertGreater(len(ip.parameters), 0, msg='load failed.')
                     self.assertGreater(len(ip.modes), 0, msg='load failed.')
                     for _, parameter in ip.parameters.items():

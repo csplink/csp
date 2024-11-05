@@ -71,7 +71,7 @@ class ListContributors(Ui_ListContributors, QWidget):
         self.scrollArea.setWidget(self.flowWidget)
         self.scrollArea.enableTransparentBackground()
 
-        contributors = Contributor().contributors
+        contributors = Contributor().contributors()
 
         for contributor in contributors:
             label = AvatarWidget(f'{CONTRIBUTORS_DIR}/{contributor.avatar}', self)

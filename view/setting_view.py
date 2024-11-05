@@ -33,7 +33,7 @@ from qfluentwidgets import (SettingCardGroup, SwitchSettingCard, OptionsSettingC
                             PrimaryPushSettingCard, ScrollArea, ComboBoxSettingCard, ExpandLayout, FluentIconBase,
                             CustomColorSettingCard, setTheme, setThemeColor, InfoBar, MessageBox, ToolButton)
 
-from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS)
+from common import (SETTINGS, Style, Icon, PROJECT, PACKAGE, SIGNAL_BUS, SUMMARY)
 from utils import converters
 from widget import (LineEditPropertySettingCard, ComboBoxPropertySettingCard, SwitchPropertySettingCard,
                     ToolButtonPropertySettingCard)
@@ -271,7 +271,7 @@ class GenerateSettingView(ScrollArea):
 
     def __createBuilderGroup(self) -> SettingCardGroup | None:
         # --------------------------------------------------------------------------------------------------------------
-        if len(PROJECT.summary.builder.keys()) == 0:
+        if len(SUMMARY.projectSummary().builder.keys()) == 0:
             return None
 
         group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
@@ -354,15 +354,15 @@ class GenerateSettingView(ScrollArea):
     def __createLinkerGroup(self) -> SettingCardGroup | None:
         if converters.ishex(PROJECT.defaultHeapSize):
             defaultHeapSize = PROJECT.defaultHeapSize
-        elif converters.ishex(PROJECT.summary.linker.defaultHeapSize):
-            defaultHeapSize = PROJECT.summary.linker.defaultHeapSize
+        elif converters.ishex(SUMMARY.projectSummary().linker.defaultHeapSize):
+            defaultHeapSize = SUMMARY.projectSummary().linker.defaultHeapSize
         else:
             return None
         # --------------------------------------------------------------------------------------------------------------
         if converters.ishex(PROJECT.defaultStackSize):
             defaultStackSize = PROJECT.defaultStackSize
-        elif converters.ishex(PROJECT.summary.linker.defaultStackSize):
-            defaultStackSize = PROJECT.summary.linker.defaultStackSize
+        elif converters.ishex(SUMMARY.projectSummary().linker.defaultStackSize):
+            defaultStackSize = SUMMARY.projectSummary().linker.defaultStackSize
         else:
             return None
         # --------------------------------------------------------------------------------------------------------------
@@ -495,7 +495,7 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None:
             return
 
-        builder = PROJECT.summary.builder
+        builder = SUMMARY.projectSummary().builder
         builderList = list(builder.keys())
         if len(builderList) == 0:
             return
@@ -522,7 +522,7 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None:
             return
 
-        builderVersion = PROJECT.summary.builder.get(PROJECT.builder, {})
+        builderVersion = SUMMARY.projectSummary().builder.get(PROJECT.builder, {})
         builderVersionList = list(builderVersion.keys())  # It must not be an empty array.
 
         if PROJECT.builderVersion == "":
@@ -548,7 +548,7 @@ class GenerateSettingView(ScrollArea):
             return
 
         # It must not be an empty array.
-        toolchains = PROJECT.summary.builder.get(PROJECT.builder, {}).get(PROJECT.builderVersion, {})
+        toolchains = SUMMARY.projectSummary().builder.get(PROJECT.builder, {}).get(PROJECT.builderVersion, {})
         if PROJECT.toolchains == "":
             PROJECT.toolchains = toolchains[-1]
         else:
@@ -571,7 +571,7 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None or not PROJECT.useToolchainsPackage:
             return
 
-        toolchainsVersions = PACKAGE.index.versions('toolchains', PROJECT.toolchains)
+        toolchainsVersions = PACKAGE.index().versions('toolchains', PROJECT.toolchains)
         if len(toolchainsVersions) != 0:
             if PROJECT.toolchainsVersion == "":
                 PROJECT.toolchainsVersion = toolchainsVersions[-1]
@@ -605,7 +605,7 @@ class GenerateSettingView(ScrollArea):
         if self.builderGroup is None or not PROJECT.useToolchainsPackage:
             return
 
-        toolchainsPath = PACKAGE.index.path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
+        toolchainsPath = PACKAGE.index().path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
 
         self.toolchainsPathToolButtonSettingCard.setContent(toolchainsPath)
         self.toolchainsPathToolButtonSettingCard.contentLabel.setToolTip(toolchainsPath)
@@ -633,7 +633,7 @@ class GenerateSettingView(ScrollArea):
         if self.halGroup is None:
             return
 
-        hals = PROJECT.summary.hals
+        hals = SUMMARY.projectSummary().hals
         if len(hals) == 0:
             return
 
@@ -658,7 +658,7 @@ class GenerateSettingView(ScrollArea):
         if self.halGroup is None:
             return
 
-        halVersions = PACKAGE.index.versions('hal', PROJECT.hal)
+        halVersions = PACKAGE.index().versions('hal', PROJECT.hal)
         if len(halVersions) != 0:
             if PROJECT.halVersion == "":
                 PROJECT.halVersion = halVersions[-1]
@@ -692,7 +692,7 @@ class GenerateSettingView(ScrollArea):
         if self.halGroup is None:
             return
 
-        halPath = PACKAGE.index.path("hal", PROJECT.hal, PROJECT.halVersion)
+        halPath = PACKAGE.index().path("hal", PROJECT.hal, PROJECT.halVersion)
 
         self.halPathToolButtonSettingCard.setContent(halPath)
         self.halPathToolButtonSettingCard.contentLabel.setToolTip(halPath)

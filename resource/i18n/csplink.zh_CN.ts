@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../../view/soc_view.py" line="68"/>
-        <source>The package &quot;{PROJECT.summary.package}&quot; is not supported at this time</source>
+        <source>The package &quot;{SUMMARY.currentSummary().package}&quot; is not supported at this time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

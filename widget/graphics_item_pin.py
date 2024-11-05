@@ -29,9 +29,10 @@ from enum import Enum
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics, QAction
 from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from loguru import logger
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
-from common import PROJECT, SIGNAL_BUS, SummaryType
+from common import PROJECT, SIGNAL_BUS, SummaryType, SUMMARY, IP
 
 
 class GraphicsItemPin(QGraphicsObject):
@@ -85,6 +86,8 @@ class GraphicsItemPin(QGraphicsObject):
         self.function = PROJECT.config(self.functionKey, "")
         self.locked = PROJECT.config(self.lockedKey, False)
 
+        self.pinIp = SUMMARY.projectSummary().pinIp()
+
         self.font = QFont("JetBrains Mono", 14, QFont.Weight.Bold)
         self.font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
         self.fontMetrics = QFontMetrics(self.font)
@@ -100,7 +103,7 @@ class GraphicsItemPin(QGraphicsObject):
             self.menu.addAction(Action(self.tr("Reset State")))
             self.menu.addSeparator()
 
-            for function in pinConfig.functions:
+            for function in pinConfig.functions():
                 # noinspection PyTypeChecker
                 action = Action(function)
                 action.setCheckable(True)
@@ -256,45 +259,40 @@ class GraphicsItemPin(QGraphicsObject):
             self.previousCheckedAction = action
 
     def __on_project_pinConfigChanged(self, keys: list[str], oldValue: str, newValue: str):
-        pin = PROJECT.summary.pins[self.name]
-        if keys[1] == self.name:
-            if keys[-1] == "label":
-                self.label = newValue
-                if len(pin.modes) == 0:
-                    return
-                instance = pin.modes[0].split("-")[0]
-                SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
-            elif keys[-1] == "locked":
-                self.locked = newValue
-                if len(pin.modes) == 0:
-                    return
-                instance = pin.modes[0].split("-")[0]
-                SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
-            elif keys[-1] == "function":
-                self.function = newValue
-                if newValue != "":
-                    instance = newValue.split("-")[0]
-                    info = pin.signals.get(newValue, None)
-                    if info is not None and info.mode != '':
-                        mode = info.mode
-                        ip = PROJECT.ip.ip(instance)
-                        ip_modes = ip["modes"][mode]
-                        path = f"{instance}/{self.name}"
-                        PROJECT.setConfig(path, {})
-                        for key, info in ip_modes.items():
-                            path = f"{instance}/{self.name}/{key}"
-                            PROJECT.setConfig(path, info["default"])
-                    elif oldValue != "" and oldValue is not None:
-                        instance = oldValue.split("-")[0]
-                        info = pin.signals.get(oldValue, None)
-                        if info is not None and info.mode != '':
-                            path = f"{instance}/{self.name}"
-                            PROJECT.setConfig(path, {})
+        pin = SUMMARY.projectSummary().pins[self.name]
+
+        # only matches own pins
+        if keys[1] != self.name:
+            return
+
+        if keys[-1] == "label":  # update pin label comment
+            self.label = newValue
+            SIGNAL_BUS.gridPropertyIpTriggered.emit(self.pinIp, self.name)
+        elif keys[-1] == "locked":  # update pin locked status
+            self.locked = newValue
+            SIGNAL_BUS.gridPropertyIpTriggered.emit(self.pinIp, self.name)
+        elif keys[-1] == "function":  # update pin function
+            self.function = newValue
+            if len(newValue) > 0:  # set new function
+                seqs = newValue.split("-")
+                instance = seqs[0]
+                mode = seqs[1]
+
+                ip = IP.projectIps().get(instance)
+                if ip is None:
+                    logger.error(f'the ip instance:"{instance}" is invalid.')
                     SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
-                elif oldValue != "" and oldValue is not None:
-                    instance = oldValue.split("-")[0]
-                    info = pin.signals.get(oldValue, None)
-                    if info is not None and info.mode != '':
-                        path = f"{instance}/{self.name}"
-                        PROJECT.setConfig(path, {})
-                    SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
+                    return
+                ip_modes = ip.modes[mode]
+                PROJECT.setConfig(f"{instance}/{self.name}", {})
+                for key, info in ip_modes.items():
+                    PROJECT.setConfig(f"{instance}/{self.name}/{key}", info.default)
+                SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
+            elif len(oldValue) > 0:  # newValue = None, so clear old function
+                instance = oldValue.split("-")[0]
+                ip = IP.projectIps().get(instance)
+                if ip is None:
+                    logger.error(f'the ip instance:"{instance}" is invalid.')
+                    return
+                PROJECT.setConfig(f"{instance}/{self.name}", {})
+                SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)

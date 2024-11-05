@@ -35,7 +35,7 @@ from PySide6.QtSvgWidgets import QGraphicsSvgItem
 from PySide6.QtWidgets import QWidget, QGraphicsScene, QGraphicsPixmapItem, QGraphicsProxyWidget, QGraphicsItem
 from qfluentwidgets import isDarkTheme, applyThemeColor, LineEdit
 
-from common import Icon, SETTINGS, PROJECT, Style
+from common import Icon, SETTINGS, PROJECT, Style, SUMMARY
 from tools import Drawio
 from view.ui.clock_tree_view_ui import Ui_ClockTreeView
 
@@ -49,7 +49,7 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.__multiple = 1
 
         self.__resPath = Path(
-            SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.vendor.lower() / PROJECT.summary.clockTree.lower()
+            SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.vendor.lower() / SUMMARY.projectSummary().clockTree.lower()
         self.__svgPath = str(self.__resPath) + ".svg"
         self.__ymlPath = str(self.__resPath) + ".yml"
 

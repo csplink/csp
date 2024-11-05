@@ -118,6 +118,11 @@ class IpType:
         self.__parameters = None
         self.__modes = None
 
+        # ----------------------------------------------------------------------
+
+        self.__total = None
+        self.__total2 = None
+
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
 
@@ -143,11 +148,39 @@ class IpType:
                     self.__modes[name][modeName] = IpType.ModeUnitType(mode)
         return self.__modes
 
+    # ------------------------------------------------------------------------------------------------------------------
+
+    def total(self) -> dict[str, str]:
+        if self.__total is None:
+            self.__total = {}
+            locale = SETTINGS.get(SETTINGS.language).value.name()
+            for _, parameter in self.parameters.items():
+                for key, value in parameter.values.items():
+                    self.__total[key] = value.comment[locale]
+        return self.__total
+
+    def total2(self) -> dict[str, str]:
+        if self.__total2 is None:
+            self.__total2 = {}
+            locale = SETTINGS.get(SETTINGS.language).value.name()
+            for _, parameter in self.parameters.items():
+                for key, value in parameter.values.items():
+                    self.__total2[value.comment[locale]] = key
+        return self.__total2
+
 
 class Ip:
 
     def __init__(self):
         self.__ips = {}
+
+        # ----------------------------------------------------------------------
+        self.__projectIps = {}
+
+        self.__flushTotal = False
+        self.__total = None
+        self.__flushTotal2 = False
+        self.__total2 = None
 
     @logger.catch(default=False)
     def __checkIp(self, ip: dict) -> bool:
@@ -171,22 +204,59 @@ class Ip:
             logger.error(f"{file} is not file!")
             return IpType({})
 
-    def loadIp(self, vendor: str, instance: str, name: str):
+    def getIp(self, vendor: str, instance: str, name: str) -> IpType:
+        if vendor in self.__ips and instance in self.__ips[vendor] and name in self.__ips[vendor][instance]:
+            return self.__ips[vendor][instance][name]
         # noinspection PyTypeChecker,PyArgumentList
         ip = self.__getIp(vendor, name)
         if vendor not in self.__ips:
             self.__ips[vendor] = {}
-        self.__ips[vendor][instance] = ip
+        if instance not in self.__ips[vendor]:
+            self.__ips[vendor][instance] = {}
+        self.__ips[vendor][instance][name] = ip
+        # noinspection PyTypeChecker
+        return ip
 
-    def getIp(self, vendor: str, instance: str) -> IpType:
-        if vendor in self.__ips and instance in self.__ips[vendor]:
-            return self.__ips[vendor][instance]
-        else:
-            return IpType({})
-
-    @property
-    def ips(self) -> dict[str, dict[str, IpType]]:
+    def ips(self) -> dict[str, dict[str, dict[str, IpType]]]:
         return self.__ips
+
+    def setProjectIp(self, vendor: str, instance: str, name: str) -> IpType:
+        self.__flushTotal = True
+        self.__flushTotal2 = True
+        ip = self.getIp(vendor, instance, name)
+        self.__projectIps[instance] = ip
+        return ip
+
+    def projectIps(self) -> dict[str, IpType]:
+        return self.__projectIps
+
+    def total(self) -> dict[str, str]:
+        if self.__total is None or self.__flushTotal:
+            self.__total = {}
+            self.__flushTotal = False
+            for _, ip in self.projectIps().items():
+                self.__total.update(ip.total())
+        return self.__total
+
+    def total2(self) -> dict[str, str]:
+        if self.__total2 is None or self.__flushTotal2:
+            self.__total2 = {}
+            self.__flushTotal2 = False
+            for _, ip in self.projectIps().items():
+                self.__total2.update(ip.total2())
+        return self.__total2
+
+    def iptr(self, name: str) -> str:
+        if name in self.total():
+            return self.total()[name]
+        else:
+            return name
+
+    def iptr2(self, name: str) -> str:
+        if name in self.total2:
+            return self.total2()[name]
+        else:
+            return name
 
 
 IP = Ip()

@@ -46,6 +46,5 @@ class GridMode(Ui_GridMode, QWidget):
 
     def changeModuleWidget(self, module: str, widget: str):
         if widget == "grid_mode_io":
-            # self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.GRID_MODE_IO.value))
-            # self.widget_gridModeIo.setInstance(module)
-            pass
+            self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.GRID_MODE_IO.value))
+            self.widget_gridModeIo.setInstance(module)

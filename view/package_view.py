@@ -54,7 +54,7 @@ class PackageInfoWidget(QWidget):
         self.treeWidget.itemClicked.connect(self.__on_treeWidget_itemClicked)
 
     def setInfo(self, kind: str, name: str, version: str):
-        path = PACKAGE.index.path(kind, name, version)
+        path = PACKAGE.index().path(kind, name, version)
         pdsc = PACKAGE.getPackageDescription(path)
         self.treeWidget.clear()
         local = SETTINGS.get(SETTINGS.language).value.name()
@@ -163,7 +163,7 @@ class PackageView(Ui_PackageView, QWidget):
         dialog.exec()
 
     def __updateTree(self):
-        package = PACKAGE.index.origin
+        package = PACKAGE.index().origin
         self.packageTree.clear()
         self.packageInfoWidget.clear()
         for kind, item in package.items():

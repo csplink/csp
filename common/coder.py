@@ -77,7 +77,7 @@ class Coder(QObject):
                     file.write(context)
 
     def dump(self) -> dict:
-        packageFolder = PROJECT.halFolder
+        packageFolder = PROJECT.halFolder()
 
         if len(self.__filesTable) == 0:
             return {}
@@ -129,7 +129,7 @@ class Coder(QObject):
 
     def __loadCoder(self) -> ModuleType | None:
         if self.__checkHalFolder():
-            spec = importlib.util.spec_from_file_location("coder", f'{PROJECT.halFolder}/tools/coder/coder.py')
+            spec = importlib.util.spec_from_file_location("coder", f'{PROJECT.halFolder()}/tools/coder/coder.py')
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             return module
@@ -142,8 +142,8 @@ class Coder(QObject):
         return files
 
     def __checkHalFolder(self) -> bool:
-        if not os.path.isfile(f'{PROJECT.halFolder}/tools/coder/coder.py'):
-            logger.error(f"{PROJECT.halFolder} is not directory! maybe package({PROJECT.hal}) not yet installed.")
+        if not os.path.isfile(f'{PROJECT.halFolder()}/tools/coder/coder.py'):
+            logger.error(f"{PROJECT.halFolder()} is not directory! maybe package({PROJECT.hal}) not yet installed.")
             return False
         return True
 
@@ -165,7 +165,7 @@ class Coder(QObject):
         return code
 
     def __render(self, path: str, brief: str, env: jinja2.Environment, args: dict) -> str | None:
-        absPath = f"{PROJECT.folder}/{path}"
+        absPath = f"{PROJECT.folder()}/{path}"
         template = env.get_template(f'{os.path.basename(path)}.j2')
         suffix = Path(absPath).suffix
         if suffix == '.h' or suffix == '.c':

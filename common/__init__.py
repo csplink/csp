@@ -26,7 +26,6 @@
 
 from .coder import Coder
 from .contributors import Contributor, ContributorType
-from .database import Database, DATABASE
 from .icon import Icon
 from .ip import Ip, IP
 from .package import Package, PACKAGE, PackageDescriptionType
@@ -40,7 +39,6 @@ from .summary import Summary, SummaryType, SUMMARY
 __all__ = [
     'Coder',
     'Contributor', 'ContributorType',
-    'Database', 'DATABASE',
     'Icon',
     'Ip', 'IP',
     'Package', 'PACKAGE', 'PackageDescriptionType',

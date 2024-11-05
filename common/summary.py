@@ -159,7 +159,8 @@ class SummaryType:
         def modes(self) -> list[str]:
             return self.__data.get("modes", [])
 
-        @property
+        # ----------------------------------------------------------------------
+
         def functions(self) -> list[str]:
             if self.__functions is None:
                 self.__functions = self.signals + self.modes
@@ -169,9 +170,13 @@ class SummaryType:
         self.__data = data
         self.__documents = None
         self.__modules = None
-        self.__moduleList = None
         self.__linker = None
         self.__pins = None
+
+        # ----------------------------------------------------------------------
+
+        self.__moduleList = None
+        self.__pinIp = None
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -231,16 +236,6 @@ class SummaryType:
         return self.__modules
 
     @property
-    def moduleList(self) -> dict[str, ModuleType]:
-        if self.__moduleList is None:
-            self.__moduleList = {}
-            modules = self.modules
-            for groupName, group in modules.items():
-                for name, module in group.items():
-                    self.__moduleList[name] = module
-        return self.__moduleList
-
-    @property
     def package(self) -> str:
         return self.__data.get("package", "")
 
@@ -267,11 +262,35 @@ class SummaryType:
                 self.__pins[name] = SummaryType.PinType(unit if unit is not None else {})
         return self.__pins
 
+    # ----------------------------------------------------------------------------------------------------------------------
+
+    def moduleList(self) -> dict[str, ModuleType]:
+        if self.__moduleList is None:
+            self.__moduleList = {}
+            modules = self.modules
+            for groupName, group in modules.items():
+                for name, module in group.items():
+                    self.__moduleList[name] = module
+        return self.__moduleList
+
+    def pinIp(self) -> str:
+        if self.__pinIp is None:
+            for _, pin in self.pins.items():
+                if len(pin.modes) > 0:
+                    self.__pinIp = pin.modes[0].split('-')[0]
+                    break
+        return self.__pinIp
+
 
 class Summary:
 
     def __init__(self):
         self.__summaries = {}
+
+        # ----------------------------------------------------------------------
+
+        self.__vendor = ""
+        self.__name = ""
 
     @logger.catch(default=False)
     def __checkSummary(self, summary: dict) -> bool:
@@ -307,9 +326,16 @@ class Summary:
             # noinspection PyTypeChecker
             return summary
 
-    @property
     def summaries(self) -> dict[str, dict[str, SummaryType]]:
         return self.__summaries
+
+    def setProjectSummary(self, vendor: str, name: str) -> SummaryType:
+        self.__vendor = vendor
+        self.__name = name
+        return self.projectSummary()
+
+    def projectSummary(self) -> SummaryType:
+        return self.getSummary(self.__vendor, self.__name)
 
 
 SUMMARY = Summary()

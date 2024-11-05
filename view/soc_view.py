@@ -30,7 +30,7 @@ from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
 from qfluentwidgets import (isDarkTheme)
 
-from common import Style, Icon, PROJECT, SETTINGS
+from common import Style, Icon, PROJECT, SETTINGS, SUMMARY
 from widget import LQFP
 from .ui.soc_view_ui import Ui_SocView
 
@@ -61,13 +61,14 @@ class SocView(Ui_SocView, QWidget):
 
         SETTINGS.themeChanged.connect(lambda theme: self.__updateGraphicsViewBackgroundColor())
 
-        if PROJECT.summary.package != "":
-            if re.match("^LQFP\d+$", PROJECT.summary.package):
+        if SUMMARY.projectSummary().package != "":
+            if re.match("^LQFP\d+$", SUMMARY.projectSummary().package):
                 items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
             else:
                 items = None
                 QMessageBox.critical(self, self.tr('critical'),
-                                     self.tr(f'The package "{PROJECT.summary.package}" is not supported at this time'))
+                                     self.tr(
+                                         f'The package "{SUMMARY.projectSummary().package}" is not supported at this time'))
             if items is not None:
                 for item in items:
                     self.__scene.addItem(item)

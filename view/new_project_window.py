@@ -134,7 +134,7 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.__repo = Repository().repository
+        self.__repo = Repository().repository()
 
         self.createBtn = PushButton(self.tr('Create'), self)
         self.btnGroupHorizontalLayout.addWidget(self.createBtn, 0, Qt.AlignmentFlag.AlignRight)

@@ -24,6 +24,7 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
+import json
 import os
 
 import jsonschema
@@ -32,51 +33,10 @@ from PySide6.QtCore import Signal, QObject
 from loguru import logger
 
 from utils import converters
-from .database import DATABASE
+from .ip import IP
 from .package import PACKAGE
 from .settings import SETTINGS
-from .summary import SummaryType, SUMMARY
-
-
-class Ip(QObject):
-
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.__ip = {}
-        self.__ipTotal = {}
-        self.__ipReverseTotal = {}
-
-    def ip(self, name: str) -> dict:
-        if name not in self.__ip:
-            return {}
-        return self.__ip[name]
-
-    def iptr(self, name: str) -> str:
-        if name in self.__ipTotal:
-            return self.__ipTotal[name]
-        else:
-            return name
-
-    def iptr2(self, name: str) -> str:
-        if name in self.__ipReverseTotal:
-            return self.__ipReverseTotal[name]
-        else:
-            return name
-
-    @property
-    def origin(self) -> dict:
-        return self.__ip
-
-    @origin.setter
-    def origin(self, ip: dict):
-        self.__ip = ip
-
-        locale = SETTINGS.get(SETTINGS.language).value.name()
-        for name in ip.keys():
-            for _, parameter in ip[name]["parameters"].items():
-                for key, value in parameter["values"].items():
-                    self.__ipTotal[key] = value["comment"][locale]
-                    self.__ipReverseTotal[value["comment"][locale]] = key
+from .summary import SUMMARY
 
 
 class Project(QObject):
@@ -85,9 +45,14 @@ class Project(QObject):
         super().__init__(parent=parent)
         self.__data = {}
         self.__path = ""
-        self.__summary = None
         self.__valid = False
-        self.__ip = Ip(self)
+
+    def __str__(self) -> str:
+        return json.dumps(self.__data, indent=2, ensure_ascii=False)
+
+    @property
+    def origin(self) -> dict:
+        return self.__data
 
     @property
     def version(self) -> str:
@@ -96,25 +61,6 @@ class Project(QObject):
     @property
     def vendor(self) -> str:
         return self.__data.get("vendor", "")
-
-    @property
-    def origin(self) -> dict:
-        return self.__data
-
-    @property
-    def summary(self) -> SummaryType:
-        if self.__summary is None:
-            logger.error('summary is None')
-            return SummaryType({})
-        return self.__summary
-
-    @property
-    def ip(self) -> Ip:
-        return self.__ip
-
-    @property
-    def valid(self) -> bool:
-        return self.__valid
 
     @vendor.setter
     def vendor(self, vendor: str):
@@ -138,6 +84,10 @@ class Project(QObject):
     def name(self, name: str):
         self.__data["name"] = name
         self.saveTmp()
+
+    @property
+    def modules(self) -> list:
+        return self.__data.setdefault("modules", [])
 
     # gen --------------------------------------------------------------------------------------------------------------
     # gen/copyHalLibrary ----------------------------------------------------------
@@ -293,6 +243,12 @@ class Project(QObject):
         self.saveTmp()
 
     # ------------------------------------------------------------------------------------------------------------------
+
+    @property
+    def valid(self) -> bool:
+        return self.__valid
+
+    # ------------------------------------------------------------------------------------------------------------------
     reloaded = Signal()
 
     @property
@@ -306,21 +262,14 @@ class Project(QObject):
             self.reloaded.emit()
         self.__path = path
 
-    @property
     def folder(self) -> str:
         return os.path.dirname(self.__path)
 
-    @property
-    def modules(self) -> list:
-        return self.__data.setdefault("modules", [])
-
-    @property
     def halFolder(self) -> str:
-        return PACKAGE.index.path("hal", self.hal, self.halVersion)
+        return PACKAGE.index().path("hal", self.hal, self.halVersion)
 
-    @property
-    def toolchainsDir(self) -> str:
-        return PACKAGE.index.path("toolchains", self.toolchains, self.toolchainsVersion)
+    def toolchainsFolder(self) -> str:
+        return PACKAGE.index().path("toolchains", self.toolchains, self.toolchainsVersion)
 
     def load(self, path: str) -> bool:
         self.__valid = False
@@ -339,24 +288,18 @@ class Project(QObject):
                 print(exception)
                 return self.__valid
 
-            try:
-                self.__summary = SUMMARY.getSummary(self.vendor, self.targetChip)
-            except jsonschema.exceptions.ValidationError as exception:
-                print(f"invalid yaml {path}")
-                print(exception)
+            summary = SUMMARY.setProjectSummary(self.vendor, self.targetChip)
+            if len(summary.origin) == 0:
+                logger.error(f"invalid summary {self.vendor}, {self.targetChip}!")
                 return self.__valid
 
-            try:
-                ip = {}
-                for _, module_group in self.summary.modules.items():
-                    for name, module in module_group.items():
-                        if module.ip != '':
-                            ip[name] = DATABASE.getIp(self.vendor, module.ip)
-                self.__ip.origin = ip
-            except jsonschema.exceptions.ValidationError as exception:
-                print(f"invalid yaml {path}")
-                print(exception)
-                return self.__valid
+            for _, group in summary.modules.items():
+                for name, module in group.items():
+                    if module.ip != '':
+                        ip = IP.setProjectIp(self.vendor, name, module.ip)
+                        if len(ip.origin) == 0:
+                            logger.error(f"invalid ip {self.vendor}, {self.targetChip}, {name} {module.ip}!")
+                            return self.__valid
 
             self.__valid = True
 
@@ -411,8 +354,9 @@ class Project(QObject):
                     self.configChanged.emit(keys, old, value)
 
             modules = set()
+            # noinspection PyUnresolvedReferences
             for name, cfg in self.__data["config"].items():
-                if name in self.summary.moduleList and cfg is not None and len(cfg) > 0:
+                if name in SUMMARY.projectSummary().moduleList() and cfg is not None and len(cfg) > 0:
                     modules.add(name)
             if set(self.modules) != modules:
                 self.__data["modules"] = list(modules)
@@ -421,18 +365,20 @@ class Project(QObject):
             self.saveTmp()
 
     def isGenerateSettingValid(self) -> bool:
-        if not os.path.isdir(self.toolchainsDir):
+        if not os.path.isdir(self.toolchainsFolder()):
             return False
-        elif not os.path.isdir(self.halFolder):
+        elif not os.path.isdir(self.halFolder()):
             return False
         elif self.builder == "":
             return False
         elif self.builderVersion == "":
             return False
 
-        if (not converters.ishex(self.defaultHeapSize)) and converters.ishex(self.summary.linker.defaultHeapSize):
+        if (not converters.ishex(self.defaultHeapSize)) and converters.ishex(
+                SUMMARY.projectSummary().linker.defaultHeapSize):
             return False
-        elif not converters.ishex(self.defaultStackSize) and converters.ishex(self.summary.linker.defaultStackSize):
+        elif not converters.ishex(self.defaultStackSize) and converters.ishex(
+                SUMMARY.projectSummary().linker.defaultStackSize):
             return False
 
         return True
