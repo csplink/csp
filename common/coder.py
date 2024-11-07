@@ -60,7 +60,7 @@ class Coder(QObject):
         if not self.__checkHalFolder():
             return
 
-        outputDir = os.path.dirname(PROJECT.path)
+        outputDir = os.path.dirname(PROJECT.path())
 
         for path, context in self.dump().items():
             genMd5 = hashlib.md5(context.encode('utf-8')).hexdigest()
@@ -85,7 +85,7 @@ class Coder(QObject):
         data = {
             "author": "csplink coder",
             "version": SETTINGS.VERSION,
-            "project": PROJECT.origin,
+            "project": PROJECT.project().origin,
             "time": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
             "year": time.strftime('%Y', time.localtime())
         }
@@ -121,7 +121,7 @@ class Coder(QObject):
         if self.__coder is None:
             return
 
-        data = self.__coder.deploy(copy.deepcopy(PROJECT.origin), os.path.dirname(PROJECT.path))
+        data = self.__coder.deploy(copy.deepcopy(PROJECT.project().origin), os.path.dirname(PROJECT.path()))
         return data
 
     def filesList(self) -> list[str]:
@@ -138,12 +138,13 @@ class Coder(QObject):
     def __getFilesTable(self) -> dict[str, dict[str, str]]:
         if self.__coder is None:
             return {}
-        files = self.__coder.files_table(copy.deepcopy(PROJECT.origin))
+        files = self.__coder.files_table(copy.deepcopy(PROJECT.project().origin))
         return files
 
     def __checkHalFolder(self) -> bool:
         if not os.path.isfile(f'{PROJECT.halFolder()}/tools/coder/coder.py'):
-            logger.error(f"{PROJECT.halFolder()} is not directory! maybe package({PROJECT.hal}) not yet installed.")
+            logger.error(
+                f"{PROJECT.halFolder()} is not directory! maybe package({PROJECT.project().gen.hal}) not yet installed.")
             return False
         return True
 

@@ -106,8 +106,8 @@ class StartupWindow(MSFluentWindow):
                                                self.tr('CSP project file (*.csp)'))
         if ok:
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
-            PROJECT.path = path
-            if PROJECT.valid:
+            PROJECT.setPath(path)
+            if PROJECT.valid():
                 self.deleteLater()
                 self.hide()
                 window = MainWindow()

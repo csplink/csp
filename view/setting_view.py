@@ -298,7 +298,7 @@ class GenerateSettingView(ScrollArea):
         self.useToolchainsPackageSwitchSettingCard = SwitchPropertySettingCard(
             icon=Icon.CHECKBOX_MULTIPLE,
             title=self.tr("Use Toolchains Package"),
-            value=PROJECT.useToolchainsPackage,
+            value=PROJECT.project().gen.useToolchainsPackage,
             content=self.tr("Use the built-in toolchain of this software"),
             parent=group)
         self.useToolchainsPackageSwitchSettingCard.checkedChanged.connect(
@@ -344,7 +344,7 @@ class GenerateSettingView(ScrollArea):
         group.addSettingCard(self.toolchainsVersionComboBoxGroupSettingCard)
         group.addSettingCard(self.toolchainsPathToolButtonSettingCard)
 
-        if not PROJECT.useToolchainsPackage:
+        if not PROJECT.project().gen.useToolchainsPackage:
             self.toolchainsComboBoxGroupSettingCard.setEnabled(False)
             self.toolchainsVersionComboBoxGroupSettingCard.setEnabled(False)
             self.toolchainsPathToolButtonSettingCard.setEnabled(False)
@@ -352,15 +352,15 @@ class GenerateSettingView(ScrollArea):
         return group
 
     def __createLinkerGroup(self) -> SettingCardGroup | None:
-        if converters.ishex(PROJECT.defaultHeapSize):
-            defaultHeapSize = PROJECT.defaultHeapSize
+        if converters.ishex(PROJECT.project().gen.linker.defaultHeapSize):
+            defaultHeapSize = PROJECT.project().gen.linker.defaultHeapSize
         elif converters.ishex(SUMMARY.projectSummary().linker.defaultHeapSize):
             defaultHeapSize = SUMMARY.projectSummary().linker.defaultHeapSize
         else:
             return None
         # --------------------------------------------------------------------------------------------------------------
-        if converters.ishex(PROJECT.defaultStackSize):
-            defaultStackSize = PROJECT.defaultStackSize
+        if converters.ishex(PROJECT.project().gen.linker.defaultStackSize):
+            defaultStackSize = PROJECT.project().gen.linker.defaultStackSize
         elif converters.ishex(SUMMARY.projectSummary().linker.defaultStackSize):
             defaultStackSize = SUMMARY.projectSummary().linker.defaultStackSize
         else:
@@ -377,7 +377,8 @@ class GenerateSettingView(ScrollArea):
                                                                    validator=R"(^0x[0-9A-Fa-f]+$)",
                                                                    parent=group)
         self.defaultHeapLineEditCard.textChanged.connect(self.__on_defaultHeapLineEditCard_textChanged)
-        PROJECT.defaultHeapSizeChanged.connect(lambda t: self.defaultHeapLineEditCard.setContent(t))
+        PROJECT.project().gen.linker.defaultHeapSizeChanged.connect(
+            lambda old, new: self.defaultHeapLineEditCard.setContent(new))
         # --------------------------------------------------------------------------------------------------------------
         self.defaultStackLineEditCard = LineEditPropertySettingCard(icon=Icon.FOLDER,
                                                                     title=self.tr("Default Stack Size"),
@@ -386,7 +387,8 @@ class GenerateSettingView(ScrollArea):
                                                                     validator=R"(^0x[0-9A-Fa-f]+$)",
                                                                     parent=group)
         self.defaultStackLineEditCard.textChanged.connect(self.__on_defaultStackLineEditCard_textChanged)
-        PROJECT.defaultStackSizeChanged.connect(lambda t: self.defaultStackLineEditCard.setContent(t))
+        PROJECT.project().gen.linker.defaultStackSizeChanged.connect(
+            lambda old, new: self.defaultStackLineEditCard.setContent(new))
         # --------------------------------------------------------------------------------------------------------------
 
         group.addSettingCard(self.defaultHeapLineEditCard)
@@ -402,7 +404,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.copyHalLibrarySwitchSettingCard = SwitchPropertySettingCard(icon=Icon.CHECKBOX_MULTIPLE,
                                                                          title=self.tr("Copy Hal Library"),
-                                                                         value=PROJECT.copyHalLibrary,
+                                                                         value=PROJECT.project().gen.copyHalLibrary,
                                                                          content=self.tr(
                                                                              "Copy the hal library files to the project directory"),
                                                                          parent=group)
@@ -445,25 +447,25 @@ class GenerateSettingView(ScrollArea):
     def __on_defaultHeapLineEditCard_textChanged(self, text: str):
         ishex = converters.ishex(text)
         if ishex:
-            PROJECT.defaultHeapSize = text
+            PROJECT.project().gen.defaultHeapSize = text
         self.defaultHeapLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
 
     def __on_defaultStackLineEditCard_textChanged(self, text: str):
         ishex = converters.ishex(text)
         if ishex:
-            PROJECT.defaultStackSize = text
+            PROJECT.project().gen.defaultStackSize = text
         self.defaultStackLineEditCard.setStatusInfo(not ishex, self.tr("The Path is not directory"))
 
     def __on_builderComboBoxGroupSettingCard_currentTextChanged(self, text: str):
-        PROJECT.builder = text
+        PROJECT.project().gen.builder = text
         self.__updateBuilderVersionSettings()
 
     def __on_builderVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
-        PROJECT.builderVersion = text
+        PROJECT.project().gen.builderVersion = text
         self.__updateToolchainsSettings()
 
     def __on_useToolchainsPackageSwitchSettingCard_checkedChanged(self, checked: bool):
-        PROJECT.useToolchainsPackage = checked
+        PROJECT.project().gen.useToolchainsPackage = checked
         self.toolchainsComboBoxGroupSettingCard.setEnabled(checked)
         self.toolchainsVersionComboBoxGroupSettingCard.setEnabled(checked)
         self.toolchainsPathToolButtonSettingCard.setEnabled(checked)
@@ -475,11 +477,11 @@ class GenerateSettingView(ScrollArea):
             self.toolchainsPathToolButtonSettingCard.clear()
 
     def __on_toolchainsComboBoxGroupSettingCard_currentTextChanged(self, text: str):
-        PROJECT.toolchains = text
+        PROJECT.project().gen.toolchains = text
         self.__updateToolchainsVersionSettings()
 
     def __on_toolchainsVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
-        PROJECT.toolchainsVersion = text
+        PROJECT.project().gen.toolchainsVersion = text
         self.__updateToolchainsPathSettings()
 
     def __on_toolchainsManagerBtn_clicked(self):
@@ -500,112 +502,116 @@ class GenerateSettingView(ScrollArea):
         if len(builderList) == 0:
             return
 
-        if PROJECT.builder == "":
-            PROJECT.builder = builderList[-1]
+        if PROJECT.project().gen.builder == "":
+            PROJECT.project().gen.builder = builderList[-1]
         else:
-            if PROJECT.builder not in builderList:
+            if PROJECT.project().gen.builder not in builderList:
                 title = self.tr('Warning')
                 content = self.tr(
-                    "The builder %1 is not supported. Use default value '%2'").replace("%1", PROJECT.builder).replace(
+                    "The builder %1 is not supported. Use default value '%2'").replace("%1",
+                                                                                       PROJECT.project().gen.builder).replace(
                     "%2", builderList[-1])
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.builder = builderList[-1]
+                PROJECT.project().gen.builder = builderList[-1]
 
-        self.builderComboBoxGroupSettingCard.setSource(PROJECT.builder, builderList)
-        self.builderComboBoxGroupSettingCard.setContent(PROJECT.builder)
+        self.builderComboBoxGroupSettingCard.setSource(PROJECT.project().gen.builder, builderList)
+        self.builderComboBoxGroupSettingCard.setContent(PROJECT.project().gen.builder)
 
     # noinspection DuplicatedCode
     def __updateBuilderVersionSettings(self):
         if self.builderGroup is None:
             return
 
-        builderVersion = SUMMARY.projectSummary().builder.get(PROJECT.builder, {})
+        builderVersion = SUMMARY.projectSummary().builder.get(PROJECT.project().gen.builder, {})
         builderVersionList = list(builderVersion.keys())  # It must not be an empty array.
 
-        if PROJECT.builderVersion == "":
-            PROJECT.builderVersion = builderVersionList[-1]
+        if PROJECT.project().gen.builderVersion == "":
+            PROJECT.project().gen.builderVersion = builderVersionList[-1]
         else:
-            if PROJECT.builderVersion not in builderVersionList:
+            if PROJECT.project().gen.builderVersion not in builderVersionList:
                 title = self.tr('Warning')
                 content = self.tr(
                     "The builder %1 is not supported. Use default value '%2'").replace(
-                    "%1", f"{PROJECT.builderVersion}@{PROJECT.builderVersion}").replace(
-                    "%2", f"{PROJECT.builderVersion}@{builderVersionList[-1]}")
+                    "%1", f"{PROJECT.project().gen.builderVersion}@{PROJECT.project().gen.builderVersion}").replace(
+                    "%2", f"{PROJECT.project().gen.builderVersion}@{builderVersionList[-1]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.builderVersion = builderVersionList[-1]
+                PROJECT.project().gen.builderVersion = builderVersionList[-1]
 
-        self.builderVersionComboBoxGroupSettingCard.setSource(PROJECT.builderVersion, builderVersionList)
-        self.builderVersionComboBoxGroupSettingCard.setContent(PROJECT.builder)
+        self.builderVersionComboBoxGroupSettingCard.setSource(PROJECT.project().gen.builderVersion, builderVersionList)
+        self.builderVersionComboBoxGroupSettingCard.setContent(PROJECT.project().gen.builder)
 
     def __updateToolchainsSettings(self):
-        if self.builderGroup is None or not PROJECT.useToolchainsPackage:
+        if self.builderGroup is None or not PROJECT.project().gen.useToolchainsPackage:
             return
 
         # It must not be an empty array.
-        toolchains = SUMMARY.projectSummary().builder.get(PROJECT.builder, {}).get(PROJECT.builderVersion, {})
-        if PROJECT.toolchains == "":
-            PROJECT.toolchains = toolchains[-1]
+        toolchains = SUMMARY.projectSummary().builder.get(PROJECT.project().gen.builder, {}).get(
+            PROJECT.project().gen.builderVersion, {})
+        if PROJECT.project().gen.toolchains == "":
+            PROJECT.project().gen.toolchains = toolchains[-1]
         else:
-            if PROJECT.toolchains not in toolchains:
+            if PROJECT.project().gen.toolchains not in toolchains:
                 title = self.tr('Warning')
                 content = self.tr(
                     "The builder %1 is not supported. Use default value '%2'").replace(
-                    "%1", f"{PROJECT.builder}@{PROJECT.toolchains}").replace("%2",
-                                                                             f"{PROJECT.builder}@{toolchains[-1]}")
+                    "%1", f"{PROJECT.project().gen.builder}@{PROJECT.project().gen.toolchains}").replace("%2",
+                                                                                                         f"{PROJECT.project().gen.builder}@{toolchains[-1]}")
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.toolchains = toolchains[-1]
+                PROJECT.project().gen.toolchains = toolchains[-1]
 
-        self.toolchainsComboBoxGroupSettingCard.setSource(PROJECT.toolchains, toolchains)
-        self.toolchainsComboBoxGroupSettingCard.setContent(PROJECT.builder)
+        self.toolchainsComboBoxGroupSettingCard.setSource(PROJECT.project().gen.toolchains, toolchains)
+        self.toolchainsComboBoxGroupSettingCard.setContent(PROJECT.project().gen.builder)
 
     def __updateToolchainsVersionSettings(self):
-        if self.builderGroup is None or not PROJECT.useToolchainsPackage:
+        if self.builderGroup is None or not PROJECT.project().gen.useToolchainsPackage:
             return
 
-        toolchainsVersions = PACKAGE.index().versions('toolchains', PROJECT.toolchains)
+        toolchainsVersions = PACKAGE.index().versions('toolchains', PROJECT.project().gen.toolchains)
         if len(toolchainsVersions) != 0:
-            if PROJECT.toolchainsVersion == "":
-                PROJECT.toolchainsVersion = toolchainsVersions[-1]
+            if PROJECT.project().gen.toolchainsVersion == "":
+                PROJECT.project().gen.toolchainsVersion = toolchainsVersions[-1]
             else:
-                if PROJECT.toolchainsVersion not in toolchainsVersions:
+                if PROJECT.project().gen.toolchainsVersion not in toolchainsVersions:
                     title = self.tr('Warning')
                     content = self.tr(
                         "The toolchains %1 is not supported. Use default value '%2'").replace(
-                        "%1", f"{PROJECT.toolchains}@{PROJECT.toolchainsVersion}").replace(
-                        "%2", f"{PROJECT.toolchains}@{toolchainsVersions[-1]}")
+                        "%1", f"{PROJECT.project().gen.toolchains}@{PROJECT.project().gen.toolchainsVersion}").replace(
+                        "%2", f"{PROJECT.project().gen.toolchains}@{toolchainsVersions[-1]}")
                     message = MessageBox(title, content, self.window())
                     message.setContentCopyable(True)
                     message.raise_()
                     message.exec()
-                    PROJECT.toolchainsVersion = toolchainsVersions[-1]
+                    PROJECT.project().gen.toolchainsVersion = toolchainsVersions[-1]
         else:
             title = self.tr('Error')
             content = self.tr(
                 "The toolchains %1 is not installed. Please install and then restart this software").replace(
-                "%1", PROJECT.toolchains)
+                "%1", PROJECT.project().gen.toolchains)
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
             message.raise_()
             if message.exec():
                 QDesktopServices.openUrl(QUrl(SETTINGS.PACKAGE_LIST_URL))
 
-        self.toolchainsVersionComboBoxGroupSettingCard.setSource(PROJECT.toolchainsVersion, toolchainsVersions)
-        self.toolchainsVersionComboBoxGroupSettingCard.setContent(PROJECT.builder)
+        self.toolchainsVersionComboBoxGroupSettingCard.setSource(PROJECT.project().gen.toolchainsVersion,
+                                                                 toolchainsVersions)
+        self.toolchainsVersionComboBoxGroupSettingCard.setContent(PROJECT.project().gen.builder)
 
     def __updateToolchainsPathSettings(self):
-        if self.builderGroup is None or not PROJECT.useToolchainsPackage:
+        if self.builderGroup is None or not PROJECT.project().gen.useToolchainsPackage:
             return
 
-        toolchainsPath = PACKAGE.index().path("toolchains", PROJECT.toolchains, PROJECT.toolchainsVersion)
+        toolchainsPath = PACKAGE.index().path("toolchains", PROJECT.project().gen.toolchains,
+                                              PROJECT.project().gen.toolchainsVersion)
 
         self.toolchainsPathToolButtonSettingCard.setContent(toolchainsPath)
         self.toolchainsPathToolButtonSettingCard.contentLabel.setToolTip(toolchainsPath)
@@ -616,14 +622,14 @@ class GenerateSettingView(ScrollArea):
             self.toolchainsPathToolButtonSettingCard.setStatusInfo(False, "")
 
     def __on_copyHalLibrarySwitchSettingCard_checkedChanged(self, checked: bool):
-        PROJECT.copyHalLibrary = checked
+        PROJECT.project().gen.copyHalLibrary = checked
 
     def __on_halComboBoxGroupSettingCard_currentTextChanged(self, text: str):
-        PROJECT.hal = text
+        PROJECT.project().gen.hal = text
         self.__updateHalVersionSettings()
 
     def __on_halVersionComboBoxGroupSettingCard_currentTextChanged(self, text: str):
-        PROJECT.halVersion = text
+        PROJECT.project().gen.halVersion = text
         self.__updateHalPathSettings()
 
     def __on_halPathToolButtonSettingCard_clicked(self):
@@ -637,62 +643,64 @@ class GenerateSettingView(ScrollArea):
         if len(hals) == 0:
             return
 
-        if PROJECT.hal == "":
-            PROJECT.hal = hals[-1]
+        if PROJECT.project().gen.hal == "":
+            PROJECT.project().gen.hal = hals[-1]
         else:
-            if PROJECT.hal not in hals:
+            if PROJECT.project().gen.hal not in hals:
                 title = self.tr('Warning')
                 content = self.tr(
-                    "The hal %1 is not supported. Use default value '%2'").replace("%1", PROJECT.hal).replace("%2",
-                                                                                                              hals[-1])
+                    "The hal %1 is not supported. Use default value '%2'").replace("%1",
+                                                                                   PROJECT.project().gen.hal).replace(
+                    "%2",
+                    hals[-1])
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.raise_()
                 message.exec()
-                PROJECT.hal = hals[-1]
+                PROJECT.project().gen.hal = hals[-1]
 
-        self.halComboBoxGroupSettingCard.setSource(PROJECT.hal, hals)
-        self.halComboBoxGroupSettingCard.setContent(PROJECT.hal)
+        self.halComboBoxGroupSettingCard.setSource(PROJECT.project().gen.hal, hals)
+        self.halComboBoxGroupSettingCard.setContent(PROJECT.project().gen.hal)
 
     def __updateHalVersionSettings(self):
         if self.halGroup is None:
             return
 
-        halVersions = PACKAGE.index().versions('hal', PROJECT.hal)
+        halVersions = PACKAGE.index().versions('hal', PROJECT.project().gen.hal)
         if len(halVersions) != 0:
-            if PROJECT.halVersion == "":
-                PROJECT.halVersion = halVersions[-1]
+            if PROJECT.project().gen.halVersion == "":
+                PROJECT.project().gen.halVersion = halVersions[-1]
             else:
-                if PROJECT.halVersion not in halVersions:
+                if PROJECT.project().gen.halVersion not in halVersions:
                     title = self.tr('Warning')
                     content = self.tr(
                         "The hal %1 is not supported. Use default value '%2'").replace(
-                        "%1", f"{PROJECT.hal}@{PROJECT.halVersion}").replace(
-                        "%2", f"{PROJECT.hal}@{halVersions[-1]}")
+                        "%1", f"{PROJECT.project().gen.hal}@{PROJECT.project().gen.halVersion}").replace(
+                        "%2", f"{PROJECT.project().gen.hal}@{halVersions[-1]}")
                     message = MessageBox(title, content, self.window())
                     message.setContentCopyable(True)
                     message.raise_()
                     message.exec()
-                    PROJECT.halVersion = halVersions[-1]
+                    PROJECT.project().gen.halVersion = halVersions[-1]
         else:
             title = self.tr('Error')
             content = self.tr(
                 "The hal %1 is not installed. Please install and then restart this software").replace(
-                "%1", PROJECT.hal)
+                "%1", PROJECT.project().gen.hal)
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
             message.raise_()
             if message.exec():
                 QDesktopServices.openUrl(QUrl(SETTINGS.PACKAGE_LIST_URL))
 
-        self.halVersionComboBoxGroupSettingCard.setSource(PROJECT.halVersion, halVersions)
-        self.halVersionComboBoxGroupSettingCard.setContent(PROJECT.halVersion)
+        self.halVersionComboBoxGroupSettingCard.setSource(PROJECT.project().gen.halVersion, halVersions)
+        self.halVersionComboBoxGroupSettingCard.setContent(PROJECT.project().gen.halVersion)
 
     def __updateHalPathSettings(self):
         if self.halGroup is None:
             return
 
-        halPath = PACKAGE.index().path("hal", PROJECT.hal, PROJECT.halVersion)
+        halPath = PACKAGE.index().path("hal", PROJECT.project().gen.hal, PROJECT.project().gen.halVersion)
 
         self.halPathToolButtonSettingCard.setContent(halPath)
         self.halPathToolButtonSettingCard.contentLabel.setToolTip(halPath)

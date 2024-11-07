@@ -63,7 +63,7 @@ class SocView(Ui_SocView, QWidget):
 
         if SUMMARY.projectSummary().package != "":
             if re.match("^LQFP\d+$", SUMMARY.projectSummary().package):
-                items = LQFP().getItems(PROJECT.vendor, PROJECT.targetChip)
+                items = LQFP().getItems(PROJECT.project().vendor, PROJECT.project().targetChip)
             else:
                 items = None
                 QMessageBox.critical(self, self.tr('critical'),

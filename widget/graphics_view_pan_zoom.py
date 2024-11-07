@@ -108,12 +108,13 @@ class GraphicsViewPanZoom(QGraphicsView):
                     if self.__key == Qt.Key.Key_Control:
                         self.__key = 0
                         key = item.data(GraphicsItemPin.Data.LABEL_DATA.value)
-                        w = LabelMessageBox(PROJECT.config(key, ""), self.window())
+                        w = LabelMessageBox(PROJECT.project().configs.get(key, ""), self.window())
                         if w.exec():
-                            PROJECT.setConfig(key, w.labelLineEdit.text())
+                            PROJECT.project().configs.set(key, w.labelLineEdit.text())
                 else:
                     name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
-                    function: str = PROJECT.config(item.data(GraphicsItemPin.Data.FUNCTION_DATA.value), "")
+                    function: str = PROJECT.project().configs.get(item.data(GraphicsItemPin.Data.FUNCTION_DATA.value),
+                                                                  "")
                     seqs = function.split('-')
                     if len(seqs) == 2:
                         SIGNAL_BUS.gridPropertyIpTriggered.emit(seqs[0], name)

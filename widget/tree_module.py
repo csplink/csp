@@ -106,7 +106,7 @@ class TreeModuleModel(QAbstractItemModel):
             return None
         elif role == Qt.ItemDataRole.ForegroundRole:  # 9
             model = index.internalPointer()
-            if model.displayName in PROJECT.modules:
+            if model.displayName in PROJECT.project().modules:
                 return self.__brush
             return None
         elif role == Qt.ItemDataRole.CheckStateRole:  # 10
@@ -181,7 +181,7 @@ class TreeModule(Ui_TreeModule, QWidget):
             if str(index.parent().data()) != "None":
                 instance = str(index.data())
                 ip = IP.projectIps().get(instance)
-                if ip is not None:
+                if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
                     return
                 SIGNAL_BUS.gridModeTriggered.emit(instance, 'grid_mode_io')

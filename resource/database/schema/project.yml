@@ -37,7 +37,7 @@ properties:
   targetChip:
     type: string
     minLength: 1
-  config:
+  configs:
     type: object
   modules:
     type: array

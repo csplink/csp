@@ -49,7 +49,7 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.__multiple = 1
 
         self.__resPath = Path(
-            SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.vendor.lower() / SUMMARY.projectSummary().clockTree.lower()
+            SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.project().vendor.lower() / SUMMARY.projectSummary().clockTree.lower()
         self.__svgPath = str(self.__resPath) + ".svg"
         self.__ymlPath = str(self.__resPath) + ".yml"
 

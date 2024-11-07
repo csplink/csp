@@ -32,7 +32,7 @@ from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOp
 from loguru import logger
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
-from common import PROJECT, SETTINGS, Style, SIGNAL_BUS, SUMMARY, IP
+from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP
 from .ui.grid_property_ip_ui import Ui_GridPropertyIp
 
 
@@ -70,7 +70,7 @@ class EditorDelegate(TableItemDelegate):
             return lineEdit
         elif g_data[row].typeof == "enum":
             comboBox = ComboBox(parent)
-            Style.GRID_PROPERTY_IP_COMBOBOX.apply(comboBox)
+            # Style.GRID_PROPERTY_IP_COMBOBOX.apply(comboBox)
             comboBox.setStyle(QApplication.style())
             for value in g_data[index.row()].possibleValues:
                 comboBox.addItem(IP.iptr(value))
@@ -151,10 +151,10 @@ class GridPropertyIpModel(QAbstractTableModel):
         if role == Qt.ItemDataRole.EditRole:
             if g_data[index.row()].typeof == "string":
                 path = g_data[index.row()].path
-                PROJECT.setConfig(path, value)
+                PROJECT.project().configs.set(path, value)
             elif g_data[index.row()].typeof == "enum":
                 path = g_data[index.row()].path
-                PROJECT.setConfig(path, IP.iptr2(value))
+                PROJECT.project().configs.set(path, IP.iptr2(value))
                 g_data[index.row()].value = value
             return True
         else:
@@ -178,7 +178,7 @@ class GridPropertyIpModel(QAbstractTableModel):
 
     def changePropertyIp(self, instance: str, value: str):
         g_data.clear()
-        function: str = PROJECT.config(f"pin/{value}/function", "")
+        function: str = PROJECT.project().configs.get(f"pin/{value}/function", "")
         if len(function) == 0:
             self.modelReset.emit()
             return
@@ -205,7 +205,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             g_data.append(
                 PModel(property=self.tr("Label"),
                        path=path,
-                       value=PROJECT.config(path, ""),
+                       value=PROJECT.project().configs.get(path, ""),
                        typeof="string",
                        possibleValues=[],
                        readonly=False,
@@ -218,7 +218,7 @@ class GridPropertyIpModel(QAbstractTableModel):
                 g_data.append(
                     PModel(property=ip.parameters[mode].displayName[local],
                            path=path,
-                           value=PROJECT.config(path, ""),
+                           value=PROJECT.project().configs.get(path, ""),
                            typeof=ip.parameters[mode].type,
                            possibleValues=cfg.values,
                            readonly=False,

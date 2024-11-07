@@ -47,8 +47,8 @@ class GridModeIoModel(QAbstractTableModel):
         self.__config = {}
         self.__data = []
 
-        PROJECT.configChanged.connect(self.projectConfigChanged)
-        PROJECT.pinConfigChanged.connect(self.pinProjectConfigChanged)
+        PROJECT.project().configs.configsChanged.connect(self.projectConfigChanged)
+        PROJECT.project().configs.pinConfigsChanged.connect(self.pinProjectConfigChanged)
 
     # noinspection PyMethodOverriding
     def rowCount(self, parent: QModelIndex) -> int:
@@ -133,18 +133,18 @@ class GridModeIoModel(QAbstractTableModel):
                 index += 1
             self.__headersList = list(self.__headersMap.keys())
 
-            self.__config = PROJECT.config(instance)
+            self.__config = PROJECT.project().configs.get(instance)
             self.__data.clear()
 
             if self.__config is not None:
                 for name in self.__config.keys():
-                    if PROJECT.config(f"pin/{name}/locked"):
+                    if PROJECT.project().configs.get(f"pin/{name}/locked"):
                         l = []
                         for _, item in self.__headersMap.items():
                             path = item["path"]
                             if path != "":
                                 path = path.replace("(name)", name)
-                                value = PROJECT.config(path, "")
+                                value = PROJECT.project().configs.get(path, "")
                                 l.append({"display": IP.iptr(self.__value2str(value)), "tooltip": value})
                             else:
                                 l.append({"display": name, "tooltip": name})

@@ -253,7 +253,7 @@ class Ip:
             return name
 
     def iptr2(self, name: str) -> str:
-        if name in self.total2:
+        if name in self.total2():
             return self.total2()[name]
         else:
             return name

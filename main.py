@@ -77,7 +77,7 @@ def main():
         for file in files:
             QFontDatabase.addApplicationFont(file)
 
-    if PROJECT.path != "":
+    if PROJECT.path() != "":
         view = MainWindow()
         view.updateFrameless()
         view.show()
@@ -97,7 +97,7 @@ def checkOpt():
     if len(sys.argv) >= 2:
         file = sys.argv[1]
         if os.path.isfile(file):
-            PROJECT.path = file
+            PROJECT.setPath(file)
             return
 
         try:

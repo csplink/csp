@@ -82,9 +82,9 @@ class GraphicsItemPin(QGraphicsObject):
         self.setData(GraphicsItemPin.Data.LOCKED_DATA.value, self.lockedKey)
         self.setData(GraphicsItemPin.Data.NAME_DATA.value, name)
 
-        self.label = PROJECT.config(self.labelKey, "")
-        self.function = PROJECT.config(self.functionKey, "")
-        self.locked = PROJECT.config(self.lockedKey, False)
+        self.label = PROJECT.project().configs.get(self.labelKey, "")
+        self.function = PROJECT.project().configs.get(self.functionKey, "")
+        self.locked = PROJECT.project().configs.get(self.lockedKey, False)
 
         self.pinIp = SUMMARY.projectSummary().pinIp()
 
@@ -118,7 +118,7 @@ class GraphicsItemPin(QGraphicsObject):
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
 
-        PROJECT.pinConfigChanged.connect(self.__on_project_pinConfigChanged)
+        PROJECT.project().configs.pinConfigsChanged.connect(self.__on_project_pinConfigChanged)
 
     def boundingRect(self) -> QRectF:
         if self.type == self.Type.RECTANGLE_TYPE:
@@ -242,18 +242,18 @@ class GraphicsItemPin(QGraphicsObject):
             if self.previousCheckedAction is not None and self.previousCheckedAction != action:
                 self.previousCheckedAction.setChecked(False)
             if action.isChecked():
-                PROJECT.setConfig(self.lockedKey, True)
-                PROJECT.setConfig(self.functionKey, action.text())
+                PROJECT.project().configs.set(self.lockedKey, True)
+                PROJECT.project().configs.set(self.functionKey, action.text())
             else:
-                PROJECT.setConfig(self.lockedKey, False)
-                PROJECT.setConfig(self.functionKey, "")
+                PROJECT.project().configs.set(self.lockedKey, False)
+                PROJECT.project().configs.set(self.functionKey, "")
         else:
             if self.previousCheckedAction is not None:
                 self.previousCheckedAction.setChecked(False)
             self.previousCheckedAction = None
-            PROJECT.setConfig(self.lockedKey, False)
-            PROJECT.setConfig(self.functionKey, "")
-            PROJECT.setConfig(self.labelKey, "")
+            PROJECT.project().configs.set(self.lockedKey, False)
+            PROJECT.project().configs.set(self.functionKey, "")
+            PROJECT.project().configs.set(self.labelKey, "")
 
         if self.previousCheckedAction != action:
             self.previousCheckedAction = action
@@ -284,9 +284,9 @@ class GraphicsItemPin(QGraphicsObject):
                     SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
                     return
                 ip_modes = ip.modes[mode]
-                PROJECT.setConfig(f"{instance}/{self.name}", {})
+                PROJECT.project().configs.set(f"{instance}/{self.name}", {})
                 for key, info in ip_modes.items():
-                    PROJECT.setConfig(f"{instance}/{self.name}/{key}", info.default)
+                    PROJECT.project().configs.set(f"{instance}/{self.name}/{key}", info.default)
                 SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
             elif len(oldValue) > 0:  # newValue = None, so clear old function
                 instance = oldValue.split("-")[0]
@@ -294,5 +294,7 @@ class GraphicsItemPin(QGraphicsObject):
                 if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
                     return
-                PROJECT.setConfig(f"{instance}/{self.name}", {})
+                PROJECT.project().configs.set(f"{instance}/{self.name}", {})
                 SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
+
+        self.update()
