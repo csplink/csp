@@ -32,8 +32,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: 🔧 build
+  test:
+    name: 🔧 test
     runs-on: windows-latest
     strategy:
       matrix:
