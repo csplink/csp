@@ -32,7 +32,7 @@ from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOp
 from loguru import logger
 from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox
 
-from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP
+from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP, Style
 from .ui.grid_property_ip_ui import Ui_GridPropertyIp
 
 
@@ -70,7 +70,7 @@ class EditorDelegate(TableItemDelegate):
             return lineEdit
         elif g_data[row].typeof == "enum":
             comboBox = ComboBox(parent)
-            # Style.GRID_PROPERTY_IP_COMBOBOX.apply(comboBox)
+            Style.GRID_PROPERTY_IP.apply(comboBox)
             comboBox.setStyle(QApplication.style())
             for value in g_data[index.row()].possibleValues:
                 comboBox.addItem(IP.iptr(value))
