@@ -27,8 +27,8 @@
 import math
 
 from PySide6.QtCore import Qt, QRegularExpression
-from PySide6.QtGui import (QTransform, QMouseEvent, QWheelEvent, QContextMenuEvent, QKeyEvent,
-                           QResizeEvent, QRegularExpressionValidator, QSurfaceFormat, QPainter)
+from PySide6.QtGui import (QTransform, QMouseEvent, QWheelEvent, QContextMenuEvent, QResizeEvent,
+                           QRegularExpressionValidator, QSurfaceFormat, QPainter)
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
 from loguru import logger
@@ -64,7 +64,6 @@ class GraphicsViewPanZoom(QGraphicsView):
     MAX_SCALE = 1000
     RESOLUTION = 50
     SCALE = (MIN_SCALE + MAX_SCALE) // 2
-    __key = 0
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -101,25 +100,19 @@ class GraphicsViewPanZoom(QGraphicsView):
     def mousePressEvent(self, event: QMouseEvent):
         super().mousePressEvent(event)
         if event.button() & Qt.MouseButton.LeftButton:
-            # self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
             item = self.itemAt(event.pos())
             if item is not None and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
-                if self.__key != 0:
-                    if self.__key == Qt.Key.Key_Control:
-                        self.__key = 0
-                        key = item.data(GraphicsItemPin.Data.LABEL_DATA.value)
-                        w = LabelMessageBox(PROJECT.project().configs.get(key, ""), self.window())
-                        if w.exec():
-                            PROJECT.project().configs.set(key, w.labelLineEdit.text())
-                else:
+                if isinstance(item, GraphicsItemPin):
                     name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
-                    function: str = PROJECT.project().configs.get(item.data(GraphicsItemPin.Data.FUNCTION_DATA.value),
-                                                                  "")
+                    functionKey = item.data(GraphicsItemPin.Data.FUNCTION_DATA.value)
+                    function: str = PROJECT.project().configs.get(functionKey, "None")
                     seqs = function.split('-')
                     if len(seqs) == 2:
                         SIGNAL_BUS.gridPropertyIpTriggered.emit(seqs[0], name)
                     else:
                         logger.error(f"Function name error, {name}:{function}")
+                else:
+                    logger.debug(f"click graphics item: {item}")
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
@@ -127,23 +120,11 @@ class GraphicsViewPanZoom(QGraphicsView):
             self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
 
     def wheelEvent(self, event: QWheelEvent):
-        # super().wheelEvent(event)
         scroll_amount = event.angleDelta()
         if scroll_amount.y() > 0:
             self.zoomIn(6)
         else:
             self.zoomOut(6)
-
-    # def mouseDoubleClickEvent(self, event: QMouseEvent):
-    #     super().mouseDoubleClickEvent(event)
-    #     if event.button() & Qt.MouseButton.LeftButton:
-    #         item = self.itemAt(event.pos())
-    #         if item != None and item.flags():
-    #             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
-    #                 key = item.data(GraphicsItemPin.Data.LABEL_KEY.value)
-    #                 w = LabelMessageBox(PROJECT.config(key, ""), self.window())
-    #                 if w.exec():
-    #                     PROJECT.setConfig(key, w.lineEdit_label.text())
 
     def contextMenuEvent(self, event: QContextMenuEvent):
         super().contextMenuEvent(event)
@@ -159,14 +140,6 @@ class GraphicsViewPanZoom(QGraphicsView):
         xHeight = event.size().height() - event.oldSize().height()
         if xHeight != 0:
             self.rescale()
-
-    def keyPressEvent(self, event: QKeyEvent):
-        super().keyPressEvent(event)
-        self.__key = event.key()
-
-    def keyReleaseEvent(self, event: QKeyEvent):
-        super().keyReleaseEvent(event)
-        self.__key = 0
 
     def zoomIn(self, value: int):
         self.SCALE += value
