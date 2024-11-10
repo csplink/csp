@@ -84,7 +84,7 @@ class GridModeIoModel(QAbstractTableModel):
         elif role == Qt.ItemDataRole.SizeHintRole:  # 13
             return None
         else:
-            print(index, role)
+            logger.warning(index, role)
             return None
 
     def flags(self, index: QModelIndex) -> Qt.ItemFlags:
