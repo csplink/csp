@@ -189,7 +189,7 @@ class GridPropertyIpModel(QAbstractTableModel):
             self.modelReset.emit()
             return
 
-        mode = function.split('-')[1]
+        mode = function.split(':')[1]
         mode_cfg = ip.modes[mode]
 
         if self.__pinInstance == instance:

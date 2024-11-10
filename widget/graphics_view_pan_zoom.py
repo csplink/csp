@@ -106,7 +106,7 @@ class GraphicsViewPanZoom(QGraphicsView):
                     name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
                     functionKey = item.data(GraphicsItemPin.Data.FUNCTION_DATA.value)
                     function: str = PROJECT.project().configs.get(functionKey, "None")
-                    seqs = function.split('-')
+                    seqs = function.split(':')
                     if len(seqs) == 2:
                         SIGNAL_BUS.gridPropertyIpTriggered.emit(seqs[0], name)
                     else:

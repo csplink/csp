@@ -277,7 +277,7 @@ class SummaryType:
         if self.__pinIp is None:
             for _, pin in self.pins.items():
                 if len(pin.modes) > 0:
-                    self.__pinIp = pin.modes[0].split('-')[0]
+                    self.__pinIp = pin.modes[0].split(':')[0]
                     break
         return self.__pinIp
 

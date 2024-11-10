@@ -138,9 +138,9 @@ class Mcu2Summary:
                 if ioModes is not None:
                     ioModes = ioModes.split(',')
                     for mode in ioModes:
-                        modes.append(f'{signalName}-{mode}')
+                        modes.append(f'{signalName}:{mode}')
                 else:
-                    signals.append(signalName)
+                    signals.append(signalName.replace('_', ':', 1))
             pinItem = {'position': position, 'type': type_}
             if len(signals) > 0:
                 pinItem['signals'] = signals

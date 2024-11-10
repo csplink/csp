@@ -1729,75 +1729,75 @@ pins:
     position: A2
     type: I/O
     signals:
-    - DCMI_D6
-    - FMC_D28
-    - LTDC_B6
-    - SAI2_SD_A
-    - TIM8_CH2
+    - DCMI:D6
+    - FMC:D28
+    - LTDC:B6
+    - SAI2:SD_A
+    - TIM8:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI5:
     position: A3
     type: I/O
     signals:
-    - DCMI_VSYNC
-    - FMC_NBL3
-    - LTDC_B5
-    - SAI2_SCK_A
-    - TIM8_CH1
+    - DCMI:VSYNC
+    - FMC:NBL3
+    - LTDC:B5
+    - SAI2:SCK_A
+    - TIM8:CH1
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI4:
     position: A4
     type: I/O
     signals:
-    - DCMI_D5
-    - FMC_NBL2
-    - LTDC_B4
-    - SAI2_MCLK_A
-    - TIM8_BKIN
-    - TIM8_BKIN_COMP1
-    - TIM8_BKIN_COMP2
+    - DCMI:D5
+    - FMC:NBL2
+    - LTDC:B4
+    - SAI2:MCLK_A
+    - TIM8:BKIN
+    - TIM8:BKIN_COMP1
+    - TIM8:BKIN_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB5:
     position: A5
     type: I/O
     signals:
-    - DCMI_D10
-    - ETH_PPS_OUT
-    - FDCAN2_RX
-    - FMC_SDCKE1
-    - HRTIM_EEV7
-    - I2C1_SMBA
-    - I2C4_SMBA
-    - I2S1_SDO
-    - I2S3_SDO
-    - SPI1_MOSI
-    - SPI3_MOSI
-    - SPI6_MOSI
-    - TIM17_BKIN
-    - TIM3_CH2
-    - UART5_RX
-    - USB_OTG_HS_ULPI_D7
+    - DCMI:D10
+    - ETH:PPS_OUT
+    - FDCAN2:RX
+    - FMC:SDCKE1
+    - HRTIM:EEV7
+    - I2C1:SMBA
+    - I2C4:SMBA
+    - I2S1:SDO
+    - I2S3:SDO
+    - SPI1:MOSI
+    - SPI3:MOSI
+    - SPI6:MOSI
+    - TIM17:BKIN
+    - TIM3:CH2
+    - UART5:RX
+    - USB:OTG_HS_ULPI_D7
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDDLDO-1:
     position: A6
     type: Power
@@ -1808,159 +1808,159 @@ pins:
     position: A8
     type: I/O
     signals:
-    - LTDC_B6
+    - LTDC:B6
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG10:
     position: A9
     type: I/O
     signals:
-    - DCMI_D2
-    - FMC_NE3
-    - HRTIM_FLT5
-    - I2S1_WS
-    - LTDC_B2
-    - LTDC_G3
-    - SAI2_SD_B
-    - SPI1_NSS
+    - DCMI:D2
+    - FMC:NE3
+    - HRTIM:FLT5
+    - I2S1:WS
+    - LTDC:B2
+    - LTDC:G3
+    - SAI2:SD_B
+    - SPI1:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG9:
     position: A10
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - DCMI_VSYNC
-    - FMC_NCE
-    - FMC_NE2
-    - I2S1_SDI
-    - QUADSPI_BK2_IO2
-    - SAI2_FS_B
-    - SPDIFRX1_IN3
-    - SPI1_MISO
-    - USART6_RX
+    - DAC1:EXTI9
+    - DCMI:VSYNC
+    - FMC:NCE
+    - FMC:NE2
+    - I2S1:SDI
+    - QUADSPI:BK2_IO2
+    - SAI2:FS_B
+    - SPDIFRX1:IN3
+    - SPI1:MISO
+    - USART6:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD5:
     position: A11
     type: I/O
     signals:
-    - FMC_NWE
-    - HRTIM_EEV3
-    - USART2_TX
+    - FMC:NWE
+    - HRTIM:EEV3
+    - USART2:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD4:
     position: A12
     type: I/O
     signals:
-    - FMC_NOE
-    - HRTIM_FLT3
-    - SAI3_FS_A
-    - USART2_DE
-    - USART2_RTS
+    - FMC:NOE
+    - HRTIM:FLT3
+    - SAI3:FS_A
+    - USART2:DE
+    - USART2:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC10:
     position: A13
     type: I/O
     signals:
-    - DCMI_D8
-    - DFSDM1_CKIN5
-    - HRTIM_EEV1
-    - I2S3_CK
-    - LTDC_R2
-    - QUADSPI_BK1_IO1
-    - SDMMC1_D2
-    - SPI3_SCK
-    - UART4_TX
-    - USART3_TX
+    - DCMI:D8
+    - DFSDM1:CKIN5
+    - HRTIM:EEV1
+    - I2S3:CK
+    - LTDC:R2
+    - QUADSPI:BK1_IO1
+    - SDMMC1:D2
+    - SPI3:SCK
+    - UART4:TX
+    - USART3:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA15 (JTDI):
     position: A14
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
     - CEC
-    - DEBUG_JTDI
-    - HRTIM_FLT1
-    - I2S1_WS
-    - I2S3_WS
-    - SPI1_NSS
-    - SPI3_NSS
-    - SPI6_NSS
-    - TIM2_CH1
-    - TIM2_ETR
-    - UART4_DE
-    - UART4_RTS
-    - UART7_TX
+    - DEBUG:JTDI
+    - HRTIM:FLT1
+    - I2S1:WS
+    - I2S3:WS
+    - SPI1:NSS
+    - SPI3:NSS
+    - SPI6:NSS
+    - TIM2:CH1
+    - TIM2:ETR
+    - UART4:DE
+    - UART4:RTS
+    - UART7:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI1:
     position: A15
     type: I/O
     signals:
-    - DCMI_D8
-    - FMC_D25
-    - I2S2_CK
-    - LTDC_G6
-    - SPI2_SCK
-    - TIM8_BKIN2
-    - TIM8_BKIN2_COMP1
-    - TIM8_BKIN2_COMP2
+    - DCMI:D8
+    - FMC:D25
+    - I2S2:CK
+    - LTDC:G6
+    - SPI2:SCK
+    - TIM8:BKIN2
+    - TIM8:BKIN2_COMP1
+    - TIM8:BKIN2_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI0:
     position: A16
     type: I/O
     signals:
-    - DCMI_D13
-    - FMC_D24
-    - I2S2_WS
-    - LTDC_G5
-    - SPI2_NSS
-    - TIM5_CH4
+    - DCMI:D13
+    - FMC:D24
+    - I2S2:WS
+    - LTDC:G5
+    - SPI2:NSS
+    - TIM5:CH4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-2:
     position: A17
     type: Power
@@ -1974,56 +1974,56 @@ pins:
     position: B3
     type: I/O
     signals:
-    - DCMI_D7
-    - FMC_D29
-    - LTDC_B7
-    - SAI2_FS_A
-    - TIM8_CH3
+    - DCMI:D7
+    - FMC:D29
+    - LTDC:B7
+    - SAI2:FS_A
+    - TIM8:CH3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE1:
     position: B4
     type: I/O
     signals:
-    - DCMI_D3
-    - FMC_NBL1
-    - HRTIM_SCOUT
-    - LPTIM1_IN2
-    - UART8_TX
+    - DCMI:D3
+    - FMC:NBL1
+    - HRTIM:SCOUT
+    - LPTIM1:IN2
+    - UART8:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB6:
     position: B5
     type: I/O
     signals:
     - CEC
-    - DCMI_D5
-    - DFSDM1_DATIN5
-    - FDCAN2_TX
-    - FMC_SDNE1
-    - HRTIM_EEV8
-    - I2C1_SCL
-    - I2C4_SCL
-    - LPUART1_TX
-    - QUADSPI_BK1_NCS
-    - TIM16_CH1N
-    - TIM4_CH1
-    - UART5_TX
-    - USART1_TX
+    - DCMI:D5
+    - DFSDM1:DATIN5
+    - FDCAN2:TX
+    - FMC:SDNE1
+    - HRTIM:EEV8
+    - I2C1:SCL
+    - I2C4:SCL
+    - LPUART1:TX
+    - QUADSPI:BK1_NCS
+    - TIM16:CH1N
+    - TIM4:CH1
+    - UART5:TX
+    - USART1:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-4:
     position: B6
     type: Power
@@ -2031,341 +2031,341 @@ pins:
     position: B7
     type: I/O
     signals:
-    - DEBUG_JTRST
-    - HRTIM_EEV6
-    - I2S1_SDI
-    - I2S2_WS
-    - I2S3_SDI
-    - SDMMC2_D3
-    - SPI1_MISO
-    - SPI2_NSS
-    - SPI3_MISO
-    - SPI6_MISO
-    - TIM16_BKIN
-    - TIM3_CH1
-    - UART7_TX
+    - DEBUG:JTRST
+    - HRTIM:EEV6
+    - I2S1:SDI
+    - I2S2:WS
+    - I2S3:SDI
+    - SDMMC2:D3
+    - SPI1:MISO
+    - SPI2:NSS
+    - SPI3:MISO
+    - SPI6:MISO
+    - TIM16:BKIN
+    - TIM3:CH1
+    - UART7:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PK4:
     position: B8
     type: I/O
     signals:
-    - LTDC_B5
+    - LTDC:B5
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG11:
     position: B9
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - DCMI_D3
-    - ETH_TX_EN
-    - HRTIM_EEV4
-    - I2S1_CK
-    - LPTIM1_IN2
-    - LTDC_B3
-    - SDMMC2_D2
-    - SPDIFRX1_IN0
-    - SPI1_SCK
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - DCMI:D3
+    - ETH:TX_EN
+    - HRTIM:EEV4
+    - I2S1:CK
+    - LPTIM1:IN2
+    - LTDC:B3
+    - SDMMC2:D2
+    - SPDIFRX1:IN0
+    - SPI1:SCK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ15:
     position: B10
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - LTDC_B3
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - LTDC:B3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD6:
     position: B11
     type: I/O
     signals:
-    - DCMI_D10
-    - DFSDM1_CKIN4
-    - DFSDM1_DATIN1
-    - FMC_NWAIT
-    - I2S3_SDO
-    - LTDC_B2
-    - SAI1_D1
-    - SAI1_SD_A
-    - SAI4_D1
-    - SAI4_SD_A
-    - SDMMC2_CK
-    - SPI3_MOSI
-    - USART2_RX
+    - DCMI:D10
+    - DFSDM1:CKIN4
+    - DFSDM1:DATIN1
+    - FMC:NWAIT
+    - I2S3:SDO
+    - LTDC:B2
+    - SAI1:D1
+    - SAI1:SD_A
+    - SAI4:D1
+    - SAI4:SD_A
+    - SDMMC2:CK
+    - SPI3:MOSI
+    - USART2:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD3:
     position: B12
     type: I/O
     signals:
-    - DCMI_D5
-    - DFSDM1_CKOUT
-    - FMC_CLK
-    - I2S2_CK
-    - LTDC_G7
-    - SPI2_SCK
-    - USART2_CTS
-    - USART2_NSS
+    - DCMI:D5
+    - DFSDM1:CKOUT
+    - FMC:CLK
+    - I2S2:CK
+    - LTDC:G7
+    - SPI2:SCK
+    - USART2:CTS
+    - USART2:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC11:
     position: B13
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - DCMI_D4
-    - DFSDM1_DATIN5
-    - HRTIM_FLT2
-    - I2S3_SDI
-    - QUADSPI_BK2_NCS
-    - SDMMC1_D3
-    - SPI3_MISO
-    - UART4_RX
-    - USART3_RX
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - DCMI:D4
+    - DFSDM1:DATIN5
+    - HRTIM:FLT2
+    - I2S3:SDI
+    - QUADSPI:BK2_NCS
+    - SDMMC1:D3
+    - SPI3:MISO
+    - UART4:RX
+    - USART3:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA14 (JTCK/SWCLK):
     position: B14
     type: I/O
     signals:
-    - DEBUG_JTCK-SWCLK
+    - DEBUG:JTCK-SWCLK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI2:
     position: B15
     type: I/O
     signals:
-    - DCMI_D9
-    - FMC_D26
-    - I2S2_SDI
-    - LTDC_G7
-    - SPI2_MISO
-    - TIM8_CH4
+    - DCMI:D9
+    - FMC:D26
+    - I2S2:SDI
+    - LTDC:G7
+    - SPI2:MISO
+    - TIM8:CH4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH15:
     position: B16
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - DCMI_D11
-    - FMC_D23
-    - LTDC_G4
-    - TIM8_CH3N
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - DCMI:D11
+    - FMC:D23
+    - LTDC:G4
+    - TIM8:CH3N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH14:
     position: B17
     type: I/O
     signals:
-    - DCMI_D4
-    - FDCAN1_RX
-    - FMC_D22
-    - LTDC_G3
-    - TIM8_CH2N
-    - UART4_RX
+    - DCMI:D4
+    - FDCAN1:RX
+    - FMC:D22
+    - LTDC:G3
+    - TIM8:CH2N
+    - UART4:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC15-OSC32_OUT (OSC32_OUT):
     position: C1
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - RCC_OSC32_OUT
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - RCC:OSC32_OUT
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC14-OSC32_IN (OSC32_IN):
     position: C2
     type: I/O
     signals:
-    - RCC_OSC32_IN
+    - RCC:OSC32_IN
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE2:
     position: C3
     type: I/O
     signals:
-    - DEBUG_TRACECLK
-    - ETH_TXD3
-    - FMC_A23
-    - QUADSPI_BK1_IO2
-    - SAI1_CK1
-    - SAI1_MCLK_A
-    - SAI4_CK1
-    - SAI4_MCLK_A
-    - SPI4_SCK
+    - DEBUG:TRACECLK
+    - ETH:TXD3
+    - FMC:A23
+    - QUADSPI:BK1_IO2
+    - SAI1:CK1
+    - SAI1:MCLK_A
+    - SAI4:CK1
+    - SAI4:MCLK_A
+    - SPI4:SCK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE0:
     position: C4
     type: I/O
     signals:
-    - DCMI_D2
-    - FMC_NBL0
-    - HRTIM_SCIN
-    - LPTIM1_ETR
-    - LPTIM2_ETR
-    - SAI2_MCLK_A
-    - TIM4_ETR
-    - UART8_RX
+    - DCMI:D2
+    - FMC:NBL0
+    - HRTIM:SCIN
+    - LPTIM1:ETR
+    - LPTIM2:ETR
+    - SAI2:MCLK_A
+    - TIM4:ETR
+    - UART8:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB7:
     position: C5
     type: I/O
     signals:
-    - DCMI_VSYNC
-    - DFSDM1_CKIN5
-    - FMC_NL
-    - HRTIM_EEV9
-    - I2C1_SDA
-    - I2C4_SDA
-    - LPUART1_RX
-    - PWR_PVD_IN
-    - TIM17_CH1N
-    - TIM4_CH2
-    - USART1_RX
+    - DCMI:VSYNC
+    - DFSDM1:CKIN5
+    - FMC:NL
+    - HRTIM:EEV9
+    - I2C1:SDA
+    - I2C4:SDA
+    - LPUART1:RX
+    - PWR:PVD_IN
+    - TIM17:CH1N
+    - TIM4:CH2
+    - USART1:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB3 (JTDO/TRACESWO):
     position: C6
     type: I/O
     signals:
-    - CRS_SYNC
-    - DEBUG_JTDO-SWO
-    - HRTIM_FLT4
-    - I2S1_CK
-    - I2S3_CK
-    - SDMMC2_D2
-    - SPI1_SCK
-    - SPI3_SCK
-    - SPI6_SCK
-    - TIM2_CH2
-    - UART7_RX
+    - CRS:SYNC
+    - DEBUG:JTDO-SWO
+    - HRTIM:FLT4
+    - I2S1:CK
+    - I2S3:CK
+    - SDMMC2:D2
+    - SPI1:SCK
+    - SPI3:SCK
+    - SPI6:SCK
+    - TIM2:CH2
+    - UART7:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PK6:
     position: C7
     type: I/O
     signals:
-    - LTDC_B7
+    - LTDC:B7
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PK3:
     position: C8
     type: I/O
     signals:
-    - LTDC_B4
+    - LTDC:B4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG12:
     position: C9
     type: I/O
     signals:
-    - ETH_TXD1
-    - FMC_NE4
-    - HRTIM_EEV5
-    - LPTIM1_IN1
-    - LTDC_B1
-    - LTDC_B4
-    - SPDIFRX1_IN1
-    - SPI6_MISO
-    - USART6_DE
-    - USART6_RTS
+    - ETH:TXD1
+    - FMC:NE4
+    - HRTIM:EEV5
+    - LPTIM1:IN1
+    - LTDC:B1
+    - LTDC:B4
+    - SPDIFRX1:IN1
+    - SPI6:MISO
+    - USART6:DE
+    - USART6:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-5:
     position: C10
     type: Power
@@ -2373,38 +2373,38 @@ pins:
     position: C11
     type: I/O
     signals:
-    - DFSDM1_CKIN1
-    - DFSDM1_DATIN4
-    - FMC_NE1
-    - I2S1_SDO
-    - SDMMC2_CMD
-    - SPDIFRX1_IN0
-    - SPI1_MOSI
-    - USART2_CK
+    - DFSDM1:CKIN1
+    - DFSDM1:DATIN4
+    - FMC:NE1
+    - I2S1:SDO
+    - SDMMC2:CMD
+    - SPDIFRX1:IN0
+    - SPI1:MOSI
+    - USART2:CK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC12:
     position: C12
     type: I/O
     signals:
-    - DCMI_D9
-    - DEBUG_TRACED3
-    - HRTIM_EEV2
-    - I2S3_SDO
-    - SDMMC1_CK
-    - SPI3_MOSI
-    - UART5_TX
-    - USART3_CK
+    - DCMI:D9
+    - DEBUG:TRACED3
+    - HRTIM:EEV2
+    - I2S3:SDO
+    - SDMMC1:CK
+    - SPI3:MOSI
+    - UART5:TX
+    - USART3:CK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-6:
     position: C13
     type: Power
@@ -2412,28 +2412,28 @@ pins:
     position: C14
     type: I/O
     signals:
-    - DCMI_D10
-    - FMC_D27
-    - I2S2_SDO
-    - SPI2_MOSI
-    - TIM8_ETR
+    - DCMI:D10
+    - FMC:D27
+    - I2S2:SDO
+    - SPI2:MOSI
+    - TIM8:ETR
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA13 (JTMS/SWDIO):
     position: C15
     type: I/O
     signals:
-    - DEBUG_JTMS-SWDIO
+    - DEBUG:JTMS-SWDIO
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-7:
     position: C16
     type: Power
@@ -2444,284 +2444,284 @@ pins:
     position: D1
     type: I/O
     signals:
-    - DCMI_D6
-    - DEBUG_TRACED2
-    - DFSDM1_CKIN3
-    - FMC_A21
-    - LTDC_G0
-    - SAI1_CK2
-    - SAI1_SCK_A
-    - SAI4_CK2
-    - SAI4_SCK_A
-    - SPI4_MISO
-    - TIM15_CH1
+    - DCMI:D6
+    - DEBUG:TRACED2
+    - DFSDM1:CKIN3
+    - FMC:A21
+    - LTDC:G0
+    - SAI1:CK2
+    - SAI1:SCK_A
+    - SAI4:CK2
+    - SAI4:SCK_A
+    - SPI4:MISO
+    - TIM15:CH1
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE4:
     position: D2
     type: I/O
     signals:
-    - DCMI_D4
-    - DEBUG_TRACED1
-    - DFSDM1_DATIN3
-    - FMC_A20
-    - LTDC_B0
-    - SAI1_D2
-    - SAI1_FS_A
-    - SAI4_D2
-    - SAI4_FS_A
-    - SPI4_NSS
-    - TIM15_CH1N
+    - DCMI:D4
+    - DEBUG:TRACED1
+    - DFSDM1:DATIN3
+    - FMC:A20
+    - LTDC:B0
+    - SAI1:D2
+    - SAI1:FS_A
+    - SAI4:D2
+    - SAI4:FS_A
+    - SPI4:NSS
+    - TIM15:CH1N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE3:
     position: D3
     type: I/O
     signals:
-    - DEBUG_TRACED0
-    - FMC_A19
-    - SAI1_SD_B
-    - SAI4_SD_B
-    - TIM15_BKIN
+    - DEBUG:TRACED0
+    - FMC:A19
+    - SAI1:SD_B
+    - SAI4:SD_B
+    - TIM15:BKIN
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB9:
     position: D4
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - DCMI_D7
-    - DFSDM1_DATIN7
-    - FDCAN1_TX
-    - I2C1_SDA
-    - I2C4_SDA
-    - I2C4_SMBA
-    - I2S2_WS
-    - LTDC_B7
-    - SDMMC1_CDIR
-    - SDMMC1_D5
-    - SDMMC2_D5
-    - SPI2_NSS
-    - TIM17_CH1
-    - TIM4_CH4
-    - UART4_TX
+    - DAC1:EXTI9
+    - DCMI:D7
+    - DFSDM1:DATIN7
+    - FDCAN1:TX
+    - I2C1:SDA
+    - I2C4:SDA
+    - I2C4:SMBA
+    - I2S2:WS
+    - LTDC:B7
+    - SDMMC1:CDIR
+    - SDMMC1:D5
+    - SDMMC2:D5
+    - SPI2:NSS
+    - TIM17:CH1
+    - TIM4:CH4
+    - UART4:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB8:
     position: D5
     type: I/O
     signals:
-    - DCMI_D6
-    - DFSDM1_CKIN7
-    - ETH_TXD3
-    - FDCAN1_RX
-    - I2C1_SCL
-    - I2C4_SCL
-    - LTDC_B6
-    - SDMMC1_CKIN
-    - SDMMC1_D4
-    - SDMMC2_D4
-    - TIM16_CH1
-    - TIM4_CH3
-    - UART4_RX
+    - DCMI:D6
+    - DFSDM1:CKIN7
+    - ETH:TXD3
+    - FDCAN1:RX
+    - I2C1:SCL
+    - I2C4:SCL
+    - LTDC:B6
+    - SDMMC1:CKIN
+    - SDMMC1:D4
+    - SDMMC2:D4
+    - TIM16:CH1
+    - TIM4:CH3
+    - UART4:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG15:
     position: D6
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - DCMI_D13
-    - FMC_SDNCAS
-    - USART6_CTS
-    - USART6_NSS
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - DCMI:D13
+    - FMC:SDNCAS
+    - USART6:CTS
+    - USART6:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PK7:
     position: D7
     type: I/O
     signals:
-    - LTDC_DE
+    - LTDC:DE
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG14:
     position: D8
     type: I/O
     signals:
-    - DEBUG_TRACED1
-    - ETH_TXD1
-    - FMC_A25
-    - LPTIM1_ETR
-    - LTDC_B0
-    - QUADSPI_BK2_IO3
-    - SPI6_MOSI
-    - USART6_TX
+    - DEBUG:TRACED1
+    - ETH:TXD1
+    - FMC:A25
+    - LPTIM1:ETR
+    - LTDC:B0
+    - QUADSPI:BK2_IO3
+    - SPI6:MOSI
+    - USART6:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG13:
     position: D9
     type: I/O
     signals:
-    - DEBUG_TRACED0
-    - ETH_TXD0
-    - FMC_A24
-    - HRTIM_EEV10
-    - LPTIM1_OUT
-    - LTDC_R0
-    - SPI6_SCK
-    - USART6_CTS
-    - USART6_NSS
+    - DEBUG:TRACED0
+    - ETH:TXD0
+    - FMC:A24
+    - HRTIM:EEV10
+    - LPTIM1:OUT
+    - LTDC:R0
+    - SPI6:SCK
+    - USART6:CTS
+    - USART6:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ14:
     position: D10
     type: I/O
     signals:
-    - LTDC_B2
+    - LTDC:B2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ12:
     position: D11
     type: I/O
     signals:
-    - DEBUG_TRGOUT
-    - LTDC_B0
-    - LTDC_G3
+    - DEBUG:TRGOUT
+    - LTDC:B0
+    - LTDC:G3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD2:
     position: D12
     type: I/O
     signals:
-    - DCMI_D11
-    - DEBUG_TRACED2
-    - SDMMC1_CMD
-    - TIM3_ETR
-    - UART5_RX
+    - DCMI:D11
+    - DEBUG:TRACED2
+    - SDMMC1:CMD
+    - TIM3:ETR
+    - UART5:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD0:
     position: D13
     type: I/O
     signals:
-    - DFSDM1_CKIN6
-    - FDCAN1_RX
-    - FMC_D2
-    - FMC_DA2
-    - SAI3_SCK_A
-    - UART4_RX
+    - DFSDM1:CKIN6
+    - FDCAN1:RX
+    - FMC:D2
+    - FMC:DA2
+    - SAI3:SCK_A
+    - UART4:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA10:
     position: D14
     type: I/O
     signals:
-    - DCMI_D1
-    - HRTIM_CHC2
-    - LPUART1_RX
-    - LTDC_B1
-    - LTDC_B4
-    - MDIOS_MDIO
-    - TIM1_CH3
-    - USART1_RX
-    - USB_OTG_FS_ID
+    - DCMI:D1
+    - HRTIM:CHC2
+    - LPUART1:RX
+    - LTDC:B1
+    - LTDC:B4
+    - MDIOS:MDIO
+    - TIM1:CH3
+    - USART1:RX
+    - USB:OTG_FS_ID
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA9:
     position: D15
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - DCMI_D0
-    - ETH_TX_ER
-    - HRTIM_CHC1
-    - I2C3_SMBA
-    - I2S2_CK
-    - LPUART1_TX
-    - LTDC_R5
-    - SPI2_SCK
-    - TIM1_CH2
-    - USART1_TX
-    - USB_OTG_FS_VBUS
+    - DAC1:EXTI9
+    - DCMI:D0
+    - ETH:TX_ER
+    - HRTIM:CHC1
+    - I2C3:SMBA
+    - I2S2:CK
+    - LPUART1:TX
+    - LTDC:R5
+    - SPI2:SCK
+    - TIM1:CH2
+    - USART1:TX
+    - USB:OTG_FS_VBUS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH13:
     position: D16
     type: I/O
     signals:
-    - FDCAN1_TX
-    - FMC_D21
-    - LTDC_G2
-    - TIM8_CH1N
-    - UART4_TX
+    - FDCAN1:TX
+    - FMC:D21
+    - LTDC:G2
+    - TIM8:CH1N
+    - UART4:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VCAP-2:
     position: D17
     type: Power
@@ -2732,68 +2732,68 @@ pins:
     position: E2
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - FDCAN1_RX
-    - FMC_D30
-    - LTDC_VSYNC
-    - UART4_RX
+    - DAC1:EXTI9
+    - FDCAN1:RX
+    - FMC:D30
+    - LTDC:VSYNC
+    - UART4:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC13:
     position: E3
     type: I/O
     signals:
-    - PWR_WKUP4
-    - RTC_OUT_ALARM
-    - RTC_OUT_CALIB
-    - RTC_TAMP1
-    - RTC_TS
+    - PWR:WKUP4
+    - RTC:OUT_ALARM
+    - RTC:OUT_CALIB
+    - RTC:TAMP1
+    - RTC:TS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI8:
     position: E4
     type: I/O
     signals:
-    - PWR_WKUP3
-    - RTC_TAMP2
+    - PWR:WKUP3
+    - RTC:TAMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE6:
     position: E5
     type: I/O
     signals:
-    - DCMI_D7
-    - DEBUG_TRACED3
-    - FMC_A22
-    - LTDC_G1
-    - SAI1_D1
-    - SAI1_SD_A
-    - SAI2_MCLK_B
-    - SAI4_D1
-    - SAI4_SD_A
-    - SPI4_MOSI
-    - TIM15_CH2
-    - TIM1_BKIN2
-    - TIM1_BKIN2_COMP1
-    - TIM1_BKIN2_COMP2
+    - DCMI:D7
+    - DEBUG:TRACED3
+    - FMC:A22
+    - LTDC:G1
+    - SAI1:D1
+    - SAI1:SD_A
+    - SAI2:MCLK_B
+    - SAI4:D1
+    - SAI4:SD_A
+    - SPI4:MOSI
+    - TIM15:CH2
+    - TIM1:BKIN2
+    - TIM1:BKIN2_COMP1
+    - TIM1:BKIN2_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-1:
     position: E6
     type: Power
@@ -2810,14 +2810,14 @@ pins:
     position: E10
     type: I/O
     signals:
-    - LTDC_B1
-    - LTDC_B4
+    - LTDC:B1
+    - LTDC:B4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-3:
     position: E11
     type: Power
@@ -2825,132 +2825,132 @@ pins:
     position: E12
     type: I/O
     signals:
-    - DFSDM1_DATIN6
-    - FDCAN1_TX
-    - FMC_D3
-    - FMC_DA3
-    - SAI3_SD_A
-    - UART4_TX
+    - DFSDM1:DATIN6
+    - FDCAN1:TX
+    - FMC:D3
+    - FMC:DA3
+    - SAI3:SD_A
+    - UART4:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC8:
     position: E13
     type: I/O
     signals:
-    - DCMI_D2
-    - DEBUG_TRACED1
-    - FMC_NCE
-    - FMC_NE2
-    - HRTIM_CHB1
-    - SDMMC1_D0
-    - SWPMI1_RX
-    - TIM3_CH3
-    - TIM8_CH3
-    - UART5_DE
-    - UART5_RTS
-    - USART6_CK
+    - DCMI:D2
+    - DEBUG:TRACED1
+    - FMC:NCE
+    - FMC:NE2
+    - HRTIM:CHB1
+    - SDMMC1:D0
+    - SWPMI1:RX
+    - TIM3:CH3
+    - TIM8:CH3
+    - UART5:DE
+    - UART5:RTS
+    - USART6:CK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC9:
     position: E14
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - DCMI_D3
-    - I2C3_SDA
-    - I2S_CKIN
-    - LTDC_B2
-    - LTDC_G3
-    - QUADSPI_BK1_IO0
-    - RCC_MCO_2
-    - SDMMC1_D1
-    - SWPMI1_SUSPEND
-    - TIM3_CH4
-    - TIM8_CH4
-    - UART5_CTS
+    - DAC1:EXTI9
+    - DCMI:D3
+    - I2C3:SDA
+    - I2S:CKIN
+    - LTDC:B2
+    - LTDC:G3
+    - QUADSPI:BK1_IO0
+    - RCC:MCO_2
+    - SDMMC1:D1
+    - SWPMI1:SUSPEND
+    - TIM3:CH4
+    - TIM8:CH4
+    - UART5:CTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA8:
     position: E15
     type: I/O
     signals:
-    - HRTIM_CHB2
-    - I2C3_SCL
-    - LTDC_B3
-    - LTDC_R6
-    - RCC_MCO_1
-    - TIM1_CH1
-    - TIM8_BKIN2
-    - TIM8_BKIN2_COMP1
-    - TIM8_BKIN2_COMP2
-    - UART7_RX
-    - USART1_CK
-    - USB_OTG_FS_SOF
+    - HRTIM:CHB2
+    - I2C3:SCL
+    - LTDC:B3
+    - LTDC:R6
+    - RCC:MCO_1
+    - TIM1:CH1
+    - TIM8:BKIN2
+    - TIM8:BKIN2_COMP1
+    - TIM8:BKIN2_COMP2
+    - UART7:RX
+    - USART1:CK
+    - USB:OTG_FS_SOF
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA12:
     position: E16
     type: I/O
     signals:
-    - FDCAN1_TX
-    - HRTIM_CHD2
-    - I2S2_CK
-    - LPUART1_DE
-    - LPUART1_RTS
-    - LTDC_R5
-    - SAI2_FS_B
-    - SPI2_SCK
-    - TIM1_ETR
-    - UART4_TX
-    - USART1_DE
-    - USART1_RTS
-    - USB_OTG_FS_DP
+    - FDCAN1:TX
+    - HRTIM:CHD2
+    - I2S2:CK
+    - LPUART1:DE
+    - LPUART1:RTS
+    - LTDC:R5
+    - SAI2:FS_B
+    - SPI2:SCK
+    - TIM1:ETR
+    - UART4:TX
+    - USART1:DE
+    - USART1:RTS
+    - USB:OTG_FS_DP
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA11:
     position: E17
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - FDCAN1_RX
-    - HRTIM_CHD1
-    - I2S2_WS
-    - LPUART1_CTS
-    - LTDC_R4
-    - SPI2_NSS
-    - TIM1_CH4
-    - UART4_RX
-    - USART1_CTS
-    - USART1_NSS
-    - USB_OTG_FS_DM
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - FDCAN1:RX
+    - HRTIM:CHD1
+    - I2S2:WS
+    - LPUART1:CTS
+    - LTDC:R4
+    - SPI2:NSS
+    - TIM1:CH4
+    - UART4:RX
+    - USART1:CTS
+    - USART1:NSS
+    - USB:OTG_FS_DM
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-8:
     position: F1
     type: Power
@@ -2961,31 +2961,31 @@ pins:
     position: F3
     type: I/O
     signals:
-    - ETH_RX_ER
-    - FMC_D31
-    - LTDC_HSYNC
+    - ETH:RX_ER
+    - FMC:D31
+    - LTDC:HSYNC
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI11:
     position: F4
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - LTDC_G6
-    - PWR_WKUP5
-    - USB_OTG_HS_ULPI_DIR
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - LTDC:G6
+    - PWR:WKUP5
+    - USB:OTG_HS_ULPI_DIR
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-4:
     position: F5
     type: Power
@@ -2993,83 +2993,83 @@ pins:
     position: F13
     type: I/O
     signals:
-    - DCMI_D1
-    - DEBUG_TRGIO
-    - DFSDM1_DATIN3
-    - FMC_NE1
-    - HRTIM_CHA2
-    - I2S3_MCK
-    - LTDC_G6
-    - SDMMC1_D123DIR
-    - SDMMC1_D7
-    - SDMMC2_D7
-    - SWPMI1_TX
-    - TIM3_CH2
-    - TIM8_CH2
-    - USART6_RX
+    - DCMI:D1
+    - DEBUG:TRGIO
+    - DFSDM1:DATIN3
+    - FMC:NE1
+    - HRTIM:CHA2
+    - I2S3:MCK
+    - LTDC:G6
+    - SDMMC1:D123DIR
+    - SDMMC1:D7
+    - SDMMC2:D7
+    - SWPMI1:TX
+    - TIM3:CH2
+    - TIM8:CH2
+    - USART6:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC6:
     position: F14
     type: I/O
     signals:
-    - DCMI_D0
-    - DFSDM1_CKIN3
-    - FMC_NWAIT
-    - HRTIM_CHA1
-    - I2S2_MCK
-    - LTDC_HSYNC
-    - SDMMC1_D0DIR
-    - SDMMC1_D6
-    - SDMMC2_D6
-    - SWPMI1_IO
-    - TIM3_CH1
-    - TIM8_CH1
-    - USART6_TX
+    - DCMI:D0
+    - DFSDM1:CKIN3
+    - FMC:NWAIT
+    - HRTIM:CHA1
+    - I2S2:MCK
+    - LTDC:HSYNC
+    - SDMMC1:D0DIR
+    - SDMMC1:D6
+    - SDMMC2:D6
+    - SWPMI1:IO
+    - TIM3:CH1
+    - TIM8:CH1
+    - USART6:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG8:
     position: F15
     type: I/O
     signals:
-    - ETH_PPS_OUT
-    - FMC_SDCLK
-    - LTDC_G7
-    - SPDIFRX1_IN2
-    - SPI6_NSS
-    - TIM8_ETR
-    - USART6_DE
-    - USART6_RTS
+    - ETH:PPS_OUT
+    - FMC:SDCLK
+    - LTDC:G7
+    - SPDIFRX1:IN2
+    - SPI6:NSS
+    - TIM8:ETR
+    - USART6:DE
+    - USART6:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG7:
     position: F16
     type: I/O
     signals:
-    - DCMI_D13
-    - FMC_INT
-    - HRTIM_CHE2
-    - LTDC_CLK
-    - SAI1_MCLK_A
-    - USART6_CK
+    - DCMI:D13
+    - FMC:INT
+    - HRTIM:CHE2
+    - LTDC:CLK
+    - SAI1:MCLK_A
+    - USART6:CK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD33_USB:
     position: F17
     type: Power
@@ -3077,14 +3077,14 @@ pins:
     position: G1
     type: I/O
     signals:
-    - FMC_A2
-    - I2C2_SMBA
+    - FMC:A2
+    - I2C2:SMBA
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-10:
     position: G2
     type: Power
@@ -3092,26 +3092,26 @@ pins:
     position: G3
     type: I/O
     signals:
-    - FMC_A1
-    - I2C2_SCL
+    - FMC:A1
+    - I2C2:SCL
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF0:
     position: G4
     type: I/O
     signals:
-    - FMC_A0
-    - I2C2_SDA
+    - FMC:A0
+    - I2C2:SDA
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-5:
     position: G5
     type: Power
@@ -3137,31 +3137,31 @@ pins:
     position: G14
     type: I/O
     signals:
-    - FMC_A15
-    - FMC_BA1
-    - TIM1_ETR
+    - FMC:A15
+    - FMC:BA1
+    - TIM1:ETR
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG6:
     position: G15
     type: I/O
     signals:
-    - DCMI_D12
-    - FMC_NE3
-    - HRTIM_CHE1
-    - LTDC_R7
-    - QUADSPI_BK1_NCS
-    - TIM17_BKIN
+    - DCMI:D12
+    - FMC:NE3
+    - HRTIM:CHE1
+    - LTDC:R7
+    - QUADSPI:BK1_NCS
+    - TIM17:BKIN
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-16:
     position: G16
     type: Power
@@ -3172,48 +3172,48 @@ pins:
     position: H1
     type: I/O
     signals:
-    - ETH_TX_ER
-    - LTDC_HSYNC
+    - ETH:TX_ER
+    - LTDC:HSYNC
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI13:
     position: H2
     type: I/O
     signals:
-    - LTDC_VSYNC
+    - LTDC:VSYNC
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI14:
     position: H3
     type: I/O
     signals:
-    - LTDC_CLK
+    - LTDC:CLK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF3:
     position: H4
     type: I/O
     signals:
-    - ADC3_INP5
-    - FMC_A3
+    - ADC3:INP5
+    - FMC:A3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-7:
     position: H5
     type: Power
@@ -3239,84 +3239,84 @@ pins:
     position: H14
     type: I/O
     signals:
-    - FMC_A14
-    - FMC_BA0
-    - TIM1_BKIN2
-    - TIM1_BKIN2_COMP1
-    - TIM1_BKIN2_COMP2
+    - FMC:A14
+    - FMC:BA0
+    - TIM1:BKIN2
+    - TIM1:BKIN2_COMP1
+    - TIM1:BKIN2_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG3:
     position: H15
     type: I/O
     signals:
-    - FMC_A13
-    - TIM8_BKIN2
-    - TIM8_BKIN2_COMP1
-    - TIM8_BKIN2_COMP2
+    - FMC:A13
+    - TIM8:BKIN2
+    - TIM8:BKIN2_COMP1
+    - TIM8:BKIN2_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG2:
     position: H16
     type: I/O
     signals:
-    - FMC_A12
-    - TIM8_BKIN
-    - TIM8_BKIN_COMP1
-    - TIM8_BKIN_COMP2
+    - FMC:A12
+    - TIM8:BKIN
+    - TIM8:BKIN_COMP1
+    - TIM8:BKIN_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PK2:
     position: H17
     type: I/O
     signals:
-    - LTDC_G7
-    - TIM1_BKIN
-    - TIM1_BKIN_COMP1
-    - TIM1_BKIN_COMP2
-    - TIM8_BKIN
-    - TIM8_BKIN_COMP1
-    - TIM8_BKIN_COMP2
+    - LTDC:G7
+    - TIM1:BKIN
+    - TIM1:BKIN_COMP1
+    - TIM1:BKIN_COMP2
+    - TIM8:BKIN
+    - TIM8:BKIN_COMP1
+    - TIM8:BKIN_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH1-OSC_OUT (PH1):
     position: J1
     type: I/O
     signals:
-    - RCC_OSC_OUT
+    - RCC:OSC_OUT
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH0-OSC_IN (PH0):
     position: J2
     type: I/O
     signals:
-    - RCC_OSC_IN
+    - RCC:OSC_IN
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-22:
     position: J3
     type: Power
@@ -3324,27 +3324,27 @@ pins:
     position: J4
     type: I/O
     signals:
-    - ADC3_INP4
-    - FMC_A5
+    - ADC3:INP4
+    - FMC:A5
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF4:
     position: J5
     type: I/O
     signals:
-    - ADC3_INN5
-    - ADC3_INP9
-    - FMC_A4
+    - ADC3:INN5
+    - ADC3:INP9
+    - FMC:A4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-23:
     position: J7
     type: Power
@@ -3367,30 +3367,30 @@ pins:
     position: J14
     type: I/O
     signals:
-    - LTDC_G5
-    - SPI5_SCK
-    - TIM1_CH1N
-    - TIM8_CH3
+    - LTDC:G5
+    - SPI5:SCK
+    - TIM1:CH1N
+    - TIM8:CH3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PK1:
     position: J15
     type: I/O
     signals:
-    - LTDC_G6
-    - SPI5_NSS
-    - TIM1_CH1
-    - TIM8_CH3N
+    - LTDC:G6
+    - SPI5:NSS
+    - TIM1:CH1
+    - TIM8:CH3N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-28:
     position: J16
     type: Power
@@ -3404,57 +3404,57 @@ pins:
     position: K2
     type: I/O
     signals:
-    - ADC3_INN4
-    - ADC3_INP8
-    - QUADSPI_BK1_IO3
-    - SAI1_SD_B
-    - SAI4_SD_B
-    - SPI5_NSS
-    - TIM16_CH1
-    - UART7_RX
+    - ADC3:INN4
+    - ADC3:INP8
+    - QUADSPI:BK1_IO3
+    - SAI1:SD_B
+    - SAI4:SD_B
+    - SPI5:NSS
+    - TIM16:CH1
+    - UART7:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF7:
     position: K3
     type: I/O
     signals:
-    - ADC3_INP3
-    - QUADSPI_BK1_IO2
-    - SAI1_MCLK_B
-    - SAI4_MCLK_B
-    - SPI5_SCK
-    - TIM17_CH1
-    - UART7_TX
+    - ADC3:INP3
+    - QUADSPI:BK1_IO2
+    - SAI1:MCLK_B
+    - SAI4:MCLK_B
+    - SPI5:SCK
+    - TIM17:CH1
+    - UART7:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF8:
     position: K4
     type: I/O
     signals:
-    - ADC3_INN3
-    - ADC3_INP7
-    - QUADSPI_BK1_IO0
-    - SAI1_SCK_B
-    - SAI4_SCK_B
-    - SPI5_MISO
-    - TIM13_CH1
-    - TIM16_CH1N
-    - UART7_DE
-    - UART7_RTS
+    - ADC3:INN3
+    - ADC3:INP7
+    - QUADSPI:BK1_IO0
+    - SAI1:SCK_B
+    - SAI4:SCK_B
+    - SPI5:MISO
+    - TIM13:CH1
+    - TIM16:CH1N
+    - UART7:DE
+    - UART7:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-10:
     position: K5
     type: Power
@@ -3480,19 +3480,19 @@ pins:
     position: K14
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - LTDC_G4
-    - SPI5_MISO
-    - TIM1_CH2
-    - TIM8_CH2N
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - LTDC:G4
+    - SPI5:MISO
+    - TIM1:CH2
+    - TIM8:CH2N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-35:
     position: K15
     type: Power
@@ -3509,58 +3509,58 @@ pins:
     position: L2
     type: I/O
     signals:
-    - ADC1_INP10
-    - ADC2_INP10
-    - ADC3_INP10
-    - DFSDM1_CKIN0
-    - DFSDM1_DATIN4
-    - FMC_SDNWE
-    - LTDC_R5
-    - SAI2_FS_B
-    - USB_OTG_HS_ULPI_STP
+    - ADC1:INP10
+    - ADC2:INP10
+    - ADC3:INP10
+    - DFSDM1:CKIN0
+    - DFSDM1:DATIN4
+    - FMC:SDNWE
+    - LTDC:R5
+    - SAI2:FS_B
+    - USB:OTG_HS_ULPI_STP
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF10:
     position: L3
     type: I/O
     signals:
-    - ADC3_INN2
-    - ADC3_INP6
-    - DCMI_D11
-    - LTDC_DE
-    - QUADSPI_CLK
-    - SAI1_D3
-    - SAI4_D3
-    - TIM16_BKIN
+    - ADC3:INN2
+    - ADC3:INP6
+    - DCMI:D11
+    - LTDC:DE
+    - QUADSPI:CLK
+    - SAI1:D3
+    - SAI4:D3
+    - TIM16:BKIN
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF9:
     position: L4
     type: I/O
     signals:
-    - ADC3_INP2
-    - DAC1_EXTI9
-    - QUADSPI_BK1_IO1
-    - SAI1_FS_B
-    - SAI4_FS_B
-    - SPI5_MOSI
-    - TIM14_CH1
-    - TIM17_CH1N
-    - UART7_CTS
+    - ADC3:INP2
+    - DAC1:EXTI9
+    - QUADSPI:BK1_IO1
+    - SAI1:FS_B
+    - SAI4:FS_B
+    - SPI5:MOSI
+    - TIM14:CH1
+    - TIM17:CH1N
+    - UART7:CTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-12:
     position: L5
     type: Power
@@ -3586,16 +3586,16 @@ pins:
     position: L14
     type: I/O
     signals:
-    - LTDC_G3
-    - SPI5_MOSI
-    - TIM1_CH2N
-    - TIM8_CH2
+    - LTDC:G3
+    - SPI5:MOSI
+    - TIM1:CH2N
+    - TIM8:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-41:
     position: L15
     type: Power
@@ -3609,82 +3609,82 @@ pins:
     position: M1
     type: MonoIO
     signals:
-    - VREFBUF_OUT
+    - VREFBUF:OUT
   PC1:
     position: M2
     type: I/O
     signals:
-    - ADC1_INN10
-    - ADC1_INP11
-    - ADC2_INN10
-    - ADC2_INP11
-    - ADC3_INN10
-    - ADC3_INP11
-    - DEBUG_TRACED0
-    - DFSDM1_CKIN4
-    - DFSDM1_DATIN0
-    - ETH_MDC
-    - I2S2_SDO
-    - MDIOS_MDC
-    - PWR_WKUP6
-    - RTC_TAMP3
-    - SAI1_D1
-    - SAI1_SD_A
-    - SAI4_D1
-    - SAI4_SD_A
-    - SDMMC2_CK
-    - SPI2_MOSI
+    - ADC1:INN10
+    - ADC1:INP11
+    - ADC2:INN10
+    - ADC2:INP11
+    - ADC3:INN10
+    - ADC3:INP11
+    - DEBUG:TRACED0
+    - DFSDM1:CKIN4
+    - DFSDM1:DATIN0
+    - ETH:MDC
+    - I2S2:SDO
+    - MDIOS:MDC
+    - PWR:WKUP6
+    - RTC:TAMP3
+    - SAI1:D1
+    - SAI1:SD_A
+    - SAI4:D1
+    - SAI4:SD_A
+    - SDMMC2:CK
+    - SPI2:MOSI
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC2:
     position: M3
     type: I/O
     signals:
-    - ADC1_INN11
-    - ADC1_INP12
-    - ADC2_INN11
-    - ADC2_INP12
-    - ADC3_INN11
-    - ADC3_INP12
-    - DFSDM1_CKIN1
-    - DFSDM1_CKOUT
-    - ETH_TXD2
-    - FMC_SDNE0
-    - I2S2_SDI
-    - PWR_CSTOP
-    - SPI2_MISO
-    - USB_OTG_HS_ULPI_DIR
+    - ADC1:INN11
+    - ADC1:INP12
+    - ADC2:INN11
+    - ADC2:INP12
+    - ADC3:INN11
+    - ADC3:INP12
+    - DFSDM1:CKIN1
+    - DFSDM1:CKOUT
+    - ETH:TXD2
+    - FMC:SDNE0
+    - I2S2:SDI
+    - PWR:CSTOP
+    - SPI2:MISO
+    - USB:OTG_HS_ULPI_DIR
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC3:
     position: M4
     type: I/O
     signals:
-    - ADC1_INN12
-    - ADC1_INP13
-    - ADC2_INN12
-    - ADC2_INP13
-    - DFSDM1_DATIN1
-    - ETH_TX_CLK
-    - FMC_SDCKE0
-    - I2S2_SDO
-    - PWR_CSLEEP
-    - SPI2_MOSI
-    - USB_OTG_HS_ULPI_NXT
+    - ADC1:INN12
+    - ADC1:INP13
+    - ADC2:INN12
+    - ADC2:INP13
+    - DFSDM1:DATIN1
+    - ETH:TX_CLK
+    - FMC:SDCKE0
+    - I2S2:SDO
+    - PWR:CSLEEP
+    - SPI2:MOSI
+    - USB:OTG_HS_ULPI_NXT
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-14:
     position: M5
     type: Power
@@ -3695,17 +3695,17 @@ pins:
     position: M14
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - LTDC_G2
-    - TIM1_CH3
-    - TIM8_CH1N
-    - UART8_RX
+    - DAC1:EXTI9
+    - LTDC:G2
+    - TIM1:CH3
+    - TIM8:CH1N
+    - UART8:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-42:
     position: M15
     type: Power
@@ -3722,100 +3722,100 @@ pins:
     position: N2
     type: I/O
     signals:
-    - ADC3_INP13
-    - ETH_CRS
-    - FMC_SDCKE0
-    - LPTIM1_IN2
-    - LTDC_R0
-    - QUADSPI_BK2_IO0
-    - SAI2_SCK_B
+    - ADC3:INP13
+    - ETH:CRS
+    - FMC:SDCKE0
+    - LPTIM1:IN2
+    - LTDC:R0
+    - QUADSPI:BK2_IO0
+    - SAI2:SCK_B
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA2:
     position: N3
     type: I/O
     signals:
-    - ADC1_INP14
-    - ADC2_INP14
-    - ETH_MDIO
-    - LPTIM4_OUT
-    - LTDC_R1
-    - MDIOS_MDIO
-    - PWR_WKUP2
-    - SAI2_SCK_B
-    - TIM15_CH1
-    - TIM2_CH3
-    - TIM5_CH3
-    - USART2_TX
+    - ADC1:INP14
+    - ADC2:INP14
+    - ETH:MDIO
+    - LPTIM4:OUT
+    - LTDC:R1
+    - MDIOS:MDIO
+    - PWR:WKUP2
+    - SAI2:SCK_B
+    - TIM15:CH1
+    - TIM2:CH3
+    - TIM5:CH3
+    - USART2:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA1:
     position: N4
     type: I/O
     signals:
-    - ADC1_INN16
-    - ADC1_INP17
-    - ETH_REF_CLK
-    - ETH_RX_CLK
-    - LPTIM3_OUT
-    - LTDC_R2
-    - QUADSPI_BK1_IO3
-    - SAI2_MCLK_B
-    - TIM15_CH1N
-    - TIM2_CH2
-    - TIM5_CH2
-    - UART4_RX
-    - USART2_DE
-    - USART2_RTS
+    - ADC1:INN16
+    - ADC1:INP17
+    - ETH:REF_CLK
+    - ETH:RX_CLK
+    - LPTIM3:OUT
+    - LTDC:R2
+    - QUADSPI:BK1_IO3
+    - SAI2:MCLK_B
+    - TIM15:CH1N
+    - TIM2:CH2
+    - TIM5:CH2
+    - UART4:RX
+    - USART2:DE
+    - USART2:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA0:
     position: N5
     type: I/O
     signals:
-    - ADC1_INP16
-    - ETH_CRS
-    - PWR_WKUP1
-    - SAI2_SD_B
-    - SDMMC2_CMD
-    - TIM15_BKIN
-    - TIM2_CH1
-    - TIM2_ETR
-    - TIM5_CH1
-    - TIM8_ETR
-    - UART4_TX
-    - USART2_CTS
-    - USART2_NSS
+    - ADC1:INP16
+    - ETH:CRS
+    - PWR:WKUP1
+    - SAI2:SD_B
+    - SDMMC2:CMD
+    - TIM15:BKIN
+    - TIM2:CH1
+    - TIM2:ETR
+    - TIM5:CH1
+    - TIM8:ETR
+    - UART4:TX
+    - USART2:CTS
+    - USART2:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ0:
     position: N6
     type: I/O
     signals:
-    - LTDC_R1
-    - LTDC_R7
+    - LTDC:R1
+    - LTDC:R7
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-16:
     position: N7
     type: Power
@@ -3826,19 +3826,19 @@ pins:
     position: N9
     type: I/O
     signals:
-    - COMP2_INM
-    - DFSDM1_DATIN4
-    - FMC_D7
-    - FMC_DA7
-    - QUADSPI_BK2_IO3
-    - TIM1_CH2N
-    - UART7_CTS
+    - COMP2:INM
+    - DFSDM1:DATIN4
+    - FMC:D7
+    - FMC:DA7
+    - QUADSPI:BK2_IO3
+    - TIM1:CH2N
+    - UART7:CTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-18:
     position: N10
     type: Power
@@ -3852,41 +3852,41 @@ pins:
     position: N13
     type: I/O
     signals:
-    - LTDC_G1
-    - TIM1_CH3N
-    - TIM8_CH1
-    - UART8_TX
+    - LTDC:G1
+    - TIM1:CH3N
+    - TIM8:CH1
+    - UART8:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ7:
     position: N14
     type: I/O
     signals:
-    - DEBUG_TRGIN
-    - LTDC_G0
-    - TIM8_CH2N
+    - DEBUG:TRGIN
+    - LTDC:G0
+    - TIM8:CH2N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ6:
     position: N15
     type: I/O
     signals:
-    - LTDC_R7
-    - TIM8_CH2
+    - LTDC:R7
+    - TIM8:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-43:
     position: N16
     type: Power
@@ -3900,257 +3900,257 @@ pins:
     position: P2
     type: I/O
     signals:
-    - ADC3_INN13
-    - ADC3_INP14
-    - ETH_COL
-    - FMC_SDNE0
-    - LTDC_R1
-    - QUADSPI_BK2_IO1
-    - SAI2_MCLK_B
+    - ADC3:INN13
+    - ADC3:INP14
+    - ETH:COL
+    - FMC:SDNE0
+    - LTDC:R1
+    - QUADSPI:BK2_IO1
+    - SAI2:MCLK_B
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH4:
     position: P3
     type: I/O
     signals:
-    - ADC3_INN14
-    - ADC3_INP15
-    - I2C2_SCL
-    - LTDC_G4
-    - LTDC_G5
-    - USB_OTG_HS_ULPI_NXT
+    - ADC3:INN14
+    - ADC3:INP15
+    - I2C2:SCL
+    - LTDC:G4
+    - LTDC:G5
+    - USB:OTG_HS_ULPI_NXT
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH5:
     position: P4
     type: I/O
     signals:
-    - ADC3_INN15
-    - ADC3_INP16
-    - FMC_SDNWE
-    - I2C2_SDA
-    - SPI5_NSS
+    - ADC3:INN15
+    - ADC3:INP16
+    - FMC:SDNWE
+    - I2C2:SDA
+    - SPI5:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PI15:
     position: P5
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - LTDC_G2
-    - LTDC_R0
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - LTDC:G2
+    - LTDC:R0
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ1:
     position: P6
     type: I/O
     signals:
-    - LTDC_R2
+    - LTDC:R2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF13:
     position: P7
     type: I/O
     signals:
-    - ADC2_INP2
-    - DFSDM1_DATIN6
-    - FMC_A7
-    - I2C4_SMBA
+    - ADC2:INP2
+    - DFSDM1:DATIN6
+    - FMC:A7
+    - I2C4:SMBA
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF14:
     position: P8
     type: I/O
     signals:
-    - ADC2_INN2
-    - ADC2_INP6
-    - DFSDM1_CKIN6
-    - FMC_A8
-    - I2C4_SCL
+    - ADC2:INN2
+    - ADC2:INP6
+    - DFSDM1:CKIN6
+    - FMC:A8
+    - I2C4:SCL
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE9:
     position: P9
     type: I/O
     signals:
-    - COMP2_INP
-    - DAC1_EXTI9
-    - DFSDM1_CKOUT
-    - FMC_D6
-    - FMC_DA6
-    - OPAMP2_VINP
-    - QUADSPI_BK2_IO2
-    - TIM1_CH1
-    - UART7_DE
-    - UART7_RTS
+    - COMP2:INP
+    - DAC1:EXTI9
+    - DFSDM1:CKOUT
+    - FMC:D6
+    - FMC:DA6
+    - OPAMP2:VINP
+    - QUADSPI:BK2_IO2
+    - TIM1:CH1
+    - UART7:DE
+    - UART7:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE11:
     position: P10
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - COMP2_INP
-    - DFSDM1_CKIN4
-    - FMC_D8
-    - FMC_DA8
-    - LTDC_G3
-    - SAI2_SD_B
-    - SPI4_NSS
-    - TIM1_CH2
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - COMP2:INP
+    - DFSDM1:CKIN4
+    - FMC:D8
+    - FMC:DA8
+    - LTDC:G3
+    - SAI2:SD_B
+    - SPI4:NSS
+    - TIM1:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB10:
     position: P11
     type: I/O
     signals:
-    - DFSDM1_DATIN7
-    - ETH_RX_ER
-    - HRTIM_SCOUT
-    - I2C2_SCL
-    - I2S2_CK
-    - LPTIM2_IN1
-    - LTDC_G4
-    - QUADSPI_BK1_NCS
-    - SPI2_SCK
-    - TIM2_CH3
-    - USART3_TX
-    - USB_OTG_HS_ULPI_D3
+    - DFSDM1:DATIN7
+    - ETH:RX_ER
+    - HRTIM:SCOUT
+    - I2C2:SCL
+    - I2S2:CK
+    - LPTIM2:IN1
+    - LTDC:G4
+    - QUADSPI:BK1_NCS
+    - SPI2:SCK
+    - TIM2:CH3
+    - USART3:TX
+    - USB:OTG_HS_ULPI_D3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB11:
     position: P12
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - DFSDM1_CKIN7
-    - ETH_TX_EN
-    - HRTIM_SCIN
-    - I2C2_SDA
-    - LPTIM2_ETR
-    - LTDC_G5
-    - TIM2_CH4
-    - USART3_RX
-    - USB_OTG_HS_ULPI_D4
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - DFSDM1:CKIN7
+    - ETH:TX_EN
+    - HRTIM:SCIN
+    - I2C2:SDA
+    - LPTIM2:ETR
+    - LTDC:G5
+    - TIM2:CH4
+    - USART3:RX
+    - USB:OTG_HS_ULPI_D4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH10:
     position: P13
     type: I/O
     signals:
-    - DCMI_D1
-    - FMC_D18
-    - I2C4_SMBA
-    - LTDC_R4
-    - TIM5_CH1
+    - DCMI:D1
+    - FMC:D18
+    - I2C4:SMBA
+    - LTDC:R4
+    - TIM5:CH1
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH11:
     position: P14
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - DCMI_D2
-    - FMC_D19
-    - I2C4_SCL
-    - LTDC_R5
-    - TIM5_CH2
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - DCMI:D2
+    - FMC:D19
+    - I2C4:SCL
+    - LTDC:R5
+    - TIM5:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD15:
     position: P15
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - FMC_D1
-    - FMC_DA1
-    - SAI3_MCLK_A
-    - TIM4_CH4
-    - UART8_DE
-    - UART8_RTS
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - FMC:D1
+    - FMC:DA1
+    - SAI3:MCLK_A
+    - TIM4:CH4
+    - UART8:DE
+    - UART8:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD14:
     position: P16
     type: I/O
     signals:
-    - FMC_D0
-    - FMC_DA0
-    - SAI3_MCLK_B
-    - TIM4_CH3
-    - UART8_CTS
+    - FMC:D0
+    - FMC:DA0
+    - SAI3:MCLK_B
+    - TIM4:CH3
+    - UART8:CTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VDD-21:
     position: P17
     type: Power
@@ -4158,66 +4158,66 @@ pins:
     position: R1
     type: I/O
     signals:
-    - ADC3_INN1
-    - ADC3_INP0
-    - DFSDM1_CKIN1
-    - DFSDM1_CKOUT
-    - ETH_TXD2
-    - FMC_SDNE0
-    - I2S2_SDI
-    - PWR_CSTOP
-    - SPI2_MISO
-    - USB_OTG_HS_ULPI_DIR
+    - ADC3:INN1
+    - ADC3:INP0
+    - DFSDM1:CKIN1
+    - DFSDM1:CKOUT
+    - ETH:TXD2
+    - FMC:SDNE0
+    - I2S2:SDI
+    - PWR:CSTOP
+    - SPI2:MISO
+    - USB:OTG_HS_ULPI_DIR
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC3_C:
     position: R2
     type: I/O
     signals:
-    - ADC3_INP1
-    - DFSDM1_DATIN1
-    - ETH_TX_CLK
-    - FMC_SDCKE0
-    - I2S2_SDO
-    - PWR_CSLEEP
-    - SPI2_MOSI
-    - USB_OTG_HS_ULPI_NXT
+    - ADC3:INP1
+    - DFSDM1:DATIN1
+    - ETH:TX_CLK
+    - FMC:SDCKE0
+    - I2S2:SDO
+    - PWR:CSLEEP
+    - SPI2:MOSI
+    - USB:OTG_HS_ULPI_NXT
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA6:
     position: R3
     type: I/O
     signals:
-    - ADC1_INP3
-    - ADC2_INP3
-    - DCMI_PIXCLK
-    - I2S1_SDI
-    - LTDC_G2
-    - MDIOS_MDC
-    - SPI1_MISO
-    - SPI6_MISO
-    - TIM13_CH1
-    - TIM1_BKIN
-    - TIM1_BKIN_COMP1
-    - TIM1_BKIN_COMP2
-    - TIM3_CH1
-    - TIM8_BKIN
-    - TIM8_BKIN_COMP1
-    - TIM8_BKIN_COMP2
+    - ADC1:INP3
+    - ADC2:INP3
+    - DCMI:PIXCLK
+    - I2S1:SDI
+    - LTDC:G2
+    - MDIOS:MDC
+    - SPI1:MISO
+    - SPI6:MISO
+    - TIM13:CH1
+    - TIM1:BKIN
+    - TIM1:BKIN_COMP1
+    - TIM1:BKIN_COMP2
+    - TIM3:CH1
+    - TIM8:BKIN
+    - TIM8:BKIN_COMP1
+    - TIM8:BKIN_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-44:
     position: R4
     type: Power
@@ -4225,63 +4225,63 @@ pins:
     position: R5
     type: I/O
     signals:
-    - ADC1_INN3
-    - ADC1_INP7
-    - ADC2_INN3
-    - ADC2_INP7
-    - ETH_CRS_DV
-    - ETH_RX_DV
-    - FMC_SDNWE
-    - I2S1_SDO
-    - OPAMP1_VINM
-    - OPAMP1_VINM1
-    - SPI1_MOSI
-    - SPI6_MOSI
-    - TIM14_CH1
-    - TIM1_CH1N
-    - TIM3_CH2
-    - TIM8_CH1N
+    - ADC1:INN3
+    - ADC1:INP7
+    - ADC2:INN3
+    - ADC2:INP7
+    - ETH:CRS_DV
+    - ETH:RX_DV
+    - FMC:SDNWE
+    - I2S1:SDO
+    - OPAMP1:VINM
+    - OPAMP1:VINM1
+    - SPI1:MOSI
+    - SPI6:MOSI
+    - TIM14:CH1
+    - TIM1:CH1N
+    - TIM3:CH2
+    - TIM8:CH1N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB2:
     position: R6
     type: I/O
     signals:
-    - COMP1_INP
-    - DFSDM1_CKIN1
-    - ETH_TX_ER
-    - I2S3_SDO
-    - QUADSPI_CLK
-    - RTC_OUT_ALARM
-    - RTC_OUT_CALIB
-    - SAI1_D1
-    - SAI1_SD_A
-    - SAI4_D1
-    - SAI4_SD_A
-    - SPI3_MOSI
+    - COMP1:INP
+    - DFSDM1:CKIN1
+    - ETH:TX_ER
+    - I2S3:SDO
+    - QUADSPI:CLK
+    - RTC:OUT_ALARM
+    - RTC:OUT_CALIB
+    - SAI1:D1
+    - SAI1:SD_A
+    - SAI4:D1
+    - SAI4:SD_A
+    - SPI3:MOSI
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF12:
     position: R7
     type: I/O
     signals:
-    - ADC1_INN2
-    - ADC1_INP6
-    - FMC_A6
+    - ADC1:INN2
+    - ADC1:INP6
+    - FMC:A6
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-45:
     position: R8
     type: Power
@@ -4289,360 +4289,360 @@ pins:
     position: R9
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - FMC_A9
-    - I2C4_SDA
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - FMC:A9
+    - I2C4:SDA
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE12:
     position: R10
     type: I/O
     signals:
-    - COMP1_OUT
-    - DFSDM1_DATIN5
-    - FMC_D9
-    - FMC_DA9
-    - LTDC_B4
-    - SAI2_SCK_B
-    - SPI4_SCK
-    - TIM1_CH3N
+    - COMP1:OUT
+    - DFSDM1:DATIN5
+    - FMC:D9
+    - FMC:DA9
+    - LTDC:B4
+    - SAI2:SCK_B
+    - SPI4:SCK
+    - TIM1:CH3N
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE15:
     position: R11
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - FMC_D12
-    - FMC_DA12
-    - LTDC_R7
-    - TIM1_BKIN
-    - TIM1_BKIN_COMP1
-    - TIM1_BKIN_COMP2
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - FMC:D12
+    - FMC:DA12
+    - LTDC:R7
+    - TIM1:BKIN
+    - TIM1:BKIN_COMP1
+    - TIM1:BKIN_COMP2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ5:
     position: R12
     type: I/O
     signals:
-    - LTDC_R6
+    - LTDC:R6
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH9:
     position: R13
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - DCMI_D0
-    - FMC_D17
-    - I2C3_SMBA
-    - LTDC_R3
-    - TIM12_CH2
+    - DAC1:EXTI9
+    - DCMI:D0
+    - FMC:D17
+    - I2C3:SMBA
+    - LTDC:R3
+    - TIM12:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH12:
     position: R14
     type: I/O
     signals:
-    - DCMI_D3
-    - FMC_D20
-    - I2C4_SDA
-    - LTDC_R6
-    - TIM5_CH3
+    - DCMI:D3
+    - FMC:D20
+    - I2C4:SDA
+    - LTDC:R6
+    - TIM5:CH3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD11:
     position: R15
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - FMC_A16
-    - FMC_CLE
-    - I2C4_SMBA
-    - LPTIM2_IN2
-    - QUADSPI_BK1_IO0
-    - SAI2_SD_A
-    - USART3_CTS
-    - USART3_NSS
+    - ADC1:EXTI11
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - FMC:A16
+    - FMC:CLE
+    - I2C4:SMBA
+    - LPTIM2:IN2
+    - QUADSPI:BK1_IO0
+    - SAI2:SD_A
+    - USART3:CTS
+    - USART3:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD12:
     position: R16
     type: I/O
     signals:
-    - FMC_A17
-    - FMC_ALE
-    - I2C4_SCL
-    - LPTIM1_IN1
-    - LPTIM2_IN1
-    - QUADSPI_BK1_IO1
-    - SAI2_FS_A
-    - TIM4_CH1
-    - USART3_DE
-    - USART3_RTS
+    - FMC:A17
+    - FMC:ALE
+    - I2C4:SCL
+    - LPTIM1:IN1
+    - LPTIM2:IN1
+    - QUADSPI:BK1_IO1
+    - SAI2:FS_A
+    - TIM4:CH1
+    - USART3:DE
+    - USART3:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD13:
     position: R17
     type: I/O
     signals:
-    - FMC_A18
-    - I2C4_SDA
-    - LPTIM1_OUT
-    - QUADSPI_BK1_IO3
-    - SAI2_SCK_A
-    - TIM4_CH2
+    - FMC:A18
+    - I2C4:SDA
+    - LPTIM1:OUT
+    - QUADSPI:BK1_IO3
+    - SAI2:SCK_A
+    - TIM4:CH2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA0_C:
     position: T1
     type: I/O
     signals:
-    - ADC1_INN1
-    - ADC1_INP0
-    - ADC2_INN1
-    - ADC2_INP0
-    - ETH_CRS
-    - PWR_WKUP1
-    - SAI2_SD_B
-    - SDMMC2_CMD
-    - TIM15_BKIN
-    - TIM2_CH1
-    - TIM2_ETR
-    - TIM5_CH1
-    - TIM8_ETR
-    - UART4_TX
-    - USART2_CTS
-    - USART2_NSS
+    - ADC1:INN1
+    - ADC1:INP0
+    - ADC2:INN1
+    - ADC2:INP0
+    - ETH:CRS
+    - PWR:WKUP1
+    - SAI2:SD_B
+    - SDMMC2:CMD
+    - TIM15:BKIN
+    - TIM2:CH1
+    - TIM2:ETR
+    - TIM5:CH1
+    - TIM8:ETR
+    - UART4:TX
+    - USART2:CTS
+    - USART2:NSS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA1_C:
     position: T2
     type: I/O
     signals:
-    - ADC1_INP1
-    - ADC2_INP1
-    - ETH_REF_CLK
-    - ETH_RX_CLK
-    - LPTIM3_OUT
-    - LTDC_R2
-    - QUADSPI_BK1_IO3
-    - SAI2_MCLK_B
-    - TIM15_CH1N
-    - TIM2_CH2
-    - TIM5_CH2
-    - UART4_RX
-    - USART2_DE
-    - USART2_RTS
+    - ADC1:INP1
+    - ADC2:INP1
+    - ETH:REF_CLK
+    - ETH:RX_CLK
+    - LPTIM3:OUT
+    - LTDC:R2
+    - QUADSPI:BK1_IO3
+    - SAI2:MCLK_B
+    - TIM15:CH1N
+    - TIM2:CH2
+    - TIM5:CH2
+    - UART4:RX
+    - USART2:DE
+    - USART2:RTS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA5:
     position: T3
     type: I/O
     signals:
-    - ADC1_INN18
-    - ADC1_INP19
-    - ADC2_INN18
-    - ADC2_INP19
-    - DAC1_OUT2
-    - I2S1_CK
-    - LTDC_R4
-    - PWR_NDSTOP2
-    - SPI1_SCK
-    - SPI6_SCK
-    - TIM2_CH1
-    - TIM2_ETR
-    - TIM8_CH1N
-    - USB_OTG_HS_ULPI_CK
+    - ADC1:INN18
+    - ADC1:INP19
+    - ADC2:INN18
+    - ADC2:INP19
+    - DAC1:OUT2
+    - I2S1:CK
+    - LTDC:R4
+    - PWR:NDSTOP2
+    - SPI1:SCK
+    - SPI6:SCK
+    - TIM2:CH1
+    - TIM2:ETR
+    - TIM8:CH1N
+    - USB:OTG_HS_ULPI_CK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC4:
     position: T4
     type: I/O
     signals:
-    - ADC1_INP4
-    - ADC2_INP4
-    - COMP1_INM
-    - DFSDM1_CKIN2
-    - ETH_RXD0
-    - FMC_SDNE0
-    - I2S1_MCK
-    - OPAMP1_VOUT
-    - SPDIFRX1_IN2
+    - ADC1:INP4
+    - ADC2:INP4
+    - COMP1:INM
+    - DFSDM1:CKIN2
+    - ETH:RXD0
+    - FMC:SDNE0
+    - I2S1:MCK
+    - OPAMP1:VOUT
+    - SPDIFRX1:IN2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB1:
     position: T5
     type: I/O
     signals:
-    - ADC1_INP5
-    - ADC2_INP5
-    - COMP1_INM
-    - DFSDM1_DATIN1
-    - ETH_RXD3
-    - LTDC_G0
-    - LTDC_R6
-    - TIM1_CH3N
-    - TIM3_CH4
-    - TIM8_CH3N
-    - USB_OTG_HS_ULPI_D2
+    - ADC1:INP5
+    - ADC2:INP5
+    - COMP1:INM
+    - DFSDM1:DATIN1
+    - ETH:RXD3
+    - LTDC:G0
+    - LTDC:R6
+    - TIM1:CH3N
+    - TIM3:CH4
+    - TIM8:CH3N
+    - USB:OTG_HS_ULPI_D2
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ2:
     position: T6
     type: I/O
     signals:
-    - LTDC_R3
+    - LTDC:R3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PF11:
     position: T7
     type: I/O
     signals:
-    - ADC1_EXTI11
-    - ADC1_INP2
-    - ADC2_EXTI11
-    - ADC3_EXTI11
-    - DCMI_D12
-    - FMC_SDNRAS
-    - SAI2_SD_B
-    - SPI5_MOSI
+    - ADC1:EXTI11
+    - ADC1:INP2
+    - ADC2:EXTI11
+    - ADC3:EXTI11
+    - DCMI:D12
+    - FMC:SDNRAS
+    - SAI2:SD_B
+    - SPI5:MOSI
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG0:
     position: T8
     type: I/O
     signals:
-    - FMC_A10
+    - FMC:A10
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE8:
     position: T9
     type: I/O
     signals:
-    - COMP2_OUT
-    - DFSDM1_CKIN2
-    - FMC_D5
-    - FMC_DA5
-    - OPAMP2_VINM
-    - OPAMP2_VINM0
-    - QUADSPI_BK2_IO1
-    - TIM1_CH1N
-    - UART7_TX
+    - COMP2:OUT
+    - DFSDM1:CKIN2
+    - FMC:D5
+    - FMC:DA5
+    - OPAMP2:VINM
+    - OPAMP2:VINM0
+    - QUADSPI:BK2_IO1
+    - TIM1:CH1N
+    - UART7:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE13:
     position: T10
     type: I/O
     signals:
-    - COMP2_OUT
-    - DFSDM1_CKIN5
-    - FMC_D10
-    - FMC_DA10
-    - LTDC_DE
-    - SAI2_FS_B
-    - SPI4_MISO
-    - TIM1_CH3
+    - COMP2:OUT
+    - DFSDM1:CKIN5
+    - FMC:D10
+    - FMC:DA10
+    - LTDC:DE
+    - SAI2:FS_B
+    - SPI4:MISO
+    - TIM1:CH3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PH6:
     position: T11
     type: I/O
     signals:
-    - DCMI_D8
-    - ETH_RXD2
-    - FMC_SDNE1
-    - I2C2_SMBA
-    - SPI5_SCK
-    - TIM12_CH1
+    - DCMI:D8
+    - ETH:RXD2
+    - FMC:SDNE1
+    - I2C2:SMBA
+    - SPI5:SCK
+    - TIM12:CH1
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-46:
     position: T12
     type: Power
@@ -4650,96 +4650,96 @@ pins:
     position: T13
     type: I/O
     signals:
-    - DCMI_HSYNC
-    - FMC_D16
-    - I2C3_SDA
-    - LTDC_R2
-    - TIM5_ETR
+    - DCMI:HSYNC
+    - FMC:D16
+    - I2C3:SDA
+    - LTDC:R2
+    - TIM5:ETR
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB12:
     position: T14
     type: I/O
     signals:
-    - DFSDM1_DATIN1
-    - ETH_TXD0
-    - FDCAN2_RX
-    - I2C2_SMBA
-    - I2S2_WS
-    - SPI2_NSS
-    - TIM1_BKIN
-    - TIM1_BKIN_COMP1
-    - TIM1_BKIN_COMP2
-    - UART5_RX
-    - USART3_CK
-    - USB_OTG_HS_ID
-    - USB_OTG_HS_ULPI_D5
+    - DFSDM1:DATIN1
+    - ETH:TXD0
+    - FDCAN2:RX
+    - I2C2:SMBA
+    - I2S2:WS
+    - SPI2:NSS
+    - TIM1:BKIN
+    - TIM1:BKIN_COMP1
+    - TIM1:BKIN_COMP2
+    - UART5:RX
+    - USART3:CK
+    - USB:OTG_HS_ID
+    - USB:OTG_HS_ULPI_D5
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB15:
     position: T15
     type: I/O
     signals:
-    - ADC1_EXTI15
-    - ADC2_EXTI15
-    - ADC3_EXTI15
-    - DFSDM1_CKIN2
-    - I2S2_SDO
-    - RTC_REFIN
-    - SDMMC2_D1
-    - SPI2_MOSI
-    - TIM12_CH2
-    - TIM1_CH3N
-    - TIM8_CH3N
-    - UART4_CTS
-    - USART1_RX
-    - USB_OTG_HS_DP
+    - ADC1:EXTI15
+    - ADC2:EXTI15
+    - ADC3:EXTI15
+    - DFSDM1:CKIN2
+    - I2S2:SDO
+    - RTC:REFIN
+    - SDMMC2:D1
+    - SPI2:MOSI
+    - TIM12:CH2
+    - TIM1:CH3N
+    - TIM8:CH3N
+    - UART4:CTS
+    - USART1:RX
+    - USB:OTG_HS_DP
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD10:
     position: T16
     type: I/O
     signals:
-    - DFSDM1_CKOUT
-    - FMC_D15
-    - FMC_DA15
-    - LTDC_B3
-    - SAI3_FS_B
-    - USART3_CK
+    - DFSDM1:CKOUT
+    - FMC:D15
+    - FMC:DA15
+    - LTDC:B3
+    - SAI3:FS_B
+    - USART3:CK
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD9:
     position: T17
     type: I/O
     signals:
-    - DAC1_EXTI9
-    - DFSDM1_DATIN3
-    - FMC_D14
-    - FMC_DA14
-    - SAI3_SD_B
-    - USART3_RX
+    - DAC1:EXTI9
+    - DFSDM1:DATIN3
+    - FMC:D14
+    - FMC:DA14
+    - SAI3:SD_B
+    - USART3:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-47:
     position: U1
     type: Power
@@ -4747,163 +4747,163 @@ pins:
     position: U2
     type: I/O
     signals:
-    - ADC1_INP15
-    - ADC2_INP15
-    - ETH_COL
-    - LPTIM5_OUT
-    - LTDC_B2
-    - LTDC_B5
-    - TIM15_CH2
-    - TIM2_CH4
-    - TIM5_CH4
-    - USART2_RX
-    - USB_OTG_HS_ULPI_D0
+    - ADC1:INP15
+    - ADC2:INP15
+    - ETH:COL
+    - LPTIM5:OUT
+    - LTDC:B2
+    - LTDC:B5
+    - TIM15:CH2
+    - TIM2:CH4
+    - TIM5:CH4
+    - USART2:RX
+    - USB:OTG_HS_ULPI_D0
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PA4:
     position: U3
     type: I/O
     signals:
-    - ADC1_INP18
-    - ADC2_INP18
-    - DAC1_OUT1
-    - DCMI_HSYNC
-    - I2S1_WS
-    - I2S3_WS
-    - LTDC_VSYNC
-    - SPI1_NSS
-    - SPI3_NSS
-    - SPI6_NSS
-    - TIM5_ETR
-    - USART2_CK
-    - USB_OTG_HS_SOF
+    - ADC1:INP18
+    - ADC2:INP18
+    - DAC1:OUT1
+    - DCMI:HSYNC
+    - I2S1:WS
+    - I2S3:WS
+    - LTDC:VSYNC
+    - SPI1:NSS
+    - SPI3:NSS
+    - SPI6:NSS
+    - TIM5:ETR
+    - USART2:CK
+    - USB:OTG_HS_SOF
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PC5:
     position: U4
     type: I/O
     signals:
-    - ADC1_INN4
-    - ADC1_INP8
-    - ADC2_INN4
-    - ADC2_INP8
-    - COMP1_OUT
-    - DFSDM1_DATIN2
-    - ETH_RXD1
-    - FMC_SDCKE0
-    - OPAMP1_VINM
-    - OPAMP1_VINM0
-    - SAI1_D3
-    - SAI4_D3
-    - SPDIFRX1_IN3
+    - ADC1:INN4
+    - ADC1:INP8
+    - ADC2:INN4
+    - ADC2:INP8
+    - COMP1:OUT
+    - DFSDM1:DATIN2
+    - ETH:RXD1
+    - FMC:SDCKE0
+    - OPAMP1:VINM
+    - OPAMP1:VINM0
+    - SAI1:D3
+    - SAI4:D3
+    - SPDIFRX1:IN3
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB0:
     position: U5
     type: I/O
     signals:
-    - ADC1_INN5
-    - ADC1_INP9
-    - ADC2_INN5
-    - ADC2_INP9
-    - COMP1_INP
-    - DFSDM1_CKOUT
-    - ETH_RXD2
-    - LTDC_G1
-    - LTDC_R3
-    - OPAMP1_VINP
-    - TIM1_CH2N
-    - TIM3_CH3
-    - TIM8_CH2N
-    - UART4_CTS
-    - USB_OTG_HS_ULPI_D1
+    - ADC1:INN5
+    - ADC1:INP9
+    - ADC2:INN5
+    - ADC2:INP9
+    - COMP1:INP
+    - DFSDM1:CKOUT
+    - ETH:RXD2
+    - LTDC:G1
+    - LTDC:R3
+    - OPAMP1:VINP
+    - TIM1:CH2N
+    - TIM3:CH3
+    - TIM8:CH2N
+    - UART4:CTS
+    - USB:OTG_HS_ULPI_D1
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ3:
     position: U6
     type: I/O
     signals:
-    - LTDC_R4
+    - LTDC:R4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PJ4:
     position: U7
     type: I/O
     signals:
-    - LTDC_R5
+    - LTDC:R5
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PG1:
     position: U8
     type: I/O
     signals:
-    - FMC_A11
-    - OPAMP2_VINM
-    - OPAMP2_VINM1
+    - FMC:A11
+    - OPAMP2:VINM
+    - OPAMP2:VINM1
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE7:
     position: U9
     type: I/O
     signals:
-    - COMP2_INM
-    - DFSDM1_DATIN2
-    - FMC_D4
-    - FMC_DA4
-    - OPAMP2_VOUT
-    - QUADSPI_BK2_IO0
-    - TIM1_ETR
-    - UART7_RX
+    - COMP2:INM
+    - DFSDM1:DATIN2
+    - FMC:D4
+    - FMC:DA4
+    - OPAMP2:VOUT
+    - QUADSPI:BK2_IO0
+    - TIM1:ETR
+    - UART7:RX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PE14:
     position: U10
     type: I/O
     signals:
-    - FMC_D11
-    - FMC_DA11
-    - LTDC_CLK
-    - SAI2_MCLK_B
-    - SPI4_MOSI
-    - TIM1_CH4
+    - FMC:D11
+    - FMC:DA11
+    - LTDC:CLK
+    - SAI2:MCLK_B
+    - SPI4:MOSI
+    - TIM1:CH4
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VCAP-3:
     position: U11
     type: Power
@@ -4914,78 +4914,78 @@ pins:
     position: U13
     type: I/O
     signals:
-    - DCMI_D9
-    - ETH_RXD3
-    - FMC_SDCKE1
-    - I2C3_SCL
-    - SPI5_MISO
+    - DCMI:D9
+    - ETH:RXD3
+    - FMC:SDCKE1
+    - I2C3:SCL
+    - SPI5:MISO
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB13:
     position: U14
     type: I/O
     signals:
-    - DFSDM1_CKIN1
-    - ETH_TXD1
-    - FDCAN2_TX
-    - I2S2_CK
-    - LPTIM2_OUT
-    - SPI2_SCK
-    - TIM1_CH1N
-    - UART5_TX
-    - USART3_CTS
-    - USART3_NSS
-    - USB_OTG_HS_ULPI_D6
-    - USB_OTG_HS_VBUS
+    - DFSDM1:CKIN1
+    - ETH:TXD1
+    - FDCAN2:TX
+    - I2S2:CK
+    - LPTIM2:OUT
+    - SPI2:SCK
+    - TIM1:CH1N
+    - UART5:TX
+    - USART3:CTS
+    - USART3:NSS
+    - USB:OTG_HS_ULPI_D6
+    - USB:OTG_HS_VBUS
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PB14:
     position: U15
     type: I/O
     signals:
-    - DFSDM1_DATIN2
-    - I2S2_SDI
-    - SDMMC2_D0
-    - SPI2_MISO
-    - TIM12_CH1
-    - TIM1_CH2N
-    - TIM8_CH2N
-    - UART4_DE
-    - UART4_RTS
-    - USART1_TX
-    - USART3_DE
-    - USART3_RTS
-    - USB_OTG_HS_DM
+    - DFSDM1:DATIN2
+    - I2S2:SDI
+    - SDMMC2:D0
+    - SPI2:MISO
+    - TIM12:CH1
+    - TIM1:CH2N
+    - TIM8:CH2N
+    - UART4:DE
+    - UART4:RTS
+    - USART1:TX
+    - USART3:DE
+    - USART3:RTS
+    - USB:OTG_HS_DM
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   PD8:
     position: U16
     type: I/O
     signals:
-    - DFSDM1_CKIN3
-    - FMC_D13
-    - FMC_DA13
-    - SAI3_SCK_B
-    - SPDIFRX1_IN1
-    - USART3_TX
+    - DFSDM1:CKIN3
+    - FMC:D13
+    - FMC:DA13
+    - SAI3:SCK_B
+    - SPDIFRX1:IN1
+    - USART3:TX
     modes:
-    - GPIO-Input
-    - GPIO-Output
-    - GPIO-Analog
-    - GPIO-EVENTOUT
-    - GPIO-EXTI
+    - GPIO:Input
+    - GPIO:Output
+    - GPIO:Analog
+    - GPIO:EVENTOUT
+    - GPIO:EXTI
   VSS-48:
     position: U17
     type: Power

@@ -84,9 +84,9 @@ class SummaryTest(unittest.TestCase):
                     self.assertGreater(len(pin.signals) + len(pin.modes), 0, msg='load failed.')
                     if len(pin.modes) > 0:
                         if pinIp is None:
-                            pinIp = pin.modes[0].split('-')[0]
+                            pinIp = pin.modes[0].split(':')[0]
                         for mode in pin.modes:
-                            self.assertEqual(pinIp, mode.split('-')[0], msg='load failed.')
+                            self.assertEqual(pinIp, mode.split(':')[0], msg='load failed.')
 
     def tearDown(self):
         pass

@@ -24,22 +24,22 @@ configs:
     PC13:
       locked: false
     PC14:
-      function: GPIO-Output
+      function: GPIO:Output
       locked: true
     PE2:
-      function: GPIO-Input
+      function: GPIO:Input
       locked: true
     PE3:
-      function: GPIO-Analog
+      function: GPIO:Analog
       locked: true
     PE4:
-      function: GPIO-Input
+      function: GPIO:Input
       locked: true
     PE5:
-      function: GPIO-Analog
+      function: GPIO:Analog
       locked: true
     PE6:
-      function: GPIO-Output
+      function: GPIO:Output
       locked: true
 gen:
   builder: XMake

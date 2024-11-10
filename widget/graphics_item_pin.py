@@ -274,7 +274,7 @@ class GraphicsItemPin(QGraphicsObject):
         elif keys[-1] == "function":  # update pin function
             self.function = newValue
             if len(newValue) > 0:  # set new function
-                seqs = newValue.split("-")
+                seqs = newValue.split(":")
                 instance = seqs[0]
                 mode = seqs[1]
 
@@ -289,7 +289,7 @@ class GraphicsItemPin(QGraphicsObject):
                     PROJECT.project().configs.set(f"{instance}/{self.name}/{key}", info.default)
                 SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
             elif len(oldValue) > 0:  # newValue = None, so clear old function
-                instance = oldValue.split("-")[0]
+                instance = oldValue.split(":")[0]
                 ip = IP.projectIps().get(instance)
                 if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
