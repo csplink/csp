@@ -23,7 +23,6 @@
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
-additionalProperties: false
 properties:
   name:
     type: string
@@ -48,7 +47,7 @@ properties:
               url:
                 $ref: "#/properties/url"
               type:
-                enum: [ "pdf" ]
+                enum: [pdf]
               description:
                 $ref: "#/properties/illustrate"
               size:
@@ -57,7 +56,7 @@ properties:
               version:
                 type: string
                 pattern: "^(?:v|V)?\\d+(?:\\.\\d+){1,2}$"
-            required: [ "url", "type", "description", "size", "version" ]
+            required: [url, type, description, size, version]
       errata:
         $ref: "#/properties/documents/properties/datasheets"
       references:
@@ -66,10 +65,8 @@ properties:
     type: object
     properties:
       en:
-        type: [ "string" ]
-      zh_CN:
-        type: [ "string", "null" ]
-    required: [ "en", "zh_CN" ]
+        type: [string]
+    required: [en]
   introduction:
     $ref: "#/properties/illustrate"
   modules:
@@ -82,7 +79,6 @@ properties:
         patternProperties:
           "^[A-Za-z0-9_+-]+$":
             type: object
-            additionalProperties: false
             properties:
               description:
                 $ref: "#/properties/illustrate"
@@ -103,13 +99,9 @@ properties:
       en:
         type: string
         pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-      zh_CN:
-        type: [ string, "null" ]
-        pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-    required: [ "en", "zh_CN" ]
+    required: ["en"]
   builder:
     type: object
-    additionalProperties: false
     properties:
       XMake:
         type: object
@@ -122,7 +114,7 @@ properties:
               minLength: 1
       CMake:
         $ref: "#/properties/builder/properties/XMake"
-      MdkArm:
+      MDK-Arm:
         $ref: "#/properties/builder/properties/XMake"
   hals:
     type: array
@@ -139,12 +131,16 @@ properties:
     type: object
     properties:
       defaultHeapSize:
-        type: string
-        pattern: "^0x[0-9A-Fa-f]+$"
+        oneOf:
+          - type: integer
+          - type: string
+            pattern: "^0x[0-9A-Fa-f]+$"
       defaultStackSize:
-        type: string
-        pattern: "^0x[0-9A-Fa-f]+$"
-    required: [ "defaultHeapSize", "defaultStackSize" ]
+        oneOf:
+          - type: integer
+          - type: string
+            pattern: "^0x[0-9A-Fa-f]+$"
+    required: [defaultStackSize]
   pins:
     type: object
     additionalProperties: false
@@ -153,22 +149,22 @@ properties:
         type: object
         properties:
           position:
-            type: [ integer, string ]
+            type: [integer, string]
           type:
-            enum: [ "I/O", "Power", "Reset", "NC", "Boot", "MonoIO" ]
+            enum: [I/O, power, reset, nc, boot, monoIO]
           signals:
             type: array
             items:
               type: string
-              minLength: 1
+              pattern: "^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$"
             minItems: 1
           modes:
             type: array
             items:
               type: string
-              minLength: 1
+              pattern: "^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$"
             minItems: 1
-        required: [ "position", "type" ]
+        required: [position, type]
 required:
   - name
   - clockTree

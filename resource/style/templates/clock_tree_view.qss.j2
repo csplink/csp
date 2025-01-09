@@ -1,27 +1,27 @@
 {#
-# Licensed under the GNU General Public License v. 3 (the "License")
-# You may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.gnu.org/licenses/gpl-3.0.html
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
-#
-# @author      xqyjlj
-# @file        clock_tree_view.qss.j2
-#
-# Change Logs:
-# Date           Author       Notes
-# ------------   ----------   -----------------------------------------------
-# 2024-10-27     xqyjlj       initial version
-#
-#}
+ # Licensed under the GNU General Public License v. 3 (the "License")
+ # You may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     https://www.gnu.org/licenses/gpl-3.0.html
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+ #
+ # @author      xqyjlj
+ # @file        clock_tree_view.qss.j2
+ #
+ # Change Logs:
+ # Date           Author       Notes
+ # ------------   ----------   -----------------------------------------------
+ # 2024-10-27     xqyjlj       initial version
+ #
+ #}
 /**
  * ****************************************************************************
  *  @author      xqyjlj
@@ -51,17 +51,161 @@
  *  2024-10-27     xqyjlj       initial version
  */
 
-QLineEdit {
+QLineEdit#floatWidget,#integerWidget {
 {% if isDarkMode %}
-    color: white;
-    background-color: rgba(255, 255, 255, 0.0605);
+    color: {% if valid %} white {% else %} red {% endif %};
+    background-color: transparent;
 {% else %}
-    color: black;
-    background-color: rgba(255, 255, 255, 0.7);
+    color: {% if valid %} black {% else %} red {% endif %};
+    background-color: transparent;
 {% endif %}
-    border: 1px solid {% if isDarkMode %}rgba(255, 255, 255, 0.5442){% else %}rgba(0, 0, 0, 13){% endif %};
-    border-radius: 5px;
+{% if valid %}
+    border: 0px solid transparent;
+{% else %}
+    border: {{ 1 * multiple }}px solid red;
+{% endif %}
     font: {{ 12 * multiple }}px "Segoe UI", "Microsoft YaHei";
     padding: 0px 10px;
     selection-background-color: --ThemeColorLight1;
+}
+
+QComboBox#enumWidget {
+{% if isDarkMode %}
+    color: white;
+    background-color: transparent;
+{% else %}
+    color: black;
+    background-color: transparent;
+{% endif %}
+    font: {{ 12 * multiple }}px "Segoe UI", "Microsoft YaHei";
+    selection-background-color: transparent
+}
+
+QListWidget#listWidget {
+{% if isDarkMode %}
+    color: white;
+    background-color: rgb(50, 50, 50);
+{% else %}
+    color: black;
+    background-color: rgb(253, 253, 253);
+{% endif %}
+    font: {{ 12 * multiple }}px "Segoe UI", "Microsoft YaHei";
+}
+
+QRadioButton#radioWidget {
+    background-color: transparent;
+{% if isDarkMode %}
+    color: white;
+{% else %}
+    color: black;
+{% endif %}
+}
+
+QRadioButton::indicator#radioWidget {
+    width: {{ width * multiple }}px;
+    height: {{ height * multiple }}px;
+    border-radius: {{ (width * multiple)//2 }}px;
+    background-color: transparent;
+}
+
+QRadioButton::indicator:hover#radioWidget {
+{% if isDarkMode %}
+    background-color: rgba(255, 255, 255, 16);
+{% else %}
+    background-color: rgba(0, 0, 0, 0);
+{% endif %}
+}
+
+QRadioButton::indicator:pressed#radioWidget {
+{% if isDarkMode %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(0, 0, 0),
+            stop:0.5 rgb(0, 0, 0),
+            stop:0.6 rgb(43, 42, 42),
+            stop:1 rgb(43, 42, 42));
+{% else %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 rgb(225, 224, 223),
+            stop:1 rgb(225, 224, 223));
+{% endif %}
+}
+
+QRadioButton::indicator:checked#radioWidget {
+    border: none;
+{% if isDarkMode %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(0, 0, 0),
+            stop:0.5 rgb(0, 0, 0),
+            stop:0.6 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+{% else %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+{% endif %}
+}
+
+QRadioButton::indicator:checked:hover#radioWidget {
+{% if isDarkMode %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(0, 0, 0),
+            stop:0.6 rgb(0, 0, 0),
+            stop:0.7 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+{% else %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.6 rgb(255, 255, 255),
+            stop:0.7 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+{% endif %}
+}
+
+QRadioButton::indicator:checked:pressed#radioWidget {
+{% if isDarkMode %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(0, 0, 0),
+            stop:0.5 rgb(0, 0, 0),
+            stop:0.6 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+{% else %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 --ThemeColorPrimary,
+            stop:1 --ThemeColorPrimary);
+{% endif %}
+}
+
+QRadioButton:disabled#radioWidget {
+{% if isDarkMode %}
+    color: rgba(255, 255, 255, 0.3628);
+{% else %}
+    color: rgba(0, 0, 0, 110);
+{% endif %}
+}
+
+QRadioButton::indicator:disabled#radioWidget {
+    background-color: transparent;
+}
+
+QRadioButton::indicator:disabled:checked#radioWidget {
+    border: none;
+{% if isDarkMode %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(0, 0, 0),
+            stop:0.5 rgb(0, 0, 0),
+            stop:0.6 rgba(255, 255, 255, 0.158),
+            stop:1 rgba(255, 255, 255, 0.158));
+{% else %}
+    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+            stop:0 rgb(255, 255, 255),
+            stop:0.5 rgb(255, 255, 255),
+            stop:0.6 rgba(0, 0, 0, 0.2169),
+            stop:1 rgba(0, 0, 0, 0.2169));
+{% endif %}
 }

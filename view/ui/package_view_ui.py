@@ -29,15 +29,6 @@ class Ui_PackageView(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.packageToolBtnCard = SimpleCardWidget(PackageView)
-        self.packageToolBtnCard.setObjectName(u"packageToolBtnCard")
-        self.packageToolBtnCard.setFrameShape(QFrame.StyledPanel)
-        self.packageToolBtnCard.setFrameShadow(QFrame.Raised)
-        self.packageToolBtnCardVerticalLayout = QVBoxLayout(self.packageToolBtnCard)
-        self.packageToolBtnCardVerticalLayout.setObjectName(u"packageToolBtnCardVerticalLayout")
-
-        self.horizontalLayout.addWidget(self.packageToolBtnCard)
-
         self.packageTreeCard = SimpleCardWidget(PackageView)
         self.packageTreeCard.setObjectName(u"packageTreeCard")
         self.packageTreeCard.setFrameShape(QFrame.StyledPanel)

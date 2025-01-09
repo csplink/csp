@@ -5,17 +5,17 @@ parameters:
       geehy.gpio_level_low:
         comment:
           zh_CN: 低电平
-          en:
+          en: Low
       geehy.gpio_level_high:
         comment:
           zh_CN: 高电平
-          en:
-    displayName:
+          en: High
+    display:
       zh_CN: 电平
-      en:
+      en: Level
     description:
       zh_CN: GPIO-电平
-      en:
+      en: GPIO Output level
     default: geehy.gpio_level_low
     readonly: false
   geehy.gpio_mode_t:
@@ -24,25 +24,25 @@ parameters:
       geehy.gpio_mode_analog:
         comment:
           zh_CN: 模拟模式
-          en:
+          en: Analog mode
       geehy.gpio_mode_input:
         comment:
           zh_CN: 输入模式
-          en:
+          en: Input mode
       geehy.gpio_mode_output:
         comment:
           zh_CN: 输出模式
-          en:
+          en: Output mode
       geehy.gpio_mode_alternate:
         comment:
           zh_CN: 复用模式
-          en:
-    displayName:
+          en: Alternate mode
+    display:
       zh_CN: 模式
-      en:
+      en: mode
     description:
       zh_CN: GPIO-模式
-      en:
+      en: GPIO mode
     default: geehy.gpio_mode_alternate
     readonly: false
   geehy.gpio_output_type_t:
@@ -51,17 +51,17 @@ parameters:
       geehy.gpio_output_pp:
         comment:
           zh_CN: 推挽输出
-          en:
+          en: Output Push Pull
       geehy.gpio_output_od:
         comment:
           zh_CN: 开漏输出
-          en:
-    displayName:
+          en: Output Open Drain
+    display:
       zh_CN: 输出类型
-      en:
+      en: Output Type
     description:
       zh_CN: GPIO-输出类型
-      en:
+      en: GPIO Output Type
     default: geehy.gpio_output_pp
     readonly: false
   geehy.gpio_pull_t:
@@ -70,49 +70,45 @@ parameters:
       geehy.gpio_pull_down:
         comment:
           zh_CN: 下拉
-          en:
+          en: Pull-down
       geehy.gpio_pull_up:
         comment:
           zh_CN: 上拉
-          en:
+          en: Pull-up
       geehy.gpio_pull_no:
         comment:
           zh_CN: 浮空
-          en:
-    displayName:
-      zh_CN: 钳位
-      en:
+          en: No pull-up and no pull-down
+    display:
+      zh_CN: 上拉/下拉
+      en: Pull-up/Pull-down
     description:
-      zh_CN: GPIO-钳位
-      en:
+      zh_CN: GPIO 上拉/下拉
+      en: GPIO Pull-up/Pull-down
     default: geehy.gpio_pull_no
     readonly: false
   geehy.gpio_speed_t:
     type: enum
     values:
-      geehy.gpio_speed_low:
+      geehy.gpio_speed_2mhz:
         comment:
-          zh_CN: 慢速
-          en:
-      geehy.gpio_speed_medium:
+          zh_CN: 2 MHz
+          en: 2 MHz
+      geehy.gpio_speed_10mhz:
         comment:
-          zh_CN: 中速
-          en:
-      geehy.gpio_speed_high:
+          zh_CN: 10 MHz
+          en: 10 MHz
+      geehy.gpio_speed_50mhz:
         comment:
-          zh_CN: 高速
-          en:
-      geehy.gpio_speed_very_high:
-        comment:
-          zh_CN: 超高速
-          en:
-    displayName:
+          zh_CN: 50 MHz
+          en: 50 MHz
+    display:
       zh_CN: 速度
-      en:
+      en: Speed
     description:
       zh_CN: GPIO-速度
-      en:
-    default: geehy.gpio_speed_low
+      en: GPIO Maximum output speed
+    default: geehy.gpio_speed_2mhz
     readonly: false
 modes:
   Input:
@@ -134,10 +130,10 @@ modes:
       default: geehy.gpio_level_low
     geehy.gpio_speed_t:
       values:
-        - geehy.gpio_speed_low
-        - geehy.gpio_speed_medium
-        - geehy.gpio_speed_high
-      default: geehy.gpio_speed_low
+        - geehy.gpio_speed_2mhz
+        - geehy.gpio_speed_10mhz
+        - geehy.gpio_speed_50mhz
+      default: geehy.gpio_speed_2mhz
     geehy.gpio_mode_t:
       values:
         - geehy.gpio_mode_output
@@ -153,17 +149,12 @@ modes:
         - geehy.gpio_mode_analog
       default: geehy.gpio_mode_analog
   EVENTOUT:
-    geehy.gpio_pull_t:
-      values:
-        - geehy.gpio_pull_up
-        - geehy.gpio_pull_down
-      default: geehy.gpio_pull_up
     geehy.gpio_speed_t:
       values:
-        - geehy.gpio_speed_low
-        - geehy.gpio_speed_medium
-        - geehy.gpio_speed_high
-      default: geehy.gpio_speed_low
+        - geehy.gpio_speed_2mhz
+        - geehy.gpio_speed_10mhz
+        - geehy.gpio_speed_50mhz
+      default: geehy.gpio_speed_2mhz
     geehy.gpio_mode_t:
       values:
         - geehy.gpio_mode_alternate
@@ -171,6 +162,7 @@ modes:
     geehy.gpio_output_type_t:
       values:
         - geehy.gpio_output_pp
+        - geehy.gpio_output_od
       default: geehy.gpio_output_pp
   EXTI:
     geehy.gpio_pull_t:

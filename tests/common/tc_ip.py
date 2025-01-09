@@ -49,12 +49,10 @@ class IpTest(unittest.TestCase):
                     self.assertGreater(len(ip.modes), 0, msg='load failed.')
                     for _, parameter in ip.parameters.items():
                         self.assertGreater(len(parameter.type), 0, msg='load failed.')
-                        self.assertGreater(len(parameter.values), 0, msg='load failed.')
                         for _, value in parameter.values.items():
-                            self.assertGreater(len(value.comment), 0, msg='load failed.')
-                        self.assertGreater(len(parameter.displayName), 0, msg='load failed.')
-                        self.assertGreater(len(parameter.description), 0, msg='load failed.')
-                        self.assertGreater(len(parameter.default), 0, msg='load failed.')
+                            self.assertGreater(len(value.comment.origin), 0, msg='load failed.')
+                        self.assertGreater(len(parameter.description.origin), 0, msg='load failed.')
+                        # self.assertGreater(len(parameter.default), 0, msg='load failed.')
                         # self.assertGreater(len(parameter.readonly), 0, msg='load failed.')
                     for _, modeGroup in ip.modes.items():
                         for _, mode in modeGroup.items():

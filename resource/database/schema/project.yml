@@ -23,7 +23,6 @@
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
-additionalProperties: false
 properties:
   version:
     type: string
@@ -45,20 +44,16 @@ properties:
       type: string
   gen:
     type: object
-    additionalProperties: false
     properties:
-      copyHalLibrary:
+      copyLibrary:
         type: boolean
       linker:
         type: object
-        additionalProperties: false
         properties:
           defaultHeapSize:
-            type: string
-            pattern: "^0x[0-9A-Fa-f]+$"
+            type: integer
           defaultStackSize:
-            type: string
-            pattern: "^0x[0-9A-Fa-f]+$"
+            type: integer
       useToolchainsPackage:
         type: boolean
       hal:
@@ -75,4 +70,4 @@ properties:
         type: string
       toolchainsVersion:
         type: string
-required: [ "version", "name", "vendor", "targetChip" ]
+required: [version, name, vendor, targetChip]

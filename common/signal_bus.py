@@ -30,8 +30,8 @@ from PySide6.QtCore import QObject, Signal
 class SignalBus(QObject):
     """ Signal bus """
 
-    gridPropertyIpTriggered = Signal(str, str)
-    gridModeTriggered = Signal(str, str)
+    modeManagerTriggered = Signal(str, str)
+    controlManagerTriggered = Signal(str, str)
     packageUpdated = Signal()
     navigationRequested = Signal(str, str)
 

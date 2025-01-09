@@ -23,25 +23,28 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-10-19     xqyjlj       initial version
 #
+from __future__ import annotations
+
 import os
 from pathlib import Path
 
 import jinja2
-import yaml
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QColor, QPixmap, Qt, QPainter
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
-from PySide6.QtWidgets import QWidget, QGraphicsScene, QGraphicsPixmapItem, QGraphicsProxyWidget, QGraphicsItem
-from qfluentwidgets import isDarkTheme, applyThemeColor, LineEdit
+from PySide6.QtWidgets import (QWidget, QGraphicsScene, QGraphicsPixmapItem, QGraphicsProxyWidget, QGraphicsItem,
+                               QButtonGroup)
+from qfluentwidgets import isDarkTheme, BodyLabel
 
-from common import Icon, SETTINGS, PROJECT, Style, SUMMARY
+from common import Icon, SETTINGS, PROJECT, Style, SUMMARY, IP, CLOCK_TREE
 from tools import Drawio
 from view.ui.clock_tree_view_ui import Ui_ClockTreeView
+from widget import (FloatClockTreeWidget, IntegerClockTreeWidget, EnumClockTreeWidget, RadioClockTreeWidget,
+                    NumberClockTreeWidget)
 
 
 class ClockTreeView(Ui_ClockTreeView, QWidget):
-
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
@@ -53,7 +56,10 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.__svgPath = str(self.__resPath) + ".svg"
         self.__ymlPath = str(self.__resPath) + ".yml"
 
-        self.__drawio = Drawio(self.__svgPath)
+        self.__clockTree = CLOCK_TREE.getClockTree(PROJECT.project().vendor, SUMMARY.projectSummary().clockTree)
+        self.__drawio = Drawio(self.__svgPath, self.__clockTree.i18nOrigin(),
+                               SETTINGS.get(SETTINGS.language).value.name())
+        self.__radioGroup: dict[str, QButtonGroup] = {}
 
         self.zoomInBtn.setIcon(Icon.ZOOM_IN)
         self.zoomResetBtn.setIcon(Icon.REFRESH)
@@ -104,11 +110,9 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.graphicsView.update()
 
     def __addWidget(self):
-        widgetsGeom = self.__drawio.widgets
+        geoms = self.__drawio.widgets
 
-        with open(self.__ymlPath, 'r', encoding='utf-8') as f:
-            config = yaml.load(f.read(), Loader=yaml.FullLoader)
-        widgets = config.get('widgets', {})
+        elements = self.__clockTree.elements
 
         data = {
             "multiple": self.__multiple,
@@ -118,32 +122,72 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         env = jinja2.Environment(loader=jinja2.FileSystemLoader([os.path.dirname(Style.T_CLOCK_TREE_VIEW.path())]),
                                  line_comment_prefix="//")
         template = env.get_template('clock_tree_view.qss.j2')
-        context = template.render(data)
-        context = applyThemeColor(context)
 
-        for id_, geom in widgetsGeom.items():
-            cfg = widgets.get('widgets')
-
-        for id_, cfg in widgets.items():
-            stylesheet = context
-            if cfg.get('widget') is not None:
-                widget = cfg['widget']
-                if widget == 'numberLineBox':
-                    w = LineEdit()
-                    w.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                else:
-                    w = QWidget()
-                    stylesheet = 'QWidget { background-color: rgb(255, 0, 0); }'
-            else:
-                w = QWidget()
-                stylesheet = 'QWidget { background-color: rgb(255, 0, 0); }'
-
-            size = QSize(int(widgetsGeom[id_]['width']), int(widgetsGeom[id_]['height'])) * self.__multiple
-            w.setStyleSheet(stylesheet)
-            w.setFixedSize(size)
-            w.setProperty('config', cfg)
+        widgetGroups = {}
+        for id_, geom in geoms.items():
+            data['width'] = geom.width
+            data['height'] = geom.height
+            widget = None
+            z = -1
+            if id_ in elements:
+                element = elements.get(id_)
+                if element is not None and element.origin is not None and len(element.origin) > 0:
+                    refParameter: str = element.refParameter
+                    z = element.z
+                    seqs = refParameter.split(':')
+                    if len(seqs) == 2:
+                        instance = seqs[0]
+                        name = seqs[1]
+                        ip = IP.projectIps().get(instance)
+                        parameter = ip.parameters.get(name)
+                        if parameter is not None:
+                            type_ = parameter.type
+                            if type_ == 'float':
+                                widget = FloatClockTreeWidget(id_, instance, name, element, parameter, self.__clockTree,
+                                                              template, data)
+                            elif type_ == 'integer':
+                                widget = IntegerClockTreeWidget(id_, instance, name, element, parameter,
+                                                                self.__clockTree, template, data)
+                            elif type_ == 'enum':
+                                widget = EnumClockTreeWidget(id_, instance, name, element, parameter, self.__clockTree,
+                                                             template, data)
+                            elif type_ == 'radio':
+                                if parameter.group not in self.__radioGroup:
+                                    group = QButtonGroup()
+                                    self.__radioGroup[parameter.group] = group
+                                else:
+                                    group = self.__radioGroup[parameter.group]
+                                widget = RadioClockTreeWidget(id_, instance, name, element, parameter, self.__clockTree,
+                                                              template, data)
+                                group.addButton(widget)
+                            if widget is not None:
+                                widgetGroups[id_] = widget
+            if widget is None:  # default use body label, and font is red
+                # noinspection PyTypeChecker
+                widget = BodyLabel(id_)
+                widget.setProperty('unused', True)
+                stylesheet = f'BodyLabel {{font: 12px "Segoe UI", "Microsoft YaHei"; color: red;}}'
+                widget.setStyleSheet(stylesheet)
+            size = QSize(int(geom.width), int(geom.height)) * self.__multiple
+            widget.setFixedSize(size)
+            # w.setProperty('config', element)
             proxy = QGraphicsProxyWidget()
-            proxy.setWidget(w)
+            proxy.setWidget(widget)
             proxy.setCacheMode(QGraphicsItem.CacheMode.ItemCoordinateCache, size)
-            proxy.setPos(widgetsGeom[id_]['x'] * self.__multiple, widgetsGeom[id_]['y'] * self.__multiple)
+            proxy.setPos(geom.x * self.__multiple, geom.y * self.__multiple)
+            if z >= 0:
+                proxy.setZValue(z)
+            elif isinstance(widget, EnumClockTreeWidget):
+                proxy.setZValue(1)
             self.__scene.addItem(proxy)
+
+        for id_, widget in widgetGroups.items():  # init connect
+            widget.binding(widgetGroups)
+
+        for id_, widget in widgetGroups.items():
+            if not (isinstance(widget, NumberClockTreeWidget) and not widget.parameter.readonly):
+                widget.setup()
+
+        for id_, widget in widgetGroups.items():
+            if isinstance(widget, NumberClockTreeWidget) and not widget.parameter.readonly:
+                widget.setup()

@@ -45,9 +45,9 @@ class PackageTest(unittest.TestCase):
         self.assertNotEqual(sc.license, "", msg='failed.')
         self.assertNotEqual(sc.type, "", msg='failed.')
         self.assertNotEqual(sc.vendor, "", msg='failed.')
-        self.assertGreater(len(sc.vendorUrl), 0, msg='install failed.')
-        self.assertGreater(len(sc.description), 0, msg='install failed.')
-        self.assertGreater(len(sc.url), 0, msg='install failed.')
+        self.assertGreater(len(sc.vendorUrl.origin), 0, msg='install failed.')
+        self.assertGreater(len(sc.description.origin), 0, msg='install failed.')
+        self.assertGreater(len(sc.url.origin), 0, msg='install failed.')
         self.assertNotEqual(sc.support, "", msg='failed.')
 
     def test_getPackageDescription(self):

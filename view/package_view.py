@@ -26,13 +26,11 @@
 
 from PySide6.QtCore import Qt, Signal, QItemSelection, QUrl, QPoint, QThread, QObject
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QWidget, QTreeWidgetItem, QVBoxLayout, QHeaderView, QHBoxLayout
-from qfluentwidgets import (TreeWidget, RoundMenu, Action, MessageBox, MessageBoxBase, IndeterminateProgressRing,
-                            TransparentToolButton)
+from PySide6.QtWidgets import QWidget, QTreeWidgetItem, QVBoxLayout, QHBoxLayout, QHeaderView
+from qfluentwidgets import (TreeWidget, RoundMenu, Action, MessageBox, MessageBoxBase, IndeterminateProgressRing)
 
 from common import Style, Icon, PACKAGE, SETTINGS, SIGNAL_BUS
-from dialogs import PackageInstallDialog
-from utils import converters
+from utils import Converters
 from .ui.package_view_ui import Ui_PackageView
 
 
@@ -44,10 +42,8 @@ class PackageInfoWidget(QWidget):
         self.mainLayout = QVBoxLayout(self)
         self.treeWidget = TreeWidget(self)
         self.treeWidget.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        hearItem = QTreeWidgetItem()
-        hearItem.setText(0, self.tr('Property'))
-        hearItem.setText(1, self.tr('Value'))
-        self.treeWidget.setHeaderItem(hearItem)
+        self.treeWidget.header().hide()
+        self.treeWidget.setColumnCount(2)
         self.treeWidget.hide()
         self.mainLayout.addWidget(self.treeWidget)
 
@@ -76,9 +72,9 @@ class PackageInfoWidget(QWidget):
         QTreeWidgetItem(self.treeWidget, [self.tr('License'), pdsc.license])
         QTreeWidgetItem(self.treeWidget, [self.tr('Type'), pdsc.type])
         QTreeWidgetItem(self.treeWidget, [self.tr('Vendor'), pdsc.vendor])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Vendor url'), pdsc.vendorUrl[local]])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Description'), pdsc.description[local]])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Url'), pdsc.url[local]])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Vendor url'), pdsc.vendorUrl.get(local)])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Description'), pdsc.description.get(local)])
+        QTreeWidgetItem(self.treeWidget, [self.tr('Url'), pdsc.url.get(local)])
         QTreeWidgetItem(self.treeWidget, [self.tr('Support'), pdsc.support])
         self.treeWidget.expandAll()
 
@@ -100,7 +96,7 @@ class PackageInfoWidget(QWidget):
     def __on_treeWidget_itemClicked(self, item: QTreeWidgetItem, column: int):
         data: str = item.data(column, Qt.ItemDataRole.DisplayRole)
         if data is not None:
-            if converters.isurl(data):
+            if Converters.isurl(data):
                 QDesktopServices.openUrl(QUrl(data))
 
 
@@ -140,13 +136,6 @@ class PackageView(Ui_PackageView, QWidget):
         self.packageInfoWidget = PackageInfoWidget(self)
         self.packageInfoCardVerticalLayout.addWidget(self.packageInfoWidget)
 
-        self.packageToolBtnCard.setFixedWidth(54)
-        self.installBtn = TransparentToolButton(Icon.INSTALL, self)
-        self.installBtn.setToolTip(self.tr('Install package'))
-        self.installBtn.clicked.connect(self.__on_installBtn_clicked)
-        self.packageToolBtnCardVerticalLayout.setSpacing(15)
-        self.packageToolBtnCardVerticalLayout.addWidget(self.installBtn, 0, Qt.AlignmentFlag.AlignTop)
-
         self.busyMessageBox = MessageBoxBase(self.window())
         ring = IndeterminateProgressRing(self.busyMessageBox)
         ringLayout = QHBoxLayout()
@@ -157,10 +146,6 @@ class PackageView(Ui_PackageView, QWidget):
 
         SIGNAL_BUS.packageUpdated.connect(self.flush)
         Style.PACKAGE_VIEW.apply(self)
-
-    def __on_installBtn_clicked(self):
-        dialog = PackageInstallDialog(self)
-        dialog.exec()
 
     def __updateTree(self):
         package = PACKAGE.index().origin

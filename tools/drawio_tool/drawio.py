@@ -23,75 +23,105 @@
 # ------------   ----------   -----------------------------------------------
 # 2024-10-21     xqyjlj       initial version
 #
-
+import json
 import xml.etree.ElementTree as etree
 
+from loguru import logger
 from packaging.version import Version
 
 
-class MxCellType:
-
-    def __init__(self, element: etree.Element):
-        self.__origin = element
-        self.__id = element.get('id', '')
-        self.__value = element.get('value', '')
-        self.__parent = int(element.get('parent', '0'))
-        self.__vertex = int(element.get('vertex', '0'))
-        self.__edge = int(element.get('edge', '0'))
-
-        self.__shape = []
-        self.__style = {}
-        styles = element.get('style', '').strip(';').split(';')
-        for style in styles:
-            if '=' in style:
-                ss = style.split('=')
-                self.__style[ss[0]] = ss[1]
-            else:
-                self.__shape.append(style)
-
-    @property
-    def origin(self) -> etree.Element:
-        return self.__origin
-
-    @property
-    def id(self) -> str:
-        return self.__id
-
-    @property
-    def value(self) -> str:
-        return self.__value
-
-    @property
-    def shape(self) -> list[str]:
-        return self.__shape
-
-    @property
-    def style(self) -> dict[str, str]:
-        return self.__style
-
-    @property
-    def parent(self) -> int:
-        return self.__parent
-
-    @property
-    def vertex(self) -> int:
-        return self.__vertex
-
-    @property
-    def edge(self) -> int:
-        return self.__edge
-
-
 class Drawio:
+    class MxCellType:
+        def __init__(self, element: etree.Element):
+            self.__origin = element
+            self.__id = element.get('id', '')
+            self.__value = element.get('value', '')
+            self.__parent = int(element.get('parent', '0'))
+            self.__vertex = int(element.get('vertex', '0'))
+            self.__edge = int(element.get('edge', '0'))
 
-    def __init__(self, path: str):
+            self.__shape = []
+            self.__style = {}
+            styles = element.get('style', '').strip(';').split(';')
+            for style in styles:
+                if '=' in style:
+                    ss = style.split('=')
+                    self.__style[ss[0]] = ss[1]
+                else:
+                    self.__shape.append(style)
+
+        @property
+        def origin(self) -> etree.Element:
+            return self.__origin
+
+        @property
+        def id(self) -> str:
+            return self.__id
+
+        @property
+        def value(self) -> str:
+            return self.__value
+
+        @property
+        def shape(self) -> list[str]:
+            return self.__shape
+
+        @property
+        def style(self) -> dict[str, str]:
+            return self.__style
+
+        @property
+        def parent(self) -> int:
+            return self.__parent
+
+        @property
+        def vertex(self) -> int:
+            return self.__vertex
+
+        @property
+        def edge(self) -> int:
+            return self.__edge
+
+    class GeometryType:
+        def __init__(self, x: float, y: float, width: float, height: float):
+            self.__data = {'x': x, 'y': y, 'width': width, 'height': height}
+
+        def __str__(self) -> str:
+            return json.dumps(self.__data, indent=2, ensure_ascii=False)
+
+        @property
+        def origin(self) -> dict:
+            return self.__data
+
+        @property
+        def x(self) -> float:
+            return self.__data['x']
+
+        @property
+        def y(self) -> float:
+            return self.__data['y']
+
+        @property
+        def width(self) -> float:
+            return self.__data['width']
+
+        @property
+        def height(self) -> float:
+            return self.__data['height']
+
+    def __init__(self, path: str, i18n: dict[str, dict[str, str]], local: str):
         self.__lines = {}
-        self.__widgets = {}
+        self.__widgets: dict[str, Drawio.GeometryType] = {}
         self.__texts = {}
         self.__graphics = {}
 
         with open(path, 'r', encoding='utf-8') as f:
             svg = f.read()
+
+        for name, value in i18n.items():
+            i = value.get(local, value.get('en'))
+            if i is not None:
+                svg = svg.replace(name, i)
 
         self.__root = etree.fromstring(svg)
         self.__drawio = etree.fromstring(self.__root.attrib['content'])
@@ -106,15 +136,33 @@ class Drawio:
             mxCell.attrib['id'] = id_
             mxCells.append(mxCell)
         for mxCell in mxCells:
-            cell = MxCellType(mxCell)
+            cell = Drawio.MxCellType(mxCell)
             id_ = mxCell.attrib['id']
             if self.__isWidget(cell):
-                mxGeometry = mxCell.find('mxGeometry')
-                x = float(mxGeometry.attrib['x']) + 1
-                y = float(mxGeometry.attrib['y']) + 1
-                width = float(mxGeometry.attrib['width']) + 1
-                height = float(mxGeometry.attrib['height']) + 1
-                self.__widgets[id_] = {'x': x, 'y': y, 'width': width, 'height': height}
+                element = self.__findSvgElement(id_)
+                ellipses = element.findall('ns:g/ns:g/ns:ellipse', self.__namespace)
+                rects = element.findall('ns:g/ns:g/ns:rect', self.__namespace)
+                if len(ellipses) == 1:
+                    ellipse = ellipses[0]
+                    x = float(ellipse.attrib['cx']) - float(ellipse.attrib['rx']) + 0.5
+                    y = float(ellipse.attrib['cy']) - float(ellipse.attrib['ry']) + 0.5
+                    width = float(ellipse.attrib['rx']) * 2
+                    height = float(ellipse.attrib['ry']) * 2
+                elif len(rects) == 1:
+                    rect = rects[0]
+                    x = float(rect.attrib['x'])
+                    y = float(rect.attrib['y'])
+                    width = float(rect.attrib['width']) + 1
+                    height = float(rect.attrib['height']) + 1
+                else:
+                    logger.warning(
+                        f'There was a problem parsing the svg file {path!r}, the default drawio configuration will be used. id {id_!r}')
+                    mxGeometry = mxCell.find('mxGeometry')
+                    x = float(mxGeometry.attrib['x']) + 1
+                    y = float(mxGeometry.attrib['y']) + 1
+                    width = float(mxGeometry.attrib['width']) + 1
+                    height = float(mxGeometry.attrib['height']) + 1
+                self.__widgets[id_] = Drawio.GeometryType(x=x, y=y, width=width, height=height)
             # elif self.__isLine(mxCell.attrib):
             #     self.__lines.append(id_)
             # elif self.__isText(mxCell.attrib):
@@ -129,7 +177,7 @@ class Drawio:
 
         for id_, item in self.__widgets.items():
             element = self.__findSvgElement(id_)
-            self.__updateGraphicsElement(element, id_, 'rgb(0, 255, 0)')
+            self.__updateGraphicsElement(element, id_, 'rgb(0, 0, 0)')
 
     @property
     def svg(self) -> bytes:
@@ -140,7 +188,7 @@ class Drawio:
         return self.__lines
 
     @property
-    def widgets(self) -> dict[str, dict[str, float]]:
+    def widgets(self) -> dict[str, GeometryType]:
         return self.__widgets
 
     def __isWidget(self, mxCell: MxCellType) -> bool:

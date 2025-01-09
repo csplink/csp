@@ -27,8 +27,8 @@
 import re
 
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import QWidget, QGraphicsScene, QMessageBox
-from qfluentwidgets import (isDarkTheme)
+from PySide6.QtWidgets import QWidget, QGraphicsScene
+from qfluentwidgets import (isDarkTheme, MessageBox)
 
 from common import Style, Icon, PROJECT, SETTINGS, SUMMARY
 from widget import LQFP
@@ -66,9 +66,15 @@ class SocView(Ui_SocView, QWidget):
                 items = LQFP().getItems(PROJECT.project().vendor, PROJECT.project().targetChip)
             else:
                 items = None
-                QMessageBox.critical(self, self.tr('critical'),
-                                     self.tr(
-                                         f'The package "{SUMMARY.projectSummary().package}" is not supported at this time'))
+                title = self.tr('Error')
+                content = self.tr('The package {!r} is not supported at this time.'.format(
+                    SUMMARY.projectSummary().package))
+                message = MessageBox(title, content, self.window())
+                message.setContentCopyable(True)
+                message.cancelButton.setDisabled(True)
+                message.raise_()
+                message.exec()
+
             if items is not None:
                 for item in items:
                     self.__scene.addItem(item)

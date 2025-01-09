@@ -36,6 +36,7 @@ import yaml
 from loguru import logger
 from py7zr import callbacks as py7zr_callbacks
 
+from .i18n_type import I18nType
 from .settings import SETTINGS
 
 
@@ -89,7 +90,11 @@ class PackageDescriptionType:
     # ------------------------------------------------------------------------------------------------------------------
     def __init__(self, data: dict):
         self.__data = data
+
         self.__author = None
+        self.__vendorUrl = None
+        self.__description = None
+        self.__url = None
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -125,16 +130,22 @@ class PackageDescriptionType:
         return self.__data.get("vendor", "")
 
     @property
-    def vendorUrl(self) -> dict[str, str]:
-        return self.__data.get("vendorUrl", {})
+    def vendorUrl(self) -> I18nType:
+        if self.__vendorUrl is None:
+            self.__vendorUrl = I18nType(self.__data.get("vendorUrl", {}))
+        return self.__vendorUrl
 
     @property
-    def description(self) -> dict[str, str]:
-        return self.__data.get("description", {})
+    def description(self) -> I18nType:
+        if self.__description is None:
+            self.__description = I18nType(self.__data.get("description", {}))
+        return self.__description
 
     @property
-    def url(self) -> dict[str, str]:
-        return self.__data.get("url", {})
+    def url(self) -> I18nType:
+        if self.__url is None:
+            self.__url = I18nType(self.__data.get("url", {}))
+        return self.__url
 
     @property
     def support(self) -> str:

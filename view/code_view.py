@@ -29,7 +29,7 @@ from PySide6.QtWidgets import QWidget, QTreeWidgetItem
 from qfluentwidgets import (FlowLayout, MessageBox)
 
 from common import Style, Icon, Coder, PROJECT, SIGNAL_BUS
-from utils import converters
+from utils import Converters
 from widget import CHighlighter
 from .ui.code_view_ui import Ui_CodeView
 
@@ -73,7 +73,7 @@ class CodeView(Ui_CodeView, QWidget):
 
         coder = Coder()
         self.codes = coder.dump()
-        tree = converters.paths2dict(list(self.codes.keys()))
+        tree = Converters.paths2dict(list(self.codes.keys()))
 
         def traverseTree(treeItem: dict, topItem: QTreeWidgetItem, path: str):
             for k, v in treeItem.items():
@@ -90,12 +90,16 @@ class CodeView(Ui_CodeView, QWidget):
                     elif k.lower().endswith(".c"):
                         item.setIcon(0, Icon.M_C.qicon())
 
-        for key, di in tree.get("core", {}).items():
+        for key, di in tree.items():
             topLevelItem = QTreeWidgetItem([key])
-            topLevelItem.setIcon(0, Icon.M_FOLDER_LIB.qicon())
             topLevelItem.setExpanded(True)
             self.fileTree.addTopLevelItem(topLevelItem)
-            traverseTree(di, topLevelItem, f"core/{key}")
+            if isinstance(di, dict):
+                topLevelItem.setIcon(0, Icon.M_FOLDER_LIB.qicon())
+                traverseTree(di, topLevelItem, key)
+            else:
+                topLevelItem.setIcon(0, Icon.M_FILE.qicon())
+                topLevelItem.setData(0, Qt.ItemDataRole.StatusTipRole, key)
             topLevelItem.setExpanded(True)
 
     def __on_fileTree_selectionChanged(self, selected: QItemSelection, _: QItemSelection):

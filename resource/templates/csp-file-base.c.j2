@@ -1,99 +1,98 @@
 {#
-# Licensed under the GNU General Public License v. 3 (the "License")
-# You may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://www.gnu.org/licenses/gpl-3.0.html
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
-#
-# @author      xqyjlj
-# @file        csp-file-base.c.j2
-#
-# Change Logs:
-# Date           Author       Notes
-# ------------   ----------   -----------------------------------------------
-# 2024-07-10     xqyjlj       initial version
-#
-#}
+ # Licensed under the GNU General Public License v. 3 (the "License")
+ # You may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     https://www.gnu.org/licenses/gpl-3.0.html
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+ #
+ # @author      xqyjlj
+ # @file        csp-file-base.c.j2
+ #
+ # Change Logs:
+ # Date           Author       Notes
+ # ------------   ----------   -----------------------------------------------
+ # 2024-07-10     xqyjlj       initial version
+ #
+ #}
 /**
  * *****************************************************************************
- *  @author:            {{author}}
- *  @file:              {{file}}
- *  @brief:             {{brief}}
- *  @version:           {{version}}
- *  @hal:               {{project.vendor}}.{{project.gen.hal}}
- *  @halVersion:        {{project.gen.halVersion}}
- *  @project:           {{project.name}}
- *  @targetChip:        {{project.targetChip}}
- *  @time:              {{time}}
+ *  @author:            {{ CSP.author }}
+ *  @file:              {{ CSP.file }}
+ *  @brief:             {{ CSP.brief }}
+ *  @version:           {{ CSP.version }}
+ *  @hal:               {{ CSP.project.vendor }}.{{ CSP.project.gen.hal }}@{{ CSP.project.gen.halVersion }}
+ *  @project:           {{ CSP.project.name }}
+ *  @targetChip:        {{ CSP.project.targetChip }}
+ *  @time:              {{ CSP.time }}
  *
  * *****************************************************************************
  *  @attention
  *
- *  Copyright (C) {{year}} csplink software.
+ *  Copyright (C) {{ CSP.year }} csplink software.
  *  All rights reserved.
  *
  * *****************************************************************************
  */
 
 /**< user code begin header, do not change this comment! */
-{{userCode["header"]}}
+{{ CSP.userCode["header"] }}
 /**> user code end header, do not change this comment! */
 
 /********************************** includes **********************************/
 {%- block includes %}
 {%- endblock %}
 /**< user code begin includes, do not change this comment! */
-{{userCode["includes"]}}
+{{ CSP.userCode["includes"] }}
 /**> user code end includes, do not change this comment! */
 
 /*********************************** typedef **********************************/
 {%- block typedef %}
 {%- endblock %}
 /**< user code begin typedef, do not change this comment! */
-{{userCode["typedef"]}}
+{{ CSP.userCode["typedef"] }}
 /**> user code end typedef, do not change this comment! */
 
 /*********************************** define ***********************************/
 {%- block define %}
 {%- endblock %}
 /**< user code begin define, do not change this comment! */
-{{userCode["define"]}}
+{{ CSP.userCode["define"] }}
 /**> user code end define, do not change this comment! */
 
-/************************************ macro ***********************************/
-{%- block macro %}
+/*********************************** extern ***********************************/
+{%- block extern %}
 {%- endblock %}
-/**< user code begin macro, do not change this comment! */
-{{userCode["macro"]}}
-/**> user code end macro, do not change this comment! */
+/**< user code begin extern, do not change this comment! */
+{{ CSP.userCode["extern"] }}
+/**> user code end extern, do not change this comment! */
 
-/****************************** extern variables ******************************/
-{%- block extern_variables %}
+/********************************** variables *********************************/
+{%- block variables %}
 {%- endblock %}
-/**< user code begin extern variables, do not change this comment! */
-{{userCode["extern variables"]}}
-/**> user code end extern variables, do not change this comment! */
+/**< user code begin variables, do not change this comment! */
+{{ CSP.userCode["variables"] }}
+/**> user code end variables, do not change this comment! */
 
-/**************************** functions prototypes ****************************/
+/********************************** functions *********************************/
 {%- block functions_prototypes %}
 {%- endblock %}
 /**< user code begin functions prototypes, do not change this comment! */
-{{userCode["functions prototypes"]}}
+{{ CSP.userCode["functions prototypes"] }}
 /**> user code end functions prototypes, do not change this comment! */
 
 /**< user code begin 0, do not change this comment! */
-{{userCode["0"]}}
+{{ CSP.userCode["0"] }}
 /**> user code end 0, do not change this comment! */
 {%- block function_body %}
 {%- endblock %}
 /**< user code begin 1, do not change this comment! */
-{{userCode["1"]}}
+{{ CSP.userCode["1"] }}
 /**> user code end 1, do not change this comment! */

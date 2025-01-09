@@ -27,11 +27,11 @@
 import attr
 from PySide6.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
 from PySide6.QtGui import QFont, QBrush, QColor
-from PySide6.QtWidgets import (QWidget)
+from PySide6.QtWidgets import (QWidget, QHBoxLayout)
 from loguru import logger
+from qfluentwidgets import TreeView
 
 from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP
-from .ui.tree_module_ui import Ui_TreeModule
 
 
 def isPrivateModelOrNone(_, attribute, value):
@@ -153,17 +153,23 @@ class TreeModuleModel(QAbstractItemModel):
         for group, moduleGroup in SUMMARY.projectSummary().modules.items():
             model = PModel(group, "", [], self.__model)
             for name, module in moduleGroup.items():
-                model_child = PModel(name, module.description.get(locale, module.description.get('en')), [], model)
+                model_child = PModel(name, module.description.get(locale), [], model)
                 model.append(model_child)
             self.__model.append(model)
         self.modelReset.emit()
 
 
-class TreeModule(Ui_TreeModule, QWidget):
+class TreeModule(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
+
+        # ----------------------------------------------------------------------
+        self.hLayout = QHBoxLayout(self)
+        self.hLayout.setContentsMargins(0, 0, 0, 0)
+        self.treeView_modules = TreeView(self)
+        self.hLayout.addWidget(self.treeView_modules)
+        # ----------------------------------------------------------------------
 
         self.treeView_modules.header().hide()
 
@@ -184,4 +190,8 @@ class TreeModule(Ui_TreeModule, QWidget):
                 if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
                     return
-                SIGNAL_BUS.gridModeTriggered.emit(instance, 'grid_mode_io')
+                if instance == SUMMARY.projectSummary().pinIp():
+                    SIGNAL_BUS.controlManagerTriggered.emit(instance, 'widget_control_io_manager')
+                else:
+                    SIGNAL_BUS.controlManagerTriggered.emit(instance, 'widget_control_ip_manager')
+                    SIGNAL_BUS.modeManagerTriggered.emit(instance, '')

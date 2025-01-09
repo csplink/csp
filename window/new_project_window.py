@@ -26,15 +26,83 @@
 
 import os
 
-from PySide6.QtCore import Qt, QSortFilterProxyModel, QObject, QEvent, QUrl, QItemSelection
+from PySide6.QtCore import Qt, QSortFilterProxyModel, QObject, QEvent, QUrl, QItemSelection, Signal
 from PySide6.QtGui import QIcon, QStandardItem, QStandardItemModel, QDesktopServices, QPixmap
 from PySide6.QtWidgets import (QApplication, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy, QAbstractItemView,
-                               QHeaderView)
+                               QHeaderView, QFileDialog)
 from qfluentwidgets import (PushButton, FluentIconBase, MSFluentWindow, TextBrowser, BodyLabel, PixmapLabel,
-                            StrongBodyLabel)
+                            StrongBodyLabel, MessageBoxBase, SubtitleLabel, LineEdit, ToolButton, MessageBox)
 
-from common import SETTINGS, Icon, Style, Repository, SUMMARY
+from common import SETTINGS, Icon, Style, Repository, SUMMARY, PROJECT
+from .main_window import MainWindow
 from .ui.new_project_view_ui import Ui_NewProjectView
+
+
+class NewMessageBox(MessageBoxBase):
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.titleLabel = SubtitleLabel(self.tr('Create a new project'), self)
+        # ----------------------------------------------------------------------
+        self.nameLineEdit = LineEdit(self)
+        self.nameLineEdit.setPlaceholderText(self.tr('Project Name'))
+        self.nameLineEdit.setClearButtonEnabled(True)
+        self.nameLineEdit.textChanged.connect(self.__on_xLineEdit_textChanged)
+        # ----------------------------------------------------------------------
+        self.pathLayout = QHBoxLayout()
+
+        self.pathLineEdit = LineEdit(self)
+        self.pathLineEdit.setReadOnly(True)
+        self.pathLineEdit.setPlaceholderText(self.tr('Project Path'))
+        self.pathLineEdit.setClearButtonEnabled(True)
+        self.pathLineEdit.textChanged.connect(self.__on_xLineEdit_textChanged)
+
+        self.folderBtn = ToolButton()
+        self.folderBtn.pressed.connect(self.__on_folderBtn_pressed)
+        self.folderBtn.setIcon(Icon.FOLDER)
+
+        self.pathLayout.addWidget(self.pathLineEdit)
+        self.pathLayout.addWidget(self.folderBtn)
+        # ----------------------------------------------------------------------
+        self.viewLayout.addWidget(self.titleLabel)
+        self.viewLayout.addWidget(self.nameLineEdit)
+        self.viewLayout.addLayout(self.pathLayout)
+        # ----------------------------------------------------------------------
+        self.yesButton.setText(self.tr('OK'))
+        self.yesButton.setEnabled(False)
+        self.yesButton.clicked.disconnect()  # self._MessageBoxBase__onYesButtonClicked
+        self.yesButton.clicked.connect(self.__on_yesButton_clicked)
+        self.cancelButton.setText(self.tr('Cancel'))
+
+        self.widget.setFixedWidth(560)
+
+    # noinspection PyUnusedLocal
+    def __on_xLineEdit_textChanged(self, text: str):
+        if os.path.isdir(self.pathLineEdit.text()) and len(self.nameLineEdit.text()) > 0:
+            self.yesButton.setEnabled(True)
+        else:
+            self.yesButton.setEnabled(False)
+
+    def __on_folderBtn_pressed(self):
+        path = QFileDialog.getExistingDirectory(self, self.tr('Choose project path'),
+                                                SETTINGS.lastNewProjectFolder.value)
+        if os.path.isdir(path):
+            SETTINGS.set(SETTINGS.lastNewProjectFolder, path)
+            self.pathLineEdit.setText(path)
+
+    def __on_yesButton_clicked(self):
+        path = os.path.join(self.pathLineEdit.text(), self.nameLineEdit.text())
+        if os.path.isdir(path):
+            title = self.tr('Warning')
+            content = self.tr(
+                "The path {!r} already exists. Do you still want to create a project in this path?").format(path)
+            message = MessageBox(title, content, self.window())
+            message.setContentCopyable(True)
+            message.raise_()
+            if message.exec():
+                self.accept()
+        else:
+            self.accept()
 
 
 class SocFeatureView(QWidget):
@@ -53,6 +121,7 @@ class SocFeatureView(QWidget):
         # ----------------------------------------------------------------------
         self.urlBtnGroupLayout = QVBoxLayout()
         self.socNameLabel = StrongBodyLabel('SOC Name', self)
+        self.socNameLabel.destroyed.connect(self.__destroyed)
         self.vendorNameLabel = StrongBodyLabel('Vendor Name', self)
         self.socNameLabel.installEventFilter(self)
         self.vendorNameLabel.installEventFilter(self)
@@ -99,6 +168,9 @@ class SocFeatureView(QWidget):
 
         Style.NEW_PROJECT_WINDOW.apply(self.textBrowser)
 
+    def __destroyed(self):
+        print('destroyed')
+
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         if isinstance(watched, StrongBodyLabel):
             if event.type() == QEvent.Type.MouseButtonRelease:
@@ -114,8 +186,8 @@ class SocFeatureView(QWidget):
         self.vendorNameLabel.setText(vendor)
         self.packageNameLabel.setText(summary.package)
         self.marketStatusLabel.setText('')
-        self.introductionLabel.setText(summary.introduction.get(locale, summary.introduction.get('en')))
-        self.textBrowser.setMarkdown(summary.illustrate.get(locale, summary.introduction.get('en')))
+        self.introductionLabel.setText(summary.introduction.get(locale))
+        self.textBrowser.setMarkdown(summary.illustrate.get(locale))
         self.priceLabel.setText('')
         packagePath = f'{SETTINGS.PACKAGES_IMAGE_FOLDER}/{summary.package.upper()}.png'
         if os.path.exists(packagePath):
@@ -129,14 +201,18 @@ class SocFeatureView(QWidget):
 
 
 class NewProjectView(Ui_NewProjectView, QWidget):
+    created = Signal(str, str, str, str)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
         self.__repo = Repository().repository()
+        self.__targetChip = ""
+        self.__vendor = ""
 
         self.createBtn = PushButton(self.tr('Create'), self)
+        self.createBtn.setEnabled(False)
         self.btnGroupHorizontalLayout.addWidget(self.createBtn, 0, Qt.AlignmentFlag.AlignRight)
 
         self.treeView.header().setVisible(False)
@@ -161,6 +237,8 @@ class NewProjectView(Ui_NewProjectView, QWidget):
 
         self.tabBar.setCurrentItem(self.socFeatureView.objectName())
         self.socFeatureView.hide()
+
+        self.createBtn.clicked.connect(self.__on_createBtn_clicked)
 
     def addSubInterface(self, interface: QWidget, icon: FluentIconBase, text: str):
         self.stackedWidget.addWidget(interface)
@@ -320,10 +398,22 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         kind: str = indexes[10].data()
         if kind == 'SOC':
             self.socFeatureView.setInfo(vendor, name)
-            pass
+            self.createBtn.setEnabled(True)
+            self.__targetChip = name
+            self.__vendor = vendor
+        else:
+            self.createBtn.setEnabled(False)
+
+    def __on_createBtn_clicked(self):
+        messageBox = NewMessageBox(self.window())
+        if messageBox.exec():
+            name = messageBox.nameLineEdit.text()
+            path = messageBox.pathLineEdit.text()
+            self.created.emit(path, name, self.__targetChip, self.__vendor)
 
 
 class NewProjectWindow(MSFluentWindow):
+    succeed = Signal()
 
     def __init__(self):
         super().__init__()
@@ -331,7 +421,10 @@ class NewProjectWindow(MSFluentWindow):
         self.navigationInterface.hide()
         self.stackedWidget.hide()
 
+        self.__mainWindow = None
+
         self.view = NewProjectView()
+        self.view.created.connect(self.__on_view_create)
         self.hBoxLayout.addWidget(self.view)
 
         self.__initWindow()
@@ -349,3 +442,13 @@ class NewProjectWindow(MSFluentWindow):
         desktop = QApplication.screens()[0].availableGeometry()
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
+
+    def __on_view_create(self, path: str, name: str, targetChip: str, vendor: str):
+        PROJECT.new(path, name, targetChip, vendor)
+        self.deleteLater()
+        self.hide()
+        self.succeed.emit()
+        self.__mainWindow = MainWindow()
+        self.__mainWindow.updateFrameless()
+        self.__mainWindow.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
+        self.__mainWindow.show()

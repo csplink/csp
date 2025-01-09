@@ -9,4 +9,6 @@ filetype~=1.2.0
 py7zr~=0.22.0
 loguru~=0.7.2
 attrs~=24.2.0
+simpleeval~=1.0.3
 packaging~=24.1
+tqdm~=4.67.1

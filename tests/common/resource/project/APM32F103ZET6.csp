@@ -1,0 +1,129 @@
+configs:
+  GPIO:
+    PC13:
+      geehy.gpio_level_t: geehy.gpio_level_low
+      geehy.gpio_mode_t: geehy.gpio_mode_output
+      geehy.gpio_output_type_t: geehy.gpio_output_pp
+      geehy.gpio_speed_t: geehy.gpio_speed_2mhz
+    PC14:
+      geehy.gpio_level_t: geehy.gpio_level_high
+      geehy.gpio_mode_t: geehy.gpio_mode_output
+      geehy.gpio_output_type_t: geehy.gpio_output_pp
+      geehy.gpio_speed_t: geehy.gpio_speed_2mhz
+    PC15:
+      geehy.gpio_mode_t: geehy.gpio_mode_analog
+    PE2:
+      geehy.gpio_mode_t: geehy.gpio_mode_alternate
+      geehy.gpio_output_type_t: geehy.gpio_output_pp
+      geehy.gpio_speed_t: geehy.gpio_speed_2mhz
+    PE3:
+      geehy.gpio_mode_t: geehy.gpio_mode_analog
+    PE4:
+      geehy.gpio_mode_t: geehy.gpio_mode_input
+      geehy.gpio_pull_t: geehy.gpio_pull_no
+    PE5:
+      geehy.gpio_mode_t: geehy.gpio_mode_analog
+    PE6:
+      geehy.gpio_level_t: geehy.gpio_level_low
+      geehy.gpio_mode_t: geehy.gpio_mode_output
+      geehy.gpio_output_type_t: geehy.gpio_output_od
+      geehy.gpio_speed_t: geehy.gpio_speed_2mhz
+  RCM:
+    geehy.rcm_adc_clk_div_t: geehy.rcm_adc_clk_div16
+    geehy.rcm_adc_clk_out_t: 6000000.0
+    geehy.rcm_ahb_div_sdio_t: geehy.rcm_ahb_div_sdio_div2
+    geehy.rcm_ahb_div_t: geehy.rcm_ahb_div1
+    geehy.rcm_apb1_div_t: geehy.rcm_apb1_div1
+    geehy.rcm_apb1_peripherals_out_t: 96000000.0
+    geehy.rcm_apb1_timers_mul_t: geehy.rcm_apb1_timers_mul1
+    geehy.rcm_apb1_timers_out_t: 96000000.0
+    geehy.rcm_apb2_div_t: geehy.rcm_apb2_div1
+    geehy.rcm_apb2_peripherals_out_t: 96000000.0
+    geehy.rcm_apb2_timers_mul_t: geehy.rcm_apb2_timers_mul1
+    geehy.rcm_apb2_timers_out_t: 96000000.0
+    geehy.rcm_css_t: geehy.rcm_css_disable
+    geehy.rcm_emmc_clk_out_t: 96000000.0
+    geehy.rcm_fclk_out_t: 96000000.0
+    geehy.rcm_flash_latency_t: geehy.rcm_flash_latency_3
+    geehy.rcm_fmc_clk_value_t: 8000000
+    geehy.rcm_fpu_clk_div_t: geehy.rcm_fpu_clk_div1
+    geehy.rcm_fpu_clk_out_t: 96000000.0
+    geehy.rcm_hclk_out_t: 96000000.0
+    geehy.rcm_hclk_t: 96000000.0
+    geehy.rcm_hse_clock_source_t: geehy.rcm_hse_clock_source_oscillator
+    geehy.rcm_hse_div_pll_t: geehy.rcm_hse_div_pll_div1
+    geehy.rcm_hse_div_rtc_t: geehy.rcm_hse_div_rtc_div128
+    geehy.rcm_hse_value_t: 8000000
+    geehy.rcm_hsi_calibration_t: 17
+    geehy.rcm_hsi_div_pll_t: geehy.rcm_hsi_div_pll_div2
+    geehy.rcm_hsi_value_t: 8000000
+    geehy.rcm_i2s2_clk_freq_value_t: 96000000.0
+    geehy.rcm_i2s3_clk_freq_value_t: 96000000.0
+    geehy.rcm_iwdg_clk_t: 40000
+    geehy.rcm_lse_clock_source_t: geehy.rcm_lse_clock_source_oscillator
+    geehy.rcm_lse_value_t: 32768
+    geehy.rcm_lsi_value_t: 40000
+    geehy.rcm_mco_clk_selector_t: geehy.rcm_mco_clk_pll_div2_t
+    geehy.rcm_mco_clk_t: 48000000.0
+    geehy.rcm_mco_enabled_t: geehy.rcm_mco_disable
+    geehy.rcm_mco_out_t: 48000000.0
+    geehy.rcm_pll_clk_selector_t: geehy.rcm_pll_hse_t
+    geehy.rcm_pll_div_mco_t: geehy.rcm_pll_div_mco_div2
+    geehy.rcm_pll_mul_t: geehy.rcm_pll_mul12
+    geehy.rcm_pll_t: 8000000.0
+    geehy.rcm_prefetch_buffer_enabled_t: geehy.rcm_prefetch_buffer_enable
+    geehy.rcm_rtc_clk_selector_t: geehy.rcm_rtc_clk_lsi_t
+    geehy.rcm_rtc_clk_t: 40000.0
+    geehy.rcm_sdio_ahb_clk_out_t: 48000000.0
+    geehy.rcm_sdio_clk_out_t: 96000000.0
+    geehy.rcm_sys_clk_freq_value_t: 96000000.0
+    geehy.rcm_sys_timer_clk_div_t: geehy.rcm_sys_timer_clk_div1
+    geehy.rcm_sys_timer_clk_out_t: 96000000.0
+    geehy.rcm_system_clk_selector_t: geehy.rcm_system_clk_pll_t
+    geehy.rcm_usb_clk_div_t: geehy.rcm_usb_clk_div2
+    geehy.rcm_usb_clk_out_t: 48000000.0
+  pin:
+    PC13:
+      function: GPIO:Output
+      label: fgddsfdfs
+      locked: true
+    PC14:
+      function: GPIO:Output
+      locked: true
+    PC15:
+      function: GPIO:Analog
+      locked: true
+    PE2:
+      function: GPIO:EVENTOUT
+      locked: true
+    PE3:
+      function: GPIO:Analog
+      locked: true
+    PE4:
+      function: GPIO:Input
+      locked: true
+    PE5:
+      function: GPIO:Analog
+      locked: true
+    PE6:
+      function: GPIO:Output
+      locked: true
+gen:
+  builder: CMake
+  builderVersion: v2.8.1
+  copyHalLibrary: true
+  hal: csp_hal_apm32f1
+  halVersion: v0.0.2
+  linker:
+    defaultHeapSize: 512
+    defaultStackSize: 1024
+  toolchains: arm-none-eabi
+  toolchainsVersion: 10.2.1
+  useToolchainsPackage: false
+modules:
+- GPIO
+- RCM
+name: test
+targetChip: APM32F103ZET6
+vendor: Geehy
+version: 0.1.0

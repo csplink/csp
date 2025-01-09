@@ -1,94 +1,278 @@
-widgets:
-  ADC-Clk-Psc: { }
-  ADC1,2,3-Timers-Out: { }
-  AHB-Psc: { }
-  APB1-Peripherals-Out: { }
-  APB1-Psc: { }
-  APB1-Timers-Mul: { }
-  APB1-Timers-Out: { }
-  APB2-Peripherals-Out: { }
-  APB2-Psc: { }
-  APB2-Timers-Mul: { }
-  APB2-Timers-Out: { }
-  CLK: { }
-  CSS: { }
-  EMMC-Clk-Out: { }
-  FCLK-Out: { }
-  FPU-Clk-Out: { }
-  Flash-Latency: { }
-  HCLK-Out: { }
-  HSE-Input:
-    widget: numberLineBox
-    refParameter: HSE_Value
-    refEnable: EnableHSE
-    output:
-      - signalId: HSE
-        to: SysClkSource
-      - signalId: HSE
-        to: HSERTCDevisor
-      - signalId: HSE
-        to: HSEDivPLL
-      - signalId: HSE
-        to: MCOMult
-  HSE-Is-Bypass: { }
-  HSE-Psc: { }
-  HSI-Calibration:
-    widget: numberLineBox
-    refValue: HSI_Calibration
-  I2S2-Clk-Out: { }
-  I2S3-Clk-Out: { }
+elements:
+  HSI-RC:
+    refParameter: RCM:geehy.rcm_hsi_value_t
+    output: [ FMC-CLK-Output, MCO-HSI, System-HSI, HSI-Div-PLL ]
+  FMC-CLK-Output:
+    refParameter: RCM:geehy.rcm_fmc_clk_value_t
+    input: [ HSI-RC ]
+  HSI-Div-PLL:
+    refParameter: RCM:geehy.rcm_hsi_div_pll_t
+    type: divisor
+    input: [ HSI-RC ]
+    output: [ PLL-HSI-Div2 ]
+  LSI-RC:
+    refParameter: RCM:geehy.rcm_lsi_value_t
+    output: [ IWDG-Clk-Out, RTC-LSI ]
   LSE-Input:
-    widget: label
-    refParameter: LSE_Value
-    refEnable: EnableLSE
-    condition:
-      expression: '!VFQFPN36'
-    output:
-      - signalId: LSE
-        to: RTCClkSource
-  LSE-Is-Bypass:
-    widget: label
-    status:
-      - dependencies: [ CSP_USING_HAL_CLOCK_OSC32_DISABLE ]
-        property:
-          text:
-            en: Disable
-            zh_CN: 关闭
-          style: disable
-      - dependencies: [ CSP_USING_HAL_CLOCK_OSC32_BYPASS ]
-        property:
-          text:
-            en: BYPASS Clock Source
-            zh_CN: 旁路模式
-          style: enable
-      - dependencies: [ CSP_USING_HAL_CLOCK_OSC32_NO_BYPASS ]
-        property:
-          text:
-            en: Crystal/Ceramic Resonator
-            zh_CN: 晶体模式
-          style: enable
-
-  MCO-HSE: { }
-  MCO-HSI: { }
-  MCO-Out: { }
-  MCO-Output: { }
-  MCO-PLL/2: { }
-  MCO-System-Clk: { }
-  PLL: { }
-  PLL-HSE: { }
-  PLL-HSE-Mul: { }
-  PLL-HSI/2: { }
-  RTC-Clk-Out: { }
-  RTC-HSE/128: { }
-  RTC-LSE: { }
-  RTC-LSI: { }
-  SDIO-AHB-Clk-Out: { }
-  SDIO-Clk-Out: { }
-  SYS-Clk: { }
-  SysTick-Clk-Out: { }
-  SysTick-Clk-Psc: { }
-  System-HSE: { }
-  System-HSI: { }
-  System-PLL: { }
-  USB-Clk-Out: { }
-  USB-Clk-Psc: { }
+    refParameter: RCM:geehy.rcm_lse_value_t
+    output: [ RTC-LSE ]
+    enable: "RCM.geehy.rcm_lse_clock_source_t != 'geehy.rcm_lse_clock_source_disable'"
+  HSE-Input:
+    refParameter: RCM:geehy.rcm_hse_value_t
+    output: [ System-HSE, HSE-Div-RTC, HSE-Div-PLL, MCO-HSE ]
+    enable: "RCM.geehy.rcm_hse_clock_source_t != 'geehy.rcm_hse_clock_source_disable'"
+  HSE-Div-PLL:
+    refParameter: RCM:geehy.rcm_hse_div_pll_t
+    type: divisor
+    input: [ HSE-Input ]
+    output: [ PLL-HSE ]
+    enable: "RCM.geehy.rcm_hse_clock_source_t != 'geehy.rcm_hse_clock_source_disable'"
+  System-HSE:
+    refParameter: RCM:geehy.rcm_system_clk_hse_t
+    type: multiplexed
+    input: [ HSE-Input ]
+    output: [ SYS-Clk ]
+  System-HSI:
+    refParameter: RCM:geehy.rcm_system_clk_hsi_t
+    type: multiplexed
+    input: [ HSI-RC ]
+    output: [ SYS-Clk ]
+  System-PLL:
+    refParameter: RCM:geehy.rcm_system_clk_pll_t
+    type: multiplexed
+    input: [ PLL-Mul ]
+    output: [ SYS-Clk ]
+  SYS-Clk:
+    refParameter: RCM:geehy.rcm_sys_clk_freq_value_t
+    input: [ System-HSE, System-HSI, System-PLL ]
+    output: [ AHB-Div, I2S2-Clk-Out, I2S3-Clk-Out, MCO-System ]
+  I2S2-Clk-Out:
+    refParameter: RCM:geehy.rcm_i2s2_clk_freq_value_t
+    input: [ SYS-Clk ]
+    enable: False # TODO
+  I2S3-Clk-Out:
+    refParameter: RCM:geehy.rcm_i2s3_clk_freq_value_t
+    input: [ SYS-Clk ]
+    enable: False # TODO
+  HSE-Div-RTC:
+    refParameter: RCM:geehy.rcm_hse_div_rtc_t
+    type: divisor
+    input: [ HSE-Input ]
+    output: [ RTC-HSE-Div128 ]
+  RTC-HSE-Div128:
+    refParameter: RCM:geehy.rcm_rtc_clk_hse_div128_t
+    type: multiplexed
+    input: [ HSE-Div-RTC ]
+    output: [ RTC-Clk-Out ]
+    enable: False # TODO
+  RTC-LSE:
+    refParameter: RCM:geehy.rcm_rtc_clk_lse_t
+    type: multiplexed
+    input: [ LSE-Input ]
+    output: [ RTC-Clk-Out ]
+    enable: False # TODO
+  RTC-LSI:
+    refParameter: RCM:geehy.rcm_rtc_clk_lsi_t
+    type: multiplexed
+    input: [ LSI-RC ]
+    output: [ RTC-Clk-Out ]
+    enable: False # TODO
+  RTC-Clk-Out:
+    refParameter: RCM:geehy.rcm_rtc_clk_t
+    input: [ RTC-HSE-Div128, RTC-LSE, RTC-LSI ]
+    enable: False # TODO
+  IWDG-Clk-Out:
+    refParameter: RCM:geehy.rcm_iwdg_clk_t
+    input: [ LSI-RC ]
+    enable: False # TODO
+  PLL-Div-MCO:
+    refParameter: RCM:geehy.rcm_pll_div_mco_t
+    type: divisor
+    input: [ PLL-Mul ]
+    output: [ MCO-PLL-Div2 ]
+    enable: False # TODO: 1
+  MCO-PLL-Div2:
+    refParameter: RCM:geehy.rcm_mco_clk_pll_div2_t
+    type: multiplexed
+    input: [ PLL-Div-MCO ]
+    output: [ MCO-Clk ]
+    enable: False # TODO: 1
+  MCO-HSE:
+    refParameter: RCM:geehy.rcm_mco_clk_hse_t
+    type: multiplexed
+    input: [ HSE-Input ]
+    output: [ MCO-Clk ]
+    enable: False # TODO: 1
+  MCO-HSI:
+    refParameter: RCM:geehy.rcm_mco_clk_hsi_t
+    type: multiplexed
+    input: [ HSI-RC ]
+    output: [ MCO-Clk ]
+    enable: False # TODO: 1
+  MCO-System:
+    refParameter: RCM:geehy.rcm_mco_clk_system_t
+    type: multiplexed
+    input: [ SYS-Clk ]
+    output: [ MCO-Clk ]
+    enable: False # TODO: 1
+  MCO-Clk:
+    refParameter: RCM:geehy.rcm_mco_clk_t
+    input: [ MCO-PLL-Div2, MCO-HSE, MCO-HSI, MCO-System ]
+    output: [ MCO-Out ]
+    enable: False # TODO: 1
+  MCO-Out:
+    refParameter: RCM:geehy.rcm_mco_out_t
+    input: [ MCO-Clk ]
+    enable: False # TODO: 1
+  AHB-Div:
+    refParameter: RCM:geehy.rcm_ahb_div_t
+    type: divisor
+    input: [ SYS-Clk ]
+    output: [ HCLK ]
+  HCLK:
+    refParameter: RCM:geehy.rcm_hclk_t
+    input: [ AHB-Div ]
+    output: [ FCLK-Out, EMMC-Clk-Out, SDIO-Clk-Out, AHB-Div-SDIO, HCLK-Out, SysTimer-Clk-Div, APB1-Div, APB2-Div, FPU-Clk-Div ]
+  AHB-Div-SDIO:
+    refParameter: RCM:geehy.rcm_ahb_div_sdio_t
+    type: divisor
+    input: [ HCLK ]
+    output: [ SDIO-AHB-Clk-Out ]
+    enable: False # TODO:
+  SDIO-AHB-Clk-Out:
+    refParameter: RCM:geehy.rcm_sdio_ahb_clk_out_t
+    input: [ AHB-Div-SDIO ]
+    enable: False # TODO:
+  HCLK-Out:
+    refParameter: RCM:geehy.rcm_hclk_out_t
+    input: [ HCLK ]
+  EMMC-Clk-Out:
+    refParameter: RCM:geehy.rcm_emmc_clk_out_t
+    input: [ HCLK ]
+    enable: False # TODO:
+  SDIO-Clk-Out:
+    refParameter: RCM:geehy.rcm_sdio_clk_out_t
+    input: [ HCLK ]
+    enable: False # TODO:
+  FCLK-Out:
+    refParameter: RCM:geehy.rcm_fclk_out_t
+    input: [ HCLK ]
+  SysTimer-Clk-Div:
+    refParameter: RCM:geehy.rcm_sys_timer_clk_div_t
+    type: divisor
+    input: [ HCLK ]
+    output: [ SysTimer-Clk-Out ]
+  SysTimer-Clk-Out:
+    refParameter: RCM:geehy.rcm_sys_timer_clk_out_t
+    input: [ SysTimer-Clk-Div ]
+  APB1-Div:
+    refParameter: RCM:geehy.rcm_apb1_div_t
+    type: divisor
+    z: 2
+    input: [ HCLK ]
+    output: [ APB1-Peripherals-Out, APB1-Timers-Mul ]
+  APB1-Peripherals-Out:
+    refParameter: RCM:geehy.rcm_apb1_peripherals_out_t
+    input: [ APB1-Div ]
+  APB1-Timers-Mul:
+    refParameter: RCM:geehy.rcm_apb1_timers_mul_t
+    type: multiple
+    input: [ APB1-Div ]
+    output: [ APB1-Timers-Out ]
+  APB1-Timers-Out:
+    refParameter: RCM:geehy.rcm_apb1_timers_out_t
+    input: [ APB1-Timers-Mul ]
+  APB2-Div:
+    refParameter: RCM:geehy.rcm_apb2_div_t
+    type: divisor
+    input: [ HCLK ]
+    output: [ APB2-Peripherals-Out, APB2-Timers-Mul, ADC-Clk-Div ]
+  APB2-Peripherals-Out:
+    refParameter: RCM:geehy.rcm_apb2_peripherals_out_t
+    input: [ APB2-Div ]
+  APB2-Timers-Mul:
+    refParameter: RCM:geehy.rcm_apb2_timers_mul_t
+    type: multiple
+    input: [ APB2-Div ]
+    output: [ APB2-Timers-Out ]
+  APB2-Timers-Out:
+    refParameter: RCM:geehy.rcm_apb2_timers_out_t
+    input: [ APB2-Timers-Mul ]
+  ADC-Clk-Div:
+    refParameter: RCM:geehy.rcm_adc_clk_div_t
+    type: divisor
+    input: [ APB2-Div ]
+    output: [ ADC-Clk-Out ]
+    enable: False # TODO:
+  ADC-Clk-Out:
+    refParameter: RCM:geehy.rcm_adc_clk_out_t
+    input: [ ADC-Clk-Div ]
+    enable: False # TODO:
+  USB-Clk-Div:
+    refParameter: RCM:geehy.rcm_usb_clk_div_t
+    type: divisor
+    input: [ PLL-Mul ]
+    output: [ USB-Clk-Out ]
+    enable: False # TODO:
+  USB-Clk-Out:
+    refParameter: RCM:geehy.rcm_usb_clk_out_t
+    input: [ USB-Clk-Div ]
+    enable: False # TODO:
+  PLL-HSI-Div2:
+    refParameter: RCM:geehy.rcm_pll_hsi_div2_t
+    type: multiplexed
+    input: [ HSI-Div-PLL ]
+    output: [ PLL ]
+  PLL-HSE:
+    refParameter: RCM:geehy.rcm_pll_hse_t
+    type: multiplexed
+    input: [ HSE-Div-PLL ]
+    output: [ PLL ]
+  PLL:
+    refParameter: RCM:geehy.rcm_pll_t
+    input: [ HSI-Div-PLL, HSE-Div-PLL ]
+    output: [ PLL-Mul ]
+  PLL-Mul:
+    refParameter: RCM:geehy.rcm_pll_mul_t
+    type: multiple
+    input: [ PLL ]
+    output: [ USB-Clk-Div, PLL-Div-MCO, System-PLL ]
+  FPU-Clk-Div:
+    refParameter: RCM:geehy.rcm_fpu_clk_div_t
+    type: divisor
+    input: [ HCLK ]
+    output: [ FPU-Clk-Out ]
+  FPU-Clk-Out:
+    refParameter: RCM:geehy.rcm_fpu_clk_out_t
+    input: [ FPU-Clk-Div ]
+  CSS:
+    refParameter: RCM:geehy.rcm_css_t
+    z: 2
+i18n:
+  $(Input Frequency):
+    zh_CN: 输入频率
+    en: Input Frequency
+  $(MCO Source Mux):
+    zh_CN: MCO 时钟选择器
+    en: MCO Source Mux
+  $(PLL Source Mux):
+    zh_CN: PLL 时钟选择器
+    en: PLL Source Mux
+  $(RTC Clock Mux):
+    zh_CN: RTC 时钟选择器
+    en: RTC Clock Mux
+  $(System Clock Mux):
+    zh_CN: System 时钟选择器
+    en: System Clock Mux
+  $(AHB Prescaler):
+    zh_CN: AHB 预分频器
+    en: AHB Prescaler
+  $(APB1 Prescaler):
+    zh_CN: APB1 预分频器
+    en: APB1 Prescaler
+  $(APB2 Prescaler):
+    zh_CN: APB2 预分频器
+    en: APB2 Prescaler
+  $(ADC Prescaler):
+    zh_CN: ADC 预分频器
+    en: ADC Prescaler

@@ -105,10 +105,10 @@ class PackageInstallDialog(MessageBoxBase):
             self.yesButton.setEnabled(False)
 
     def __on_folderBtn_pressed(self):
-        path, ok = QFileDialog.getOpenFileName(self, self.tr('Choose CSP package file'),
+        path, _ = QFileDialog.getOpenFileName(self, self.tr('Choose CSP package file'),
                                                SETTINGS.lastPackageFileFolder.value,
                                                self.tr('CSP package file (*.csppack)'))
-        if ok:
+        if os.path.isfile(path):
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             self.pathLineEdit.setText(path)
 

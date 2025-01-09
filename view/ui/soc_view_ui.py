@@ -20,9 +20,9 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QSizePolicy,
 
 from qfluentwidgets import (SimpleCardWidget, ToolButton)
 from widget.graphics_view_pan_zoom import GraphicsViewPanZoom
-from widget.grid_mode import GridMode
-from widget.grid_property_ip import GridPropertyIp
 from widget.tree_module import TreeModule
+from widget.widget_control_manager import WidgetControlManager
+from widget.widget_mode_manager import WidgetModeManager
 
 class Ui_SocView(object):
     def setupUi(self, SocView):
@@ -55,12 +55,12 @@ class Ui_SocView(object):
         self.modePropertySplitter = QSplitter(self.frame_3)
         self.modePropertySplitter.setObjectName(u"modePropertySplitter")
         self.modePropertySplitter.setOrientation(Qt.Vertical)
-        self.gridModeWidget = GridMode(self.modePropertySplitter)
+        self.gridModeWidget = WidgetControlManager(self.modePropertySplitter)
         self.gridModeWidget.setObjectName(u"gridModeWidget")
         self.modePropertySplitter.addWidget(self.gridModeWidget)
-        self.gridPropertyIpWidget = GridPropertyIp(self.modePropertySplitter)
-        self.gridPropertyIpWidget.setObjectName(u"gridPropertyIpWidget")
-        self.modePropertySplitter.addWidget(self.gridPropertyIpWidget)
+        self.widgetModeManagerWidget = WidgetModeManager(self.modePropertySplitter)
+        self.widgetModeManagerWidget.setObjectName(u"widgetModeManagerWidget")
+        self.modePropertySplitter.addWidget(self.widgetModeManagerWidget)
 
         self.verticalLayout.addWidget(self.modePropertySplitter)
 

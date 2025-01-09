@@ -26,13 +26,14 @@
 
 import os
 
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, Qt
 from PySide6.QtWidgets import QApplication, QWidget, QBoxLayout, QFileDialog
 from qfluentwidgets import (PushButton, MSFluentWindow)
 
 from common import SETTINGS, PROJECT
 from widget import ListContributors
 from .main_window import MainWindow
+from .new_project_window import NewProjectWindow
 from .ui.startup_view_ui import Ui_StartupView
 
 
@@ -46,6 +47,9 @@ class StartupView(Ui_StartupView, QWidget):
         self.__initContributors()
         self.__initProjectList()
         self.__initMore()
+
+        self.__newProjectWindow = None
+        self.__mainWindow = None
 
     def __initCardCommand(self):
         self.cardCommand.setTitle(self.tr("I Need To:"))
@@ -97,7 +101,16 @@ class StartupWindow(MSFluentWindow):
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
     def __on_newSocProjectBtn_pressed(self):
-        pass
+        self.__newProjectWindow = NewProjectWindow()
+        self.__newProjectWindow.updateFrameless()
+        self.__newProjectWindow.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
+        self.__newProjectWindow.show()
+        self.__newProjectWindow.succeed.connect(self.__on_newProjectWindow_succeed)
+
+    def __on_newProjectWindow_succeed(self):
+        self.__newProjectWindow = None
+        self.deleteLater()
+        self.hide()
 
     def __on_openProjectBtn_pressed(self):
         path, ok = QFileDialog.getOpenFileName(self,
@@ -110,6 +123,7 @@ class StartupWindow(MSFluentWindow):
             if PROJECT.valid():
                 self.deleteLater()
                 self.hide()
-                window = MainWindow()
-                window.updateFrameless()
-                window.show()
+                self.__mainWindow = MainWindow()
+                self.__mainWindow.updateFrameless()
+                self.__mainWindow.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
+                self.__mainWindow.show()

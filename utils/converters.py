@@ -27,31 +27,34 @@ import re
 from functools import reduce
 
 
-def ishex(string: str) -> bool:
-    pattern = r'^0x[0-9A-Fa-f]+$'
-    return bool(re.match(pattern, string))
+class Converters:
 
+    @staticmethod
+    def ishex(string: str) -> bool:
+        pattern = r'^0x[0-9A-Fa-f]+$'
+        return bool(re.match(pattern, string))
 
-def isurl(string: str) -> bool:
-    pattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
-    return bool(re.match(pattern, string))
+    @staticmethod
+    def isurl(string: str) -> bool:
+        pattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+        return bool(re.match(pattern, string))
 
+    @staticmethod
+    def isemail(string: str) -> bool:
+        pattern = r'^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$'
+        return bool(re.match(pattern, string))
 
-def isemail(string: str) -> bool:
-    pattern = r'^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$'
-    return bool(re.match(pattern, string))
+    @staticmethod
+    def paths2dict(paths: list[str], separator='/'):
+        pathDict = {}
+        for path in paths:
+            parts = path.strip().split(separator)
 
+            def updateDict(dt, key):
+                if key not in dt:
+                    dt[key] = {}
+                return dt[key]
 
-def paths2dict(paths: list[str], separator='/'):
-    pathDict = {}
-    for path in paths:
-        parts = path.strip().split(separator)
-
-        def updateDict(dt, key):
-            if key not in dt:
-                dt[key] = {}
-            return dt[key]
-
-        currentDict = reduce(updateDict, parts[:-1], pathDict)
-        currentDict[parts[-1]] = ""
-    return pathDict
+            currentDict = reduce(updateDict, parts[:-1], pathDict)
+            currentDict[parts[-1]] = ""
+        return pathDict

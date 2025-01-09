@@ -24,9 +24,8 @@
 # 2024-10-06     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, Signal, QEasingCurve
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QAbstractScrollArea
-from qfluentwidgets import PopUpAniStackedWidget
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QStackedWidget, QWidget
 
 
 class StackedWidget(QFrame):
@@ -35,7 +34,7 @@ class StackedWidget(QFrame):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.hBoxLayout = QHBoxLayout(self)
-        self.view = PopUpAniStackedWidget(self)
+        self.view = QStackedWidget(self)
 
         self.hBoxLayout.setContentsMargins(0, 0, 0, 0)
         self.hBoxLayout.addWidget(self.view)
@@ -43,33 +42,28 @@ class StackedWidget(QFrame):
         self.view.currentChanged.connect(self.currentChanged)
         self.setAttribute(Qt.WA_StyledBackground)
 
-    def addWidget(self, widget):
-        """ add widget to view """
+    def addWidget(self, widget: QWidget):
         self.view.addWidget(widget)
 
     def widget(self, index: int):
         return self.view.widget(index)
 
-    def setCurrentWidget(self, widget, popOut=True):
-        if isinstance(widget, QAbstractScrollArea):
-            widget.verticalScrollBar().setValue(0)
+    # noinspection PyUnusedLocal
+    def setCurrentWidget(self, widget: QWidget, popOut: bool = True):
+        self.view.setCurrentWidget(widget)
 
-        if not popOut:
-            self.view.setCurrentWidget(widget, duration=300)
-        else:
-            self.view.setCurrentWidget(widget, True, False, 200, QEasingCurve.InQuad)
+    # noinspection PyUnusedLocal
+    def setCurrentIndex(self, index: int, popOut: bool = True):
+        self.view.setCurrentIndex(index)
 
-    def setCurrentIndex(self, index, popOut=True):
-        self.setCurrentWidget(self.view.widget(index), popOut)
-
-    def currentIndex(self):
+    def currentIndex(self) -> int:
         return self.view.currentIndex()
 
-    def currentWidget(self):
+    def currentWidget(self) -> QWidget:
         return self.view.currentWidget()
 
-    def indexOf(self, widget):
+    def indexOf(self, widget) -> int:
         return self.view.indexOf(widget)
 
-    def count(self):
+    def count(self) -> int:
         return self.view.count()

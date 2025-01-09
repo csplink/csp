@@ -13,14 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
+# Copyright (C) 2024-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        grid_mode_ip.py
+# @file        plain_text_edit_readonly.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-02     xqyjlj       initial version
+# 2024-12-22     xqyjlj       initial version
 #
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QInputMethodEvent
+from qfluentwidgets import PlainTextEdit
+
+
+class PlainTextEditReadonly(PlainTextEdit):
+    def inputMethodEvent(self, event: QInputMethodEvent):
+        if not (self.textInteractionFlags() & Qt.TextInteractionFlag.TextEditable):
+            event.ignore()
+            return
+        super().inputMethodEvent(event)

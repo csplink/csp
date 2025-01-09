@@ -26,20 +26,14 @@
 
 from .clock_tree_view import ClockTreeView
 from .code_view import CodeView
-from .main_window import MainWindow
-from .new_project_window import NewProjectWindow
 from .package_view import PackageView
 from .setting_view import SettingView
 from .soc_view import SocView
-from .startup_window import StartupWindow
 
 __all__ = [
     'ClockTreeView',
     'CodeView',
-    'MainWindow',
-    'NewProjectWindow',
     'PackageView',
     'SettingView',
-    'SocView',
-    'StartupWindow',
+    'SocView'
 ]

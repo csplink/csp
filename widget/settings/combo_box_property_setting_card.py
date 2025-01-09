@@ -30,12 +30,7 @@ from qfluentwidgets import (FluentIconBase, SettingCard, ComboBox, IconInfoBadge
 from common import Icon
 
 
-# from PySide6.QtGui import QRegularExpressionValidator
-# from PySide6.QtWidgets import QWidget
-
-
 class ComboBoxPropertySettingCard(SettingCard):
-    currentIndexChanged = Signal(int)
     currentTextChanged = Signal(str)
 
     def __init__(self, icon: FluentIconBase, title: str, value: str, values: list, content=None, parent=None):
@@ -46,7 +41,6 @@ class ComboBoxPropertySettingCard(SettingCard):
             self.comboBox.addItem(v)
 
         self.comboBox.setCurrentText(value)
-        self.comboBox.currentIndexChanged.connect(self.currentIndexChanged)
         self.comboBox.currentTextChanged.connect(self.currentTextChanged)
 
         self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
@@ -66,12 +60,19 @@ class ComboBoxPropertySettingCard(SettingCard):
             self.comboBox.setToolTip("")
 
     def setSource(self, value: str, values: list):
+        self.comboBox.currentTextChanged.disconnect(self.currentTextChanged)
+
         self.comboBox.clear()
 
         for v in values:
             self.comboBox.addItem(v)
 
+        self.comboBox.currentTextChanged.connect(self.currentTextChanged)
+
+        text = self.comboBox.currentText()
         self.comboBox.setCurrentText(value)
+        if text == value:
+            self.currentTextChanged.emit(value)
 
     def clear(self):
         self.comboBox.clear()

@@ -34,7 +34,7 @@ class ProjectTest(unittest.TestCase):
         pass
 
     def test_project(self):
-        file = os.path.join(os.path.dirname(__file__), "resource", "project", "test.csp")
+        file = os.path.join(os.path.dirname(__file__), "resource", "project", "APM32F103ZET6.csp")
         PROJECT.setPath(file)
         project = PROJECT.project()
         self.assertGreater(len(project.name), 0, msg='load failed.')
@@ -47,11 +47,11 @@ class ProjectTest(unittest.TestCase):
         self.assertGreater(len(project.gen.builderVersion), 0, msg='load failed.')
         self.assertGreater(len(project.gen.hal), 0, msg='load failed.')
         self.assertGreater(len(project.gen.halVersion), 0, msg='load failed.')
-        self.assertGreater(len(project.gen.linker.defaultHeapSize), 0, msg='load failed.')
-        self.assertGreater(len(project.gen.linker.defaultStackSize), 0, msg='load failed.')
+        self.assertGreater(project.gen.linker.defaultHeapSize, -2, msg='load failed.')
+        self.assertGreater(project.gen.linker.defaultStackSize, -2, msg='load failed.')
         self.assertGreater(len(project.gen.toolchains), 0, msg='load failed.')
         self.assertGreater(len(project.gen.toolchainsVersion), 0, msg='load failed.')
-        # self.assertGreater(project.gen.copyHalLibrary, 0, msg='load failed.')
+        # self.assertGreater(project.gen.copyLibrary, 0, msg='load failed.')
         # self.assertGreater(project.gen.useToolchainsPackage, 0, msg='load failed.')
         self.assertGreater(len(project.configs.origin), 0, msg='load failed.')
 

@@ -1,7 +1,7 @@
 /**
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        grid_property_ip.qss
+ *  @file        widget_base_manager.qss
  *  @brief
  *
  * ****************************************************************************
@@ -58,4 +58,17 @@ ComboBox:disabled {
 
 ComboBox[isPlaceholderText="true"] {
   color: rgba(255, 255, 255, 0.6063);
+}
+
+SpinBox,
+DoubleSpinBox {
+    background-color: rgba(30, 30, 30, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5442);
+    border-radius: 5px;
+    /* font: 14px "Segoe UI", "Microsoft YaHei"; */
+    padding: 0px 80px 0 10px;
+    color: white;
+    selection-background-color: --ThemeColorPrimary;
+    selection-color: black;
 }

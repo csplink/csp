@@ -16,35 +16,26 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        grid_mode.py
+# @file        __init__.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-16     xqyjlj       initial version
+# 2024-09-10     xqyjlj       initial version
 #
 
-from enum import Enum
+from .base_clock_tree_widget import BaseClockTreeWidget
+from .enum_clock_tree_widget import EnumClockTreeWidget
+from .float_clock_tree_widget import FloatClockTreeWidget
+from .integer_clock_tree_widget import IntegerClockTreeWidget
+from .number_clock_tree_widget import NumberClockTreeWidget
+from .radio_clock_tree_widget import RadioClockTreeWidget
 
-from PySide6.QtWidgets import QWidget
-
-from common import SIGNAL_BUS
-from .ui.grid_mode_ui import Ui_GridMode
-
-
-class StackedWidgetIndex(Enum):
-    GRID_MODE_IO = 0
-
-
-class GridMode(Ui_GridMode, QWidget):
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setupUi(self)
-
-        SIGNAL_BUS.gridModeTriggered.connect(self.changeModuleWidget)
-
-    def changeModuleWidget(self, module: str, widget: str):
-        if widget == "grid_mode_io":
-            self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.GRID_MODE_IO.value))
-            self.widget_gridModeIo.setInstance(module)
+__all__ = [
+    "BaseClockTreeWidget",
+    "EnumClockTreeWidget",
+    "FloatClockTreeWidget",
+    "IntegerClockTreeWidget",
+    "NumberClockTreeWidget",
+    "RadioClockTreeWidget",
+]

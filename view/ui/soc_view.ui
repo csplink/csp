@@ -45,8 +45,8 @@
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
-         <widget class="GridMode" name="gridModeWidget" native="true"/>
-         <widget class="GridPropertyIp" name="gridPropertyIpWidget" native="true"/>
+         <widget class="WidgetControlManager" name="gridModeWidget" native="true"/>
+         <widget class="WidgetModeManager" name="widgetModeManagerWidget" native="true"/>
         </widget>
        </item>
       </layout>
@@ -149,9 +149,9 @@
    <header>widget.graphics_view_pan_zoom</header>
   </customwidget>
   <customwidget>
-   <class>GridPropertyIp</class>
+   <class>WidgetModeManager</class>
    <extends>QWidget</extends>
-   <header>widget.grid_property_ip</header>
+   <header>widget.widget_mode_manager</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -161,9 +161,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>GridMode</class>
+   <class>WidgetControlManager</class>
    <extends>QWidget</extends>
-   <header>widget.grid_mode</header>
+   <header>widget.widget_control_manager</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

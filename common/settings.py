@@ -24,6 +24,7 @@
 # 2024-06-29     xqyjlj       initial version
 #
 
+import copy
 import os
 import sys
 from enum import Enum
@@ -56,10 +57,20 @@ class LanguageSerializer(ConfigSerializer):
 class Settings(QConfig):
     """ Config of application """
 
-    if os.getenv('__CSPLINK_UNIT_TEST_TESTING', '0') == '1':
+    if os.getenv('__CSP_UNIT_TEST_TESTING', '0') == '1':
+        UNIT_TEST = True
+    else:
+        UNIT_TEST = False
+
+    if UNIT_TEST:
         EXE_FOLDER = os.getcwd()
     else:
         EXE_FOLDER = str(Path(sys.argv[0]).parent)
+
+    if os.getenv('__CSP_DEBUG_MODE', '0') == '1':
+        DEBUG = True
+    else:
+        DEBUG = False
 
     # folders ----------------------------------------------------------------------------------------------------------
     packageFolder = ConfigItem("Folders", "Packages", os.path.join(EXE_FOLDER, "resource", "packages"),
@@ -79,11 +90,7 @@ class Settings(QConfig):
                                  OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
                                  restart=True)
     isUseOpenGL = ConfigItem("System", "UseOpenGL", True, BoolValidator(), restart=True)
-    openGLSamples = OptionsConfigItem("System",
-                                      "OpenGLSamples",
-                                      4,
-                                      OptionsValidator([4, 8, 12, 16]),
-                                      restart=True)
+    openGLSamples = OptionsConfigItem("System", "OpenGLSamples", 4, OptionsValidator([4, 8, 12, 16]), restart=True)
     clockTreeType = OptionsConfigItem("System",
                                       "ClockTreeType",
                                       "Pixmap",
@@ -105,6 +112,9 @@ class Settings(QConfig):
     lastPackageFileFolder = ConfigItem(
         "Misc", "LastPackageFileFolder",
         QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DownloadLocation), FolderValidator())
+    lastNewProjectFolder = ConfigItem(
+        "Misc", "LastNewProjectFolder",
+        QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation), FolderValidator())
 
     # const data -------------------------------------------------------------------------------------------------------
     DATABASE_FOLDER = os.path.join(EXE_FOLDER, "resource", "database")
@@ -124,6 +134,8 @@ class Settings(QConfig):
     FEEDBACK_URL = "https://github.com/csplink/csp/issues"
     RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
     PACKAGE_LIST_URL = "https://csplink.top"
+
+    SYS_PATH = copy.deepcopy(sys.path)
 
 
 SETTINGS = Settings()

@@ -22,50 +22,45 @@
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
-additionalProperties: false
 properties:
   parameters:
     type: object
     additionalProperties: false
     patternProperties:
       "^[A-Za-z0-9_.+-]+$":
-        type: object
-        additionalProperties: false
-        properties:
-          displayName:
-            $ref: "#/properties/language"
-          description:
-            $ref: "#/properties/language"
-          readonly:
-            type: boolean
-          type:
-            enum: [ enum, integer, float, double ]
-          values:
-            type: object
+        oneOf:
+          - $ref: "#/properties/$parameter$"
+          - type: object
             additionalProperties: false
             patternProperties:
-              "^[A-Za-z0-9_.+-]+$":
-                type: object
-                additionalProperties: false
-                properties:
-                  comment:
-                    $ref: "#/properties/language"
-                required: [ "comment" ]
+              "^\\(.*\\)$":
+                $ref: "#/properties/$parameter$"
+            required: ["(default)"]
+  controls:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_.+-]+$":
+        type: object
+        properties:
+          values:
+            type: array
+            items:
+              type: string
+              pattern: "^[A-Za-z0-9_.+-]+$"
           default:
             type: string
             pattern: "^[A-Za-z0-9_.+-]+$"
-        required: [ "displayName", "type", "description", "readonly", "default" ]
   modes:
     type: object
     additionalProperties: false
     patternProperties:
       "^[A-Za-z0-9_.+-]+$":
-        type: [ object, 'null' ]
+        type: object
         additionalProperties: false
         patternProperties:
           "^[A-Za-z0-9_.+-]+$":
             type: object
-            additionalProperties: false
             properties:
               values:
                 type: array
@@ -75,12 +70,55 @@ properties:
               default:
                 type: string
                 pattern: "^[A-Za-z0-9_.+-]+$"
-  language:
+  $parameter$:
+    type: object
+    properties:
+      display:
+        $ref: "#/properties/$language$"
+      description:
+        $ref: "#/properties/$language$"
+      readonly:
+        type: boolean
+      type:
+        enum: [enum, integer, float, boolean, radio]
+      values:
+        additionalProperties: false
+        patternProperties:
+          "^[A-Za-z0-9_.+-]+$":
+            type: object
+            properties:
+              expression:
+                $ref: "#/properties/$expression$"
+              comment:
+                $ref: "#/properties/$language$"
+            required: [comment]
+      group:
+        type: string
+        minLength: 1
+      default:
+        type: [string, number, boolean]
+      expression:
+        $ref: "#/properties/$expression$"
+      visible:
+        type: boolean
+      max:
+        type: number
+      min:
+        type: number
+    required: [type, description]
+  $language$:
     type: object
     properties:
       en:
-        type: [ "string", "null" ] # TODO: null
-      zh_CN:
+        type: [string, "null"] # TODO: null
+    required: [en]
+  $expression$:
+    type: object
+    properties:
+      display:
         type: string
-    required: [ "en", "zh_CN" ]
-required: [ "parameters", "modes" ]
+        minLength: 1
+      real:
+        type: string
+        minLength: 1
+required: [parameters, modes]

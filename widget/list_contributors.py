@@ -26,13 +26,13 @@
 
 import os
 
-from PySide6.QtCore import Qt, QPoint, QObject, QEvent, QUrl
+from PySide6.QtCore import Qt, QPoint, QObject, QEvent, QUrl, QRect
 from PySide6.QtGui import QColor, QDesktopServices
-from PySide6.QtWidgets import QWidget
-from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, CaptionLabel, HyperlinkLabel, isDarkTheme)
+from PySide6.QtWidgets import QWidget, QVBoxLayout
+from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, CaptionLabel, HyperlinkLabel, isDarkTheme,
+                            ScrollArea)
 
 from common import SETTINGS, Icon, Contributor, ContributorType
-from .ui.list_contributors_ui import Ui_ListContributors
 
 AVATAR_SIZE = 32
 CONTRIBUTORS_DIR = os.path.dirname(SETTINGS.CONTRIBUTORS_FILE)
@@ -57,11 +57,21 @@ class CardProfile(QWidget):
         self.urlLabel.move(64, 32)
 
 
-class ListContributors(Ui_ListContributors, QWidget):
+class ListContributors(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.setupUi(self)
+
+        # ----------------------------------------------------------------------
+        self.vLayout = QVBoxLayout(self)
+        self.vLayout.setContentsMargins(0, 0, 0, 0)
+        self.scrollArea = ScrollArea(self)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 398, 298))
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.vLayout.addWidget(self.scrollArea)
+        # ----------------------------------------------------------------------
 
         self.flowWidget = QWidget(self)
         self.flowLayout = FlowLayout(self.flowWidget, needAni=True)

@@ -1586,7 +1586,7 @@ builder:
   CMake:
     v3.7:
     - arm-none-eabi
-  MdkArm:
+  MDK-Arm:
     v5.27:
     - armcc
     - armclang
@@ -1662,7 +1662,7 @@ pins:
     - GPIO:EXTI
   VBAT:
     position: 6
-    type: Power
+    type: power
   PC13-ANTI_TAMP:
     position: 7
     type: I/O
@@ -1773,10 +1773,10 @@ pins:
     - GPIO:EXTI
   VSS-1:
     position: 16
-    type: Power
+    type: power
   VDD-1:
     position: 17
-    type: Power
+    type: power
   PF6:
     position: 18
     type: I/O
@@ -1866,7 +1866,7 @@ pins:
     - GPIO:EXTI
   NRST:
     position: 25
-    type: Reset
+    type: reset
   PC0:
     position: 26
     type: I/O
@@ -1931,16 +1931,16 @@ pins:
     - GPIO:EXTI
   VDD-2:
     position: 30
-    type: Power
+    type: power
   VSSA:
     position: 31
-    type: Power
+    type: power
   VREF+:
     position: 32
-    type: Power
+    type: power
   VDDA:
     position: 33
-    type: Power
+    type: power
   PA0-WKUP:
     position: 34
     type: I/O
@@ -2020,10 +2020,10 @@ pins:
     - GPIO:EXTI
   VSS-2:
     position: 38
-    type: Power
+    type: power
   VDD-3:
     position: 39
-    type: Power
+    type: power
   PA4:
     position: 40
     type: I/O
@@ -2194,10 +2194,10 @@ pins:
     - GPIO:EXTI
   VSS-3:
     position: 51
-    type: Power
+    type: power
   VDD-4:
     position: 52
-    type: Power
+    type: power
   PF13:
     position: 53
     type: I/O
@@ -2298,10 +2298,10 @@ pins:
     - GPIO:EXTI
   VSS-4:
     position: 61
-    type: Power
+    type: power
   VDD-5:
     position: 62
-    type: Power
+    type: power
   PE10:
     position: 63
     type: I/O
@@ -2423,10 +2423,10 @@ pins:
     - GPIO:EXTI
   VCAP_1:
     position: 71
-    type: Power
+    type: power
   VDD-6:
     position: 72
-    type: Power
+    type: power
   PB12:
     position: 73
     type: I/O
@@ -2585,10 +2585,10 @@ pins:
     - GPIO:EXTI
   VSS-5:
     position: 83
-    type: Power
+    type: power
   VDD-7:
     position: 84
-    type: Power
+    type: power
   PD14:
     position: 85
     type: I/O
@@ -2699,10 +2699,10 @@ pins:
     - GPIO:EXTI
   VSS-6:
     position: 94
-    type: Power
+    type: power
   VDD-8:
     position: 95
-    type: Power
+    type: power
   PC6:
     position: 96
     type: I/O
@@ -2857,13 +2857,13 @@ pins:
     - GPIO:EXTI
   VCAP_2:
     position: 106
-    type: Power
+    type: power
   VSS-7:
     position: 107
-    type: Power
+    type: power
   VDD-9:
     position: 108
-    type: Power
+    type: power
   PA14:
     position: 109
     type: I/O
@@ -3023,10 +3023,10 @@ pins:
     - GPIO:EXTI
   VSS-8:
     position: 120
-    type: Power
+    type: power
   VDD-10:
     position: 121
-    type: Power
+    type: power
   PD6:
     position: 122
     type: I/O
@@ -3133,10 +3133,10 @@ pins:
     - GPIO:EXTI
   VSS-9:
     position: 130
-    type: Power
+    type: power
   VDD-11:
     position: 131
-    type: Power
+    type: power
   PG15:
     position: 132
     type: I/O
@@ -3233,7 +3233,7 @@ pins:
     - GPIO:EXTI
   BOOT0:
     position: 138
-    type: Boot
+    type: boot
   PB8:
     position: 139
     type: I/O
@@ -3297,7 +3297,7 @@ pins:
     - GPIO:EXTI
   PDR_ON:
     position: 143
-    type: Reset
+    type: reset
   VDD-12:
     position: 144
-    type: Power
+    type: power

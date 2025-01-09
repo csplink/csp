@@ -31,6 +31,7 @@ import jsonschema
 import yaml
 from loguru import logger
 
+from .i18n_type import I18nType
 from .settings import SETTINGS
 
 
@@ -39,6 +40,7 @@ class SummaryType:
         class DocumentUnitType:
             def __init__(self, data: dict):
                 self.__data = data
+                self.__url = None
 
             def __str__(self) -> str:
                 return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -48,8 +50,10 @@ class SummaryType:
                 return self.__data
 
             @property
-            def url(self) -> dict[str, str]:
-                return self.__data.get("url", {})
+            def url(self) -> I18nType:
+                if self.__url is None:
+                    self.__url = I18nType(self.__data.get("url", {}))
+                return self.__url
 
         def __init__(self, data: dict):
             self.__data = data
@@ -97,6 +101,8 @@ class SummaryType:
         def __init__(self, data: dict):
             self.__data = data
 
+            self.__description = None
+
         def __str__(self) -> str:
             return json.dumps(self.__data, indent=2, ensure_ascii=False)
 
@@ -105,8 +111,10 @@ class SummaryType:
             return self.__data
 
         @property
-        def description(self) -> dict[str, str]:
-            return self.__data.get("description", {})
+        def description(self) -> I18nType:
+            if self.__description is None:
+                self.__description = I18nType(self.__data.get("description", {}))
+            return self.__description
 
         @property
         def ip(self) -> str:
@@ -124,12 +132,18 @@ class SummaryType:
             return self.__data
 
         @property
-        def defaultHeapSize(self) -> str:
-            return self.__data.get("defaultHeapSize", "")
+        def defaultHeapSize(self) -> int:
+            size = self.__data.get("defaultHeapSize", -1)
+            if isinstance(size, str):
+                size = int(size, 16)
+            return size
 
         @property
-        def defaultStackSize(self) -> str:
-            return self.__data.get("defaultStackSize", "")
+        def defaultStackSize(self) -> int:
+            size = self.__data.get("defaultStackSize", -1)
+            if isinstance(size, str):
+                size = int(size, 16)
+            return size
 
     class PinType:
         def __init__(self, data: dict):
@@ -168,8 +182,13 @@ class SummaryType:
 
     def __init__(self, data: dict):
         self.__data = data
+
+        self.__vendorUrl = None
         self.__documents = None
+        self.__illustrate = None
+        self.__introduction = None
         self.__modules = None
+        self.__url = None
         self.__linker = None
         self.__pins = None
 
@@ -198,8 +217,10 @@ class SummaryType:
         return self.__data.get("vendor", "")
 
     @property
-    def vendorUrl(self) -> dict[str, str]:
-        return self.__data.get("vendorUrl", {})
+    def vendorUrl(self) -> I18nType:
+        if self.__vendorUrl is None:
+            self.__vendorUrl = I18nType(self.__data.get("vendorUrl", {}))
+        return self.__vendorUrl
 
     @property
     def documents(self) -> DocumentType:
@@ -216,12 +237,16 @@ class SummaryType:
         return self.__data.get("hasPowerPad", False)
 
     @property
-    def illustrate(self) -> dict[str, str]:
-        return self.__data.get("illustrate", {})
+    def illustrate(self) -> I18nType:
+        if self.__illustrate is None:
+            self.__illustrate = I18nType(self.__data.get("illustrate", {}))
+        return self.__illustrate
 
     @property
-    def introduction(self) -> dict[str, str]:
-        return self.__data.get("introduction", {})
+    def introduction(self) -> I18nType:
+        if self.__introduction is None:
+            self.__introduction = I18nType(self.__data.get("introduction", {}))
+        return self.__introduction
 
     @property
     def modules(self) -> dict[str, dict[str, ModuleType]]:
@@ -240,8 +265,10 @@ class SummaryType:
         return self.__data.get("package", "")
 
     @property
-    def url(self) -> dict[str, str]:
-        return self.__data.get("url", {})
+    def url(self) -> I18nType:
+        if self.__url is None:
+            self.__url = I18nType(self.__data.get("url", {}))
+        return self.__url
 
     @property
     def builder(self) -> dict[str, dict[str, list[str]]]:

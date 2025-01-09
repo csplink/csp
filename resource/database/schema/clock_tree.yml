@@ -23,21 +23,42 @@
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
-additionalProperties: false
 properties:
-  widgets:
+  elements:
     type: object
     additionalProperties: false
     patternProperties:
       ".*":
-        type: [ object, 'null' ] #TODO: null
+        type: [object, "null"] #TODO: null
+        properties:
+          refParameter:
+            type: string
+            pattern: "^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$"
+          type:
+            enum: [divisor, multiplexed, multiple]
+          enable:
+            type: [string, boolean]
+          output:
+            type: array
+            items:
+              type: string
+              pattern: "^[A-Za-z0-9_.+-]+$"
+          input:
+            $ref: "#/properties/elements/patternProperties/.*/properties/output"
+          z:
+            type: integer
+        required: [refParameter]
   i18n:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^\\$\\(.*\\)$":
+        $ref: "#/properties/$language$"
+  $language$:
     type: object
     properties:
       en:
-        type: [ "string", "null" ] #TODO: null
-      zh_CN:
         type: string
-    required: [ "en", "zh_CN" ]
+    required: [en]
 
-required: [ "widgets" ]
+required: [elements]

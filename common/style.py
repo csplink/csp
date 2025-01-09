@@ -37,10 +37,11 @@ class Style(StyleSheetBase, Enum):
 
     CLOCK_TREE_VIEW = "clock_tree_view"
     CODE_VIEW = "code_view"
-    GRID_PROPERTY_IP = "grid_property_ip"
+    WIDGET_BASE_MANAGER = "widget_base_manager"
     NEW_PROJECT_WINDOW = "new_project_window"
     PACKAGE_VIEW = "package_view"
     PLAIN_TEXT_EDIT_CODE = "plain_text_edit_code"
+    PLAIN_TEXT_EDIT_LOGGER = "plain_text_edit_logger"
     SETTING_VIEW = "setting_view"
     SOC_VIEW = "soc_view"
 

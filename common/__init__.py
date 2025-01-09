@@ -24,10 +24,11 @@
 # 2024-07-01     xqyjlj       initial version
 #
 
-from .coder import Coder
+from .clock_tree import ClockTree, CLOCK_TREE, ClockTreeType
+from .coder import Coder, CoderCmd
 from .contributors import Contributor, ContributorType
 from .icon import Icon
-from .ip import Ip, IP
+from .ip import Ip, IP, IpType
 from .package import Package, PACKAGE, PackageDescriptionType
 from .project import Project, PROJECT
 from .repository import Repository, RepositoryType, RepositorySocType
@@ -37,10 +38,11 @@ from .style import Style
 from .summary import Summary, SummaryType, SUMMARY
 
 __all__ = [
-    'Coder',
+    'ClockTree', 'CLOCK_TREE', 'ClockTreeType',
+    'Coder', 'CoderCmd',
     'Contributor', 'ContributorType',
     'Icon',
-    'Ip', 'IP',
+    'Ip', 'IP', 'IpType',
     'Package', 'PACKAGE', 'PackageDescriptionType',
     'Project', 'PROJECT',
     'Repository', 'RepositoryType', 'RepositorySocType',

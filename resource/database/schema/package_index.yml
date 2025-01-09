@@ -22,8 +22,7 @@
 #
 
 $schema: "http://json-schema.org/draft-07/schema#"
-type: [ object, "null" ]
-additionalProperties: false
+type: [object, "null"]
 properties:
   hal:
     type: object

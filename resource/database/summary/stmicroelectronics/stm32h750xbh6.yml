@@ -1714,7 +1714,7 @@ builder:
   CMake:
     v3.7:
     - arm-none-eabi
-  MdkArm:
+  MDK-Arm:
     v5.27:
     - armcc
     - armclang
@@ -1724,7 +1724,7 @@ linker:
 pins:
   VSS-1:
     position: A1
-    type: Power
+    type: power
   PI6:
     position: A2
     type: I/O
@@ -1800,10 +1800,10 @@ pins:
     - GPIO:EXTI
   VDDLDO-1:
     position: A6
-    type: Power
+    type: power
   VCAP-1:
     position: A7
-    type: Power
+    type: power
   PK5:
     position: A8
     type: I/O
@@ -1963,13 +1963,13 @@ pins:
     - GPIO:EXTI
   VSS-2:
     position: A17
-    type: Power
+    type: power
   VBAT:
     position: B1
-    type: Power
+    type: power
   VSS-3:
     position: B2
-    type: Power
+    type: power
   PI7:
     position: B3
     type: I/O
@@ -2026,7 +2026,7 @@ pins:
     - GPIO:EXTI
   VSS-4:
     position: B6
-    type: Power
+    type: power
   PB4 (NJTRST):
     position: B7
     type: I/O
@@ -2368,7 +2368,7 @@ pins:
     - GPIO:EXTI
   VSS-5:
     position: C10
-    type: Power
+    type: power
   PD7:
     position: C11
     type: I/O
@@ -2407,7 +2407,7 @@ pins:
     - GPIO:EXTI
   VSS-6:
     position: C13
-    type: Power
+    type: power
   PI3:
     position: C14
     type: I/O
@@ -2436,10 +2436,10 @@ pins:
     - GPIO:EXTI
   VSS-7:
     position: C16
-    type: Power
+    type: power
   VDDLDO-2:
     position: C17
-    type: Power
+    type: power
   PE5:
     position: D1
     type: I/O
@@ -2724,10 +2724,10 @@ pins:
     - GPIO:EXTI
   VCAP-2:
     position: D17
-    type: Power
+    type: power
   NC-1:
     position: E1
-    type: NC
+    type: nc
   PI9:
     position: E2
     type: I/O
@@ -2796,16 +2796,16 @@ pins:
     - GPIO:EXTI
   VDD-1:
     position: E6
-    type: Power
+    type: power
   PDR_ON:
     position: E7
-    type: Power
+    type: power
   BOOT0:
     position: E8
-    type: Boot
+    type: boot
   VDD-2:
     position: E9
-    type: Power
+    type: power
   PJ13:
     position: E10
     type: I/O
@@ -2820,7 +2820,7 @@ pins:
     - GPIO:EXTI
   VDD-3:
     position: E11
-    type: Power
+    type: power
   PD1:
     position: E12
     type: I/O
@@ -2953,10 +2953,10 @@ pins:
     - GPIO:EXTI
   VSS-8:
     position: F1
-    type: Power
+    type: power
   VSS-9:
     position: F2
-    type: Power
+    type: power
   PI10:
     position: F3
     type: I/O
@@ -2988,7 +2988,7 @@ pins:
     - GPIO:EXTI
   VDD-4:
     position: F5
-    type: Power
+    type: power
   PC7:
     position: F13
     type: I/O
@@ -3072,7 +3072,7 @@ pins:
     - GPIO:EXTI
   VDD33_USB:
     position: F17
-    type: Power
+    type: power
   PF2:
     position: G1
     type: I/O
@@ -3087,7 +3087,7 @@ pins:
     - GPIO:EXTI
   VSS-10:
     position: G2
-    type: Power
+    type: power
   PF1:
     position: G3
     type: I/O
@@ -3114,25 +3114,25 @@ pins:
     - GPIO:EXTI
   VDD-5:
     position: G5
-    type: Power
+    type: power
   VSS-11:
     position: G7
-    type: Power
+    type: power
   VSS-12:
     position: G8
-    type: Power
+    type: power
   VSS-13:
     position: G9
-    type: Power
+    type: power
   VSS-14:
     position: G10
-    type: Power
+    type: power
   VSS-15:
     position: G11
-    type: Power
+    type: power
   VDD-6:
     position: G13
-    type: Power
+    type: power
   PG5:
     position: G14
     type: I/O
@@ -3164,10 +3164,10 @@ pins:
     - GPIO:EXTI
   VSS-16:
     position: G16
-    type: Power
+    type: power
   VDD50_USB:
     position: G17
-    type: Power
+    type: power
   PI12:
     position: H1
     type: I/O
@@ -3216,25 +3216,25 @@ pins:
     - GPIO:EXTI
   VDD-7:
     position: H5
-    type: Power
+    type: power
   VSS-17:
     position: H7
-    type: Power
+    type: power
   VSS-18:
     position: H8
-    type: Power
+    type: power
   VSS-19:
     position: H9
-    type: Power
+    type: power
   VSS-20:
     position: H10
-    type: Power
+    type: power
   VSS-21:
     position: H11
-    type: Power
+    type: power
   VDD-8:
     position: H13
-    type: Power
+    type: power
   PG4:
     position: H14
     type: I/O
@@ -3319,7 +3319,7 @@ pins:
     - GPIO:EXTI
   VSS-22:
     position: J3
-    type: Power
+    type: power
   PF5:
     position: J4
     type: I/O
@@ -3347,22 +3347,22 @@ pins:
     - GPIO:EXTI
   VSS-23:
     position: J7
-    type: Power
+    type: power
   VSS-24:
     position: J8
-    type: Power
+    type: power
   VSS-25:
     position: J9
-    type: Power
+    type: power
   VSS-26:
     position: J10
-    type: Power
+    type: power
   VSS-27:
     position: J11
-    type: Power
+    type: power
   VDD-9:
     position: J13
-    type: Power
+    type: power
   PK0:
     position: J14
     type: I/O
@@ -3393,13 +3393,13 @@ pins:
     - GPIO:EXTI
   VSS-28:
     position: J16
-    type: Power
+    type: power
   VSS-29:
     position: J17
-    type: Power
+    type: power
   NRST:
     position: K1
-    type: Reset
+    type: reset
   PF6:
     position: K2
     type: I/O
@@ -3457,25 +3457,25 @@ pins:
     - GPIO:EXTI
   VDD-10:
     position: K5
-    type: Power
+    type: power
   VSS-30:
     position: K7
-    type: Power
+    type: power
   VSS-31:
     position: K8
-    type: Power
+    type: power
   VSS-32:
     position: K9
-    type: Power
+    type: power
   VSS-33:
     position: K10
-    type: Power
+    type: power
   VSS-34:
     position: K11
-    type: Power
+    type: power
   VDD-11:
     position: K13
-    type: Power
+    type: power
   PJ11:
     position: K14
     type: I/O
@@ -3495,16 +3495,16 @@ pins:
     - GPIO:EXTI
   VSS-35:
     position: K15
-    type: Power
+    type: power
   NC-2:
     position: K16
-    type: NC
+    type: nc
   NC-3:
     position: K17
-    type: NC
+    type: nc
   VDDA:
     position: L1
-    type: Power
+    type: power
   PC0:
     position: L2
     type: I/O
@@ -3563,25 +3563,25 @@ pins:
     - GPIO:EXTI
   VDD-12:
     position: L5
-    type: Power
+    type: power
   VSS-36:
     position: L7
-    type: Power
+    type: power
   VSS-37:
     position: L8
-    type: Power
+    type: power
   VSS-38:
     position: L9
-    type: Power
+    type: power
   VSS-39:
     position: L10
-    type: Power
+    type: power
   VSS-40:
     position: L11
-    type: Power
+    type: power
   VDD-13:
     position: L13
-    type: Power
+    type: power
   PJ10:
     position: L14
     type: I/O
@@ -3598,16 +3598,16 @@ pins:
     - GPIO:EXTI
   VSS-41:
     position: L15
-    type: Power
+    type: power
   NC-4:
     position: L16
-    type: NC
+    type: nc
   NC-5:
     position: L17
-    type: NC
+    type: nc
   VREF+:
     position: M1
-    type: MonoIO
+    type: monoIO
     signals:
     - VREFBUF:OUT
   PC1:
@@ -3687,10 +3687,10 @@ pins:
     - GPIO:EXTI
   VDD-14:
     position: M5
-    type: Power
+    type: power
   VDD-15:
     position: M13
-    type: Power
+    type: power
   PJ9:
     position: M14
     type: I/O
@@ -3708,16 +3708,16 @@ pins:
     - GPIO:EXTI
   VSS-42:
     position: M15
-    type: Power
+    type: power
   NC-6:
     position: M16
-    type: NC
+    type: nc
   NC-7:
     position: M17
-    type: NC
+    type: nc
   VREF-:
     position: N1
-    type: Power
+    type: power
   PH2:
     position: N2
     type: I/O
@@ -3818,10 +3818,10 @@ pins:
     - GPIO:EXTI
   VDD-16:
     position: N7
-    type: Power
+    type: power
   VDD-17:
     position: N8
-    type: Power
+    type: power
   PE10:
     position: N9
     type: I/O
@@ -3841,13 +3841,13 @@ pins:
     - GPIO:EXTI
   VDD-18:
     position: N10
-    type: Power
+    type: power
   VDD-19:
     position: N11
-    type: Power
+    type: power
   VDD-20:
     position: N12
-    type: Power
+    type: power
   PJ8:
     position: N13
     type: I/O
@@ -3889,13 +3889,13 @@ pins:
     - GPIO:EXTI
   VSS-43:
     position: N16
-    type: Power
+    type: power
   NC-8:
     position: N17
-    type: NC
+    type: nc
   VSSA:
     position: P1
-    type: Power
+    type: power
   PH3:
     position: P2
     type: I/O
@@ -4153,7 +4153,7 @@ pins:
     - GPIO:EXTI
   VDD-21:
     position: P17
-    type: Power
+    type: power
   PC2_C:
     position: R1
     type: I/O
@@ -4220,7 +4220,7 @@ pins:
     - GPIO:EXTI
   VSS-44:
     position: R4
-    type: Power
+    type: power
   PA7:
     position: R5
     type: I/O
@@ -4284,7 +4284,7 @@ pins:
     - GPIO:EXTI
   VSS-45:
     position: R8
-    type: Power
+    type: power
   PF15:
     position: R9
     type: I/O
@@ -4645,7 +4645,7 @@ pins:
     - GPIO:EXTI
   VSS-46:
     position: T12
-    type: Power
+    type: power
   PH8:
     position: T13
     type: I/O
@@ -4742,7 +4742,7 @@ pins:
     - GPIO:EXTI
   VSS-47:
     position: U1
-    type: Power
+    type: power
   PA3:
     position: U2
     type: I/O
@@ -4906,10 +4906,10 @@ pins:
     - GPIO:EXTI
   VCAP-3:
     position: U11
-    type: Power
+    type: power
   VDDLDO-3:
     position: U12
-    type: Power
+    type: power
   PH7:
     position: U13
     type: I/O
@@ -4988,4 +4988,4 @@ pins:
     - GPIO:EXTI
   VSS-48:
     position: U17
-    type: Power
+    type: power

@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        grid_mode_io.py
+# @file        widget_control_io_manager.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -26,22 +26,23 @@
 
 from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView
+from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView, QVBoxLayout
 from loguru import logger
+from qfluentwidgets import TableView
 
 from common import PROJECT, SETTINGS, SIGNAL_BUS, IP
-from .ui.grid_mode_io_ui import Ui_GridModeIo
 
 
-class GridModeIoModel(QAbstractTableModel):
-    __font = QFont('JetBrains Mono')
-    __font.setPixelSize(12)
+class WidgetControlIoManagerModel(QAbstractTableModel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.__font = QFont('JetBrains Mono')
+        self.__font.setPixelSize(12)
+
         self.__instance = ""
-        self.__ip = {}
+        self.__ip = None
         self.__headersMap = {}
         self.__headersList = []
         self.__config = {}
@@ -104,7 +105,7 @@ class GridModeIoModel(QAbstractTableModel):
         if self.__instance != instance:
             self.__instance = instance
 
-            locale = SETTINGS.get(SETTINGS.language).value
+            locale = SETTINGS.get(SETTINGS.language).value.name()
 
             self.__ip = IP.projectIps().get(instance)
             self.__headersMap.clear()
@@ -116,19 +117,22 @@ class GridModeIoModel(QAbstractTableModel):
             self.__headersMap = {
                 self.tr("Name"): {
                     "path": "",
-                    "index": 0
+                    "index": 0,
+                    "param": ""
                 },
                 self.tr("Label"): {
                     "path": "pin/(name)/label",
-                    "index": 1
+                    "index": 1,
+                    "param": ""
                 },
             }
 
             index = 2
             for key, info in self.__ip.parameters.items():
-                self.__headersMap[info.displayName[locale.name()]] = {
+                self.__headersMap[info.display.get(locale)] = {
                     "path": f"{instance}/(name)/{key}",
-                    "index": index
+                    "index": index,
+                    "param": key
                 }
                 index += 1
             self.__headersList = list(self.__headersMap.keys())
@@ -145,7 +149,8 @@ class GridModeIoModel(QAbstractTableModel):
                             if path != "":
                                 path = path.replace("(name)", name)
                                 value = PROJECT.project().configs.get(path, "")
-                                l.append({"display": IP.iptr(self.__value2str(value)), "tooltip": value})
+                                l.append({"display": IP.iptr(item["param"], self.__value2str(value)),
+                                          "tooltip": value})
                             else:
                                 l.append({"display": name, "tooltip": name})
                         self.__data.append(l)
@@ -205,11 +210,11 @@ class GridModeIoModel(QAbstractTableModel):
             elif len(keys) == 3:
                 index = self.__getModelDataIndex(name)
                 if index >= 0:
-                    locale = SETTINGS.get(SETTINGS.language).value
-                    param = self.__ip["parameters"][keys[2]]["displayName"][locale.name()]
+                    locale = SETTINGS.get(SETTINGS.language).value.name()
+                    param = self.__ip.parameters[keys[2]].display.get(locale)
                     column = self.__headersList.index(param)
                     self.__data[index][column] = {
-                        "display": IP.iptr(self.__value2str(newValue)),
+                        "display": IP.iptr(keys[2], self.__value2str(newValue)),
                         "tooltip": newValue
                     }
                     index = self.createIndex(index, column)
@@ -226,15 +231,21 @@ class GridModeIoModel(QAbstractTableModel):
                     self.dataChanged.emit(index, index)
 
 
-class GridModeIo(Ui_GridModeIo, QWidget):
-    __instance = ""
-
+class WidgetControlIoManager(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
+
+        # ----------------------------------------------------------------------
+        self.vLayout = QVBoxLayout(self)
+        self.vLayout.setContentsMargins(9, 9, 9, 9)
+        self.tableView_io = TableView(self)
+        self.vLayout.addWidget(self.tableView_io)
+        # ----------------------------------------------------------------------
+
+        self.__instance = ""
 
         self.m_tableView_ioProxyModel = QSortFilterProxyModel(self)
-        self.m_model = GridModeIoModel(self)
+        self.m_model = WidgetControlIoManagerModel(self)
         self.m_tableView_ioProxyModel.setSourceModel(self.m_model)
         self.tableView_io.setModel(self.m_tableView_ioProxyModel)
         self.tableView_io.setBorderVisible(True)
@@ -256,4 +267,4 @@ class GridModeIo(Ui_GridModeIo, QWidget):
         if len(indexes) > 0:
             index = indexes[0]
             name = str(index.data())
-            SIGNAL_BUS.gridPropertyIpTriggered.emit(self.__instance, name)
+            SIGNAL_BUS.modeManagerTriggered.emit(self.__instance, name)

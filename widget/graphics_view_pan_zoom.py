@@ -26,15 +26,16 @@
 
 import math
 
-from PySide6.QtCore import Qt, QRegularExpression
+from PySide6.QtCore import Qt, QRegularExpression, QEvent, QCoreApplication
 from PySide6.QtGui import (QTransform, QMouseEvent, QWheelEvent, QContextMenuEvent, QResizeEvent,
                            QRegularExpressionValidator, QSurfaceFormat, QPainter)
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
-from PySide6.QtWidgets import QGraphicsView, QGraphicsItem
+from PySide6.QtWidgets import QGraphicsView, QGraphicsItem, QGraphicsSceneWheelEvent, QGraphicsProxyWidget
 from loguru import logger
 from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
 
 from common import PROJECT, SIGNAL_BUS, SETTINGS
+from . import EnumClockTreeWidget
 from .graphics_item_pin import GraphicsItemPin
 
 
@@ -63,11 +64,10 @@ class GraphicsViewPanZoom(QGraphicsView):
     MIN_SCALE = 0
     MAX_SCALE = 1000
     RESOLUTION = 50
-    SCALE = (MIN_SCALE + MAX_SCALE) // 2
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-
+        self.scale = (self.MIN_SCALE + self.MAX_SCALE) // 2
         if SETTINGS.isUseOpenGL.value:
             self.m_opengl = QOpenGLWidget(self)
             fmt = QSurfaceFormat()
@@ -90,7 +90,7 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
 
     def setupMatrix(self):
-        scale = math.pow(2, (self.SCALE - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION)
+        scale = math.pow(2, (self.scale - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION)
         matrix = QTransform()
         matrix.scale(scale, scale)
         # matrix.rotate(90)
@@ -108,11 +108,7 @@ class GraphicsViewPanZoom(QGraphicsView):
                     function: str = PROJECT.project().configs.get(functionKey, "None")
                     seqs = function.split(':')
                     if len(seqs) == 2:
-                        SIGNAL_BUS.gridPropertyIpTriggered.emit(seqs[0], name)
-                    else:
-                        logger.error(f"Function name error, {name}:{function}")
-                else:
-                    logger.debug(f"click graphics item: {item}")
+                        SIGNAL_BUS.modeManagerTriggered.emit(seqs[0], name)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
@@ -120,8 +116,20 @@ class GraphicsViewPanZoom(QGraphicsView):
             self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
 
     def wheelEvent(self, event: QWheelEvent):
-        scroll_amount = event.angleDelta()
-        if scroll_amount.y() > 0:
+        item = self.itemAt(event.position().toPoint())
+        # TODO: There may be a more elegant solution
+        if item is not None and item.flags() == (QGraphicsItem.GraphicsItemFlag.ItemIsFocusable |
+                                                 QGraphicsItem.GraphicsItemFlag.ItemUsesExtendedStyleOption |
+                                                 QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges |
+                                                 QGraphicsItem.GraphicsItemFlag.ItemIsPanel):
+            parentItem = item.parentItem()
+            if parentItem is not None and isinstance(parentItem, QGraphicsProxyWidget):
+                if isinstance(parentItem.widget(), EnumClockTreeWidget):
+                    QCoreApplication.sendEvent(self.scene(), self.QWheelEvent2QGraphicsSceneWheelEvent(event))
+                    return
+
+        scrollAmount = event.angleDelta()
+        if scrollAmount.y() > 0:
             self.zoomIn(6)
         else:
             self.zoomOut(6)
@@ -141,27 +149,45 @@ class GraphicsViewPanZoom(QGraphicsView):
         if xHeight != 0:
             self.rescale()
 
+    def QWheelEvent2QGraphicsSceneWheelEvent(self, event: QWheelEvent) -> QGraphicsSceneWheelEvent:
+        wheelEvent = QGraphicsSceneWheelEvent(QEvent.GraphicsSceneWheel)
+        wheelEvent.setScenePos(self.mapToScene(event.position().toPoint()))
+        wheelEvent.setScreenPos(event.globalPosition().toPoint())
+        wheelEvent.setButtons(event.buttons())
+        wheelEvent.setModifiers(event.modifiers())
+        horizontal = abs(event.angleDelta().x()) > abs(event.angleDelta().y())
+        wheelEvent.setDelta(event.angleDelta().x() if horizontal else event.angleDelta().y())
+        wheelEvent.setPixelDelta(event.pixelDelta())
+        wheelEvent.setPhase(event.phase())
+        wheelEvent.setInverted(event.isInverted())
+        wheelEvent.setOrientation(Qt.Horizontal if horizontal else Qt.Vertical)
+        wheelEvent.setAccepted(False)
+        wheelEvent.setTimestamp(event.timestamp())
+        return wheelEvent
+
     def zoomIn(self, value: int):
-        self.SCALE += value
-        if self.SCALE >= self.MAX_SCALE:
-            self.SCALE = self.MAX_SCALE
+        self.scale += value
+        if self.scale >= self.MAX_SCALE:
+            self.scale = self.MAX_SCALE
 
         self.setupMatrix()
 
     def zoomOut(self, value: int):
-        self.SCALE -= value
-        if self.SCALE <= self.MIN_SCALE:
-            self.SCALE = self.MIN_SCALE
+        self.scale -= value
+        if self.scale <= self.MIN_SCALE:
+            self.scale = self.MIN_SCALE
 
         self.setupMatrix()
 
     def zoom(self, value):
-        self.SCALE = math.log(value, 2) * self.RESOLUTION + (self.MIN_SCALE + self.MAX_SCALE / 2)
-        if self.SCALE >= self.MAX_SCALE:
-            self.SCALE = self.MAX_SCALE
+        if value <= 0:
+            return
+        self.scale = math.log(value, 2) * self.RESOLUTION + (self.MIN_SCALE + self.MAX_SCALE / 2)
+        if self.scale >= self.MAX_SCALE:
+            self.scale = self.MAX_SCALE
 
-        if self.SCALE <= self.MIN_SCALE:
-            self.SCALE = self.MIN_SCALE
+        if self.scale <= self.MIN_SCALE:
+            self.scale = self.MIN_SCALE
 
         self.setupMatrix()
 
@@ -173,6 +199,14 @@ class GraphicsViewPanZoom(QGraphicsView):
             sceneHeight = scene.itemsBoundingRect().height()
             viewWidth = self.width()
             viewHeight = self.height()
+
+            if sceneWidth == 0:
+                logger.error(f'the scene width is 0.')
+                return
+
+            if sceneHeight == 0:
+                logger.error(f'the scene height is 0.')
+                return
 
             scaleWidth = viewWidth / sceneWidth
             scaleHeight = viewHeight / sceneHeight

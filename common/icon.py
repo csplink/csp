@@ -35,6 +35,7 @@ from .settings import SETTINGS
 class Icon(FluentIconBase, Enum):
     """ Custom icons """
     M_C = "material/c"
+    M_FILE = "material/file"
     M_FOLDER_BASE = "material/folder-base"
     M_FOLDER_BASE_OPEN = "material/folder-base-open"
     M_FOLDER_DIST = "material/folder-dist"

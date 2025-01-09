@@ -142,7 +142,7 @@ class GraphicsItemPin(QGraphicsObject):
                 painter.setBrush(self.SELECTED_COLOR)
             else:
                 painter.setBrush(self.DEFAULT_COLOR)
-        elif self.pinConfig.type == "Power":
+        elif self.pinConfig.type == "power":
             painter.setBrush(self.POWER_COLOR)
         else:
             painter.setBrush(self.OTHER_COLOR)
@@ -267,10 +267,10 @@ class GraphicsItemPin(QGraphicsObject):
 
         if keys[-1] == "label":  # update pin label comment
             self.label = newValue
-            SIGNAL_BUS.gridPropertyIpTriggered.emit(self.pinIp, self.name)
+            SIGNAL_BUS.modeManagerTriggered.emit(self.pinIp, self.name)
         elif keys[-1] == "locked":  # update pin locked status
             self.locked = newValue
-            SIGNAL_BUS.gridPropertyIpTriggered.emit(self.pinIp, self.name)
+            SIGNAL_BUS.modeManagerTriggered.emit(self.pinIp, self.name)
         elif keys[-1] == "function":  # update pin function
             self.function = newValue
             if len(newValue) > 0:  # set new function
@@ -281,13 +281,13 @@ class GraphicsItemPin(QGraphicsObject):
                 ip = IP.projectIps().get(instance)
                 if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
-                    SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
+                    SIGNAL_BUS.modeManagerTriggered.emit(instance, self.name)
                     return
                 ip_modes = ip.modes[mode]
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})
                 for key, info in ip_modes.items():
                     PROJECT.project().configs.set(f"{instance}/{self.name}/{key}", info.default)
-                SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
+                SIGNAL_BUS.modeManagerTriggered.emit(instance, self.name)
             elif len(oldValue) > 0:  # newValue = None, so clear old function
                 instance = oldValue.split(":")[0]
                 ip = IP.projectIps().get(instance)
@@ -295,6 +295,6 @@ class GraphicsItemPin(QGraphicsObject):
                     logger.error(f'the ip instance:"{instance}" is invalid.')
                     return
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})
-                SIGNAL_BUS.gridPropertyIpTriggered.emit(instance, self.name)
+                SIGNAL_BUS.modeManagerTriggered.emit(instance, self.name)
 
         self.update()

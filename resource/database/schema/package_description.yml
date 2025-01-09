@@ -23,11 +23,9 @@
 
 $schema: "http://json-schema.org/draft-07/schema#"
 type: object
-additionalProperties: false
 properties:
   author:
     type: object
-    additionalProperties: false
     properties:
       name:
         type: string
@@ -38,7 +36,6 @@ properties:
         pattern: "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"
       website:
         type: object
-        additionalProperties: false
         properties:
           blog:
             type: string
@@ -46,7 +43,7 @@ properties:
             pattern: "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
           github:
             $ref: "#/properties/author/properties/website/properties/blog"
-    required: [ "name", "email", "website" ]
+    required: [name, email, website]
   name:
     type: string
     minLength: 1
@@ -57,7 +54,7 @@ properties:
     type: string
     minLength: 1
   type:
-    enum: [ "hal", "toolchains" ]
+    enum: [hal, toolchains]
   vendor:
     type: string
     minLength: 1
@@ -66,9 +63,7 @@ properties:
     properties:
       en:
         $ref: "#/properties/author/properties/website/properties/blog"
-      zh_CN:
-        $ref: "#/properties/author/properties/website/properties/blog"
-    required: [ "en", "zh_CN" ]
+    required: [en]
   vendorUrl:
     $ref: "#/properties/url"
   description:
@@ -77,10 +72,7 @@ properties:
       en:
         type: string
         minLength: 1
-      zh_CN:
-        type: string
-        minLength: 1
-    required: [ "en", "zh_CN" ]
+    required: [en]
   support:
     $ref: "#/properties/author/properties/email"
 required:
