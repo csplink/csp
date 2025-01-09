@@ -28,8 +28,7 @@
 # TODO: 2. 支持所有文档的分组
 # TODO: 3. 支持差异更新
 
-
-import getopt
+import argparse
 import os
 import re
 import sqlite3
@@ -123,12 +122,20 @@ class Mcu2Summary:
     def __getPins(self, pinNodes: list[etree.Element], ns: dict) -> dict:
         pins = {}
         segs = []
+        typeMap = {
+            'I/O': 'I/O',
+            'Power': 'power',
+            'Reset': 'reset',
+            'NC': 'nc',
+            'Boot': 'boot',
+            'MonoIO': 'monoIO',
+        }
         for pinNode in pinNodes:
             pinName = pinNode.attrib['Name']
             position: str = pinNode.attrib['Position']
             if position.isdecimal():
                 position: int = int(position)
-            type_ = pinNode.attrib['Type']
+            type_ = typeMap.get(pinNode.attrib['Type'], pinNode.attrib['Type'])
             signalNodes = pinNode.findall('ns:Signal', ns)
             signals = []
             modes = []
@@ -325,7 +332,7 @@ class Mcu2Summary:
                     'builder': {
                         'XMake': {'v2.8.1': ['arm-none-eabi']},
                         'CMake': {'v3.7': ['arm-none-eabi']},
-                        'MdkArm': {'v5.27': ['armcc', 'armclang']},
+                        'MDK-Arm': {'v5.27': ['armcc', 'armclang']},
                     },
                     'linker': {
                         'defaultHeapSize': '0x200',
@@ -352,51 +359,45 @@ def __help():
 
 def __main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hs:d:", ["help", "source=", "dest=", "crdb=", "cfdb="])
-    except getopt.GetoptError:
-        # help()
-        sys.exit(2)
+        parser = __createParser()
+        args = parser.parse_args()
+    except argparse.ArgumentError as e:
+        print(e)
+        sys.exit(1)
 
-    src = ''
-    dest = ''
-    crdb = ''
-    cfdb = ''
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            __help()
-            sys.exit()
-        elif opt in ("-s", "--source"):
-            src = arg
-        elif opt in ("-d", "--dest"):
-            dest = arg
-        elif opt == "--crdb":
-            crdb = arg
-        elif opt == "--cfdb":
-            cfdb = arg
+    file = args.file
+    output = args.output
+    crdb = args.crdb
+    cfdb = args.cfdb
 
-    if not os.path.isfile(src):
-        print(f'"{src}" is not a file')
-        __help()
-        sys.exit(2)
+    if not os.path.isfile(file):
+        print(f'the file {file!r} is not a file')
+        sys.exit(1)
 
     if not os.path.isfile(crdb):
-        print(f'"{crdb}" is not a file')
-        __help()
-        sys.exit(2)
+        print(f'the file {crdb!r} is not a file')
+        sys.exit(1)
 
     if not os.path.isfile(cfdb):
-        print(f'"{cfdb}" is not a file')
-        __help()
-        sys.exit(2)
+        print(f'the file {cfdb!r} is not a file')
+        sys.exit(1)
 
-    if dest == '':
-        __help()
-        sys.exit(2)
+    if not os.path.isdir(output):
+        print(f'the dir {output!r} is not a dir')
+        sys.exit(1)
 
-    if not os.path.isdir(dest):
-        os.makedirs(dest)
+    Mcu2Summary().generate(file, output, crdb, cfdb)
 
-    Mcu2Summary().generate(src, dest, crdb, cfdb)
+
+def __createParser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description='generate csp summary from stm32cubemx mcu xml file',
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    parser.add_argument('-f', '--file', required=True, help='stm32cubemx mcu xml file')
+    parser.add_argument('-o', '--output', required=True, help='output dir')
+    parser.add_argument('--crdb', required=True, help='stm32cubemx crdb.db file')
+    parser.add_argument('--cfdb', required=True, help='stm32cubemx cube-finder-db.db file')
+    return parser
 
 
 if __name__ == '__main__':

@@ -28,7 +28,7 @@
 # TODO: 2. 支持特定名称MCU导出
 # TODO: 3. 支持差异更新
 
-import getopt
+import argparse
 import os
 import sys
 import xml.etree.ElementTree as etree
@@ -131,32 +131,35 @@ def __help():
 
 def __main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hs:d:", ["help", "source=", "dest="])
-    except getopt.GetoptError:
-        # help()
-        sys.exit(2)
+        parser = __createParser()
+        args = parser.parse_args()
+    except argparse.ArgumentError as e:
+        print(e)
+        sys.exit(1)
 
-    src = ''
-    dest = ''
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            __help()
-            sys.exit()
-        elif opt in ("-s", "--source"):
-            src = arg
-        elif opt in ("-d", "--dest"):
-            dest = arg
+    file = args.file
+    output = args.output
 
-    if not os.path.isfile(src):
-        print(f'"{src}" is not a file')
-        __help()
-        sys.exit(2)
+    if not os.path.isfile(file):
+        print(f'the file {file!r} is not a file')
+        sys.exit(1)
 
-    if dest == '':
-        __help()
-        sys.exit(2)
+    if not os.path.isdir(output):
+        print(f'the dir {output!r} is not a dir')
+        sys.exit(1)
 
-    Families2Repository().generate(src, dest)
+    dest = os.path.join(output, 'repository.yaml')
+
+    Families2Repository().generate(file, dest)
+
+
+def __createParser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description='generate csp repository from stm32cubemx families.xml file',
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    parser.add_argument('-f', '--file', required=True, help='stm32cubemx mcu xml file')
+    parser.add_argument('-o', '--output', required=True, help='output dir')
+    return parser
 
 
 if __name__ == '__main__':
