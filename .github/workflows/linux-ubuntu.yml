@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           sudo apt update
-          sudo apt install libegl1-mesa libegl1
+          sudo apt install libegl1-mesa-dev libegl1
 
       - name: ⬇️ checkout csp
         uses: actions/checkout@v4
