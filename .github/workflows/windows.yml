@@ -33,7 +33,7 @@ concurrency:
 
 jobs:
   test:
-    name: 🔧 test
+    name: 🧪 test
     runs-on: windows-latest
     strategy:
       matrix:
@@ -63,3 +63,46 @@ jobs:
         shell: bash
         run: |
           python3 unit-test.py
+
+  release:
+    name: ⬆️ release
+    runs-on: windows-latest
+    needs: [ test ]
+    strategy:
+      matrix:
+        include:
+          - python_version: 3.10.11
+    env:
+      QT_ASSUME_STDERR_HAS_CONSOLE: 1
+      CI_PROJECT_DIR: ${{ github.workspace }}
+      GITHUB_CSPLINK_DEVELOPER_TOKEN: ${{ github.token }}
+    steps:
+      - name: ⬇️ checkout csp
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: ⬇️ setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      - name: ⬇️ install python packages
+        shell: bash
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install nuitka
+          python -m nuitka --version
+
+      - name: 🔨 build & deploy
+        shell: bash
+        run: |
+          source tools/deploy.sh && deploy csp-windows
+
+      - name: ⬆️ upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: csp-windows
+          path: csp-windows
+          include-hidden-files: true

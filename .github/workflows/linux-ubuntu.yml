@@ -33,7 +33,7 @@ concurrency:
 
 jobs:
   test:
-    name: 🔧 test
+    name: 🧪 test
     runs-on: ubuntu-latest
     strategy:
       matrix:
