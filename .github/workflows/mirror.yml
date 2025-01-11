@@ -40,7 +40,7 @@ jobs:
   mirror:
     name: 💕 mirror to another location
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'csp'
+    if: github.repository_owner == 'csplink'
     steps:
       - name: 💕 mirror
         uses: csplink/action_git_mirror/@master
