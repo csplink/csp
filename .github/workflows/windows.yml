@@ -68,6 +68,7 @@ jobs:
     name: ⬆️ release
     runs-on: windows-latest
     needs: [ test ]
+    if: startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         include:
@@ -98,11 +99,15 @@ jobs:
       - name: 🔨 build & deploy
         shell: bash
         run: |
-          source tools/deploy.sh && deploy csp-windows
+          source tools/deploy.sh && deploy csp-windows-${{ github.ref_name }}
+          7z a -tzip -mx=9 csp-windows-${{ github.ref_name }}.zip csp-windows-${{ github.ref_name }}
 
-      - name: ⬆️ upload artifact
-        uses: actions/upload-artifact@v4
+      - name: ⬆️ create release
+        uses: softprops/action-gh-release@v2
         with:
-          name: csp-windows
-          path: csp-windows
-          include-hidden-files: true
+          name: csp ${{ github.ref_name }}
+          draft: true
+          prerelease: true
+          token: ${{ secrets.RELEASE_TOKEN }}
+          files: |
+            csp-windows-${{ github.ref_name }}.zip
