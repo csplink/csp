@@ -38,12 +38,33 @@ __token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
 
 
 class Contributors:
+
+    @staticmethod
+    def getUser(name: str):
+        url = f"https://api.github.com/users/{name}"
+        resp = requests.get(url)
+        json = resp.json()
+        return json
+
     @staticmethod
     def getContributors(owner: str, repo: str, token: str):
         url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
         headers = {"Authorization": f"token {token}"}
         resp = requests.get(url, headers=headers)
         json = resp.json()
+        names = []
+        for info in json:
+            names.append(info["login"])
+        if 'HalfSweet' not in names:  # for branch stable/cpp-qt
+            userInfo = Contributors.getUser('HalfSweet')
+            json.append({
+                'login': userInfo['login'],
+                'avatar_url': userInfo['avatar_url'],
+                'html_url': userInfo['html_url'],
+                'id': userInfo['id'],
+                'contributions': 1
+            })
+
         return sorted(json, key=lambda x: x['contributions'], reverse=True)
 
     @staticmethod
