@@ -67,6 +67,8 @@ class Settings(QConfig):
     else:
         EXE_FOLDER = str(Path(sys.argv[0]).parent)
 
+    os.chdir(EXE_FOLDER)
+
     if os.getenv('__CSP_DEBUG_MODE', '0') == '1':
         DEBUG = True
     else:

@@ -33,9 +33,6 @@ from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, ToolButton,
 from common import Icon, SETTINGS, PACKAGE, SIGNAL_BUS
 
 
-# from qframelesswindow import (FramelessDialog)
-
-
 class PackageInstallThread(QThread):
     progressUpdated = Signal(str, float)
 
@@ -106,8 +103,8 @@ class PackageInstallDialog(MessageBoxBase):
 
     def __on_folderBtn_pressed(self):
         path, _ = QFileDialog.getOpenFileName(self, self.tr('Choose CSP package file'),
-                                               SETTINGS.lastPackageFileFolder.value,
-                                               self.tr('CSP package file (*.csppack)'))
+                                              SETTINGS.lastPackageFileFolder.value,
+                                              self.tr('CSP package file (*.csppack)'))
         if os.path.isfile(path):
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             self.pathLineEdit.setText(path)

@@ -33,8 +33,10 @@ from typing import Callable
 import jsonschema
 import py7zr
 import yaml
+from PySide6.QtCore import QMutex, QMutexLocker, QObject
 from loguru import logger
 from py7zr import callbacks as py7zr_callbacks
+from tqdm import tqdm
 
 from .i18n_type import I18nType
 from .settings import SETTINGS
@@ -180,6 +182,7 @@ class Package:
     def __init__(self) -> None:
         self.__index = self.getPackageIndex()
         self.__pdscs = {}
+        self.__mutex = QMutex()
 
     @logger.catch(default=False)
     def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
@@ -259,92 +262,111 @@ class Package:
         with open(SETTINGS.PACKAGE_INDEX_FILE, 'w', encoding='utf-8') as f:
             f.write(self.dump())
 
-    def install(self, file: str, callback: Callable[[str, float], None]) -> bool:
-        if not os.path.isfile(file):
+    def install(self, path: str, callback: Callable[[str, float], None]) -> bool:
+        if not os.path.exists(path):
             return False
 
         repositoryFolder = SETTINGS.packageFolder.value
-
         tmpFolder = os.path.join(repositoryFolder, "tmp")
-        if os.path.isdir(tmpFolder):
-            shutil.rmtree(tmpFolder)
-        elif os.path.isfile(tmpFolder):
-            os.remove(tmpFolder)
-        os.makedirs(tmpFolder)
 
-        with py7zr.SevenZipFile(file, 'r') as archive:
-            info = archive.archiveinfo()
-            cbk = Callback(info.uncompressed, callback)
-            archive.extractall(path=tmpFolder, callback=cbk)
+        with QMutexLocker(self.__mutex):
+            if os.path.isdir(tmpFolder):
+                shutil.rmtree(tmpFolder)
+            if os.path.isfile(path):
+                if os.path.isfile(tmpFolder):
+                    os.remove(tmpFolder)
+                os.makedirs(tmpFolder)
 
-        # --------------------------------------------------------------------------------------------------------------
-        dirs = os.listdir(tmpFolder)
-        count = len(dirs)
+                # noinspection PyBroadException
+                try:
+                    with py7zr.SevenZipFile(path, 'r') as archive:
+                        info = archive.archiveinfo()
+                        cbk = Callback(info.uncompressed, callback)
+                        archive.extractall(path=tmpFolder, callback=cbk)
+                except Exception as e:
+                    logger.error(e)
+                    return False
 
-        if count == 1 and os.path.isdir(os.path.join(tmpFolder, dirs[0])):
-            d = os.path.join(tmpFolder, dirs[0])
-            tmpTmpFolder = os.path.join(repositoryFolder, "tmp.tmp")
-            shutil.move(d, tmpTmpFolder)
-            shutil.rmtree(tmpFolder)
-            shutil.move(tmpTmpFolder, tmpFolder)
-        # --------------------------------------------------------------------------------------------------------------
-        package = self.getPackageDescription(tmpFolder)
-        if package is None:
-            logger.error(f"invalid package {tmpFolder}")
-            return False
+                dirs = os.listdir(tmpFolder)
+                count = len(dirs)
 
-        kind = package.type.lower()
-        vendor = package.vendor
-        name = package.name
-        version = package.version.lower()
+                if count == 1 and os.path.isdir(os.path.join(tmpFolder, dirs[0])):
+                    d = os.path.join(tmpFolder, dirs[0])
+                    tmpTmpFolder = os.path.join(repositoryFolder, "tmp.tmp")
+                    shutil.move(d, tmpTmpFolder)
+                    shutil.rmtree(tmpFolder)
+                    shutil.move(tmpTmpFolder, tmpFolder)
+            elif os.path.isdir(path):
+                items = []
+                for root, dirs, files in os.walk(path):
+                    dirs[:] = [d for d in dirs if d not in ['.git']]
+                    for file in files:
+                        sourceFile = os.path.join(root, file)
+                        relPath = os.path.relpath(sourceFile, path)
+                        targetFile = os.path.join(tmpFolder, relPath)
+                        items.append((sourceFile, targetFile))
+                count = len(items)
+                for index, (sourceFile, targetFile) in enumerate(items, start=1):
+                    os.makedirs(os.path.dirname(targetFile), exist_ok=True)
+                    shutil.copy2(sourceFile, targetFile)
+                    callback(targetFile, (index / count) * 100)
 
-        vendorFolder = os.path.join(repositoryFolder, kind, vendor.lower(), name.lower())
-        folder = os.path.join(vendorFolder, version).replace("\\", "/")
-        if os.path.isdir(folder):
-            shutil.rmtree(folder)
-        elif os.path.isfile(folder):
-            os.remove(folder)
+            # ----------------------------------------------------------------------------------------------------------
+            package = self.getPackageDescription(tmpFolder)
+            if package is None:
+                logger.error(f"invalid package {tmpFolder}")
+                return False
 
-        if not os.path.isdir(vendorFolder):
-            os.makedirs(vendorFolder)
-        elif os.path.isfile(vendorFolder):
-            os.remove(vendorFolder)
-            os.makedirs(vendorFolder)
+            kind = package.type.lower()
+            vendor = package.vendor
+            name = package.name
+            version = package.version.lower()
 
-        shutil.move(tmpFolder, folder)
+            vendorFolder = os.path.join(repositoryFolder, kind, vendor.lower(), name.lower())
+            folder = os.path.join(vendorFolder, version).replace("\\", "/")
+            if os.path.isdir(folder):
+                shutil.rmtree(folder)
+            elif os.path.isfile(folder):
+                os.remove(folder)
 
-        self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = folder
-        self.save()
+            if not os.path.isdir(vendorFolder):
+                os.makedirs(vendorFolder)
+            elif os.path.isfile(vendorFolder):
+                os.remove(vendorFolder)
+                os.makedirs(vendorFolder)
+
+            shutil.move(tmpFolder, folder)
+            self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = os.path.relpath(folder)
+            self.save()
 
         return True
 
     def uninstall(self, kind: str, name: str, version: str) -> bool:
         path = self.index().path(kind, name, version)
-        if os.path.isdir(path):
-            shutil.rmtree(path)
-        elif os.path.isfile(path):
-            os.remove(path)
-        else:
-            logger.error(f"uninstall failed {kind}@{name}-{version}")
-            return False
-        # clear index tree
-        self.__index.origin[kind][name].pop(version)
-        if len(self.__index.origin[kind][name]) == 0:
-            self.__index.origin[kind].pop(name)
-            if len(self.__index.origin[kind]) == 0:
-                self.__index.origin.pop(kind)
-        self.save()
+        with QMutexLocker(self.__mutex):
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+            elif os.path.isfile(path):
+                os.remove(path)
+            else:
+                logger.error(f"uninstall failed {kind}@{name}-{version}")
+                return False
+            # clear index tree
+            self.__index.origin[kind][name].pop(version)
+            if len(self.__index.origin[kind][name]) == 0:
+                self.__index.origin[kind].pop(name)
+                if len(self.__index.origin[kind]) == 0:
+                    self.__index.origin.pop(kind)
+            self.save()
         return True
 
 
 class Callback(py7zr_callbacks.ExtractCallback):
-    __archiveTotal = 0
-    __totalBytes = 0
-    __callback = None
 
     def __init__(self, totalBytes, callback: Callable[[str, float], None]):
         self.__archiveTotal = totalBytes
         self.__callback = callback
+        self.__totalBytes = 0
 
     def report_start_preparation(self):
         pass
@@ -357,11 +379,11 @@ class Callback(py7zr_callbacks.ExtractCallback):
 
     def report_end(self, processingFilePath, wroteBytes):
         if self.__archiveTotal == 0:
-            self.__callback(processingFilePath, 1.0)
+            self.__callback(processingFilePath, 100)
             return
 
         self.__totalBytes += int(wroteBytes)
-        progress = self.__totalBytes / self.__archiveTotal
+        progress = (self.__totalBytes / self.__archiveTotal) * 100
         self.__callback(processingFilePath, progress)
 
     def report_warning(self, message):
@@ -369,6 +391,30 @@ class Callback(py7zr_callbacks.ExtractCallback):
 
     def report_postprocess(self):
         pass
+
+
+class PackageCmd(QObject):
+    def __init__(self, progress: bool, parent=None):
+        super().__init__(parent=parent)
+
+        self.progress = progress
+        self.installBar = None
+
+    def install(self, path: str):
+        PACKAGE.install(path, self.__package_install_callback)
+
+    def __package_install_callback(self, file: str, progress: float):
+        if self.progress:
+            if self.installBar is None:
+                self.installBar = tqdm(total=100, desc='install', unit='file')
+            self.installBar.set_description(f'install {file}')
+            self.installBar.n = progress
+            self.installBar.refresh()
+            if progress == 100:
+                self.installBar.set_description('install')
+                self.installBar.close()
+        else:
+            print(f'install {file}')
 
 
 PACKAGE = Package()

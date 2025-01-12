@@ -47,7 +47,7 @@ from qfluentwidgets import FluentTranslator
 
 sys.stdout = stdout
 
-from common import SETTINGS, PROJECT, CoderCmd
+from common import SETTINGS, PROJECT, CoderCmd, PackageCmd
 from window import MainWindow, StartupWindow, NewProjectWindow
 
 
@@ -155,6 +155,21 @@ def handleGen(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QA
     generator.gen()
 
 
+# noinspection PyUnusedLocal
+def handleInstall(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
+    path = args.path
+    progress = args.progress
+
+    if not os.path.exists(path):
+        print(f'The path {path!r} is not exist.')
+        sys.exit(1)
+
+    cmd = PackageCmd(progress)
+    if not cmd.install(path):
+        print(f'install failed. Please check it.')
+        sys.exit(1)
+
+
 def createParser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description='a fully open source chip configuration software system',
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -169,6 +184,11 @@ def createParser() -> argparse.ArgumentParser:
     gen.add_argument('-o', '--output', required=False, help='output dir')
     gen.add_argument('--progress', required=False, help='enable progress bar printing', action='store_true')
     gen.set_defaults(func=handleGen)
+
+    install = subparsers.add_parser('install', help='install csp package')
+    install.add_argument('-p', '--path', required=True, help='csp package path')
+    install.add_argument('--progress', required=False, help='enable progress bar printing', action='store_true')
+    install.set_defaults(func=handleInstall)
 
     parser.add_argument('-f', '--file', required=False, help='csp project file')
     parser.add_argument('-v', '--version', required=False, help='print the version number', action='store_true')

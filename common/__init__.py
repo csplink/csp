@@ -29,7 +29,7 @@ from .coder import Coder, CoderCmd
 from .contributors import Contributor, ContributorType
 from .icon import Icon
 from .ip import Ip, IP, IpType
-from .package import Package, PACKAGE, PackageDescriptionType
+from .package import Package, PACKAGE, PackageDescriptionType, PackageCmd
 from .project import Project, PROJECT
 from .repository import Repository, RepositoryType, RepositorySocType
 from .settings import Settings, SETTINGS
@@ -43,7 +43,7 @@ __all__ = [
     'Contributor', 'ContributorType',
     'Icon',
     'Ip', 'IP', 'IpType',
-    'Package', 'PACKAGE', 'PackageDescriptionType',
+    'Package', 'PACKAGE', 'PackageDescriptionType', 'PackageCmd',
     'Project', 'PROJECT',
     'Repository', 'RepositoryType', 'RepositorySocType',
     'Settings', 'SETTINGS',
