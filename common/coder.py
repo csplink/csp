@@ -55,9 +55,9 @@ _filters = {
 
 
 class Coder(QObject):
-    dumped = Signal(str, int, int)
-    generated = Signal(str, int, int, bool)
-    libraryCopied = Signal(str, int, int, bool, str)
+    dumpProgressUpdated = Signal(str, int, int)
+    generateProgressUpdated = Signal(str, int, int, bool)
+    copyLibraryProgressUpdated = Signal(str, int, int, bool, str)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -89,11 +89,11 @@ class Coder(QObject):
                 Path(path).parent.mkdir(parents=True, exist_ok=True)
                 fileMd5 = ''
             if genMd5 != fileMd5:
-                self.generated.emit(path, index, count, True)
+                self.generateProgressUpdated.emit(path, index, count, True)
                 with open(path, 'w', encoding='utf-8') as file:
                     file.write(context)
             else:
-                self.generated.emit(path, index, count, False)
+                self.generateProgressUpdated.emit(path, index, count, False)
 
         for file, info in self.__files.items():
             if not info.get('gen', True):
@@ -147,7 +147,7 @@ class Coder(QObject):
         for file, info in self.__files.items():
             if info.get('gen', True):
                 index += 1
-                self.dumped.emit(file, index, count)
+                self.dumpProgressUpdated.emit(file, index, count)
                 suffix = Path(file).suffix
                 context = self.__render(file, info, env, data)
                 if context is not None:
@@ -191,7 +191,7 @@ class Coder(QObject):
         self.__generator.copy_library(copy.deepcopy(PROJECT.project().origin), outputDir, self.__emitCopyLibrarySignal)
 
     def __emitCopyLibrarySignal(self, path: str, index: int, count: int, success: bool, reason: str):
-        self.libraryCopied.emit(path, index, count, success, reason)
+        self.copyLibraryProgressUpdated.emit(path, index, count, success, reason)
 
     def __checkHalFolder(self) -> bool:
         if not os.path.isfile(f'{PROJECT.halFolder()}/tools/generator/generator.py'):
@@ -277,11 +277,11 @@ class CoderCmd(QObject):
         self.libraryCopiedBar = None
 
         self.coder = Coder()
-        self.coder.dumped.connect(self.__on_coder_dumped)
-        self.coder.generated.connect(self.__on_coder_generated)
-        self.coder.libraryCopied.connect(self.__on_coder_libraryCopied)
+        self.coder.dumpProgressUpdated.connect(self.__on_coder_dumpProgressUpdated)
+        self.coder.generateProgressUpdated.connect(self.__on_coder_generateProgressUpdated)
+        self.coder.copyLibraryProgressUpdated.connect(self.__on_coder_copyLibraryProgressUpdated)
 
-    def __on_coder_dumped(self, path: str, index: int, count: int):
+    def __on_coder_dumpProgressUpdated(self, path: str, index: int, count: int):
         if self.progress:
             if self.dumpedBar is None:
                 self.dumpedBar = tqdm(total=count, desc='dump', unit='file')
@@ -292,7 +292,7 @@ class CoderCmd(QObject):
                 self.dumpedBar.set_description('dump')
                 self.dumpedBar.close()
 
-    def __on_coder_generated(self, path: str, index: int, count: int, success: bool):
+    def __on_coder_generateProgressUpdated(self, path: str, index: int, count: int, success: bool):
         if self.progress:
             if self.generatedBar is None:
                 self.generatedBar = tqdm(total=count, desc='generate', unit='file')
@@ -309,7 +309,7 @@ class CoderCmd(QObject):
                 # print(f'skip {path!r}, because the file or config has not been modified.')
                 pass
 
-    def __on_coder_libraryCopied(self, path: str, index: int, count: int, success: bool, reason: str):
+    def __on_coder_copyLibraryProgressUpdated(self, path: str, index: int, count: int, success: bool, reason: str):
         if self.progress:
             if self.libraryCopiedBar is None:
                 self.libraryCopiedBar = tqdm(total=count, desc='copy', unit='file')
