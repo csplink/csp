@@ -99,7 +99,7 @@ jobs:
       - name: 🔨 build & deploy
         shell: bash
         run: |
-          source tools/deploy.sh && deploy csp-windows-${{ github.ref_name }}
+          source tools/deploy.sh && deploy windows csp-windows-${{ github.ref_name }}
           7z a -tzip -mx=9 csp-windows-${{ github.ref_name }}.zip csp-windows-${{ github.ref_name }}
 
       - name: ⬆️ create release

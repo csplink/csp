@@ -26,21 +26,34 @@
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 function deploy {
-    path=${1}
+    platform=${1}
+    path=${2}
 
     pushd "${script_dir}"/..
 
     python tools/lrelease.py
     python tools/contributors.py
-    python -m nuitka --standalone --disable-console --windows-icon-from-ico=resource/images/logo.ico --show-memory --show-progress --assume-yes-for-downloads --output-dir=build --onefile --plugin-enable=pyside6 ./csp.py
+
+    common_args="--standalone --disable-console --show-memory --show-progress --assume-yes-for-downloads --output-dir=build --onefile --plugin-enable=pyside6 ./csp.py"
+    if [ "$platform" = "windows" ]; then
+        icon_arg="--windows-icon-from-ico=resource/images/logo.ico"
+    elif  [ "$platform" = "linux" ]; then
+        icon_arg="--linux-icon=resource/images/logo.ico"
+    fi
+
+    # shellcheck disable=SC2086
+    python -m nuitka ${common_args} ${icon_arg}
+
+    if [ "$platform" = "linux" ]; then
+        cp -fv build/csp.bin build/csp
+    fi
 
     mkdir -pv "${path}"
     cp -rfv resource "${path}/"
     rm -rfv "${path}/resource/i18n/csplink.*.ts"
-    cp -fv build/csp.exe "${path}/"
+    cp -fv build/csp "${path}/"
 
-    "${path}/csp.exe" --version
+    "${path}/csp" --version
 
     popd
 }
-
