@@ -109,18 +109,11 @@ jobs:
           pip3 install nuitka
           python -m nuitka --version
 
-      - name: 📝 get ubuntu version
-        shell: bash
-        run: |
-          source /etc/os-release
-          version="${ID}-${VERSION_ID}"
-          echo "ubuntu_version=${version}" >> $GITHUB_ENV
-
       - name: 🔨 build & deploy
         shell: bash
         run: |
-          source tools/deploy.sh && deploy linux csp-${{ env.ubuntu_version }}-${{ github.ref_name }}
-          tar -czvf csp-${{ env.ubuntu_version }}-${{ github.ref_name }}.tar.gz csp-${{ env.ubuntu_version }}-${{ github.ref_name }}
+          source tools/deploy.sh && deploy linux csp-ubuntu-${{ github.ref_name }}
+          tar -czvf csp-ubuntu-${{ github.ref_name }}.tar.gz csp-ubuntu-${{ github.ref_name }}
 
       - name: ⬆️ create release
         uses: softprops/action-gh-release@v2
@@ -130,4 +123,4 @@ jobs:
           prerelease: true
           token: ${{ secrets.RELEASE_TOKEN }}
           files: |
-            csp-${{ env.ubuntu_version }}-${{ github.ref_name }}.tar.gz
+            csp-ubuntu-${{ github.ref_name }}.tar.gz
