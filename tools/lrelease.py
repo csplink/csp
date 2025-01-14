@@ -39,9 +39,9 @@ class Lrelease:
     @staticmethod
     def run(root: str, languages: list[str]):
         if platform.system() == 'Windows':
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease.exe", recursive=True)
+            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lrelease.exe", recursive=True)
         else:
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lrelease", recursive=True)
+            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lrelease", recursive=True)
 
         if len(exes) > 0:
             exe = exes[0]
@@ -54,6 +54,7 @@ class Lrelease:
                 subprocess.call([exe, tsFile, '-qm', qmFile])
         else:
             print("can not find lrelease")
+            sys.exit(1)
 
 
 if __name__ == '__main__':

@@ -40,9 +40,9 @@ class Lupdate:
     @staticmethod
     def run(root: str, languages: list[str]):
         if platform.system() == 'Windows':
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate.exe", recursive=True)
+            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lupdate.exe", recursive=True)
         else:
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/lupdate", recursive=True)
+            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lupdate", recursive=True)
 
         if len(exes) > 0:
             exe = exes[0]
