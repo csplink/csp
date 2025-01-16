@@ -36,9 +36,9 @@ function deploy {
 
     common_args="--standalone --disable-console --show-memory --show-progress --assume-yes-for-downloads --output-dir=build --onefile --plugin-enable=pyside6 ./csp.py"
     if [ "$platform" = "windows" ]; then
-        icon_arg="--windows-icon-from-ico=resource/images/logo.ico"
+        icon_arg="--windows-icon-from-ico=resource/images/logo.48.ico"
     elif  [ "$platform" = "linux" ]; then
-        icon_arg="--linux-icon=resource/images/logo.ico"
+        icon_arg="--linux-icon=resource/images/logo.48.ico"
     fi
 
     # shellcheck disable=SC2086
@@ -52,8 +52,10 @@ function deploy {
     cp -rfv resource "${path}/"
     rm -rfv "${path}/resource/i18n/csplink.*.ts"
     cp -fv build/csp "${path}/"
+    cp -fv LICENSE "${path}/"
 
     "${path}/csp" --version
+    rm -rfv "${path}/log"
 
     popd
 }

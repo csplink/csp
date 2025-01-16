@@ -101,6 +101,9 @@ jobs:
         run: |
           source tools/deploy.sh && deploy windows csp-windows-${{ github.ref_name }}
           7z a -tzip -mx=9 csp-windows-${{ github.ref_name }}.zip csp-windows-${{ github.ref_name }}
+          sed -i 's/latest/${{ github.ref_name }}/g' ./win-installer.nsi
+          pushd csp-windows-${{ github.ref_name }} && makensis -V4 -NOCD ../win-installer.nsi && popd
+          mv -fv csp-windows-${{ github.ref_name }}/csp-windows-${{ github.ref_name }}.exe .
 
       - name: ⬆️ create release
         uses: softprops/action-gh-release@v2
@@ -111,3 +114,4 @@ jobs:
           token: ${{ secrets.RELEASE_TOKEN }}
           files: |
             csp-windows-${{ github.ref_name }}.zip
+            csp-windows-${{ github.ref_name }}.exe
