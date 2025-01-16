@@ -60,7 +60,7 @@ def main():
         sys.exit(1)
 
     today = datetime.datetime.today()
-    logger.add(f'log/csp-{today.year}-{today.month}.log', rotation='10 MB')
+    logger.add(f'{SETTINGS.EXE_FOLDER}/log/csp-{today.year}-{today.month}.log', rotation='10 MB')
 
     app = QApplication(sys.argv)
     app.setAttribute(Qt.ApplicationAttribute.AA_DontCreateNativeWidgetSiblings)

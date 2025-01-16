@@ -336,7 +336,8 @@ class Package:
                 os.makedirs(vendorFolder)
 
             shutil.move(tmpFolder, folder)
-            self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = os.path.relpath(folder)
+            self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = os.path.relpath(folder,
+                                                                                                     SETTINGS.EXE_FOLDER)
             self.save()
 
         return True
