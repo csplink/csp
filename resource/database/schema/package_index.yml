@@ -32,7 +32,7 @@ properties:
         type: object
         additionalProperties: false
         patternProperties:
-          "^(?:v|V)?\\d+\\.\\d+\\.\\d+$":
+          ".*":
             type: string
   toolchains:
     $ref: "#/properties/hal"

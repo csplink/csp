@@ -61,7 +61,6 @@ properties:
         minLength: 1
       halVersion:
         type: string
-        pattern: "^(?:v|V)?\\d+\\.\\d+\\.\\d+$"
       builder:
         type: string
       builderVersion:

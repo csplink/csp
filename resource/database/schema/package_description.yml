@@ -49,7 +49,6 @@ properties:
     minLength: 1
   version:
     type: string
-    pattern: "^(?:v|V)?\\d+\\.\\d+\\.\\d+$"
   license:
     type: string
     minLength: 1
