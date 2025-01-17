@@ -33,7 +33,7 @@ from typing import Callable
 import jsonschema
 import py7zr
 import yaml
-from PySide6.QtCore import QMutex, QMutexLocker, QObject
+from PySide6.QtCore import QMutex, QMutexLocker, QObject, Signal
 from loguru import logger
 from py7zr import callbacks as py7zr_callbacks
 from tqdm import tqdm
@@ -178,8 +178,12 @@ class PackageIndexType:
         return self.__data.get(kind, {}).get(name, {}).get(version, "")
 
 
-class Package:
-    def __init__(self) -> None:
+class Package(QObject):
+    installed = Signal(str, str, str, str)
+    uninstalled = Signal(str, str, str, str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.__index = self.getPackageIndex()
         self.__pdscs = {}
         self.__mutex = QMutex()
@@ -339,6 +343,7 @@ class Package:
             self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = os.path.relpath(folder,
                                                                                                      SETTINGS.EXE_FOLDER)
             self.save()
+            self.installed.emit(kind, name, version, folder)
 
         return True
 
@@ -359,6 +364,7 @@ class Package:
                 if len(self.__index.origin[kind]) == 0:
                     self.__index.origin.pop(kind)
             self.save()
+            self.installed.emit(kind, name, version, path)
         return True
 
 
@@ -395,14 +401,25 @@ class Callback(py7zr_callbacks.ExtractCallback):
 
 
 class PackageCmd(QObject):
-    def __init__(self, progress: bool, parent=None):
+
+    def __init__(self, progress: bool, verbose: bool, parent=None):
         super().__init__(parent=parent)
 
         self.progress = progress
+        self.verbose = verbose
         self.installBar = None
 
-    def install(self, path: str):
-        PACKAGE.install(path, self.__package_install_callback)
+        PACKAGE.installed.connect(self.__on_x_installed)
+        PACKAGE.uninstalled.connect(self.__on_x_uninstalled)
+
+    def install(self, path: str) -> bool:
+        return PACKAGE.install(path, self.__package_install_callback)
+
+    def __on_x_installed(self, kind: str, name: str, version: str, path: str):
+        print(f"successfully installed the package ‘{kind}@{name}-{version}’ to: {path!r}")
+
+    def __on_x_uninstalled(self, kind: str, name: str, version: str, path: str):
+        print(f"successfully uninstalled the package ‘{kind}@{name}-{version}’ from: {path!r}")
 
     def __package_install_callback(self, file: str, progress: float):
         if self.progress:
@@ -415,7 +432,8 @@ class PackageCmd(QObject):
                 self.installBar.set_description('install')
                 self.installBar.close()
         else:
-            print(f'install {file}')
+            if self.verbose:
+                print(f'install {file}')
 
 
 PACKAGE = Package()

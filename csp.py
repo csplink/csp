@@ -159,12 +159,13 @@ def handleGen(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QA
 def handleInstall(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
     path = args.path
     progress = args.progress
+    verbose = args.verbose
 
     if not os.path.exists(path):
         print(f'The path {path!r} is not exist.')
         sys.exit(1)
 
-    cmd = PackageCmd(progress)
+    cmd = PackageCmd(progress, verbose)
     if not cmd.install(path):
         print(f'install failed. Please check it.')
         sys.exit(1)
@@ -188,6 +189,7 @@ def createParser() -> argparse.ArgumentParser:
     install = subparsers.add_parser('install', help='install csp package')
     install.add_argument('-p', '--path', required=True, help='csp package path')
     install.add_argument('--progress', required=False, help='enable progress bar printing', action='store_true')
+    install.add_argument('--verbose', required=False, help='enable verbose information for users.', action='store_true')
     install.set_defaults(func=handleInstall)
 
     parser.add_argument('-f', '--file', required=False, help='csp project file')
