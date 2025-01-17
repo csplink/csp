@@ -1,6 +1,6 @@
 # Changelog ([中文](#中文))
 
-## v0.0.2
+## v0.0.3
 
 - Added Windows installer
 - Fixed relative path issues
