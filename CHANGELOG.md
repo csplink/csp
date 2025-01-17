@@ -2,6 +2,12 @@
 
 ## v0.0.2
 
+- Added Windows installer
+- Fixed relative path issues
+- Removed package version restrictions
+
+## v0.0.2
+
 - Add csp install command
 - Add release artifacts
 
@@ -13,6 +19,12 @@
 <h1 id="中文"></h1>
 
 # 更新日志
+
+## v0.0.3
+
+- 添加 windows 安装程序
+- 修复相对路径问题
+- 移除软件包版本限制
 
 ## v0.0.2
 
