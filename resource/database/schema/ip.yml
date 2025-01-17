@@ -35,7 +35,7 @@ properties:
             patternProperties:
               "^\\(.*\\)$":
                 $ref: "#/properties/$parameter$"
-            required: ["(default)"]
+            required: [ "(default)" ]
   controls:
     type: object
     additionalProperties: false
@@ -51,25 +51,16 @@ properties:
           default:
             type: string
             pattern: "^[A-Za-z0-9_.+-]+$"
+          pins:
+            type: object
   modes:
+    $ref: "#/properties/controls"
+  pinModes:
     type: object
     additionalProperties: false
     patternProperties:
       "^[A-Za-z0-9_.+-]+$":
-        type: object
-        additionalProperties: false
-        patternProperties:
-          "^[A-Za-z0-9_.+-]+$":
-            type: object
-            properties:
-              values:
-                type: array
-                items:
-                  type: string
-                  pattern: "^[A-Za-z0-9_.+-]+$"
-              default:
-                type: string
-                pattern: "^[A-Za-z0-9_.+-]+$"
+        $ref: "#/properties/controls"
   $parameter$:
     type: object
     properties:
@@ -80,7 +71,7 @@ properties:
       readonly:
         type: boolean
       type:
-        enum: [enum, integer, float, boolean, radio]
+        enum: [ enum, integer, float, boolean, radio ]
       values:
         additionalProperties: false
         patternProperties:
@@ -91,12 +82,12 @@ properties:
                 $ref: "#/properties/$expression$"
               comment:
                 $ref: "#/properties/$language$"
-            required: [comment]
+            required: [ comment ]
       group:
         type: string
         minLength: 1
       default:
-        type: [string, number, boolean]
+        type: [ string, number, boolean ]
       expression:
         $ref: "#/properties/$expression$"
       visible:
@@ -105,13 +96,13 @@ properties:
         type: number
       min:
         type: number
-    required: [type, description]
+    required: [ type, description ]
   $language$:
     type: object
     properties:
       en:
-        type: [string, "null"] # TODO: null
-    required: [en]
+        type: [ string, "null" ] # TODO: null
+    required: [ en ]
   $expression$:
     type: object
     properties:
@@ -121,4 +112,4 @@ properties:
       real:
         type: string
         minLength: 1
-required: [parameters, modes]
+required: [ parameters ]

@@ -110,7 +110,7 @@ parameters:
       en: GPIO Maximum output speed
     default: geehy.gpio_speed_2mhz
     readonly: false
-modes:
+pinModes:
   Input:
     geehy.gpio_pull_t:
       values:

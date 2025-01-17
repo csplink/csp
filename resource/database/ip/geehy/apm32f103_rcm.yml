@@ -1160,6 +1160,5 @@ controls:
       pins:
         MCO: AlternateFunctionPushPull
 modes:
-  default:
-    geehy.rcm_flash_latency_t: { }
-    geehy.rcm_prefetch_buffer_enabled_t: { }
+  geehy.rcm_flash_latency_t: { }
+  geehy.rcm_prefetch_buffer_enabled_t: { }

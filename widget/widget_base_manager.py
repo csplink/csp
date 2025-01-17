@@ -272,18 +272,19 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             self.modelReset.emit()
             return
 
+        self.__ip = ip
+
         if self.__type == WidgetBaseManagerType.MODE:
             if self.__pinInstance == instance:
                 function: str = PROJECT.project().configs.get(f'pin/{value}/function', '')
                 if len(function) == 0:
                     self.modelReset.emit()
+                    self.__ip.parameterItemUpdated.connect(self.__on_ip_parameterItemUpdated)
                     return
 
-                param = function.split(':')[1]
+                cfgs = ip.pinModes[function.split(':')[1]]
             else:
-                param = 'default'
-
-            cfgs = ip.modes[param]
+                cfgs = ip.modes
 
             if self.__pinInstance == instance:
                 self.__data.append(
@@ -293,10 +294,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                                                   typeof='string',
                                                   possibleValues=[],
                                                   readonly=True,
-                                                  description='',
-                                                  param=param,
-                                                  parameter=None,
-                                                  parameters={}))
+                                                  description=''))
                 path = f'pin/{value}/label'
                 self.__data.append(
                     WidgetBaseManagerPrivateModel(property=self.tr('Label'),
@@ -305,13 +303,10 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                                                   typeof='string',
                                                   possibleValues=[],
                                                   readonly=False,
-                                                  description='',
-                                                  param=param,
-                                                  parameters={}))
+                                                  description=''))
         else:
             cfgs = ip.controls
 
-        self.__ip = ip
         self.__configs = cfgs
 
         if len(ip.parameters) > 0:
@@ -322,8 +317,8 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                     else:
                         path = f'{instance}/{param}'
                     self.__data.append(self.__genPrivateModel(path, param))
-        self.modelReset.emit()
 
+        self.modelReset.emit()
         self.__ip.parameterItemUpdated.connect(self.__on_ip_parameterItemUpdated)
 
     def __getParams(self) -> dict[str, int]:

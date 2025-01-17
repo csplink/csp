@@ -32,7 +32,7 @@ from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOpt
 from loguru import logger
 from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
 
-from common import PROJECT, SIGNAL_BUS, SummaryType, SUMMARY, IP
+from common import PROJECT, SummaryType, SUMMARY, IP
 
 
 class GraphicsItemPin(QGraphicsObject):
@@ -40,6 +40,7 @@ class GraphicsItemPin(QGraphicsObject):
     POWER_COLOR = QColor(255, 246, 204)
     OTHER_COLOR = QColor(187, 204, 0)
     SELECTED_COLOR = QColor(0, 204, 68)
+    UNSUPPORTED_COLOR = QColor(255, 211, 0)
 
     class Direction(Enum):
         TOP_DIRECTION = 0
@@ -76,6 +77,8 @@ class GraphicsItemPin(QGraphicsObject):
         self.labelKey = f"pin/{self.name}/label"
         self.functionKey = f"pin/{self.name}/function"
         self.lockedKey = f"pin/{self.name}/locked"
+        self.unsupportedKey = f"pin/{self.name}/unsupported"
+        self.modeKey = f"pin/{self.name}/mode"
 
         self.setData(GraphicsItemPin.Data.LABEL_DATA.value, self.labelKey)
         self.setData(GraphicsItemPin.Data.FUNCTION_DATA.value, self.functionKey)
@@ -85,6 +88,8 @@ class GraphicsItemPin(QGraphicsObject):
         self.label = PROJECT.project().configs.get(self.labelKey, "")
         self.function = PROJECT.project().configs.get(self.functionKey, "")
         self.locked = PROJECT.project().configs.get(self.lockedKey, False)
+        self.unsupported = PROJECT.project().configs.get(self.unsupportedKey, False)
+        self.mode = PROJECT.project().configs.get(self.modeKey, '')
 
         self.pinIp = SUMMARY.projectSummary().pinIp()
 
@@ -137,7 +142,9 @@ class GraphicsItemPin(QGraphicsObject):
         # draw background
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
-        if self.pinConfig.type == "I/O":
+        if self.unsupported:
+            painter.setBrush(self.UNSUPPORTED_COLOR)
+        elif self.pinConfig.type == "I/O":
             if self.locked:
                 painter.setBrush(self.SELECTED_COLOR)
             else:
@@ -260,41 +267,38 @@ class GraphicsItemPin(QGraphicsObject):
 
     def __on_project_pinConfigChanged(self, keys: list[str], oldValue: str, newValue: str):
         pin = SUMMARY.projectSummary().pins[self.name]
-
-        # only matches own pins
         if keys[1] != self.name:
             return
 
         if keys[-1] == "label":  # update pin label comment
             self.label = newValue
-            SIGNAL_BUS.modeManagerTriggered.emit(self.pinIp, self.name)
         elif keys[-1] == "locked":  # update pin locked status
             self.locked = newValue
-            SIGNAL_BUS.modeManagerTriggered.emit(self.pinIp, self.name)
+        elif keys[-1] == "unsupported":  # update pin locked status
+            self.unsupported = newValue
         elif keys[-1] == "function":  # update pin function
             self.function = newValue
-            if len(newValue) > 0:  # set new function
+            if newValue:  # set new function
                 seqs = newValue.split(":")
                 instance = seqs[0]
-                mode = seqs[1]
-
+                pinMode = seqs[1]
                 ip = IP.projectIps().get(instance)
                 if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
-                    SIGNAL_BUS.modeManagerTriggered.emit(instance, self.name)
+                    PROJECT.project().configs.set(self.unsupportedKey, True)
                     return
-                ip_modes = ip.modes[mode]
+                if pinMode not in ip.pinModes:
+                    PROJECT.project().configs.set(self.unsupportedKey, True)
+                    return
+                ip_modes = ip.pinModes[pinMode]
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})
                 for key, info in ip_modes.items():
                     PROJECT.project().configs.set(f"{instance}/{self.name}/{key}", info.default)
-                SIGNAL_BUS.modeManagerTriggered.emit(instance, self.name)
-            elif len(oldValue) > 0:  # newValue = None, so clear old function
+            elif oldValue:  # newValue = None, so clear old function
                 instance = oldValue.split(":")[0]
-                ip = IP.projectIps().get(instance)
-                if ip is None:
-                    logger.error(f'the ip instance:"{instance}" is invalid.')
-                    return
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})
-                SIGNAL_BUS.modeManagerTriggered.emit(instance, self.name)
+            PROJECT.project().configs.set(self.unsupportedKey, False)
+        elif keys[-1] == "mode":  # update pin mode
+            print(newValue)
 
         self.update()

@@ -211,6 +211,7 @@ class IpType(QObject):
         self.__data = data
         self.__parameters = None
         self.__controls = None
+        self.__pinModes = None
         self.__modes = None
 
         # ----------------------------------------------------------------------
@@ -263,13 +264,21 @@ class IpType(QObject):
         return self.__controls
 
     @property
-    def modes(self) -> dict[str, dict[str, ControlModeUnitType]]:
+    def pinModes(self) -> dict[str, dict[str, ControlModeUnitType]]:
+        if self.__pinModes is None:
+            self.__pinModes = {}
+            for name, modeItem in self.__data.get("pinModes", {}).items():
+                self.__pinModes[name] = {}
+                for modeName, mode in modeItem.items():
+                    self.__pinModes[name][modeName] = IpType.ControlModeUnitType(mode, modeName, self.parameters)
+        return self.__pinModes
+
+    @property
+    def modes(self) -> dict[str, ControlModeUnitType]:
         if self.__modes is None:
             self.__modes = {}
-            for name, modeItem in self.__data.get("modes", {}).items():
-                self.__modes[name] = {}
-                for modeName, mode in modeItem.items():
-                    self.__modes[name][modeName] = IpType.ControlModeUnitType(mode, modeName, self.parameters)
+            for name, item in self.__data.get("modes", {}).items():
+                self.__modes[name] = IpType.ControlModeUnitType(item, name, self.parameters)
         return self.__modes
 
     # ------------------------------------------------------------------------------------------------------------------
