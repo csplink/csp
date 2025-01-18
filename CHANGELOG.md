@@ -1,5 +1,9 @@
 # Changelog ([中文](#中文))
 
+## v0.0.5
+
+- 🐞fix: fix the problem that jinja2 function cannot be found after packaging
+
 ## v0.0.4
 
 - Improve install log output, add verbose option
@@ -24,6 +28,10 @@
 <h1 id="中文"></h1>
 
 # 更新日志
+
+## v0.0.5
+
+- 🐞fix: 修复打包后 jinja2 函数无法找到的问题
 
 ## v0.0.4
 

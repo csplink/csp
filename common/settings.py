@@ -128,7 +128,7 @@ class Settings(QConfig):
     YEAR = 2023
     AUTHOR = "xqyjlj"
     AUTHOR_BLOG_URL = "https://xqyjlj.github.io/"
-    VERSION = "0.0.4"
+    VERSION = "0.0.5"
     HELP_URL = "https://csplink.top"
     REPO_URL = "https://github.com/csplink/csp"
     FEEDBACK_URL = "https://github.com/csplink/csp/issues"
