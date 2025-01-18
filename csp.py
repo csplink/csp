@@ -30,14 +30,10 @@ import glob
 import os
 import sys
 
-from loguru import logger
-
-script_dir = os.path.dirname(__file__)
-sys.path.append(f'{script_dir}/jinja2')
-
 from PySide6.QtCore import Qt, QTranslator
 from PySide6.QtGui import QFontDatabase
 from PySide6.QtWidgets import QApplication
+from loguru import logger
 
 # masking printing: 📢 Tips: QFluentWidgets Pro is now released. Click https://qfluentwidgets.com/pages/pro to learn more about it.
 stdout = sys.stdout

@@ -135,6 +135,7 @@ class Settings(QConfig):
     RELEASE_URL = "https://github.com/csplink/csp/releases/latest"
     PACKAGE_LIST_URL = "https://csplink.top"
 
+    sys.path.append(f'{EXE_FOLDER}/jinja2')
     SYS_PATH = copy.deepcopy(sys.path)
 
 

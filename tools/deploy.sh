@@ -41,21 +41,21 @@ function deploy {
         icon_arg="--linux-icon=resource/images/logo.48.ico"
     fi
 
-    # shellcheck disable=SC2086
     python -m nuitka ${common_args} ${icon_arg}
 
     if [ "$platform" = "linux" ]; then
         cp -fv build/csp.bin build/csp
     fi
 
-    mkdir -pv "${path}"
-    cp -rfv resource "${path}/"
-    rm -rfv "${path}/resource/i18n/csplink.*.ts"
-    cp -fv build/csp "${path}/"
-    cp -fv LICENSE "${path}/"
+    mkdir -pv ${path}/{jinja2,}
+    cp -rfv resource ${path}/
+    cp -fv jinja2/*.py ${path}/jinja2
+    rm -rfv ${path}/resource/i18n/*.ts
+    cp -fv build/csp ${path}/
+    cp -fv LICENSE ${path}/
 
-    "${path}/csp" --version
-    rm -rfv "${path}/log"
+    ${path}/csp --version
+    rm -rfv ${path}/log
 
     popd
 }
