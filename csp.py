@@ -47,7 +47,7 @@ from qfluentwidgets import FluentTranslator
 
 sys.stdout = stdout
 
-from common import SETTINGS, PROJECT, CoderCmd, PackageCmd
+from common import SETTINGS, PROJECT, CoderCmd, PackageCmd, PACKAGE
 from window import MainWindow, StartupWindow, NewProjectWindow
 
 
@@ -131,7 +131,7 @@ def handleStartup(args: argparse.Namespace, parser: argparse.ArgumentParser, app
 
 # noinspection PyUnusedLocal
 def handleMain(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
-    file = args.file
+    file: str = args.file
     __setProject(file)
     __initQtEnv(app)
     window = MainWindow()
@@ -142,9 +142,9 @@ def handleMain(args: argparse.Namespace, parser: argparse.ArgumentParser, app: Q
 
 # noinspection PyUnusedLocal
 def handleGen(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
-    file = args.file
-    progress = args.progress
-    output = args.output
+    file: str = args.file
+    progress: bool = args.progress
+    output: str = args.output
     __setProject(file)
 
     if not PROJECT.isGenerateSettingValid():
@@ -157,9 +157,9 @@ def handleGen(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QA
 
 # noinspection PyUnusedLocal
 def handleInstall(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
-    path = args.path
-    progress = args.progress
-    verbose = args.verbose
+    path: str = args.path
+    progress: bool = args.progress
+    verbose: bool = args.verbose
 
     if not os.path.exists(path):
         print(f'The path {path!r} is not exist.')
@@ -169,6 +169,33 @@ def handleInstall(args: argparse.Namespace, parser: argparse.ArgumentParser, app
     if not cmd.install(path):
         print(f'install failed. Please check it.')
         sys.exit(1)
+
+
+# noinspection PyUnusedLocal
+def handleUninstall(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
+    kind: str = args.type
+    name: str = args.name
+    version: str = args.version
+
+    path = PACKAGE.index().path(kind, name, version)
+    if not os.path.exists(path):
+        print(f"uninstall failed {kind}@{name}:{version}")
+        sys.exit(1)
+
+    cmd = PackageCmd(False, False)
+    if not cmd.uninstall(kind, name, version):
+        print(f'uninstall failed. Please check it.')
+        sys.exit(1)
+
+
+# noinspection PyUnusedLocal
+def handleList(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication):
+    for kind, package in PACKAGE.index().origin.items():
+        print(f'{kind}:')
+        for name, info in package.items():
+            print(f'  {name}:')
+            for version, path in info.items():
+                print(f'    {version}: {PACKAGE.index().path(kind, name, version)}')
 
 
 def createParser() -> argparse.ArgumentParser:
@@ -191,6 +218,15 @@ def createParser() -> argparse.ArgumentParser:
     install.add_argument('--progress', required=False, help='enable progress bar printing', action='store_true')
     install.add_argument('--verbose', required=False, help='enable verbose information for users.', action='store_true')
     install.set_defaults(func=handleInstall)
+
+    uninstall = subparsers.add_parser('uninstall', help='uninstall csp package')
+    uninstall.add_argument('-t', '--type', required=True, help='csp package type')
+    uninstall.add_argument('-n', '--name', required=True, help='csp package name')
+    uninstall.add_argument('-v', '--version', required=True, help='csp package version')
+    uninstall.set_defaults(func=handleUninstall)
+
+    list_ = subparsers.add_parser('list', help='list csp package')
+    list_.set_defaults(func=handleList)
 
     parser.add_argument('-f', '--file', required=False, help='csp project file')
     parser.add_argument('-v', '--version', required=False, help='print the version number', action='store_true')

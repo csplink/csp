@@ -28,6 +28,7 @@ import glob
 import json
 import os
 import shutil
+from pathlib import Path
 from typing import Callable
 
 import jsonschema
@@ -175,7 +176,10 @@ class PackageIndexType:
         return list(self.__data.get(kind, {}).get(name, {}).keys())
 
     def path(self, kind: str, name: str, version: str) -> str:
-        return self.__data.get(kind, {}).get(name, {}).get(version, "")
+        path = Path(self.__data.get(kind, {}).get(name, {}).get(version, ""))
+        if path.is_absolute():
+            return str(path)
+        return str((SETTINGS.EXE_FOLDER / path).resolve())
 
 
 class Package(QObject):
@@ -343,7 +347,7 @@ class Package(QObject):
             self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = os.path.relpath(folder,
                                                                                                      SETTINGS.EXE_FOLDER)
             self.save()
-            self.installed.emit(kind, name, version, folder)
+            self.installed.emit(kind, name, version, self.__index.path(kind, name, version))
 
         return True
 
@@ -355,7 +359,7 @@ class Package(QObject):
             elif os.path.isfile(path):
                 os.remove(path)
             else:
-                logger.error(f"uninstall failed {kind}@{name}-{version}")
+                logger.error(f"uninstall failed {kind}@{name}:{version}")
                 return False
             # clear index tree
             self.__index.origin[kind][name].pop(version)
@@ -364,7 +368,7 @@ class Package(QObject):
                 if len(self.__index.origin[kind]) == 0:
                     self.__index.origin.pop(kind)
             self.save()
-            self.installed.emit(kind, name, version, path)
+            self.uninstalled.emit(kind, name, version, path)
         return True
 
 
@@ -415,11 +419,14 @@ class PackageCmd(QObject):
     def install(self, path: str) -> bool:
         return PACKAGE.install(path, self.__package_install_callback)
 
+    def uninstall(self, kind: str, name: str, version: str) -> bool:
+        return PACKAGE.uninstall(kind, name, version)
+
     def __on_x_installed(self, kind: str, name: str, version: str, path: str):
-        print(f"successfully installed the package ‘{kind}@{name}-{version}’ to: {path!r}")
+        print(f"successfully installed the package ‘{kind}@{name}:{version}’ to: {path!r}")
 
     def __on_x_uninstalled(self, kind: str, name: str, version: str, path: str):
-        print(f"successfully uninstalled the package ‘{kind}@{name}-{version}’ from: {path!r}")
+        print(f"successfully uninstalled the package ‘{kind}@{name}:{version}’ from: {path!r}")
 
     def __package_install_callback(self, file: str, progress: float):
         if self.progress:
