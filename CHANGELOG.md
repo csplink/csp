@@ -1,5 +1,10 @@
 # Changelog ([中文](#中文))
 
+## v0.0.4
+
+- Improve install log output, add verbose option
+- Add uninstall, list commands
+
 ## v0.0.3
 
 - Added Windows installer
@@ -19,6 +24,11 @@
 <h1 id="中文"></h1>
 
 # 更新日志
+
+## v0.0.4
+
+- 完善安装日志输出，添加 verbose 选项
+- 添加 uninstall, list 命令
 
 ## v0.0.3
 
