@@ -440,13 +440,14 @@ class Project(QObject):
         return self.__path
 
     def setPath(self, path: str):
+        path = os.path.abspath(path)
         if self.__path != path:
             self.load(path)
             self.reloaded.emit()
             self.__path = path
 
     def new(self, path: str, name: str, targetChip: str, vendor: str):
-        self.__path = os.path.join(path, name, f"{name}.csp")
+        self.__path = os.path.abspath(os.path.join(path, name, f"{name}.csp"))
         p = os.path.dirname(self.__path)
         if not os.path.isdir(p):
             os.makedirs(p)
