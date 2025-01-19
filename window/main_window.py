@@ -29,6 +29,7 @@ import os
 from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer, Qt
 from PySide6.QtGui import QIcon, QDesktopServices, QCloseEvent
 from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QSplitter, QVBoxLayout, QMessageBox
+from loguru import logger
 from qfluentwidgets import (NavigationItemPosition, MessageBox, MSFluentTitleBar, MSFluentWindow, RoundMenu, Action,
                             TransparentPushButton, SplashScreen, FluentIconBase, NavigationBarPushButton, BodyLabel,
                             getFont, FluentStyleSheet, Pivot)
@@ -135,7 +136,9 @@ class CustomTitleBar(MSFluentTitleBar):
         return menu
 
     def generateCode(self):
-        if not PROJECT.isGenerateSettingValid():
+        succeed, msg = PROJECT.isGenerateSettingValid()
+        if not succeed:
+            logger.error(msg)
             title = self.tr('Error')
             content = self.tr("The coder settings is invalid. Please check it.")
             message = MessageBox(title, content, self.window())
@@ -336,21 +339,6 @@ If you would like to support the development of csplink, you are encouraged to d
 
         if message.exec():
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))
-
-    def __on_generate_clicked(self):
-        if not PROJECT.isGenerateSettingValid():
-            title = self.tr('Error')
-            content = self.tr("The coder settings is invalid. Please check it.")
-            message = MessageBox(title, content, self.window())
-            message.setContentCopyable(True)
-            message.cancelButton.setDisabled(True)
-            message.raise_()
-            message.exec()
-            SIGNAL_BUS.navigationRequested.emit('SettingView', 'GenerateSettingView')
-            return
-
-        coder = Coder()
-        coder.generate()
 
     def __on_x_navigationRequested(self, routeKey: str, subKey: str):
         if routeKey in self.navigationInterface.items.keys():

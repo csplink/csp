@@ -143,8 +143,9 @@ def handleGen(args: argparse.Namespace, parser: argparse.ArgumentParser, app: QA
     output: str = args.output
     __setProject(file)
 
-    if not PROJECT.isGenerateSettingValid():
-        print(f'The coder settings is invalid. Please check it.')
+    succeed, msg = PROJECT.isGenerateSettingValid()
+    if not succeed:
+        print(f'the coder settings is invalid, reason: {msg!r}. please check it.')
         sys.exit(1)
 
     generator = CoderCmd(output, progress)

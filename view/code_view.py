@@ -26,6 +26,7 @@
 
 from PySide6.QtCore import Qt, QItemSelection
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
+from loguru import logger
 from qfluentwidgets import (FlowLayout, MessageBox)
 
 from common import Style, Icon, Coder, PROJECT, SIGNAL_BUS
@@ -60,7 +61,9 @@ class CodeView(Ui_CodeView, QWidget):
         self.fileTree.clear()
         self.plainTextEdit.clear()
 
-        if not PROJECT.isGenerateSettingValid():
+        succeed, msg = PROJECT.isGenerateSettingValid()
+        if not succeed:
+            logger.error(msg)
             title = self.tr('Error')
             content = self.tr("The coder settings is invalid. Please check it.")
             message = MessageBox(title, content, self.window())

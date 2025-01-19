@@ -518,17 +518,17 @@ class Project(QObject):
     def dump(self):
         return yaml.dump(self.__project.origin)
 
-    def isGenerateSettingValid(self) -> bool:
+    def isGenerateSettingValid(self) -> tuple[bool, str]:
         if self.project().gen.useToolchainsPackage and not os.path.isdir(self.toolchainsFolder()):
-            return False
+            return False, f'the toolchains folder does not exist! maybe the toolchains \'{self.project().gen.toolchains}:{self.project().gen.toolchainsVersion}\' is not installed yet'
         elif not os.path.isdir(self.halFolder()):
-            return False
-        elif self.__project.gen.builder == "":
-            return False
-        elif self.__project.gen.builderVersion == "":
-            return False
+            return False, f'the hal folder does not exist! maybe the hal \'{self.project().gen.hal}:{self.project().gen.halVersion}\' is not installed yet'
+        elif self.project().gen.builder == "":
+            return False, 'the builder is not set'
+        elif self.project().gen.builderVersion == "":
+            return False, f'the builder {self.project().gen.builder!r} version is not set'
 
-        return True
+        return True, ''
 
     def save(self):
         if self.__path != "":
