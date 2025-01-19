@@ -1,8 +1,15 @@
 # Changelog ([中文](#中文))
 
+## v0.0.6
+
+- 🐞 fix: Add executable permissions for each component under Linux
+- 🐞 fix: Fix the problem that the relative path of the project cannot be indexed
+- 🐞 fix: Fix the problem that the package path is empty but the current path is returned
+- ✨ feat: Improve the error message of the generated code
+
 ## v0.0.5
 
-- 🐞fix: fix the problem that jinja2 function cannot be found after packaging
+- 🐞 fix: fix the problem that jinja2 function cannot be found after packaging
 
 ## v0.0.4
 
@@ -29,9 +36,16 @@
 
 # 更新日志
 
+## v0.0.6
+
+- 🐞 fix: 添加各组件在 linux 下的可执行权限
+- 🐞 fix: 修复 project 相对路径无法索引的问题
+- 🐞 fix: 修复 package 路径为空但返回当前路径的问题
+- ✨ feat: 完善生成代码的报错信息
+
 ## v0.0.5
 
-- 🐞fix: 修复打包后 jinja2 函数无法找到的问题
+- 🐞 fix: 修复打包后 jinja2 函数无法找到的问题
 
 ## v0.0.4
 
