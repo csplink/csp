@@ -176,7 +176,10 @@ class PackageIndexType:
         return list(self.__data.get(kind, {}).get(name, {}).keys())
 
     def path(self, kind: str, name: str, version: str) -> str:
-        path = Path(self.__data.get(kind, {}).get(name, {}).get(version, ""))
+        path = self.__data.get(kind, {}).get(name, {}).get(version, "")
+        if not path:
+            return path
+        path = Path(path)
         if path.is_absolute():
             return str(path)
         return str((SETTINGS.EXE_FOLDER / path).resolve())
