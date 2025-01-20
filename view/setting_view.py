@@ -155,19 +155,11 @@ class SystemSettingView(ScrollArea):
             configItem=SETTINGS.openGLSamples,
             texts=['4', '8', '12', '16'],
             parent=group)
-        self.clockTreeTypeCard = OptionsSettingCard(
-            configItem=SETTINGS.clockTreeType,
-            icon=Icon.LANDSCAPE,
-            title=self.tr("Clock tree type"),
-            content=self.tr("Choose the Clock tree type"),
-            texts=["Pixmap", "Svg"],
-            parent=group)
 
         group.addSettingCard(self.languageCard)
         group.addSettingCard(self.zoomCard)
         group.addSettingCard(self.useOpenGLCard)
         group.addSettingCard(self.openGLSamplesCard)
-        group.addSettingCard(self.clockTreeTypeCard)
 
         return group
 

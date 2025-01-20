@@ -85,9 +85,9 @@ class GraphicsViewPanZoom(QGraphicsView):
                             QPainter.RenderHint.TextAntialiasing |
                             QPainter.RenderHint.SmoothPixmapTransform)
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
-        INT_MAX = 2147483647
-        INT_MIN = -2147483648
-        self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
+        # INT_MAX = 2147483647
+        # INT_MIN = -2147483648
+        # self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
 
     def setupMatrix(self):
         scale = math.pow(2, (self.scale - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION)
