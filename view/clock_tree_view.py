@@ -30,11 +30,10 @@ from pathlib import Path
 
 import jinja2
 from PySide6.QtCore import QSize
-from PySide6.QtGui import QColor, QPixmap, Qt, QPainter
+from PySide6.QtGui import QColor
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtSvgWidgets import QGraphicsSvgItem
-from PySide6.QtWidgets import (QWidget, QGraphicsScene, QGraphicsPixmapItem, QGraphicsProxyWidget, QGraphicsItem,
-                               QButtonGroup)
+from PySide6.QtWidgets import (QWidget, QGraphicsScene, QGraphicsPixmapItem, QGraphicsProxyWidget, QButtonGroup)
 from qfluentwidgets import isDarkTheme, BodyLabel
 
 from common import Icon, SETTINGS, PROJECT, Style, SUMMARY, IP, CLOCK_TREE
@@ -48,8 +47,6 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-
-        self.__multiple = 1
 
         self.__resPath = Path(
             SETTINGS.DATABASE_FOLDER) / 'clock' / PROJECT.project().vendor.lower() / SUMMARY.projectSummary().clockTree.lower()
@@ -79,24 +76,9 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
 
         renderer = QSvgRenderer(self.__drawio.svg, self)
 
-        if SETTINGS.clockTreeType.value == "Pixmap":
-            self.__multiple = 5
-            pixmap = QPixmap(renderer.defaultSize() * self.__multiple)
-            pixmap.fill(Qt.GlobalColor.transparent)
-            painter = QPainter()
-            painter.begin(pixmap)
-            painter.setRenderHints(QPainter.RenderHint.Antialiasing |
-                                   QPainter.RenderHint.TextAntialiasing |
-                                   QPainter.RenderHint.SmoothPixmapTransform)
-            renderer.render(painter)
-            painter.end()
-            item = QGraphicsPixmapItem(pixmap)
-            item.setTransformationMode(Qt.TransformationMode.SmoothTransformation)
-        else:
-            self.__multiple = 1
-            item = QGraphicsSvgItem()
-            item.setMaximumCacheSize(renderer.defaultSize() * 2)
-            item.setSharedRenderer(renderer)
+        item = QGraphicsSvgItem()
+        # item.setMaximumCacheSize(renderer.defaultSize() * 2)
+        item.setSharedRenderer(renderer)
 
         return item
 
@@ -115,7 +97,6 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         elements = self.__clockTree.elements
 
         data = {
-            "multiple": self.__multiple,
             "isDarkMode": isDarkTheme(),
         }
 
@@ -168,13 +149,12 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                 widget.setProperty('unused', True)
                 stylesheet = f'BodyLabel {{font: 12px "Segoe UI", "Microsoft YaHei"; color: red;}}'
                 widget.setStyleSheet(stylesheet)
-            size = QSize(int(geom.width), int(geom.height)) * self.__multiple
+            size = QSize(int(geom.width), int(geom.height))
             widget.setFixedSize(size)
             # w.setProperty('config', element)
             proxy = QGraphicsProxyWidget()
             proxy.setWidget(widget)
-            proxy.setCacheMode(QGraphicsItem.CacheMode.ItemCoordinateCache, size)
-            proxy.setPos(geom.x * self.__multiple, geom.y * self.__multiple)
+            proxy.setPos(geom.x, geom.y)
             if z >= 0:
                 proxy.setZValue(z)
             elif isinstance(widget, EnumClockTreeWidget):

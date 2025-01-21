@@ -62,9 +62,9 @@ QLineEdit#floatWidget,#integerWidget {
 {% if valid %}
     border: 0px solid transparent;
 {% else %}
-    border: {{ 1 * multiple }}px solid red;
+    border: 1px solid red;
 {% endif %}
-    font: {{ 12 * multiple }}px "Segoe UI", "Microsoft YaHei";
+    font: 12px "Segoe UI", "Microsoft YaHei";
     padding: 0px 10px;
     selection-background-color: --ThemeColorLight1;
 }
@@ -77,7 +77,7 @@ QComboBox#enumWidget {
     color: black;
     background-color: transparent;
 {% endif %}
-    font: {{ 12 * multiple }}px "Segoe UI", "Microsoft YaHei";
+    font: 12px "Segoe UI", "Microsoft YaHei";
     selection-background-color: transparent
 }
 
@@ -89,7 +89,7 @@ QListWidget#listWidget {
     color: black;
     background-color: rgb(253, 253, 253);
 {% endif %}
-    font: {{ 12 * multiple }}px "Segoe UI", "Microsoft YaHei";
+    font: 12px "Segoe UI", "Microsoft YaHei";
 }
 
 QRadioButton#radioWidget {
@@ -102,9 +102,9 @@ QRadioButton#radioWidget {
 }
 
 QRadioButton::indicator#radioWidget {
-    width: {{ width * multiple }}px;
-    height: {{ height * multiple }}px;
-    border-radius: {{ (width * multiple)//2 }}px;
+    width: {{ width }}px;
+    height: {{ height }}px;
+    border-radius: {{ width // 2 }}px;
     background-color: transparent;
 }
 
