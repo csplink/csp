@@ -1145,20 +1145,27 @@ parameters:
     readonly: false
 controls:
   geehy.rcm_hse_clock_source_t:
-    (True):
-      pins:
-        OSC_IN: System
-        OSC_OUT: System
+    pins:
+      OSC-IN:
+        mode: GPIO:System
+        condition: RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_bypass' or RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_oscillator'
+      OSC-OUT:
+        mode: GPIO:System
+        condition: RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_bypass' or RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_oscillator'
   geehy.rcm_lse_clock_source_t:
-    (True):
-      pins:
-        OSC32-IN: System
-        OSC32-OUT: System
+    pins:
+      OSC32-IN:
+        mode: GPIO:System
+        condition: true
+      OSC32-OUT:
+        mode: GPIO:System
+        condition: true
   geehy.rcm_hsi_calibration_t: { }
   geehy.rcm_mco_enabled_t:
-    (True):
-      pins:
-        MCO: AlternateFunctionPushPull
+    pins:
+      MCO:
+        mode: GPIO:AlternateFunctionPushPull
+        condition: true
 modes:
   geehy.rcm_flash_latency_t: { }
   geehy.rcm_prefetch_buffer_enabled_t: { }

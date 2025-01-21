@@ -35,7 +35,7 @@ properties:
             patternProperties:
               "^\\(.*\\)$":
                 $ref: "#/properties/$parameter$"
-            required: [ "(default)" ]
+            required: ["(default)"]
   controls:
     type: object
     additionalProperties: false
@@ -53,6 +53,20 @@ properties:
             pattern: "^[A-Za-z0-9_.+-]+$"
           pins:
             type: object
+            additionalProperties: false
+            patternProperties:
+              ".*":
+                type: object
+                properties:
+                  mode:
+                    type: string
+                    minLength: 1
+                    pattern: ".*"
+                  condition:
+                    type: string
+                    minLength: 1
+                    pattern: ".*"
+                required: [mode, condition]
   modes:
     $ref: "#/properties/controls"
   pinModes:
@@ -71,7 +85,7 @@ properties:
       readonly:
         type: boolean
       type:
-        enum: [ enum, integer, float, boolean, radio ]
+        enum: [enum, integer, float, boolean, radio]
       values:
         additionalProperties: false
         patternProperties:
@@ -82,12 +96,12 @@ properties:
                 $ref: "#/properties/$expression$"
               comment:
                 $ref: "#/properties/$language$"
-            required: [ comment ]
+            required: [comment]
       group:
         type: string
         minLength: 1
       default:
-        type: [ string, number, boolean ]
+        type: [string, number, boolean]
       expression:
         $ref: "#/properties/$expression$"
       visible:
@@ -96,13 +110,13 @@ properties:
         type: number
       min:
         type: number
-    required: [ type, description ]
+    required: [type, description]
   $language$:
     type: object
     properties:
       en:
-        type: [ string, "null" ] # TODO: null
-    required: [ en ]
+        type: [string, "null"] # TODO: null
+    required: [en]
   $expression$:
     type: object
     properties:
@@ -112,4 +126,4 @@ properties:
       real:
         type: string
         minLength: 1
-required: [ parameters ]
+required: [parameters]
