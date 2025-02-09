@@ -187,6 +187,7 @@ class IpType(QObject):
         class PinUnitType:
             def __init__(self, data: dict):
                 self.__data = data
+                self.__dependencies = None
 
             def __str__(self) -> str:
                 return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -201,7 +202,12 @@ class IpType(QObject):
 
             @property
             def condition(self) -> str:
-                return self.__data.get("if", "")
+                return self.__data.get("condition", "")
+
+            def dependencies(self) -> list[str]:
+                if self.__dependencies is None:
+                    self.__dependencies = Express.variables(self.condition)
+                return self.__dependencies
 
         def __init__(
             self, data: dict, name: str, parameters: dict[str, IpType.ParameterUnitType]
@@ -210,6 +216,7 @@ class IpType(QObject):
             self.__name = name
             self.__parameters = parameters
             self.__pins = None
+            self.__dependencies = None
 
         def __str__(self) -> str:
             return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -239,6 +246,14 @@ class IpType(QObject):
                 for name, value in self.__data.get("pins", {}).items():
                     self.__pins[name] = self.PinUnitType(value)
             return self.__pins
+
+        def dependencies(self) -> list[str]:
+            if self.__dependencies is None:
+                self.__dependencies = []
+                for name, pin in self.pins.items():
+                    self.__dependencies += pin.dependencies()
+                self.__dependencies = sorted(set(self.__dependencies))
+            return self.__dependencies
 
     def __init__(self, data: dict, parent=None):
         super().__init__(parent)

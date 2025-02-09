@@ -563,8 +563,8 @@ parameters:
           expression:
             real: value*1
           comment:
-            zh_CN: '*1'
-            en: '*1'
+            zh_CN: "*1"
+            en: "*1"
       description:
         zh_CN: APB1 倍频器
         en: APB1 CLK Multiplier
@@ -578,8 +578,8 @@ parameters:
           expression:
             real: value*2
           comment:
-            zh_CN: '*2'
-            en: '*2'
+            zh_CN: "*2"
+            en: "*2"
       description:
         zh_CN: APB1 倍频器
         en: APB1 CLK Multiplier
@@ -655,8 +655,8 @@ parameters:
           expression:
             real: value*1
           comment:
-            zh_CN: '*1'
-            en: '*1'
+            zh_CN: "*1"
+            en: "*1"
       description:
         zh_CN: APB2 倍频器
         en: APB2 CLK Multiplier
@@ -670,8 +670,8 @@ parameters:
           expression:
             real: value*2
           comment:
-            zh_CN: '*2'
-            en: '*2'
+            zh_CN: "*2"
+            en: "*2"
       description:
         zh_CN: APB2 倍频器
         en: APB2 CLK Multiplier
@@ -824,92 +824,92 @@ parameters:
           expression:
             real: value*2
           comment:
-            zh_CN: '*2'
-            en: '*2'
+            zh_CN: "*2"
+            en: "*2"
         geehy.rcm_pll_mul3:
           expression:
             real: value*3
           comment:
-            zh_CN: '*3'
-            en: '*3'
+            zh_CN: "*3"
+            en: "*3"
         geehy.rcm_pll_mul4:
           expression:
             real: value*4
           comment:
-            zh_CN: '*4'
-            en: '*4'
+            zh_CN: "*4"
+            en: "*4"
         geehy.rcm_pll_mul5:
           expression:
             real: value*5
           comment:
-            zh_CN: '*5'
-            en: '*5'
+            zh_CN: "*5"
+            en: "*5"
         geehy.rcm_pll_mul6:
           expression:
             real: value*6
           comment:
-            zh_CN: '*6'
-            en: '*6'
+            zh_CN: "*6"
+            en: "*6"
         geehy.rcm_pll_mul7:
           expression:
             real: value*7
           comment:
-            zh_CN: '*7'
-            en: '*7'
+            zh_CN: "*7"
+            en: "*7"
         geehy.rcm_pll_mul8:
           expression:
             real: value*8
           comment:
-            zh_CN: '*8'
-            en: '*8'
+            zh_CN: "*8"
+            en: "*8"
         geehy.rcm_pll_mul9:
           expression:
             real: value*9
           comment:
-            zh_CN: '*9'
-            en: '*9'
+            zh_CN: "*9"
+            en: "*9"
         geehy.rcm_pll_mul10:
           expression:
             real: value*10
           comment:
-            zh_CN: '*10'
-            en: '*10'
+            zh_CN: "*10"
+            en: "*10"
         geehy.rcm_pll_mul11:
           expression:
             real: value*11
           comment:
-            zh_CN: '*11'
-            en: '*11'
+            zh_CN: "*11"
+            en: "*11"
         geehy.rcm_pll_mul12:
           expression:
             real: value*12
           comment:
-            zh_CN: '*12'
-            en: '*12'
+            zh_CN: "*12"
+            en: "*12"
         geehy.rcm_pll_mul13:
           expression:
             real: value*13
           comment:
-            zh_CN: '*13'
-            en: '*13'
+            zh_CN: "*13"
+            en: "*13"
         geehy.rcm_pll_mul14:
           expression:
             real: value*14
           comment:
-            zh_CN: '*14'
-            en: '*14'
+            zh_CN: "*14"
+            en: "*14"
         geehy.rcm_pll_mul15:
           expression:
             real: value*15
           comment:
-            zh_CN: '*15'
-            en: '*15'
+            zh_CN: "*15"
+            en: "*15"
         geehy.rcm_pll_mul16:
           expression:
             real: value*16
           comment:
-            zh_CN: '*16'
-            en: '*16'
+            zh_CN: "*16"
+            en: "*16"
       description:
         zh_CN: PLL 倍频器
         en: PLL Multiplier
@@ -1146,26 +1146,26 @@ parameters:
 controls:
   geehy.rcm_hse_clock_source_t:
     pins:
-      OSC-IN:
+      RCM:OSC-IN:
         mode: GPIO:System
-        condition: RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_bypass' or RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_oscillator'
-      OSC-OUT:
+        condition: RCM.geehy.rcm_hse_clock_source_t == "geehy.rcm_hse_clock_source_bypass" or RCM.geehy.rcm_hse_clock_source_t == "geehy.rcm_hse_clock_source_oscillator"
+      RCM:OSC-OUT:
         mode: GPIO:System
-        condition: RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_bypass' or RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_oscillator'
+        condition: RCM.geehy.rcm_hse_clock_source_t == "geehy.rcm_hse_clock_source_bypass" or RCM.geehy.rcm_hse_clock_source_t == "geehy.rcm_hse_clock_source_oscillator"
   geehy.rcm_lse_clock_source_t:
     pins:
-      OSC32-IN:
+      RCM:OSC32-IN:
         mode: GPIO:System
-        condition: true
-      OSC32-OUT:
+        condition: RCM.geehy.rcm_lse_clock_source_t == "geehy.rcm_lse_clock_source_bypass" or RCM.geehy.rcm_lse_clock_source_t == "geehy.rcm_lse_clock_source_oscillator"
+      RCM:OSC32-OUT:
         mode: GPIO:System
-        condition: true
-  geehy.rcm_hsi_calibration_t: { }
+        condition: RCM.geehy.rcm_lse_clock_source_t == "geehy.rcm_lse_clock_source_bypass" or RCM.geehy.rcm_lse_clock_source_t == "geehy.rcm_lse_clock_source_oscillator"
+  geehy.rcm_hsi_calibration_t: {}
   geehy.rcm_mco_enabled_t:
     pins:
-      MCO:
+      RCM:MCO:
         mode: GPIO:AlternateFunctionPushPull
-        condition: true
+        condition: RCM.geehy.rcm_mco_enabled_t == True
 modes:
-  geehy.rcm_flash_latency_t: { }
-  geehy.rcm_prefetch_buffer_enabled_t: { }
+  geehy.rcm_flash_latency_t: {}
+  geehy.rcm_prefetch_buffer_enabled_t: {}
