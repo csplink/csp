@@ -47,7 +47,7 @@ class ContributorType:
 
     @property
     def avatar(self) -> str:
-        return self.__data.get("avatar", '')
+        return self.__data.get("avatar", "")
 
     @property
     def contributions(self) -> int:
@@ -55,11 +55,11 @@ class ContributorType:
 
     @property
     def htmlUrl(self) -> str:
-        return self.__data.get("htmlUrl", '')
+        return self.__data.get("htmlUrl", "")
 
     @property
     def name(self) -> str:
-        return self.__data.get("name", '')
+        return self.__data.get("name", "")
 
 
 class Contributor:
@@ -68,7 +68,11 @@ class Contributor:
 
     @logger.catch(default=False)
     def checkContributors(self, contributors: list) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "contributors.yml"), 'r', encoding='utf-8') as f:
+        with open(
+            os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "contributors.yml"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=contributors, schema=schema)
         return True
@@ -76,7 +80,7 @@ class Contributor:
     @logger.catch(default=[])
     def __getContributors(self) -> list[dict]:
         if os.path.isfile(SETTINGS.CONTRIBUTORS_FILE):
-            with open(SETTINGS.CONTRIBUTORS_FILE, 'r', encoding='utf-8') as f:
+            with open(SETTINGS.CONTRIBUTORS_FILE, "r", encoding="utf-8") as f:
                 contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.checkContributors(contributors)
             if succeed:

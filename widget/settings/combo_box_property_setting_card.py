@@ -25,7 +25,13 @@
 #
 
 from PySide6.QtCore import Qt, Signal
-from qfluentwidgets import (FluentIconBase, SettingCard, ComboBox, IconInfoBadge, InfoBadgePosition)
+from qfluentwidgets import (
+    FluentIconBase,
+    SettingCard,
+    ComboBox,
+    IconInfoBadge,
+    InfoBadgePosition,
+)
 
 from common import Icon
 
@@ -33,7 +39,15 @@ from common import Icon
 class ComboBoxPropertySettingCard(SettingCard):
     currentTextChanged = Signal(str)
 
-    def __init__(self, icon: FluentIconBase, title: str, value: str, values: list, content=None, parent=None):
+    def __init__(
+        self,
+        icon: FluentIconBase,
+        title: str,
+        value: str,
+        values: list,
+        content=None,
+        parent=None,
+    ):
         super().__init__(icon, title, content, parent)
         self.comboBox = ComboBox(self)
 
@@ -43,10 +57,12 @@ class ComboBoxPropertySettingCard(SettingCard):
         self.comboBox.setCurrentText(value)
         self.comboBox.currentTextChanged.connect(self.currentTextChanged)
 
-        self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
-                                         parent=self.comboBox.parent(),
-                                         target=self.comboBox,
-                                         position=InfoBadgePosition.TOP_RIGHT)
+        self.badge = IconInfoBadge.error(
+            icon=Icon.CLOSE_LARGE,
+            parent=self.comboBox.parent(),
+            target=self.comboBox,
+            position=InfoBadgePosition.TOP_RIGHT,
+        )
         self.badge.hide()
 
         self.hBoxLayout.addWidget(self.comboBox, 0, Qt.AlignmentFlag.AlignRight)
@@ -76,5 +92,5 @@ class ComboBoxPropertySettingCard(SettingCard):
 
     def clear(self):
         self.comboBox.clear()
-        self.setStatusInfo(False, '')
-        self.setContent('')
+        self.setStatusInfo(False, "")
+        self.setContent("")

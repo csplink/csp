@@ -28,8 +28,10 @@ from .main_window import MainWindow
 from .new_project_window import NewProjectWindow
 from .startup_window import StartupWindow
 
+# fmt: off
 __all__ = [
-    'MainWindow',
-    'NewProjectWindow',
-    'StartupWindow'
+    "MainWindow",
+    "NewProjectWindow",
+    "StartupWindow"
 ]
+# fmt: on

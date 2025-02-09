@@ -34,18 +34,18 @@ class Drawio:
     class MxCellType:
         def __init__(self, element: etree.Element):
             self.__origin = element
-            self.__id = element.get('id', '')
-            self.__value = element.get('value', '')
-            self.__parent = int(element.get('parent', '0'))
-            self.__vertex = int(element.get('vertex', '0'))
-            self.__edge = int(element.get('edge', '0'))
+            self.__id = element.get("id", "")
+            self.__value = element.get("value", "")
+            self.__parent = int(element.get("parent", "0"))
+            self.__vertex = int(element.get("vertex", "0"))
+            self.__edge = int(element.get("edge", "0"))
 
             self.__shape = []
             self.__style = {}
-            styles = element.get('style', '').strip(';').split(';')
+            styles = element.get("style", "").strip(";").split(";")
             for style in styles:
-                if '=' in style:
-                    ss = style.split('=')
+                if "=" in style:
+                    ss = style.split("=")
                     self.__style[ss[0]] = ss[1]
                 else:
                     self.__shape.append(style)
@@ -84,7 +84,7 @@ class Drawio:
 
     class GeometryType:
         def __init__(self, x: float, y: float, width: float, height: float):
-            self.__data = {'x': x, 'y': y, 'width': width, 'height': height}
+            self.__data = {"x": x, "y": y, "width": width, "height": height}
 
         def __str__(self) -> str:
             return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -95,19 +95,19 @@ class Drawio:
 
         @property
         def x(self) -> float:
-            return self.__data['x']
+            return self.__data["x"]
 
         @property
         def y(self) -> float:
-            return self.__data['y']
+            return self.__data["y"]
 
         @property
         def width(self) -> float:
-            return self.__data['width']
+            return self.__data["width"]
 
         @property
         def height(self) -> float:
-            return self.__data['height']
+            return self.__data["height"]
 
     def __init__(self, path: str, i18n: dict[str, dict[str, str]], local: str):
         self.__lines = {}
@@ -115,54 +115,63 @@ class Drawio:
         self.__texts = {}
         self.__graphics = {}
 
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             svg = f.read()
 
         for name, value in i18n.items():
-            i = value.get(local, value.get('en'))
+            i = value.get(local, value.get("en"))
             if i is not None:
                 svg = svg.replace(name, i)
 
         self.__root = etree.fromstring(svg)
-        self.__drawio = etree.fromstring(self.__root.attrib['content'])
-        self.__namespace = {'ns': self.__root.tag.split('}')[0][1:] if '}' in self.__root.tag else ''}
-        version = Version(self.__drawio.attrib['version'])
-        objects: list[etree.Element] = self.__drawio.find('diagram').findall('mxGraphModel/root/object')
-        mxCells: list[etree.Element] = self.__drawio.find('diagram').findall('mxGraphModel/root/mxCell')
+        self.__drawio = etree.fromstring(self.__root.attrib["content"])
+        self.__namespace = {
+            "ns": self.__root.tag.split("}")[0][1:] if "}" in self.__root.tag else ""
+        }
+        version = Version(self.__drawio.attrib["version"])
+        objects: list[etree.Element] = self.__drawio.find("diagram").findall(
+            "mxGraphModel/root/object"
+        )
+        mxCells: list[etree.Element] = self.__drawio.find("diagram").findall(
+            "mxGraphModel/root/mxCell"
+        )
 
         for obj in objects:
-            id_ = obj.attrib['id']
-            mxCell = obj.find('mxCell')
-            mxCell.attrib['id'] = id_
+            id_ = obj.attrib["id"]
+            mxCell = obj.find("mxCell")
+            mxCell.attrib["id"] = id_
             mxCells.append(mxCell)
         for mxCell in mxCells:
             cell = Drawio.MxCellType(mxCell)
-            id_ = mxCell.attrib['id']
+            id_ = mxCell.attrib["id"]
             if self.__isWidget(cell):
                 element = self.__findSvgElement(id_)
-                ellipses = element.findall('ns:g/ns:g/ns:ellipse', self.__namespace)
-                rects = element.findall('ns:g/ns:g/ns:rect', self.__namespace)
+                ellipses = element.findall("ns:g/ns:g/ns:ellipse", self.__namespace)
+                rects = element.findall("ns:g/ns:g/ns:rect", self.__namespace)
                 if len(ellipses) == 1:
                     ellipse = ellipses[0]
-                    x = float(ellipse.attrib['cx']) - float(ellipse.attrib['rx']) + 0.5
-                    y = float(ellipse.attrib['cy']) - float(ellipse.attrib['ry']) + 0.5
-                    width = float(ellipse.attrib['rx']) * 2
-                    height = float(ellipse.attrib['ry']) * 2
+                    x = float(ellipse.attrib["cx"]) - float(ellipse.attrib["rx"]) + 0.5
+                    y = float(ellipse.attrib["cy"]) - float(ellipse.attrib["ry"]) + 0.5
+                    width = float(ellipse.attrib["rx"]) * 2
+                    height = float(ellipse.attrib["ry"]) * 2
                 elif len(rects) == 1:
                     rect = rects[0]
-                    x = float(rect.attrib['x'])
-                    y = float(rect.attrib['y'])
-                    width = float(rect.attrib['width']) + 1
-                    height = float(rect.attrib['height']) + 1
+                    x = float(rect.attrib["x"])
+                    y = float(rect.attrib["y"])
+                    width = float(rect.attrib["width"]) + 1
+                    height = float(rect.attrib["height"]) + 1
                 else:
                     logger.warning(
-                        f'There was a problem parsing the svg file {path!r}, the default drawio configuration will be used. id {id_!r}')
-                    mxGeometry = mxCell.find('mxGeometry')
-                    x = float(mxGeometry.attrib['x']) + 1
-                    y = float(mxGeometry.attrib['y']) + 1
-                    width = float(mxGeometry.attrib['width']) + 1
-                    height = float(mxGeometry.attrib['height']) + 1
-                self.__widgets[id_] = Drawio.GeometryType(x=x, y=y, width=width, height=height)
+                        f"There was a problem parsing the svg file {path!r}, the default drawio configuration will be used. id {id_!r}"
+                    )
+                    mxGeometry = mxCell.find("mxGeometry")
+                    x = float(mxGeometry.attrib["x"]) + 1
+                    y = float(mxGeometry.attrib["y"]) + 1
+                    width = float(mxGeometry.attrib["width"]) + 1
+                    height = float(mxGeometry.attrib["height"]) + 1
+                self.__widgets[id_] = Drawio.GeometryType(
+                    x=x, y=y, width=width, height=height
+                )
             # elif self.__isLine(mxCell.attrib):
             #     self.__lines.append(id_)
             # elif self.__isText(mxCell.attrib):
@@ -177,7 +186,7 @@ class Drawio:
 
         for id_, item in self.__widgets.items():
             element = self.__findSvgElement(id_)
-            self.__updateGraphicsElement(element, id_, 'rgb(0, 0, 0)')
+            self.__updateGraphicsElement(element, id_, "rgb(0, 0, 0)")
 
     @property
     def svg(self) -> bytes:
@@ -193,16 +202,16 @@ class Drawio:
 
     def __isWidget(self, mxCell: MxCellType) -> bool:
         # widget 其背景必须为透明，edge属性为0，内部无文本（非文本图形），必须为无圆角矩形或者圆形，边框宽度等于1
-        fillColor = mxCell.style.get('fillColor', 'none')
-        if mxCell.value != '' or mxCell.shape == 'text':
+        fillColor = mxCell.style.get("fillColor", "none")
+        if mxCell.value != "" or mxCell.shape == "text":
             return False
         elif mxCell.edge == 1:
             return False
-        elif fillColor == 'none' or fillColor == 'default':
-            strokeWidth = int(mxCell.style.get('strokeWidth', '1'))
+        elif fillColor == "none" or fillColor == "default":
+            strokeWidth = int(mxCell.style.get("strokeWidth", "1"))
             if strokeWidth != 1:
                 return False
-            elif mxCell.style.get('rounded', '') == '0' or mxCell.shape == 'ellipse':
+            elif mxCell.style.get("rounded", "") == "0" or mxCell.shape == "ellipse":
                 return True
 
         return False
@@ -210,12 +219,16 @@ class Drawio:
     def __isGraphics(self, attrib: dict[str, str]) -> bool:
         # rounded!=none && fillColor!=none
         times = 0
-        styles = attrib.get('style', '').strip(';').split(';')
+        styles = attrib.get("style", "").strip(";").split(";")
         for style in styles:
-            if style.startswith('rounded='):
+            if style.startswith("rounded="):
                 times += 1
                 continue
-            elif style.startswith('fillColor=') and style != 'fillColor=none' and style != 'fillColor=default':
+            elif (
+                style.startswith("fillColor=")
+                and style != "fillColor=none"
+                and style != "fillColor=default"
+            ):
                 times += 1
                 continue
 
@@ -225,14 +238,18 @@ class Drawio:
 
     def __isLine(self, attrib: dict[str, str]) -> bool:
         # shape==line; edge==1 && strokeColor!=none/default
-        styles = attrib.get('style', '').strip(';').split(';')
+        styles = attrib.get("style", "").strip(";").split(";")
         for style in styles:
-            if style.startswith('strokeColor=') and style != 'strokeColor=none' and style != 'strokeColor=default':
+            if (
+                style.startswith("strokeColor=")
+                and style != "strokeColor=none"
+                and style != "strokeColor=default"
+            ):
                 return False
-            if style == 'line':
+            if style == "line":
                 return True
 
-        if attrib.get('edge', '0') == '0':
+        if attrib.get("edge", "0") == "0":
             return False
 
         return True
@@ -240,13 +257,17 @@ class Drawio:
     def __isText(self, attrib: dict[str, str]) -> bool:
         # value!=none && shape==text && fillColor!=none/default
         times = 0
-        if attrib.get('value', '') != '':
+        if attrib.get("value", "") != "":
             times += 1
-        styles = attrib.get('style', '').strip(';').split(';')
+        styles = attrib.get("style", "").strip(";").split(";")
         for style in styles:
-            if style == 'text':
+            if style == "text":
                 times += 1
-            elif style.startswith('fillColor=') and style != 'fillColor=none' and style != 'fillColor=default':
+            elif (
+                style.startswith("fillColor=")
+                and style != "fillColor=none"
+                and style != "fillColor=default"
+            ):
                 return False
 
         return times > 0
@@ -254,9 +275,9 @@ class Drawio:
     def __findSvgElement(self, id_: str) -> etree.Element:
         rtn = None
 
-        gs = self.__root.findall('ns:g/ns:g/ns:g/ns:g', self.__namespace)
+        gs = self.__root.findall("ns:g/ns:g/ns:g/ns:g", self.__namespace)
         for g in gs:
-            if g.attrib['data-cell-id'] == id_:
+            if g.attrib["data-cell-id"] == id_:
                 rtn = g
                 break
 
@@ -265,48 +286,48 @@ class Drawio:
     def __updateLine(self):
         for id_ in self.__lines:
             element = self.__findSvgElement(id_)
-            self.__updateLineElement(element, id_, 'rgb(255, 0, 0)')
+            self.__updateLineElement(element, id_, "rgb(255, 0, 0)")
 
     def __updateText(self):
         for id_ in self.__texts:
             element = self.__findSvgElement(id_)
-            self.__updateTextElement(element, id_, 'rgb(0, 255, 255)')
+            self.__updateTextElement(element, id_, "rgb(0, 255, 255)")
 
     def __updateGraphics(self):
         for id_ in self.__graphics:
             element = self.__findSvgElement(id_)
-            self.__updateGraphicsElement(element, id_, 'rgb(0, 255, 0)')
+            self.__updateGraphicsElement(element, id_, "rgb(0, 255, 0)")
 
     def __updateLineElement(self, el: etree.Element, cellId: str, color: str):
         for e in el:
-            if e.tag == '{http://www.w3.org/2000/svg}path':
-                e.attrib['stroke'] = color
-                if e.get('fill', 'none') != 'none':
-                    e.attrib['fill'] = color
-            elif e.tag == '{http://www.w3.org/2000/svg}ellipse':
-                e.attrib['fill'] = color
-                e.attrib['stroke'] = color
+            if e.tag == "{http://www.w3.org/2000/svg}path":
+                e.attrib["stroke"] = color
+                if e.get("fill", "none") != "none":
+                    e.attrib["fill"] = color
+            elif e.tag == "{http://www.w3.org/2000/svg}ellipse":
+                e.attrib["fill"] = color
+                e.attrib["stroke"] = color
 
             if len(e) > 0:
                 self.__updateLineElement(e, cellId, color)
 
     def __updateTextElement(self, el: etree.Element, cellId: str, color: str):
         for e in el:
-            if e.tag == '{http://www.w3.org/2000/svg}g':
-                if 'fill' in e.attrib:
-                    e.attrib['fill'] = color
+            if e.tag == "{http://www.w3.org/2000/svg}g":
+                if "fill" in e.attrib:
+                    e.attrib["fill"] = color
 
             if len(e) > 0:
                 self.__updateTextElement(e, cellId, color)
 
     def __updateGraphicsElement(self, el: etree.Element, cellId: str, color: str):
         for e in el:
-            if e.tag == '{http://www.w3.org/2000/svg}rect':
-                if 'stroke' in e.attrib:
-                    e.attrib['stroke'] = color
-            elif e.tag == '{http://www.w3.org/2000/svg}ellipse':
-                if 'stroke' in e.attrib:
-                    e.attrib['stroke'] = color
+            if e.tag == "{http://www.w3.org/2000/svg}rect":
+                if "stroke" in e.attrib:
+                    e.attrib["stroke"] = color
+            elif e.tag == "{http://www.w3.org/2000/svg}ellipse":
+                if "stroke" in e.attrib:
+                    e.attrib["stroke"] = color
 
             if len(e) > 0:
                 self.__updateGraphicsElement(e, cellId, color)

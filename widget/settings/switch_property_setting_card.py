@@ -25,8 +25,14 @@
 #
 
 from PySide6.QtCore import Qt, Signal
-from qfluentwidgets import (FluentIconBase, SettingCard, SwitchButton, IconInfoBadge, InfoBadgePosition,
-                            IndicatorPosition)
+from qfluentwidgets import (
+    FluentIconBase,
+    SettingCard,
+    SwitchButton,
+    IconInfoBadge,
+    InfoBadgePosition,
+    IndicatorPosition,
+)
 
 from common import Icon
 
@@ -38,16 +44,20 @@ from common import Icon
 class SwitchPropertySettingCard(SettingCard):
     checkedChanged = Signal(bool)
 
-    def __init__(self, icon: FluentIconBase, title: str, value: bool, content=None, parent=None):
+    def __init__(
+        self, icon: FluentIconBase, title: str, value: bool, content=None, parent=None
+    ):
         super().__init__(icon, title, content, parent)
         self.switchButton = SwitchButton(self, indicatorPos=IndicatorPosition.RIGHT)
         self.switchButton.setChecked(value)
         self.switchButton.checkedChanged.connect(self.checkedChanged)
 
-        self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
-                                         parent=self.switchButton.parent(),
-                                         target=self.switchButton,
-                                         position=InfoBadgePosition.TOP_RIGHT)
+        self.badge = IconInfoBadge.error(
+            icon=Icon.CLOSE_LARGE,
+            parent=self.switchButton.parent(),
+            target=self.switchButton,
+            position=InfoBadgePosition.TOP_RIGHT,
+        )
         self.badge.hide()
 
         self.hBoxLayout.addWidget(self.switchButton, 0, Qt.AlignmentFlag.AlignRight)
@@ -61,5 +71,5 @@ class SwitchPropertySettingCard(SettingCard):
             self.switchButton.setToolTip("")
 
     def clear(self):
-        self.setStatusInfo(False, '')
-        self.setContent('')
+        self.setStatusInfo(False, "")
+        self.setContent("")

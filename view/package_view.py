@@ -26,8 +26,21 @@
 
 from PySide6.QtCore import Qt, Signal, QItemSelection, QUrl, QPoint, QThread, QObject
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtWidgets import QWidget, QTreeWidgetItem, QVBoxLayout, QHBoxLayout, QHeaderView
-from qfluentwidgets import (TreeWidget, RoundMenu, Action, MessageBox, MessageBoxBase, IndeterminateProgressRing)
+from PySide6.QtWidgets import (
+    QWidget,
+    QTreeWidgetItem,
+    QVBoxLayout,
+    QHBoxLayout,
+    QHeaderView,
+)
+from qfluentwidgets import (
+    TreeWidget,
+    RoundMenu,
+    Action,
+    MessageBox,
+    MessageBoxBase,
+    IndeterminateProgressRing,
+)
 
 from common import Style, Icon, PACKAGE, SETTINGS, SIGNAL_BUS
 from utils import Converters
@@ -41,7 +54,9 @@ class PackageInfoWidget(QWidget):
         super().__init__(parent=parent)
         self.mainLayout = QVBoxLayout(self)
         self.treeWidget = TreeWidget(self)
-        self.treeWidget.header().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.treeWidget.header().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents
+        )
         self.treeWidget.header().hide()
         self.treeWidget.setColumnCount(2)
         self.treeWidget.hide()
@@ -60,22 +75,26 @@ class PackageInfoWidget(QWidget):
         self.treeWidget.show()
 
         # Author ---------------------------------------------------------------
-        authorItem = QTreeWidgetItem(self.treeWidget, [self.tr('Author')])
-        QTreeWidgetItem(authorItem, [self.tr('Name'), pdsc.author.name])
-        QTreeWidgetItem(authorItem, [self.tr('Email'), pdsc.author.email])
-        websiteItem = QTreeWidgetItem(authorItem, [self.tr('Website')])
-        QTreeWidgetItem(websiteItem, [self.tr('Blog'), pdsc.author.website.blog])
-        QTreeWidgetItem(websiteItem, [self.tr('Github'), pdsc.author.website.github])
+        authorItem = QTreeWidgetItem(self.treeWidget, [self.tr("Author")])
+        QTreeWidgetItem(authorItem, [self.tr("Name"), pdsc.author.name])
+        QTreeWidgetItem(authorItem, [self.tr("Email"), pdsc.author.email])
+        websiteItem = QTreeWidgetItem(authorItem, [self.tr("Website")])
+        QTreeWidgetItem(websiteItem, [self.tr("Blog"), pdsc.author.website.blog])
+        QTreeWidgetItem(websiteItem, [self.tr("Github"), pdsc.author.website.github])
         # ----------------------------------------------------------------------
-        QTreeWidgetItem(self.treeWidget, [self.tr('Name'), pdsc.name])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Version'), pdsc.version])
-        QTreeWidgetItem(self.treeWidget, [self.tr('License'), pdsc.license])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Type'), pdsc.type])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Vendor'), pdsc.vendor])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Vendor url'), pdsc.vendorUrl.get(local)])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Description'), pdsc.description.get(local)])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Url'), pdsc.url.get(local)])
-        QTreeWidgetItem(self.treeWidget, [self.tr('Support'), pdsc.support])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Name"), pdsc.name])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Version"), pdsc.version])
+        QTreeWidgetItem(self.treeWidget, [self.tr("License"), pdsc.license])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Type"), pdsc.type])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Vendor"), pdsc.vendor])
+        QTreeWidgetItem(
+            self.treeWidget, [self.tr("Vendor url"), pdsc.vendorUrl.get(local)]
+        )
+        QTreeWidgetItem(
+            self.treeWidget, [self.tr("Description"), pdsc.description.get(local)]
+        )
+        QTreeWidgetItem(self.treeWidget, [self.tr("Url"), pdsc.url.get(local)])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Support"), pdsc.support])
         self.treeWidget.expandAll()
 
         # def setItems(tree: TreeWidget, parent=None):
@@ -112,7 +131,7 @@ class PackageUninstallThread(QThread):
     def run(self):
         status = PACKAGE.uninstall(self.kind, self.name, self.version)
         if not status:
-            self.failed.emit(self.tr('Uninstall failed'))
+            self.failed.emit(self.tr("Uninstall failed"))
 
 
 class PackageView(Ui_PackageView, QWidget):
@@ -125,11 +144,15 @@ class PackageView(Ui_PackageView, QWidget):
         self.packageTreeCard.setFixedWidth(300)
         self.packageTree.header().setVisible(False)
         self.packageTree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.packageTree.customContextMenuRequested.connect(self.__on_packageTree_customContextMenuRequested)
-        self.packageTree.selectionModel().selectionChanged.connect(self.__on_packageTree_selectionChanged)
+        self.packageTree.customContextMenuRequested.connect(
+            self.__on_packageTree_customContextMenuRequested
+        )
+        self.packageTree.selectionModel().selectionChanged.connect(
+            self.__on_packageTree_selectionChanged
+        )
 
         self.versionMenu = RoundMenu(parent=self)
-        self.uninstallAction = Action(self.tr('Uninstall'))
+        self.uninstallAction = Action(self.tr("Uninstall"))
         self.uninstallAction.triggered.connect(self.__on_uninstallAction_triggered)
         self.versionMenu.addAction(self.uninstallAction)
 
@@ -161,16 +184,25 @@ class PackageView(Ui_PackageView, QWidget):
                 for version, path in value.items():
                     versionItem = QTreeWidgetItem(nameItem, [version])
                     versionItem.setIcon(0, Icon.DATABASE_2.qicon())
-                    versionItem.setData(0, Qt.ItemDataRole.StatusTipRole, f"{kind}/{name}/{version}")
+                    versionItem.setData(
+                        0, Qt.ItemDataRole.StatusTipRole, f"{kind}/{name}/{version}"
+                    )
         self.packageTree.expandAll()
 
     def __on_uninstallAction_triggered(self):
         if self.__uninstallArgs is None:
             return
 
-        thread = PackageUninstallThread(self.__uninstallArgs[0], self.__uninstallArgs[1], self.__uninstallArgs[2], self)
+        thread = PackageUninstallThread(
+            self.__uninstallArgs[0],
+            self.__uninstallArgs[1],
+            self.__uninstallArgs[2],
+            self,
+        )
         thread.started.connect(self.__on_uninstallThread_started)
-        thread.failed.connect(lambda s: MessageBox(self.tr("Error"), s, self.window()).exec())
+        thread.failed.connect(
+            lambda s: MessageBox(self.tr("Error"), s, self.window()).exec()
+        )
         thread.finished.connect(self.__on_uninstallThread_finished)
         thread.start()
 
@@ -181,7 +213,9 @@ class PackageView(Ui_PackageView, QWidget):
         self.busyMessageBox.accept()
         self.flush()
 
-    def __on_packageTree_selectionChanged(self, selected: QItemSelection, _: QItemSelection):
+    def __on_packageTree_selectionChanged(
+        self, selected: QItemSelection, _: QItemSelection
+    ):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
@@ -199,7 +233,9 @@ class PackageView(Ui_PackageView, QWidget):
         if path is not None:
             args = path.split("/")
             self.__uninstallArgs = args
-            self.versionMenu.exec(self.packageTree.viewport().mapToGlobal(pos), ani=True)
+            self.versionMenu.exec(
+                self.packageTree.viewport().mapToGlobal(pos), ani=True
+            )
 
     def flush(self):
         self.__updateTree()

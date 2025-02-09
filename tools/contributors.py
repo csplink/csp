@@ -55,17 +55,19 @@ class Contributors:
         names = []
         for info in json:
             names.append(info["login"])
-        if 'HalfSweet' not in names:  # for branch stable/cpp-qt
-            userInfo = Contributors.getUser('HalfSweet')
-            json.append({
-                'login': userInfo['login'],
-                'avatar_url': userInfo['avatar_url'],
-                'html_url': userInfo['html_url'],
-                'id': userInfo['id'],
-                'contributions': 1
-            })
+        if "HalfSweet" not in names:  # for branch stable/cpp-qt
+            userInfo = Contributors.getUser("HalfSweet")
+            json.append(
+                {
+                    "login": userInfo["login"],
+                    "avatar_url": userInfo["avatar_url"],
+                    "html_url": userInfo["html_url"],
+                    "id": userInfo["id"],
+                    "contributions": 1,
+                }
+            )
 
-        return sorted(json, key=lambda x: x['contributions'], reverse=True)
+        return sorted(json, key=lambda x: x["contributions"], reverse=True)
 
     @staticmethod
     def generate(root: str, owner: str, repo: str, token: str):
@@ -83,17 +85,25 @@ class Contributors:
             extension = filetype.guess_extension(response.content)
             extension = f".{extension}" if extension else ""
             file = f"{avatarFolder}/{contributor['id']}{extension}"
-            with open(file, 'wb') as fp:
+            with open(file, "wb") as fp:
                 fp.write(response.content)
-            print(f"Author: {contributor['login']}, Contributions: {contributor['contributions']}")
-            contributorList.append({
-                "name": contributor["login"],
-                "avatar": f"avatar/{os.path.basename(file)}",
-                "htmlUrl": contributor["html_url"],
-                "contributions": contributor["contributions"],
-            })
+            print(
+                f"Author: {contributor['login']}, Contributions: {contributor['contributions']}"
+            )
+            contributorList.append(
+                {
+                    "name": contributor["login"],
+                    "avatar": f"avatar/{os.path.basename(file)}",
+                    "htmlUrl": contributor["html_url"],
+                    "contributions": contributor["contributions"],
+                }
+            )
 
-        with open(f"{os.path.join(os.path.dirname(avatarFolder), 'contributors')}", 'w', encoding='utf-8') as f:
+        with open(
+            f"{os.path.join(os.path.dirname(avatarFolder), 'contributors')}",
+            "w",
+            encoding="utf-8",
+        ) as f:
             f.write(yaml.dump(contributorList))
 
 

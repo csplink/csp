@@ -75,7 +75,8 @@ class SummaryType:
                 datasheets = self.__data.get("datasheets", {})
                 for name, unit in datasheets.items():
                     self.__datasheets[name] = SummaryType.DocumentType.DocumentUnitType(
-                        unit if unit is not None else {})
+                        unit if unit is not None else {}
+                    )
             return self.__datasheets
 
         @property
@@ -84,7 +85,9 @@ class SummaryType:
                 self.__errata = {}
                 errata = self.__data.get("errata", {})
                 for name, unit in errata.items():
-                    self.__errata[name] = SummaryType.DocumentType.DocumentUnitType(unit if unit is not None else {})
+                    self.__errata[name] = SummaryType.DocumentType.DocumentUnitType(
+                        unit if unit is not None else {}
+                    )
             return self.__errata
 
         @property
@@ -94,7 +97,8 @@ class SummaryType:
                 references = self.__data.get("references", {})
                 for name, unit in references.items():
                     self.__references[name] = SummaryType.DocumentType.DocumentUnitType(
-                        unit if unit is not None else {})
+                        unit if unit is not None else {}
+                    )
             return self.__references
 
     class ModuleType:
@@ -118,7 +122,7 @@ class SummaryType:
 
         @property
         def ip(self) -> str:
-            return self.__data.get("ip", '')
+            return self.__data.get("ip", "")
 
     class LinkerType:
         def __init__(self, data: dict):
@@ -163,7 +167,7 @@ class SummaryType:
 
         @property
         def type(self) -> str:
-            return self.__data.get("type", '')
+            return self.__data.get("type", "")
 
         @property
         def signals(self) -> list[str]:
@@ -225,7 +229,9 @@ class SummaryType:
     @property
     def documents(self) -> DocumentType:
         if self.__documents is None:
-            self.__documents = SummaryType.DocumentType(self.__data.get("documents", {}))
+            self.__documents = SummaryType.DocumentType(
+                self.__data.get("documents", {})
+            )
         return self.__documents
 
     @property
@@ -256,7 +262,9 @@ class SummaryType:
             for groupName, group in modules.items():
                 groupUnit = {}
                 for name, unit in group.items():
-                    groupUnit[name] = SummaryType.ModuleType(unit if unit is not None else {})
+                    groupUnit[name] = SummaryType.ModuleType(
+                        unit if unit is not None else {}
+                    )
                 self.__modules[groupName] = groupUnit
         return self.__modules
 
@@ -286,7 +294,9 @@ class SummaryType:
             self.__pins = {}
             pins = self.__data.get("pins", {})
             for name, unit in pins.items():
-                self.__pins[name] = SummaryType.PinType(unit if unit is not None else {})
+                self.__pins[name] = SummaryType.PinType(
+                    unit if unit is not None else {}
+                )
         return self.__pins
 
     # ----------------------------------------------------------------------------------------------------------------------
@@ -304,7 +314,7 @@ class SummaryType:
         if self.__pinIp is None:
             for _, pin in self.pins.items():
                 if len(pin.modes) > 0:
-                    self.__pinIp = pin.modes[0].split(':')[0]
+                    self.__pinIp = pin.modes[0].split(":")[0]
                     break
         return self.__pinIp
 
@@ -321,16 +331,22 @@ class Summary:
 
     @logger.catch(default=False)
     def __checkSummary(self, summary: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"), 'r', encoding='utf-8') as f:
+        with open(
+            os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=summary, schema=schema)
         return True
 
     @logger.catch(default=SummaryType({}))
     def __getSummary(self, vendor: str, name: str) -> SummaryType:
-        file = os.path.join(SETTINGS.DATABASE_FOLDER, "summary", vendor.lower(), f"{name.lower()}.yml")
+        file = os.path.join(
+            SETTINGS.DATABASE_FOLDER, "summary", vendor.lower(), f"{name.lower()}.yml"
+        )
         if os.path.isfile(file):
-            with open(file, 'r', encoding='utf-8') as f:
+            with open(file, "r", encoding="utf-8") as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkSummary(summary)
             if succeed:

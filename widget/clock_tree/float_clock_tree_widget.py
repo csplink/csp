@@ -34,10 +34,31 @@ from .number_clock_tree_widget import NumberClockTreeWidget
 
 
 class FloatClockTreeWidget(NumberClockTreeWidget, QLineEdit):
-    def __init__(self, id_: str, instance: str, param: str, element: ClockTreeType.ElementUnitType,
-                 parameter: IpType.ParameterUnitType, clockTree: ClockTreeType, template: Template, data: dict,
-                 parent=None):
-        NumberClockTreeWidget.__init__(self, id_, instance, param, element, parameter, clockTree, template, data,
-                                       parent)
+    def __init__(
+        self,
+        id_: str,
+        instance: str,
+        param: str,
+        element: ClockTreeType.ElementUnitType,
+        parameter: IpType.ParameterUnitType,
+        clockTree: ClockTreeType,
+        template: Template,
+        data: dict,
+        parent=None,
+    ):
+        NumberClockTreeWidget.__init__(
+            self,
+            id_,
+            instance,
+            param,
+            element,
+            parameter,
+            clockTree,
+            template,
+            data,
+            parent,
+        )
         self.setObjectName("floatWidget")
-        self.setValidator(QRegularExpressionValidator(QRegularExpression(R"(\d+)(\.\d+)?$")))
+        self.setValidator(
+            QRegularExpressionValidator(QRegularExpression(R"(\d+)(\.\d+)?$"))
+        )

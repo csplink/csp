@@ -29,8 +29,16 @@ import os
 from PySide6.QtCore import Qt, QPoint, QObject, QEvent, QUrl, QRect
 from PySide6.QtGui import QColor, QDesktopServices
 from PySide6.QtWidgets import QWidget, QVBoxLayout
-from qfluentwidgets import (RoundMenu, FlowLayout, AvatarWidget, Action, CaptionLabel, HyperlinkLabel, isDarkTheme,
-                            ScrollArea)
+from qfluentwidgets import (
+    RoundMenu,
+    FlowLayout,
+    AvatarWidget,
+    Action,
+    CaptionLabel,
+    HyperlinkLabel,
+    isDarkTheme,
+    ScrollArea,
+)
 
 from common import SETTINGS, Icon, Contributor, ContributorType
 
@@ -39,7 +47,7 @@ CONTRIBUTORS_DIR = os.path.dirname(SETTINGS.CONTRIBUTORS_FILE)
 
 
 class CardProfile(QWidget):
-    """ Profile card """
+    """Profile card"""
 
     def __init__(self, avatarPath: str, name: str, url: str, parent=None):
         super().__init__(parent=parent)
@@ -48,7 +56,7 @@ class CardProfile(QWidget):
         self.urlLabel = CaptionLabel(url, self)
 
         color = QColor(206, 206, 206) if isDarkTheme() else QColor(96, 96, 96)
-        self.urlLabel.setStyleSheet('QLabel{color: ' + color.name() + '}')
+        self.urlLabel.setStyleSheet("QLabel{color: " + color.name() + "}")
 
         self.setFixedSize(307, 82)
         self.avatar.setRadius(24)
@@ -84,7 +92,7 @@ class ListContributors(QWidget):
         contributors = Contributor().contributors()
 
         for contributor in contributors:
-            label = AvatarWidget(f'{CONTRIBUTORS_DIR}/{contributor.avatar}', self)
+            label = AvatarWidget(f"{CONTRIBUTORS_DIR}/{contributor.avatar}", self)
             label.setCursor(Qt.CursorShape.PointingHandCursor)
             label.installEventFilter(self)
             label.setRadius(AVATAR_SIZE // 2)
@@ -93,11 +101,16 @@ class ListContributors(QWidget):
 
     def createCustomWidgetMenu(self, contributor: ContributorType, pos: QPoint):
         menu = RoundMenu(parent=self)
-        card = CardProfile(f'{CONTRIBUTORS_DIR}/{contributor.avatar}', contributor.name, contributor.htmlUrl, menu)
+        card = CardProfile(
+            f"{CONTRIBUTORS_DIR}/{contributor.avatar}",
+            contributor.name,
+            contributor.htmlUrl,
+            menu,
+        )
         menu.addWidget(card, selectable=False)
 
         menu.addSeparator()
-        action = Action(Icon.GITHUB, self.tr('Open Github Url'))
+        action = Action(Icon.GITHUB, self.tr("Open Github Url"))
         action.setProperty("url", contributor.htmlUrl)
         action.triggered.connect(self.__on_githubAction_triggered)
         menu.addAction(action)
@@ -109,5 +122,8 @@ class ListContributors(QWidget):
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         if isinstance(watched, AvatarWidget):
             if event.type() == QEvent.Type.MouseButtonRelease:
-                self.createCustomWidgetMenu(watched.property("info"), watched.mapToGlobal(QPoint(watched.width(), 0)))
+                self.createCustomWidgetMenu(
+                    watched.property("info"),
+                    watched.mapToGlobal(QPoint(watched.width(), 0)),
+                )
         return super().eventFilter(watched, event)

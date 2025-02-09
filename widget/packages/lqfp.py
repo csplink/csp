@@ -42,13 +42,21 @@ class LQFP:
 
     def getItems(self, vendor: str, name: str):
         pins = SUMMARY.projectSummary().pins
-        _pins: list[tuple[str, SummaryType.PinType]] = sorted(pins.items(), key=lambda d: d[1].position, reverse=False)
+        _pins: list[tuple[str, SummaryType.PinType]] = sorted(
+            pins.items(), key=lambda d: d[1].position, reverse=False
+        )
         pins: dict[str, SummaryType.PinType] = {k: v for k, v in _pins}
         count = len(pins)
         num = count // 4
         items = []
 
-        item = GraphicsItemChipBody(self.getBodyLength(num), self.getBodyLength(num), name, vendor, f"LQFP{count}")
+        item = GraphicsItemChipBody(
+            self.getBodyLength(num),
+            self.getBodyLength(num),
+            name,
+            vendor,
+            f"LQFP{count}",
+        )
         item.setPos(QPointF(self.PIN_WIDTH, self.PIN_WIDTH))
         items.append(item)
 
@@ -60,14 +68,22 @@ class LQFP:
                 w = self.PIN_WIDTH
                 h = self.PIN_HEIGHT
                 x = 0
-                y = index * (self.PIN_HEIGHT + self.PIN_SPACING) + self.PIN_WIDTH + self.PIN_SPACING
+                y = (
+                    index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                    + self.PIN_WIDTH
+                    + self.PIN_SPACING
+                )
 
             elif num <= position < 2 * num:
                 index = position - num
                 direction = GraphicsItemPin.Direction.BOTTOM_DIRECTION
                 w = self.PIN_HEIGHT
                 h = self.PIN_WIDTH
-                x = index * (self.PIN_HEIGHT + self.PIN_SPACING) + self.PIN_WIDTH + self.PIN_SPACING
+                x = (
+                    index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                    + self.PIN_WIDTH
+                    + self.PIN_SPACING
+                )
                 y = self.PIN_WIDTH + self.getBodyLength(num)
 
             elif 2 * num <= position < 3 * num:
@@ -76,17 +92,33 @@ class LQFP:
                 w = self.PIN_WIDTH
                 h = self.PIN_HEIGHT
                 x = self.PIN_WIDTH + self.getBodyLength(num)
-                y = self.PIN_WIDTH + self.getBodyLength(num) - index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                y = (
+                    self.PIN_WIDTH
+                    + self.getBodyLength(num)
+                    - index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                )
 
             else:
                 index = 4 * num - position
                 direction = GraphicsItemPin.Direction.TOP_DIRECTION
                 w = self.PIN_HEIGHT
                 h = self.PIN_WIDTH
-                x = self.PIN_WIDTH + self.getBodyLength(num) - index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                x = (
+                    self.PIN_WIDTH
+                    + self.getBodyLength(num)
+                    - index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                )
                 y = 0
 
-            item = GraphicsItemPin(w, h, self.PIN_LENGTH, direction, name, GraphicsItemPin.Type.RECTANGLE_TYPE, pin)
+            item = GraphicsItemPin(
+                w,
+                h,
+                self.PIN_LENGTH,
+                direction,
+                name,
+                GraphicsItemPin.Type.RECTANGLE_TYPE,
+                pin,
+            )
             item.setPos(QPointF(x, y))
             items.append(item)
 

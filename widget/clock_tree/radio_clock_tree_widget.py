@@ -32,10 +32,21 @@ from .base_clock_tree_widget import BaseClockTreeWidget
 
 
 class RadioClockTreeWidget(BaseClockTreeWidget, QRadioButton):
-    def __init__(self, id_: str, instance: str, param: str, element: ClockTreeType.ElementUnitType,
-                 parameter: IpType.ParameterUnitType, clockTree: ClockTreeType, template: Template, data: dict,
-                 parent=None):
-        BaseClockTreeWidget.__init__(self, id_, instance, param, element, parameter, clockTree, template, data)
+    def __init__(
+        self,
+        id_: str,
+        instance: str,
+        param: str,
+        element: ClockTreeType.ElementUnitType,
+        parameter: IpType.ParameterUnitType,
+        clockTree: ClockTreeType,
+        template: Template,
+        data: dict,
+        parent=None,
+    ):
+        BaseClockTreeWidget.__init__(
+            self, id_, instance, param, element, parameter, clockTree, template, data
+        )
         QRadioButton.__init__(self, parent)
 
         self.setObjectName("radioWidget")
@@ -52,7 +63,9 @@ class RadioClockTreeWidget(BaseClockTreeWidget, QRadioButton):
 
     def setup(self):
         super().setup()
-        selector = PROJECT.project().configs.get(f'{self.instance}/{self.parameter.group}')
+        selector = PROJECT.project().configs.get(
+            f"{self.instance}/{self.parameter.group}"
+        )
         if selector is None:
             default = self.parameter.default
             if default is not None and default == True:
@@ -70,6 +83,8 @@ class RadioClockTreeWidget(BaseClockTreeWidget, QRadioButton):
 
     def __on_toggled(self, checked: bool):
         if checked:
-            PROJECT.project().configs.set(f'{self.instance}/{self.parameter.group}', self.param)
+            PROJECT.project().configs.set(
+                f"{self.instance}/{self.parameter.group}", self.param
+            )
             for id_, widget in self.outputs().items():
                 widget.flush(self)

@@ -30,7 +30,7 @@ import platform
 import subprocess
 import sys
 
-__languages = ['zh_CN']
+__languages = ["zh_CN"]
 
 __rootDir = os.path.join(os.path.dirname(__file__), "..")
 
@@ -38,24 +38,29 @@ __rootDir = os.path.join(os.path.dirname(__file__), "..")
 class Lrelease:
     @staticmethod
     def run(root: str, languages: list[str]):
-        if platform.system() == 'Windows':
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lrelease.exe", recursive=True)
+        if platform.system() == "Windows":
+            exes = glob.glob(
+                f"{os.path.dirname(sys.executable)}/**/pyside6-lrelease.exe",
+                recursive=True,
+            )
         else:
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lrelease", recursive=True)
+            exes = glob.glob(
+                f"{os.path.dirname(sys.executable)}/**/pyside6-lrelease", recursive=True
+            )
 
         if len(exes) > 0:
             exe = exes[0]
             for lang in languages:
                 tsFile = os.path.join(root, "resource", "i18n", f"csplink.{lang}.ts")
-                assert os.path.isfile(tsFile), f'{tsFile} is not exists'
+                assert os.path.isfile(tsFile), f"{tsFile} is not exists"
                 qmFile = os.path.join(root, "resource", "i18n", f"csplink.{lang}.qm")
                 if not os.path.isdir(os.path.dirname(qmFile)):
                     os.makedirs(os.path.dirname(qmFile))
-                subprocess.call([exe, tsFile, '-qm', qmFile])
+                subprocess.call([exe, tsFile, "-qm", qmFile])
         else:
             print("can not find lrelease")
             sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     Lrelease.run(__rootDir, __languages)

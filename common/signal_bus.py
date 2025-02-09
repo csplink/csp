@@ -28,7 +28,7 @@ from PySide6.QtCore import QObject, Signal
 
 
 class SignalBus(QObject):
-    """ Signal bus """
+    """Signal bus"""
 
     modeManagerTriggered = Signal(str, str)
     controlManagerTriggered = Signal(str, str)

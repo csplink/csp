@@ -63,19 +63,25 @@ class ValueHub(QObject):
         item[keys[-1]] = value
 
         # remove node
-        if ((isinstance(value, dict) or isinstance(value, str) or isinstance(value, list))
-            and len(value) == 0) or value is None:
+        if (
+            (
+                isinstance(value, dict)
+                or isinstance(value, str)
+                or isinstance(value, list)
+            )
+            and len(value) == 0
+        ) or value is None:
             item.pop(keys[-1])
 
         self.itemUpdated.emit(keys, old, value)
         self.changed.emit()
 
     def save(self, folder: str):
-        folder = os.path.join(folder, '.csp')
+        folder = os.path.join(folder, ".csp")
         if not os.path.exists(folder):
             os.makedirs(folder)
-        path = os.path.join(folder, 'value_hub.yaml')
-        with open(path, 'w', encoding='utf-8') as f:
+        path = os.path.join(folder, "value_hub.yaml")
+        with open(path, "w", encoding="utf-8") as f:
             f.write(yaml.dump(self.__data))
 
     def __convertToNestedDict(self, data: dict[str, str]) -> dict:
@@ -88,7 +94,7 @@ class ValueHub(QObject):
 
         for key, value in data.items():
             # split the key into parts by '.'
-            keys = key.split('.')
+            keys = key.split(".")
             __nestedSet(nested, keys, value)
         return nested
 

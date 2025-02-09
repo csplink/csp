@@ -86,8 +86,14 @@ class ProjectType(QObject):
             item[keys[-1]] = value
 
             # remove node
-            if ((isinstance(value, dict) or isinstance(value, str) or isinstance(value, list))
-                and len(value) == 0) or value is None:
+            if (
+                (
+                    isinstance(value, dict)
+                    or isinstance(value, str)
+                    or isinstance(value, list)
+                )
+                and len(value) == 0
+            ) or value is None:
                 item.pop(keys[-1])
 
             if len(keys) >= 2:
@@ -395,7 +401,11 @@ class ProjectType(QObject):
         modules = set()
         # noinspection PyUnresolvedReferences
         for name, cfg in self.configs.origin.items():
-            if name in SUMMARY.projectSummary().moduleList() and cfg is not None and len(cfg) > 0:
+            if (
+                name in SUMMARY.projectSummary().moduleList()
+                and cfg is not None
+                and len(cfg) > 0
+            ):
                 modules.add(name)
         self.modules = list(modules)
 
@@ -406,7 +416,7 @@ class Project(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.__path = ''
+        self.__path = ""
         self.__valid = False
         self.__project = ProjectType({}, self)
         self.__project.changed.connect(self.__on_project_changed)
@@ -414,7 +424,11 @@ class Project(QObject):
 
     @logger.catch(default=False)
     def __checkProject(self, project: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "project.yml"), 'r', encoding='utf-8') as f:
+        with open(
+            os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "project.yml"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=project, schema=schema)
         return True
@@ -422,7 +436,7 @@ class Project(QObject):
     @logger.catch(default={})
     def __getProject(self, file: str) -> dict:
         if os.path.isfile(file):
-            with open(file, 'r', encoding='utf-8') as f:
+            with open(file, "r", encoding="utf-8") as f:
                 project = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkProject(project)
             if succeed:
@@ -465,10 +479,16 @@ class Project(QObject):
         return os.path.dirname(self.__path)
 
     def halFolder(self) -> str:
-        return PACKAGE.index().path("hal", self.__project.gen.hal, self.__project.gen.halVersion)
+        return PACKAGE.index().path(
+            "hal", self.__project.gen.hal, self.__project.gen.halVersion
+        )
 
     def toolchainsFolder(self) -> str:
-        return PACKAGE.index().path("toolchains", self.__project.gen.toolchains, self.__project.gen.toolchainsVersion)
+        return PACKAGE.index().path(
+            "toolchains",
+            self.__project.gen.toolchains,
+            self.__project.gen.toolchainsVersion,
+        )
 
     def __buildValuesHub(self, item: dict, parentKey: str, hub: dict[str, object]):
         for k, v in item.items():
@@ -487,23 +507,28 @@ class Project(QObject):
             logger.error(f'project "{path}" load failed.')
             return self.__valid
 
-        summary = SUMMARY.setProjectSummary(self.__project.vendor, self.__project.targetChip)
+        summary = SUMMARY.setProjectSummary(
+            self.__project.vendor, self.__project.targetChip
+        )
         if len(summary.origin) == 0:
-            logger.error(f"invalid summary {self.__project.vendor}, {self.__project.targetChip}!")
+            logger.error(
+                f"invalid summary {self.__project.vendor}, {self.__project.targetChip}!"
+            )
             return self.__valid
 
         for _, group in summary.modules.items():
             for name, module in group.items():
-                if module.ip != '':
+                if module.ip != "":
                     ip = IP.setProjectIp(self.__project.vendor, name, module.ip)
                     if len(ip.origin) == 0:
                         logger.error(
-                            f"invalid ip {self.__project.vendor}, {self.__project.targetChip}, {name} {module.ip}!")
+                            f"invalid ip {self.__project.vendor}, {self.__project.targetChip}, {name} {module.ip}!"
+                        )
                         return self.__valid
 
         # init
         valueHub = {}
-        self.__buildValuesHub(self.__project.origin, 'project', valueHub)
+        self.__buildValuesHub(self.__project.origin, "project", valueHub)
         for k, v in SUMMARY.projectSummary().origin.items():
             if not isinstance(v, dict):
                 valueHub[k] = v
@@ -519,20 +544,31 @@ class Project(QObject):
         return yaml.dump(self.__project.origin)
 
     def isGenerateSettingValid(self) -> tuple[bool, str]:
-        if self.project().gen.useToolchainsPackage and not os.path.isdir(self.toolchainsFolder()):
-            return False, f'the toolchains folder does not exist! maybe the toolchains \'{self.project().gen.toolchains}:{self.project().gen.toolchainsVersion}\' is not installed yet'
+        if self.project().gen.useToolchainsPackage and not os.path.isdir(
+            self.toolchainsFolder()
+        ):
+            return (
+                False,
+                f"the toolchains folder does not exist! maybe the toolchains '{self.project().gen.toolchains}:{self.project().gen.toolchainsVersion}' is not installed yet",
+            )
         elif not os.path.isdir(self.halFolder()):
-            return False, f'the hal folder does not exist! maybe the hal \'{self.project().gen.hal}:{self.project().gen.halVersion}\' is not installed yet'
+            return (
+                False,
+                f"the hal folder does not exist! maybe the hal '{self.project().gen.hal}:{self.project().gen.halVersion}' is not installed yet",
+            )
         elif self.project().gen.builder == "":
-            return False, 'the builder is not set'
+            return False, "the builder is not set"
         elif self.project().gen.builderVersion == "":
-            return False, f'the builder {self.project().gen.builder!r} version is not set'
+            return (
+                False,
+                f"the builder {self.project().gen.builder!r} version is not set",
+            )
 
-        return True, ''
+        return True, ""
 
     def save(self):
         if self.__path != "":
-            with open(self.__path, 'w', encoding='utf-8') as f:
+            with open(self.__path, "w", encoding="utf-8") as f:
                 f.write(self.dump())
             VALUE_HUB.save(self.folder())
             self.__isChanged = False

@@ -31,7 +31,9 @@ from PySide6.QtWidgets import QGraphicsObject, QWidget, QStyleOptionGraphicsItem
 
 class GraphicsItemChipBody(QGraphicsObject):
 
-    def __init__(self, width: int, height: int, name: str, vendor: str, package: str, parent=None):
+    def __init__(
+        self, width: int, height: int, name: str, vendor: str, package: str, parent=None
+    ):
         super().__init__(parent=parent)
 
         self.width = int(width)
@@ -53,7 +55,9 @@ class GraphicsItemChipBody(QGraphicsObject):
         return path
 
     # noinspection PyMethodOverriding
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+    def paint(
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+    ):
         brush = painter.brush()
 
         # draw background
@@ -79,18 +83,39 @@ class GraphicsItemChipBody(QGraphicsObject):
         painter.setFont(self.font)
 
         pixels = int(fm.horizontalAdvance(self.package) * 0.8)
-        painter.drawText(QPointF((self.width - pixels) / 2, self.height * 0.9), self.package)
+        painter.drawText(
+            QPointF((self.width - pixels) / 2, self.height * 0.9), self.package
+        )
 
         height = fm.height()
         pixels = int(fm.horizontalAdvance(self.vendor) * 0.8)
-        painter.drawText(QPointF((self.width - pixels) / 2, self.height * 0.9 - height - 10), self.vendor)
+        painter.drawText(
+            QPointF((self.width - pixels) / 2, self.height * 0.9 - height - 10),
+            self.vendor,
+        )
 
         # draw border (with margin)
-        painter.drawLine(QLineF(self.margin, self.margin, self.margin, self.height - self.margin))
-        painter.drawLine(QLineF(self.margin, self.margin, self.width - self.margin, self.margin))
         painter.drawLine(
-            QLineF(self.width - self.margin, self.height - self.margin, self.margin, self.height - self.margin))
+            QLineF(self.margin, self.margin, self.margin, self.height - self.margin)
+        )
         painter.drawLine(
-            QLineF(self.width - self.margin, self.height - self.margin, self.width - self.margin, self.margin))
+            QLineF(self.margin, self.margin, self.width - self.margin, self.margin)
+        )
+        painter.drawLine(
+            QLineF(
+                self.width - self.margin,
+                self.height - self.margin,
+                self.margin,
+                self.height - self.margin,
+            )
+        )
+        painter.drawLine(
+            QLineF(
+                self.width - self.margin,
+                self.height - self.margin,
+                self.width - self.margin,
+                self.margin,
+            )
+        )
 
         painter.setBrush(brush)

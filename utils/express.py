@@ -36,7 +36,7 @@ class Express:
     def __eval(expression: str, values: dict, default: Any) -> Any:
         rtn = default
         try:
-            expression = expression.replace(':', '.')
+            expression = expression.replace(":", ".")
             rtn = simple_eval(expression, names=values)
         except NameNotDefined:
             pass

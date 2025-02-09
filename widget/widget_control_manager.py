@@ -58,7 +58,11 @@ class WidgetControlManager(QWidget):
 
     def __on_x_controlManagerTriggered(self, module: str, widget: str):
         if widget == "widget_control_io_manager":
-            self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.WIDGET_CONTROL_IO_MANAGER.value))
+            self.stackedWidget.setCurrentIndex(
+                int(StackedWidgetIndex.WIDGET_CONTROL_IO_MANAGER.value)
+            )
             self.widget_widgetControlIoManager.setInstance(module)
         else:  # widget_control_ip_manager
-            self.stackedWidget.setCurrentIndex(int(StackedWidgetIndex.WIDGET_CONTROL_IP_MANAGER.value))
+            self.stackedWidget.setCurrentIndex(
+                int(StackedWidgetIndex.WIDGET_CONTROL_IP_MANAGER.value)
+            )

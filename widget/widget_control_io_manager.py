@@ -24,7 +24,13 @@
 # 2024-07-02     xqyjlj       initial version
 #
 
-from PySide6.QtCore import Qt, QSortFilterProxyModel, QAbstractTableModel, QModelIndex, QItemSelection
+from PySide6.QtCore import (
+    Qt,
+    QSortFilterProxyModel,
+    QAbstractTableModel,
+    QModelIndex,
+    QItemSelection,
+)
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView, QVBoxLayout
 from loguru import logger
@@ -38,7 +44,7 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.__font = QFont('JetBrains Mono')
+        self.__font = QFont("JetBrains Mono")
         self.__font.setPixelSize(12)
 
         self.__instance = ""
@@ -49,7 +55,9 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
         self.__data = []
 
         PROJECT.project().configs.configsChanged.connect(self.projectConfigChanged)
-        PROJECT.project().configs.pinConfigsChanged.connect(self.pinProjectConfigChanged)
+        PROJECT.project().configs.pinConfigsChanged.connect(
+            self.pinProjectConfigChanged
+        )
 
     # noinspection PyMethodOverriding
     def rowCount(self, parent: QModelIndex) -> int:
@@ -92,7 +100,9 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
         return super().flags(index)
 
     # noinspection PyMethodOverriding
-    def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
+    def headerData(
+        self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole
+    ) -> object:
         if role == Qt.ItemDataRole.DisplayRole:  # 0
             if orientation == Qt.Orientation.Horizontal:
                 return self.__headersList[section]
@@ -115,16 +125,8 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                 return
 
             self.__headersMap = {
-                self.tr("Name"): {
-                    "path": "",
-                    "index": 0,
-                    "param": ""
-                },
-                self.tr("Label"): {
-                    "path": "pin/(name)/label",
-                    "index": 1,
-                    "param": ""
-                },
+                self.tr("Name"): {"path": "", "index": 0, "param": ""},
+                self.tr("Label"): {"path": "pin/(name)/label", "index": 1, "param": ""},
             }
 
             index = 2
@@ -132,7 +134,7 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                 self.__headersMap[info.display.get(locale)] = {
                     "path": f"{instance}/(name)/{key}",
                     "index": index,
-                    "param": key
+                    "param": key,
                 }
                 index += 1
             self.__headersList = list(self.__headersMap.keys())
@@ -149,8 +151,14 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                             if path != "":
                                 path = path.replace("(name)", name)
                                 value = PROJECT.project().configs.get(path, "")
-                                l.append({"display": IP.iptr(item["param"], self.__value2str(value)),
-                                          "tooltip": value})
+                                l.append(
+                                    {
+                                        "display": IP.iptr(
+                                            item["param"], self.__value2str(value)
+                                        ),
+                                        "tooltip": value,
+                                    }
+                                )
                             else:
                                 l.append({"display": name, "tooltip": name})
                         self.__data.append(l)
@@ -215,7 +223,7 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                     column = self.__headersList.index(param)
                     self.__data[index][column] = {
                         "display": IP.iptr(keys[2], self.__value2str(newValue)),
-                        "tooltip": newValue
+                        "tooltip": newValue,
                     }
                     index = self.createIndex(index, column)
                     self.dataChanged.emit(index, index)
@@ -252,10 +260,16 @@ class WidgetControlIoManager(QWidget):
         self.tableView_io.setBorderRadius(8)
         self.tableView_io.setSortingEnabled(True)
         self.tableView_io.sortByColumn(0, Qt.SortOrder.AscendingOrder)
-        self.tableView_io.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.tableView_io.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.tableView_io.setSelectionMode(
+            QAbstractItemView.SelectionMode.SingleSelection
+        )
+        self.tableView_io.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )
 
-        self.tableView_io.selectionModel().selectionChanged.connect(self.tableView_ioSelectionChanged)
+        self.tableView_io.selectionModel().selectionChanged.connect(
+            self.tableView_ioSelectionChanged
+        )
 
     def setInstance(self, instance: str):
         if self.__instance != instance:

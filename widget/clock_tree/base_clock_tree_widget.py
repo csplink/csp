@@ -35,8 +35,17 @@ from common import IpType, ClockTreeType, IP
 
 
 class BaseClockTreeWidget:
-    def __init__(self, id_: str, instance: str, param: str, element: ClockTreeType.ElementUnitType,
-                 parameter: IpType.ParameterUnitType, clockTree: ClockTreeType, template: Template, data: dict):
+    def __init__(
+        self,
+        id_: str,
+        instance: str,
+        param: str,
+        element: ClockTreeType.ElementUnitType,
+        parameter: IpType.ParameterUnitType,
+        clockTree: ClockTreeType,
+        template: Template,
+        data: dict,
+    ):
         self.id = id_
         self.instance = instance
         self.param = param
@@ -46,7 +55,7 @@ class BaseClockTreeWidget:
         self.ip = IP.projectIps()[self.instance]
         self.template = template
         self.data = copy.deepcopy(data)
-        self.data['valid'] = True
+        self.data["valid"] = True
 
         self.__inputs = {}
         self.__outputs = {}

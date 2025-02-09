@@ -87,7 +87,9 @@ class PackageDescriptionType:
         @property
         def website(self) -> WebsiteType:
             if self.__website is None:
-                self.__website = PackageDescriptionType.AuthorType.WebsiteType(self.__data.get("website", {}))
+                self.__website = PackageDescriptionType.AuthorType.WebsiteType(
+                    self.__data.get("website", {})
+                )
             return self.__website
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -109,7 +111,9 @@ class PackageDescriptionType:
     @property
     def author(self) -> AuthorType:
         if self.__author is None:
-            self.__author = PackageDescriptionType.AuthorType(self.__data.get("author", {}))
+            self.__author = PackageDescriptionType.AuthorType(
+                self.__data.get("author", {})
+            )
         return self.__author
 
     @property
@@ -197,7 +201,7 @@ class Package(QObject):
 
     @logger.catch(default=False)
     def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
-        with open(schemaPath, 'r', encoding='utf-8') as f:
+        with open(schemaPath, "r", encoding="utf-8") as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=instance, schema=schema)
         return True
@@ -205,9 +209,11 @@ class Package(QObject):
     @logger.catch(default=None)
     def __getPackageDescription(self, path: str) -> PackageDescriptionType | None:
         if os.path.isfile(path):
-            with open(path, 'r', encoding='utf-8') as f:
+            with open(path, "r", encoding="utf-8") as f:
                 package: dict = yaml.load(f.read(), Loader=yaml.FullLoader)
-                path = os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_description.yml")
+                path = os.path.join(
+                    SETTINGS.DATABASE_FOLDER, "schema", "package_description.yml"
+                )
                 # noinspection PyArgumentList
                 succeed = self.__checkYaml(path, package)
             if succeed:
@@ -246,16 +252,21 @@ class Package(QObject):
     def __getPackageIndex(self) -> PackageIndexType:
         file = SETTINGS.PACKAGE_INDEX_FILE
         if os.path.isfile(file):
-            with open(file, 'r', encoding='utf-8') as f:
+            with open(file, "r", encoding="utf-8") as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
                 # noinspection PyArgumentList
-                succeed = self.__checkYaml(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"), index)
+                succeed = self.__checkYaml(
+                    os.path.join(
+                        SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"
+                    ),
+                    index,
+                )
             if succeed:
                 return PackageIndexType(index if index is not None else {})
             else:
                 return PackageIndexType({})
         else:
-            with open(file, 'w'):
+            with open(file, "w"):
                 pass
             return PackageIndexType({})
 
@@ -270,7 +281,7 @@ class Package(QObject):
         return yaml.dump(self.__index.origin)
 
     def save(self):
-        with open(SETTINGS.PACKAGE_INDEX_FILE, 'w', encoding='utf-8') as f:
+        with open(SETTINGS.PACKAGE_INDEX_FILE, "w", encoding="utf-8") as f:
             f.write(self.dump())
 
     def install(self, path: str, callback: Callable[[str, float], None]) -> bool:
@@ -290,7 +301,7 @@ class Package(QObject):
 
                 # noinspection PyBroadException
                 try:
-                    with py7zr.SevenZipFile(path, 'r') as archive:
+                    with py7zr.SevenZipFile(path, "r") as archive:
                         info = archive.archiveinfo()
                         cbk = Callback(info.uncompressed, callback)
                         archive.extractall(path=tmpFolder, callback=cbk)
@@ -310,7 +321,7 @@ class Package(QObject):
             elif os.path.isdir(path):
                 items = []
                 for root, dirs, files in os.walk(path):
-                    dirs[:] = [d for d in dirs if d not in ['.git']]
+                    dirs[:] = [d for d in dirs if d not in [".git"]]
                     for file in files:
                         sourceFile = os.path.join(root, file)
                         relPath = os.path.relpath(sourceFile, path)
@@ -333,7 +344,9 @@ class Package(QObject):
             name = package.name
             version = package.version.lower()
 
-            vendorFolder = os.path.join(repositoryFolder, kind, vendor.lower(), name.lower())
+            vendorFolder = os.path.join(
+                repositoryFolder, kind, vendor.lower(), name.lower()
+            )
             folder = os.path.join(vendorFolder, version).replace("\\", "/")
             if os.path.isdir(folder):
                 shutil.rmtree(folder)
@@ -347,10 +360,13 @@ class Package(QObject):
                 os.makedirs(vendorFolder)
 
             shutil.move(tmpFolder, folder)
-            self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = os.path.relpath(folder,
-                                                                                                     SETTINGS.EXE_FOLDER)
+            self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = (
+                os.path.relpath(folder, SETTINGS.EXE_FOLDER)
+            )
             self.save()
-            self.installed.emit(kind, name, version, self.__index.path(kind, name, version))
+            self.installed.emit(
+                kind, name, version, self.__index.path(kind, name, version)
+            )
 
         return True
 
@@ -426,24 +442,28 @@ class PackageCmd(QObject):
         return PACKAGE.uninstall(kind, name, version)
 
     def __on_x_installed(self, kind: str, name: str, version: str, path: str):
-        print(f"successfully installed the package ‘{kind}@{name}:{version}’ to: {path!r}")
+        print(
+            f"successfully installed the package ‘{kind}@{name}:{version}’ to: {path!r}"
+        )
 
     def __on_x_uninstalled(self, kind: str, name: str, version: str, path: str):
-        print(f"successfully uninstalled the package ‘{kind}@{name}:{version}’ from: {path!r}")
+        print(
+            f"successfully uninstalled the package ‘{kind}@{name}:{version}’ from: {path!r}"
+        )
 
     def __package_install_callback(self, file: str, progress: float):
         if self.progress:
             if self.installBar is None:
-                self.installBar = tqdm(total=100, desc='install', unit='file')
-            self.installBar.set_description(f'install {file}')
+                self.installBar = tqdm(total=100, desc="install", unit="file")
+            self.installBar.set_description(f"install {file}")
             self.installBar.n = progress
             self.installBar.refresh()
             if progress == 100:
-                self.installBar.set_description('install')
+                self.installBar.set_description("install")
                 self.installBar.close()
         else:
             if self.verbose:
-                print(f'install {file}')
+                print(f"install {file}")
 
 
 PACKAGE = Package()

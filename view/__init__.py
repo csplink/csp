@@ -30,10 +30,12 @@ from .package_view import PackageView
 from .setting_view import SettingView
 from .soc_view import SocView
 
+# fmt: off
 __all__ = [
-    'ClockTreeView',
-    'CodeView',
-    'PackageView',
-    'SettingView',
-    'SocView'
+    "ClockTreeView",
+    "CodeView",
+    "PackageView",
+    "SettingView",
+    "SocView",
 ]
+# fmt: on

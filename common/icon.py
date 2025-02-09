@@ -33,7 +33,8 @@ from .settings import SETTINGS
 
 
 class Icon(FluentIconBase, Enum):
-    """ Custom icons """
+    """Custom icons"""
+
     M_C = "material/c"
     M_FILE = "material/file"
     M_FOLDER_BASE = "material/folder-base"
@@ -85,4 +86,6 @@ class Icon(FluentIconBase, Enum):
     def path(self, theme=Theme.AUTO):
         if self.value.startswith("material/"):
             return os.path.join(SETTINGS.ICON_FOLDER, f"{self.value}.svg")
-        return os.path.join(SETTINGS.ICON_FOLDER, 'remix', getIconColor(theme), f"{self.value}.svg")
+        return os.path.join(
+            SETTINGS.ICON_FOLDER, "remix", getIconColor(theme), f"{self.value}.svg"
+        )

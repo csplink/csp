@@ -38,19 +38,23 @@ __rootDir = os.path.join(os.path.dirname(__file__), "..")
 class Pyuic:
     @staticmethod
     def run(root: str):
-        if platform.system() == 'Windows':
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-uic.exe", recursive=True)
+        if platform.system() == "Windows":
+            exes = glob.glob(
+                f"{os.path.dirname(sys.executable)}/**/pyside6-uic.exe", recursive=True
+            )
         else:
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-uic", recursive=True)
+            exes = glob.glob(
+                f"{os.path.dirname(sys.executable)}/**/pyside6-uic", recursive=True
+            )
 
         if len(exes) > 0:
             exe = exes[0]
             uiFiles = glob.glob(f"{root}/**/*.ui", recursive=True)
             for uiFile in uiFiles:
                 uiFile = Path(uiFile)
-                targetFile = uiFile.parent / f'{uiFile.stem}_ui.py'
+                targetFile = uiFile.parent / f"{uiFile.stem}_ui.py"
                 print(f"Updating '{targetFile}'...")
-                subprocess.call([exe, uiFile, '-o', targetFile])
+                subprocess.call([exe, uiFile, "-o", targetFile])
         else:
             print("can not find pyside6-uic")
 

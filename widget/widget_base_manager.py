@@ -27,12 +27,34 @@
 from enum import Enum
 
 import attr
-from PySide6.QtCore import (Qt, QRegularExpression, QModelIndex, QAbstractTableModel, QSortFilterProxyModel,
-                            QAbstractItemModel, QEvent, QRectF)
+from PySide6.QtCore import (
+    Qt,
+    QRegularExpression,
+    QModelIndex,
+    QAbstractTableModel,
+    QSortFilterProxyModel,
+    QAbstractItemModel,
+    QEvent,
+    QRectF,
+)
 from PySide6.QtGui import QRegularExpressionValidator, QFont, QMouseEvent
-from PySide6.QtWidgets import (QWidget, QHeaderView, QAbstractItemView, QStyleOptionViewItem, QApplication, QVBoxLayout)
+from PySide6.QtWidgets import (
+    QWidget,
+    QHeaderView,
+    QAbstractItemView,
+    QStyleOptionViewItem,
+    QApplication,
+    QVBoxLayout,
+)
 from loguru import logger
-from qfluentwidgets import LineEdit, TableItemDelegate, ComboBox, SpinBox, DoubleSpinBox, TableView
+from qfluentwidgets import (
+    LineEdit,
+    TableItemDelegate,
+    ComboBox,
+    SpinBox,
+    DoubleSpinBox,
+    TableView,
+)
 
 from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP, Style, IpType
 
@@ -44,14 +66,16 @@ class WidgetBaseManagerType(Enum):
 
 @attr.s
 class WidgetBaseManagerPrivateModel:
-    property = attr.ib(default='', validator=attr.validators.instance_of(str))
-    path = attr.ib(default='', validator=attr.validators.instance_of(str))
-    value = attr.ib(default='', validator=attr.validators.instance_of((str, int, float, bool)))
-    typeof = attr.ib(default='', validator=attr.validators.instance_of(str))
+    property = attr.ib(default="", validator=attr.validators.instance_of(str))
+    path = attr.ib(default="", validator=attr.validators.instance_of(str))
+    value = attr.ib(
+        default="", validator=attr.validators.instance_of((str, int, float, bool))
+    )
+    typeof = attr.ib(default="", validator=attr.validators.instance_of(str))
     possibleValues = attr.ib(default=[], validator=attr.validators.instance_of(list))
-    readonly = attr.ib(default='', validator=attr.validators.instance_of(bool))
-    description = attr.ib(default='', validator=attr.validators.instance_of(str))
-    param = attr.ib(default='', validator=attr.validators.instance_of(str))
+    readonly = attr.ib(default="", validator=attr.validators.instance_of(bool))
+    description = attr.ib(default="", validator=attr.validators.instance_of(str))
+    param = attr.ib(default="", validator=attr.validators.instance_of(str))
     parameter = attr.ib(default=None)
     parameters = attr.ib(default={}, validator=attr.validators.instance_of(dict))
 
@@ -63,10 +87,16 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
 
         self.__data = data
 
-    def editorEvent(self, event: QEvent, model: QAbstractItemModel, option: QStyleOptionViewItem, index: QModelIndex):
+    def editorEvent(
+        self,
+        event: QEvent,
+        model: QAbstractItemModel,
+        option: QStyleOptionViewItem,
+        index: QModelIndex,
+    ):
         column = index.column()
         row = index.row()
-        if column == 1 and self.__data[row].typeof == 'boolean':
+        if column == 1 and self.__data[row].typeof == "boolean":
             if event.type() == QEvent.Type.MouseButtonRelease:
                 event: QMouseEvent
                 if event.button() == Qt.MouseButton.LeftButton:
@@ -74,33 +104,47 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
                     y = option.rect.center().y() - 9.5
                     rect = QRectF(x, y, 19, 19)
                     if rect.contains(event.pos()):
-                        return model.setData(index, not self.__data[row].value, Qt.ItemDataRole.EditRole)
+                        return model.setData(
+                            index, not self.__data[row].value, Qt.ItemDataRole.EditRole
+                        )
 
         return super().editorEvent(event, model, option, index)
 
-    def createEditor(self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex) -> QWidget | None:
+    def createEditor(
+        self, parent: QWidget, option: QStyleOptionViewItem, index: QModelIndex
+    ) -> QWidget | None:
         column = index.column()
         row = index.row()
         if column == 0:
             return None
 
-        if self.__data[row].typeof == 'string':
+        if self.__data[row].typeof == "string":
             lineEdit = LineEdit(parent)
-            lineEdit.setProperty('transparent', False)
+            lineEdit.setProperty("transparent", False)
             lineEdit.setStyle(QApplication.style())
             lineEdit.setText(self.__data[row].value)
-            lineEdit.setValidator(QRegularExpressionValidator(QRegularExpression('^[A-Za-z_][A-Za-z0-9_]+$')))
+            lineEdit.setValidator(
+                QRegularExpressionValidator(
+                    QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")
+                )
+            )
             return lineEdit
-        elif self.__data[row].typeof == 'enum':
+        elif self.__data[row].typeof == "enum":
             comboBox = ComboBox(parent)
             Style.WIDGET_BASE_MANAGER.apply(comboBox)
             comboBox.setStyle(QApplication.style())
             for value in self.__data[index.row()].possibleValues:
-                comboBox.addItem(IP.iptr(self.__data[index.row()].path.split('/')[-1], value))
+                comboBox.addItem(
+                    IP.iptr(self.__data[index.row()].path.split("/")[-1], value)
+                )
             comboBox.setCurrentText(
-                IP.iptr(self.__data[index.row()].path.split('/')[-1], self.__data[index.row()].value))
+                IP.iptr(
+                    self.__data[index.row()].path.split("/")[-1],
+                    self.__data[index.row()].value,
+                )
+            )
             return comboBox
-        elif self.__data[row].typeof == 'integer':
+        elif self.__data[row].typeof == "integer":
             spinBox = SpinBox(parent)
             Style.WIDGET_BASE_MANAGER.apply(spinBox)
             parameter: IpType.ParameterUnitType = self.__data[row].parameter
@@ -109,7 +153,7 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
                 spinBox.setMinimum(int(parameter.min))
             spinBox.setValue(self.__data[row].value)
             return spinBox
-        elif self.__data[row].typeof == 'float':
+        elif self.__data[row].typeof == "float":
             spinBox = DoubleSpinBox(parent)
             Style.WIDGET_BASE_MANAGER.apply(spinBox)
             parameter: IpType.ParameterUnitType = self.__data[row].parameter
@@ -119,45 +163,52 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
             spinBox.setValue(self.__data[row].value)
             return spinBox
         else:
-            logger.warning(f'unknown typeof {self.__data[row].typeof!r}')
+            logger.warning(f"unknown typeof {self.__data[row].typeof!r}")
 
         return None
 
-    def setModelData(self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex):
+    def setModelData(
+        self, editor: QWidget, model: QAbstractItemModel, index: QModelIndex
+    ):
         column = index.column()
         row = index.row()
         if column == 0:
             return None
 
-        if self.__data[row].typeof == 'string':
+        if self.__data[row].typeof == "string":
             editor: LineEdit
             model.setData(index, editor.text(), Qt.ItemDataRole.EditRole)
-        elif self.__data[row].typeof == 'enum':
+        elif self.__data[row].typeof == "enum":
             editor: ComboBox
             model.setData(index, editor.currentText(), Qt.ItemDataRole.EditRole)
-        elif self.__data[row].typeof == 'integer':
+        elif self.__data[row].typeof == "integer":
             editor: SpinBox
             model.setData(index, editor.value(), Qt.ItemDataRole.EditRole)
-        elif self.__data[row].typeof == 'float':
+        elif self.__data[row].typeof == "float":
             editor: SpinBox
             model.setData(index, editor.value(), Qt.ItemDataRole.EditRole)
         else:
-            logger.warning(f'unknown typeof {self.__data[row].typeof!r}')
+            logger.warning(f"unknown typeof {self.__data[row].typeof!r}")
 
 
 class WidgetBaseManagerModel(QAbstractTableModel):
 
-    def __init__(self, data: list[WidgetBaseManagerPrivateModel], type_: WidgetBaseManagerType, parent=None):
+    def __init__(
+        self,
+        data: list[WidgetBaseManagerPrivateModel],
+        type_: WidgetBaseManagerType,
+        parent=None,
+    ):
         super().__init__(parent)
 
         self.__data = data
         self.__type = type_
-        self.__pinInstance = ''
+        self.__pinInstance = ""
         self.__ip = None
         self.__configs = None
-        self.__instance = ''
+        self.__instance = ""
 
-        self.__font = QFont('JetBrains Mono')
+        self.__font = QFont("JetBrains Mono")
         self.__font.setPixelSize(12)
 
         self.__pinInstance = SUMMARY.projectSummary().pinIp()
@@ -175,20 +226,24 @@ class WidgetBaseManagerModel(QAbstractTableModel):
 
     # noinspection PyMethodOverriding
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
-        if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:  # 0, 2
+        if (
+            role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole
+        ):  # 0, 2
             if index.column() == 0:
                 return self.__data[index.row()].property
             elif index.column() == 1:
-                if self.__data[index.row()].typeof == 'boolean':
+                if self.__data[index.row()].typeof == "boolean":
                     return None
-                return IP.iptr(self.__data[index.row()].param, self.__data[index.row()].value)
+                return IP.iptr(
+                    self.__data[index.row()].param, self.__data[index.row()].value
+                )
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
             if index.column() == 1:
                 return self.__data[index.row()].description
             else:
-                return ''
+                return ""
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
         elif role == Qt.ItemDataRole.FontRole:  # 6
@@ -201,8 +256,12 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             return None
         elif role == Qt.ItemDataRole.CheckStateRole:  # 10
             if index.column() == 1:
-                if self.__data[index.row()].typeof == 'boolean':
-                    return Qt.CheckState.Checked if self.__data[index.row()].value else Qt.CheckState.Unchecked
+                if self.__data[index.row()].typeof == "boolean":
+                    return (
+                        Qt.CheckState.Checked
+                        if self.__data[index.row()].value
+                        else Qt.CheckState.Unchecked
+                    )
         elif role == Qt.ItemDataRole.SizeHintRole:  # 13
             return None
         else:
@@ -212,28 +271,32 @@ class WidgetBaseManagerModel(QAbstractTableModel):
     # noinspection PyMethodOverriding
     def setData(self, index: QModelIndex, value: object, role: int) -> bool:
         if role == Qt.ItemDataRole.EditRole:
-            if self.__data[index.row()].typeof == 'string':
+            if self.__data[index.row()].typeof == "string":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
                 self.__data[index.row()].value = value
-            elif self.__data[index.row()].typeof == 'enum':
+            elif self.__data[index.row()].typeof == "enum":
                 path = self.__data[index.row()].path
-                PROJECT.project().configs.set(path, IP.iptr2(path.split('/')[-1], value))
+                PROJECT.project().configs.set(
+                    path, IP.iptr2(path.split("/")[-1], value)
+                )
                 self.__data[index.row()].value = value
-            elif self.__data[index.row()].typeof == 'integer':
-                path = self.__data[index.row()].path
-                PROJECT.project().configs.set(path, value)
-                self.__data[index.row()].value = value
-            elif self.__data[index.row()].typeof == 'float':
+            elif self.__data[index.row()].typeof == "integer":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
                 self.__data[index.row()].value = value
-            elif self.__data[index.row()].typeof == 'boolean':
+            elif self.__data[index.row()].typeof == "float":
+                path = self.__data[index.row()].path
+                PROJECT.project().configs.set(path, value)
+                self.__data[index.row()].value = value
+            elif self.__data[index.row()].typeof == "boolean":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
                 self.__data[index.row()].value = value
             else:
-                logger.warning(f'unknown typeof {self.__data[index.row()].typeof} with value {value}')
+                logger.warning(
+                    f"unknown typeof {self.__data[index.row()].typeof} with value {value}"
+                )
                 return False
             return True
         else:
@@ -242,7 +305,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
     def flags(self, index: QModelIndex) -> Qt.ItemFlag:
         flag = super().flags(index)
         if index.column() == 0:
-            if self.__data[index.row()].typeof == 'boolean':
+            if self.__data[index.row()].typeof == "boolean":
                 flag &= Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsUserTristate
         elif index.column() == 1:
             if self.__data[index.row()].readonly:
@@ -252,7 +315,9 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         return flag
 
     # noinspection PyMethodOverriding
-    def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole) -> object:
+    def headerData(
+        self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole
+    ) -> object:
         return None
 
     def __on_x_controlManagerTriggered(self, instance: str, widget: str):
@@ -268,7 +333,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
 
         ip = IP.projectIps().get(instance)
         if ip is None:
-            logger.error(f'the ip instance:{instance!r} is invalid.')
+            logger.error(f"the ip instance:{instance!r} is invalid.")
             self.modelReset.emit()
             return
 
@@ -276,34 +341,44 @@ class WidgetBaseManagerModel(QAbstractTableModel):
 
         if self.__type == WidgetBaseManagerType.MODE:
             if self.__pinInstance == instance:
-                function: str = PROJECT.project().configs.get(f'pin/{value}/function', '')
+                function: str = PROJECT.project().configs.get(
+                    f"pin/{value}/function", ""
+                )
                 if len(function) == 0:
                     self.modelReset.emit()
-                    self.__ip.parameterItemUpdated.connect(self.__on_ip_parameterItemUpdated)
+                    self.__ip.parameterItemUpdated.connect(
+                        self.__on_ip_parameterItemUpdated
+                    )
                     return
 
-                cfgs = ip.pinModes[function.split(':')[1]]
+                cfgs = ip.pinModes[function.split(":")[1]]
             else:
                 cfgs = ip.modes
 
             if self.__pinInstance == instance:
                 self.__data.append(
-                    WidgetBaseManagerPrivateModel(property=self.tr('Name'),
-                                                  path='',
-                                                  value=value,
-                                                  typeof='string',
-                                                  possibleValues=[],
-                                                  readonly=True,
-                                                  description=''))
-                path = f'pin/{value}/label'
+                    WidgetBaseManagerPrivateModel(
+                        property=self.tr("Name"),
+                        path="",
+                        value=value,
+                        typeof="string",
+                        possibleValues=[],
+                        readonly=True,
+                        description="",
+                    )
+                )
+                path = f"pin/{value}/label"
                 self.__data.append(
-                    WidgetBaseManagerPrivateModel(property=self.tr('Label'),
-                                                  path=path,
-                                                  value=PROJECT.project().configs.get(path, ''),
-                                                  typeof='string',
-                                                  possibleValues=[],
-                                                  readonly=False,
-                                                  description=''))
+                    WidgetBaseManagerPrivateModel(
+                        property=self.tr("Label"),
+                        path=path,
+                        value=PROJECT.project().configs.get(path, ""),
+                        typeof="string",
+                        possibleValues=[],
+                        readonly=False,
+                        description="",
+                    )
+                )
         else:
             cfgs = ip.controls
 
@@ -313,9 +388,9 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             for param, cfg in cfgs.items():
                 if ip.parameters[param].visible:
                     if len(value) != 0:
-                        path = f'{instance}/{value}/{param}'
+                        path = f"{instance}/{value}/{param}"
                     else:
-                        path = f'{instance}/{param}'
+                        path = f"{instance}/{param}"
                     self.__data.append(self.__genPrivateModel(path, param))
 
         self.modelReset.emit()
@@ -341,7 +416,9 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                 originModel.param = param
                 originModel.parameter = model.parameter
 
-                self.dataChanged.emit(self.createIndex(index, 0), self.createIndex(index, 1))
+                self.dataChanged.emit(
+                    self.createIndex(index, 0), self.createIndex(index, 1)
+                )
 
     def __genPrivateModel(self, path: str, param: str) -> WidgetBaseManagerPrivateModel:
         local = SETTINGS.get(SETTINGS.language).value.name()
@@ -352,40 +429,44 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             val = config.default
             PROJECT.project().configs.set(path, val)
         else:
-            if parameter.type == 'enum':
+            if parameter.type == "enum":
                 if val not in parameter.values:
                     # logger.warning(
                     #     f'The enum item {val!r} is not supported. Use default value {parameter.default!r}')
                     val = parameter.default
                     PROJECT.project().configs.set(path, val)
-            elif parameter.type == 'integer' or parameter.type == 'float':
+            elif parameter.type == "integer" or parameter.type == "float":
                 if not isinstance(val, int) and not isinstance(val, float):
                     logger.warning(
-                        f'The value type {val!r}({type(val).__name__!r}) is invalid. Use default value {parameter.default!r}. ({parameter.type!r} is required)')
+                        f"The value type {val!r}({type(val).__name__!r}) is invalid. Use default value {parameter.default!r}. ({parameter.type!r} is required)"
+                    )
                     val = parameter.default
                 elif parameter.max > -1:
                     if val > parameter.max or val < parameter.min:
                         # logger.warning(
                         #     f'The {parameter.type!r} item {val} is not supported. Use default value {parameter.default!r}')
                         val = parameter.default
-            elif parameter.type == 'boolean':
+            elif parameter.type == "boolean":
                 if not isinstance(val, bool):
                     logger.warning(
-                        f'The value type {val!r}({type(val).__name__!r}) is invalid. Use default value {parameter.default!r}. ({parameter.type!r} is required)')
+                        f"The value type {val!r}({type(val).__name__!r}) is invalid. Use default value {parameter.default!r}. ({parameter.type!r} is required)"
+                    )
                     val = parameter.default
             else:
-                logger.warning(f'unknown typeof {parameter.type!r}')
+                logger.warning(f"unknown typeof {parameter.type!r}")
 
-        return WidgetBaseManagerPrivateModel(property=parameter.display.get(local),
-                                             path=path,
-                                             value=val,
-                                             typeof=parameter.type,
-                                             possibleValues=config.values,
-                                             readonly=parameter.readonly,
-                                             description=parameter.description.get(local),
-                                             param=param,
-                                             parameter=parameter,
-                                             parameters=self.__ip.parameters)
+        return WidgetBaseManagerPrivateModel(
+            property=parameter.display.get(local),
+            path=path,
+            value=val,
+            typeof=parameter.type,
+            possibleValues=config.values,
+            readonly=parameter.readonly,
+            description=parameter.description.get(local),
+            param=param,
+            parameter=parameter,
+            parameters=self.__ip.parameters,
+        )
 
 
 class WidgetBaseManager(QWidget):
@@ -408,10 +489,15 @@ class WidgetBaseManager(QWidget):
         model = WidgetBaseManagerModel(data, self.__type, self)
         proxyModel.setSourceModel(model)
         self.tableView_property.setModel(proxyModel)
-        self.tableView_property.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.tableView_property.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )
         self.tableView_property.verticalHeader().setVisible(False)
         self.tableView_property.setBorderVisible(True)
         self.tableView_property.setBorderRadius(8)
-        self.tableView_property.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
-        self.tableView_property.setItemDelegateForColumn(1,
-                                                         WidgetBaseManagerEditorDelegate(data, self.tableView_property))
+        self.tableView_property.setSelectionMode(
+            QAbstractItemView.SelectionMode.NoSelection
+        )
+        self.tableView_property.setItemDelegateForColumn(
+            1, WidgetBaseManagerEditorDelegate(data, self.tableView_property)
+        )
