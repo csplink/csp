@@ -25,6 +25,7 @@ build-*
 resource/contributors
 resource/repository
 resource/packages
+resource/database/schema/*.json
 
 # nuitka-scons
 *.dist
