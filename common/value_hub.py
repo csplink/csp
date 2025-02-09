@@ -52,10 +52,13 @@ class ValueHub(QObject):
     def set(self, path: str, value: object):
         item = self.__data
         keys = path.split(".")
+
+        # create parent node
         for key in keys[:-1]:
             if key not in item:
                 item[key] = {}
             item = item[key]
+
         if item.get(keys[-1], None) == value:
             return
 
