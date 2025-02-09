@@ -93,11 +93,14 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
         model: QAbstractItemModel,
         option: QStyleOptionViewItem,
         index: QModelIndex,
-    ):
+    ) -> bool:
         column = index.column()
         row = index.row()
         if column == 1 and self.__data[row].typeof == "boolean":
-            if event.type() == QEvent.Type.MouseButtonRelease:
+            if (
+                event.type() == QEvent.Type.MouseButtonRelease
+                or event.type() == QEvent.Type.MouseButtonDblClick
+            ):
                 event: QMouseEvent
                 if event.button() == Qt.MouseButton.LeftButton:
                     x = option.rect.x() + 15
