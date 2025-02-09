@@ -490,13 +490,22 @@ class Project(QObject):
             self.__project.gen.toolchainsVersion,
         )
 
-    def __buildValuesHub(self, item: dict, parentKey: str, hub: dict[str, object]):
-        for k, v in item.items():
-            if isinstance(v, dict):
-                self.__buildValuesHub(v, k, hub)
+    def __buildValuesHub(self, nestedDict: dict, parentKey: str = "", sep: str = "."):
+        flattened = {}
+        ignore = ["configs"]
+        for key, value in nestedDict.items():
+            if isinstance(value, dict):
+                if key in ignore:
+                    new_key = parentKey
+                else:
+                    new_key = f"{parentKey}{sep}{key}" if parentKey else key
+                flattened.update(self.__buildValuesHub(value, new_key, sep))
             else:
-                key = f"{parentKey}.{k}" if parentKey else k
-                hub[key] = v
+                new_key = (
+                    f"{parentKey}{sep}{key}" if parentKey else f"project{sep}{key}"
+                )
+                flattened[new_key] = value
+        return flattened
 
     def load(self, path: str) -> bool:
         self.__valid = False
@@ -527,11 +536,10 @@ class Project(QObject):
                         return self.__valid
 
         # init
-        valueHub = {}
-        self.__buildValuesHub(self.__project.origin, "project", valueHub)
+        valueHub = self.__buildValuesHub(self.__project.origin)
         for k, v in SUMMARY.projectSummary().origin.items():
             if not isinstance(v, dict):
-                valueHub[k] = v
+                valueHub[f"summary.{k}"] = v
         VALUE_HUB.assign(valueHub)
 
         self.__valid = True
