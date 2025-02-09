@@ -28,6 +28,7 @@ import logging
 
 from PySide6.QtGui import QFont
 from loguru import logger
+
 # noinspection PyProtectedMember
 from loguru._handler import Message
 
@@ -59,5 +60,7 @@ class PlainTextEditLogger(PlainTextEditReadonly):
         msg = message.record["message"]
         file = message.record["file"]
         line = message.record["line"]
-        text = f"{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {file.name}:{line} | {msg}"
+        text = (
+            f"{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {file.name}:{line} | {msg}"
+        )
         self.appendPlainText(text)

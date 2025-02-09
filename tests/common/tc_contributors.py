@@ -37,10 +37,10 @@ class ContributorTest(unittest.TestCase):
     def test_getContributor(self):
         contributors = Contributor().getContributors()
         for contributor in contributors:
-            self.assertGreater(len(contributor.name), 0, msg='load failed.')
-            self.assertGreater(len(contributor.htmlUrl), 0, msg='load failed.')
-            self.assertGreater(contributor.contributions, 0, msg='load failed.')
-            self.assertGreater(len(contributor.avatar), 0, msg='load failed.')
+            self.assertGreater(len(contributor.name), 0, msg="load failed.")
+            self.assertGreater(len(contributor.htmlUrl), 0, msg="load failed.")
+            self.assertGreater(contributor.contributions, 0, msg="load failed.")
+            self.assertGreater(len(contributor.avatar), 0, msg="load failed.")
 
     def tearDown(self):
         pass

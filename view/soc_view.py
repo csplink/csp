@@ -28,7 +28,7 @@ import re
 
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QGraphicsScene
-from qfluentwidgets import (isDarkTheme, MessageBox)
+from qfluentwidgets import isDarkTheme, MessageBox
 
 from common import Style, Icon, PROJECT, SETTINGS, SUMMARY
 from widget import LQFP
@@ -59,16 +59,23 @@ class SocView(Ui_SocView, QWidget):
         self.__scene = QGraphicsScene(self.graphicsView)
         self.__updateGraphicsViewBackgroundColor()
 
-        SETTINGS.themeChanged.connect(lambda theme: self.__updateGraphicsViewBackgroundColor())
+        SETTINGS.themeChanged.connect(
+            lambda theme: self.__updateGraphicsViewBackgroundColor()
+        )
 
         if SUMMARY.projectSummary().package != "":
             if re.match("^LQFP\d+$", SUMMARY.projectSummary().package):
-                items = LQFP().getItems(PROJECT.project().vendor, PROJECT.project().targetChip)
+                items = LQFP().getItems(
+                    PROJECT.project().vendor, PROJECT.project().targetChip
+                )
             else:
                 items = None
-                title = self.tr('Error')
-                content = self.tr('The package {!r} is not supported at this time.'.format(
-                    SUMMARY.projectSummary().package))
+                title = self.tr("Error")
+                content = self.tr(
+                    "The package {!r} is not supported at this time.".format(
+                        SUMMARY.projectSummary().package
+                    )
+                )
                 message = MessageBox(title, content, self.window())
                 message.setContentCopyable(True)
                 message.cancelButton.setDisabled(True)
@@ -84,4 +91,6 @@ class SocView(Ui_SocView, QWidget):
         Style.SOC_VIEW.apply(self)
 
     def __updateGraphicsViewBackgroundColor(self):
-        self.__scene.setBackgroundBrush(QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253))
+        self.__scene.setBackgroundBrush(
+            QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253)
+        )

@@ -27,12 +27,25 @@
 import math
 
 from PySide6.QtCore import Qt, QRegularExpression, QEvent, QCoreApplication
-from PySide6.QtGui import (QTransform, QMouseEvent, QWheelEvent, QContextMenuEvent, QResizeEvent,
-                           QRegularExpressionValidator, QSurfaceFormat, QPainter)
+from PySide6.QtGui import (
+    QTransform,
+    QMouseEvent,
+    QWheelEvent,
+    QContextMenuEvent,
+    QResizeEvent,
+    QRegularExpressionValidator,
+    QSurfaceFormat,
+    QPainter,
+)
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
-from PySide6.QtWidgets import QGraphicsView, QGraphicsItem, QGraphicsSceneWheelEvent, QGraphicsProxyWidget
+from PySide6.QtWidgets import (
+    QGraphicsView,
+    QGraphicsItem,
+    QGraphicsSceneWheelEvent,
+    QGraphicsProxyWidget,
+)
 from loguru import logger
-from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType)
+from qfluentwidgets import MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType
 
 from common import PROJECT, SIGNAL_BUS, SETTINGS
 from . import EnumClockTreeWidget
@@ -43,19 +56,21 @@ class LabelMessageBox(MessageBoxBase):
 
     def __init__(self, text: str, parent=None):
         super().__init__(parent)
-        self.titleLabel = SubtitleLabel(self.tr('Set label'), self)
+        self.titleLabel = SubtitleLabel(self.tr("Set label"), self)
         self.labelLineEdit = LineEdit(self)
 
         self.labelLineEdit.setText(text)
-        self.labelLineEdit.setPlaceholderText(self.tr('Enter the user label'))
+        self.labelLineEdit.setPlaceholderText(self.tr("Enter the user label"))
         self.labelLineEdit.setClearButtonEnabled(True)
-        self.labelLineEdit.setValidator(QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")))
+        self.labelLineEdit.setValidator(
+            QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$"))
+        )
 
         self.viewLayout.addWidget(self.titleLabel)
         self.viewLayout.addWidget(self.labelLineEdit)
 
-        self.yesButton.setText(self.tr('OK'))
-        self.cancelButton.setText(self.tr('Cancel'))
+        self.yesButton.setText(self.tr("OK"))
+        self.cancelButton.setText(self.tr("Cancel"))
 
         self.widget.setMinimumWidth(360)
 
@@ -81,16 +96,20 @@ class GraphicsViewPanZoom(QGraphicsView):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setOptimizationFlags(QGraphicsView.OptimizationFlag.DontSavePainterState)
         self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.SmartViewportUpdate)
-        self.setRenderHints(QPainter.RenderHint.Antialiasing |
-                            QPainter.RenderHint.TextAntialiasing |
-                            QPainter.RenderHint.SmoothPixmapTransform)
+        self.setRenderHints(
+            QPainter.RenderHint.Antialiasing
+            | QPainter.RenderHint.TextAntialiasing
+            | QPainter.RenderHint.SmoothPixmapTransform
+        )
         self.viewport().setCursor(Qt.CursorShape.ArrowCursor)
         # INT_MAX = 2147483647
         # INT_MIN = -2147483648
         # self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
 
     def setupMatrix(self):
-        scale = math.pow(2, (self.scale - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION)
+        scale = math.pow(
+            2, (self.scale - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION
+        )
         matrix = QTransform()
         matrix.scale(scale, scale)
         # matrix.rotate(90)
@@ -101,12 +120,15 @@ class GraphicsViewPanZoom(QGraphicsView):
         super().mousePressEvent(event)
         if event.button() & Qt.MouseButton.LeftButton:
             item = self.itemAt(event.pos())
-            if item is not None and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
+            if (
+                item is not None
+                and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable
+            ):
                 if isinstance(item, GraphicsItemPin):
                     name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
                     functionKey = item.data(GraphicsItemPin.Data.FUNCTION_DATA.value)
                     function: str = PROJECT.project().configs.get(functionKey, "None")
-                    seqs = function.split(':')
+                    seqs = function.split(":")
                     if len(seqs) == 2:
                         SIGNAL_BUS.modeManagerTriggered.emit(seqs[0], name)
 
@@ -118,14 +140,18 @@ class GraphicsViewPanZoom(QGraphicsView):
     def wheelEvent(self, event: QWheelEvent):
         item = self.itemAt(event.position().toPoint())
         # TODO: There may be a more elegant solution
-        if item is not None and item.flags() == (QGraphicsItem.GraphicsItemFlag.ItemIsFocusable |
-                                                 QGraphicsItem.GraphicsItemFlag.ItemUsesExtendedStyleOption |
-                                                 QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges |
-                                                 QGraphicsItem.GraphicsItemFlag.ItemIsPanel):
+        if item is not None and item.flags() == (
+            QGraphicsItem.GraphicsItemFlag.ItemIsFocusable
+            | QGraphicsItem.GraphicsItemFlag.ItemUsesExtendedStyleOption
+            | QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges
+            | QGraphicsItem.GraphicsItemFlag.ItemIsPanel
+        ):
             parentItem = item.parentItem()
             if parentItem is not None and isinstance(parentItem, QGraphicsProxyWidget):
                 if isinstance(parentItem.widget(), EnumClockTreeWidget):
-                    QCoreApplication.sendEvent(self.scene(), self.QWheelEvent2QGraphicsSceneWheelEvent(event))
+                    QCoreApplication.sendEvent(
+                        self.scene(), self.QWheelEvent2QGraphicsSceneWheelEvent(event)
+                    )
                     return
 
         scrollAmount = event.angleDelta()
@@ -141,7 +167,9 @@ class GraphicsViewPanZoom(QGraphicsView):
             if item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable:
                 menu = item.data(GraphicsItemPin.Data.MENU_DATA.value)
                 if menu is not None:
-                    menu.exec(event.globalPos(), False, MenuAnimationType.FADE_IN_DROP_DOWN)
+                    menu.exec(
+                        event.globalPos(), False, MenuAnimationType.FADE_IN_DROP_DOWN
+                    )
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
@@ -149,14 +177,18 @@ class GraphicsViewPanZoom(QGraphicsView):
         if xHeight != 0:
             self.rescale()
 
-    def QWheelEvent2QGraphicsSceneWheelEvent(self, event: QWheelEvent) -> QGraphicsSceneWheelEvent:
+    def QWheelEvent2QGraphicsSceneWheelEvent(
+        self, event: QWheelEvent
+    ) -> QGraphicsSceneWheelEvent:
         wheelEvent = QGraphicsSceneWheelEvent(QEvent.GraphicsSceneWheel)
         wheelEvent.setScenePos(self.mapToScene(event.position().toPoint()))
         wheelEvent.setScreenPos(event.globalPosition().toPoint())
         wheelEvent.setButtons(event.buttons())
         wheelEvent.setModifiers(event.modifiers())
         horizontal = abs(event.angleDelta().x()) > abs(event.angleDelta().y())
-        wheelEvent.setDelta(event.angleDelta().x() if horizontal else event.angleDelta().y())
+        wheelEvent.setDelta(
+            event.angleDelta().x() if horizontal else event.angleDelta().y()
+        )
         wheelEvent.setPixelDelta(event.pixelDelta())
         wheelEvent.setPhase(event.phase())
         wheelEvent.setInverted(event.isInverted())
@@ -182,7 +214,9 @@ class GraphicsViewPanZoom(QGraphicsView):
     def zoom(self, value):
         if value <= 0:
             return
-        self.scale = math.log(value, 2) * self.RESOLUTION + (self.MIN_SCALE + self.MAX_SCALE / 2)
+        self.scale = math.log(value, 2) * self.RESOLUTION + (
+            self.MIN_SCALE + self.MAX_SCALE / 2
+        )
         if self.scale >= self.MAX_SCALE:
             self.scale = self.MAX_SCALE
 
@@ -201,11 +235,11 @@ class GraphicsViewPanZoom(QGraphicsView):
             viewHeight = self.height()
 
             if sceneWidth == 0:
-                logger.error(f'the scene width is 0.')
+                logger.error(f"the scene width is 0.")
                 return
 
             if sceneHeight == 0:
-                logger.error(f'the scene height is 0.')
+                logger.error(f"the scene height is 0.")
                 return
 
             scaleWidth = viewWidth / sceneWidth

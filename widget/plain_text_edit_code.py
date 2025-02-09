@@ -54,7 +54,7 @@ class PlainTextEditCode(PlainTextEdit):
             maxDigs //= 10
             digits += 1
 
-        space = 3 + self.fontMetrics().horizontalAdvance('9') * digits
+        space = 3 + self.fontMetrics().horizontalAdvance("9") * digits
         rightMargin = self.lineNumberArea.RIGHT_MARGIN
         self.lineNumberAreaWidth = space + rightMargin
 
@@ -64,12 +64,16 @@ class PlainTextEditCode(PlainTextEdit):
         if dy:
             self.lineNumberArea.scroll(0, dy)
         else:
-            self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
+            self.lineNumberArea.update(
+                0, rect.y(), self.lineNumberArea.width(), rect.height()
+            )
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
         cr = self.contentsRect()
-        self.lineNumberArea.setGeometry(QRect(cr.left(), cr.top(), self.lineNumberAreaWidth, cr.height()))
+        self.lineNumberArea.setGeometry(
+            QRect(cr.left(), cr.top(), self.lineNumberAreaWidth, cr.height())
+        )
 
     def lineNumberAreaPaintEvent(self, event):
         painter = QPainter(self.lineNumberArea)
@@ -87,8 +91,14 @@ class PlainTextEditCode(PlainTextEdit):
         while block.isValid() and top <= event.rect().bottom():
             if block.isVisible() and bottom >= event.rect().top():
                 number = str(blockNumber)
-                painter.drawText(0, int(top), areaWidth - rightMargin,
-                                 self.fontMetrics().height(), Qt.AlignmentFlag.AlignRight, number)
+                painter.drawText(
+                    0,
+                    int(top),
+                    areaWidth - rightMargin,
+                    self.fontMetrics().height(),
+                    Qt.AlignmentFlag.AlignRight,
+                    number,
+                )
 
             block = block.next()
             top = bottom

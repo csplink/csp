@@ -72,31 +72,34 @@ def {{ name }}(project: dict, default: {{ value.type }} | None = None) -> {{ val
 {# #}
 {%- endfor %}
 """
-        if len(modules) == 1 and modules[0] == 'all':
-            modules = project.get('modules', [])
+        if len(modules) == 1 and modules[0] == "all":
+            modules = project.get("modules", [])
 
         for module in modules:
-            module_cfg = project.get('configs', {}).get(module, {})
+            module_cfg = project.get("configs", {}).get(module, {})
             configs = {}
 
             for key, value in module_cfg.items():
                 key: str
                 if not isinstance(value, dict):
-                    configs[key.split(".")[-1]] = {'path': f'configs/{module}/{key}', 'type': type(value).__name__}
+                    configs[key.split(".")[-1]] = {
+                        "path": f"configs/{module}/{key}",
+                        "type": type(value).__name__,
+                    }
             data = {
                 "module": module.lower(),
-                "date": time.strftime('%Y-%m-%d', time.localtime()),
-                "year": time.strftime('%Y', time.localtime()),
+                "date": time.strftime("%Y-%m-%d", time.localtime()),
+                "year": time.strftime("%Y", time.localtime()),
                 "configs": configs,
             }
             env = jinja2.Environment()
             template = env.from_string(__template)
             context = template.render(data)
 
-            path = f'{output}/{module.lower()}.py'.replace("\\", "/")
+            path = f"{output}/{module.lower()}.py".replace("\\", "/")
             print(f"generate {path!r}.")
 
-            with open(path, 'w', encoding='utf-8') as f:
+            with open(path, "w", encoding="utf-8") as f:
                 f.write(context)
 
 
@@ -113,7 +116,7 @@ def __main():
     modules = args.modules
 
     if not os.path.isfile(file):
-        print(f'the file {file!r} is not a file')
+        print(f"the file {file!r} is not a file")
         sys.exit(1)
 
     if output is None or not os.path.isdir(output):
@@ -122,21 +125,30 @@ def __main():
     if not os.path.isdir(output):
         os.makedirs(output)
 
-    with open(file, 'r', encoding='utf-8') as f:
+    with open(file, "r", encoding="utf-8") as f:
         project = yaml.load(f.read(), Loader=yaml.FullLoader)
 
     Csp2Filter.generate(project, output, modules)
 
 
 def __createParser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description='generate jinja2 template filter from csp project',
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description="generate jinja2 template filter from csp project",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
 
-    parser.add_argument('-f', '--file', required=True, help='csp project file')
-    parser.add_argument('-o', '--output', required=False, help='output dir')
-    parser.add_argument('-m', '--modules', required=False, nargs='+', default=['all'], help='dump modules')
+    parser.add_argument("-f", "--file", required=True, help="csp project file")
+    parser.add_argument("-o", "--output", required=False, help="output dir")
+    parser.add_argument(
+        "-m",
+        "--modules",
+        required=False,
+        nargs="+",
+        default=["all"],
+        help="dump modules",
+    )
     return parser
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     __main()

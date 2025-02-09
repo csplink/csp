@@ -39,7 +39,7 @@ class I18nType:
         return self.__data
 
     def get(self, local: str) -> str:
-        default = self.__data.get('en', 'unknown')
-        if local == 'en':
+        default = self.__data.get("en", "unknown")
+        if local == "en":
             return default
         return self.__data.get(local, default)

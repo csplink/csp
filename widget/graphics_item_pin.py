@@ -27,10 +27,23 @@
 from enum import Enum
 
 from PySide6.QtCore import QRectF, Qt
-from PySide6.QtGui import QFont, QPainterPath, QPainter, QColor, QPen, QFontMetrics, QAction
-from PySide6.QtWidgets import QGraphicsObject, QGraphicsItem, QWidget, QStyleOptionGraphicsItem
+from PySide6.QtGui import (
+    QFont,
+    QPainterPath,
+    QPainter,
+    QColor,
+    QPen,
+    QFontMetrics,
+    QAction,
+)
+from PySide6.QtWidgets import (
+    QGraphicsObject,
+    QGraphicsItem,
+    QWidget,
+    QStyleOptionGraphicsItem,
+)
 from loguru import logger
-from qfluentwidgets import (isDarkTheme, CheckableMenu, Action)
+from qfluentwidgets import isDarkTheme, CheckableMenu, Action
 
 from common import PROJECT, SummaryType, SUMMARY, IP
 
@@ -59,8 +72,16 @@ class GraphicsItemPin(QGraphicsObject):
         RECTANGLE_TYPE = 0
         CIRCLE_TYPE = 1
 
-    def __init__(self, width: int, height: int, pinLength: int, direction: Direction, name: str, kind: Type,
-                 pinConfig: SummaryType.PinType):
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        pinLength: int,
+        direction: Direction,
+        name: str,
+        kind: Type,
+        pinConfig: SummaryType.PinType,
+    ):
         super().__init__()
 
         self.width = int(width)
@@ -89,7 +110,7 @@ class GraphicsItemPin(QGraphicsObject):
         self.function = PROJECT.project().configs.get(self.functionKey, "")
         self.locked = PROJECT.project().configs.get(self.lockedKey, False)
         self.unsupported = PROJECT.project().configs.get(self.unsupportedKey, False)
-        self.mode = PROJECT.project().configs.get(self.modeKey, '')
+        self.mode = PROJECT.project().configs.get(self.modeKey, "")
 
         self.pinIp = SUMMARY.projectSummary().pinIp()
 
@@ -99,10 +120,12 @@ class GraphicsItemPin(QGraphicsObject):
 
         if self.pinConfig.type == "I/O":
             self.menu = CheckableMenu()
-            self.menu.view.setStyleSheet('''MenuActionListWidget {
+            self.menu.view.setStyleSheet(
+                """MenuActionListWidget {
                         font: 12px "JetBrains Mono", "Segoe UI", "Microsoft YaHei", "PingFang SC";
                         font-weight: normal;
-                }''')
+                }"""
+            )
             self.menu.clear()
             self.menu.triggered.connect(self.menuTriggered)
             self.menu.addAction(Action(self.tr("Reset State")))
@@ -123,7 +146,9 @@ class GraphicsItemPin(QGraphicsObject):
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
 
-        PROJECT.project().configs.pinConfigsChanged.connect(self.__on_project_pinConfigChanged)
+        PROJECT.project().configs.pinConfigsChanged.connect(
+            self.__on_project_pinConfigChanged
+        )
 
     def boundingRect(self) -> QRectF:
         if self.type == self.Type.RECTANGLE_TYPE:
@@ -136,7 +161,9 @@ class GraphicsItemPin(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
-    def paintRectangle(self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget):
+    def paintRectangle(
+        self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget
+    ):
         brush = painter.brush()
 
         # draw background
@@ -179,11 +206,18 @@ class GraphicsItemPin(QGraphicsObject):
         painter.drawRect(x, y, width, height)
 
         # draw text
-        if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION or self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
-            text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20)
+        if (
+            self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION
+            or self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION
+        ):
+            text = self.fontMetrics.elidedText(
+                self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20
+            )
             painter.translate(10 + x, (self.height / 2) + 8)
         else:
-            text = self.fontMetrics.elidedText(self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20)
+            text = self.fontMetrics.elidedText(
+                self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20
+            )
             painter.translate((self.width / 2) + 8, self.pinLength - 10 + y)
             painter.rotate(-90)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
@@ -202,22 +236,34 @@ class GraphicsItemPin(QGraphicsObject):
 
             if text != "":
                 if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
-                    text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.width - self.pinLength - 20)
+                    text = self.fontMetrics.elidedText(
+                        text,
+                        Qt.TextElideMode.ElideRight,
+                        self.width - self.pinLength - 20,
+                    )
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
                 elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
-                    text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.height - self.pinLength - 20)
+                    text = self.fontMetrics.elidedText(
+                        text,
+                        Qt.TextElideMode.ElideRight,
+                        self.height - self.pinLength - 20,
+                    )
                     pixels = self.fontMetrics.horizontalAdvance(text)
                     painter.translate(-pixels - 20, 0)
                 elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
-                    text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.width - self.pinLength - 20)
+                    text = self.fontMetrics.elidedText(
+                        text,
+                        Qt.TextElideMode.ElideRight,
+                        self.width - self.pinLength - 20,
+                    )
                     painter.translate(self.pinLength, 0)
                 else:
-                    text = self.fontMetrics.elidedText(text, Qt.TextElideMode.ElideRight,
-                                                       self.height - self.pinLength - 20)
+                    text = self.fontMetrics.elidedText(
+                        text,
+                        Qt.TextElideMode.ElideRight,
+                        self.height - self.pinLength - 20,
+                    )
                     painter.translate(self.pinLength, 0)
 
             if isDarkTheme():
@@ -228,14 +274,18 @@ class GraphicsItemPin(QGraphicsObject):
         painter.resetTransform()
         painter.setBrush(brush)
 
-    def paintCircle(self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget):
+    def paintCircle(
+        self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget
+    ):
         brush = painter.brush()
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         painter.drawEllipse(0, 0, self.width // 2, self.width // 2)
 
     # noinspection PyMethodOverriding
-    def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget):
+    def paint(
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+    ):
         if self.type == self.Type.RECTANGLE_TYPE:
             self.paintRectangle(painter, option, widget)
         elif self.type == self.Type.CIRCLE_TYPE:
@@ -246,7 +296,10 @@ class GraphicsItemPin(QGraphicsObject):
     def menuTriggered(self, action: QAction):
         self.currentCheckedAction = action
         if action.isCheckable():
-            if self.previousCheckedAction is not None and self.previousCheckedAction != action:
+            if (
+                self.previousCheckedAction is not None
+                and self.previousCheckedAction != action
+            ):
                 self.previousCheckedAction.setChecked(False)
             if action.isChecked():
                 PROJECT.project().configs.set(self.lockedKey, True)
@@ -265,7 +318,9 @@ class GraphicsItemPin(QGraphicsObject):
         if self.previousCheckedAction != action:
             self.previousCheckedAction = action
 
-    def __on_project_pinConfigChanged(self, keys: list[str], oldValue: str, newValue: str):
+    def __on_project_pinConfigChanged(
+        self, keys: list[str], oldValue: str, newValue: str
+    ):
         pin = SUMMARY.projectSummary().pins[self.name]
         if keys[1] != self.name:
             return
@@ -293,7 +348,9 @@ class GraphicsItemPin(QGraphicsObject):
                 ip_modes = ip.pinModes[pinMode]
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})
                 for key, info in ip_modes.items():
-                    PROJECT.project().configs.set(f"{instance}/{self.name}/{key}", info.default)
+                    PROJECT.project().configs.set(
+                        f"{instance}/{self.name}/{key}", info.default
+                    )
             elif oldValue:  # newValue = None, so clear old function
                 instance = oldValue.split(":")[0]
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})

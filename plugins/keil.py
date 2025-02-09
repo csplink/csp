@@ -28,7 +28,7 @@ import os
 import xml.etree.ElementTree as etree
 
 
-class Keil():
+class Keil:
 
     def xml_indent(self, elem: etree.Element, level=0):
         i = "\n" + level * "  "
@@ -48,24 +48,24 @@ class Keil():
     def get_filetype(self, file: str):
         file_type = 5
 
-        if file.endswith('.cpp') or file.endswith('.cxx'):
+        if file.endswith(".cpp") or file.endswith(".cxx"):
             file_type = 8
 
-        if file.endswith('.c') or file.endswith('.C'):
+        if file.endswith(".c") or file.endswith(".C"):
             file_type = 1
 
         # assemble file type
-        if file.endswith('.s') or file.endswith('.S'):
+        if file.endswith(".s") or file.endswith(".S"):
             file_type = 2
 
         # header type
-        if file.endswith('.h'):
+        if file.endswith(".h"):
             file_type = 5
 
-        if file.endswith('.lib'):
+        if file.endswith(".lib"):
             file_type = 4
 
-        if file.endswith('.o'):
+        if file.endswith(".o"):
             file_type = 3
 
         return file_type
@@ -78,32 +78,32 @@ class Keil():
         existing_files_name = []
         group = None
 
-        for tmp_group in parent.findall('Group'):
-            group_name = tmp_group.find('GroupName').text
+        for tmp_group in parent.findall("Group"):
+            group_name = tmp_group.find("GroupName").text
             if group_name == name:
                 group = tmp_group
-                group_files = tmp_group.find('Files')
+                group_files = tmp_group.find("Files")
                 if group_files is not None:
-                    for file in group_files.findall('File'):
-                        file_name = file.find('FileName').text
+                    for file in group_files.findall("File"):
+                        file_name = file.find("FileName").text
                         # file_path = file.find('FilePath').text
                         existing_files_name.append(file_name)
                 break
 
         if group is None:
-            group = etree.SubElement(parent, 'Group')
-            group_name = etree.SubElement(group, 'GroupName')
+            group = etree.SubElement(parent, "Group")
+            group_name = etree.SubElement(group, "GroupName")
             group_name.text = name
-            group_files = etree.SubElement(group, 'Files')
+            group_files = etree.SubElement(group, "Files")
 
         for f in files:
             name = os.path.basename(f)
             if name not in existing_files_name:
-                group_file = etree.SubElement(group_files, 'File')
-                group_file_name = etree.SubElement(group_file, 'FileName')
+                group_file = etree.SubElement(group_files, "File")
+                group_file_name = etree.SubElement(group_file, "FileName")
 
                 group_file_name.text = name
-                group_file_type = etree.SubElement(group_file, 'FileType')
+                group_file_type = etree.SubElement(group_file, "FileType")
                 group_file_type.text = str(get_filetype(name))
-                group_file_path = etree.SubElement(group_file, 'FilePath')
-                group_file_path.text = f"{prefix}{f}".replace('/', '\\')
+                group_file_path = etree.SubElement(group_file, "FilePath")
+                group_file_path.text = f"{prefix}{f}".replace("/", "\\")

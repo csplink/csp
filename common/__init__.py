@@ -37,17 +37,19 @@ from .signal_bus import SignalBus, SIGNAL_BUS
 from .style import Style
 from .summary import Summary, SummaryType, SUMMARY
 
+# fmt: off
 __all__ = [
-    'ClockTree', 'CLOCK_TREE', 'ClockTreeType',
-    'Coder', 'CoderCmd',
-    'Contributor', 'ContributorType',
-    'Icon',
-    'Ip', 'IP', 'IpType',
-    'Package', 'PACKAGE', 'PackageDescriptionType', 'PackageCmd',
-    'Project', 'PROJECT',
-    'Repository', 'RepositoryType', 'RepositorySocType',
-    'Settings', 'SETTINGS',
+    "ClockTree", "CLOCK_TREE", "ClockTreeType",
+    "Coder", "CoderCmd",
+    "Contributor", "ContributorType",
+    "Icon",
+    "Ip", "IP", "IpType",
+    "Package", "PACKAGE", "PackageDescriptionType", "PackageCmd",
+    "Project", "PROJECT",
+    "Repository", "RepositoryType", "RepositorySocType",
+    "Settings", "SETTINGS",
     "SignalBus", "SIGNAL_BUS",
-    'Style',
-    'Summary', 'SummaryType', 'SUMMARY'
+    "Style",
+    "Summary", "SummaryType", "SUMMARY"
 ]
+# fmt: on

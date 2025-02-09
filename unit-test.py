@@ -34,13 +34,17 @@ def main(folder):
     stdout = sys.stdout
     sys.stdout = None
 
-    discover = unittest.defaultTestLoader.discover(start_dir=folder, pattern='tc_*.py', top_level_dir=".")
+    discover = unittest.defaultTestLoader.discover(
+        start_dir=folder, pattern="tc_*.py", top_level_dir="."
+    )
 
     sys.stdout = stdout
 
     app = QApplication(sys.argv)
 
-    print("find {count} testcases !!!".format(count=discover.countTestCases()), flush=True)
+    print(
+        "find {count} testcases !!!".format(count=discover.countTestCases()), flush=True
+    )
 
     suite = unittest.TestSuite()
     suite.addTest(discover)
@@ -52,5 +56,5 @@ def main(folder):
         exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main("./tests")

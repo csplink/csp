@@ -28,7 +28,7 @@ import os
 
 from PySide6.QtGui import QIcon, Qt
 from PySide6.QtWidgets import QApplication, QWidget, QBoxLayout, QFileDialog
-from qfluentwidgets import (PushButton, MSFluentWindow)
+from qfluentwidgets import PushButton, MSFluentWindow
 
 from common import SETTINGS, PROJECT
 from widget import ListContributors
@@ -90,8 +90,10 @@ class StartupWindow(MSFluentWindow):
 
     def __initWindow(self):
         self.resize(1100, 750)
-        self.setWindowIcon(QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg")))
-        self.setWindowTitle('CSPLink')
+        self.setWindowIcon(
+            QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg"))
+        )
+        self.setWindowTitle("CSPLink")
 
         self.updateFrameless()
         self.setMicaEffectEnabled(False)
@@ -113,10 +115,12 @@ class StartupWindow(MSFluentWindow):
         self.hide()
 
     def __on_openProjectBtn_pressed(self):
-        path, ok = QFileDialog.getOpenFileName(self,
-                                               self.tr('Open CSP project file'),
-                                               SETTINGS.lastPackageFileFolder.value,
-                                               self.tr('CSP project file (*.csp)'))
+        path, ok = QFileDialog.getOpenFileName(
+            self,
+            self.tr("Open CSP project file"),
+            SETTINGS.lastPackageFileFolder.value,
+            self.tr("CSP project file (*.csp)"),
+        )
         if ok:
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             PROJECT.setPath(path)

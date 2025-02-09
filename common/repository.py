@@ -99,7 +99,9 @@ class RepositorySocType:
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, data: dict, kind: str, vendor: str, series: str, line: str, name: str):
+    def __init__(
+        self, data: dict, kind: str, vendor: str, series: str, line: str, name: str
+    ):
         self.__data = data
         self.__current = None
         self.__temperature = None
@@ -144,7 +146,9 @@ class RepositorySocType:
     @property
     def current(self) -> CurrentType:
         if self.__current is None:
-            self.__current = RepositorySocType.CurrentType(self.__data.get("current", {}))
+            self.__current = RepositorySocType.CurrentType(
+                self.__data.get("current", {})
+            )
         return self.__current
 
     @property
@@ -161,7 +165,7 @@ class RepositorySocType:
 
     @property
     def package(self) -> str:
-        return self.__data.get("package", '')
+        return self.__data.get("package", "")
 
     @property
     def peripherals(self) -> dict[str, int]:
@@ -174,13 +178,17 @@ class RepositorySocType:
     @property
     def temperature(self) -> TemperatureType:
         if self.__temperature is None:
-            self.__temperature = RepositorySocType.TemperatureType(self.__data.get("temperature", {}))
+            self.__temperature = RepositorySocType.TemperatureType(
+                self.__data.get("temperature", {})
+            )
         return self.__temperature
 
     @property
     def voltage(self) -> VoltageType:
         if self.__voltage is None:
-            self.__voltage = RepositorySocType.VoltageType(self.__data.get("voltage", {}))
+            self.__voltage = RepositorySocType.VoltageType(
+                self.__data.get("voltage", {})
+            )
         return self.__voltage
 
 
@@ -204,8 +212,10 @@ class RepositoryType:
                     for line, lineItem in seriesItem.items():
                         self.__allLines.append(line)
                         for soc, socItem in lineItem.items():
-                            if kind == 'soc':
-                                item = RepositorySocType(socItem, kind, vendor, series, line, soc)
+                            if kind == "soc":
+                                item = RepositorySocType(
+                                    socItem, kind, vendor, series, line, soc
+                                )
                                 self.__allSoc.append(item)
                                 self.__allCores.append(item.core)
                                 self.__allPackage.append(item.package)
@@ -245,13 +255,34 @@ class RepositoryType:
         return self.__allLines
 
     def names(self, kind: str, vendor: str, series: str, line: str) -> list[str]:
-        return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).get(line, {}).keys())
+        return list(
+            self.__data.get(kind, {})
+            .get(vendor, {})
+            .get(series, {})
+            .get(line, {})
+            .keys()
+        )
 
     def __info(self, kind: str, vendor: str, series: str, line: str, name: str) -> dict:
-        return self.__data.get(kind, {}).get(vendor, {}).get(series, {}).get(line, {}).get(name, {})
+        return (
+            self.__data.get(kind, {})
+            .get(vendor, {})
+            .get(series, {})
+            .get(line, {})
+            .get(name, {})
+        )
 
-    def soc(self, kind: str, vendor: str, series: str, line: str, name: str) -> RepositorySocType:
-        return RepositorySocType(self.__info(kind, vendor, series, line, name), kind, vendor, series, line, name)
+    def soc(
+        self, kind: str, vendor: str, series: str, line: str, name: str
+    ) -> RepositorySocType:
+        return RepositorySocType(
+            self.__info(kind, vendor, series, line, name),
+            kind,
+            vendor,
+            series,
+            line,
+            name,
+        )
 
     def allSoc(self) -> list[RepositorySocType]:
         return self.__allSoc
@@ -270,7 +301,11 @@ class Repository:
 
     @logger.catch(default=False)
     def __checkRepository(self, repository: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"), 'r', encoding='utf-8') as f:
+        with open(
+            os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=repository, schema=schema)
         return True
@@ -279,7 +314,7 @@ class Repository:
     def __getRepository(self) -> RepositoryType:
         file = os.path.join(SETTINGS.DATABASE_FOLDER, "repository.yml")
         if os.path.isfile(file):
-            with open(file, 'r', encoding='utf-8') as f:
+            with open(file, "r", encoding="utf-8") as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkRepository(repository)
             if succeed:

@@ -31,7 +31,7 @@ import re
 import subprocess
 import sys
 
-__languages = ['zh_CN']
+__languages = ["zh_CN"]
 
 __rootDir = os.path.join(os.path.dirname(__file__), "..")
 
@@ -39,10 +39,15 @@ __rootDir = os.path.join(os.path.dirname(__file__), "..")
 class Lupdate:
     @staticmethod
     def run(root: str, languages: list[str]):
-        if platform.system() == 'Windows':
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lupdate.exe", recursive=True)
+        if platform.system() == "Windows":
+            exes = glob.glob(
+                f"{os.path.dirname(sys.executable)}/**/pyside6-lupdate.exe",
+                recursive=True,
+            )
         else:
-            exes = glob.glob(f"{os.path.dirname(sys.executable)}/**/pyside6-lupdate", recursive=True)
+            exes = glob.glob(
+                f"{os.path.dirname(sys.executable)}/**/pyside6-lupdate", recursive=True
+            )
 
         if len(exes) > 0:
             exe = exes[0]
@@ -54,8 +59,8 @@ class Lupdate:
                 with open(file, "r", encoding="utf-8") as f:
                     text = f.read()
                     if re.search(r'.tr\((["\'])(.*?)\1\)', text) or re.search(
-                            r'QCoreApplication.translate\((["\'])(.*?)\1\)',
-                            text):
+                        r'QCoreApplication.translate\((["\'])(.*?)\1\)', text
+                    ):
                         srcFiles.append(file)
 
             for file in uiFiles:
@@ -66,10 +71,13 @@ class Lupdate:
                 if not os.path.isdir(os.path.dirname(tsFile)):
                     os.makedirs(os.path.dirname(tsFile))
                 subprocess.call(
-                    [exe, '-source-language', 'en_US', '-target-language', lang] + srcFiles + ['-ts', tsFile])
+                    [exe, "-source-language", "en_US", "-target-language", lang]
+                    + srcFiles
+                    + ["-ts", tsFile]
+                )
         else:
             print("can not find lupdate")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     Lupdate.run(__rootDir, __languages)

@@ -25,7 +25,13 @@
 #
 
 from PySide6.QtCore import Qt, Signal
-from qfluentwidgets import (FluentIconBase, SettingCard, TransparentToolButton, IconInfoBadge, InfoBadgePosition)
+from qfluentwidgets import (
+    FluentIconBase,
+    SettingCard,
+    TransparentToolButton,
+    IconInfoBadge,
+    InfoBadgePosition,
+)
 
 from common import Icon
 
@@ -37,15 +43,24 @@ from common import Icon
 class ToolButtonPropertySettingCard(SettingCard):
     clicked = Signal()
 
-    def __init__(self, icon: FluentIconBase, title: str, btnIcon: FluentIconBase, content=None, parent=None):
+    def __init__(
+        self,
+        icon: FluentIconBase,
+        title: str,
+        btnIcon: FluentIconBase,
+        content=None,
+        parent=None,
+    ):
         super().__init__(icon, title, content, parent)
         self.toolButton = TransparentToolButton(btnIcon, self)
         self.toolButton.clicked.connect(self.clicked)
 
-        self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
-                                         parent=self.toolButton.parent(),
-                                         target=self.toolButton,
-                                         position=InfoBadgePosition.TOP_RIGHT)
+        self.badge = IconInfoBadge.error(
+            icon=Icon.CLOSE_LARGE,
+            parent=self.toolButton.parent(),
+            target=self.toolButton,
+            position=InfoBadgePosition.TOP_RIGHT,
+        )
         self.badge.hide()
 
         self.hBoxLayout.addWidget(self.toolButton, 0, Qt.AlignmentFlag.AlignRight)
@@ -59,5 +74,5 @@ class ToolButtonPropertySettingCard(SettingCard):
             self.setToolTip("")
 
     def clear(self):
-        self.setStatusInfo(False, '')
-        self.setContent('')
+        self.setStatusInfo(False, "")
+        self.setContent("")

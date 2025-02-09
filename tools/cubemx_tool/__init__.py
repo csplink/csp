@@ -27,7 +27,9 @@
 from .families2repository import Families2Repository
 from .mcu2summary import Mcu2Summary
 
+# fmt: off
 __all__ = [
-    'Families2Repository',
-    'Mcu2Summary',
+    "Families2Repository",
+    "Mcu2Summary",
 ]
+# fmt: on

@@ -25,9 +25,15 @@
 #
 
 import attr
-from PySide6.QtCore import Qt, QModelIndex, QAbstractItemModel, QSortFilterProxyModel, QItemSelection
+from PySide6.QtCore import (
+    Qt,
+    QModelIndex,
+    QAbstractItemModel,
+    QSortFilterProxyModel,
+    QItemSelection,
+)
 from PySide6.QtGui import QFont, QBrush, QColor
-from PySide6.QtWidgets import (QWidget, QHBoxLayout)
+from PySide6.QtWidgets import QWidget, QHBoxLayout
 from loguru import logger
 from qfluentwidgets import TreeView
 
@@ -67,7 +73,7 @@ class TreeModuleModel(QAbstractItemModel):
     __brush = QBrush()
     __brush.setColor(SELECTED_COLOR)
 
-    __font = QFont('JetBrains Mono')
+    __font = QFont("JetBrains Mono")
     __font.setPixelSize(12)
 
     def __init__(self, parent=None):
@@ -88,7 +94,9 @@ class TreeModuleModel(QAbstractItemModel):
 
     # noinspection PyMethodOverriding
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
-        if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:  # 0, 2
+        if (
+            role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole
+        ):  # 0, 2
             model = index.internalPointer()
             return model.displayName
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
@@ -178,9 +186,13 @@ class TreeModule(QWidget):
         proxyModel.setSourceModel(model)
         self.treeView_modules.setModel(proxyModel)
         self.treeView_modules.expandAll()
-        self.treeView_modules.selectionModel().selectionChanged.connect(self.treeView_modulesSelectionChanged)
+        self.treeView_modules.selectionModel().selectionChanged.connect(
+            self.treeView_modulesSelectionChanged
+        )
 
-    def treeView_modulesSelectionChanged(self, selected: QItemSelection, _: QItemSelection):
+    def treeView_modulesSelectionChanged(
+        self, selected: QItemSelection, _: QItemSelection
+    ):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
@@ -191,7 +203,11 @@ class TreeModule(QWidget):
                     logger.error(f'the ip instance:"{instance}" is invalid.')
                     return
                 if instance == SUMMARY.projectSummary().pinIp():
-                    SIGNAL_BUS.controlManagerTriggered.emit(instance, 'widget_control_io_manager')
+                    SIGNAL_BUS.controlManagerTriggered.emit(
+                        instance, "widget_control_io_manager"
+                    )
                 else:
-                    SIGNAL_BUS.controlManagerTriggered.emit(instance, 'widget_control_ip_manager')
-                    SIGNAL_BUS.modeManagerTriggered.emit(instance, '')
+                    SIGNAL_BUS.controlManagerTriggered.emit(
+                        instance, "widget_control_ip_manager"
+                    )
+                    SIGNAL_BUS.modeManagerTriggered.emit(instance, "")

@@ -36,22 +36,24 @@ class PackageTest(unittest.TestCase):
         pass
 
     def check_getPackageDescription(self, sc: PackageDescriptionType):
-        self.assertNotEqual(sc.author.name, "", msg='failed.')
-        self.assertNotEqual(sc.author.email, "", msg='failed.')
-        self.assertNotEqual(sc.author.website.blog, "", msg='failed.')
-        self.assertNotEqual(sc.author.website.github, "", msg='failed.')
-        self.assertNotEqual(sc.name, "", msg='failed.')
-        self.assertNotEqual(sc.version, "", msg='failed.')
-        self.assertNotEqual(sc.license, "", msg='failed.')
-        self.assertNotEqual(sc.type, "", msg='failed.')
-        self.assertNotEqual(sc.vendor, "", msg='failed.')
-        self.assertGreater(len(sc.vendorUrl.origin), 0, msg='install failed.')
-        self.assertGreater(len(sc.description.origin), 0, msg='install failed.')
-        self.assertGreater(len(sc.url.origin), 0, msg='install failed.')
-        self.assertNotEqual(sc.support, "", msg='failed.')
+        self.assertNotEqual(sc.author.name, "", msg="failed.")
+        self.assertNotEqual(sc.author.email, "", msg="failed.")
+        self.assertNotEqual(sc.author.website.blog, "", msg="failed.")
+        self.assertNotEqual(sc.author.website.github, "", msg="failed.")
+        self.assertNotEqual(sc.name, "", msg="failed.")
+        self.assertNotEqual(sc.version, "", msg="failed.")
+        self.assertNotEqual(sc.license, "", msg="failed.")
+        self.assertNotEqual(sc.type, "", msg="failed.")
+        self.assertNotEqual(sc.vendor, "", msg="failed.")
+        self.assertGreater(len(sc.vendorUrl.origin), 0, msg="install failed.")
+        self.assertGreater(len(sc.description.origin), 0, msg="install failed.")
+        self.assertGreater(len(sc.url.origin), 0, msg="install failed.")
+        self.assertNotEqual(sc.support, "", msg="failed.")
 
     def test_getPackageDescription(self):
-        file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.csppdsc")
+        file = os.path.join(
+            os.path.dirname(__file__), "resource", "package", "test.csppdsc"
+        )
         sc = PACKAGE.getPackageDescription(file)
         self.check_getPackageDescription(sc)
 
@@ -63,7 +65,7 @@ class PackageTest(unittest.TestCase):
         self.test_install()
         index = PACKAGE.getPackageIndex()
         self.test_uninstall()
-        self.assertGreater(len(index.origin), 0, msg='install failed.')
+        self.assertGreater(len(index.origin), 0, msg="install failed.")
 
     def test_install(self):
         file = os.path.join(os.path.dirname(__file__), "resource", "package", "test.7z")
@@ -75,13 +77,13 @@ class PackageTest(unittest.TestCase):
 
         status = PACKAGE.install(file, callback)
 
-        self.assertTrue(status, msg='install failed.')
-        self.assertGreater(succeed, 0, msg='install failed.')
+        self.assertTrue(status, msg="install failed.")
+        self.assertGreater(succeed, 0, msg="install failed.")
 
     def test_uninstall(self):
         self.test_install()
-        status = PACKAGE.uninstall('hal', 'test', '0.0.2')
-        self.assertTrue(status, msg='uninstall failed.')
+        status = PACKAGE.uninstall("hal", "test", "0.0.2")
+        self.assertTrue(status, msg="uninstall failed.")
 
     def tearDown(self):
         pass

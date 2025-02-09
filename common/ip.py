@@ -59,11 +59,11 @@ class IpType(QObject):
 
             @property
             def display(self) -> str:
-                return self.__data.get("display", '')
+                return self.__data.get("display", "")
 
             @property
             def real(self) -> str:
-                return self.__data.get("real", '')
+                return self.__data.get("real", "")
 
         class ValueUnitType:
             class ExpressionType:
@@ -79,11 +79,11 @@ class IpType(QObject):
 
                 @property
                 def display(self) -> str:
-                    return self.__data.get("display", '')
+                    return self.__data.get("display", "")
 
                 @property
                 def real(self) -> str:
-                    return self.__data.get("real", '')
+                    return self.__data.get("real", "")
 
             def __init__(self, data: dict):
                 self.__data = data
@@ -101,7 +101,9 @@ class IpType(QObject):
             @property
             def expression(self) -> ExpressionType:
                 if self.__expression is None:
-                    self.__expression = self.ExpressionType(self.__data.get("expression", {}))
+                    self.__expression = self.ExpressionType(
+                        self.__data.get("expression", {})
+                    )
                 return self.__expression
 
             @property
@@ -143,19 +145,19 @@ class IpType(QObject):
 
         @property
         def type(self) -> str:
-            return self.__data.get("type", '')
+            return self.__data.get("type", "")
 
         @property
         def values(self) -> dict[str, ValueUnitType]:
             if self.__values is None:
                 self.__values = {}
-                for name, value in self.__data.get('values', {}).items():
+                for name, value in self.__data.get("values", {}).items():
                     self.__values[name] = self.ValueUnitType(value)
             return self.__values
 
         @property
         def group(self) -> str:
-            return self.__data.get("group", '')
+            return self.__data.get("group", "")
 
         @property
         def default(self) -> str | float | int | bool | None:
@@ -164,7 +166,9 @@ class IpType(QObject):
         @property
         def expression(self) -> ExpressionType:
             if self.__expression is None:
-                self.__expression = self.ExpressionType(self.__data.get("expression", {}))
+                self.__expression = self.ExpressionType(
+                    self.__data.get("expression", {})
+                )
             return self.__expression
 
         @property
@@ -180,7 +184,9 @@ class IpType(QObject):
             return self.__data.get("min", -1)
 
     class ControlModeUnitType:
-        def __init__(self, data: dict, name: str, parameters: dict[str, IpType.ParameterUnitType]):
+        def __init__(
+            self, data: dict, name: str, parameters: dict[str, IpType.ParameterUnitType]
+        ):
             self.__data = data
             self.__name = name
             self.__parameters = parameters
@@ -260,7 +266,9 @@ class IpType(QObject):
         if self.__controls is None:
             self.__controls = {}
             for name, item in self.__data.get("controls", {}).items():
-                self.__controls[name] = IpType.ControlModeUnitType(item, name, self.parameters)
+                self.__controls[name] = IpType.ControlModeUnitType(
+                    item, name, self.parameters
+                )
         return self.__controls
 
     @property
@@ -270,7 +278,9 @@ class IpType(QObject):
             for name, modeItem in self.__data.get("pinModes", {}).items():
                 self.__pinModes[name] = {}
                 for modeName, mode in modeItem.items():
-                    self.__pinModes[name][modeName] = IpType.ControlModeUnitType(mode, modeName, self.parameters)
+                    self.__pinModes[name][modeName] = IpType.ControlModeUnitType(
+                        mode, modeName, self.parameters
+                    )
         return self.__pinModes
 
     @property
@@ -278,7 +288,9 @@ class IpType(QObject):
         if self.__modes is None:
             self.__modes = {}
             for name, item in self.__data.get("modes", {}).items():
-                self.__modes[name] = IpType.ControlModeUnitType(item, name, self.parameters)
+                self.__modes[name] = IpType.ControlModeUnitType(
+                    item, name, self.parameters
+                )
         return self.__modes
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -361,16 +373,22 @@ class Ip(QObject):
 
     @logger.catch(default=False)
     def __checkIp(self, ip: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "ip.yml"), 'r', encoding='utf-8') as f:
+        with open(
+            os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "ip.yml"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=ip, schema=schema)
         return True
 
     @logger.catch(default=IpType({}))
     def __getIp(self, vendor: str, name: str) -> IpType:
-        file = os.path.join(SETTINGS.DATABASE_FOLDER, "ip", vendor.lower(), f"{name.lower()}.yml")
+        file = os.path.join(
+            SETTINGS.DATABASE_FOLDER, "ip", vendor.lower(), f"{name.lower()}.yml"
+        )
         if os.path.isfile(file):
-            with open(file, 'r', encoding='utf-8') as f:
+            with open(file, "r", encoding="utf-8") as f:
                 ip = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkIp(ip)
             if succeed:
@@ -382,7 +400,11 @@ class Ip(QObject):
             return IpType({})
 
     def getIp(self, vendor: str, instance: str, name: str) -> IpType:
-        if vendor in self.__ips and instance in self.__ips[vendor] and name in self.__ips[vendor][instance]:
+        if (
+            vendor in self.__ips
+            and instance in self.__ips[vendor]
+            and name in self.__ips[vendor][instance]
+        ):
             return self.__ips[vendor][instance][name]
         # noinspection PyTypeChecker,PyArgumentList
         ip = self.__getIp(vendor, name)

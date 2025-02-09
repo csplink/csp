@@ -27,7 +27,7 @@
 from PySide6.QtCore import Qt, QItemSelection
 from PySide6.QtWidgets import QWidget, QTreeWidgetItem
 from loguru import logger
-from qfluentwidgets import (FlowLayout, MessageBox)
+from qfluentwidgets import FlowLayout, MessageBox
 
 from common import Style, Icon, Coder, PROJECT, SIGNAL_BUS
 from utils import Converters
@@ -36,7 +36,7 @@ from .ui.code_view_ui import Ui_CodeView
 
 
 class CodeView(Ui_CodeView, QWidget):
-    """ Tab interface """
+    """Tab interface"""
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -46,7 +46,9 @@ class CodeView(Ui_CodeView, QWidget):
 
         self.fileCard.setFixedWidth(300)
         self.fileTree.header().setVisible(False)
-        self.fileTree.selectionModel().selectionChanged.connect(self.__on_fileTree_selectionChanged)
+        self.fileTree.selectionModel().selectionChanged.connect(
+            self.__on_fileTree_selectionChanged
+        )
 
         layout = FlowLayout(None, False)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -64,14 +66,14 @@ class CodeView(Ui_CodeView, QWidget):
         succeed, msg = PROJECT.isGenerateSettingValid()
         if not succeed:
             logger.error(msg)
-            title = self.tr('Error')
+            title = self.tr("Error")
             content = self.tr("The coder settings is invalid. Please check it.")
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
             message.cancelButton.setDisabled(True)
             message.raise_()
             message.exec()
-            SIGNAL_BUS.navigationRequested.emit('SettingView', 'GenerateSettingView')
+            SIGNAL_BUS.navigationRequested.emit("SettingView", "GenerateSettingView")
             return
 
         coder = Coder()
@@ -105,7 +107,9 @@ class CodeView(Ui_CodeView, QWidget):
                 topLevelItem.setData(0, Qt.ItemDataRole.StatusTipRole, key)
             topLevelItem.setExpanded(True)
 
-    def __on_fileTree_selectionChanged(self, selected: QItemSelection, _: QItemSelection):
+    def __on_fileTree_selectionChanged(
+        self, selected: QItemSelection, _: QItemSelection
+    ):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]

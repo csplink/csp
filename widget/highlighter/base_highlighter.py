@@ -24,30 +24,36 @@
 # 2024-07-27     xqyjlj       initial version
 #
 
-from PySide6.QtGui import QSyntaxHighlighter, QFont, QColor, QTextCharFormat, QTextDocument
+from PySide6.QtGui import (
+    QSyntaxHighlighter,
+    QFont,
+    QColor,
+    QTextCharFormat,
+    QTextDocument,
+)
 
 
 class BaseHighlighter(QSyntaxHighlighter):
 
     @staticmethod
-    def format(color, style=''):
+    def format(color, style=""):
         char_format = QTextCharFormat()
         char_format.setForeground(color)
-        if 'bold' in style:
+        if "bold" in style:
             char_format.setFontWeight(QFont.Weight.Bold)
-        if 'italic' in style:
+        if "italic" in style:
             char_format.setFontItalic(True)
 
         return char_format
 
     STYLES = {
-        'keyword': format(QColor("#c678dd"), 'bold'),
-        'operator': format(QColor("#c678dd"), 'bold'),
-        'brace': format(QColor("#d1a075")),
-        'macro': format(QColor("#c678dd"), 'bold'),
-        'string': format(QColor("#98c379")),
-        'comment': format(QColor("#7f848e"), "italic"),
-        'numbers': format(QColor("#d1a075")),
+        "keyword": format(QColor("#c678dd"), "bold"),
+        "operator": format(QColor("#c678dd"), "bold"),
+        "brace": format(QColor("#d1a075")),
+        "macro": format(QColor("#c678dd"), "bold"),
+        "string": format(QColor("#98c379")),
+        "comment": format(QColor("#7f848e"), "italic"),
+        "numbers": format(QColor("#d1a075")),
     }
 
     def __init__(self, document: QTextDocument):

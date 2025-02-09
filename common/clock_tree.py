@@ -49,11 +49,11 @@ class ClockTreeType:
 
         @property
         def refParameter(self) -> str:
-            return self.__data.get("refParameter", '')
+            return self.__data.get("refParameter", "")
 
         @property
         def type(self) -> str:
-            return self.__data.get("type", '')
+            return self.__data.get("type", "")
 
         @property
         def enable(self) -> str | bool | None:
@@ -87,7 +87,7 @@ class ClockTreeType:
     def elements(self) -> dict[str, ElementUnitType]:
         if self.__elements is None:
             self.__elements = {}
-            for name, element in self.__data.get('elements', {}).items():
+            for name, element in self.__data.get("elements", {}).items():
                 self.__elements[name] = self.ElementUnitType(element)
         return self.__elements
 
@@ -95,12 +95,12 @@ class ClockTreeType:
     def i18n(self) -> dict[str, I18nType]:
         if self.__i18n is None:
             self.__i18n = {}
-            for name, i in self.__data.get('i18n', {}).items():
+            for name, i in self.__data.get("i18n", {}).items():
                 self.__i18n[name] = I18nType(i)
         return self.__i18n
 
     def i18nOrigin(self) -> dict[str, I18nType]:
-        return self.__data.get('i18n', {})
+        return self.__data.get("i18n", {})
 
 
 class ClockTree:
@@ -110,16 +110,22 @@ class ClockTree:
 
     @logger.catch(default=False)
     def __checkClockTree(self, clockTree: dict) -> bool:
-        with open(os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "clock_tree.yml"), 'r', encoding='utf-8') as f:
+        with open(
+            os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "clock_tree.yml"),
+            "r",
+            encoding="utf-8",
+        ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=clockTree, schema=schema)
         return True
 
     @logger.catch(default=ClockTreeType({}))
     def __getClockTree(self, vendor: str, name: str) -> ClockTreeType:
-        file = os.path.join(SETTINGS.DATABASE_FOLDER, "clock", vendor.lower(), f"{name.lower()}.yml")
+        file = os.path.join(
+            SETTINGS.DATABASE_FOLDER, "clock", vendor.lower(), f"{name.lower()}.yml"
+        )
         if os.path.isfile(file):
-            with open(file, 'r', encoding='utf-8') as f:
+            with open(file, "r", encoding="utf-8") as f:
                 clockTree = yaml.load(f.read(), Loader=yaml.FullLoader)
                 succeed = self.__checkClockTree(clockTree)
             if succeed:

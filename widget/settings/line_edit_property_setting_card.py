@@ -26,7 +26,13 @@
 
 from PySide6.QtCore import Qt, QRegularExpression, Signal
 from PySide6.QtGui import QRegularExpressionValidator
-from qfluentwidgets import (FluentIconBase, SettingCard, LineEdit, IconInfoBadge, InfoBadgePosition)
+from qfluentwidgets import (
+    FluentIconBase,
+    SettingCard,
+    LineEdit,
+    IconInfoBadge,
+    InfoBadgePosition,
+)
 
 from common import Icon
 
@@ -37,18 +43,30 @@ from common import Icon
 class LineEditPropertySettingCard(SettingCard):
     textChanged = Signal(str)
 
-    def __init__(self, icon: FluentIconBase, title: str, value: str, content=None, validator=None, parent=None):
+    def __init__(
+        self,
+        icon: FluentIconBase,
+        title: str,
+        value: str,
+        content=None,
+        validator=None,
+        parent=None,
+    ):
         super().__init__(icon, title, content, parent)
         self.lineEdit = LineEdit(self)
         if validator is not None:
-            self.lineEdit.setValidator(QRegularExpressionValidator(QRegularExpression(validator)))
+            self.lineEdit.setValidator(
+                QRegularExpressionValidator(QRegularExpression(validator))
+            )
         self.lineEdit.setText(value)
         self.lineEdit.textChanged.connect(self.textChanged)
 
-        self.badge = IconInfoBadge.error(icon=Icon.CLOSE_LARGE,
-                                         parent=self.lineEdit.parent(),
-                                         target=self.lineEdit,
-                                         position=InfoBadgePosition.TOP_RIGHT)
+        self.badge = IconInfoBadge.error(
+            icon=Icon.CLOSE_LARGE,
+            parent=self.lineEdit.parent(),
+            target=self.lineEdit,
+            position=InfoBadgePosition.TOP_RIGHT,
+        )
         self.badge.hide()
 
         self.hBoxLayout.addWidget(self.lineEdit, 0, Qt.AlignmentFlag.AlignRight)
@@ -63,5 +81,5 @@ class LineEditPropertySettingCard(SettingCard):
 
     def clear(self):
         self.lineEdit.clear()
-        self.setStatusInfo(False, '')
-        self.setContent('')
+        self.setStatusInfo(False, "")
+        self.setContent("")

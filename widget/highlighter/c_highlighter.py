@@ -32,42 +32,112 @@ from .base_highlighter import BaseHighlighter
 
 class CHighlighter(BaseHighlighter):
     keywords = [
-        "auto", "break", "case", "char", "const", "continue", "default", "do", "double", "else", "enum", "extern",
-        "float", "for", "goto", "if", "inline", "int", "long", "register", "restrict", "return", "short", "signed",
-        "sizeof", "static", "struct", "switch", "typedef", "union", "unsigned", "void", "volatile", "while"
+        "auto",
+        "break",
+        "case",
+        "char",
+        "const",
+        "continue",
+        "default",
+        "do",
+        "double",
+        "else",
+        "enum",
+        "extern",
+        "float",
+        "for",
+        "goto",
+        "if",
+        "inline",
+        "int",
+        "long",
+        "register",
+        "restrict",
+        "return",
+        "short",
+        "signed",
+        "sizeof",
+        "static",
+        "struct",
+        "switch",
+        "typedef",
+        "union",
+        "unsigned",
+        "void",
+        "volatile",
+        "while",
     ]
 
     operators = [
-        '=', '==', '!=', '<', '<=', '>', '>=', '\+', '-', '\*', '/', '//', '\%', '\*\*', '\+=', '-=', '\*=', '/=',
-        '\%=', '\^', '\|', '\&', '\~', '>>', '<<', "#"
+        "=",
+        "==",
+        "!=",
+        "<",
+        "<=",
+        ">",
+        ">=",
+        "\+",
+        "-",
+        "\*",
+        "/",
+        "//",
+        "\%",
+        "\*\*",
+        "\+=",
+        "-=",
+        "\*=",
+        "/=",
+        "\%=",
+        "\^",
+        "\|",
+        "\&",
+        "\~",
+        ">>",
+        "<<",
+        "#",
     ]
 
-    braces = ['\(', '\)', '\[', '\]']
+    braces = ["\(", "\)", "\[", "\]"]
 
-    macros = ['#', "include", "ifndef", "define", "ifdef", "endif", "defined"]
+    macros = ["#", "include", "ifndef", "define", "ifdef", "endif", "defined"]
 
     def __init__(self, document: QTextDocument):
         super().__init__(document)
 
-        self.multiline_comment = (QRegularExpression("/\*"), QRegularExpression("\*/"), 1, self.STYLES['comment'])
+        self.multiline_comment = (
+            QRegularExpression("/\*"),
+            QRegularExpression("\*/"),
+            1,
+            self.STYLES["comment"],
+        )
 
         rules = []
 
-        rules += [(r'\b%s\b' % w, 0, self.STYLES['keyword']) for w in CHighlighter.keywords]
-        rules += [(r'%s' % o, 0, self.STYLES['operator']) for o in CHighlighter.operators]
-        rules += [(r'%s' % b, 0, self.STYLES['brace']) for b in CHighlighter.braces]
-        rules += [(r'%s' % m, 0, self.STYLES['macro']) for m in CHighlighter.macros]
+        rules += [
+            (r"\b%s\b" % w, 0, self.STYLES["keyword"]) for w in CHighlighter.keywords
+        ]
+        rules += [
+            (r"%s" % o, 0, self.STYLES["operator"]) for o in CHighlighter.operators
+        ]
+        rules += [(r"%s" % b, 0, self.STYLES["brace"]) for b in CHighlighter.braces]
+        rules += [(r"%s" % m, 0, self.STYLES["macro"]) for m in CHighlighter.macros]
 
         rules += [
-            (r'"[^"\\]*(\\.[^"\\]*)*"', 0, self.STYLES['string']),
-            (r"'[^'\\]*(\\.[^'\\]*)*'", 0, self.STYLES['string']),
-            (r'\b[+-]?[0-9]+[lL]?\b', 0, self.STYLES['numbers']),
-            (r'\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b', 0, self.STYLES['numbers']),
-            (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b', 0, self.STYLES['numbers']),
-            (r'//[^\n]*', 0, self.STYLES['comment']),
+            (r'"[^"\\]*(\\.[^"\\]*)*"', 0, self.STYLES["string"]),
+            (r"'[^'\\]*(\\.[^'\\]*)*'", 0, self.STYLES["string"]),
+            (r"\b[+-]?[0-9]+[lL]?\b", 0, self.STYLES["numbers"]),
+            (r"\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b", 0, self.STYLES["numbers"]),
+            (
+                r"\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b",
+                0,
+                self.STYLES["numbers"],
+            ),
+            (r"//[^\n]*", 0, self.STYLES["comment"]),
         ]
 
-        self.rules = [(QRegularExpression(pat), index, fmt) for (pat, index, fmt) in rules]
+        self.rules = [
+            (QRegularExpression(pat), index, fmt) for (pat, index, fmt) in rules
+        ]
 
     def highlightBlock(self, text: str):
         for expression, nth, fm in self.rules:
@@ -80,8 +150,14 @@ class CHighlighter(BaseHighlighter):
 
         self.match_multiline(text, *self.multiline_comment)
 
-    def match_multiline(self, text: str, delimiter_start: QRegularExpression, delimiter_end: QRegularExpression,
-                        in_state, style):
+    def match_multiline(
+        self,
+        text: str,
+        delimiter_start: QRegularExpression,
+        delimiter_end: QRegularExpression,
+        in_state,
+        style,
+    ):
         start_index = 0
         if self.previousBlockState() != 1:
             start_index = delimiter_start.match(text, 0).capturedStart()
@@ -98,7 +174,9 @@ class CHighlighter(BaseHighlighter):
                 length = end_index - start_index + captured_length
 
             self.setFormat(start_index, length, style)
-            start_index = delimiter_start.match(text, start_index + length).capturedStart()
+            start_index = delimiter_start.match(
+                text, start_index + length
+            ).capturedStart()
 
         if self.currentBlockState() == in_state:
             return True

@@ -31,11 +31,13 @@ from .lrelease import Lrelease
 from .lupdate import Lupdate
 from .pyuic import Pyuic
 
+# fmt: off
 __all__ = [
-    'Contributors',
-    'Families2Repository', 'Mcu2Summary',
-    'Drawio',
-    'Lrelease',
-    'Lupdate',
-    'Pyuic'
+    "Contributors",
+    "Families2Repository", "Mcu2Summary",
+    "Drawio",
+    "Lrelease",
+    "Lupdate",
+    "Pyuic"
 ]
+# fmt: on

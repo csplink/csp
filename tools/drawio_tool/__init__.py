@@ -26,6 +26,8 @@
 
 from .drawio import Drawio
 
+# fmt: off
 __all__ = [
-    'Drawio',
+    "Drawio",
 ]
+# fmt: on

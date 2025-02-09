@@ -33,7 +33,7 @@ from .settings import SETTINGS
 
 
 class Style(StyleSheetBase, Enum):
-    """ Style sheet  """
+    """Style sheet"""
 
     CLOCK_TREE_VIEW = "clock_tree_view"
     CODE_VIEW = "code_view"
@@ -53,4 +53,6 @@ class Style(StyleSheetBase, Enum):
         if self.value.startswith("templates/"):
             return os.path.join(SETTINGS.STYLE_FOLDER, f"{self.value}.qss")
         theme = qconfig.theme if theme == Theme.AUTO else theme
-        return os.path.join(SETTINGS.STYLE_FOLDER, theme.value.lower(), f"{self.value}.qss")
+        return os.path.join(
+            SETTINGS.STYLE_FOLDER, theme.value.lower(), f"{self.value}.qss"
+        )

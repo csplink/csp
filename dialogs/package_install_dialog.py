@@ -27,8 +27,16 @@
 import os
 
 from PySide6.QtCore import QThread, Signal, QObject
-from PySide6.QtWidgets import (QFileDialog, QHBoxLayout)
-from qfluentwidgets import (MessageBoxBase, SubtitleLabel, LineEdit, ToolButton, ProgressBar, CaptionLabel, BodyLabel)
+from PySide6.QtWidgets import QFileDialog, QHBoxLayout
+from qfluentwidgets import (
+    MessageBoxBase,
+    SubtitleLabel,
+    LineEdit,
+    ToolButton,
+    ProgressBar,
+    CaptionLabel,
+    BodyLabel,
+)
 
 from common import Icon, SETTINGS, PACKAGE, SIGNAL_BUS
 
@@ -51,13 +59,13 @@ class PackageInstallDialog(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.titleLabel = SubtitleLabel(self.tr('Install package'), self)
+        self.titleLabel = SubtitleLabel(self.tr("Install package"), self)
         # ----------------------------------------------------------------------
         self.pathLayout = QHBoxLayout()
 
         self.pathLineEdit = LineEdit(self)
         self.pathLineEdit.setReadOnly(True)
-        self.pathLineEdit.setPlaceholderText(self.tr('Choose package (*.csppack) path'))
+        self.pathLineEdit.setPlaceholderText(self.tr("Choose package (*.csppack) path"))
         self.pathLineEdit.textChanged.connect(self.__on_pathLineEdit_textChanged)
 
         self.folderBtn = ToolButton()
@@ -72,7 +80,9 @@ class PackageInstallDialog(MessageBoxBase):
         self.progressBar = ProgressBar(self)
 
         self.progressLabel = CaptionLabel(self)
-        self.progressLabel.setMinimumWidth(3 + self.progressLabel.fontMetrics().horizontalAdvance('100%'))
+        self.progressLabel.setMinimumWidth(
+            3 + self.progressLabel.fontMetrics().horizontalAdvance("100%")
+        )
         self.progressLabel.setText(self.progressBar.valText())
 
         self.progressLayout.addWidget(self.progressBar)
@@ -88,7 +98,7 @@ class PackageInstallDialog(MessageBoxBase):
         self.viewLayout.addLayout(self.progressLayout)
         self.viewLayout.addWidget(self.fileLabel)
         # ----------------------------------------------------------------------
-        self.yesButton.setText(self.tr('Install'))
+        self.yesButton.setText(self.tr("Install"))
         self.yesButton.clicked.disconnect()  # self._MessageBoxBase__onYesButtonClicked
         self.yesButton.clicked.connect(self.__on_yesButton_clicked)
         self.yesButton.setEnabled(False)
@@ -102,9 +112,12 @@ class PackageInstallDialog(MessageBoxBase):
             self.yesButton.setEnabled(False)
 
     def __on_folderBtn_pressed(self):
-        path, _ = QFileDialog.getOpenFileName(self, self.tr('Choose CSP package file'),
-                                              SETTINGS.lastPackageFileFolder.value,
-                                              self.tr('CSP package file (*.csppack)'))
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            self.tr("Choose CSP package file"),
+            SETTINGS.lastPackageFileFolder.value,
+            self.tr("CSP package file (*.csppack)"),
+        )
         if os.path.isfile(path):
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
             self.pathLineEdit.setText(path)

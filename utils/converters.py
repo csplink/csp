@@ -31,21 +31,21 @@ class Converters:
 
     @staticmethod
     def ishex(string: str) -> bool:
-        pattern = r'^0x[0-9A-Fa-f]+$'
+        pattern = r"^0x[0-9A-Fa-f]+$"
         return bool(re.match(pattern, string))
 
     @staticmethod
     def isurl(string: str) -> bool:
-        pattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+        pattern = r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
         return bool(re.match(pattern, string))
 
     @staticmethod
     def isemail(string: str) -> bool:
-        pattern = r'^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$'
+        pattern = r"^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"
         return bool(re.match(pattern, string))
 
     @staticmethod
-    def paths2dict(paths: list[str], separator='/'):
+    def paths2dict(paths: list[str], separator="/"):
         pathDict = {}
         for path in paths:
             parts = path.strip().split(separator)

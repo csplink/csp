@@ -35,11 +35,13 @@ class ClockTreeTest(unittest.TestCase):
     def setUp(self):
         pass
 
-    def detect_all_cycles(self, data: dict[str, ClockTreeType.ElementUnitType], kind: str):
+    def detect_all_cycles(
+        self, data: dict[str, ClockTreeType.ElementUnitType], kind: str
+    ):
         # build a directed graph
         graph = defaultdict(list)
         for node, details in data.items():
-            if kind == 'output':
+            if kind == "output":
                 # add edges based on 'output'
                 for name in details.output:
                     graph[node].append(name)
@@ -57,7 +59,9 @@ class ClockTreeTest(unittest.TestCase):
             if node_ in recursion_stack:  # a cycle is detected
                 cycle_start_index = path.index(node_)  # find where the cycle starts
                 cycle_path = path[cycle_start_index:]  # extract the cycle path
-                all_cycles.append(cycle_path + [node_])  # add the cycle to the result list
+                all_cycles.append(
+                    cycle_path + [node_]
+                )  # add the cycle to the result list
                 return
 
             if node_ in visited:  # skip already visited nodes
@@ -96,21 +100,27 @@ class ClockTreeTest(unittest.TestCase):
 
             for _, elem in clockTree.elements.items():
                 for name in elem.input:
-                    self.assertTrue(name in clockTree.elements, msg=f'the {name!r} is not exits!')
+                    self.assertTrue(
+                        name in clockTree.elements, msg=f"the {name!r} is not exits!"
+                    )
                 for name in elem.output:
-                    self.assertTrue(name in clockTree.elements, msg=f'the {name!r} is not exits!')
+                    self.assertTrue(
+                        name in clockTree.elements, msg=f"the {name!r} is not exits!"
+                    )
 
-            inputCycles = self.detect_all_cycles(clockTree.elements, 'input')
+            inputCycles = self.detect_all_cycles(clockTree.elements, "input")
             if inputCycles:
                 print("input node cycles detected!")
                 for i, cycle in enumerate(inputCycles, 1):
                     print(f"    cycle {i}: {' -> '.join(cycle)}")
-            outputCycles = self.detect_all_cycles(clockTree.elements, 'output')
+            outputCycles = self.detect_all_cycles(clockTree.elements, "output")
             if outputCycles:
                 print("output node cycles detected!")
                 for i, cycle in enumerate(outputCycles, 1):
                     print(f"    cycle {i}: {' -> '.join(cycle)}")
-            self.assertEqual(len(inputCycles) + len(outputCycles), 0, msg='exits cycles detected!')
+            self.assertEqual(
+                len(inputCycles) + len(outputCycles), 0, msg="exits cycles detected!"
+            )
 
     def tearDown(self):
         pass

@@ -37,40 +37,54 @@ class RepositoryTest(unittest.TestCase):
     def test_getRepository(self):
         repository = Repository()
         repo = repository.repository()
-        self.assertGreater(len(repo.origin), 0, msg='load failed.')
+        self.assertGreater(len(repo.origin), 0, msg="load failed.")
 
         types = repo.types()
-        self.assertGreater(len(types), 0, msg='load failed.')
+        self.assertGreater(len(types), 0, msg="load failed.")
         for kind in types:
             vendors = repo.vendors(kind)
-            self.assertGreater(len(vendors), 0, msg='load failed.')
+            self.assertGreater(len(vendors), 0, msg="load failed.")
             for vendor in vendors:
                 series = repo.series(kind, vendor)
-                self.assertGreater(len(series), 0, msg='load failed.')
+                self.assertGreater(len(series), 0, msg="load failed.")
                 for ser in series:
                     lines = repo.lines(kind, vendor, ser)
-                    self.assertGreater(len(lines), 0, msg='load failed.')
+                    self.assertGreater(len(lines), 0, msg="load failed.")
                     for line in lines:
                         names = repo.names(kind, vendor, ser, line)
-                        self.assertGreater(len(names), 0, msg='load failed.')
+                        self.assertGreater(len(names), 0, msg="load failed.")
                         for name in names:
-                            if kind == 'soc':
+                            if kind == "soc":
                                 soc = repo.soc(kind, vendor, ser, line, name)
-                                self.assertGreater(len(soc.core), 0, msg='load failed.')
-                                self.assertGreater(soc.current.lowest, 0, msg='load failed.')
-                                self.assertGreater(soc.current.run, 0, msg='load failed.')
-                                self.assertGreater(soc.flash, 0, msg='load failed.')
-                                self.assertGreater(soc.frequency, 0, msg='load failed.')
-                                self.assertGreater(soc.io, 0, msg='load failed.')
-                                self.assertGreater(len(soc.package), 0, msg='load failed.')
-                                self.assertGreater(len(soc.peripherals), 0, msg='load failed.')
-                                self.assertGreater(soc.ram, 0, msg='load failed.')
-                                self.assertGreater(soc.temperature.max, 0, msg='load failed.')
+                                self.assertGreater(len(soc.core), 0, msg="load failed.")
+                                self.assertGreater(
+                                    soc.current.lowest, 0, msg="load failed."
+                                )
+                                self.assertGreater(
+                                    soc.current.run, 0, msg="load failed."
+                                )
+                                self.assertGreater(soc.flash, 0, msg="load failed.")
+                                self.assertGreater(soc.frequency, 0, msg="load failed.")
+                                self.assertGreater(soc.io, 0, msg="load failed.")
+                                self.assertGreater(
+                                    len(soc.package), 0, msg="load failed."
+                                )
+                                self.assertGreater(
+                                    len(soc.peripherals), 0, msg="load failed."
+                                )
+                                self.assertGreater(soc.ram, 0, msg="load failed.")
+                                self.assertGreater(
+                                    soc.temperature.max, 0, msg="load failed."
+                                )
                                 # self.assertGreater(soc.temperature.min, 0, msg='load failed.')
-                                self.assertGreater(soc.voltage.max, 0, msg='load failed.')
-                                self.assertGreater(soc.voltage.min, 0, msg='load failed.')
+                                self.assertGreater(
+                                    soc.voltage.max, 0, msg="load failed."
+                                )
+                                self.assertGreater(
+                                    soc.voltage.min, 0, msg="load failed."
+                                )
 
-        self.assertGreater(len(repo.allSoc()), 0, msg='load failed.')
+        self.assertGreater(len(repo.allSoc()), 0, msg="load failed.")
 
     def tearDown(self):
         pass
