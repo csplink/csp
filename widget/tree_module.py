@@ -207,7 +207,7 @@ class TreeModule(QWidget):
                 if ip is None:
                     logger.error(f'the ip instance:"{instance}" is invalid.')
                     return
-                if instance == SUMMARY.projectSummary().pinIp():
+                if instance == SUMMARY.projectSummary().pinInstance():
                     SIGNAL_BUS.controlManagerTriggered.emit(
                         instance, "widget_control_io_manager"
                     )

@@ -199,7 +199,7 @@ class SummaryType:
         # ----------------------------------------------------------------------
 
         self.__moduleList = None
-        self.__pinIp = None
+        self.__pinInstance = None
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -310,13 +310,13 @@ class SummaryType:
                     self.__moduleList[name] = module
         return self.__moduleList
 
-    def pinIp(self) -> str:
-        if self.__pinIp is None:
+    def pinInstance(self) -> str:
+        if self.__pinInstance is None:
             for _, pin in self.pins.items():
                 if len(pin.modes) > 0:
-                    self.__pinIp = pin.modes[0].split(":")[0]
+                    self.__pinInstance = pin.modes[0].split(":")[0]
                     break
-        return self.__pinIp or ""
+        return self.__pinInstance or ""
 
 
 class Summary:
@@ -379,6 +379,15 @@ class Summary:
 
     def projectSummary(self) -> SummaryType:
         return self.getSummary(self.__vendor, self.__name)
+
+    def findPinBySignal(self, signal: str, summary: SummaryType = None) -> list[str]:
+        if summary is None:
+            summary = self.projectSummary()
+        pins = []
+        for name, pin in summary.pins.items():
+            if signal in pin.signals:
+                pins.append(name)
+        return pins
 
 
 SUMMARY = Summary()

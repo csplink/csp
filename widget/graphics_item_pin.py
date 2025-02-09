@@ -45,7 +45,7 @@ from PySide6.QtWidgets import (
 from loguru import logger
 from qfluentwidgets import isDarkTheme, CheckableMenu, Action
 
-from common import PROJECT, SummaryType, SUMMARY, IP
+from common import PROJECT, SummaryType, SUMMARY, IP, SIGNAL_BUS
 
 
 class GraphicsItemPin(QGraphicsObject):
@@ -91,14 +91,11 @@ class GraphicsItemPin(QGraphicsObject):
         self.name = name
         self.pinConfig = pinConfig
         self.type_ = type_
-
-        self.currentCheckedAction = None
-        self.previousCheckedAction = None
+        self.menu = None
 
         self.labelKey = f"pin/{self.name}/label"
         self.functionKey = f"pin/{self.name}/function"
         self.lockedKey = f"pin/{self.name}/locked"
-        self.unsupportedKey = f"pin/{self.name}/unsupported"
         self.modeKey = f"pin/{self.name}/mode"
 
         self.setData(GraphicsItemPin.Data.LABEL_DATA.value, self.labelKey)
@@ -109,46 +106,23 @@ class GraphicsItemPin(QGraphicsObject):
         self.label: str = PROJECT.project().configs.get(self.labelKey, "")  # type: ignore
         self.function: str = PROJECT.project().configs.get(self.functionKey, "")  # type: ignore
         self.locked: bool = PROJECT.project().configs.get(self.lockedKey, False)  # type: ignore
-        self.unsupported: bool = PROJECT.project().configs.get(self.unsupportedKey, False)  # type: ignore
         self.mode: str = PROJECT.project().configs.get(self.modeKey, "")  # type: ignore
 
-        self.pinIp = SUMMARY.projectSummary().pinIp()
+        self.pinInstance = SUMMARY.projectSummary().pinInstance()
 
         self.font = QFont("JetBrains Mono", 14, QFont.Weight.Bold)
         self.font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
         self.fontMetrics = QFontMetrics(self.font)
 
-        if self.pinConfig.type == "I/O":
-            self.menu = CheckableMenu()
-            self.menu.view.setStyleSheet(
-                """MenuActionListWidget {
-                        font: 12px "JetBrains Mono", "Segoe UI", "Microsoft YaHei", "PingFang SC";
-                        font-weight: normal;
-                }"""
-            )
-            self.menu.clear()
-            self.menu.triggered.connect(self.menuTriggered)
-            self.menu.addAction(Action(self.tr("Reset State")))  # type: ignore
-            self.menu.addSeparator()
+        self.__initMenu()
 
-            for function in pinConfig.functions():
-                # noinspection PyTypeChecker
-                action = Action(function)
-                action.setCheckable(True)
-                if self.function == function:
-                    action.setChecked(True)
-                    self.currentCheckedAction = action
-                    self.previousCheckedAction = action
-                self.menu.addAction(action)
-
-            self.setData(GraphicsItemPin.Data.MENU_DATA.value, self.menu)
-            self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
 
         PROJECT.project().configs.pinConfigsChanged.connect(
             self.__on_project_pinConfigChanged
         )
+        SIGNAL_BUS.updatePinTriggered.connect(self.__on_x_updatePinTriggered)
 
     def boundingRect(self) -> QRectF:
         if self.type_ == self.Type.RECTANGLE_TYPE:
@@ -169,11 +143,11 @@ class GraphicsItemPin(QGraphicsObject):
         # draw background
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
-        if self.unsupported:
-            painter.setBrush(self.UNSUPPORTED_COLOR)
-        elif self.pinConfig.type == "I/O":
+        if self.pinConfig.type == "I/O":
             if self.locked:
                 painter.setBrush(self.SELECTED_COLOR)
+            elif self.function:
+                painter.setBrush(self.UNSUPPORTED_COLOR)
             else:
                 painter.setBrush(self.DEFAULT_COLOR)
         elif self.pinConfig.type == "power":
@@ -294,34 +268,29 @@ class GraphicsItemPin(QGraphicsObject):
             super().paint(painter, option, widget)
 
     def menuTriggered(self, action: QAction):
-        self.currentCheckedAction = action
-        if action.isCheckable():
-            if (
-                self.previousCheckedAction is not None
-                and self.previousCheckedAction != action
-            ):
-                self.previousCheckedAction.setChecked(False)
-            if action.isChecked():
-                PROJECT.project().configs.set(self.lockedKey, True)
-                PROJECT.project().configs.set(self.functionKey, action.text())
-            else:
+        if action.isCheckable():  # function
+            if action.isChecked():  # set function
+                function = action.text()
+                seqs = function.split(":")
+                instance = seqs[0]
+                if instance == self.pinInstance and function in self.pinConfig.modes:
+                    PROJECT.project().configs.set(self.lockedKey, True)
+                else:
+                    PROJECT.project().configs.set(self.lockedKey, False)
+                PROJECT.project().configs.set(self.functionKey, function)
+            else:  # unset function
                 PROJECT.project().configs.set(self.lockedKey, False)
                 PROJECT.project().configs.set(self.functionKey, "")
-        else:
-            if self.previousCheckedAction is not None:
-                self.previousCheckedAction.setChecked(False)
-            self.previousCheckedAction = None
+        else:  # reset state
             PROJECT.project().configs.set(self.lockedKey, False)
             PROJECT.project().configs.set(self.functionKey, "")
             PROJECT.project().configs.set(self.labelKey, "")
 
-        if self.previousCheckedAction != action:
-            self.previousCheckedAction = action
+        SIGNAL_BUS.updatePinTriggered.emit(self.name)
 
     def __on_project_pinConfigChanged(
         self, keys: list[str], oldValue: object, newValue: object
     ):
-        pin = SUMMARY.projectSummary().pins[self.name]
         if keys[1] != self.name:
             return
 
@@ -329,33 +298,78 @@ class GraphicsItemPin(QGraphicsObject):
             self.label = newValue  # type: ignore
         elif keys[-1] == "locked":  # update pin locked status
             self.locked = newValue  # type: ignore
-        elif keys[-1] == "unsupported":  # update pin locked status
-            self.unsupported = newValue  # type: ignore
         elif keys[-1] == "function":  # update pin function
             self.function = newValue  # type: ignore
-            if newValue:  # set new function
-                seqs = newValue.split(":")  # type: ignore
-                instance = seqs[0]
-                pinMode = seqs[1]
-                ip = IP.projectIps().get(instance)
-                if ip is None:
-                    logger.error(f'the ip instance:"{instance}" is invalid.')
-                    PROJECT.project().configs.set(self.unsupportedKey, True)
-                    return
-                if pinMode not in ip.pinModes:
-                    PROJECT.project().configs.set(self.unsupportedKey, True)
-                    return
-                ip_modes = ip.pinModes[pinMode]
-                PROJECT.project().configs.set(f"{instance}/{self.name}", {})
-                for key, info in ip_modes.items():
-                    PROJECT.project().configs.set(
-                        f"{instance}/{self.name}/{key}", info.default
-                    )
-            elif oldValue:  # newValue = None, so clear old function
-                instance = oldValue.split(":")[0]  # type: ignore
-                PROJECT.project().configs.set(f"{instance}/{self.name}", {})
-            PROJECT.project().configs.set(self.unsupportedKey, False)
         elif keys[-1] == "mode":  # update pin mode
-            print(newValue)
+            self.mode = newValue  # type: ignore
+
+        self.__flushMenuAction()
 
         self.update()
+
+    def __initMenu(self):
+        if self.pinConfig.type == "I/O":  # only "I/O" type can init menu
+            self.menu = CheckableMenu()
+            self.menu.view.setStyleSheet(
+                """MenuActionListWidget {
+                        font: 12px "JetBrains Mono", "Segoe UI", "Microsoft YaHei", "PingFang SC";
+                        font-weight: normal;
+                }"""
+            )
+            self.menu.clear()
+            self.menu.triggered.connect(self.menuTriggered)
+            self.menu.addAction(Action(self.tr("Reset State")))  # type: ignore
+            self.menu.addSeparator()
+
+            for function in self.pinConfig.functions():
+                action = Action(function)
+                action.setCheckable(True)
+                self.menu.addAction(action)
+
+            self.setData(GraphicsItemPin.Data.MENU_DATA.value, self.menu)
+            self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
+
+            self.__flushMenuAction()
+
+    def __flushMenuAction(self):
+        if self.menu is not None:
+            actions = self.menu.actions()
+            for action in actions:
+                if action.isCheckable():
+                    if action.isChecked():
+                        action.setChecked(False)
+                    if action.text() == self.function:
+                        action.setChecked(True)
+
+    def __on_x_updatePinTriggered(self, name: str):
+        if name != self.name:
+            return
+        self.updatePin()
+
+    def updatePin(self):
+        if self.function:  # set new function
+            instance = self.function.split(":")[0]
+            ip = IP.projectIps().get(self.pinInstance)
+
+            PROJECT.project().configs.set(f"{self.pinInstance}/{self.name}", {})
+
+            if ip is None:
+                return
+
+            if instance == self.pinInstance:
+                function = self.function
+            else:
+                function = self.mode
+
+            mode = function.split(":")[1]
+            if mode in ip.pinModes:
+                ip_modes = ip.pinModes[mode]
+            else:
+                return
+
+            for key, info in ip_modes.items():
+                PROJECT.project().configs.set(
+                    f"{self.pinInstance}/{self.name}/{key}", info.default
+                )
+        else:  # clear function
+            PROJECT.project().configs.set(f"{self.pinInstance}/{self.name}", {})

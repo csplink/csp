@@ -217,7 +217,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         self.__font = QFont("JetBrains Mono")
         self.__font.setPixelSize(12)
 
-        self.__pinInstance = SUMMARY.projectSummary().pinIp()
+        self.__pinInstance = SUMMARY.projectSummary().pinInstance()
 
         SIGNAL_BUS.controlManagerTriggered.connect(self.__on_x_controlManagerTriggered)
         SIGNAL_BUS.modeManagerTriggered.connect(self.__on_x_modeManagerTriggered)
