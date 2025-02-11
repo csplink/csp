@@ -316,7 +316,7 @@ class SummaryType:
                 if len(pin.modes) > 0:
                     self.__pinIp = pin.modes[0].split(":")[0]
                     break
-        return self.__pinIp
+        return self.__pinIp or ""
 
 
 class Summary:

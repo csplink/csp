@@ -115,6 +115,7 @@ class EnumClockTreeWidget(BaseClockTreeWidget, QComboBox):
 
         self.currentTextChanged.connect(self.__on_currentTextChanged)
         text = self.currentText()
+        val = str(val)
         v = IP.iptr(self.param, val)
         self.setCurrentText(IP.iptr(self.param, val))
         if v == text:

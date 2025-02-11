@@ -64,14 +64,14 @@ class SocView(Ui_SocView, QWidget):
         )
 
         if SUMMARY.projectSummary().package != "":
-            if re.match("^LQFP\d+$", SUMMARY.projectSummary().package):
+            if re.match(r"^LQFP\d+$", SUMMARY.projectSummary().package):
                 items = LQFP().getItems(
                     PROJECT.project().vendor, PROJECT.project().targetChip
                 )
             else:
                 items = None
-                title = self.tr("Error")
-                content = self.tr(
+                title = self.tr("Error")  # type: ignore
+                content = self.tr(  # type: ignore
                     "The package {!r} is not supported at this time.".format(
                         SUMMARY.projectSummary().package
                     )

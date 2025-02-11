@@ -72,7 +72,7 @@ class BaseClockTreeWidget:
         address = hex(id(self))
 
         # noinspection PyUnresolvedReferences
-        return f"<{module}.{classname}({address}, id={self.id!r}, name={self.objectName()!r}, value={self.value()!r}) at {address}>"
+        return f"<{module}.{classname}({address}, id={self.id!r}, name={self.objectName()!r}, value={self.value()!r}) at {address}>"  # type: ignore
 
     def value(self) -> float:
         if not self.__isSetup:

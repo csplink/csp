@@ -135,6 +135,8 @@ class Coder(QObject):
         sys.path = SETTINGS.SYS_PATH + [f"{packageFolder}/tools/generator/filters"]
         for file in files:
             spec = importlib.util.spec_from_file_location(Path(file).stem, file)
+            if spec is None or spec.loader is None:
+                break
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             functions = [
@@ -184,6 +186,8 @@ class Coder(QObject):
             spec = importlib.util.spec_from_file_location(
                 "coder", f"{PROJECT.halFolder()}/tools/generator/generator.py"
             )
+            if spec is None or spec.loader is None:
+                return None
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
             return module
@@ -252,7 +256,7 @@ class Coder(QObject):
         suffix = Path(absPath).suffix
         if suffix == ".h" or suffix == ".c":
             args["userCode"] = self.__matchUser(
-                absPath, "/\*\*<", " \*/", "/\*\*>", " \*/"
+                absPath, r"/\*\*<", r" \*/", r"/\*\*>", r" \*/"
             )
         elif Path(absPath).name == "xmake.lua":
             args["userCode"] = self.__matchUser(absPath, "----<", "", "---->", "")
@@ -283,21 +287,21 @@ class Coder(QObject):
 
         return context
 
-    def __generateMdkArmProject(self, project: dict, path: str, minVersion: str) -> str:
-        spec = importlib.util.spec_from_file_location(
-            "coder", f"{package_dir}/tools/coder/gen_mdk_arm.py"
-        )
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+    # def __generateMdkArmProject(self, project: dict, path: str, minVersion: str) -> str:
+    #     spec = importlib.util.spec_from_file_location(
+    #         "coder", f"{package_dir}/tools/coder/gen_mdk_arm.py"
+    #     )
+    #     module = importlib.util.module_from_spec(spec)
+    #     spec.loader.exec_module(module)
 
-        if os.path.isfile(path):
-            tree = etree.parse(path)
-        else:
-            tree = None
+    #     if os.path.isfile(path):
+    #         tree = etree.parse(path)
+    #     else:
+    #         tree = None
 
-        return module.main(
-            copy.deepcopy(project), copy.deepcopy(minVersion), copy.deepcopy(tree)
-        )
+    #     return module.main(
+    #         copy.deepcopy(project), copy.deepcopy(minVersion), copy.deepcopy(tree)
+    #     )
 
 
 class CoderCmd(QObject):
@@ -358,7 +362,7 @@ class CoderCmd(QObject):
         if self.progress:
             if self.libraryCopiedBar is None:
                 self.libraryCopiedBar = tqdm(total=count, desc="copy", unit="file")
-            self.generatedBar.set_description(f"copy {os.path.basename(path)}")
+            self.libraryCopiedBar.set_description(f"copy {os.path.basename(path)}")
             self.libraryCopiedBar.n = index
             self.libraryCopiedBar.refresh()
             if index == count:

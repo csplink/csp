@@ -40,7 +40,7 @@ class StackedWidget(QFrame):
         self.hBoxLayout.addWidget(self.view)
 
         self.view.currentChanged.connect(self.currentChanged)
-        self.setAttribute(Qt.WA_StyledBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
 
     def addWidget(self, widget: QWidget):
         self.view.addWidget(widget)

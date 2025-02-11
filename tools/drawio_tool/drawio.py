@@ -129,16 +129,19 @@ class Drawio:
             "ns": self.__root.tag.split("}")[0][1:] if "}" in self.__root.tag else ""
         }
         version = Version(self.__drawio.attrib["version"])
-        objects: list[etree.Element] = self.__drawio.find("diagram").findall(
-            "mxGraphModel/root/object"
-        )
-        mxCells: list[etree.Element] = self.__drawio.find("diagram").findall(
-            "mxGraphModel/root/mxCell"
-        )
+        diagram = self.__drawio.find("diagram")
+        if diagram is None:
+            logger.error("The 'diagram' node is not found")
+            return
+        objects: list[etree.Element] = diagram.findall("mxGraphModel/root/object")
+        mxCells: list[etree.Element] = diagram.findall("mxGraphModel/root/mxCell")
 
         for obj in objects:
             id_ = obj.attrib["id"]
             mxCell = obj.find("mxCell")
+            if mxCell is None:
+                logger.error(f"The 'mxCell' node is not found")
+                break
             mxCell.attrib["id"] = id_
             mxCells.append(mxCell)
         for mxCell in mxCells:
@@ -146,6 +149,9 @@ class Drawio:
             id_ = mxCell.attrib["id"]
             if self.__isWidget(cell):
                 element = self.__findSvgElement(id_)
+                if element is None:
+                    logger.error(f"The '{id_}' id is not found")
+                    break
                 ellipses = element.findall("ns:g/ns:g/ns:ellipse", self.__namespace)
                 rects = element.findall("ns:g/ns:g/ns:rect", self.__namespace)
                 if len(ellipses) == 1:
@@ -165,6 +171,9 @@ class Drawio:
                         f"There was a problem parsing the svg file {path!r}, the default drawio configuration will be used. id {id_!r}"
                     )
                     mxGeometry = mxCell.find("mxGeometry")
+                    if mxGeometry is None:
+                        logger.error("The 'mxGeometry' node is not found")
+                        break
                     x = float(mxGeometry.attrib["x"]) + 1
                     y = float(mxGeometry.attrib["y"]) + 1
                     width = float(mxGeometry.attrib["width"]) + 1
@@ -186,6 +195,9 @@ class Drawio:
 
         for id_, item in self.__widgets.items():
             element = self.__findSvgElement(id_)
+            if element is None:
+                logger.error(f"The '{id_}' id is not found")
+                break
             self.__updateGraphicsElement(element, id_, "rgb(0, 0, 0)")
 
     @property
@@ -272,7 +284,7 @@ class Drawio:
 
         return times > 0
 
-    def __findSvgElement(self, id_: str) -> etree.Element:
+    def __findSvgElement(self, id_: str) -> etree.Element | None:
         rtn = None
 
         gs = self.__root.findall("ns:g/ns:g/ns:g/ns:g", self.__namespace)
@@ -286,16 +298,25 @@ class Drawio:
     def __updateLine(self):
         for id_ in self.__lines:
             element = self.__findSvgElement(id_)
+            if element is None:
+                logger.error(f"The '{id_}' id is not found")
+                break
             self.__updateLineElement(element, id_, "rgb(255, 0, 0)")
 
     def __updateText(self):
         for id_ in self.__texts:
             element = self.__findSvgElement(id_)
+            if element is None:
+                logger.error(f"The '{id_}' id is not found")
+                break
             self.__updateTextElement(element, id_, "rgb(0, 255, 255)")
 
     def __updateGraphics(self):
         for id_ in self.__graphics:
             element = self.__findSvgElement(id_)
+            if element is None:
+                logger.error(f"The '{id_}' id is not found")
+                break
             self.__updateGraphicsElement(element, id_, "rgb(0, 255, 0)")
 
     def __updateLineElement(self, el: etree.Element, cellId: str, color: str):

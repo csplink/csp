@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from loguru import logger
 
 import jinja2
 from PySide6.QtCore import QSize
@@ -120,9 +121,8 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
 
         elements = self.__clockTree.elements
 
-        data = {
-            "isDarkMode": isDarkTheme(),
-        }
+        data = {}
+        data["isDarkMode"] = isDarkTheme()
 
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(
@@ -152,6 +152,9 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                         instance = seqs[0]
                         name = seqs[1]
                         ip = IP.projectIps().get(instance)
+                        if ip is None:
+                            logger.error(f"The {instance} ip is not found")
+                            break
                         parameter = ip.parameters.get(name)
                         if parameter is not None:
                             type_ = parameter.type

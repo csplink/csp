@@ -76,28 +76,28 @@ class CHighlighter(BaseHighlighter):
         "<=",
         ">",
         ">=",
-        "\+",
+        r"\+",
         "-",
-        "\*",
+        r"\*",
         "/",
         "//",
-        "\%",
-        "\*\*",
-        "\+=",
+        r"\%",
+        r"\*\*",
+        r"\+=",
         "-=",
-        "\*=",
+        r"\*=",
         "/=",
-        "\%=",
-        "\^",
-        "\|",
-        "\&",
-        "\~",
+        r"\%=",
+        r"\^",
+        r"\|",
+        r"\&",
+        r"\~",
         ">>",
         "<<",
         "#",
     ]
 
-    braces = ["\(", "\)", "\[", "\]"]
+    braces = [r"\(", r"\)", r"\[", r"\]"]
 
     macros = ["#", "include", "ifndef", "define", "ifdef", "endif", "defined"]
 
@@ -105,8 +105,8 @@ class CHighlighter(BaseHighlighter):
         super().__init__(document)
 
         self.multiline_comment = (
-            QRegularExpression("/\*"),
-            QRegularExpression("\*/"),
+            QRegularExpression(r"/\*"),
+            QRegularExpression(r"\*/"),
             1,
             self.STYLES["comment"],
         )

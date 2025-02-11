@@ -93,10 +93,9 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
         elif role == Qt.ItemDataRole.SizeHintRole:  # 13
             return None
         else:
-            logger.warning(index, role)
             return None
 
-    def flags(self, index: QModelIndex) -> Qt.ItemFlags:
+    def flags(self, index: QModelIndex) -> Qt.ItemFlag:
         return super().flags(index)
 
     # noinspection PyMethodOverriding
@@ -125,8 +124,8 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                 return
 
             self.__headersMap = {
-                self.tr("Name"): {"path": "", "index": 0, "param": ""},
-                self.tr("Label"): {"path": "pin/(name)/label", "index": 1, "param": ""},
+                self.tr("Name"): {"path": "", "index": 0, "param": ""},  # type: ignore
+                self.tr("Label"): {"path": "pin/(name)/label", "index": 1, "param": ""},  # type: ignore
             }
 
             index = 2
@@ -139,35 +138,34 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                 index += 1
             self.__headersList = list(self.__headersMap.keys())
 
-            self.__config = PROJECT.project().configs.get(instance)
+            self.__config: dict = PROJECT.project().configs.get(instance, {})  # type: ignore
             self.__data.clear()
 
-            if self.__config is not None:
-                for name in self.__config.keys():
-                    if PROJECT.project().configs.get(f"pin/{name}/locked"):
-                        l = []
-                        for _, item in self.__headersMap.items():
-                            path = item["path"]
-                            if path != "":
-                                path = path.replace("(name)", name)
-                                value = PROJECT.project().configs.get(path, "")
-                                l.append(
-                                    {
-                                        "display": IP.iptr(
-                                            item["param"], self.__value2str(value)
-                                        ),
-                                        "tooltip": value,
-                                    }
-                                )
-                            else:
-                                l.append({"display": name, "tooltip": name})
-                        self.__data.append(l)
+            for name in self.__config.keys():
+                if PROJECT.project().configs.get(f"pin/{name}/locked"):
+                    l = []
+                    for _, item in self.__headersMap.items():
+                        path = item["path"]
+                        if path != "":
+                            path = path.replace("(name)", name)
+                            value = str(PROJECT.project().configs.get(path, ""))
+                            l.append(
+                                {
+                                    "display": IP.iptr(
+                                        item["param"], self.__value2str(value)
+                                    ),
+                                    "tooltip": value,
+                                }
+                            )
+                        else:
+                            l.append({"display": name, "tooltip": name})
+                    self.__data.append(l)
 
             self.modelReset.emit()
 
     def __value2str(self, value):
         if isinstance(value, bool):
-            return self.tr("Locked") if value else self.tr("Unlocked")
+            return self.tr("Locked") if value else self.tr("Unlocked")  # type: ignore
         return value
 
     def __removeModelData(self, name: str):
@@ -219,6 +217,9 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                 index = self.__getModelDataIndex(name)
                 if index >= 0:
                     locale = SETTINGS.get(SETTINGS.language).value.name()
+                    if self.__ip is None:
+                        logger.error("The ip is None")
+                        return
                     param = self.__ip.parameters[keys[2]].display.get(locale)
                     column = self.__headersList.index(param)
                     self.__data[index][column] = {

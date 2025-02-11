@@ -99,7 +99,7 @@ class ClockTreeType:
                 self.__i18n[name] = I18nType(i)
         return self.__i18n
 
-    def i18nOrigin(self) -> dict[str, I18nType]:
+    def i18nOrigin(self) -> dict[str, dict[str, str]]:
         return self.__data.get("i18n", {})
 
 

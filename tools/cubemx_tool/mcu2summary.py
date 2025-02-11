@@ -124,9 +124,9 @@ class Mcu2Summary:
         }
         for pinNode in pinNodes:
             pinName = pinNode.attrib["Name"]
-            position: str = pinNode.attrib["Position"]
-            if position.isdecimal():
-                position: int = int(position)
+            position: str | int = pinNode.attrib["Position"]
+            if isinstance(position, str) and position.isdecimal():
+                position: str | int = int(position)
             type_ = typeMap.get(pinNode.attrib["Type"], pinNode.attrib["Type"])
             signalNodes = pinNode.findall("ns:Signal", ns)
             signals = []

@@ -24,6 +24,8 @@
 # 2024-07-13     xqyjlj       initial version
 #
 
+from __future__ import annotations
+
 import attr
 from PySide6.QtCore import (
     Qt,
@@ -47,10 +49,10 @@ def isPrivateModelOrNone(_, attribute, value):
 
 @attr.s
 class PModel:
-    displayName = attr.ib(default="", validator=attr.validators.instance_of(str))
-    description = attr.ib(default="", validator=attr.validators.instance_of(str))
-    children = attr.ib(default=[], validator=attr.validators.instance_of(list))
-    parent = attr.ib(default=None)
+    displayName: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    description: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    children: list = attr.ib(default=[], validator=attr.validators.instance_of(list))
+    parent: PModel | None = attr.ib(default=None)
 
     def append(self, model):
         self.children.append(model)
@@ -85,7 +87,7 @@ class TreeModuleModel(QAbstractItemModel):
         if not parent.isValid():
             return len(self.__model.children)
         else:
-            model = parent.internalPointer()
+            model: PModel = parent.internalPointer()  # type: ignore
             return len(model.children)
 
     # noinspection PyMethodOverriding
@@ -97,12 +99,12 @@ class TreeModuleModel(QAbstractItemModel):
         if (
             role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole
         ):  # 0, 2
-            model = index.internalPointer()
+            model: PModel = index.internalPointer()  # type: ignore
             return model.displayName
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
-            model = index.internalPointer()
+            model: PModel = index.internalPointer()  # type: ignore
             return model.description
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
@@ -113,7 +115,7 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
             return None
         elif role == Qt.ItemDataRole.ForegroundRole:  # 9
-            model = index.internalPointer()
+            model: PModel = index.internalPointer()  # type: ignore
             if model.displayName in PROJECT.project().modules:
                 return self.__brush
             return None
@@ -122,10 +124,9 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.SizeHintRole:  # 13
             return None
         else:
-            logger.warning(index, role)
             return None
 
-    def flags(self, index: QModelIndex) -> Qt.ItemFlags:
+    def flags(self, index: QModelIndex) -> Qt.ItemFlag:
         return super().flags(index)
 
     # noinspection PyMethodOverriding
@@ -137,7 +138,7 @@ class TreeModuleModel(QAbstractItemModel):
         else:
             parentModel = parent.internalPointer()
 
-        childModel = parentModel.child(row)
+        childModel: PModel = parentModel.child(row)  # type: ignore
         if childModel is not None:
             return self.createIndex(row, column, childModel)
         else:
@@ -148,10 +149,14 @@ class TreeModuleModel(QAbstractItemModel):
         if not index.isValid():
             return QModelIndex()
 
-        childModel = index.internalPointer()
+        childModel: PModel = index.internalPointer()  # type: ignore
         parentModel = childModel.parent
 
         if parentModel == self.__model:
+            return QModelIndex()
+
+        if parentModel is None:
+            logger.error("The parent model is None")
             return QModelIndex()
 
         return self.createIndex(parentModel.row(), 0, parentModel)

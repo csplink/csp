@@ -72,7 +72,7 @@ class SystemSettingView(ScrollArea):
         self.setObjectName("SystemSettingView")
 
         # setting label
-        self.settingLabel = QLabel(self.tr("System Setting"), self)
+        self.settingLabel = QLabel(self.tr("System Setting"), self)  # type: ignore
         self.settingLabel.setObjectName("settingLabel")
         self.settingLabel.move(36, 30)
 
@@ -104,13 +104,13 @@ class SystemSettingView(ScrollArea):
         self.enableTransparentBackground()
 
     def __createFoldersGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Folders Location"), self.widgetScroll)  # type: ignore
 
         # ---------------------------------------------------------------------------------------------------------------
         self.packageFolderCard = PushSettingCard(
-            self.tr("Choose folder"),
+            self.tr("Choose folder"),  # type: ignore
             Icon.FOLDER,
-            self.tr("Package directory"),
+            self.tr("Package directory"),  # type: ignore
             SETTINGS.packageFolder.value,
             group,
         )
@@ -122,14 +122,14 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createPersonalizationGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(self.tr("Personalization"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Personalization"), self.widgetScroll)  # type: ignore
 
         self.themeCard = OptionsSettingCard(
             SETTINGS.themeMode,
             Icon.PAINT,
-            self.tr("Application theme"),
-            self.tr("Change the appearance of your application"),
-            texts=[self.tr("Light"), self.tr("Dark"), self.tr("Use system setting")],
+            self.tr("Application theme"),  # type: ignore
+            self.tr("Change the appearance of your application"),  # type: ignore
+            texts=[self.tr("Light"), self.tr("Dark"), self.tr("Use system setting")],  # type: ignore
             parent=group,
         )
         self.themeCard.optionChanged.connect(lambda ci: setTheme(SETTINGS.get(ci)))
@@ -137,8 +137,8 @@ class SystemSettingView(ScrollArea):
         self.themeColorCard = CustomColorSettingCard(
             SETTINGS.themeColor,
             Icon.PALETTE,
-            self.tr("Theme color"),
-            self.tr("Change the theme color of you application"),
+            self.tr("Theme color"),  # type: ignore
+            self.tr("Change the theme color of you application"),  # type: ignore
             group,
         )
         self.themeColorCard.colorChanged.connect(lambda c: setThemeColor(c))
@@ -146,8 +146,8 @@ class SystemSettingView(ScrollArea):
         self.alertColorCard = CustomColorSettingCard(
             SETTINGS.alertColor,
             Icon.PALETTE,
-            self.tr("Alert color"),
-            self.tr("Change the alert color of you application"),
+            self.tr("Alert color"),  # type: ignore
+            self.tr("Change the alert color of you application"),  # type: ignore
             group,
         )
 
@@ -158,42 +158,42 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createSystemGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(self.tr("System"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("System"), self.widgetScroll)  # type: ignore
 
         self.languageCard = ComboBoxSettingCard(
             SETTINGS.language,
             Icon.GLOBAL,
-            self.tr("Language"),
-            self.tr("Set your preferred language for UI"),
-            texts=["简体中文", "繁體中文", "English", self.tr("Use system setting")],
+            self.tr("Language"),  # type: ignore
+            self.tr("Set your preferred language for UI"),  # type: ignore
+            texts=["简体中文", "繁體中文", "English", self.tr("Use system setting")],  # type: ignore
             parent=group,
         )
         self.zoomCard = OptionsSettingCard(
             SETTINGS.dpiScale,
             Icon.PICTURE_IN_PICTURE,
-            self.tr("Interface zoom"),
-            self.tr("Change the size of widgets and fonts"),
+            self.tr("Interface zoom"),  # type: ignore
+            self.tr("Change the size of widgets and fonts"),  # type: ignore
             texts=[
                 "100%",
                 "125%",
                 "150%",
                 "175%",
                 "200%",
-                self.tr("Use system setting"),
+                self.tr("Use system setting"),  # type: ignore
             ],
             parent=group,
         )
         self.useOpenGLCard = SwitchSettingCard(
             Icon.SPEED_UP,
-            self.tr("Using opengl for acceleration"),
-            self.tr("Hardware acceleration for your applications"),
+            self.tr("Using opengl for acceleration"),  # type: ignore
+            self.tr("Hardware acceleration for your applications"),  # type: ignore
             configItem=SETTINGS.isUseOpenGL,
             parent=group,
         )
         self.openGLSamplesCard = OptionsSettingCard(
             icon=Icon.NUMBERS,
-            title=self.tr("OpenGL samples"),
-            content=self.tr("Set the preferred number of samples per pixel"),
+            title=self.tr("OpenGL samples"),  # type: ignore
+            content=self.tr("Set the preferred number of samples per pixel"),  # type: ignore
             configItem=SETTINGS.openGLSamples,
             texts=["4", "8", "12", "16"],
             parent=group,
@@ -207,12 +207,12 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createUpdateGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(self.tr("Software update"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Software update"), self.widgetScroll)  # type: ignore
 
         self.updateAtStartupCard = SwitchSettingCard(
             Icon.REFRESH,
-            self.tr("Check for updates when the application starts"),
-            self.tr("The new version will be more stable and have more features"),
+            self.tr("Check for updates when the application starts"),  # type: ignore
+            self.tr("The new version will be more stable and have more features"),  # type: ignore
             configItem=SETTINGS.isUpdateAtStartup,
             parent=group,
         )
@@ -222,22 +222,22 @@ class SystemSettingView(ScrollArea):
         return group
 
     def __createAboutGroup(self) -> SettingCardGroup:
-        group = SettingCardGroup(self.tr("About"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("About"), self.widgetScroll)  # type: ignore
 
         self.helpCard = HyperlinkCard(
             SETTINGS.HELP_URL,
-            self.tr("Open help page"),
+            self.tr("Open help page"),  # type: ignore
             Icon.QUESTION,
-            self.tr("Help"),
-            self.tr("Discover new features and learn useful tips about CSP"),
+            self.tr("Help"),  # type: ignore
+            self.tr("Discover new features and learn useful tips about CSP"),  # type: ignore
             group,
         )
 
         self.feedbackCard = PrimaryPushSettingCard(
-            self.tr("Provide feedback"),
+            self.tr("Provide feedback"),  # type: ignore
             Icon.FEEDBACK,
-            self.tr("Provide feedback"),
-            self.tr("Help us improve CSP by providing feedback"),
+            self.tr("Provide feedback"),  # type: ignore
+            self.tr("Help us improve CSP by providing feedback"),  # type: ignore
             group,
         )
         self.feedbackCard.clicked.connect(
@@ -245,10 +245,10 @@ class SystemSettingView(ScrollArea):
         )
 
         self.aboutCard = PrimaryPushSettingCard(
-            self.tr("Check update"),
+            self.tr("Check update"),  # type: ignore
             Icon.INFORMATION,
-            self.tr("About"),
-            f"© {self.tr('Copyright')} {SETTINGS.YEAR}, {SETTINGS.AUTHOR}. {self.tr('Version')} {SETTINGS.VERSION}",
+            self.tr("About"),  # type: ignore
+            f"© {self.tr('Copyright')} {SETTINGS.YEAR}, {SETTINGS.AUTHOR}. {self.tr('Version')} {SETTINGS.VERSION}",  # type: ignore
             group,
         )
 
@@ -261,15 +261,15 @@ class SystemSettingView(ScrollArea):
     def __showRestartTooltip(self):
         """show restart tooltip"""
         InfoBar.success(
-            self.tr("Updated successfully"),
-            self.tr("Configuration takes effect after restart"),
+            self.tr("Updated successfully"),  # type: ignore
+            self.tr("Configuration takes effect after restart"),  # type: ignore
             duration=1500,
             parent=self,
         )
 
     def __on_repositoryFolderCard_clicked(self):
         """download folder card clicked slot"""
-        folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))
+        folder = QFileDialog.getExistingDirectory(self, self.tr("Choose folder"))  # type: ignore
         if not folder or SETTINGS.get(SETTINGS.packageFolder) == folder:
             return
 
@@ -284,7 +284,7 @@ class GenerateSettingView(ScrollArea):
         self.setObjectName("GenerateSettingView")
 
         # setting label
-        self.settingLabel = QLabel(self.tr("Generate Setting"), self)
+        self.settingLabel = QLabel(self.tr("Generate Setting"), self)  # type: ignore
         self.settingLabel.setObjectName("settingLabel")
         self.settingLabel.move(36, 30)
 
@@ -321,12 +321,12 @@ class GenerateSettingView(ScrollArea):
         if len(SUMMARY.projectSummary().builder.keys()) == 0:
             return None
 
-        group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Builder Settings"), self.widgetScroll)  # type: ignore
 
         # --------------------------------------------------------------------------------------------------------------
         self.builderComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.HAMMER,
-            title=self.tr("Builder Tools"),
+            title=self.tr("Builder Tools"),  # type: ignore
             value="",
             values=[],
             content=" ",
@@ -338,7 +338,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.builderVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.DATABASE_2,
-            title=self.tr("Builder Version"),
+            title=self.tr("Builder Version"),  # type: ignore
             value="",
             values=[],
             content=" ",
@@ -350,7 +350,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.toolchainsComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.TOOLS,
-            title=self.tr("Toolchains"),
+            title=self.tr("Toolchains"),  # type: ignore
             value="",
             values=[],
             content=" ",
@@ -362,9 +362,9 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.useToolchainsPackageSwitchSettingCard = SwitchPropertySettingCard(
             icon=Icon.CHECKBOX_MULTIPLE,
-            title=self.tr("Use Toolchains Package"),
+            title=self.tr("Use Toolchains Package"),  # type: ignore
             value=PROJECT.project().gen.useToolchainsPackage,
-            content=self.tr("Use the built-in toolchain of this software"),
+            content=self.tr("Use the built-in toolchain of this software"),  # type: ignore
             parent=group,
         )
         self.useToolchainsPackageSwitchSettingCard.checkedChanged.connect(
@@ -373,7 +373,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.toolchainsVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.DATABASE_2,
-            title=self.tr("Toolchains Version"),
+            title=self.tr("Toolchains Version"),  # type: ignore
             value="",
             values=[],
             content=" ",
@@ -397,7 +397,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.toolchainsPathToolButtonSettingCard = ToolButtonPropertySettingCard(
             icon=Icon.FOLDER,
-            title=self.tr("Toolchains Path"),
+            title=self.tr("Toolchains Path"),  # type: ignore
             btnIcon=Icon.BOX,
             content=" ",
             parent=group,
@@ -438,13 +438,13 @@ class GenerateSettingView(ScrollArea):
         PROJECT.project().gen.linker.defaultStackSize = defaultStackSize
         # --------------------------------------------------------------------------------------------------------------
 
-        group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Linker Settings"), self.widgetScroll)  # type: ignore
 
         # --------------------------------------------------------------------------------------------------------------
         if defaultHeapSize > -1:
             self.defaultHeapLineEditCard = LineEditPropertySettingCard(
                 icon=Icon.FOLDER,
-                title=self.tr("Default Heap Size"),
+                title=self.tr("Default Heap Size"),  # type: ignore
                 value=hex(defaultHeapSize),
                 content=hex(defaultHeapSize),
                 validator=R"(^0x[0-9A-Fa-f]+$)",
@@ -461,7 +461,7 @@ class GenerateSettingView(ScrollArea):
         if defaultStackSize > -1:
             self.defaultStackLineEditCard = LineEditPropertySettingCard(
                 icon=Icon.FOLDER,
-                title=self.tr("Default Stack Size"),
+                title=self.tr("Default Stack Size"),  # type: ignore
                 value=hex(defaultStackSize),
                 content=hex(defaultStackSize),
                 validator=R"(^0x[0-9A-Fa-f]+$)",
@@ -480,14 +480,14 @@ class GenerateSettingView(ScrollArea):
     def __createHalGroup(self) -> SettingCardGroup | None:
         # --------------------------------------------------------------------------------------------------------------
 
-        group = SettingCardGroup(self.tr("Hal Settings"), self.widgetScroll)
+        group = SettingCardGroup(self.tr("Hal Settings"), self.widgetScroll)  # type: ignore
 
         # --------------------------------------------------------------------------------------------------------------
         self.copyLibrarySwitchSettingCard = SwitchPropertySettingCard(
             icon=Icon.CHECKBOX_MULTIPLE,
-            title=self.tr("Copy Hal Library"),
+            title=self.tr("Copy Hal Library"),  # type: ignore
             value=PROJECT.project().gen.copyLibrary,
-            content=self.tr("Copy the hal library files to the project directory"),
+            content=self.tr("Copy the hal library files to the project directory"),  # type: ignore
             parent=group,
         )
         self.copyLibrarySwitchSettingCard.checkedChanged.connect(
@@ -496,7 +496,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.halComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.HAMMER,
-            title=self.tr("Hal Package"),
+            title=self.tr("Hal Package"),  # type: ignore
             value="",
             values=[],
             content=" ",
@@ -508,7 +508,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.halVersionComboBoxGroupSettingCard = ComboBoxPropertySettingCard(
             icon=Icon.DATABASE_2,
-            title=self.tr("Hal Package Version"),
+            title=self.tr("Hal Package Version"),  # type: ignore
             value="",
             values=[],
             content=" ",
@@ -520,7 +520,7 @@ class GenerateSettingView(ScrollArea):
         # --------------------------------------------------------------------------------------------------------------
         self.halPathToolButtonSettingCard = ToolButtonPropertySettingCard(
             icon=Icon.FOLDER,
-            title=self.tr("Hal Package Path"),
+            title=self.tr("Hal Package Path"),  # type: ignore
             btnIcon=Icon.BOX,
             content=" ",
             parent=group,
@@ -540,17 +540,17 @@ class GenerateSettingView(ScrollArea):
     def __on_defaultHeapLineEditCard_textChanged(self, text: str):
         ishex = Converters.ishex(text)
         if ishex:
-            PROJECT.project().gen.defaultHeapSize = text
+            PROJECT.project().gen.linker.defaultHeapSize = int(text, 16)
         self.defaultHeapLineEditCard.setStatusInfo(
-            not ishex, self.tr("The Path is not directory")
+            not ishex, self.tr("The Path is not directory")  # type: ignore
         )
 
     def __on_defaultStackLineEditCard_textChanged(self, text: str):
         ishex = Converters.ishex(text)
         if ishex:
-            PROJECT.project().gen.defaultStackSize = text
+            PROJECT.project().gen.linker.defaultStackSize = int(text, 16)
         self.defaultStackLineEditCard.setStatusInfo(
-            not ishex, self.tr("The Path is not directory")
+            not ishex, self.tr("The Path is not directory")  # type: ignore
         )
 
     def __on_builderComboBoxGroupSettingCard_currentTextChanged(self, text: str):
@@ -648,7 +648,7 @@ class GenerateSettingView(ScrollArea):
         toolchains = (
             SUMMARY.projectSummary()
             .builder.get(PROJECT.project().gen.builder, {})
-            .get(PROJECT.project().gen.builderVersion, {})
+            .get(PROJECT.project().gen.builderVersion, [])
         )
         if PROJECT.project().gen.toolchains == "":
             PROJECT.project().gen.toolchains = toolchains[-1]
@@ -704,7 +704,7 @@ class GenerateSettingView(ScrollArea):
         self.toolchainsPathToolButtonSettingCard.setContent(toolchainsPath)
         self.toolchainsPathToolButtonSettingCard.contentLabel.setToolTip(toolchainsPath)
         if not os.path.isdir(toolchainsPath):
-            message = self.tr("The Path is not directory")
+            message = self.tr("The Path is not directory")  # type: ignore
             self.toolchainsPathToolButtonSettingCard.setStatusInfo(True, message)
         else:
             self.toolchainsPathToolButtonSettingCard.setStatusInfo(False, "")
@@ -779,7 +779,7 @@ class GenerateSettingView(ScrollArea):
         self.halPathToolButtonSettingCard.setContent(halPath)
         self.halPathToolButtonSettingCard.contentLabel.setToolTip(halPath)
         if not os.path.isdir(halPath):
-            message = self.tr("The Path is not directory")
+            message = self.tr("The Path is not directory")  # type: ignore
             self.halPathToolButtonSettingCard.setStatusInfo(True, message)
         else:
             self.halPathToolButtonSettingCard.setStatusInfo(False, "")
@@ -805,15 +805,16 @@ class SettingView(Ui_SettingView, QWidget):
         self.generateSettingView = GenerateSettingView(self)
 
         self.systemSettingTreeWidgetItem = self.__addView(
-            self.systemSettingView, Icon.LIST_SETTINGS, self.tr("System Setting")
+            self.systemSettingView, Icon.LIST_SETTINGS, self.tr("System Setting")  # type: ignore
         )
         self.generateSettingTreeWidgetItem = self.__addView(
-            self.generateSettingView, Icon.AI_GENERATE, self.tr("Generate Setting")
+            self.generateSettingView, Icon.AI_GENERATE, self.tr("Generate Setting")  # type: ignore
         )
 
         Style.SETTING_VIEW.apply(self)
 
-        self.settingTree.setCurrentItem(self.systemSettingTreeWidgetItem)
+        if self.systemSettingTreeWidgetItem is not None:
+            self.settingTree.setCurrentItem(self.systemSettingTreeWidgetItem)
 
     def switchTo(self, key: str):
         if key not in self.__navigationViews:

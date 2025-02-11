@@ -119,9 +119,13 @@ class LineNumberArea(QWidget):
         font.setWeight(QFont.Weight.Light)
         self.setFont(font)
 
-    def sizeHint(self):
+    def sizeHint(self) -> QSize:
+        if self.codeEditor is None:
+            return QSize(0, 0)
         return QSize(self.codeEditor.lineNumberAreaWidth, 0)
 
     def paintEvent(self, event: QPaintEvent):
         super().paintEvent(event)
+        if self.codeEditor is None:
+            return
         self.codeEditor.lineNumberAreaPaintEvent(event)
