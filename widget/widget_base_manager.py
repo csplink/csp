@@ -45,6 +45,7 @@ from PySide6.QtWidgets import (
     QStyleOptionViewItem,
     QApplication,
     QVBoxLayout,
+    QTableView,
 )
 from loguru import logger
 from qfluentwidgets import (
@@ -66,23 +67,25 @@ class WidgetBaseManagerType(Enum):
 
 @attr.s
 class WidgetBaseManagerPrivateModel:
-    property = attr.ib(default="", validator=attr.validators.instance_of(str))
-    path = attr.ib(default="", validator=attr.validators.instance_of(str))
-    value = attr.ib(
+    property: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    path: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    value: str | int | float | bool = attr.ib(
         default="", validator=attr.validators.instance_of((str, int, float, bool))
     )
-    typeof = attr.ib(default="", validator=attr.validators.instance_of(str))
-    possibleValues = attr.ib(default=[], validator=attr.validators.instance_of(list))
-    readonly = attr.ib(default="", validator=attr.validators.instance_of(bool))
-    description = attr.ib(default="", validator=attr.validators.instance_of(str))
-    param = attr.ib(default="", validator=attr.validators.instance_of(str))
-    parameter = attr.ib(default=None)
-    parameters = attr.ib(default={}, validator=attr.validators.instance_of(dict))
+    typeof: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    possibleValues: list = attr.ib(
+        default=[], validator=attr.validators.instance_of(list)
+    )
+    readonly: bool = attr.ib(default=False, validator=attr.validators.instance_of(bool))
+    description: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    param: str = attr.ib(default="", validator=attr.validators.instance_of(str))
+    parameter: IpType.ParameterUnitType = attr.ib(default=IpType.ParameterUnitType({}))
+    parameters: dict = attr.ib(default={}, validator=attr.validators.instance_of(dict))
 
 
 class WidgetBaseManagerEditorDelegate(TableItemDelegate):
 
-    def __init__(self, data: list[WidgetBaseManagerPrivateModel], parent=None):
+    def __init__(self, data: list[WidgetBaseManagerPrivateModel], parent: QTableView):
         super().__init__(parent)
 
         self.__data = data
@@ -101,12 +104,12 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
                 event.type() == QEvent.Type.MouseButtonRelease
                 or event.type() == QEvent.Type.MouseButtonDblClick
             ):
-                event: QMouseEvent
-                if event.button() == Qt.MouseButton.LeftButton:
-                    x = option.rect.x() + 15
-                    y = option.rect.center().y() - 9.5
+                mouseEvent: QMouseEvent = event  # type: ignore
+                if mouseEvent.button() == Qt.MouseButton.LeftButton:
+                    x = option.rect.x() + 15  # type: ignore
+                    y = option.rect.center().y() - 9.5  # type: ignore
                     rect = QRectF(x, y, 19, 19)
-                    if rect.contains(event.pos()):
+                    if rect.contains(mouseEvent.pos()):
                         return model.setData(
                             index, not self.__data[row].value, Qt.ItemDataRole.EditRole
                         )
@@ -125,7 +128,7 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
             lineEdit = LineEdit(parent)
             lineEdit.setProperty("transparent", False)
             lineEdit.setStyle(QApplication.style())
-            lineEdit.setText(self.__data[row].value)
+            lineEdit.setText(self.__data[row].value)  # type: ignore
             lineEdit.setValidator(
                 QRegularExpressionValidator(
                     QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")
@@ -143,27 +146,27 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
             comboBox.setCurrentText(
                 IP.iptr(
                     self.__data[index.row()].path.split("/")[-1],
-                    self.__data[index.row()].value,
+                    self.__data[index.row()].value,  # type: ignore
                 )
             )
             return comboBox
         elif self.__data[row].typeof == "integer":
             spinBox = SpinBox(parent)
             Style.WIDGET_BASE_MANAGER.apply(spinBox)
-            parameter: IpType.ParameterUnitType = self.__data[row].parameter
+            parameter = self.__data[row].parameter
             if parameter.max > -1:
                 spinBox.setMaximum(int(parameter.max))
                 spinBox.setMinimum(int(parameter.min))
-            spinBox.setValue(self.__data[row].value)
+            spinBox.setValue(self.__data[row].value)  # type: ignore
             return spinBox
         elif self.__data[row].typeof == "float":
             spinBox = DoubleSpinBox(parent)
             Style.WIDGET_BASE_MANAGER.apply(spinBox)
-            parameter: IpType.ParameterUnitType = self.__data[row].parameter
+            parameter = self.__data[row].parameter
             if parameter.max > -1:
                 spinBox.setMaximum(parameter.max)
                 spinBox.setMinimum(parameter.min)
-            spinBox.setValue(self.__data[row].value)
+            spinBox.setValue(self.__data[row].value)  # type: ignore
             return spinBox
         else:
             logger.warning(f"unknown typeof {self.__data[row].typeof!r}")
@@ -179,17 +182,17 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
             return None
 
         if self.__data[row].typeof == "string":
-            editor: LineEdit
-            model.setData(index, editor.text(), Qt.ItemDataRole.EditRole)
+            lineEdit: LineEdit = editor  # type: ignore
+            model.setData(index, lineEdit.text(), Qt.ItemDataRole.EditRole)
         elif self.__data[row].typeof == "enum":
-            editor: ComboBox
-            model.setData(index, editor.currentText(), Qt.ItemDataRole.EditRole)
+            comboBox: ComboBox = editor  # type: ignore
+            model.setData(index, comboBox.currentText(), Qt.ItemDataRole.EditRole)
         elif self.__data[row].typeof == "integer":
-            editor: SpinBox
-            model.setData(index, editor.value(), Qt.ItemDataRole.EditRole)
+            spinBox: SpinBox = editor  # type: ignore
+            model.setData(index, spinBox.value(), Qt.ItemDataRole.EditRole)
         elif self.__data[row].typeof == "float":
-            editor: SpinBox
-            model.setData(index, editor.value(), Qt.ItemDataRole.EditRole)
+            spinBox: SpinBox = editor  # type: ignore
+            model.setData(index, spinBox.value(), Qt.ItemDataRole.EditRole)
         else:
             logger.warning(f"unknown typeof {self.__data[row].typeof!r}")
 
@@ -208,7 +211,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         self.__type = type_
         self.__pinInstance = ""
         self.__ip = None
-        self.__configs = None
+        self.__configs: dict[str, IpType.ControlModeUnitType] = {}
         self.__instance = ""
 
         self.__font = QFont("JetBrains Mono")
@@ -238,7 +241,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                 if self.__data[index.row()].typeof == "boolean":
                     return None
                 return IP.iptr(
-                    self.__data[index.row()].param, self.__data[index.row()].value
+                    self.__data[index.row()].param, self.__data[index.row()].value  # type: ignore
                 )
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
@@ -268,7 +271,6 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         elif role == Qt.ItemDataRole.SizeHintRole:  # 13
             return None
         else:
-            logger.warning(index, role)
             return None
 
     # noinspection PyMethodOverriding
@@ -277,25 +279,25 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             if self.__data[index.row()].typeof == "string":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
-                self.__data[index.row()].value = value
+                self.__data[index.row()].value = value  # type: ignore
             elif self.__data[index.row()].typeof == "enum":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(
-                    path, IP.iptr2(path.split("/")[-1], value)
+                    path, IP.iptr2(path.split("/")[-1], value)  # type: ignore
                 )
-                self.__data[index.row()].value = value
+                self.__data[index.row()].value = value  # type: ignore
             elif self.__data[index.row()].typeof == "integer":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
-                self.__data[index.row()].value = value
+                self.__data[index.row()].value = value  # type: ignore
             elif self.__data[index.row()].typeof == "float":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
-                self.__data[index.row()].value = value
+                self.__data[index.row()].value = value  # type: ignore
             elif self.__data[index.row()].typeof == "boolean":
                 path = self.__data[index.row()].path
                 PROJECT.project().configs.set(path, value)
-                self.__data[index.row()].value = value
+                self.__data[index.row()].value = value  # type: ignore
             else:
                 logger.warning(
                     f"unknown typeof {self.__data[index.row()].typeof} with value {value}"
@@ -344,7 +346,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
 
         if self.__type == WidgetBaseManagerType.MODE:
             if self.__pinInstance == instance:
-                function: str = PROJECT.project().configs.get(
+                function: str = PROJECT.project().configs.get(  # type: ignore
                     f"pin/{value}/function", ""
                 )
                 if len(function) == 0:
@@ -361,7 +363,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             if self.__pinInstance == instance:
                 self.__data.append(
                     WidgetBaseManagerPrivateModel(
-                        property=self.tr("Name"),
+                        property=self.tr("Name"),  # type: ignore
                         path="",
                         value=value,
                         typeof="string",
@@ -373,9 +375,9 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                 path = f"pin/{value}/label"
                 self.__data.append(
                     WidgetBaseManagerPrivateModel(
-                        property=self.tr("Label"),
+                        property=self.tr("Label"),  # type: ignore
                         path=path,
-                        value=PROJECT.project().configs.get(path, ""),
+                        value=PROJECT.project().configs.get(path, ""),  # type: ignore
                         typeof="string",
                         possibleValues=[],
                         readonly=False,
@@ -424,6 +426,9 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                 )
 
     def __genPrivateModel(self, path: str, param: str) -> WidgetBaseManagerPrivateModel:
+        if self.__ip is None:
+            return WidgetBaseManagerPrivateModel()
+
         local = SETTINGS.get(SETTINGS.language).value.name()
         val = PROJECT.project().configs.get(path)
         config = self.__configs[param]
@@ -461,7 +466,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         return WidgetBaseManagerPrivateModel(
             property=parameter.display.get(local),
             path=path,
-            value=val,
+            value=val,  # type: ignore
             typeof=parameter.type,
             possibleValues=config.values,
             readonly=parameter.readonly,

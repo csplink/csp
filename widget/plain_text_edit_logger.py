@@ -52,7 +52,7 @@ class PlainTextEditLogger(PlainTextEditReadonly):
         Style.PLAIN_TEXT_EDIT_LOGGER.apply(self)
 
         # {level: <8} |  {name}:{function}:{line} - {message}
-        logger.add(self.__callback, level=logging.INFO)
+        logger.add(self.__callback, level=logging.INFO)  # type: ignore
 
     def __callback(self, message: Message):
         time = message.record["time"]

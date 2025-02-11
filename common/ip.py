@@ -206,7 +206,7 @@ class IpType(QObject):
             return values
 
         @property
-        def default(self) -> str:
+        def default(self) -> str | float | int | bool | None:
             default = self.__data.get("default")
             if default is None:
                 default = self.__parameters[self.__name].default
@@ -256,7 +256,7 @@ class IpType(QObject):
                             break
                     if tmp is None:
                         express = "(default)"
-                        tmp = param.get("(default)")
+                        tmp = param.get("(default)", {})
                     self.__parameters[name] = IpType.ParameterUnitType(tmp)
                     self.__conditions[name] = express
         return self.__parameters
@@ -334,7 +334,7 @@ class IpType(QObject):
 
             if condition != express:
                 li.append(name)
-                self.__parameters[name] = IpType.ParameterUnitType(tmp)
+                self.parameters[name] = IpType.ParameterUnitType(tmp)
                 self.__conditions[name] = express
         if len(li) > 0:
             self.__flushI18n(li)
@@ -343,17 +343,17 @@ class IpType(QObject):
     def __flushI18n(self, names: list[str]):
         locale = SETTINGS.get(SETTINGS.language).value.name()
         for name in names:
-            parameter = self.__parameters[name]
+            parameter = self.parameters[name]
             for key, value in parameter.values.items():
                 val = value.comment.get(locale)
                 if self.total()[name].get(key, "") != val:
-                    old = self.__total[name].get(key, "")
-                    self.__total[name][key] = val
+                    old = self.total()[name].get(key, "")
+                    self.total()[name][key] = val
                     self.totalChanged.emit(name, key, old, val)
 
                 if self.total2()[name].get(val, "") != key:
-                    old = self.__total2[name].get(val, "")
-                    self.__total2[name][val] = key
+                    old = self.total2()[name].get(val, "")
+                    self.total2()[name][val] = key
                     self.total2Changed.emit(name, val, old, key)
 
 

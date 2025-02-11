@@ -79,7 +79,7 @@ class GraphicsItemPin(QGraphicsObject):
         pinLength: int,
         direction: Direction,
         name: str,
-        kind: Type,
+        type_: Type,
         pinConfig: SummaryType.PinType,
     ):
         super().__init__()
@@ -90,7 +90,7 @@ class GraphicsItemPin(QGraphicsObject):
         self.direction = direction
         self.name = name
         self.pinConfig = pinConfig
-        self.type = kind
+        self.type_ = type_
 
         self.currentCheckedAction = None
         self.previousCheckedAction = None
@@ -106,11 +106,11 @@ class GraphicsItemPin(QGraphicsObject):
         self.setData(GraphicsItemPin.Data.LOCKED_DATA.value, self.lockedKey)
         self.setData(GraphicsItemPin.Data.NAME_DATA.value, name)
 
-        self.label = PROJECT.project().configs.get(self.labelKey, "")
-        self.function = PROJECT.project().configs.get(self.functionKey, "")
-        self.locked = PROJECT.project().configs.get(self.lockedKey, False)
-        self.unsupported = PROJECT.project().configs.get(self.unsupportedKey, False)
-        self.mode = PROJECT.project().configs.get(self.modeKey, "")
+        self.label: str = PROJECT.project().configs.get(self.labelKey, "")  # type: ignore
+        self.function: str = PROJECT.project().configs.get(self.functionKey, "")  # type: ignore
+        self.locked: bool = PROJECT.project().configs.get(self.lockedKey, False)  # type: ignore
+        self.unsupported: bool = PROJECT.project().configs.get(self.unsupportedKey, False)  # type: ignore
+        self.mode: str = PROJECT.project().configs.get(self.modeKey, "")  # type: ignore
 
         self.pinIp = SUMMARY.projectSummary().pinIp()
 
@@ -128,7 +128,7 @@ class GraphicsItemPin(QGraphicsObject):
             )
             self.menu.clear()
             self.menu.triggered.connect(self.menuTriggered)
-            self.menu.addAction(Action(self.tr("Reset State")))
+            self.menu.addAction(Action(self.tr("Reset State")))  # type: ignore
             self.menu.addSeparator()
 
             for function in pinConfig.functions():
@@ -151,9 +151,9 @@ class GraphicsItemPin(QGraphicsObject):
         )
 
     def boundingRect(self) -> QRectF:
-        if self.type == self.Type.RECTANGLE_TYPE:
+        if self.type_ == self.Type.RECTANGLE_TYPE:
             return QRectF(0, 0, self.width, self.height)
-        elif self.type == self.Type.CIRCLE_TYPE:
+        else:  # self.Type.CIRCLE_TYPE
             return QRectF(-self.width // 2, -self.height // 2, self.width, self.height)
 
     def shape(self) -> QPainterPath:
@@ -286,9 +286,9 @@ class GraphicsItemPin(QGraphicsObject):
     def paint(
         self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
     ):
-        if self.type == self.Type.RECTANGLE_TYPE:
+        if self.type_ == self.Type.RECTANGLE_TYPE:
             self.paintRectangle(painter, option, widget)
-        elif self.type == self.Type.CIRCLE_TYPE:
+        elif self.type_ == self.Type.CIRCLE_TYPE:
             self.paintCircle(painter, option, widget)
         else:
             super().paint(painter, option, widget)
@@ -319,22 +319,22 @@ class GraphicsItemPin(QGraphicsObject):
             self.previousCheckedAction = action
 
     def __on_project_pinConfigChanged(
-        self, keys: list[str], oldValue: str, newValue: str
+        self, keys: list[str], oldValue: object, newValue: object
     ):
         pin = SUMMARY.projectSummary().pins[self.name]
         if keys[1] != self.name:
             return
 
         if keys[-1] == "label":  # update pin label comment
-            self.label = newValue
+            self.label = newValue  # type: ignore
         elif keys[-1] == "locked":  # update pin locked status
-            self.locked = newValue
+            self.locked = newValue  # type: ignore
         elif keys[-1] == "unsupported":  # update pin locked status
-            self.unsupported = newValue
+            self.unsupported = newValue  # type: ignore
         elif keys[-1] == "function":  # update pin function
-            self.function = newValue
+            self.function = newValue  # type: ignore
             if newValue:  # set new function
-                seqs = newValue.split(":")
+                seqs = newValue.split(":")  # type: ignore
                 instance = seqs[0]
                 pinMode = seqs[1]
                 ip = IP.projectIps().get(instance)
@@ -352,7 +352,7 @@ class GraphicsItemPin(QGraphicsObject):
                         f"{instance}/{self.name}/{key}", info.default
                     )
             elif oldValue:  # newValue = None, so clear old function
-                instance = oldValue.split(":")[0]
+                instance = oldValue.split(":")[0]  # type: ignore
                 PROJECT.project().configs.set(f"{instance}/{self.name}", {})
             PROJECT.project().configs.set(self.unsupportedKey, False)
         elif keys[-1] == "mode":  # update pin mode

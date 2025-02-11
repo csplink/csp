@@ -59,13 +59,13 @@ class PackageInstallDialog(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.titleLabel = SubtitleLabel(self.tr("Install package"), self)
+        self.titleLabel = SubtitleLabel(self.tr("Install package"), self)  # type: ignore
         # ----------------------------------------------------------------------
         self.pathLayout = QHBoxLayout()
 
         self.pathLineEdit = LineEdit(self)
         self.pathLineEdit.setReadOnly(True)
-        self.pathLineEdit.setPlaceholderText(self.tr("Choose package (*.csppack) path"))
+        self.pathLineEdit.setPlaceholderText(self.tr("Choose package (*.csppack) path"))  # type: ignore
         self.pathLineEdit.textChanged.connect(self.__on_pathLineEdit_textChanged)
 
         self.folderBtn = ToolButton()
@@ -98,7 +98,7 @@ class PackageInstallDialog(MessageBoxBase):
         self.viewLayout.addLayout(self.progressLayout)
         self.viewLayout.addWidget(self.fileLabel)
         # ----------------------------------------------------------------------
-        self.yesButton.setText(self.tr("Install"))
+        self.yesButton.setText(self.tr("Install"))  # type: ignore
         self.yesButton.clicked.disconnect()  # self._MessageBoxBase__onYesButtonClicked
         self.yesButton.clicked.connect(self.__on_yesButton_clicked)
         self.yesButton.setEnabled(False)
@@ -114,9 +114,9 @@ class PackageInstallDialog(MessageBoxBase):
     def __on_folderBtn_pressed(self):
         path, _ = QFileDialog.getOpenFileName(
             self,
-            self.tr("Choose CSP package file"),
+            self.tr("Choose CSP package file"),  # type: ignore
             SETTINGS.lastPackageFileFolder.value,
-            self.tr("CSP package file (*.csppack)"),
+            self.tr("CSP package file (*.csppack)"),  # type: ignore
         )
         if os.path.isfile(path):
             SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))

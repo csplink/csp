@@ -95,7 +95,7 @@ class Families2Repository:
                     peripherals = {}
                     for peripheralNode in peripheralNodes:
                         _kind = peripheralNode.attrib.get("Type", None)
-                        num = peripheralNode.attrib.get("MaxOccurs", None)
+                        num = peripheralNode.attrib.get("MaxOccurs", 0)
                         peripherals[_kind] = int(num)
 
                     socs[name] = {

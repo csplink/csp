@@ -75,26 +75,26 @@ class PackageInfoWidget(QWidget):
         self.treeWidget.show()
 
         # Author ---------------------------------------------------------------
-        authorItem = QTreeWidgetItem(self.treeWidget, [self.tr("Author")])
-        QTreeWidgetItem(authorItem, [self.tr("Name"), pdsc.author.name])
-        QTreeWidgetItem(authorItem, [self.tr("Email"), pdsc.author.email])
-        websiteItem = QTreeWidgetItem(authorItem, [self.tr("Website")])
-        QTreeWidgetItem(websiteItem, [self.tr("Blog"), pdsc.author.website.blog])
-        QTreeWidgetItem(websiteItem, [self.tr("Github"), pdsc.author.website.github])
+        authorItem = QTreeWidgetItem(self.treeWidget, [self.tr("Author")])  # type: ignore
+        QTreeWidgetItem(authorItem, [self.tr("Name"), pdsc.author.name])  # type: ignore
+        QTreeWidgetItem(authorItem, [self.tr("Email"), pdsc.author.email])  # type: ignore
+        websiteItem = QTreeWidgetItem(authorItem, [self.tr("Website")])  # type: ignore
+        QTreeWidgetItem(websiteItem, [self.tr("Blog"), pdsc.author.website.blog])  # type: ignore
+        QTreeWidgetItem(websiteItem, [self.tr("Github"), pdsc.author.website.github])  # type: ignore
         # ----------------------------------------------------------------------
-        QTreeWidgetItem(self.treeWidget, [self.tr("Name"), pdsc.name])
-        QTreeWidgetItem(self.treeWidget, [self.tr("Version"), pdsc.version])
-        QTreeWidgetItem(self.treeWidget, [self.tr("License"), pdsc.license])
-        QTreeWidgetItem(self.treeWidget, [self.tr("Type"), pdsc.type])
-        QTreeWidgetItem(self.treeWidget, [self.tr("Vendor"), pdsc.vendor])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Name"), pdsc.name])  # type: ignore
+        QTreeWidgetItem(self.treeWidget, [self.tr("Version"), pdsc.version])  # type: ignore
+        QTreeWidgetItem(self.treeWidget, [self.tr("License"), pdsc.license])  # type: ignore
+        QTreeWidgetItem(self.treeWidget, [self.tr("Type"), pdsc.type])  # type: ignore
+        QTreeWidgetItem(self.treeWidget, [self.tr("Vendor"), pdsc.vendor])  # type: ignore
         QTreeWidgetItem(
-            self.treeWidget, [self.tr("Vendor url"), pdsc.vendorUrl.get(local)]
+            self.treeWidget, [self.tr("Vendor url"), pdsc.vendorUrl.get(local)]  # type: ignore
         )
         QTreeWidgetItem(
-            self.treeWidget, [self.tr("Description"), pdsc.description.get(local)]
+            self.treeWidget, [self.tr("Description"), pdsc.description.get(local)]  # type: ignore
         )
-        QTreeWidgetItem(self.treeWidget, [self.tr("Url"), pdsc.url.get(local)])
-        QTreeWidgetItem(self.treeWidget, [self.tr("Support"), pdsc.support])
+        QTreeWidgetItem(self.treeWidget, [self.tr("Url"), pdsc.url.get(local)])  # type: ignore
+        QTreeWidgetItem(self.treeWidget, [self.tr("Support"), pdsc.support])  # type: ignore
         self.treeWidget.expandAll()
 
         # def setItems(tree: TreeWidget, parent=None):
@@ -131,7 +131,7 @@ class PackageUninstallThread(QThread):
     def run(self):
         status = PACKAGE.uninstall(self.kind, self.name, self.version)
         if not status:
-            self.failed.emit(self.tr("Uninstall failed"))
+            self.failed.emit(self.tr("Uninstall failed"))  # type: ignore
 
 
 class PackageView(Ui_PackageView, QWidget):
@@ -152,7 +152,7 @@ class PackageView(Ui_PackageView, QWidget):
         )
 
         self.versionMenu = RoundMenu(parent=self)
-        self.uninstallAction = Action(self.tr("Uninstall"))
+        self.uninstallAction = Action(self.tr("Uninstall"))  # type: ignore
         self.uninstallAction.triggered.connect(self.__on_uninstallAction_triggered)
         self.versionMenu.addAction(self.uninstallAction)
 
@@ -201,7 +201,7 @@ class PackageView(Ui_PackageView, QWidget):
         )
         thread.started.connect(self.__on_uninstallThread_started)
         thread.failed.connect(
-            lambda s: MessageBox(self.tr("Error"), s, self.window()).exec()
+            lambda s: MessageBox(self.tr("Error"), s, self.window()).exec()  # type: ignore
         )
         thread.finished.connect(self.__on_uninstallThread_finished)
         thread.start()

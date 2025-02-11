@@ -94,7 +94,7 @@ class NumberClockTreeWidget(BaseClockTreeWidget, QLineEdit):
                 num = self.inputs()[self.element.input[0]].value()  # used input data
             else:
                 num = self.parameter.default  # used default data
-        self.__setValue(num)
+        self.__setValue(num)  # type: ignore
         self.setReadOnly(self.parameter.readonly)
 
         local = SETTINGS.get(SETTINGS.language).value.name()

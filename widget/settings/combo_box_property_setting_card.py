@@ -75,7 +75,7 @@ class ComboBoxPropertySettingCard(SettingCard):
         else:
             self.comboBox.setToolTip("")
 
-    def setSource(self, value: str, values: list):
+    def setSource(self, value: str, values: list[str]):
         self.comboBox.currentTextChanged.disconnect(self.currentTextChanged)
 
         self.comboBox.clear()
