@@ -26,33 +26,51 @@
 
 from __future__ import annotations
 
-import attr
+
 from PySide6.QtCore import (
     Qt,
     QModelIndex,
     QAbstractItemModel,
     QSortFilterProxyModel,
     QItemSelection,
+    Signal,
 )
 from PySide6.QtGui import QFont, QBrush, QColor
 from PySide6.QtWidgets import QWidget, QHBoxLayout
 from loguru import logger
 from qfluentwidgets import TreeView
 
-from common import PROJECT, SETTINGS, SIGNAL_BUS, SUMMARY, IP
+from common import PROJECT, SETTINGS, SUMMARY
 
 
-def isPrivateModelOrNone(_, attribute, value):
-    if value is not None and not isinstance(value, PModel):
-        raise ValueError(f"{attribute.name} must be a PModel instance or None")
+class _PModel:
+    def __init__(
+        self, displayName: str, description: str, children: list, parent: _PModel | None
+    ):
+        self.__displayName = displayName
+        self.__description = description
+        self.__children = children
+        self.__parent = parent
 
+    # region getter/setter
 
-@attr.s
-class PModel:
-    displayName: str = attr.ib(default="", validator=attr.validators.instance_of(str))
-    description: str = attr.ib(default="", validator=attr.validators.instance_of(str))
-    children: list = attr.ib(default=[], validator=attr.validators.instance_of(list))
-    parent: PModel | None = attr.ib(default=None)
+    @property
+    def displayName(self) -> str:
+        return self.__displayName
+
+    @property
+    def description(self) -> str:
+        return self.__description
+
+    @property
+    def children(self) -> list[_PModel]:
+        return self.__children
+
+    @property
+    def parent(self) -> _PModel | None:
+        return self.__parent
+
+    # endregion
 
     def append(self, model):
         self.children.append(model)
@@ -69,42 +87,43 @@ class PModel:
 
 
 class TreeModuleModel(QAbstractItemModel):
-    __model = PModel()
-
     SELECTED_COLOR = QColor(0, 204, 68)
-    __brush = QBrush()
-    __brush.setColor(SELECTED_COLOR)
-
-    __font = QFont("JetBrains Mono")
-    __font.setPixelSize(12)
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.__model = _PModel("", "", [], None)
+
+        self.__brush = QBrush()
+        self.__brush.setColor(self.SELECTED_COLOR)
+
+        self.__font = QFont("JetBrains Mono")
+        self.__font.setPixelSize(12)
+
         self.__loadModule()
 
-    # noinspection PyMethodOverriding
+    # region overrides
+
     def rowCount(self, parent: QModelIndex) -> int:
         if not parent.isValid():
             return len(self.__model.children)
         else:
-            model: PModel = parent.internalPointer()  # type: ignore
+            model: _PModel = parent.internalPointer()  # type: ignore
             return len(model.children)
 
-    # noinspection PyMethodOverriding
     def columnCount(self, parent: QModelIndex) -> int:
         return 1
 
-    # noinspection PyMethodOverriding
     def data(self, index: QModelIndex, role: Qt.ItemDataRole) -> object:
+        model: _PModel = index.internalPointer()  # type: ignore
+
         if (
             role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole
         ):  # 0, 2
-            model: PModel = index.internalPointer()  # type: ignore
             return model.displayName
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
-            model: PModel = index.internalPointer()  # type: ignore
             return model.description
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
             return None
@@ -115,7 +134,6 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
             return None
         elif role == Qt.ItemDataRole.ForegroundRole:  # 9
-            model: PModel = index.internalPointer()  # type: ignore
             if model.displayName in PROJECT.project().modules:
                 return self.__brush
             return None
@@ -129,7 +147,6 @@ class TreeModuleModel(QAbstractItemModel):
     def flags(self, index: QModelIndex) -> Qt.ItemFlag:
         return super().flags(index)
 
-    # noinspection PyMethodOverriding
     def index(self, row: int, column: int, parent: QModelIndex) -> QModelIndex:
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
@@ -138,18 +155,17 @@ class TreeModuleModel(QAbstractItemModel):
         else:
             parentModel = parent.internalPointer()
 
-        childModel: PModel = parentModel.child(row)  # type: ignore
+        childModel: _PModel = parentModel.child(row)  # type: ignore
         if childModel is not None:
             return self.createIndex(row, column, childModel)
         else:
             return QModelIndex()
 
-    # noinspection PyMethodOverriding
     def parent(self, index: QModelIndex) -> QModelIndex:
         if not index.isValid():
             return QModelIndex()
 
-        childModel: PModel = index.internalPointer()  # type: ignore
+        childModel: _PModel = index.internalPointer()  # type: ignore
         parentModel = childModel.parent
 
         if parentModel == self.__model:
@@ -161,18 +177,21 @@ class TreeModuleModel(QAbstractItemModel):
 
         return self.createIndex(parentModel.row(), 0, parentModel)
 
+    # endregion
+
     def __loadModule(self):
         locale = SETTINGS.get(SETTINGS.language).value.name()
         for group, moduleGroup in SUMMARY.projectSummary().modules.items():
-            model = PModel(group, "", [], self.__model)
+            model = _PModel(group, "", [], self.__model)
             for name, module in moduleGroup.items():
-                model_child = PModel(name, module.description.get(locale), [], model)
-                model.append(model_child)
+                child = _PModel(name, module.description.get(locale), [], model)
+                model.append(child)
             self.__model.append(model)
         self.modelReset.emit()
 
 
 class TreeModule(QWidget):
+    selectionChanged = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -196,23 +215,11 @@ class TreeModule(QWidget):
         )
 
     def treeView_modulesSelectionChanged(
-        self, selected: QItemSelection, _: QItemSelection
+        self, selected: QItemSelection, deselected: QItemSelection
     ):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
             if str(index.parent().data()) != "None":
                 instance = str(index.data())
-                ip = IP.projectIps().get(instance)
-                if ip is None:
-                    logger.error(f'the ip instance:"{instance}" is invalid.')
-                    return
-                if instance == SUMMARY.projectSummary().pinInstance():
-                    SIGNAL_BUS.controlManagerTriggered.emit(
-                        instance, "widget_control_io_manager"
-                    )
-                else:
-                    SIGNAL_BUS.controlManagerTriggered.emit(
-                        instance, "widget_control_ip_manager"
-                    )
-                    SIGNAL_BUS.modeManagerTriggered.emit(instance, "")
+                self.selectionChanged.emit(instance)

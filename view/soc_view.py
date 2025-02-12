@@ -35,6 +35,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QSplitter,
     QHBoxLayout,
+    QFrame,
+    QStackedWidget,
 )
 from loguru import logger
 from qfluentwidgets import isDarkTheme, MessageBox, SimpleCardWidget, ToolButton
@@ -46,6 +48,7 @@ from widget import (
     WidgetControlManager,
     WidgetModeManager,
     GraphicsViewPanZoom,
+    WidgetControlDashboard,
 )
 
 
@@ -93,6 +96,9 @@ class SocView(QWidget):
         Style.SOC_VIEW.apply(self)
 
         self.treeModule.selectionChanged.connect(self.__on_treeModule_selectionChanged)
+        self.widgetControlDashboard.selectionChanged.connect(
+            self.__on_widgetControlDashboard_selectionChanged
+        )
 
     # region ui setup
 
@@ -109,11 +115,21 @@ class SocView(QWidget):
         self.managerCardLayout = QVBoxLayout(self.managerCard)
         self.managerCardSplitter = QSplitter(self.managerCard)
         self.managerCardSplitter.setOrientation(Qt.Orientation.Vertical)
-        self.widgetControlManager = WidgetControlManager(self.managerCardSplitter)
+        self.managerCardControlStackedWidget = QStackedWidget(self.managerCardSplitter)
+        self.managerCardControlStackedWidget.setFrameShape(QFrame.Shape.NoFrame)
         self.widgetModeManager = WidgetModeManager(self.managerCardSplitter)
-        self.managerCardSplitter.addWidget(self.widgetControlManager)
+        self.managerCardSplitter.addWidget(self.managerCardControlStackedWidget)
         self.managerCardSplitter.addWidget(self.widgetModeManager)
         self.managerCardLayout.addWidget(self.managerCardSplitter)
+
+        self.widgetControlDashboard = WidgetControlDashboard(
+            self.managerCardControlStackedWidget
+        )
+        self.widgetControlManager = WidgetControlManager(
+            self.managerCardControlStackedWidget
+        )
+        self.managerCardControlStackedWidget.addWidget(self.widgetControlDashboard)
+        self.managerCardControlStackedWidget.addWidget(self.widgetControlManager)
 
         self.managerCardSplitter.setSizes([300, 100])
         self.managerCardSplitter.setCollapsible(0, False)
@@ -125,6 +141,7 @@ class SocView(QWidget):
         self.socCard = SimpleCardWidget(self.mainSplitter)
         self.socCardLayout = QVBoxLayout(self.socCard)
         self.graphicsView = GraphicsViewPanZoom(self.socCard)
+        self.graphicsView.setFrameShape(QFrame.Shape.NoFrame)
         self.socCardLayout.addWidget(self.graphicsView)
         self.socCardToolLayout = QHBoxLayout()
         self.socCardLayout.addLayout(self.socCardToolLayout)
@@ -170,19 +187,24 @@ class SocView(QWidget):
             QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253)
         )
 
-    def __on_treeModule_selectionChanged(self, instance):
+    def __on_treeModule_selectionChanged(self, instance: str):
         ip = IP.projectIps().get(instance)
         if ip is None:
             logger.error(f'the ip instance:"{instance}" is invalid.')
             return
 
-        # if instance == SUMMARY.projectSummary().pinInstance():
-        #     SIGNAL_BUS.controlManagerTriggered.emit(
-        #         instance, "widget_control_io_manager"
-        #     )
+        if instance == SUMMARY.projectSummary().pinInstance():
+            self.widgetControlDashboard.instance = instance
+            self.widgetModeManager.setTarget(instance, "")
+            self.managerCardControlStackedWidget.setCurrentWidget(
+                self.widgetControlDashboard
+            )
+        else:
+            self.widgetControlManager.setTarget(instance, "")
+            self.widgetModeManager.setTarget(instance, "")
+            self.managerCardControlStackedWidget.setCurrentWidget(
+                self.widgetControlManager
+            )
 
-        # else:
-        #     SIGNAL_BUS.controlManagerTriggered.emit(
-        #         instance, "widget_control_ip_manager"
-        #     )
-        #     SIGNAL_BUS.modeManagerTriggered.emit(instance, "")
+    def __on_widgetControlDashboard_selectionChanged(self, instance: str, target: str):
+        self.widgetModeManager.setTarget(instance, target)

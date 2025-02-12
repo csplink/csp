@@ -30,8 +30,6 @@ from PySide6.QtCore import QObject, Signal
 class SignalBus(QObject):
     """Signal bus"""
 
-    modeManagerTriggered = Signal(str, str)
-    controlManagerTriggered = Signal(str, str)
     packageUpdated = Signal()
     navigationRequested = Signal(str, str)
     updatePinTriggered = Signal(str)

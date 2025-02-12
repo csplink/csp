@@ -16,7 +16,7 @@
 # Copyright (C) 2022-2024 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        widget_control_io_manager.py
+# @file        widget_control_dashboard.py
 #
 # Change Logs:
 # Date           Author       Notes
@@ -30,6 +30,7 @@ from PySide6.QtCore import (
     QAbstractTableModel,
     QModelIndex,
     QItemSelection,
+    Signal,
 )
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView, QVBoxLayout
@@ -39,7 +40,7 @@ from qfluentwidgets import TableView
 from common import PROJECT, SETTINGS, SIGNAL_BUS, IP
 
 
-class WidgetControlIoManagerModel(QAbstractTableModel):
+class _PModel(QAbstractTableModel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -240,7 +241,9 @@ class WidgetControlIoManagerModel(QAbstractTableModel):
                     self.dataChanged.emit(index, index)
 
 
-class WidgetControlIoManager(QWidget):
+class WidgetControlDashboard(QWidget):
+    selectionChanged = Signal(str, str)
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -254,7 +257,7 @@ class WidgetControlIoManager(QWidget):
         self.__instance = ""
 
         self.m_tableView_ioProxyModel = QSortFilterProxyModel(self)
-        self.m_model = WidgetControlIoManagerModel(self)
+        self.m_model = _PModel(self)
         self.m_tableView_ioProxyModel.setSourceModel(self.m_model)
         self.tableView_io.setModel(self.m_tableView_ioProxyModel)
         self.tableView_io.setBorderVisible(True)
@@ -272,14 +275,25 @@ class WidgetControlIoManager(QWidget):
             self.tableView_ioSelectionChanged
         )
 
-    def setInstance(self, instance: str):
+    # region getter/setter
+
+    @property
+    def instance(self) -> str:
+        return self.__instance
+
+    @instance.setter
+    def instance(self, instance: str):
         if self.__instance != instance:
             self.__instance = instance
             self.m_model.setInstance(instance)
 
-    def tableView_ioSelectionChanged(self, selected: QItemSelection, _: QItemSelection):
+    # endregion
+
+    def tableView_ioSelectionChanged(
+        self, selected: QItemSelection, deselected: QItemSelection
+    ):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
             name = str(index.data())
-            SIGNAL_BUS.modeManagerTriggered.emit(self.__instance, name)
+            self.selectionChanged.emit(self.__instance, name)

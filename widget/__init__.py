@@ -49,8 +49,7 @@ from .settings import (
 )
 from .stacked_widget import StackedWidget
 from .tree_module import TreeModule
-from .widget_control_io_manager import WidgetControlIoManager
-from .widget_control_ip_manager import WidgetControlIpManager
+from .widget_control_dashboard import WidgetControlDashboard
 from .widget_control_manager import WidgetControlManager
 from .widget_mode_manager import WidgetModeManager
 
@@ -74,8 +73,7 @@ __all__ = [
 
     "StackedWidget",
     "TreeModule",
-    "WidgetControlIoManager",
-    "WidgetControlIpManager",
+    "WidgetControlDashboard",
     "WidgetControlManager",
     "WidgetModeManager",
 ]

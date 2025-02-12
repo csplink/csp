@@ -361,7 +361,12 @@ class GraphicsItemPin(QGraphicsObject):
             else:
                 function = self.mode
 
-            mode = function.split(":")[1]
+            seqs = function.split(":")
+            if len(seqs) != 2:
+                return
+
+            mode = seqs[1]
+
             if mode in ip.pinModes:
                 ip_modes = ip.pinModes[mode]
             else:
