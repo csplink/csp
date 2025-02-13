@@ -26,38 +26,40 @@
 
 import re
 
+
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import QWidget, QGraphicsScene
-from qfluentwidgets import isDarkTheme, MessageBox
+from PySide6.QtWidgets import (
+    QWidget,
+    QGraphicsScene,
+    QVBoxLayout,
+    QSplitter,
+    QHBoxLayout,
+)
+from loguru import logger
+from qfluentwidgets import isDarkTheme, MessageBox, SimpleCardWidget, ToolButton
 
-from common import Style, Icon, PROJECT, SETTINGS, SUMMARY
-from widget import LQFP
-from .ui.soc_view_ui import Ui_SocView
+from common import Style, Icon, PROJECT, SETTINGS, SUMMARY, IP
+from widget import (
+    LQFP,
+    TreeModule,
+    WidgetControlManager,
+    WidgetModeManager,
+    GraphicsViewPanZoom,
+)
 
 
-class SocView(Ui_SocView, QWidget):
+class SocView(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)
+        self.setObjectName("SocView")
 
-        self.zoomInBtn.setIcon(Icon.ZOOM_IN)
-        self.zoomResetBtn.setIcon(Icon.REFRESH)
-        self.zoomOutBtn.setIcon(Icon.ZOOM_OUT)
-
-        self.modulePropertySocSplitter.setSizes([100, 300, 300])
-        self.modulePropertySocSplitter.setCollapsible(0, False)
-        self.modulePropertySocSplitter.setCollapsible(1, False)
-        self.modePropertySplitter.setSizes([300, 100])
-        self.modePropertySplitter.setCollapsible(0, False)
-        self.modePropertySplitter.setCollapsible(1, False)
+        self.__setupUi()
 
         self.zoomInBtn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
         self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.rescale())
         self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoomOut(6))
-
-        self.__scene = QGraphicsScene(self.graphicsView)
-        self.__updateGraphicsViewBackgroundColor()
 
         SETTINGS.themeChanged.connect(
             lambda theme: self.__updateGraphicsViewBackgroundColor()
@@ -84,13 +86,103 @@ class SocView(Ui_SocView, QWidget):
 
             if items is not None:
                 for item in items:
-                    self.__scene.addItem(item)
-        self.graphicsView.setScene(self.__scene)
+                    self.graphicsScene.addItem(item)
+
         self.graphicsView.rescale()
 
         Style.SOC_VIEW.apply(self)
 
+        self.treeModule.selectionChanged.connect(self.__on_treeModule_selectionChanged)
+
+    # region ui setup
+
+    def __createTreeModuleView(self) -> SimpleCardWidget:
+        self.treeModuleCard = SimpleCardWidget(self.mainSplitter)
+        self.treeModule = TreeModule(self.treeModuleCard)
+        self.treeModuleCardLayout = QHBoxLayout(self.treeModuleCard)
+        self.treeModuleCardLayout.addWidget(self.treeModule)
+
+        return self.treeModuleCard
+
+    def __createManagerView(self) -> SimpleCardWidget:
+        self.managerCard = SimpleCardWidget(self.mainSplitter)
+        self.managerCardLayout = QVBoxLayout(self.managerCard)
+        self.managerCardSplitter = QSplitter(self.managerCard)
+        self.managerCardSplitter.setOrientation(Qt.Orientation.Vertical)
+        self.widgetControlManager = WidgetControlManager(self.managerCardSplitter)
+        self.widgetModeManager = WidgetModeManager(self.managerCardSplitter)
+        self.managerCardSplitter.addWidget(self.widgetControlManager)
+        self.managerCardSplitter.addWidget(self.widgetModeManager)
+        self.managerCardLayout.addWidget(self.managerCardSplitter)
+
+        self.managerCardSplitter.setSizes([300, 100])
+        self.managerCardSplitter.setCollapsible(0, False)
+        self.managerCardSplitter.setCollapsible(1, False)
+
+        return self.managerCard
+
+    def __createSocView(self) -> SimpleCardWidget:
+        self.socCard = SimpleCardWidget(self.mainSplitter)
+        self.socCardLayout = QVBoxLayout(self.socCard)
+        self.graphicsView = GraphicsViewPanZoom(self.socCard)
+        self.socCardLayout.addWidget(self.graphicsView)
+        self.socCardToolLayout = QHBoxLayout()
+        self.socCardLayout.addLayout(self.socCardToolLayout)
+        self.socCardToolLayout.setSpacing(20)
+        self.zoomInBtn = ToolButton(self.socCard)
+        self.zoomResetBtn = ToolButton(self.socCard)
+        self.zoomOutBtn = ToolButton(self.socCard)
+        self.zoomInBtn.setIcon(Icon.ZOOM_IN)
+        self.zoomResetBtn.setIcon(Icon.REFRESH)
+        self.zoomOutBtn.setIcon(Icon.ZOOM_OUT)
+        self.socCardToolLayout.addStretch(1)
+        self.socCardToolLayout.addWidget(self.zoomInBtn)
+        self.socCardToolLayout.addWidget(self.zoomResetBtn)
+        self.socCardToolLayout.addWidget(self.zoomOutBtn)
+        self.socCardToolLayout.addStretch(1)
+
+        self.graphicsScene = QGraphicsScene(self.graphicsView)
+        self.graphicsView.setScene(self.graphicsScene)
+
+        self.__updateGraphicsViewBackgroundColor()
+
+        return self.socCard
+
+    def __setupUi(self):
+        self.mainLayout = QVBoxLayout(self)
+        self.mainSplitter = QSplitter(self)
+        self.mainSplitter.setOrientation(Qt.Orientation.Horizontal)
+
+        self.mainSplitter.addWidget(self.__createTreeModuleView())
+        self.mainSplitter.addWidget(self.__createManagerView())
+        self.mainSplitter.addWidget(self.__createSocView())
+
+        self.mainLayout.addWidget(self.mainSplitter)
+
+        self.mainSplitter.setSizes([100, 300, 300])
+        self.mainSplitter.setCollapsible(0, False)
+        self.mainSplitter.setCollapsible(1, False)
+
+    # endregion
+
     def __updateGraphicsViewBackgroundColor(self):
-        self.__scene.setBackgroundBrush(
+        self.graphicsScene.setBackgroundBrush(
             QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253)
         )
+
+    def __on_treeModule_selectionChanged(self, instance):
+        ip = IP.projectIps().get(instance)
+        if ip is None:
+            logger.error(f'the ip instance:"{instance}" is invalid.')
+            return
+
+        # if instance == SUMMARY.projectSummary().pinInstance():
+        #     SIGNAL_BUS.controlManagerTriggered.emit(
+        #         instance, "widget_control_io_manager"
+        #     )
+
+        # else:
+        #     SIGNAL_BUS.controlManagerTriggered.emit(
+        #         instance, "widget_control_ip_manager"
+        #     )
+        #     SIGNAL_BUS.modeManagerTriggered.emit(instance, "")
