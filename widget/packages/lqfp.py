@@ -87,7 +87,7 @@ class LQFP:
                 y = self.PIN_WIDTH + self.getBodyLength(num)
 
             elif 2 * num <= position < 3 * num:
-                index = 3 * num - position
+                index = position - 2 * num
                 direction = GraphicsItemPin.Direction.RIGHT_DIRECTION
                 w = self.PIN_WIDTH
                 h = self.PIN_HEIGHT
@@ -95,18 +95,18 @@ class LQFP:
                 y = (
                     self.PIN_WIDTH
                     + self.getBodyLength(num)
-                    - index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                    - (index + 1) * (self.PIN_HEIGHT + self.PIN_SPACING)
                 )
 
             else:
-                index = 4 * num - position
+                index = position - 3 * num
                 direction = GraphicsItemPin.Direction.TOP_DIRECTION
                 w = self.PIN_HEIGHT
                 h = self.PIN_WIDTH
                 x = (
                     self.PIN_WIDTH
                     + self.getBodyLength(num)
-                    - index * (self.PIN_HEIGHT + self.PIN_SPACING)
+                    - (index + 1) * (self.PIN_HEIGHT + self.PIN_SPACING)
                 )
                 y = 0
 
