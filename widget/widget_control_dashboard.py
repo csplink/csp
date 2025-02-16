@@ -37,7 +37,7 @@ from PySide6.QtWidgets import QWidget, QAbstractItemView, QHeaderView, QVBoxLayo
 from loguru import logger
 from qfluentwidgets import TableView
 
-from common import PROJECT, SETTINGS, SIGNAL_BUS, IP
+from common import PROJECT, SETTINGS, SUMMARY, IP
 
 
 class _PModel(QAbstractTableModel):
@@ -126,20 +126,24 @@ class _PModel(QAbstractTableModel):
 
             self.__headersMap = {
                 self.tr("Name"): {"path": "", "index": 0, "param": ""},  # type: ignore
-                self.tr("Label"): {"path": "pin/(name)/label", "index": 1, "param": ""},  # type: ignore
+                self.tr("Label"): {"path": "pin/{name}/label", "index": 1, "param": ""},  # type: ignore
+                self.tr("Signal"): {"path": "pin/{name}/function", "index": 1, "param": ""},  # type: ignore
             }
 
             index = 2
             for key, info in self.__ip.parameters.items():
                 self.__headersMap[info.display.get(locale)] = {
-                    "path": f"{instance}/(name)/{key}",
+                    "path": f"{instance}/{{name}}/{key}",
                     "index": index,
                     "param": key,
                 }
                 index += 1
             self.__headersList = list(self.__headersMap.keys())
 
-            self.__config: dict = PROJECT.project().configs.get(instance, {})  # type: ignore
+            if instance == SUMMARY.projectSummary().pinInstance():
+                self.__config: dict = PROJECT.project().configs.get("pin", {})  # type: ignore
+            else:
+                self.__config: dict = PROJECT.project().configs.get(instance, {})  # type: ignore
             self.__data.clear()
 
             for name in self.__config.keys():
@@ -148,7 +152,7 @@ class _PModel(QAbstractTableModel):
                     for _, item in self.__headersMap.items():
                         path = item["path"]
                         if path != "":
-                            path = path.replace("(name)", name)
+                            path = path.format(name=name)
                             value = str(PROJECT.project().configs.get(path, ""))
                             l.append(
                                 {
