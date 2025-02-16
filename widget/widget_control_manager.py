@@ -25,7 +25,7 @@
 #
 
 from loguru import logger
-from common import PROJECT, IP, VALUE_HUB, SUMMARY
+from common import PROJECT, IP, VALUE_HUB, SUMMARY, SIGNAL_BUS
 from utils import Express
 from .widget_base_manager import WidgetBaseManager, WidgetBaseManagerType
 
@@ -71,3 +71,5 @@ class WidgetControlManager(WidgetBaseManager):
                                 PROJECT.project().configs.set(functionKey, "")
                                 PROJECT.project().configs.set(lockedKey, False)
                                 PROJECT.project().configs.set(modeKey, "")
+
+                            SIGNAL_BUS.updatePinTriggered.emit(pin)

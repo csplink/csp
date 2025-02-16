@@ -175,3 +175,19 @@ pinModes:
       values:
         - geehy.gpio_mode_input
       default: geehy.gpio_mode_input
+  AlternateFunctionPushPull:
+    geehy.gpio_speed_t:
+      values:
+        - geehy.gpio_speed_2mhz
+        - geehy.gpio_speed_10mhz
+        - geehy.gpio_speed_50mhz
+      default: geehy.gpio_speed_2mhz
+    geehy.gpio_mode_t:
+      values:
+        - geehy.gpio_mode_alternate
+      default: geehy.gpio_mode_alternate
+    geehy.gpio_output_type_t:
+      values:
+        - geehy.gpio_output_pp
+      default: geehy.gpio_output_pp
+  System: {}

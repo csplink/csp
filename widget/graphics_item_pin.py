@@ -286,7 +286,7 @@ class GraphicsItemPin(QGraphicsObject):
             PROJECT.project().configs.set(self.functionKey, "")
             PROJECT.project().configs.set(self.labelKey, "")
 
-        SIGNAL_BUS.updatePinTriggered.emit(self.name)
+        self.updatePin()
 
     def __on_project_pinConfigChanged(
         self, keys: list[str], oldValue: object, newValue: object
