@@ -25,7 +25,6 @@
 #
 
 from .contributors import Contributors
-from .cubemx_tool import Families2Repository, Mcu2Summary
 from .drawio_tool import Drawio
 from .lrelease import Lrelease
 from .lupdate import Lupdate
@@ -34,7 +33,6 @@ from .pyuic import Pyuic
 # fmt: off
 __all__ = [
     "Contributors",
-    "Families2Repository", "Mcu2Summary",
     "Drawio",
     "Lrelease",
     "Lupdate",
