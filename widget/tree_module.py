@@ -101,6 +101,7 @@ class TreeModuleModel(QAbstractItemModel):
         self.__font.setPixelSize(12)
 
         self.__loadModule()
+        PROJECT.project().modulesChanged.connect(self.__on_project_modulesChanged)
 
     # region overrides
 
@@ -153,7 +154,7 @@ class TreeModuleModel(QAbstractItemModel):
         if not parent.isValid():
             parentModel = self.__model
         else:
-            parentModel = parent.internalPointer()
+            parentModel: _PModel = parent.internalPointer()  # type: ignore
 
         childModel: _PModel = parentModel.child(row)  # type: ignore
         if childModel is not None:
@@ -184,10 +185,33 @@ class TreeModuleModel(QAbstractItemModel):
         for group, moduleGroup in SUMMARY.projectSummary().modules.items():
             model = _PModel(group, "", [], self.__model)
             for name, module in moduleGroup.items():
-                child = _PModel(name, module.description.get(locale), [], model)
-                model.append(child)
-            self.__model.append(model)
+                if module.ip:
+                    child = _PModel(name, module.description.get(locale), [], model)
+                    model.append(child)
+            if len(model.children) > 0:
+                self.__model.append(model)
         self.modelReset.emit()
+
+    def __on_project_modulesChanged(self, old: list[str], new: list[str]):
+        self.refresh()
+
+    def refresh(self):
+        rootIndex = QModelIndex()  # The root index is empty
+        self.__refreshRecursively(rootIndex)
+
+    def __refreshRecursively(self, parent):
+        rows = self.rowCount(parent)
+        cols = self.columnCount(parent)
+        if rows == 0 or cols == 0:
+            return
+
+        topLeft = self.index(0, 0, parent)
+        bottomRight = self.index(rows - 1, cols - 1, parent)
+        self.dataChanged.emit(topLeft, bottomRight)
+
+        for row in range(rows):
+            child = self.index(row, 0, parent)
+            self.__refreshRecursively(child)
 
 
 class TreeModule(QWidget):
