@@ -34,8 +34,12 @@ from simpleeval import simple_eval, NameNotDefined, AttributeDoesNotExist
 
 class Express:
     @staticmethod
-    def __eval(expression: str, values: dict, default: Any) -> Any:
+    def __eval(
+        expression: str, values: dict, replaces: dict[str, str], default: Any
+    ) -> Any:
         rtn = default
+        for key, value in replaces.items():
+            expression = expression.replace(key, value)
         try:
             expression = expression.replace(":", ".")
             rtn = simple_eval(expression, names=values)
@@ -49,33 +53,30 @@ class Express:
 
     @staticmethod
     @logger.catch(default=-1.0)
-    def __floatExpr(expression: str, values: dict) -> float:
-        return float(Express.__eval(expression, values, -1.0))
+    def __floatExpr(expression: str, values: dict, replaces: dict) -> float:
+        return float(Express.__eval(expression, values, replaces, -1.0))
 
     @staticmethod
-    def floatExpr(expression: str, values: dict) -> float:
-        # noinspection PyTypeChecker, PyArgumentList
-        return Express.__floatExpr(expression, values)
+    def floatExpr(expression: str, values: dict, replaces: dict = {}) -> float:
+        return Express.__floatExpr(expression, values, replaces)
 
     @staticmethod
     @logger.catch(default=-1)
-    def __intExpr(expression: str, values: dict) -> int:
-        return int(Express.__eval(expression, values, -1))
+    def __intExpr(expression: str, values: dict, replaces: dict) -> int:
+        return int(Express.__eval(expression, values, replaces, -1))
 
     @staticmethod
-    def intExpr(expression: str, values: dict) -> int:
-        # noinspection PyTypeChecker, PyArgumentList
-        return Express.__intExpr(expression, values)
+    def intExpr(expression: str, values: dict, replaces: dict = {}) -> int:
+        return Express.__intExpr(expression, values, replaces)
 
     @staticmethod
     @logger.catch(default=False)
-    def __boolExpr(expression: str, values: dict[str, bool]) -> bool:
-        return bool(Express.__eval(expression, values, False))
+    def __boolExpr(expression: str, values: dict[str, bool], replaces: dict) -> bool:
+        return bool(Express.__eval(expression, values, replaces, False))
 
     @staticmethod
-    def boolExpr(expression: str, values: dict) -> bool:
-        # noinspection PyTypeChecker, PyArgumentList
-        return Express.__boolExpr(expression, values)
+    def boolExpr(expression: str, values: dict, replaces: dict = {}) -> bool:
+        return Express.__boolExpr(expression, values, replaces)
 
     @staticmethod
     def variables(expression: str) -> list[str]:
