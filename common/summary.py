@@ -101,28 +101,66 @@ class SummaryType:
                     )
             return self.__references
 
-    class ModuleType:
+    class ModulesType:
+        class ModuleUnitType:
+            def __init__(self, data: dict):
+                self.__data = data
+
+                self.__description = None
+
+            def __str__(self) -> str:
+                return json.dumps(self.__data, indent=2, ensure_ascii=False)
+
+            @property
+            def origin(self) -> dict:
+                return self.__data
+
+            @property
+            def description(self) -> I18nType:
+                if self.__description is None:
+                    self.__description = I18nType(self.__data.get("description", {}))
+                return self.__description
+
+            @property
+            def ip(self) -> str:
+                return self.__data.get("ip", "")
+
         def __init__(self, data: dict):
             self.__data = data
 
-            self.__description = None
+            self.__peripherals = None
+            self.__middlewares = None
 
         def __str__(self) -> str:
             return json.dumps(self.__data, indent=2, ensure_ascii=False)
 
         @property
-        def origin(self) -> dict:
-            return self.__data
+        def peripherals(self) -> dict[str, dict[str, ModuleUnitType]]:
+            if self.__peripherals is None:
+                self.__peripherals = {}
+                peripherals = self.__data.get("peripherals", {})
+                for groupName, group in peripherals.items():
+                    groupUnit = {}
+                    for name, unit in group.items():
+                        groupUnit[name] = SummaryType.ModulesType.ModuleUnitType(
+                            unit if unit is not None else {}
+                        )
+                    self.__peripherals[groupName] = groupUnit
+            return self.__peripherals
 
         @property
-        def description(self) -> I18nType:
-            if self.__description is None:
-                self.__description = I18nType(self.__data.get("description", {}))
-            return self.__description
-
-        @property
-        def ip(self) -> str:
-            return self.__data.get("ip", "")
+        def middlewares(self) -> dict[str, dict[str, ModuleUnitType]]:
+            if self.__middlewares is None:
+                self.__middlewares = {}
+                middlewares = self.__data.get("middlewares", {})
+                for groupName, group in middlewares.items():
+                    groupUnit = {}
+                    for name, unit in group.items():
+                        groupUnit[name] = SummaryType.ModulesType.ModuleUnitType(
+                            unit if unit is not None else {}
+                        )
+                    self.__middlewares[groupName] = groupUnit
+            return self.__middlewares
 
     class LinkerType:
         def __init__(self, data: dict):
@@ -255,17 +293,9 @@ class SummaryType:
         return self.__introduction
 
     @property
-    def modules(self) -> dict[str, dict[str, ModuleType]]:
+    def modules(self) -> ModulesType:
         if self.__modules is None:
-            self.__modules = {}
-            modules = self.__data.get("modules", {})
-            for groupName, group in modules.items():
-                groupUnit = {}
-                for name, unit in group.items():
-                    groupUnit[name] = SummaryType.ModuleType(
-                        unit if unit is not None else {}
-                    )
-                self.__modules[groupName] = groupUnit
+            self.__modules = SummaryType.ModulesType(self.__data.get("modules", {}))
         return self.__modules
 
     @property
@@ -301,11 +331,14 @@ class SummaryType:
 
     # ----------------------------------------------------------------------------------------------------------------------
 
-    def moduleList(self) -> dict[str, ModuleType]:
+    def moduleList(self) -> dict[str, ModulesType]:
         if self.__moduleList is None:
             self.__moduleList = {}
             modules = self.modules
-            for groupName, group in modules.items():
+            for groupName, group in modules.peripherals.items():
+                for name, module in group.items():
+                    self.__moduleList[name] = module
+            for groupName, group in modules.middlewares.items():
                 for name, module in group.items():
                     self.__moduleList[name] = module
         return self.__moduleList
@@ -380,7 +413,9 @@ class Summary:
     def projectSummary(self) -> SummaryType:
         return self.getSummary(self.__vendor, self.__name)
 
-    def findPinBySignal(self, signal: str, summary: SummaryType = None) -> list[str]:
+    def findPinsBySignal(
+        self, signal: str, summary: SummaryType | None = None
+    ) -> list[str]:
         if summary is None:
             summary = self.projectSummary()
         pins = []

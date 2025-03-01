@@ -48,6 +48,7 @@ from .settings import (
     ToolButtonPropertySettingCard,
 )
 from .stacked_widget import StackedWidget
+from .tab_widget import TabWidget
 from .tree_module import TreeModule
 from .widget_control_dashboard import WidgetControlDashboard
 from .widget_control_manager import WidgetControlManager
@@ -72,6 +73,7 @@ __all__ = [
     "IntegerClockTreeWidget", "NumberClockTreeWidget", "RadioClockTreeWidget",
 
     "StackedWidget",
+    "TabWidget",
     "TreeModule",
     "WidgetControlDashboard",
     "WidgetControlManager",

@@ -26,13 +26,14 @@
 
 import json
 import os
+from typing import Any
 
 import jsonschema
 import yaml
 from PySide6.QtCore import Signal, QObject
 from loguru import logger
 
-from .ip import IP
+from .ip import IP, IpType
 from .package import PACKAGE
 from .settings import SETTINGS
 from .summary import SUMMARY
@@ -63,7 +64,7 @@ class ProjectType(QObject):
         def origin(self, origin: dict):
             self.__data = origin
 
-        def get(self, path: str, default=None):
+        def get(self, path: str, default=None) -> Any:
             item = self.__data
             keys = path.split("/")
             for key in keys:
@@ -406,8 +407,10 @@ class ProjectType(QObject):
                 and cfg is not None
                 and len(cfg) > 0
             ):
-                modules.add(name)
-        self.modules = list(modules)
+                ip = IP.projectIps().get(name)
+                if ip and ip.activated:
+                    modules.add(name)
+        self.modules = sorted(modules)
 
 
 class Project(QObject):
@@ -525,7 +528,10 @@ class Project(QObject):
             )
             return self.__valid
 
-        for _, group in summary.modules.items():
+        modules = {}
+        modules.update(summary.modules.peripherals)
+        modules.update(summary.modules.middlewares)
+        for _, group in modules.items():
             for name, module in group.items():
                 if module.ip != "":
                     ip = IP.setProjectIp(self.__project.vendor, name, module.ip)
@@ -594,6 +600,15 @@ class Project(QObject):
     def __on_project_changed(self):
         self.__isChanged = True
         self.titleChanged.emit(self.title())
+
+    def pinIp(self) -> IpType | None:
+        pinInstance = SUMMARY.projectSummary().pinInstance()
+        ips = IP.projectIps()
+        if pinInstance in ips:
+            return ips[pinInstance]
+        else:
+            logger.error(f"invalid pin instance: {pinInstance}!")
+            return None
 
 
 PROJECT = Project()

@@ -24,10 +24,41 @@
 # 2024-07-01     xqyjlj       initial version
 #
 
+
+from PySide6.QtWidgets import QWidget, QVBoxLayout
+from loguru import logger
+
 from .widget_base_manager import WidgetBaseManager, WidgetBaseManagerType
+from .tab_widget import TabWidget
 
 
-class WidgetModeManager(WidgetBaseManager):
+class ModeManager(WidgetBaseManager):
 
     def __init__(self, parent=None):
         super().__init__(WidgetBaseManagerType.MODE, parent)
+
+
+class PinMapManager(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+
+class WidgetModeManager(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.vLayout = QVBoxLayout(self)
+        self.vLayout.setContentsMargins(9, 9, 9, 9)
+        self.tabView = TabWidget(self)
+        self.vLayout.addWidget(self.tabView)
+
+        self.modeManager = ModeManager(self)
+        self.modeManager.setObjectName("ModeManager")
+        self.pinMapManager = PinMapManager(self)
+        self.pinMapManager.setObjectName("PinMapManager")
+
+        self.tabView.addSubInterface(self.modeManager, "Mode", True)
+        self.tabView.addSubInterface(self.pinMapManager, "Pin Map", True)
+
+    def setTarget(self, instance: str, target: str):
+        self.modeManager.setTarget(instance, target)

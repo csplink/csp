@@ -30,43 +30,29 @@ properties:
       "^[A-Za-z0-9_.+-]+$":
         oneOf:
           - $ref: "#/properties/$parameter$"
-          - type: object
-            additionalProperties: false
-            patternProperties:
-              "^\\(.*\\)$":
-                $ref: "#/properties/$parameter$"
-            required: ["(default)"]
-  controls:
-    type: object
-    additionalProperties: false
-    patternProperties:
-      "^[A-Za-z0-9_.+-]+$":
-        type: object
-        properties:
-          values:
-            type: array
+          - type: array
             items:
+              type: object
+              additionalProperties: false
+              properties:
+                condition:
+                  type: string
+                  minLength: 1
+                content:
+                  $ref: "#/properties/$parameter$"
+  controls:
+    oneOf:
+      - $ref: "#/properties/$control$"
+      - type: array
+        items:
+          type: object
+          additionalProperties: false
+          properties:
+            condition:
               type: string
-              pattern: "^[A-Za-z0-9_.+-]+$"
-          default:
-            type: string
-            pattern: "^[A-Za-z0-9_.+-]+$"
-          pins:
-            type: object
-            additionalProperties: false
-            patternProperties:
-              ".*":
-                type: object
-                properties:
-                  mode:
-                    type: string
-                    minLength: 1
-                    pattern: ".*"
-                  condition:
-                    type: string
-                    minLength: 1
-                    pattern: ".*"
-                required: [mode, condition]
+              minLength: 1
+            content:
+              $ref: "#/properties/$control$"
   modes:
     $ref: "#/properties/controls"
   pinModes:
@@ -75,6 +61,28 @@ properties:
     patternProperties:
       "^[A-Za-z0-9_.+-]+$":
         $ref: "#/properties/controls"
+  pins:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_]+$":
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^[A-Za-z0-9_]*:[A-Za-z0-9_]+$":
+            type: object
+            additionalProperties: false
+            patternProperties:
+              "^[A-Za-z0-9_]+$":
+                type: object
+                additionalProperties: false
+                properties:
+                  default:
+                    type: boolean
+                required: [default]
+  activated:
+    type: string
+    minLength: 1
   $parameter$:
     type: object
     properties:
@@ -85,7 +93,7 @@ properties:
       readonly:
         type: boolean
       type:
-        enum: [enum, integer, float, boolean, radio]
+        enum: [enum, integer, float, boolean, radio, string]
       values:
         additionalProperties: false
         patternProperties:
@@ -96,6 +104,18 @@ properties:
                 $ref: "#/properties/$expression$"
               comment:
                 $ref: "#/properties/$language$"
+              pins:
+                type: object
+                additionalProperties: false
+                patternProperties:
+                  ".*":
+                    type: object
+                    properties:
+                      mode:
+                        type: string
+                        minLength: 1
+                        pattern: ".*"
+                    required: [mode]
             required: [comment]
       group:
         type: string
@@ -107,9 +127,9 @@ properties:
       visible:
         type: boolean
       max:
-        type: number
+        type: [number, string]
       min:
-        type: number
+        type: [number, string]
     required: [type, description]
   $language$:
     type: object
@@ -126,4 +146,19 @@ properties:
       real:
         type: string
         minLength: 1
+  $control$:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_.+-]+$":
+        type: object
+        properties:
+          values:
+            type: array
+            items:
+              type: string
+              pattern: "^[A-Za-z0-9_.+-]+$"
+          default:
+            type: string
+            pattern: "^[A-Za-z0-9_.+-]+$"
 required: [parameters]

@@ -1,0 +1,1113 @@
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 csplink<https://csplink.top/>
+#
+# @author      csplink
+# @file        apm32f103_usart.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-03-03     csplink      initial version
+#
+
+parameters:
+  geehy.usart_virtual_mode_t:
+    type: enum
+    values:
+      geehy.usart_virtual_mode_vm_async:
+        comment:
+          zh_CN: VM_ASYNC
+          en: VM_ASYNC
+      geehy.usart_virtual_mode_vm_sync:
+        comment:
+          zh_CN: VM_SYNC
+          en: VM_SYNC
+      geehy.usart_virtual_mode_vm_irda:
+        comment:
+          zh_CN: VM_IRDA
+          en: VM_IRDA
+      geehy.usart_virtual_mode_vm_smartcard:
+        comment:
+          zh_CN: VM_SMARTCARD
+          en: VM_SMARTCARD
+    default: geehy.usart_virtual_mode_vm_async
+    display:
+      zh_CN: ""
+      en: ""
+    description:
+      zh_CN: ""
+      en: ""
+    visible: false
+    readonly: false
+  geehy.usart_virtual_clock_mode_t:
+    type: enum
+    values:
+      geehy.usart_virtual_clock_mode_vm_sync:
+        comment:
+          zh_CN: VM_SYNC
+          en: VM_SYNC
+      geehy.usart_virtual_clock_mode_vm_smartcard:
+        comment:
+          zh_CN: VM_SMARTCARD
+          en: VM_SMARTCARD
+    default: geehy.usart_virtual_clock_mode_vm_sync
+    display:
+      zh_CN: ""
+      en: ""
+    description:
+      zh_CN: ""
+      en: ""
+    visible: false
+    readonly: false
+  geehy.usart_baud_rate_t:
+    type: integer
+    default: 115200
+    max: 10500000
+    min: 110
+    display:
+      zh_CN: Baud Rate
+      en: Baud Rate
+    description:
+      zh_CN: Baud Rate
+      en: Baud Rate
+    visible: true
+    readonly: false
+  geehy.usart_word_length_t:
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_sync'
+      content:
+        type: enum
+        values:
+          geehy.usart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          geehy.usart_word_length_wordlength_9_b:
+            comment:
+              zh_CN: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: geehy.usart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_mode_vm_irda'
+      content:
+        type: enum
+        values:
+          geehy.usart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          geehy.usart_word_length_wordlength_9_b:
+            comment:
+              zh_CN: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: geehy.usart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: enum
+        values:
+          geehy.usart_word_length_wordlength_9_b:
+            comment:
+              zh_CN: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: geehy.usart_word_length_wordlength_9_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_lin')
+      content:
+        type: enum
+        values:
+          geehy.usart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+        default: geehy.usart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.usart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          geehy.usart_word_length_wordlength_9_b:
+            comment:
+              zh_CN: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: geehy.usart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+  geehy.usart_stop_bits_t:
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_sync'
+      content:
+        type: enum
+        values:
+          geehy.usart_stop_bits_stopbits_1:
+            comment:
+              zh_CN: "1"
+              en: "1"
+          geehy.usart_stop_bits_stopbits_2:
+            comment:
+              zh_CN: "2"
+              en: "2"
+          geehy.usart_stop_bits_stopbits_0_5:
+            comment:
+              zh_CN: "0.5"
+              en: "0.5"
+          geehy.usart_stop_bits_stopbits_1_5:
+            comment:
+              zh_CN: "1.5"
+              en: "1.5"
+        default: geehy.usart_stop_bits_stopbits_1
+        display:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        description:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_asynchronous')
+        and (STM32F0 or STM32F3 or STM32L4)
+      content:
+        type: enum
+        values:
+          geehy.usart_stop_bits_stopbits_1:
+            comment:
+              zh_CN: "1"
+              en: "1"
+          geehy.usart_stop_bits_stopbits_2:
+            comment:
+              zh_CN: "2"
+              en: "2"
+          geehy.usart_stop_bits_stopbits_0_5:
+            comment:
+              zh_CN: "0.5"
+              en: "0.5"
+          geehy.usart_stop_bits_stopbits_1_5:
+            comment:
+              zh_CN: "1.5"
+              en: "1.5"
+        default: geehy.usart_stop_bits_stopbits_1
+        display:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        description:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_asynchronous')
+        and STM32L0
+      content:
+        type: enum
+        values:
+          geehy.usart_stop_bits_stopbits_1:
+            comment:
+              zh_CN: "1"
+              en: "1"
+          geehy.usart_stop_bits_stopbits_2:
+            comment:
+              zh_CN: "2"
+              en: "2"
+          geehy.usart_stop_bits_stopbits_1_5:
+            comment:
+              zh_CN: "1.5"
+              en: "1.5"
+        default: geehy.usart_stop_bits_stopbits_1
+        display:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        description:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: enum
+        values:
+          geehy.usart_stop_bits_stopbits_0_5:
+            comment:
+              zh_CN: "0.5"
+              en: "0.5"
+          geehy.usart_stop_bits_stopbits_1_5:
+            comment:
+              zh_CN: "1.5"
+              en: "1.5"
+        default: geehy.usart_stop_bits_stopbits_1_5
+        display:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        description:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.usart_stop_bits_stopbits_1:
+            comment:
+              zh_CN: "1"
+              en: "1"
+          geehy.usart_stop_bits_stopbits_2:
+            comment:
+              zh_CN: "2"
+              en: "2"
+        default: geehy.usart_stop_bits_stopbits_1
+        display:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        description:
+          zh_CN: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+  geehy.usart_parity_t:
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: enum
+        values:
+          geehy.usart_parity_parity_even:
+            comment:
+              zh_CN: Even
+              en: Even
+          geehy.usart_parity_parity_odd:
+            comment:
+              zh_CN: Odd
+              en: Odd
+        default: geehy.usart_parity_parity_even
+        display:
+          zh_CN: Parity
+          en: Parity
+        description:
+          zh_CN: Parity
+          en: Parity
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.usart_parity_parity_none:
+            comment:
+              zh_CN: None
+              en: None
+          geehy.usart_parity_parity_even:
+            comment:
+              zh_CN: Even
+              en: Even
+          geehy.usart_parity_parity_odd:
+            comment:
+              zh_CN: Odd
+              en: Odd
+        default: geehy.usart_parity_parity_none
+        display:
+          zh_CN: Parity
+          en: Parity
+        description:
+          zh_CN: Parity
+          en: Parity
+        visible: true
+        readonly: false
+  geehy.usart_mode_t:
+    type: enum
+    values:
+      geehy.usart_mode_mode_tx_rx:
+        comment:
+          zh_CN: Receive and Transmit
+          en: Receive and Transmit
+      geehy.usart_mode_mode_rx:
+        comment:
+          zh_CN: Receive Only
+          en: Receive Only
+      geehy.usart_mode_mode_tx:
+        comment:
+          zh_CN: Transmit Only
+          en: Transmit Only
+    default: geehy.usart_mode_mode_tx_rx
+    display:
+      zh_CN: Data Direction
+      en: Data Direction
+    description:
+      zh_CN: Data Direction
+      en: Data Direction
+    visible: true
+    readonly: false
+  geehy.usart_hw_flow_ctl_t:
+    - condition: (${INSTANCE}.geehy.usart_control_hardware_flow_control_rs232_t == 'geehy.usart_control_hardware_flow_control_rs232_rts_only')
+      content:
+        type: enum
+        values:
+          geehy.usart_hw_flow_ctl_uart_hwcontrol_rts:
+            comment:
+              zh_CN: RTS Only
+              en: RTS Only
+        default: geehy.usart_hw_flow_ctl_uart_hwcontrol_rts
+        display:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: (${INSTANCE}.geehy.usart_control_hardware_flow_control_rs232_t == 'geehy.usart_control_hardware_flow_control_rs232_cts_only')
+      content:
+        type: enum
+        values:
+          geehy.usart_hw_flow_ctl_uart_hwcontrol_cts:
+            comment:
+              zh_CN: CTS Only
+              en: CTS Only
+        default: geehy.usart_hw_flow_ctl_uart_hwcontrol_cts
+        display:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: (${INSTANCE}.geehy.usart_control_hardware_flow_control_rs232_t == 'geehy.usart_control_hardware_flow_control_rs232_cts_rts')
+      content:
+        type: enum
+        values:
+          geehy.usart_hw_flow_ctl_uart_hwcontrol_rts_cts:
+            comment:
+              zh_CN: RTS/CTS
+              en: RTS/CTS
+        default: geehy.usart_hw_flow_ctl_uart_hwcontrol_rts_cts
+        display:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.usart_hw_flow_ctl_uart_hwcontrol_none:
+            comment:
+              zh_CN: None
+              en: None
+        default: geehy.usart_hw_flow_ctl_uart_hwcontrol_none
+        display:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh_CN: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+  geehy.usart_over_sampling_t:
+    - condition: ((${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_sync')
+        or (${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_mode_vm_irda')
+        or (${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard')
+        or (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_lin'))
+      content:
+        type: enum
+        values:
+          geehy.usart_over_sampling_null:
+            comment:
+              zh_CN: "null"
+              en: "null"
+        default: geehy.usart_over_sampling_null
+        display:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        description:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.usart_over_sampling_uart_oversampling_16:
+            comment:
+              zh_CN: 16 Samples
+              en: 16 Samples
+        default: geehy.usart_over_sampling_uart_oversampling_16
+        display:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        description:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        visible: true
+        readonly: false
+  geehy.usart_clk_polarity_t:
+    - condition: ${INSTANCE}.geehy.usart_virtual_clock_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: enum
+        values:
+          geehy.usart_clk_polarity_smartcard_polarity_low:
+            comment:
+              zh_CN: Low
+              en: Low
+          geehy.usart_clk_polarity_smartcard_polarity_high:
+            comment:
+              zh_CN: High
+              en: High
+        default: geehy.usart_clk_polarity_smartcard_polarity_low
+        display:
+          zh_CN: Clock Polarity
+          en: Clock Polarity
+        description:
+          zh_CN: Clock Polarity
+          en: Clock Polarity
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_sync'
+      content:
+        type: enum
+        values:
+          geehy.usart_clk_polarity_usart_polarity_low:
+            comment:
+              zh_CN: Low
+              en: Low
+          geehy.usart_clk_polarity_usart_polarity_high:
+            comment:
+              zh_CN: High
+              en: High
+        default: geehy.usart_clk_polarity_usart_polarity_low
+        display:
+          zh_CN: Clock Polarity
+          en: Clock Polarity
+        description:
+          zh_CN: Clock Polarity
+          en: Clock Polarity
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh_CN: Clock Polarity
+          en: Clock Polarity
+        description:
+          zh_CN: Clock Polarity
+          en: Clock Polarity
+        visible: false
+        readonly: false
+  geehy.usart_clk_phase_t:
+    - condition: ${INSTANCE}.geehy.usart_virtual_clock_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: enum
+        values:
+          geehy.usart_clk_phase_smartcard_phase_1_edge:
+            comment:
+              zh_CN: One Edge
+              en: One Edge
+          geehy.usart_clk_phase_smartcard_phase_2_edge:
+            comment:
+              zh_CN: Two Edge
+              en: Two Edge
+        default: geehy.usart_clk_phase_smartcard_phase_1_edge
+        display:
+          zh_CN: Clock Phase
+          en: Clock Phase
+        description:
+          zh_CN: Clock Phase
+          en: Clock Phase
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_sync'
+      content:
+        type: enum
+        values:
+          geehy.usart_clk_phase_usart_phase_1_edge:
+            comment:
+              zh_CN: One Edge
+              en: One Edge
+          geehy.usart_clk_phase_usart_phase_2_edge:
+            comment:
+              zh_CN: Two Edge
+              en: Two Edge
+        default: geehy.usart_clk_phase_usart_phase_1_edge
+        display:
+          zh_CN: Clock Phase
+          en: Clock Phase
+        description:
+          zh_CN: Clock Phase
+          en: Clock Phase
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh_CN: Clock Phase
+          en: Clock Phase
+        description:
+          zh_CN: Clock Phase
+          en: Clock Phase
+        visible: false
+        readonly: false
+  geehy.usart_clk_last_bit_t:
+    - condition: ${INSTANCE}.geehy.usart_virtual_clock_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: enum
+        values:
+          geehy.usart_clk_last_bit_smartcard_lastbit_disable:
+            comment:
+              zh_CN: Disable
+              en: Disable
+          geehy.usart_clk_last_bit_smartcard_lastbit_enable:
+            comment:
+              zh_CN: Enable
+              en: Enable
+        default: geehy.usart_clk_last_bit_smartcard_lastbit_disable
+        display:
+          zh_CN: Clock Last Bit
+          en: Clock Last Bit
+        description:
+          zh_CN: Clock Last Bit
+          en: Clock Last Bit
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_sync'
+      content:
+        type: enum
+        values:
+          geehy.usart_clk_last_bit_usart_lastbit_disable:
+            comment:
+              zh_CN: Disable
+              en: Disable
+          geehy.usart_clk_last_bit_usart_lastbit_enable:
+            comment:
+              zh_CN: Enable
+              en: Enable
+        default: geehy.usart_clk_last_bit_usart_lastbit_disable
+        display:
+          zh_CN: Clock Last Bit
+          en: Clock Last Bit
+        description:
+          zh_CN: Clock Last Bit
+          en: Clock Last Bit
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh_CN: Clock Last Bit
+          en: Clock Last Bit
+        description:
+          zh_CN: Clock Last Bit
+          en: Clock Last Bit
+        visible: false
+        readonly: false
+  geehy.usart_ir_da_mode_t:
+    type: enum
+    values:
+      geehy.usart_ir_da_mode_irda_powermode_lowpower:
+        comment:
+          zh_CN: Low Power
+          en: Low Power
+      geehy.usart_ir_da_mode_irda_powermode_normal:
+        comment:
+          zh_CN: Normal Power
+          en: Normal Power
+    default: geehy.usart_ir_da_mode_irda_powermode_normal
+    display:
+      zh_CN: IrDa Mode
+      en: IrDa Mode
+    description:
+      zh_CN: IrDa Mode
+      en: IrDa Mode
+    visible: true
+    readonly: false
+  geehy.usart_prescaler_t:
+    - condition: (${INSTANCE}.geehy.usart_ir_da_mode_t == 'geehy.usart_ir_da_mode_irda_powermode_normal')
+        and (${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_mode_vm_irda')
+      content:
+        type: integer
+        default: 1
+        max: 1
+        min: 1
+        display:
+          zh_CN: Prescaler
+          en: Prescaler
+        description:
+          zh_CN: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: (${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard')
+        and (${INSTANCE}.geehy.usart_virtual_clock_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard')
+      content:
+        type: integer
+        default: 10
+        max: 31
+        min: 1
+        display:
+          zh_CN: Prescaler
+          en: Prescaler
+        description:
+          zh_CN: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: ${INSTANCE}.geehy.usart_virtual_mode_t == 'geehy.usart_virtual_clock_mode_vm_smartcard'
+      content:
+        type: integer
+        default: 0
+        max: 255
+        min: 1
+        display:
+          zh_CN: Prescaler
+          en: Prescaler
+        description:
+          zh_CN: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 10
+        max: 255
+        min: 1
+        display:
+          zh_CN: Prescaler
+          en: Prescaler
+        description:
+          zh_CN: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+  geehy.usart_calculate_speed_t:
+    type: string
+    default: "5000000"
+    readonly: true
+    display:
+      zh_CN: SmartCard Clock Frequency
+      en: SmartCard Clock Frequency
+    description:
+      zh_CN: SmartCard Clock Frequency
+      en: SmartCard Clock Frequency
+    visible: true
+  geehy.usart_nack_state_t:
+    type: enum
+    values:
+      geehy.usart_nack_state_smartcard_nack_disable:
+        comment:
+          zh_CN: Disable
+          en: Disable
+      geehy.usart_nack_state_smartcard_nack_enable:
+        comment:
+          zh_CN: Enable
+          en: Enable
+    default: geehy.usart_nack_state_smartcard_nack_disable
+    display:
+      zh_CN: NAck if Parity Error
+      en: NAck if Parity Error
+    description:
+      zh_CN: NAck if Parity Error
+      en: NAck if Parity Error
+    visible: true
+    readonly: false
+  geehy.usart_guard_time_t:
+    type: integer
+    default: 0
+    max: 255
+    min: 0
+    display:
+      zh_CN: Guard Time
+      en: Guard Time
+    description:
+      zh_CN: Guard Time
+      en: Guard Time
+    visible: true
+    readonly: false
+  geehy.usart_wake_up_methode_t:
+    - condition: DIE436 or DIE427 or DIE437 or DIE416 or STM32F1
+      content:
+        type: enum
+        values:
+          geehy.usart_wake_up_methode_uart_wakeupmethod_idleline:
+            comment:
+              zh_CN: Idle Line
+              en: Idle Line
+          geehy.usart_wake_up_methode_uart_wakeupmethod_addressmark:
+            comment:
+              zh_CN: Address Mark
+              en: Address Mark
+        default: geehy.usart_wake_up_methode_uart_wakeupmethod_idleline
+        display:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        description:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.usart_wake_up_methode_uart_wakeupmethod_idleline:
+            comment:
+              zh_CN: Idle Line
+              en: Idle Line
+          geehy.usart_wake_up_methode_uart_wakeupmethod_addressmark:
+            comment:
+              zh_CN: Address Mark
+              en: Address Mark
+        default: geehy.usart_wake_up_methode_uart_wakeupmethod_idleline
+        display:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        description:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        visible: true
+        readonly: false
+  geehy.usart_address_t:
+    - condition: ${INSTANCE}.geehy.usart_wake_up_methode_t == 'geehy.usart_wake_up_methode_uart_wakeupmethod_addressmark'
+      content:
+        type: integer
+        default: 0
+        max: 15
+        min: 0
+        display:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        description:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        max: 0
+        min: 0
+        display:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        description:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        visible: false
+        readonly: false
+  geehy.usart_break_detect_length_t:
+    type: enum
+    values:
+      geehy.usart_break_detect_length_uart_linbreakdetectlength_10_b:
+        comment:
+          zh_CN: 10 Bits
+          en: 10 Bits
+      geehy.usart_break_detect_length_uart_linbreakdetectlength_11_b:
+        comment:
+          zh_CN: 11 Bits
+          en: 11 Bits
+    default: geehy.usart_break_detect_length_uart_linbreakdetectlength_10_b
+    display:
+      zh_CN: Break Detect Length
+      en: Break Detect Length
+    description:
+      zh_CN: Break Detect Length
+      en: Break Detect Length
+    visible: true
+    readonly: false
+  geehy.usart_control_mode_t:
+    type: enum
+    values:
+      geehy.usart_control_mode_disable:
+        comment:
+          zh_CN: 关闭
+          en: Disable
+      geehy.usart_control_mode_asynchronous:
+        comment:
+          zh_CN: Asynchronous
+          en: Asynchronous
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullPULLUP
+      geehy.usart_control_mode_synchronous:
+        comment:
+          zh_CN: Synchronous
+          en: Synchronous
+        signals:
+          ${INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPull
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      geehy.usart_control_mode_half_duplex_single_wire_mode:
+        comment:
+          zh_CN: Single Wire (Half-Duplex)
+          en: Single Wire (Half-Duplex)
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+      geehy.usart_control_mode_multiprocessor_communication:
+        comment:
+          zh_CN: Multiprocessor Communication
+          en: Multiprocessor Communication
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      geehy.usart_control_mode_ir_da:
+        comment:
+          zh_CN: IrDA
+          en: IrDA
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      geehy.usart_control_mode_lin:
+        comment:
+          zh_CN: LIN
+          en: LIN
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      geehy.usart_control_mode_smart_card:
+        comment:
+          zh_CN: SmartCard
+          en: SmartCard
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+      geehy.usart_control_mode_smart_card_with_clock:
+        comment:
+          zh_CN: SmartCard with Card Clock
+          en: SmartCard with Card Clock
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+          ${INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPull
+    default: geehy.usart_control_mode_disable
+    display:
+      zh_CN: Mode
+      en: Mode
+    description:
+      zh_CN: Mode
+      en: Mode
+    visible: true
+    readonly: false
+  geehy.usart_control_hardware_flow_control_rs232_t:
+    type: enum
+    values:
+      geehy.usart_control_hardware_flow_control_rs232_disable:
+        comment:
+          zh_CN: 关闭
+          en: Disable
+      geehy.usart_control_hardware_flow_control_rs232_cts_only:
+        comment:
+          zh_CN: CTS Only
+          en: CTS Only
+        signals:
+          ${INSTANCE}:CTS:
+            mode: GPIO:InputFloatingAndPullUp
+      geehy.usart_control_hardware_flow_control_rs232_rts_only:
+        comment:
+          zh_CN: RTS Only
+          en: RTS Only
+        signals:
+          ${INSTANCE}:RTS:
+            mode: GPIO:AlternateFunctionPushPull
+      geehy.usart_control_hardware_flow_control_rs232_cts_rts:
+        comment:
+          zh_CN: CTS/RTS
+          en: CTS/RTS
+        signals:
+          ${INSTANCE}:CTS:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:RTS:
+            mode: GPIO:AlternateFunctionPushPull
+    default: geehy.usart_control_hardware_flow_control_rs232_disable
+    display:
+      zh_CN: Hardware Flow Control (RS232)
+      en: Hardware Flow Control (RS232)
+    description:
+      zh_CN: Active only with Asynchronous Mode
+      en: Active only with Asynchronous Mode
+    visible: true
+    readonly: false
+controls:
+  geehy.usart_control_mode_t: {}
+  geehy.usart_control_hardware_flow_control_rs232_t:
+    condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_asynchronous')
+modes:
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_asynchronous')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_async
+        default: geehy.usart_virtual_mode_vm_async
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_hw_flow_ctl_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_over_sampling_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_synchronous')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_sync
+        default: geehy.usart_virtual_mode_vm_sync
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_clk_polarity_t: {}
+      geehy.usart_clk_phase_t: {}
+      geehy.usart_clk_last_bit_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_half_duplex_single_wire_mode')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_async
+        default: geehy.usart_virtual_mode_vm_async
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_over_sampling_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_multiprocessor_communication')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_async
+        default: geehy.usart_virtual_mode_vm_async
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_over_sampling_t: {}
+      geehy.usart_wake_up_methode_t: {}
+      geehy.usart_address_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_ir_da')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_irda
+        default: geehy.usart_virtual_mode_vm_irda
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_ir_da_mode_t: {}
+      geehy.usart_prescaler_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_lin')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_async
+        default: geehy.usart_virtual_mode_vm_async
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_break_detect_length_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_smart_card')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_smartcard
+        default: geehy.usart_virtual_mode_vm_smartcard
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_nack_state_t: {}
+      geehy.usart_guard_time_t: {}
+  - condition: (${INSTANCE}.geehy.usart_control_mode_t == 'geehy.usart_control_mode_smart_card_with_clock')
+    content:
+      geehy.usart_baud_rate_t: {}
+      geehy.usart_virtual_mode_t:
+        values:
+          - geehy.usart_virtual_mode_vm_smartcard
+        default: geehy.usart_virtual_mode_vm_smartcard
+      geehy.usart_virtual_clock_mode_t:
+        values:
+          - geehy.usart_virtual_clock_mode_vm_smartcard
+        default: geehy.usart_virtual_clock_mode_vm_smartcard
+      geehy.usart_word_length_t: {}
+      geehy.usart_parity_t: {}
+      geehy.usart_stop_bits_t: {}
+      geehy.usart_mode_t: {}
+      geehy.usart_nack_state_t: {}
+      geehy.usart_guard_time_t: {}
+      geehy.usart_prescaler_t: {}
+      geehy.usart_calculate_speed_t: {}
+      geehy.usart_clk_polarity_t: {}
+      geehy.usart_clk_phase_t: {}
+      geehy.usart_clk_last_bit_t: {}
+activated: (${INSTANCE}.geehy.usart_control_mode_t != 'geehy.usart_control_mode_disable')
+  or (${INSTANCE}.geehy.usart_control_hardware_flow_control_rs232_t != 'geehy.usart_control_hardware_flow_control_rs232_disable')

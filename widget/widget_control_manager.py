@@ -39,37 +39,57 @@ class WidgetControlManager(WidgetBaseManager):
             self.__on_project_configsChanged
         )
 
-    def __on_project_configsChanged(self, keys: list[str], old: object, value: object):
-        if len(keys) <= 1:
+    def __on_project_configsChanged(self, keys: list[str], old: str, new: str):
+        if len(keys) != 2:
             return
 
         instance = keys[0]
         ips = IP.projectIps()
 
         if instance not in ips:
-            logger.error(f'the ip instance:"{instance}" is invalid.')
+            logger.error(f"the ip instance:{instance!r} is invalid.")
             return
 
         ip = ips[instance]
-        key = ".".join(keys)
-        for _, control in ip.controls.items():
-            if key in control.dependencies():
-                for name, cfg in control.pins.items():
-                    if key in control.dependencies():
-                        signal = name.replace("${INSTANCE}", name)
-                        pins = SUMMARY.findPinBySignal(signal)
-                        if len(pins) > 0:
-                            pin = pins[0]
-                            functionKey = f"pin/{pin}/function"
-                            lockedKey = f"pin/{pin}/locked"
-                            modeKey = f"pin/{pin}/mode"
-                            if Express.boolExpr(cfg.condition, VALUE_HUB.values()):
-                                PROJECT.project().configs.set(functionKey, signal)
-                                PROJECT.project().configs.set(lockedKey, True)
-                                PROJECT.project().configs.set(modeKey, cfg.mode)
-                            else:
-                                PROJECT.project().configs.set(functionKey, "")
-                                PROJECT.project().configs.set(lockedKey, False)
-                                PROJECT.project().configs.set(modeKey, "")
+        param = keys[1]
 
-                            SIGNAL_BUS.updatePinTriggered.emit(pin)
+        if param not in ip.parameters:
+            return
+
+        oldValue = ip.parameters[param].values.get(old, None)
+        newValue = ip.parameters[param].values.get(new, None)
+
+        if oldValue is not None:
+            for name, cfg in oldValue.signals.items():
+                signal = name.replace("${INSTANCE}", instance)
+                pins = SUMMARY.findPinsBySignal(signal)
+                if len(pins) > 0:
+                    pin = pins[0]
+                    functionKey = f"pin/{pin}/function"
+                    lockedKey = f"pin/{pin}/locked"
+                    modeKey = f"pin/{pin}/mode"
+
+                    PROJECT.project().configs.set(functionKey, "")
+                    PROJECT.project().configs.set(lockedKey, False)
+                    PROJECT.project().configs.set(modeKey, "")
+
+                    SIGNAL_BUS.updatePinTriggered.emit(pin)
+
+        if newValue is not None:
+            for name, cfg in newValue.signals.items():
+                signal = name.replace("${INSTANCE}", instance)
+                pins = SUMMARY.findPinsBySignal(signal)
+                if len(pins) > 0:
+                    pin = pins[0]
+                    functionKey = f"pin/{pin}/function"
+                    lockedKey = f"pin/{pin}/locked"
+                    modeKey = f"pin/{pin}/mode"
+
+                    PROJECT.project().configs.set(functionKey, signal)
+                    PROJECT.project().configs.set(lockedKey, True)
+                    PROJECT.project().configs.set(modeKey, cfg.mode)
+
+                    SIGNAL_BUS.updatePinTriggered.emit(pin)
+
+                for pin in pins:
+                    print(pin, PROJECT.pinIp().findPinGroups(pin, signal))

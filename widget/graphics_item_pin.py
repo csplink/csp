@@ -26,7 +26,7 @@
 
 from enum import Enum
 
-from PySide6.QtCore import QRectF, Qt
+from PySide6.QtCore import QRectF, Qt, QPointF
 from PySide6.QtGui import (
     QFont,
     QPainterPath,
@@ -84,14 +84,16 @@ class GraphicsItemPin(QGraphicsObject):
     ):
         super().__init__()
 
-        self.width = int(width)
-        self.height = int(height)
-        self.pinLength = int(pinLength)
+        self.width = width
+        self.height = height
+        self.pinLength = pinLength
+        self.ellipseDia = self.pinLength // 6
         self.direction = direction
         self.name = name
         self.pinConfig = pinConfig
         self.type_ = type_
         self.menu = None
+        self.highlight = False
 
         self.labelKey = f"pin/{self.name}/label"
         self.functionKey = f"pin/{self.name}/function"
@@ -123,6 +125,7 @@ class GraphicsItemPin(QGraphicsObject):
             self.__on_project_pinConfigChanged
         )
         SIGNAL_BUS.updatePinTriggered.connect(self.__on_x_updatePinTriggered)
+        SIGNAL_BUS.highlightPinTriggered.connect(self.__on_x_highlightPinTriggered)
 
     def boundingRect(self) -> QRectF:
         if self.type_ == self.Type.RECTANGLE_TYPE:
@@ -179,6 +182,21 @@ class GraphicsItemPin(QGraphicsObject):
 
         painter.drawRect(x, y, width, height)
 
+        if self.highlight:
+            painter.setBrush(self.SELECTED_COLOR)
+            radius = self.ellipseDia // 2
+            if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
+                center = QPointF(x - self.ellipseDia, self.height / 2)
+            elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
+                center = QPointF(self.width / 2, self.pinLength + self.ellipseDia)
+            elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
+                center = QPointF(self.pinLength + self.ellipseDia, self.height / 2)
+            else:
+                center = QPointF(
+                    self.width / 2, self.height - self.pinLength - self.ellipseDia
+                )
+            painter.drawEllipse(center, radius, radius)
+
         # draw text
         if (
             self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION
@@ -209,36 +227,37 @@ class GraphicsItemPin(QGraphicsObject):
                     text = f"{self.label}({self.function})"
 
             if text != "":
+                diff = 20 + self.ellipseDia * 2
                 if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
                     text = self.fontMetrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.width - self.pinLength - 20,
+                        self.width - self.pinLength - diff,
                     )
                     pixels = self.fontMetrics.horizontalAdvance(text)
-                    painter.translate(-pixels - 20, 0)
+                    painter.translate(-pixels - diff, 0)
                 elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
                     text = self.fontMetrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.height - self.pinLength - 20,
+                        self.height - self.pinLength - diff,
                     )
                     pixels = self.fontMetrics.horizontalAdvance(text)
-                    painter.translate(-pixels - 20, 0)
+                    painter.translate(-pixels - diff, 0)
                 elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
                     text = self.fontMetrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.width - self.pinLength - 20,
+                        self.width - self.pinLength - diff,
                     )
-                    painter.translate(self.pinLength, 0)
+                    painter.translate(self.pinLength + self.ellipseDia * 2, 0)
                 else:
                     text = self.fontMetrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.height - self.pinLength - 20,
+                        self.height - self.pinLength - diff,
                     )
-                    painter.translate(self.pinLength, 0)
+                    painter.translate(self.pinLength + self.ellipseDia * 2, 0)
 
             if isDarkTheme():
                 painter.setPen(QPen(QColor(255, 255, 255), 1))
@@ -340,11 +359,22 @@ class GraphicsItemPin(QGraphicsObject):
                         action.setChecked(False)
                     if action.text() == self.function:
                         action.setChecked(True)
+                if self.mode:
+                    action.setEnabled(False)
+                else:
+                    action.setEnabled(True)
 
     def __on_x_updatePinTriggered(self, name: str):
         if name != self.name:
             return
         self.updatePin()
+
+    def __on_x_highlightPinTriggered(self, names: list[str]):
+        if self.name in names:
+            self.highlight = True
+        else:
+            self.highlight = False
+        self.update()
 
     def updatePin(self):
         if self.function:  # set new function
@@ -370,6 +400,7 @@ class GraphicsItemPin(QGraphicsObject):
             if mode in ip.pinModes:
                 ip_modes = ip.pinModes[mode]
             else:
+                logger.error(f"invalid mode: {mode}")
                 return
 
             for key, info in ip_modes.items():

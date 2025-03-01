@@ -40,7 +40,8 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout
 from loguru import logger
 from qfluentwidgets import TreeView
 
-from common import PROJECT, SETTINGS, SUMMARY
+from common import PROJECT, SETTINGS, SUMMARY, IP
+from common.signal_bus import SIGNAL_BUS
 
 
 class _PModel:
@@ -182,14 +183,32 @@ class TreeModuleModel(QAbstractItemModel):
 
     def __loadModule(self):
         locale = SETTINGS.get(SETTINGS.language).value.name()
-        for group, moduleGroup in SUMMARY.projectSummary().modules.items():
-            model = _PModel(group, "", [], self.__model)
-            for name, module in moduleGroup.items():
-                if module.ip:
-                    child = _PModel(name, module.description.get(locale), [], model)
-                    model.append(child)
-            if len(model.children) > 0:
-                self.__model.append(model)
+        peripherals = SUMMARY.projectSummary().modules.peripherals
+        if peripherals:
+            modelRoot = _PModel("peripherals", "", [], self.__model)
+            self.__model.append(modelRoot)
+            for group, moduleGroup in peripherals.items():
+                model = _PModel(group, "", [], modelRoot)
+                for name, module in moduleGroup.items():
+                    if module.ip:
+                        child = _PModel(name, module.description.get(locale), [], model)
+                        model.append(child)
+                if len(model.children) > 0:
+                    modelRoot.append(model)
+
+        middlewares = SUMMARY.projectSummary().modules.middlewares
+        if middlewares:
+            modelRoot = _PModel("middlewares", "", [], self.__model)
+            self.__model.append(modelRoot)
+            for group, moduleGroup in middlewares.items():
+                model = _PModel(group, "", [], modelRoot)
+                for name, module in moduleGroup.items():
+                    if module.ip:
+                        child = _PModel(name, module.description.get(locale), [], model)
+                        model.append(child)
+                if len(model.children) > 0:
+                    modelRoot.append(model)
+
         self.modelReset.emit()
 
     def __on_project_modulesChanged(self, old: list[str], new: list[str]):
@@ -244,6 +263,12 @@ class TreeModule(QWidget):
         indexes = selected.indexes()
         if len(indexes) > 0:
             index = indexes[0]
-            if str(index.parent().data()) != "None":
+            if index.parent().data() != None and index.parent().parent().data() != None:
                 instance = str(index.data())
+                ips = IP.projectIps()
+                ip = ips[instance]
+                pins = []
+                for signal in ip.signals():
+                    pins.extend(SUMMARY.findPinsBySignal(signal))
                 self.selectionChanged.emit(instance)
+                SIGNAL_BUS.highlightPinTriggered.emit(pins)

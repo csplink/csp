@@ -1,5 +1,10 @@
 name: APM32F103ZET6
 clockTree: APM32F103
+core: ARM Cortex-M7
+frequency: 96
+io: 112
+series: APM32F1
+line: APM32F103
 vendor: Geehy
 vendorUrl:
   en: https://global.geehy.com
@@ -8,218 +13,241 @@ documents:
   datasheets:
     APM32F103xDxE数据手册V1.7:
       url:
-        en: ''
+        en: ""
         zh_CN: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
       type: pdf
       description:
-        en: ''
+        en: ""
         zh_CN: null
       size: 3.4 MB
-      version: '1.7'
+      version: "1.7"
   errata:
     APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
       url:
-        en: ''
+        en: ""
         zh_CN: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
       type: pdf
       description:
-        en: ''
+        en: ""
         zh_CN: null
       size: 582 KB
-      version: '1.0'
+      version: "1.0"
   references:
     APM32F103xCxDxE用户手册V1.5:
       url:
-        en: ''
+        en: ""
         zh_CN: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
       type: pdf
       description:
-        en: ''
+        en: ""
         zh_CN: null
       size: 9.4 MB
-      version: '1.5'
-hals: [ csp_hal_apm32f1 ]
+      version: "1.5"
+hals: [csp_hal_apm32f1]
 hasPowerPad: false
 illustrate:
-  en: ''
+  en: ""
   zh_CN: |
     APM32F103xDxE系列MCU，基于32位Arm® Cortex®-M3内核，最高工作主频96MHz，支持FPU浮点运算单元，配置增强型外部存储控制器EMMC，
     支持USB和CAN接口同时使用；集成片上储存器、定时器以及数据转换器等多种外设接口，具有功耗低、容量大、可移植性好、Flash擦除/编程速度快等特点。
     目前已经通过中国IEC61508 SIL2认证和USB-IF测试，符合工业级高可靠性标准。适用于航模飞机、手持云台、扫码枪、报警器、密码锁、电子秤等领域。
 introduction:
-  en: ''
+  en: ""
   zh_CN: 具有 512KB Flash和 96MHz CPU的主流 Arm Cortex-M3 超值系列 MCU
 modules:
-  Analog:
-    ADC1:
-      description:
-        en: ''
-        zh_CN: 模数转换器1
-    ADC2:
-      description:
-        en: ''
-        zh_CN: 模数转换器2
-    ADC3:
-      description:
-        en: ''
-        zh_CN: 模数转换器3
+  peripherals:
+    ADC:
+      ADC1:
+        description:
+          en: ""
+          zh_CN: 模数转换器1
+      ADC2:
+        description:
+          en: ""
+          zh_CN: 模数转换器2
+      ADC3:
+        description:
+          en: ""
+          zh_CN: 模数转换器3
     DAC:
-      description:
-        en: ''
-        zh_CN: 数模转换器
-  Computing:
+      DAC:
+        description:
+          en: ""
+          zh_CN: 数模转换器
     CRC:
-      description:
-        en: ''
-        zh_CN: 循环冗余校验计算单元
-  Connectivity:
+      CRC:
+        description:
+          en: ""
+          zh_CN: 循环冗余校验计算单元
+        ip: apm32f103_crc
     CAN:
-      description:
-        en: ''
-        zh_CN: 控制器局域网络
+      CAN:
+        description:
+          en: ""
+          zh_CN: 控制器局域网络
     EMMC:
-      description:
-        en: ''
-        zh_CN: 外部存储器控制器
-    I2C1:
-      description:
-        en: ''
-        zh_CN: 内部集成电路接口1
-    I2C2:
-      description:
-        en: ''
-        zh_CN: 内部集成电路接口2
+      EMMC:
+        description:
+          en: ""
+          zh_CN: 外部存储器控制器
+    I2C:
+      I2C1:
+        description:
+          en: ""
+          zh_CN: 内部集成电路接口1
+      I2C2:
+        description:
+          en: ""
+          zh_CN: 内部集成电路接口2
     SDIO:
-      description:
-        en: ''
-        zh_CN: 安全数字输入输出接口
-    SPI1:
-      description:
-        en: ''
-        zh_CN: 串行外设接口1
-    SPI2:
-      description:
-        en: ''
-        zh_CN: 串行外设接口2
-    SPI3:
-      description:
-        en: ''
-        zh_CN: 串行外设接3
-    UART4:
-      description:
-        en: ''
-        zh_CN: 通用异步收发器4
-    UART5:
-      description:
-        en: ''
-        zh_CN: 通用异步收发器5
-    USART1:
-      description:
-        en: ''
-        zh_CN: 通用同步异步收发器1
-    USART2:
-      description:
-        en: ''
-        zh_CN: 通用同步异步收发器2
-    USART3:
-      description:
-        en: ''
-        zh_CN: 通用同步异步收发器3
-    USBD:
-      description:
-        en: ''
-        zh_CN: 全速 USBD 接口设备
-  Multimedia:
-    I2S2:
-      description:
-        en: ''
-        zh_CN: 片上音频接口2
-    I2S3:
-      description:
-        en: ''
-        zh_CN: 片上音频接口3
-  System Core:
+      SDIO:
+        description:
+          en: ""
+          zh_CN: 安全数字输入输出接口
+    SPI:
+      SPI1:
+        description:
+          en: ""
+          zh_CN: 串行外设接口1
+      SPI2:
+        description:
+          en: ""
+          zh_CN: 串行外设接口2
+      SPI3:
+        description:
+          en: ""
+          zh_CN: 串行外设接3
+    UART:
+      UART4:
+        description:
+          en: ""
+          zh_CN: 通用异步收发器4
+        ip: apm32f103_uart
+      UART5:
+        description:
+          en: ""
+          zh_CN: 通用异步收发器5
+        ip: apm32f103_uart
+    USART:
+      USART1:
+        description:
+          en: ""
+          zh_CN: 通用同步异步收发器1
+        ip: apm32f103_usart
+      USART2:
+        description:
+          en: ""
+          zh_CN: 通用同步异步收发器2
+        ip: apm32f103_usart
+      USART3:
+        description:
+          en: ""
+          zh_CN: 通用同步异步收发器3
+        ip: apm32f103_usart
+    USB:
+      USBD:
+        description:
+          en: ""
+          zh_CN: 全速 USBD 接口设备
+    I2S:
+      I2S2:
+        description:
+          en: ""
+          zh_CN: 片上音频接口2
+      I2S3:
+        description:
+          en: ""
+          zh_CN: 片上音频接口3
     DMA:
-      description:
-        en: ''
-        zh_CN: 直接存储器存取
+      DMA:
+        description:
+          en: ""
+          zh_CN: 直接存储器存取
     GPIO:
-      description:
-        en: General Purpose Input Output
-        zh_CN: 通用输入/输出引脚
-      ip: apm32f103_gpio
-    IWDT:
-      description:
-        en: ''
-        zh_CN: 独立看门狗定时器
+      GPIO:
+        description:
+          en: General Purpose Input Output
+          zh_CN: 通用输入/输出引脚
+        ip: apm32f103_gpio
+    WDT:
+      IWDT:
+        description:
+          en: ""
+          zh_CN: 独立看门狗定时器
+        ip: apm32f103_iwdt
+      WWDT:
+        description:
+          en: ""
+          zh_CN: 窗口看门狗定时器
+        ip: apm32f103_wwdt
     NVIC:
-      description:
-        en: ''
-        zh_CN: 嵌套向量中断控制器
+      NVIC:
+        description:
+          en: ""
+          zh_CN: 嵌套向量中断控制器
     RCM:
-      description:
-        en: ''
-        zh_CN: 复位与时钟管理
-      ip: apm32f103_rcm
+      RCM:
+        description:
+          en: ""
+          zh_CN: 复位与时钟管理
+        ip: apm32f103_rcm
     SYS:
-      description:
-        en: ''
-        zh_CN: 系统模块
-    WWDT:
-      description:
-        en: ''
-        zh_CN: 窗口看门狗定时器
-  Timers:
-    RTC:
-      description:
-        en: ''
-        zh_CN: 实时时钟
-    TMR1:
-      description:
-        en: ''
-        zh_CN: 高级定时器1
-    TMR2:
-      description:
-        en: ''
-        zh_CN: 通用定时器2
-    TMR3:
-      description:
-        en: ''
-        zh_CN: 通用定时器3
-    TMR4:
-      description:
-        en: ''
-        zh_CN: 通用定时器4
-    TMR5:
-      description:
-        en: ''
-        zh_CN: 通用定时器5
-    TMR6:
-      description:
-        en: ''
-        zh_CN: 基本定时器6
-    TMR7:
-      description:
-        en: ''
-        zh_CN: 基本定时器7
-    TMR8:
-      description:
-        en: ''
-        zh_CN: 高级定时器8
+      SYS:
+        description:
+          en: ""
+          zh_CN: 系统模块
+    TIMER:
+      RTC:
+        description:
+          en: ""
+          zh_CN: 实时时钟
+      TMR1:
+        description:
+          en: ""
+          zh_CN: 高级定时器1
+      TMR2:
+        description:
+          en: ""
+          zh_CN: 通用定时器2
+      TMR3:
+        description:
+          en: ""
+          zh_CN: 通用定时器3
+      TMR4:
+        description:
+          en: ""
+          zh_CN: 通用定时器4
+      TMR5:
+        description:
+          en: ""
+          zh_CN: 通用定时器5
+      TMR6:
+        description:
+          en: ""
+          zh_CN: 基本定时器6
+      TMR7:
+        description:
+          en: ""
+          zh_CN: 基本定时器7
+      TMR8:
+        description:
+          en: ""
+          zh_CN: 高级定时器8
+  middlewares: {}
 package: LQFP144
 url:
   en: https://global.geehy.com/product/fifth/APM32F103
   zh_CN: https://geehy.com/product/fifth/APM32F103
 builder:
   XMake:
-    v2.8.1: [ "arm-none-eabi" ]
+    v2.8.1: ["arm-none-eabi"]
   CMake:
-    v3.7: [ "arm-none-eabi" ]
+    v3.7: ["arm-none-eabi"]
 #  MDK-Arm:
 #    v5.27: [ "armcc", "armclang" ]
 linker:
-  defaultHeapSize: '0x200'
-  defaultStackSize: '0x400'
+  defaultHeapSize: "0x200"
+  defaultStackSize: "0x400"
 pins:
   PE2:
     position: 1
@@ -527,10 +555,10 @@ pins:
       - ADC2:IN0
       - ADC3:IN0
       - SYS:WKUP
-      - TIM2:CH1
-      - TIM2:ETR
-      - TIM5:CH1
-      - TIM8:ETR
+      - TMR2:CH1
+      - TMR2:ETR
+      - TMR5:CH1
+      - TMR8:ETR
       - USART2:CTS
     modes:
       - GPIO:Input
@@ -545,8 +573,8 @@ pins:
       - ADC1:IN1
       - ADC2:IN1
       - ADC3:IN1
-      - TIM2:CH2
-      - TIM5:CH2
+      - TMR2:CH2
+      - TMR5:CH2
       - USART2:RTS
     modes:
       - GPIO:Input
@@ -561,8 +589,8 @@ pins:
       - ADC1:IN2
       - ADC2:IN2
       - ADC3:IN2
-      - TIM2:CH3
-      - TIM5:CH3
+      - TMR2:CH3
+      - TMR5:CH3
       - USART2:TX
     modes:
       - GPIO:Input
@@ -577,8 +605,8 @@ pins:
       - ADC1:IN3
       - ADC2:IN3
       - ADC3:IN3
-      - TIM2:CH4
-      - TIM5:CH4
+      - TMR2:CH4
+      - TMR5:CH4
       - USART2:RX
     modes:
       - GPIO:Input
@@ -628,9 +656,9 @@ pins:
       - ADC1:IN6
       - ADC2:IN6
       - SPI1:MISO
-      - TIM1:BKIN
-      - TIM3:CH1
-      - TIM8:BKIN
+      - TMR1:BKIN
+      - TMR3:CH1
+      - TMR8:BKIN
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -644,9 +672,9 @@ pins:
       - ADC1:IN7
       - ADC2:IN7
       - SPI1:MOSI
-      - TIM1:CH1N
-      - TIM3:CH2
-      - TIM8:CH1N
+      - TMR1:CH1N
+      - TMR3:CH2
+      - TMR8:CH1N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -683,9 +711,9 @@ pins:
     signals:
       - ADC1:IN8
       - ADC2:IN8
-      - TIM1:CH2N
-      - TIM3:CH3
-      - TIM8:CH2N
+      - TMR1:CH2N
+      - TMR3:CH3
+      - TMR8:CH2N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -698,9 +726,9 @@ pins:
     signals:
       - ADC1:IN9
       - ADC2:IN9
-      - TIM1:CH3N
-      - TIM3:CH4
-      - TIM8:CH3N
+      - TMR1:CH3N
+      - TMR3:CH4
+      - TMR8:CH3N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -802,7 +830,7 @@ pins:
     signals:
       - FSMC:D4
       - FSMC:DA4
-      - TIM1:ETR
+      - TMR1:ETR
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -815,7 +843,7 @@ pins:
     signals:
       - FSMC:D5
       - FSMC:DA5
-      - TIM1:CH1N
+      - TMR1:CH1N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -829,7 +857,7 @@ pins:
       - DAC:EXTI9
       - FSMC:D6
       - FSMC:DA6
-      - TIM1:CH1
+      - TMR1:CH1
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -848,7 +876,7 @@ pins:
     signals:
       - FSMC:D7
       - FSMC:DA7
-      - TIM1:CH2N
+      - TMR1:CH2N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -863,7 +891,7 @@ pins:
       - ADC2:EXTI11
       - FSMC:D8
       - FSMC:DA8
-      - TIM1:CH2
+      - TMR1:CH2
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -876,7 +904,7 @@ pins:
     signals:
       - FSMC:D9
       - FSMC:DA9
-      - TIM1:CH3N
+      - TMR1:CH3N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -889,7 +917,7 @@ pins:
     signals:
       - FSMC:D10
       - FSMC:DA10
-      - TIM1:CH3
+      - TMR1:CH3
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -902,7 +930,7 @@ pins:
     signals:
       - FSMC:D11
       - FSMC:DA11
-      - TIM1:CH4
+      - TMR1:CH4
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -917,7 +945,7 @@ pins:
       - ADC2:EXTI15
       - FSMC:D12
       - FSMC:DA12
-      - TIM1:BKIN
+      - TMR1:BKIN
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -929,7 +957,7 @@ pins:
     type: I/O
     signals:
       - I2C2:SCL
-      - TIM2:CH3
+      - TMR2:CH3
       - USART3:TX
     modes:
       - GPIO:Input
@@ -944,7 +972,7 @@ pins:
       - ADC1:EXTI11
       - ADC2:EXTI11
       - I2C2:SDA
-      - TIM2:CH4
+      - TMR2:CH4
       - USART3:RX
     modes:
       - GPIO:Input
@@ -965,7 +993,7 @@ pins:
       - I2C2:SMBA
       - I2S2:WS
       - SPI2:NSS
-      - TIM1:BKIN
+      - TMR1:BKIN
       - USART3:CK
     modes:
       - GPIO:Input
@@ -979,7 +1007,7 @@ pins:
     signals:
       - I2S2:CK
       - SPI2:SCK
-      - TIM1:CH1N
+      - TMR1:CH1N
       - USART3:CTS
     modes:
       - GPIO:Input
@@ -992,7 +1020,7 @@ pins:
     type: I/O
     signals:
       - SPI2:MISO
-      - TIM1:CH2N
+      - TMR1:CH2N
       - USART3:RTS
     modes:
       - GPIO:Input
@@ -1008,7 +1036,7 @@ pins:
       - ADC2:EXTI15
       - I2S2:SD
       - SPI2:MOSI
-      - TIM1:CH3N
+      - TMR1:CH3N
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1076,7 +1104,7 @@ pins:
     signals:
       - FSMC:A17
       - FSMC:ALE
-      - TIM4:CH1
+      - TMR4:CH1
       - USART3:RTS
     modes:
       - GPIO:Input
@@ -1089,7 +1117,7 @@ pins:
     type: I/O
     signals:
       - FSMC:A18
-      - TIM4:CH2
+      - TMR4:CH2
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1108,7 +1136,7 @@ pins:
     signals:
       - FSMC:D0
       - FSMC:DA0
-      - TIM4:CH3
+      - TMR4:CH3
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1123,7 +1151,7 @@ pins:
       - ADC2:EXTI15
       - FSMC:D1
       - FSMC:DA1
-      - TIM4:CH4
+      - TMR4:CH4
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1210,8 +1238,8 @@ pins:
     signals:
       - I2S2:MCK
       - SDIO:D6
-      - TIM3:CH1
-      - TIM8:CH1
+      - TMR3:CH1
+      - TMR8:CH1
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1224,8 +1252,8 @@ pins:
     signals:
       - I2S3:MCK
       - SDIO:D7
-      - TIM3:CH2
-      - TIM8:CH2
+      - TMR3:CH2
+      - TMR8:CH2
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1237,8 +1265,8 @@ pins:
     type: I/O
     signals:
       - SDIO:D0
-      - TIM3:CH3
-      - TIM8:CH3
+      - TMR3:CH3
+      - TMR8:CH3
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1251,8 +1279,8 @@ pins:
     signals:
       - DAC:EXTI9
       - SDIO:D1
-      - TIM3:CH4
-      - TIM8:CH4
+      - TMR3:CH4
+      - TMR8:CH4
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1264,7 +1292,7 @@ pins:
     type: I/O
     signals:
       - RCM:MCO
-      - TIM1:CH1
+      - TMR1:CH1
       - USART1:CK
     modes:
       - GPIO:Input
@@ -1277,7 +1305,7 @@ pins:
     type: I/O
     signals:
       - DAC:EXTI9
-      - TIM1:CH2
+      - TMR1:CH2
       - USART1:TX
     modes:
       - GPIO:Input
@@ -1289,7 +1317,7 @@ pins:
     position: 102
     type: I/O
     signals:
-      - TIM1:CH3
+      - TMR1:CH3
       - USART1:RX
     modes:
       - GPIO:Input
@@ -1304,7 +1332,7 @@ pins:
       - ADC1:EXTI11
       - ADC2:EXTI11
       - CAN:RX
-      - TIM1:CH4
+      - TMR1:CH4
       - USART1:CTS
       - USB:DM
     modes:
@@ -1318,7 +1346,7 @@ pins:
     type: I/O
     signals:
       - CAN:TX
-      - TIM1:ETR
+      - TMR1:ETR
       - USART1:RTS
       - USB:DP
     modes:
@@ -1368,8 +1396,8 @@ pins:
       - SPI1:NSS
       - SPI3:NSS
       - SYS:JTDI
-      - TIM2:CH1
-      - TIM2:ETR
+      - TMR2:CH1
+      - TMR2:ETR
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1448,7 +1476,7 @@ pins:
     type: I/O
     signals:
       - SDIO:CMD
-      - TIM3:ETR
+      - TMR3:ETR
       - UART5:RX
     modes:
       - GPIO:Input
@@ -1613,7 +1641,7 @@ pins:
       - SPI1:SCK
       - SPI3:SCK
       - SYS:JTDO-TRACESWO
-      - TIM2:CH2
+      - TMR2:CH2
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1627,7 +1655,7 @@ pins:
       - SPI1:MISO
       - SPI3:MISO
       - SYS:NJTRST
-      - TIM3:CH1
+      - TMR3:CH1
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1642,7 +1670,7 @@ pins:
       - I2S3:SD
       - SPI1:MOSI
       - SPI3:MOSI
-      - TIM3:CH2
+      - TMR3:CH2
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1654,7 +1682,7 @@ pins:
     type: I/O
     signals:
       - I2C1:SCL
-      - TIM4:CH1
+      - TMR4:CH1
       - USART1:TX
     modes:
       - GPIO:Input
@@ -1668,7 +1696,7 @@ pins:
     signals:
       - FSMC:NL
       - I2C1:SDA
-      - TIM4:CH2
+      - TMR4:CH2
       - USART1:RX
     modes:
       - GPIO:Input
@@ -1686,7 +1714,7 @@ pins:
       - CAN:RX
       - I2C1:SCL
       - SDIO:D4
-      - TIM4:CH3
+      - TMR4:CH3
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1701,7 +1729,7 @@ pins:
       - DAC:EXTI9
       - I2C1:SDA
       - SDIO:D5
-      - TIM4:CH4
+      - TMR4:CH4
     modes:
       - GPIO:Input
       - GPIO:Output
@@ -1713,7 +1741,7 @@ pins:
     type: I/O
     signals:
       - FSMC:NBL0
-      - TIM4:ETR
+      - TMR4:ETR
     modes:
       - GPIO:Input
       - GPIO:Output
