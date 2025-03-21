@@ -29,18 +29,21 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QStackedWidget, QWidget
 
 
 class StackedWidget(QFrame):
-    currentChanged = Signal(int)
+    current_changed = Signal(int)
+    currentChanged = current_changed
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.hBoxLayout = QHBoxLayout(self)
+        self.h_box_layout = QHBoxLayout(self)
         self.view = QStackedWidget(self)
 
-        self.hBoxLayout.setContentsMargins(0, 0, 0, 0)
-        self.hBoxLayout.addWidget(self.view)
+        self.h_box_layout.setContentsMargins(0, 0, 0, 0)
+        self.h_box_layout.addWidget(self.view)
 
-        self.view.currentChanged.connect(self.currentChanged)
+        self.view.currentChanged.connect(self.current_changed)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
+
+    # region overrides
 
     def addWidget(self, widget: QWidget):
         self.view.addWidget(widget)
@@ -48,11 +51,9 @@ class StackedWidget(QFrame):
     def widget(self, index: int):
         return self.view.widget(index)
 
-    # noinspection PyUnusedLocal
     def setCurrentWidget(self, widget: QWidget, popOut: bool = True):
         self.view.setCurrentWidget(widget)
 
-    # noinspection PyUnusedLocal
     def setCurrentIndex(self, index: int, popOut: bool = True):
         self.view.setCurrentIndex(index)
 
@@ -67,3 +68,5 @@ class StackedWidget(QFrame):
 
     def count(self) -> int:
         return self.view.count()
+
+    # endregion

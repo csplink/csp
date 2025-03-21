@@ -58,27 +58,27 @@ class SocView(QWidget):
         super().__init__(parent)
         self.setObjectName("SocView")
 
-        self.__setupUi()
+        self.__setup_ui()
 
-        self.zoomInBtn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
-        self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.rescale())
-        self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoomOut(6))
+        self.zoom_in_btn.pressed.connect(lambda: self.graphics_view.zoom_in(6))
+        self.zoom_reset_btn.pressed.connect(lambda: self.graphics_view.rescale())
+        self.zoom_out_btn.pressed.connect(lambda: self.graphics_view.zoom_out(6))
 
         SETTINGS.themeChanged.connect(
-            lambda theme: self.__updateGraphicsViewBackgroundColor()
+            lambda theme: self.__update_graphics_view_background_color()
         )
 
-        if SUMMARY.projectSummary().package != "":
-            if re.match(r"^LQFP\d+$", SUMMARY.projectSummary().package):
-                items = LQFP().getItems(
-                    PROJECT.project().vendor, PROJECT.project().targetChip
+        if SUMMARY.project_summary().package != "":
+            if re.match(r"^LQFP\d+$", SUMMARY.project_summary().package):
+                items = LQFP().get_items(
+                    PROJECT.project().vendor, PROJECT.project().target_chip
                 )
             else:
                 items = None
                 title = self.tr("Error")  # type: ignore
                 content = self.tr(  # type: ignore
                     "The package {!r} is not supported at this time.".format(
-                        SUMMARY.projectSummary().package
+                        SUMMARY.project_summary().package
                     )
                 )
                 message = MessageBox(title, content, self.window())
@@ -89,122 +89,128 @@ class SocView(QWidget):
 
             if items is not None:
                 for item in items:
-                    self.graphicsScene.addItem(item)
+                    self.graphics_scene.addItem(item)
 
-        self.graphicsView.rescale()
+        self.graphics_view.rescale()
 
         Style.SOC_VIEW.apply(self)
 
-        self.treeModule.selectionChanged.connect(self.__on_treeModule_selectionChanged)
-        self.widgetControlDashboard.selectionChanged.connect(
+        self.tree_module.selection_changed.connect(
+            self.__on_tree_module_selection_changed
+        )
+        self.widget_control_dashboard.selection_changed.connect(
             self.__on_widgetControlDashboard_selectionChanged
         )
 
     # region ui setup
 
-    def __createTreeModuleView(self) -> SimpleCardWidget:
-        self.treeModuleCard = SimpleCardWidget(self.mainSplitter)
-        self.treeModule = TreeModule(self.treeModuleCard)
-        self.treeModuleCardLayout = QHBoxLayout(self.treeModuleCard)
-        self.treeModuleCardLayout.addWidget(self.treeModule)
+    def __create_tree_module_view(self) -> SimpleCardWidget:
+        self.tree_module_card = SimpleCardWidget(self.main_splitter)
+        self.tree_module = TreeModule(self.tree_module_card)
+        self.tree_module_card_layout = QHBoxLayout(self.tree_module_card)
+        self.tree_module_card_layout.addWidget(self.tree_module)
 
-        return self.treeModuleCard
+        return self.tree_module_card
 
-    def __createManagerView(self) -> SimpleCardWidget:
-        self.managerCard = SimpleCardWidget(self.mainSplitter)
-        self.managerCardLayout = QVBoxLayout(self.managerCard)
-        self.managerCardSplitter = QSplitter(self.managerCard)
-        self.managerCardSplitter.setOrientation(Qt.Orientation.Vertical)
-        self.managerCardControlStackedWidget = QStackedWidget(self.managerCardSplitter)
-        self.managerCardControlStackedWidget.setFrameShape(QFrame.Shape.NoFrame)
-        self.widgetModeManager = WidgetModeManager(self.managerCardSplitter)
-        self.managerCardSplitter.addWidget(self.managerCardControlStackedWidget)
-        self.managerCardSplitter.addWidget(self.widgetModeManager)
-        self.managerCardLayout.addWidget(self.managerCardSplitter)
-
-        self.widgetControlDashboard = WidgetControlDashboard(
-            self.managerCardControlStackedWidget
+    def __create_manager_view(self) -> SimpleCardWidget:
+        self.manager_card = SimpleCardWidget(self.main_splitter)
+        self.manager_card_layout = QVBoxLayout(self.manager_card)
+        self.manager_card_splitter = QSplitter(self.manager_card)
+        self.manager_card_splitter.setOrientation(Qt.Orientation.Vertical)
+        self.manager_card_control_stacked_widget = QStackedWidget(
+            self.manager_card_splitter
         )
-        self.widgetControlManager = WidgetControlManager(
-            self.managerCardControlStackedWidget
+        self.manager_card_control_stacked_widget.setFrameShape(QFrame.Shape.NoFrame)
+        self.widget_mode_manager = WidgetModeManager(self.manager_card_splitter)
+        self.manager_card_splitter.addWidget(self.manager_card_control_stacked_widget)
+        self.manager_card_splitter.addWidget(self.widget_mode_manager)
+        self.manager_card_layout.addWidget(self.manager_card_splitter)
+
+        self.widget_control_dashboard = WidgetControlDashboard(
+            self.manager_card_control_stacked_widget
         )
-        self.managerCardControlStackedWidget.addWidget(self.widgetControlDashboard)
-        self.managerCardControlStackedWidget.addWidget(self.widgetControlManager)
+        self.widget_control_manager = WidgetControlManager(
+            self.manager_card_control_stacked_widget
+        )
+        self.manager_card_control_stacked_widget.addWidget(
+            self.widget_control_dashboard
+        )
+        self.manager_card_control_stacked_widget.addWidget(self.widget_control_manager)
 
-        self.managerCardSplitter.setSizes([300, 100])
-        self.managerCardSplitter.setCollapsible(0, False)
-        self.managerCardSplitter.setCollapsible(1, False)
+        self.manager_card_splitter.setSizes([300, 100])
+        self.manager_card_splitter.setCollapsible(0, False)
+        self.manager_card_splitter.setCollapsible(1, False)
 
-        return self.managerCard
+        return self.manager_card
 
-    def __createSocView(self) -> SimpleCardWidget:
-        self.socCard = SimpleCardWidget(self.mainSplitter)
-        self.socCardLayout = QVBoxLayout(self.socCard)
-        self.graphicsView = GraphicsViewPanZoom(self.socCard)
-        self.graphicsView.setFrameShape(QFrame.Shape.NoFrame)
-        self.socCardLayout.addWidget(self.graphicsView)
-        self.socCardToolLayout = QHBoxLayout()
-        self.socCardLayout.addLayout(self.socCardToolLayout)
-        self.socCardToolLayout.setSpacing(20)
-        self.zoomInBtn = ToolButton(self.socCard)
-        self.zoomResetBtn = ToolButton(self.socCard)
-        self.zoomOutBtn = ToolButton(self.socCard)
-        self.zoomInBtn.setIcon(Icon.ZOOM_IN)
-        self.zoomResetBtn.setIcon(Icon.REFRESH)
-        self.zoomOutBtn.setIcon(Icon.ZOOM_OUT)
-        self.socCardToolLayout.addStretch(1)
-        self.socCardToolLayout.addWidget(self.zoomInBtn)
-        self.socCardToolLayout.addWidget(self.zoomResetBtn)
-        self.socCardToolLayout.addWidget(self.zoomOutBtn)
-        self.socCardToolLayout.addStretch(1)
+    def __create_soc_view(self) -> SimpleCardWidget:
+        self.soc_card = SimpleCardWidget(self.main_splitter)
+        self.soc_card_layout = QVBoxLayout(self.soc_card)
+        self.graphics_view = GraphicsViewPanZoom(self.soc_card)
+        self.graphics_view.setFrameShape(QFrame.Shape.NoFrame)
+        self.soc_card_layout.addWidget(self.graphics_view)
+        self.soc_card_tool_layout = QHBoxLayout()
+        self.soc_card_layout.addLayout(self.soc_card_tool_layout)
+        self.soc_card_tool_layout.setSpacing(20)
+        self.zoom_in_btn = ToolButton(self.soc_card)
+        self.zoom_reset_btn = ToolButton(self.soc_card)
+        self.zoom_out_btn = ToolButton(self.soc_card)
+        self.zoom_in_btn.setIcon(Icon.ZOOM_IN)
+        self.zoom_reset_btn.setIcon(Icon.REFRESH)
+        self.zoom_out_btn.setIcon(Icon.ZOOM_OUT)
+        self.soc_card_tool_layout.addStretch(1)
+        self.soc_card_tool_layout.addWidget(self.zoom_in_btn)
+        self.soc_card_tool_layout.addWidget(self.zoom_reset_btn)
+        self.soc_card_tool_layout.addWidget(self.zoom_out_btn)
+        self.soc_card_tool_layout.addStretch(1)
 
-        self.graphicsScene = QGraphicsScene(self.graphicsView)
-        self.graphicsView.setScene(self.graphicsScene)
+        self.graphics_scene = QGraphicsScene(self.graphics_view)
+        self.graphics_view.setScene(self.graphics_scene)
 
-        self.__updateGraphicsViewBackgroundColor()
+        self.__update_graphics_view_background_color()
 
-        return self.socCard
+        return self.soc_card
 
-    def __setupUi(self):
-        self.mainLayout = QVBoxLayout(self)
-        self.mainSplitter = QSplitter(self)
-        self.mainSplitter.setOrientation(Qt.Orientation.Horizontal)
+    def __setup_ui(self):
+        self.main_layout = QVBoxLayout(self)
+        self.main_splitter = QSplitter(self)
+        self.main_splitter.setOrientation(Qt.Orientation.Horizontal)
 
-        self.mainSplitter.addWidget(self.__createTreeModuleView())
-        self.mainSplitter.addWidget(self.__createManagerView())
-        self.mainSplitter.addWidget(self.__createSocView())
+        self.main_splitter.addWidget(self.__create_tree_module_view())
+        self.main_splitter.addWidget(self.__create_manager_view())
+        self.main_splitter.addWidget(self.__create_soc_view())
 
-        self.mainLayout.addWidget(self.mainSplitter)
+        self.main_layout.addWidget(self.main_splitter)
 
-        self.mainSplitter.setSizes([100, 300, 300])
-        self.mainSplitter.setCollapsible(0, False)
-        self.mainSplitter.setCollapsible(1, False)
+        self.main_splitter.setSizes([100, 300, 300])
+        self.main_splitter.setCollapsible(0, False)
+        self.main_splitter.setCollapsible(1, False)
 
     # endregion
 
-    def __updateGraphicsViewBackgroundColor(self):
-        self.graphicsScene.setBackgroundBrush(
+    def __update_graphics_view_background_color(self):
+        self.graphics_scene.setBackgroundBrush(
             QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253)
         )
 
-    def __on_treeModule_selectionChanged(self, instance: str):
-        ip = IP.projectIps().get(instance)
+    def __on_tree_module_selection_changed(self, instance: str):
+        ip = IP.project_ips().get(instance)
         if ip is None:
             logger.error(f'the ip instance:"{instance}" is invalid.')
             return
 
-        if instance == SUMMARY.projectSummary().pinInstance():
-            self.widgetControlDashboard.instance = instance
-            self.widgetModeManager.setTarget(instance, "")
-            self.managerCardControlStackedWidget.setCurrentWidget(
-                self.widgetControlDashboard
+        if instance == SUMMARY.project_summary().pin_instance():
+            self.widget_control_dashboard.instance = instance
+            self.widget_mode_manager.set_target(instance, "")
+            self.manager_card_control_stacked_widget.setCurrentWidget(
+                self.widget_control_dashboard
             )
         else:
-            self.widgetControlManager.setTarget(instance, "")
-            self.widgetModeManager.setTarget(instance, "")
-            self.managerCardControlStackedWidget.setCurrentWidget(
-                self.widgetControlManager
+            self.widget_control_manager.set_target(instance, "")
+            self.widget_mode_manager.set_target(instance, "")
+            self.manager_card_control_stacked_widget.setCurrentWidget(
+                self.widget_control_manager
             )
 
     def __on_widgetControlDashboard_selectionChanged(self, instance: str, target: str):
-        self.widgetModeManager.setTarget(instance, target)
+        self.widget_mode_manager.set_target(instance, target)

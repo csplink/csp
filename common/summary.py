@@ -139,13 +139,13 @@ class SummaryType:
             if self.__peripherals is None:
                 self.__peripherals = {}
                 peripherals = self.__data.get("peripherals", {})
-                for groupName, group in peripherals.items():
-                    groupUnit = {}
+                for group_name, group in peripherals.items():
+                    group_unit = {}
                     for name, unit in group.items():
-                        groupUnit[name] = SummaryType.ModulesType.ModuleUnitType(
+                        group_unit[name] = SummaryType.ModulesType.ModuleUnitType(
                             unit if unit is not None else {}
                         )
-                    self.__peripherals[groupName] = groupUnit
+                    self.__peripherals[group_name] = group_unit
             return self.__peripherals
 
         @property
@@ -153,13 +153,13 @@ class SummaryType:
             if self.__middlewares is None:
                 self.__middlewares = {}
                 middlewares = self.__data.get("middlewares", {})
-                for groupName, group in middlewares.items():
-                    groupUnit = {}
+                for group_name, group in middlewares.items():
+                    group_unit = {}
                     for name, unit in group.items():
-                        groupUnit[name] = SummaryType.ModulesType.ModuleUnitType(
+                        group_unit[name] = SummaryType.ModulesType.ModuleUnitType(
                             unit if unit is not None else {}
                         )
-                    self.__middlewares[groupName] = groupUnit
+                    self.__middlewares[group_name] = group_unit
             return self.__middlewares
 
     class LinkerType:
@@ -174,14 +174,14 @@ class SummaryType:
             return self.__data
 
         @property
-        def defaultHeapSize(self) -> int:
+        def default_heap_size(self) -> int:
             size = self.__data.get("defaultHeapSize", -1)
             if isinstance(size, str):
                 size = int(size, 16)
             return size
 
         @property
-        def defaultStackSize(self) -> int:
+        def default_stack_size(self) -> int:
             size = self.__data.get("defaultStackSize", -1)
             if isinstance(size, str):
                 size = int(size, 16)
@@ -225,7 +225,7 @@ class SummaryType:
     def __init__(self, data: dict):
         self.__data = data
 
-        self.__vendorUrl = None
+        self.__vendor_url = None
         self.__documents = None
         self.__illustrate = None
         self.__introduction = None
@@ -236,8 +236,8 @@ class SummaryType:
 
         # ----------------------------------------------------------------------
 
-        self.__moduleList = None
-        self.__pinInstance = None
+        self.__module_list = None
+        self.__pin_instance = None
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -251,7 +251,7 @@ class SummaryType:
         return self.__data.get("name", "")
 
     @property
-    def clockTree(self) -> str:
+    def clock_tree(self) -> str:
         return self.__data.get("clockTree", "")
 
     @property
@@ -259,10 +259,10 @@ class SummaryType:
         return self.__data.get("vendor", "")
 
     @property
-    def vendorUrl(self) -> I18nType:
-        if self.__vendorUrl is None:
-            self.__vendorUrl = I18nType(self.__data.get("vendorUrl", {}))
-        return self.__vendorUrl
+    def vendor_url(self) -> I18nType:
+        if self.__vendor_url is None:
+            self.__vendor_url = I18nType(self.__data.get("vendorUrl", {}))
+        return self.__vendor_url
 
     @property
     def documents(self) -> DocumentType:
@@ -277,7 +277,7 @@ class SummaryType:
         return self.__data.get("hals", [])
 
     @property
-    def hasPowerPad(self) -> bool:
+    def has_power_pad(self) -> bool:
         return self.__data.get("hasPowerPad", False)
 
     @property
@@ -331,25 +331,25 @@ class SummaryType:
 
     # ----------------------------------------------------------------------------------------------------------------------
 
-    def moduleList(self) -> dict[str, ModulesType]:
-        if self.__moduleList is None:
-            self.__moduleList = {}
+    def module_list(self) -> dict[str, ModulesType]:
+        if self.__module_list is None:
+            self.__module_list = {}
             modules = self.modules
-            for groupName, group in modules.peripherals.items():
+            for group_name, group in modules.peripherals.items():
                 for name, module in group.items():
-                    self.__moduleList[name] = module
-            for groupName, group in modules.middlewares.items():
+                    self.__module_list[name] = module
+            for group_name, group in modules.middlewares.items():
                 for name, module in group.items():
-                    self.__moduleList[name] = module
-        return self.__moduleList
+                    self.__module_list[name] = module
+        return self.__module_list
 
-    def pinInstance(self) -> str:
-        if self.__pinInstance is None:
+    def pin_instance(self) -> str:
+        if self.__pin_instance is None:
             for _, pin in self.pins.items():
                 if len(pin.modes) > 0:
-                    self.__pinInstance = pin.modes[0].split(":")[0]
+                    self.__pin_instance = pin.modes[0].split(":")[0]
                     break
-        return self.__pinInstance or ""
+        return self.__pin_instance or ""
 
 
 class Summary:
@@ -363,7 +363,7 @@ class Summary:
         self.__name = ""
 
     @logger.catch(default=False)
-    def __checkSummary(self, summary: dict) -> bool:
+    def __check_summary(self, summary: dict) -> bool:
         with open(
             os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "summary.yml"),
             "r",
@@ -374,14 +374,14 @@ class Summary:
         return True
 
     @logger.catch(default=SummaryType({}))
-    def __getSummary(self, vendor: str, name: str) -> SummaryType:
+    def __get_summary(self, vendor: str, name: str) -> SummaryType:
         file = os.path.join(
             SETTINGS.DATABASE_FOLDER, "summary", vendor.lower(), f"{name.lower()}.yml"
         )
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
                 summary = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkSummary(summary)
+                succeed = self.__check_summary(summary)
             if succeed:
                 return SummaryType(summary)
             else:
@@ -390,12 +390,12 @@ class Summary:
             logger.error(f"{file} is not file!")
             return SummaryType({})
 
-    def getSummary(self, vendor: str, name: str) -> SummaryType:
+    def get_summary(self, vendor: str, name: str) -> SummaryType:
         if vendor in self.__summaries and name in self.__summaries[vendor]:
             return self.__summaries[vendor][name]
         else:
             # noinspection PyTypeChecker,PyArgumentList
-            summary = self.__getSummary(vendor, name)
+            summary = self.__get_summary(vendor, name)
             if vendor not in self.__summaries:
                 self.__summaries[vendor] = {}
             self.__summaries[vendor][name] = summary
@@ -405,19 +405,19 @@ class Summary:
     def summaries(self) -> dict[str, dict[str, SummaryType]]:
         return self.__summaries
 
-    def setProjectSummary(self, vendor: str, name: str) -> SummaryType:
+    def set_project_summary(self, vendor: str, name: str) -> SummaryType:
         self.__vendor = vendor
         self.__name = name
-        return self.projectSummary()
+        return self.project_summary()
 
-    def projectSummary(self) -> SummaryType:
-        return self.getSummary(self.__vendor, self.__name)
+    def project_summary(self) -> SummaryType:
+        return self.get_summary(self.__vendor, self.__name)
 
-    def findPinsBySignal(
+    def find_pins_by_signal(
         self, signal: str, summary: SummaryType | None = None
     ) -> list[str]:
         if summary is None:
-            summary = self.projectSummary()
+            summary = self.project_summary()
         pins = []
         for name, pin in summary.pins.items():
             if signal in pin.signals:

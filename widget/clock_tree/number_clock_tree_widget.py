@@ -43,13 +43,13 @@ class NumberClockTreeWidget(BaseClockTreeWidget, QLineEdit):
         param: str,
         element: ClockTreeType.ElementUnitType,
         parameter: IpType.ParameterUnitType,
-        clockTree: ClockTreeType,
+        clock_tree: ClockTreeType,
         template: Template,
         data: dict,
         parent=None,
     ):
         BaseClockTreeWidget.__init__(
-            self, id_, instance, param, element, parameter, clockTree, template, data
+            self, id_, instance, param, element, parameter, clock_tree, template, data
         )
         QLineEdit.__init__(self, parent)
 
@@ -61,14 +61,14 @@ class NumberClockTreeWidget(BaseClockTreeWidget, QLineEdit):
 
         self.data["valid"] = False
         context = template.render(self.data)
-        self.invalidStylesheet = applyThemeColor(context)
+        self.invalid_stylesheet = applyThemeColor(context)
 
         self.editingFinished.connect(self.__on_editingFinished)
 
-    def __rangeToolTip(self) -> str:
+    def __range_tool_tip(self) -> str:
         if self.parameter.max > -1 and self.parameter.min > -1:
-            max_ = self.__displayValue(self.parameter.max)
-            min_ = self.__displayValue(self.parameter.min)
+            max_ = self.__display_value(self.parameter.max)
+            min_ = self.__display_value(self.parameter.min)
             return f"({min_} ~ {max_})"
         else:
             return ""
@@ -78,10 +78,10 @@ class NumberClockTreeWidget(BaseClockTreeWidget, QLineEdit):
         if len(self.inputs()) == 1:
             value = self.inputs()[self.element.input[0]].value()
             # sometimes it needs to initialize itself
-            if self.__realValue(self.text() or "0") != value:
-                self.__setValue(value)
+            if self.__real_value(self.text() or "0") != value:
+                self.__set_value(value)
         else:
-            value = self.__realValue(self.text() or "0")
+            value = self.__real_value(self.text() or "0")
         return value
 
     def setup(self):
@@ -94,43 +94,43 @@ class NumberClockTreeWidget(BaseClockTreeWidget, QLineEdit):
                 num = self.inputs()[self.element.input[0]].value()  # used input data
             else:
                 num = self.parameter.default  # used default data
-        self.__setValue(num)  # type: ignore
+        self.__set_value(num)  # type: ignore
         self.setReadOnly(self.parameter.readonly)
 
         local = SETTINGS.get(SETTINGS.language).value.name()
         self.setToolTip(
-            f"{self.parameter.description.get(local)} {self.__rangeToolTip()}"
+            f"{self.parameter.description.get(local)} {self.__range_tool_tip()}"
         )
 
     def flush(self, source: BaseClockTreeWidget):
-        self.__setValue(source.value())
+        self.__set_value(source.value())
         super().flush(source)
 
-    def __displayValue(self, value: float) -> str:
+    def __display_value(self, value: float) -> str:
         expression = self.parameter.expression.display
         if len(expression) == 0:
             result = str(value)
         else:
-            result = str(Express.floatExpr(expression, {"value": value}))
+            result = str(Express.float_expr(expression, {"value": value}))
         return self.__strip(result)
 
-    def __realValue(self, value: float | str) -> float:
+    def __real_value(self, value: float | str) -> float:
         result = float(value)
         expression = self.parameter.expression.real
         if len(expression) > 0:
-            result = Express.floatExpr(expression, {"value": result})
+            result = Express.float_expr(expression, {"value": result})
         return result
 
     def __strip(self, value: str) -> str:
         return value.rstrip("0").rstrip(".")
 
-    def __setValue(self, value: float):
-        text = self.__displayValue(value)
+    def __set_value(self, value: float):
+        text = self.__display_value(value)
         if text != self.text():
             self.setText(text)
-            self.__valueUpdated(value)
+            self.__value_updated(value)
 
-    def __valueUpdated(self, value: float):
+    def __value_updated(self, value: float):
         PROJECT.project().configs.set(f"{self.instance}/{self.param}", value)
         for id_, widget in self.outputs().items():
             widget.flush(self)
@@ -144,15 +144,15 @@ class NumberClockTreeWidget(BaseClockTreeWidget, QLineEdit):
             self.valid = True
         else:
             if self.valid:
-                self.setStyleSheet(self.invalidStylesheet)
+                self.setStyleSheet(self.invalid_stylesheet)
             self.valid = False
             logger.warning(
-                f"invalid number in widget:{self.id} with ‘{self.__displayValue(value)}', range '{self.__rangeToolTip()}'."
+                f"invalid number in widget:{self.id} with ‘{self.__display_value(value)}', range '{self.__range_tool_tip()}'."
             )
 
     def __on_editingFinished(self):
         text = self.text()
         if len(text) > 0:
-            self.__valueUpdated(self.__realValue(text))
+            self.__value_updated(self.__real_value(text))
         else:
             logger.warning(f"invalid number in widget:{self.id} with 'null'")

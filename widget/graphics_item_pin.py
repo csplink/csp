@@ -76,56 +76,58 @@ class GraphicsItemPin(QGraphicsObject):
         self,
         width: int,
         height: int,
-        pinLength: int,
+        pin_length: int,
         direction: Direction,
         name: str,
         type_: Type,
-        pinConfig: SummaryType.PinType,
+        pin_config: SummaryType.PinType,
     ):
         super().__init__()
 
         self.width = width
         self.height = height
-        self.pinLength = pinLength
-        self.ellipseDia = self.pinLength // 6
+        self.pin_length = pin_length
+        self.ellipse_dia = self.pin_length // 6
         self.direction = direction
         self.name = name
-        self.pinConfig = pinConfig
+        self.pin_config = pin_config
         self.type_ = type_
         self.menu = None
         self.highlight = False
 
-        self.labelKey = f"pin/{self.name}/label"
-        self.functionKey = f"pin/{self.name}/function"
-        self.lockedKey = f"pin/{self.name}/locked"
-        self.modeKey = f"pin/{self.name}/mode"
+        self.label_key = f"pin/{self.name}/label"
+        self.function_key = f"pin/{self.name}/function"
+        self.locked_key = f"pin/{self.name}/locked"
+        self.mode_key = f"pin/{self.name}/mode"
 
-        self.setData(GraphicsItemPin.Data.LABEL_DATA.value, self.labelKey)
-        self.setData(GraphicsItemPin.Data.FUNCTION_DATA.value, self.functionKey)
-        self.setData(GraphicsItemPin.Data.LOCKED_DATA.value, self.lockedKey)
+        self.setData(GraphicsItemPin.Data.LABEL_DATA.value, self.label_key)
+        self.setData(GraphicsItemPin.Data.FUNCTION_DATA.value, self.function_key)
+        self.setData(GraphicsItemPin.Data.LOCKED_DATA.value, self.locked_key)
         self.setData(GraphicsItemPin.Data.NAME_DATA.value, name)
 
-        self.label: str = PROJECT.project().configs.get(self.labelKey, "")  # type: ignore
-        self.function: str = PROJECT.project().configs.get(self.functionKey, "")  # type: ignore
-        self.locked: bool = PROJECT.project().configs.get(self.lockedKey, False)  # type: ignore
-        self.mode: str = PROJECT.project().configs.get(self.modeKey, "")  # type: ignore
+        self.label: str = PROJECT.project().configs.get(self.label_key, "")  # type: ignore
+        self.function: str = PROJECT.project().configs.get(self.function_key, "")  # type: ignore
+        self.locked: bool = PROJECT.project().configs.get(self.locked_key, False)  # type: ignore
+        self.mode: str = PROJECT.project().configs.get(self.mode_key, "")  # type: ignore
 
-        self.pinInstance = SUMMARY.projectSummary().pinInstance()
+        self.pin_instance = SUMMARY.project_summary().pin_instance()
 
         self.font = QFont("JetBrains Mono", 14, QFont.Weight.Bold)
         self.font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
-        self.fontMetrics = QFontMetrics(self.font)
+        self.font_metrics = QFontMetrics(self.font)
 
-        self.__initMenu()
+        self.__init_menu()
 
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.MouseButton.RightButton)
 
-        PROJECT.project().configs.pinConfigsChanged.connect(
+        PROJECT.project().configs.pin_configs_changed.connect(
             self.__on_project_pinConfigChanged
         )
-        SIGNAL_BUS.updatePinTriggered.connect(self.__on_x_updatePinTriggered)
-        SIGNAL_BUS.highlightPinTriggered.connect(self.__on_x_highlightPinTriggered)
+        SIGNAL_BUS.update_pin_triggered.connect(self.__on_x_update_pin_triggered)
+        SIGNAL_BUS.highlight_pin_triggered.connect(self.__on_x_highlight_pin_triggered)
+
+    # region overrides
 
     def boundingRect(self) -> QRectF:
         if self.type_ == self.Type.RECTANGLE_TYPE:
@@ -138,7 +140,19 @@ class GraphicsItemPin(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
-    def paintRectangle(
+    def paint(
+        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
+    ):
+        if self.type_ == self.Type.RECTANGLE_TYPE:
+            self.paint_rectangle(painter, option, widget)
+        elif self.type_ == self.Type.CIRCLE_TYPE:
+            self.paint_circle(painter, option, widget)
+        else:
+            super().paint(painter, option, widget)
+
+    # endregion
+
+    def paint_rectangle(
         self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget
     ):
         brush = painter.brush()
@@ -146,14 +160,14 @@ class GraphicsItemPin(QGraphicsObject):
         # draw background
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
-        if self.pinConfig.type == "I/O":
+        if self.pin_config.type == "I/O":
             if self.locked:
                 painter.setBrush(self.SELECTED_COLOR)
             elif self.function:
                 painter.setBrush(self.UNSUPPORTED_COLOR)
             else:
                 painter.setBrush(self.DEFAULT_COLOR)
-        elif self.pinConfig.type == "power":
+        elif self.pin_config.type == "power":
             painter.setBrush(self.POWER_COLOR)
         else:
             painter.setBrush(self.OTHER_COLOR)
@@ -162,38 +176,38 @@ class GraphicsItemPin(QGraphicsObject):
         if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
             x = self.width - 100
             y = 0
-            width = self.pinLength
+            width = self.pin_length
             height = self.height
         elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
             x = 0
             y = 0
             width = self.width
-            height = self.pinLength
+            height = self.pin_length
         elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
             x = 0
             y = 0
-            width = self.pinLength
+            width = self.pin_length
             height = self.height
         else:
             x = 0
-            y = self.height - self.pinLength
+            y = self.height - self.pin_length
             width = self.width
-            height = self.pinLength
+            height = self.pin_length
 
         painter.drawRect(x, y, width, height)
 
         if self.highlight:
             painter.setBrush(self.SELECTED_COLOR)
-            radius = self.ellipseDia // 2
+            radius = self.ellipse_dia // 2
             if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
-                center = QPointF(x - self.ellipseDia, self.height / 2)
+                center = QPointF(x - self.ellipse_dia, self.height / 2)
             elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
-                center = QPointF(self.width / 2, self.pinLength + self.ellipseDia)
+                center = QPointF(self.width / 2, self.pin_length + self.ellipse_dia)
             elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
-                center = QPointF(self.pinLength + self.ellipseDia, self.height / 2)
+                center = QPointF(self.pin_length + self.ellipse_dia, self.height / 2)
             else:
                 center = QPointF(
-                    self.width / 2, self.height - self.pinLength - self.ellipseDia
+                    self.width / 2, self.height - self.pin_length - self.ellipse_dia
                 )
             painter.drawEllipse(center, radius, radius)
 
@@ -202,22 +216,22 @@ class GraphicsItemPin(QGraphicsObject):
             self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION
             or self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION
         ):
-            text = self.fontMetrics.elidedText(
-                self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20
+            text = self.font_metrics.elidedText(
+                self.name, Qt.TextElideMode.ElideRight, self.pin_length - 20
             )
             painter.translate(10 + x, (self.height / 2) + 8)
         else:
-            text = self.fontMetrics.elidedText(
-                self.name, Qt.TextElideMode.ElideRight, self.pinLength - 20
+            text = self.font_metrics.elidedText(
+                self.name, Qt.TextElideMode.ElideRight, self.pin_length - 20
             )
-            painter.translate((self.width / 2) + 8, self.pinLength - 10 + y)
+            painter.translate((self.width / 2) + 8, self.pin_length - 10 + y)
             painter.rotate(-90)
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         painter.setFont(self.font)
         painter.drawText(0, 0, text)
 
         # draw label
-        if self.pinConfig.type == "I/O":
+        if self.pin_config.type == "I/O":
             if self.label == "":
                 text = self.function
             else:
@@ -227,37 +241,37 @@ class GraphicsItemPin(QGraphicsObject):
                     text = f"{self.label}({self.function})"
 
             if text != "":
-                diff = 20 + self.ellipseDia * 2
+                diff = 20 + self.ellipse_dia * 2
                 if self.direction == GraphicsItemPin.Direction.LEFT_DIRECTION:
-                    text = self.fontMetrics.elidedText(
+                    text = self.font_metrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.width - self.pinLength - diff,
+                        self.width - self.pin_length - diff,
                     )
-                    pixels = self.fontMetrics.horizontalAdvance(text)
+                    pixels = self.font_metrics.horizontalAdvance(text)
                     painter.translate(-pixels - diff, 0)
                 elif self.direction == GraphicsItemPin.Direction.BOTTOM_DIRECTION:
-                    text = self.fontMetrics.elidedText(
+                    text = self.font_metrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.height - self.pinLength - diff,
+                        self.height - self.pin_length - diff,
                     )
-                    pixels = self.fontMetrics.horizontalAdvance(text)
+                    pixels = self.font_metrics.horizontalAdvance(text)
                     painter.translate(-pixels - diff, 0)
                 elif self.direction == GraphicsItemPin.Direction.RIGHT_DIRECTION:
-                    text = self.fontMetrics.elidedText(
+                    text = self.font_metrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.width - self.pinLength - diff,
+                        self.width - self.pin_length - diff,
                     )
-                    painter.translate(self.pinLength + self.ellipseDia * 2, 0)
+                    painter.translate(self.pin_length + self.ellipse_dia * 2, 0)
                 else:
-                    text = self.fontMetrics.elidedText(
+                    text = self.font_metrics.elidedText(
                         text,
                         Qt.TextElideMode.ElideRight,
-                        self.height - self.pinLength - diff,
+                        self.height - self.pin_length - diff,
                     )
-                    painter.translate(self.pinLength + self.ellipseDia * 2, 0)
+                    painter.translate(self.pin_length + self.ellipse_dia * 2, 0)
 
             if isDarkTheme():
                 painter.setPen(QPen(QColor(255, 255, 255), 1))
@@ -267,7 +281,7 @@ class GraphicsItemPin(QGraphicsObject):
         painter.resetTransform()
         painter.setBrush(brush)
 
-    def paintCircle(
+    def paint_circle(
         self, painter: QPainter, _option: QStyleOptionGraphicsItem, _widget: QWidget
     ):
         brush = painter.brush()
@@ -275,59 +289,48 @@ class GraphicsItemPin(QGraphicsObject):
         painter.setPen(QPen(QColor(0, 0, 0), 1))
         painter.drawEllipse(0, 0, self.width // 2, self.width // 2)
 
-    # noinspection PyMethodOverriding
-    def paint(
-        self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
-    ):
-        if self.type_ == self.Type.RECTANGLE_TYPE:
-            self.paintRectangle(painter, option, widget)
-        elif self.type_ == self.Type.CIRCLE_TYPE:
-            self.paintCircle(painter, option, widget)
-        else:
-            super().paint(painter, option, widget)
-
-    def menuTriggered(self, action: QAction):
+    def menu_triggered(self, action: QAction):
         if action.isCheckable():  # function
             if action.isChecked():  # set function
                 function = action.text()
                 seqs = function.split(":")
                 instance = seqs[0]
-                if instance == self.pinInstance and function in self.pinConfig.modes:
-                    PROJECT.project().configs.set(self.lockedKey, True)
+                if instance == self.pin_instance and function in self.pin_config.modes:
+                    PROJECT.project().configs.set(self.locked_key, True)
                 else:
-                    PROJECT.project().configs.set(self.lockedKey, False)
-                PROJECT.project().configs.set(self.functionKey, function)
+                    PROJECT.project().configs.set(self.locked_key, False)
+                PROJECT.project().configs.set(self.function_key, function)
             else:  # unset function
-                PROJECT.project().configs.set(self.lockedKey, False)
-                PROJECT.project().configs.set(self.functionKey, "")
+                PROJECT.project().configs.set(self.locked_key, False)
+                PROJECT.project().configs.set(self.function_key, "")
         else:  # reset state
-            PROJECT.project().configs.set(self.lockedKey, False)
-            PROJECT.project().configs.set(self.functionKey, "")
-            PROJECT.project().configs.set(self.labelKey, "")
+            PROJECT.project().configs.set(self.locked_key, False)
+            PROJECT.project().configs.set(self.function_key, "")
+            PROJECT.project().configs.set(self.label_key, "")
 
-        self.updatePin()
+        self.update_pin()
 
     def __on_project_pinConfigChanged(
-        self, keys: list[str], oldValue: object, newValue: object
+        self, keys: list[str], old_value: object, new_value: object
     ):
         if keys[1] != self.name:
             return
 
         if keys[-1] == "label":  # update pin label comment
-            self.label = newValue  # type: ignore
+            self.label = new_value  # type: ignore
         elif keys[-1] == "locked":  # update pin locked status
-            self.locked = newValue  # type: ignore
+            self.locked = new_value  # type: ignore
         elif keys[-1] == "function":  # update pin function
-            self.function = newValue  # type: ignore
+            self.function = new_value  # type: ignore
         elif keys[-1] == "mode":  # update pin mode
-            self.mode = newValue  # type: ignore
+            self.mode = new_value  # type: ignore
 
-        self.__flushMenuAction()
+        self.__flush_menu_action()
 
         self.update()
 
-    def __initMenu(self):
-        if self.pinConfig.type == "I/O":  # only "I/O" type can init menu
+    def __init_menu(self):
+        if self.pin_config.type == "I/O":  # only "I/O" type can init menu
             self.menu = CheckableMenu()
             self.menu.view.setStyleSheet(
                 """MenuActionListWidget {
@@ -336,11 +339,11 @@ class GraphicsItemPin(QGraphicsObject):
                 }"""
             )
             self.menu.clear()
-            self.menu.triggered.connect(self.menuTriggered)
+            self.menu.triggered.connect(self.menu_triggered)
             self.menu.addAction(Action(self.tr("Reset State")))  # type: ignore
             self.menu.addSeparator()
 
-            for function in self.pinConfig.functions():
+            for function in self.pin_config.functions():
                 action = Action(function)
                 action.setCheckable(True)
                 self.menu.addAction(action)
@@ -348,9 +351,9 @@ class GraphicsItemPin(QGraphicsObject):
             self.setData(GraphicsItemPin.Data.MENU_DATA.value, self.menu)
             self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
 
-            self.__flushMenuAction()
+            self.__flush_menu_action()
 
-    def __flushMenuAction(self):
+    def __flush_menu_action(self):
         if self.menu is not None:
             actions = self.menu.actions()
             for action in actions:
@@ -364,29 +367,29 @@ class GraphicsItemPin(QGraphicsObject):
                 else:
                     action.setEnabled(True)
 
-    def __on_x_updatePinTriggered(self, name: str):
+    def __on_x_update_pin_triggered(self, name: str):
         if name != self.name:
             return
-        self.updatePin()
+        self.update_pin()
 
-    def __on_x_highlightPinTriggered(self, names: list[str]):
+    def __on_x_highlight_pin_triggered(self, names: list[str]):
         if self.name in names:
             self.highlight = True
         else:
             self.highlight = False
         self.update()
 
-    def updatePin(self):
+    def update_pin(self):
         if self.function:  # set new function
             instance = self.function.split(":")[0]
-            ip = IP.projectIps().get(self.pinInstance)
+            ip = IP.project_ips().get(self.pin_instance)
 
-            PROJECT.project().configs.set(f"{self.pinInstance}/{self.name}", {})
+            PROJECT.project().configs.set(f"{self.pin_instance}/{self.name}", {})
 
             if ip is None:
                 return
 
-            if instance == self.pinInstance:
+            if instance == self.pin_instance:
                 function = self.function
             else:
                 function = self.mode
@@ -397,15 +400,15 @@ class GraphicsItemPin(QGraphicsObject):
 
             mode = seqs[1]
 
-            if mode in ip.pinModes:
-                ip_modes = ip.pinModes[mode]
+            if mode in ip.pin_modes:
+                ip_modes = ip.pin_modes[mode]
             else:
                 logger.error(f"invalid mode: {mode}")
                 return
 
             for key, info in ip_modes.items():
                 PROJECT.project().configs.set(
-                    f"{self.pinInstance}/{self.name}/{key}", info.default
+                    f"{self.pin_instance}/{self.name}/{key}", info.default
                 )
         else:  # clear function
-            PROJECT.project().configs.set(f"{self.pinInstance}/{self.name}", {})
+            PROJECT.project().configs.set(f"{self.pin_instance}/{self.name}", {})

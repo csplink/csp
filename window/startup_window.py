@@ -43,32 +43,29 @@ class StartupView(Ui_StartupView, QWidget):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.__initCardCommand()
-        self.__initContributors()
-        self.__initProjectList()
-        self.__initMore()
+        self.__init_card_command()
+        self.__init_contributors()
+        self.__init_project_list()
+        self.__init_more()
 
-        self.__newProjectWindow = None
-        self.__mainWindow = None
-
-    def __initCardCommand(self):
+    def __init_card_command(self):
         self.cardCommand.setTitle(self.tr("I Need To:"))
-        self.newSocProjectBtn = PushButton(self.tr("New SOC Project"))
-        self.openProjectBtn = PushButton(self.tr("Open Project"))
+        self.new_soc_project_btn = PushButton(self.tr("New SOC Project"))
+        self.open_project_btn = PushButton(self.tr("Open Project"))
         self.cardCommand.viewLayout.setContentsMargins(30, 30, 30, 30)
         self.cardCommand.viewLayout.setDirection(QBoxLayout.Direction.TopToBottom)
-        self.cardCommand.viewLayout.addWidget(self.newSocProjectBtn)
-        self.cardCommand.viewLayout.addWidget(self.openProjectBtn)
+        self.cardCommand.viewLayout.addWidget(self.new_soc_project_btn)
+        self.cardCommand.viewLayout.addWidget(self.open_project_btn)
 
-    def __initContributors(self):
+    def __init_contributors(self):
         self.cardContributors.setTitle(self.tr("Contributors"))
-        self.listContributors = ListContributors(self)
-        self.cardContributors.viewLayout.addWidget(self.listContributors)
+        self.list_contributors = ListContributors(self)
+        self.cardContributors.viewLayout.addWidget(self.list_contributors)
 
-    def __initProjectList(self):
+    def __init_project_list(self):
         self.cardProjectList.setTitle(self.tr("Recent Opened Projects"))
 
-    def __initMore(self):
+    def __init_more(self):
         self.cardMore.setTitle(self.tr("More"))
 
 
@@ -77,18 +74,23 @@ class StartupWindow(MSFluentWindow):
     def __init__(self):
         super().__init__()
 
+        self.__main_window = None
+        self.__new_project_window = None
+
         self.navigationInterface.hide()
         self.stackedWidget.hide()
 
         self.view = StartupView()
         self.hBoxLayout.addWidget(self.view)
 
-        self.view.newSocProjectBtn.pressed.connect(self.__on_newSocProjectBtn_pressed)
-        self.view.openProjectBtn.pressed.connect(self.__on_openProjectBtn_pressed)
+        self.view.new_soc_project_btn.pressed.connect(
+            self.__on_newSocProjectBtn_pressed
+        )
+        self.view.open_project_btn.pressed.connect(self.__on_openProjectBtn_pressed)
 
-        self.__initWindow()
+        self.__init_window()
 
-    def __initWindow(self):
+    def __init_window(self):
         self.resize(1100, 750)
         self.setWindowIcon(
             QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg"))
@@ -103,14 +105,14 @@ class StartupWindow(MSFluentWindow):
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
     def __on_newSocProjectBtn_pressed(self):
-        self.__newProjectWindow = NewProjectWindow()
-        self.__newProjectWindow.updateFrameless()
-        self.__newProjectWindow.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
-        self.__newProjectWindow.show()
-        self.__newProjectWindow.succeed.connect(self.__on_newProjectWindow_succeed)
+        self.__new_project_window = NewProjectWindow()
+        self.__new_project_window.updateFrameless()
+        self.__new_project_window.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
+        self.__new_project_window.show()
+        self.__new_project_window.succeed.connect(self.__on_newProjectWindow_succeed)
 
     def __on_newProjectWindow_succeed(self):
-        self.__newProjectWindow = None
+        self.__new_project_window = None
         self.deleteLater()
         self.hide()
 
@@ -118,16 +120,16 @@ class StartupWindow(MSFluentWindow):
         path, ok = QFileDialog.getOpenFileName(
             self,
             self.tr("Open CSP project file"),
-            SETTINGS.lastPackageFileFolder.value,
+            SETTINGS.last_package_file_folder.value,
             self.tr("CSP project file (*.csp)"),
         )
         if ok:
-            SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
-            PROJECT.setPath(path)
+            SETTINGS.set(SETTINGS.last_package_file_folder, os.path.dirname(path))
+            PROJECT.set_path(path)
             if PROJECT.valid():
                 self.deleteLater()
                 self.hide()
-                self.__mainWindow = MainWindow()
-                self.__mainWindow.updateFrameless()
-                self.__mainWindow.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
-                self.__mainWindow.show()
+                self.__main_window = MainWindow()
+                self.__main_window.updateFrameless()
+                self.__main_window.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
+                self.__main_window.show()

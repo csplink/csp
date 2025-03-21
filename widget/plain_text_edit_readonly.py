@@ -30,8 +30,13 @@ from qfluentwidgets import PlainTextEdit
 
 
 class PlainTextEditReadonly(PlainTextEdit):
+
+    # region overrides
+
     def inputMethodEvent(self, event: QInputMethodEvent):
         if not (self.textInteractionFlags() & Qt.TextInteractionFlag.TextEditable):
             event.ignore()
             return
         super().inputMethodEvent(event)
+
+    # endregion

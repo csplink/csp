@@ -37,11 +37,11 @@ class LQFP:
     PIN_SPACING = 6
     PIN_LENGTH = 100
 
-    def getBodyLength(self, num: int):
+    def get_body_length(self, num: int):
         return self.PIN_SPACING + (self.PIN_HEIGHT + self.PIN_SPACING) * num
 
-    def getItems(self, vendor: str, name: str):
-        pins = SUMMARY.projectSummary().pins
+    def get_items(self, vendor: str, name: str):
+        pins = SUMMARY.project_summary().pins
         _pins: list[tuple[str, SummaryType.PinType]] = sorted(
             pins.items(), key=lambda d: d[1].position, reverse=False
         )
@@ -51,8 +51,8 @@ class LQFP:
         items = []
 
         item = GraphicsItemChipBody(
-            self.getBodyLength(num),
-            self.getBodyLength(num),
+            self.get_body_length(num),
+            self.get_body_length(num),
             name,
             vendor,
             f"LQFP{count}",
@@ -84,17 +84,17 @@ class LQFP:
                     + self.PIN_WIDTH
                     + self.PIN_SPACING
                 )
-                y = self.PIN_WIDTH + self.getBodyLength(num)
+                y = self.PIN_WIDTH + self.get_body_length(num)
 
             elif 2 * num <= position < 3 * num:
                 index = position - 2 * num
                 direction = GraphicsItemPin.Direction.RIGHT_DIRECTION
                 w = self.PIN_WIDTH
                 h = self.PIN_HEIGHT
-                x = self.PIN_WIDTH + self.getBodyLength(num)
+                x = self.PIN_WIDTH + self.get_body_length(num)
                 y = (
                     self.PIN_WIDTH
-                    + self.getBodyLength(num)
+                    + self.get_body_length(num)
                     - (index + 1) * (self.PIN_HEIGHT + self.PIN_SPACING)
                 )
 
@@ -105,7 +105,7 @@ class LQFP:
                 h = self.PIN_WIDTH
                 x = (
                     self.PIN_WIDTH
-                    + self.getBodyLength(num)
+                    + self.get_body_length(num)
                     - (index + 1) * (self.PIN_HEIGHT + self.PIN_SPACING)
                 )
                 y = 0

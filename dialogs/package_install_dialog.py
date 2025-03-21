@@ -42,7 +42,7 @@ from common import Icon, SETTINGS, PACKAGE, SIGNAL_BUS
 
 
 class PackageInstallThread(QThread):
-    progressUpdated = Signal(str, float)
+    progress_updated = Signal(str, float)
 
     def __init__(self, path: str, parent: QObject):
         super().__init__(parent=parent)
@@ -52,95 +52,95 @@ class PackageInstallThread(QThread):
         PACKAGE.install(self.path, self.__package_install_callback)
 
     def __package_install_callback(self, file: str, progress: float):
-        self.progressUpdated.emit(file, progress)
+        self.progress_updated.emit(file, progress)
 
 
 class PackageInstallDialog(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.titleLabel = SubtitleLabel(self.tr("Install package"), self)  # type: ignore
+        self.title_label = SubtitleLabel(self.tr("Install package"), self)  # type: ignore
         # ----------------------------------------------------------------------
-        self.pathLayout = QHBoxLayout()
+        self.path_layout = QHBoxLayout()
 
-        self.pathLineEdit = LineEdit(self)
-        self.pathLineEdit.setReadOnly(True)
-        self.pathLineEdit.setPlaceholderText(self.tr("Choose package (*.csppack) path"))  # type: ignore
-        self.pathLineEdit.textChanged.connect(self.__on_pathLineEdit_textChanged)
+        self.path_line_edit = LineEdit(self)
+        self.path_line_edit.setReadOnly(True)
+        self.path_line_edit.setPlaceholderText(self.tr("Choose package (*.csppack) path"))  # type: ignore
+        self.path_line_edit.textChanged.connect(self.__on_path_line_edit_textChanged)
 
-        self.folderBtn = ToolButton()
-        self.folderBtn.pressed.connect(self.__on_folderBtn_pressed)
-        self.folderBtn.setIcon(Icon.FOLDER)
+        self.folder_btn = ToolButton()
+        self.folder_btn.pressed.connect(self.__on_folder_btn_pressed)
+        self.folder_btn.setIcon(Icon.FOLDER)
 
-        self.pathLayout.addWidget(self.pathLineEdit)
-        self.pathLayout.addWidget(self.folderBtn)
+        self.path_layout.addWidget(self.path_line_edit)
+        self.path_layout.addWidget(self.folder_btn)
         # ----------------------------------------------------------------------
-        self.progressLayout = QHBoxLayout()
+        self.progress_layout = QHBoxLayout()
 
-        self.progressBar = ProgressBar(self)
+        self.progress_bar = ProgressBar(self)
 
-        self.progressLabel = CaptionLabel(self)
-        self.progressLabel.setMinimumWidth(
-            3 + self.progressLabel.fontMetrics().horizontalAdvance("100%")
+        self.progress_label = CaptionLabel(self)
+        self.progress_label.setMinimumWidth(
+            3 + self.progress_label.fontMetrics().horizontalAdvance("100%")
         )
-        self.progressLabel.setText(self.progressBar.valText())
+        self.progress_label.setText(self.progress_bar.valText())
 
-        self.progressLayout.addWidget(self.progressBar)
-        self.progressLayout.addWidget(self.progressLabel)
-        self.progressBar.hide()
-        self.progressLabel.hide()
+        self.progress_layout.addWidget(self.progress_bar)
+        self.progress_layout.addWidget(self.progress_label)
+        self.progress_bar.hide()
+        self.progress_label.hide()
         # ----------------------------------------------------------------------
-        self.fileLabel = BodyLabel(self)
-        self.fileLabel.hide()
+        self.file_label = BodyLabel(self)
+        self.file_label.hide()
         # ----------------------------------------------------------------------
-        self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addLayout(self.pathLayout)
-        self.viewLayout.addLayout(self.progressLayout)
-        self.viewLayout.addWidget(self.fileLabel)
+        self.viewLayout.addWidget(self.title_label)
+        self.viewLayout.addLayout(self.path_layout)
+        self.viewLayout.addLayout(self.progress_layout)
+        self.viewLayout.addWidget(self.file_label)
         # ----------------------------------------------------------------------
         self.yesButton.setText(self.tr("Install"))  # type: ignore
         self.yesButton.clicked.disconnect()  # self._MessageBoxBase__onYesButtonClicked
-        self.yesButton.clicked.connect(self.__on_yesButton_clicked)
+        self.yesButton.clicked.connect(self.__on_yes_button_clicked)
         self.yesButton.setEnabled(False)
 
         self.widget.setFixedWidth(560)
 
-    def __on_pathLineEdit_textChanged(self, text: str):
+    def __on_path_line_edit_textChanged(self, text: str):
         if os.path.isfile(text):
             self.yesButton.setEnabled(True)
         else:
             self.yesButton.setEnabled(False)
 
-    def __on_folderBtn_pressed(self):
+    def __on_folder_btn_pressed(self):
         path, _ = QFileDialog.getOpenFileName(
             self,
             self.tr("Choose CSP package file"),  # type: ignore
-            SETTINGS.lastPackageFileFolder.value,
+            SETTINGS.last_package_file_folder.value,
             self.tr("CSP package file (*.csppack)"),  # type: ignore
         )
         if os.path.isfile(path):
-            SETTINGS.set(SETTINGS.lastPackageFileFolder, os.path.dirname(path))
-            self.pathLineEdit.setText(path)
+            SETTINGS.set(SETTINGS.last_package_file_folder, os.path.dirname(path))
+            self.path_line_edit.setText(path)
 
-    def __on_yesButton_clicked(self):
-        thread = PackageInstallThread(self.pathLineEdit.text(), self)
-        thread.progressUpdated.connect(self.__updateProgress)
-        thread.started.connect(self.__showProgress)
+    def __on_yes_button_clicked(self):
+        thread = PackageInstallThread(self.path_line_edit.text(), self)
+        thread.progress_updated.connect(self.__update_progress)
+        thread.started.connect(self.__show_progress)
         thread.finished.connect(self.__finish)
         thread.start()
         self.yesButton.setEnabled(False)
         self.cancelButton.setEnabled(False)
 
-    def __showProgress(self):
-        self.progressBar.show()
-        self.progressLabel.show()
-        self.fileLabel.show()
+    def __show_progress(self):
+        self.progress_bar.show()
+        self.progress_label.show()
+        self.file_label.show()
 
-    def __updateProgress(self, file: str, progress: float):
-        self.progressBar.setVal(progress * 100)
-        self.progressLabel.setText(self.progressBar.valText())
-        self.fileLabel.setText(file)
+    def __update_progress(self, file: str, progress: float):
+        self.progress_bar.setVal(progress * 100)
+        self.progress_label.setText(self.progress_bar.valText())
+        self.file_label.setText(file)
 
     def __finish(self):
-        SIGNAL_BUS.packageUpdated.emit()
+        SIGNAL_BUS.package_updated.emit()
         self.accept()

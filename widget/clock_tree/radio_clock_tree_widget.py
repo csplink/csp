@@ -39,13 +39,13 @@ class RadioClockTreeWidget(BaseClockTreeWidget, QRadioButton):
         param: str,
         element: ClockTreeType.ElementUnitType,
         parameter: IpType.ParameterUnitType,
-        clockTree: ClockTreeType,
+        clock_tree: ClockTreeType,
         template: Template,
         data: dict,
         parent=None,
     ):
         BaseClockTreeWidget.__init__(
-            self, id_, instance, param, element, parameter, clockTree, template, data
+            self, id_, instance, param, element, parameter, clock_tree, template, data
         )
         QRadioButton.__init__(self, parent)
 

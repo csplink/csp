@@ -54,7 +54,7 @@ class ContributorType:
         return self.__data.get("contributions", 0)
 
     @property
-    def htmlUrl(self) -> str:
+    def html_url(self) -> str:
         return self.__data.get("htmlUrl", "")
 
     @property
@@ -64,10 +64,10 @@ class ContributorType:
 
 class Contributor:
     def __init__(self):
-        self.__contributors = self.getContributors()
+        self.__contributors = self.get_contributors()
 
     @logger.catch(default=False)
-    def checkContributors(self, contributors: list) -> bool:
+    def check_contributors(self, contributors: list) -> bool:
         with open(
             os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "contributors.yml"),
             "r",
@@ -78,11 +78,11 @@ class Contributor:
         return True
 
     @logger.catch(default=[])
-    def __getContributors(self) -> list[dict]:
+    def __get_contributors(self) -> list[dict]:
         if os.path.isfile(SETTINGS.CONTRIBUTORS_FILE):
             with open(SETTINGS.CONTRIBUTORS_FILE, "r", encoding="utf-8") as f:
                 contributors = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.checkContributors(contributors)
+                succeed = self.check_contributors(contributors)
             if succeed:
                 return contributors
             else:
@@ -90,11 +90,9 @@ class Contributor:
         else:
             return []
 
-    def getContributors(self) -> list[ContributorType]:
+    def get_contributors(self) -> list[ContributorType]:
         l = []
-        # noinspection PyTypeChecker,PyArgumentList
-        contributors = self.__getContributors()
-        # noinspection PyTypeChecker,PyArgumentList
+        contributors = self.__get_contributors()
         for contributor in contributors:
             l.append(ContributorType(contributor))
         return l

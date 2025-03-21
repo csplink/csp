@@ -36,13 +36,13 @@ class SummaryTest(unittest.TestCase):
 
     def test_getSummary(self):
         repository = Repository()
-        socs = repository.repository().allSoc()
+        socs = repository.repository().all_soc()
         for soc in socs:
-            summary = SUMMARY.getSummary(soc.vendor, soc.name)
+            summary = SUMMARY.get_summary(soc.vendor, soc.name)
             self.assertGreater(len(summary.name), 0, msg="load failed.")
-            self.assertGreater(len(summary.clockTree), 0, msg="load failed.")
+            self.assertGreater(len(summary.clock_tree), 0, msg="load failed.")
             self.assertGreater(len(summary.vendor), 0, msg="load failed.")
-            self.assertGreater(len(summary.vendorUrl.origin), 0, msg="load failed.")
+            self.assertGreater(len(summary.vendor_url.origin), 0, msg="load failed.")
             documents = summary.documents
             self.assertGreater(len(documents.datasheets), 0, msg="load failed.")
             self.assertGreater(len(documents.errata), 0, msg="load failed.")
@@ -76,11 +76,11 @@ class SummaryTest(unittest.TestCase):
                 for _, version in build.items():
                     self.assertGreater(len(version), 0, msg="load failed.")
             linker = summary.linker
-            self.assertGreater(linker.defaultHeapSize, -2, msg="load failed.")
-            self.assertGreater(linker.defaultStackSize, -2, msg="load failed.")
+            self.assertGreater(linker.default_heap_size, -2, msg="load failed.")
+            self.assertGreater(linker.default_stack_size, -2, msg="load failed.")
             pins = summary.pins
             self.assertGreater(len(pins), 0, msg="load failed.")
-            pinIp = None
+            pin_ip = None
             for _, pin in pins.items():
                 # self.assertGreater(len(pin.position), 0, msg='load failed.')
                 self.assertGreater(len(pin.type), 0, msg="load failed.")
@@ -89,11 +89,11 @@ class SummaryTest(unittest.TestCase):
                         len(pin.signals) + len(pin.modes), 0, msg="load failed."
                     )
                     if len(pin.modes) > 0:
-                        if pinIp is None:
-                            pinIp = pin.modes[0].split(":")[0]
+                        if pin_ip is None:
+                            pin_ip = pin.modes[0].split(":")[0]
                         for mode in pin.modes:
                             self.assertEqual(
-                                pinIp, mode.split(":")[0], msg="load failed."
+                                pin_ip, mode.split(":")[0], msg="load failed."
                             )
 
     def tearDown(self):

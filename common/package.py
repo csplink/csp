@@ -97,7 +97,7 @@ class PackageDescriptionType:
         self.__data = data
 
         self.__author = None
-        self.__vendorUrl = None
+        self.__vendor_url = None
         self.__description = None
         self.__url = None
 
@@ -137,10 +137,10 @@ class PackageDescriptionType:
         return self.__data.get("vendor", "")
 
     @property
-    def vendorUrl(self) -> I18nType:
-        if self.__vendorUrl is None:
-            self.__vendorUrl = I18nType(self.__data.get("vendorUrl", {}))
-        return self.__vendorUrl
+    def vendor_url(self) -> I18nType:
+        if self.__vendor_url is None:
+            self.__vendor_url = I18nType(self.__data.get("vendorUrl", {}))
+        return self.__vendor_url
 
     @property
     def description(self) -> I18nType:
@@ -195,19 +195,19 @@ class Package(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.__index = self.getPackageIndex()
+        self.__index = self.get_package_index()
         self.__pdscs = {}
         self.__mutex = QMutex()
 
     @logger.catch(default=False)
-    def __checkYaml(self, schemaPath: str, instance: dict) -> bool:
-        with open(schemaPath, "r", encoding="utf-8") as f:
+    def __check_yaml(self, schema_path: str, instance: dict) -> bool:
+        with open(schema_path, "r", encoding="utf-8") as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
             jsonschema.validate(instance=instance, schema=schema)
         return True
 
     @logger.catch(default=None)
-    def __getPackageDescription(self, path: str) -> PackageDescriptionType | None:
+    def __get_package_description(self, path: str) -> PackageDescriptionType | None:
         if os.path.isfile(path):
             with open(path, "r", encoding="utf-8") as f:
                 package: dict = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -215,7 +215,7 @@ class Package(QObject):
                     SETTINGS.DATABASE_FOLDER, "schema", "package_description.yml"
                 )
                 # noinspection PyArgumentList
-                succeed = self.__checkYaml(path, package)
+                succeed = self.__check_yaml(path, package)
             if succeed:
                 return PackageDescriptionType(package)
             else:
@@ -224,38 +224,40 @@ class Package(QObject):
             logger.error(f"{path} is not file!")
             return None
 
-    def __getPackageDescriptionAuto(self, path: str) -> PackageDescriptionType | None:
+    def __get_package_description_auto(
+        self, path: str
+    ) -> PackageDescriptionType | None:
         if os.path.isfile(path):
             # noinspection PyTypeChecker
-            return self.__getPackageDescription(path)
+            return self.__get_package_description(path)
         elif os.path.isdir(path):
             files = glob.glob(f"{path}/*.csppdsc")
             count = len(files)
             if count != 1:
                 logger.error(f"invalid package")
                 return None
-            packageFile = files[0]
+            package_file = files[0]
             # noinspection PyTypeChecker
-            return self.__getPackageDescription(packageFile)
+            return self.__get_package_description(package_file)
         else:
             return None
 
-    def getPackageDescription(self, path: str) -> PackageDescriptionType | None:
+    def get_package_description(self, path: str) -> PackageDescriptionType | None:
         if path in self.__pdscs:
             return self.__pdscs[path]
         else:
-            pdsc = self.__getPackageDescriptionAuto(path)
+            pdsc = self.__get_package_description_auto(path)
             self.__pdscs[path] = pdsc
             return pdsc
 
     @logger.catch(default=PackageIndexType({}))
-    def __getPackageIndex(self) -> PackageIndexType:
+    def __get_package_index(self) -> PackageIndexType:
         file = SETTINGS.PACKAGE_INDEX_FILE
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
                 index = yaml.load(f.read(), Loader=yaml.FullLoader)
                 # noinspection PyArgumentList
-                succeed = self.__checkYaml(
+                succeed = self.__check_yaml(
                     os.path.join(
                         SETTINGS.DATABASE_FOLDER, "schema", "package_index.yml"
                     ),
@@ -270,9 +272,9 @@ class Package(QObject):
                 pass
             return PackageIndexType({})
 
-    def getPackageIndex(self) -> PackageIndexType:
+    def get_package_index(self) -> PackageIndexType:
         # noinspection PyTypeChecker,PyArgumentList
-        return self.__getPackageIndex()
+        return self.__get_package_index()
 
     def index(self) -> PackageIndexType:
         return self.__index
@@ -288,55 +290,55 @@ class Package(QObject):
         if not os.path.exists(path):
             return False
 
-        repositoryFolder = SETTINGS.packageFolder.value
-        tmpFolder = os.path.join(repositoryFolder, "tmp")
+        repository_folder = SETTINGS.package_folder.value
+        tmp_folder = os.path.join(repository_folder, "tmp")
 
         with QMutexLocker(self.__mutex):
-            if os.path.isdir(tmpFolder):
-                shutil.rmtree(tmpFolder)
+            if os.path.isdir(tmp_folder):
+                shutil.rmtree(tmp_folder)
             if os.path.isfile(path):
-                if os.path.isfile(tmpFolder):
-                    os.remove(tmpFolder)
-                os.makedirs(tmpFolder)
+                if os.path.isfile(tmp_folder):
+                    os.remove(tmp_folder)
+                os.makedirs(tmp_folder)
 
                 # noinspection PyBroadException
                 try:
                     with py7zr.SevenZipFile(path, "r") as archive:
                         info = archive.archiveinfo()
                         cbk = Callback(info.uncompressed, callback)
-                        archive.extractall(path=tmpFolder, callback=cbk)
+                        archive.extractall(path=tmp_folder, callback=cbk)
                 except Exception as e:
                     logger.error(e)
                     return False
 
-                dirs = os.listdir(tmpFolder)
+                dirs = os.listdir(tmp_folder)
                 count = len(dirs)
 
-                if count == 1 and os.path.isdir(os.path.join(tmpFolder, dirs[0])):
-                    d = os.path.join(tmpFolder, dirs[0])
-                    tmpTmpFolder = os.path.join(repositoryFolder, "tmp.tmp")
-                    shutil.move(d, tmpTmpFolder)
-                    shutil.rmtree(tmpFolder)
-                    shutil.move(tmpTmpFolder, tmpFolder)
+                if count == 1 and os.path.isdir(os.path.join(tmp_folder, dirs[0])):
+                    d = os.path.join(tmp_folder, dirs[0])
+                    tmp_tmp_folder = os.path.join(repository_folder, "tmp.tmp")
+                    shutil.move(d, tmp_tmp_folder)
+                    shutil.rmtree(tmp_folder)
+                    shutil.move(tmp_tmp_folder, tmp_folder)
             elif os.path.isdir(path):
                 items = []
                 for root, dirs, files in os.walk(path):
                     dirs[:] = [d for d in dirs if d not in [".git"]]
                     for file in files:
-                        sourceFile = os.path.join(root, file)
-                        relPath = os.path.relpath(sourceFile, path)
-                        targetFile = os.path.join(tmpFolder, relPath)
-                        items.append((sourceFile, targetFile))
+                        source_file = os.path.join(root, file)
+                        rel_path = os.path.relpath(source_file, path)
+                        target_file = os.path.join(tmp_folder, rel_path)
+                        items.append((source_file, target_file))
                 count = len(items)
-                for index, (sourceFile, targetFile) in enumerate(items, start=1):
-                    os.makedirs(os.path.dirname(targetFile), exist_ok=True)
-                    shutil.copy2(sourceFile, targetFile)
-                    callback(targetFile, (index / count) * 100)
+                for index, (source_file, target_file) in enumerate(items, start=1):
+                    os.makedirs(os.path.dirname(target_file), exist_ok=True)
+                    shutil.copy2(source_file, target_file)
+                    callback(target_file, (index / count) * 100)
 
             # ----------------------------------------------------------------------------------------------------------
-            package = self.getPackageDescription(tmpFolder)
+            package = self.get_package_description(tmp_folder)
             if package is None:
-                logger.error(f"invalid package {tmpFolder}")
+                logger.error(f"invalid package {tmp_folder}")
                 return False
 
             kind = package.type.lower()
@@ -344,22 +346,22 @@ class Package(QObject):
             name = package.name
             version = package.version.lower()
 
-            vendorFolder = os.path.join(
-                repositoryFolder, kind, vendor.lower(), name.lower()
+            vendor_folder = os.path.join(
+                repository_folder, kind, vendor.lower(), name.lower()
             )
-            folder = os.path.join(vendorFolder, version).replace("\\", "/")
+            folder = os.path.join(vendor_folder, version).replace("\\", "/")
             if os.path.isdir(folder):
                 shutil.rmtree(folder)
             elif os.path.isfile(folder):
                 os.remove(folder)
 
-            if not os.path.isdir(vendorFolder):
-                os.makedirs(vendorFolder)
-            elif os.path.isfile(vendorFolder):
-                os.remove(vendorFolder)
-                os.makedirs(vendorFolder)
+            if not os.path.isdir(vendor_folder):
+                os.makedirs(vendor_folder)
+            elif os.path.isfile(vendor_folder):
+                os.remove(vendor_folder)
+                os.makedirs(vendor_folder)
 
-            shutil.move(tmpFolder, folder)
+            shutil.move(tmp_folder, folder)
             self.__index.origin.setdefault(kind, {}).setdefault(name, {})[version] = (
                 os.path.relpath(folder, SETTINGS.EXE_FOLDER)
             )
@@ -393,28 +395,28 @@ class Package(QObject):
 
 class Callback(py7zr_callbacks.ExtractCallback):
 
-    def __init__(self, totalBytes, callback: Callable[[str, float], None]):
-        self.__archiveTotal = totalBytes
+    def __init__(self, total_bytes, callback: Callable[[str, float], None]):
+        self.__archive_total = total_bytes
         self.__callback = callback
-        self.__totalBytes = 0
+        self.__total_bytes = 0
 
     def report_start_preparation(self):
         pass
 
-    def report_start(self, processingFilePath, processingBytes):
+    def report_start(self, processing_file_path, processing_bytes):
         pass
 
-    def report_update(self, decompressedBytes):
+    def report_update(self, decompressed_bytes):
         pass
 
-    def report_end(self, processingFilePath, wroteBytes):
-        if self.__archiveTotal == 0:
-            self.__callback(processingFilePath, 100)
+    def report_end(self, processing_file_path, wrote_bytes):
+        if self.__archive_total == 0:
+            self.__callback(processing_file_path, 100)
             return
 
-        self.__totalBytes += int(wroteBytes)
-        progress = (self.__totalBytes / self.__archiveTotal) * 100
-        self.__callback(processingFilePath, progress)
+        self.__total_bytes += int(wrote_bytes)
+        progress = (self.__total_bytes / self.__archive_total) * 100
+        self.__callback(processing_file_path, progress)
 
     def report_warning(self, message):
         pass
@@ -430,7 +432,7 @@ class PackageCmd(QObject):
 
         self.progress = progress
         self.verbose = verbose
-        self.installBar = None
+        self.install_bar = None
 
         PACKAGE.installed.connect(self.__on_x_installed)
         PACKAGE.uninstalled.connect(self.__on_x_uninstalled)
@@ -453,14 +455,14 @@ class PackageCmd(QObject):
 
     def __package_install_callback(self, file: str, progress: float):
         if self.progress:
-            if self.installBar is None:
-                self.installBar = tqdm(total=100, desc="install", unit="file")
-            self.installBar.set_description(f"install {file}")
-            self.installBar.n = progress
-            self.installBar.refresh()
+            if self.install_bar is None:
+                self.install_bar = tqdm(total=100, desc="install", unit="file")
+            self.install_bar.set_description(f"install {file}")
+            self.install_bar.n = progress
+            self.install_bar.refresh()
             if progress == 100:
-                self.installBar.set_description("install")
-                self.installBar.close()
+                self.install_bar.set_description("install")
+                self.install_bar.close()
         else:
             if self.verbose:
                 print(f"install {file}")

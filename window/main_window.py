@@ -59,115 +59,115 @@ class CustomTitleBar(MSFluentTitleBar):
         super().__init__(parent)
 
         # add buttons
-        self.btnLayout = QHBoxLayout()
+        self.btn_layout = QHBoxLayout()
 
         # ----------------------------------------------------------------------
-        self.projectBtn = TransparentPushButton(self.tr("Project"), self)  # type: ignore
-        self.projectMenu = self.__createProjectMenu()
-        self.projectBtn.clicked.connect(
-            lambda: self.projectMenu.exec(
-                self.projectBtn.mapToGlobal(QPoint(0, self.projectBtn.height())),
+        self.project_btn = TransparentPushButton(self.tr("Project"), self)  # type: ignore
+        self.project_menu = self.__create_project_menu()
+        self.project_btn.clicked.connect(
+            lambda: self.project_menu.exec(
+                self.project_btn.mapToGlobal(QPoint(0, self.project_btn.height())),
                 ani=True,
             )
         )
         # ----------------------------------------------------------------------
-        self.helpBtn = TransparentPushButton(self.tr("Help"), self)  # type: ignore
-        self.helpMenu = self.__createHelpMenu()
-        self.helpBtn.clicked.connect(
-            lambda: self.helpMenu.exec(
-                self.helpBtn.mapToGlobal(QPoint(0, self.helpBtn.height())), ani=True
+        self.help_btn = TransparentPushButton(self.tr("Help"), self)  # type: ignore
+        self.help_menu = self.__create_help_menu()
+        self.help_btn.clicked.connect(
+            lambda: self.help_menu.exec(
+                self.help_btn.mapToGlobal(QPoint(0, self.help_btn.height())), ani=True
             )
         )
         # ----------------------------------------------------------------------
-        self.packageBtn = TransparentPushButton(self.tr("Package"), self)  # type: ignore
-        self.packageMenu = self.__createPackageMenu()
-        self.packageBtn.clicked.connect(
-            lambda: self.packageMenu.exec(
-                self.packageBtn.mapToGlobal(QPoint(0, self.packageBtn.height())),
+        self.package_btn = TransparentPushButton(self.tr("Package"), self)  # type: ignore
+        self.package_menu = self.__create_package_menu()
+        self.package_btn.clicked.connect(
+            lambda: self.package_menu.exec(
+                self.package_btn.mapToGlobal(QPoint(0, self.package_btn.height())),
                 ani=True,
             )
         )
         # ----------------------------------------------------------------------
-        self.btnLayout.setContentsMargins(20, 0, 20, 0)
-        self.btnLayout.setSpacing(15)
+        self.btn_layout.setContentsMargins(20, 0, 20, 0)
+        self.btn_layout.setSpacing(15)
 
-        self.btnLayout.addWidget(self.projectBtn)
-        self.btnLayout.addWidget(self.helpBtn)
-        self.btnLayout.addWidget(self.packageBtn)
+        self.btn_layout.addWidget(self.project_btn)
+        self.btn_layout.addWidget(self.help_btn)
+        self.btn_layout.addWidget(self.package_btn)
 
-        self.layoutHeader = self.hBoxLayout
-        self.layoutHeader.insertLayout(4, self.btnLayout)
+        self.layout_header = self.hBoxLayout
+        self.layout_header.insertLayout(4, self.btn_layout)
 
-        self.projectLabel = BodyLabel(self)
-        self.projectLabel.setFont(getFont(16))
-        self.projectLabel.setText(PROJECT.title())
-        PROJECT.titleChanged.connect(lambda s: self.projectLabel.setText(s))
+        self.project_label = BodyLabel(self)
+        self.project_label.setFont(getFont(16))
+        self.project_label.setText(PROJECT.title())
+        PROJECT.title_changed.connect(lambda s: self.project_label.setText(s))
 
         self.hBoxLayout.insertWidget(
             5,
-            self.projectLabel,
+            self.project_label,
             100,
             Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter,
         )
-        self.layoutHeader.setStretch(6, 0)
+        self.layout_header.setStretch(6, 0)
 
-    def __createProjectMenu(self) -> RoundMenu:
+    def __create_project_menu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        # self.newAction = Action(self.tr('New'))
-        # self.newAction.setShortcut("Ctrl+N")
-        # menu.addAction(self.newAction)
+        # self.new_action = Action(self.tr('New'))
+        # self.new_action.setShortcut("Ctrl+N")
+        # menu.addAction(self.new_action)
         #
-        # self.openAction = Action(self.tr('Open'))
-        # self.openAction.setShortcut("Ctrl+O")
-        # menu.addAction(self.openAction)
+        # self.open_action = Action(self.tr('Open'))
+        # self.open_action.setShortcut("Ctrl+O")
+        # menu.addAction(self.open_action)
 
-        self.saveAction = Action(self.tr("Save"))  # type: ignore
-        # self.saveAction.setShortcut("Ctrl+S")
-        self.saveAction.triggered.connect(lambda: PROJECT.save())
-        menu.addAction(self.saveAction)
+        self.save_action = Action(self.tr("Save"))  # type: ignore
+        # self.save_action.setShortcut("Ctrl+S")
+        self.save_action.triggered.connect(lambda: PROJECT.save())
+        menu.addAction(self.save_action)
 
         menu.addSeparator()
 
-        self.generateAction = Action(self.tr("Generate"))  # type: ignore
-        # self.generateAction.setShortcut("Ctrl+G")
-        self.generateAction.triggered.connect(lambda: self.generateCode())
-        menu.addAction(self.generateAction)
+        self.generate_action = Action(self.tr("Generate"))  # type: ignore
+        # self.generate_action.setShortcut("Ctrl+G")
+        self.generate_action.triggered.connect(lambda: self.generate_code())
+        menu.addAction(self.generate_action)
 
         return menu
 
-    def __createHelpMenu(self) -> RoundMenu:
+    def __create_help_menu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.aboutQtAction = Action(self.tr("About Qt"))  # type: ignore
-        self.aboutQtAction.triggered.connect(
+        self.about_qt_action = Action(self.tr("About Qt"))  # type: ignore
+        self.about_qt_action.triggered.connect(
             lambda: QMessageBox.aboutQt(self.window(), self.tr("About Qt"))  # type: ignore
         )
-        menu.addAction(self.aboutQtAction)
+        menu.addAction(self.about_qt_action)
 
-        self.aboutAction = Action(self.tr("About"))  # type: ignore
-        menu.addAction(self.aboutAction)
+        self.about_action = Action(self.tr("About"))  # type: ignore
+        menu.addAction(self.about_action)
 
         menu.addSeparator()
 
-        self.openSourceLicenseAction = Action(self.tr("Open Source License"))  # type: ignore
-        menu.addAction(self.openSourceLicenseAction)
+        self.open_source_license_action = Action(self.tr("Open Source License"))  # type: ignore
+        menu.addAction(self.open_source_license_action)
 
         return menu
 
-    def __createPackageMenu(self) -> RoundMenu:
+    def __create_package_menu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.installPackageAction = Action(self.tr("Install"))  # type: ignore
-        self.installPackageAction.triggered.connect(
+        self.install_package_action = Action(self.tr("Install"))  # type: ignore
+        self.install_package_action.triggered.connect(
             lambda: PackageInstallDialog(self.window()).exec()
         )
-        menu.addAction(self.installPackageAction)
+        menu.addAction(self.install_package_action)
 
         return menu
 
-    def generateCode(self):
-        succeed, msg = PROJECT.isGenerateSettingValid()
+    def generate_code(self):
+        succeed, msg = PROJECT.is_generate_setting_valid()
         if not succeed:
             logger.error(msg)
             title = self.tr("Error")  # type: ignore
@@ -177,7 +177,7 @@ class CustomTitleBar(MSFluentTitleBar):
             message.cancelButton.setDisabled(True)
             message.raise_()
             message.exec()
-            SIGNAL_BUS.navigationRequested.emit("SettingView", "GenerateSettingView")
+            SIGNAL_BUS.navigation_requested.emit("SettingView", "GenerateSettingView")
             return
 
         coder = Coder()
@@ -191,53 +191,54 @@ class MainWindow(MSFluentWindow):
 
         self.__views = {}
 
-        self.__initWindow()
+        self.__init_window()
 
         loop = QEventLoop(self)
-        QTimer.singleShot(3000, loop.quit)  # splashScreen show at least 3s
+        QTimer.singleShot(3000, loop.quit)  # splash screen show at least 3s
         QApplication.processEvents()
 
-        self.socView = SocView(self)
-        self.clockTreeView = ClockTreeView(self)
+        self.soc_view = SocView(self)
+        self.clock_tree_view = ClockTreeView(self)
 
         # ugly, because when opengl is created, the window will automatically hide
         self.show()
 
-        self.codeView = CodeView(self)
-        self.packageView = PackageView(self)
-        self.settingView = SettingView(self)
+        self.code_view = CodeView(self)
+        self.package_view = PackageView(self)
+        self.setting_view = SettingView(self)
 
-        self.viewSplitter = QSplitter(Qt.Orientation.Vertical, self)
-        self.subTabView = TabWidget(self.viewSplitter)
-        self.plainTextEditLogger = PlainTextEditLogger(self.subTabView)
-        self.plainTextEditLogger.setObjectName("plainTextEditLogger")
+        self.view_splitter = QSplitter(Qt.Orientation.Vertical, self)
+        self.sub_tab_view = TabWidget(self.view_splitter)
+        self.plain_text_edit_logger = PlainTextEditLogger(self.sub_tab_view)
+        self.plain_text_edit_logger.setObjectName("plainTextEditLogger")
 
         old = self.stackedWidget
         old.deleteLater()
-        self.stackedWidget = StackedWidget(self.viewSplitter)
+        self.stackedWidget = StackedWidget(self.view_splitter)
+        self.stacked_widget = self.stackedWidget
 
-        self.__initMainView()
-        self.__initNavigation()
-        self.__initSubTabView()
+        self.__init_main_view()
+        self.__init_navigation()
+        self.__init_sub_tab_view()
 
         # project --------------------------------------------------------------
 
-        SIGNAL_BUS.navigationRequested.connect(
+        SIGNAL_BUS.navigation_requested.connect(
             self.__on_x_navigationRequested, Qt.ConnectionType.QueuedConnection
         )
-        self.stackedWidget.currentChanged.connect(
+        self.stacked_widget.current_changed.connect(
             self.__on_stackedWidget_currentChanged, Qt.ConnectionType.QueuedConnection
         )
 
         if SETTINGS.DEBUG:
-            self.splashScreen.finish()
+            self.splash_screen.finish()
         else:
             loop.exec()
-            self.splashScreen.finish()
+            self.splash_screen.finish()
             self.showMaximized()
 
     def closeEvent(self, event: QCloseEvent):
-        if PROJECT.isChanged():
+        if PROJECT.is_changed():
             title = self.tr("Warning")  # type: ignore
             content = self.tr(  # type: ignore
                 "The project {!r} has not been saved yet, do you want to exit?"
@@ -252,10 +253,10 @@ class MainWindow(MSFluentWindow):
         else:
             event.accept()
 
-    def __initNavigation(self):
-        self.__addView(self.socView, Icon.CPU, self.tr("SOC"), Icon.CPU)  # type: ignore
-        self.__addView(self.clockTreeView, Icon.TIME, self.tr("Clock"), Icon.TIME)  # type: ignore
-        self.__addView(self.codeView, Icon.CODE, self.tr("Code"), Icon.CODE)  # type: ignore
+    def __init_navigation(self):
+        self.__add_view(self.soc_view, Icon.CPU, self.tr("SOC"), Icon.CPU)  # type: ignore
+        self.__add_view(self.clock_tree_view, Icon.TIME, self.tr("Clock"), Icon.TIME)  # type: ignore
+        self.__add_view(self.code_view, Icon.CODE, self.tr("Code"), Icon.CODE)  # type: ignore
 
         self.navigationInterface.addItem(
             routeKey="Generate",
@@ -275,36 +276,36 @@ class MainWindow(MSFluentWindow):
             position=NavigationItemPosition.BOTTOM,
         )
 
-        self.__addView(
-            self.packageView,
+        self.__add_view(
+            self.package_view,
             Icon.BOOK_SHELF,
             self.tr("Package"),  # type: ignore
             Icon.BOOK_SHELF,
             NavigationItemPosition.BOTTOM,
         )
-        self.__addView(
-            self.settingView,
+        self.__add_view(
+            self.setting_view,
             Icon.SETTING,
             self.tr("Settings"),  # type: ignore
             Icon.SETTING,
             NavigationItemPosition.BOTTOM,
         )
-        self.navigationInterface.setCurrentItem(self.socView.objectName())
+        self.navigationInterface.setCurrentItem(self.soc_view.objectName())
 
-    def __initMainView(self):
-        self.hBoxLayout.removeWidget(self.stackedWidget)
-        self.viewSplitter.addWidget(self.stackedWidget)
-        self.viewSplitter.addWidget(self.subTabView)
-        self.viewSplitter.setSizes([700, 200])
-        self.viewSplitter.setCollapsible(0, False)
-        self.viewSplitter.setCollapsible(1, False)
-        self.hBoxLayout.addWidget(self.viewSplitter, 1)
+    def __init_main_view(self):
+        self.hBoxLayout.removeWidget(self.stacked_widget)
+        self.view_splitter.addWidget(self.stacked_widget)
+        self.view_splitter.addWidget(self.sub_tab_view)
+        self.view_splitter.setSizes([700, 200])
+        self.view_splitter.setCollapsible(0, False)
+        self.view_splitter.setCollapsible(1, False)
+        self.hBoxLayout.addWidget(self.view_splitter, 1)
 
-        FluentStyleSheet.FLUENT_WINDOW.apply(self.stackedWidget)
+        FluentStyleSheet.FLUENT_WINDOW.apply(self.stacked_widget)
 
-    def __initWindow(self):
-        self.barTitle = CustomTitleBar(self)
-        self.setTitleBar(self.barTitle)
+    def __init_window(self):
+        self.bar_title = CustomTitleBar(self)
+        self.setTitleBar(self.bar_title)
 
         self.resize(1100, 750)
         self.setWindowIcon(
@@ -315,9 +316,9 @@ class MainWindow(MSFluentWindow):
         self.updateFrameless()
         self.setMicaEffectEnabled(False)
 
-        self.splashScreen = SplashScreen(self.windowIcon(), self)
-        self.splashScreen.setIconSize(QSize(106, 106))
-        self.splashScreen.raise_()
+        self.splash_screen = SplashScreen(self.windowIcon(), self)
+        self.splash_screen.setIconSize(QSize(106, 106))
+        self.splash_screen.raise_()
 
         # noinspection DuplicatedCode
         desktop = QApplication.screens()[0].availableGeometry()
@@ -326,21 +327,21 @@ class MainWindow(MSFluentWindow):
 
         self.show()
 
-    def __initSubTabView(self):
-        self.subTabView.addSubInterface(self.plainTextEditLogger, self.tr("Log"))  # type: ignore
+    def __init_sub_tab_view(self):
+        self.sub_tab_view.add_sub_interface(self.plain_text_edit_logger, self.tr("Log"))  # type: ignore
 
-    def __addView(
+    def __add_view(
         self,
         view: QWidget,
         icon: FluentIconBase,
         text: str,
-        selectedIcon=None,
+        selected_icon=None,
         position=NavigationItemPosition.TOP,
-        isTransparent=False,
+        is_transparent=False,
     ) -> NavigationBarPushButton:
         self.__views[view.objectName()] = view
         return self.addSubInterface(
-            view, icon, text, selectedIcon, position, isTransparent
+            view, icon, text, selected_icon, position, is_transparent
         )
 
     def __on_sponsorKey_clicked(self):
@@ -358,16 +359,16 @@ If you would like to support the development of csplink, you are encouraged to d
         if message.exec():
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))
 
-    def __on_x_navigationRequested(self, routeKey: str, subKey: str):
-        if routeKey in self.navigationInterface.items.keys():
-            self.switchTo(self.__views[routeKey])
-            self.navigationInterface.setCurrentItem(routeKey)
-            if routeKey == "SettingView" and len(subKey) > 0:
-                self.settingView.switchTo(subKey)
+    def __on_x_navigationRequested(self, route_key: str, sub_key: str):
+        if route_key in self.navigationInterface.items.keys():
+            self.switchTo(self.__views[route_key])
+            self.navigationInterface.setCurrentItem(route_key)
+            if route_key == "SettingView" and len(sub_key) > 0:
+                self.setting_view.switch_to(sub_key)
 
     def __on_stackedWidget_currentChanged(self, index: int):
-        view = self.stackedWidget.widget(index)
-        if view == self.codeView:
-            self.codeView.flush()
-        elif view == self.packageView:
-            self.packageView.flush()
+        view = self.stacked_widget.widget(index)
+        if view == self.code_view:
+            self.code_view.flush()
+        elif view == self.package_view:
+            self.package_view.flush()

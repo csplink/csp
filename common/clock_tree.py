@@ -48,7 +48,7 @@ class ClockTreeType:
             return self.__data
 
         @property
-        def refParameter(self) -> str:
+        def ref_parameter(self) -> str:
             return self.__data.get("refParameter", "")
 
         @property
@@ -99,59 +99,59 @@ class ClockTreeType:
                 self.__i18n[name] = I18nType(i)
         return self.__i18n
 
-    def i18nOrigin(self) -> dict[str, dict[str, str]]:
+    def i18n_origin(self) -> dict[str, dict[str, str]]:
         return self.__data.get("i18n", {})
 
 
 class ClockTree:
 
     def __init__(self):
-        self.__clockTrees = {}
+        self.__clock_trees = {}
 
     @logger.catch(default=False)
-    def __checkClockTree(self, clockTree: dict) -> bool:
+    def __check_clock_tree(self, clock_tree: dict) -> bool:
         with open(
             os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "clock_tree.yml"),
             "r",
             encoding="utf-8",
         ) as f:
             schema = yaml.load(f.read(), Loader=yaml.FullLoader)
-            jsonschema.validate(instance=clockTree, schema=schema)
+            jsonschema.validate(instance=clock_tree, schema=schema)
         return True
 
     @logger.catch(default=ClockTreeType({}))
-    def __getClockTree(self, vendor: str, name: str) -> ClockTreeType:
+    def __get_clock_tree(self, vendor: str, name: str) -> ClockTreeType:
         file = os.path.join(
             SETTINGS.DATABASE_FOLDER, "clock", vendor.lower(), f"{name.lower()}.yml"
         )
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
-                clockTree = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkClockTree(clockTree)
+                clock_tree = yaml.load(f.read(), Loader=yaml.FullLoader)
+                succeed = self.__check_clock_tree(clock_tree)
             if succeed:
-                return ClockTreeType(clockTree)
+                return ClockTreeType(clock_tree)
             else:
                 return ClockTreeType({})
         else:
             logger.error(f"{file} is not file!")
             return ClockTreeType({})
 
-    def getClockTree(self, vendor: str, name: str) -> ClockTreeType:
+    def get_clock_tree(self, vendor: str, name: str) -> ClockTreeType:
         vendor = vendor.lower()
         name = name.lower()
-        if vendor in self.__clockTrees and name in self.__clockTrees[vendor]:
-            return self.__clockTrees[vendor][name]
+        if vendor in self.__clock_trees and name in self.__clock_trees[vendor]:
+            return self.__clock_trees[vendor][name]
         else:
             # noinspection PyTypeChecker,PyArgumentList
-            clockTree = self.__getClockTree(vendor, name)
-            if vendor not in self.__clockTrees:
-                self.__clockTrees[vendor] = {}
-            self.__clockTrees[vendor][name] = clockTree
+            clock_tree = self.__get_clock_tree(vendor, name)
+            if vendor not in self.__clock_trees:
+                self.__clock_trees[vendor] = {}
+            self.__clock_trees[vendor][name] = clock_tree
             # noinspection PyTypeChecker
-            return clockTree
+            return clock_tree
 
-    def clockTrees(self) -> dict[str, ClockTreeType]:
-        return self.__clockTrees
+    def clock_trees(self) -> dict[str, ClockTreeType]:
+        return self.__clock_trees
 
 
 CLOCK_TREE = ClockTree()

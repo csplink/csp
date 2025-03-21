@@ -40,19 +40,19 @@ from .settings import SETTINGS
 from .value_hub import VALUE_HUB
 
 
-def _getCondition(expr: str, cls) -> str:
+def _get_condition(expr: str, cls) -> str:
     expr = expr.replace("${INSTANCE}", cls.instance())
     return expr
 
 
 class IpType(QObject):
-    parameterItemUpdated = Signal(list)
-    controlsUpdated = Signal()
-    modesUpdated = Signal()
-    controlsItemUpdated = Signal(str, bool)
-    modesItemUpdated = Signal(str, bool)
-    totalChanged = Signal(str, str, str, str)
-    total2Changed = Signal(str, str, str, str)
+    parameter_item_updated = Signal(list)
+    controls_updated = Signal()
+    modes_updated = Signal()
+    controls_item_updated = Signal(str, bool)
+    modes_item_updated = Signal(str, bool)
+    total_changed = Signal(str, str, str, str)
+    total2_changed = Signal(str, str, str, str)
 
     class ParameterUnitType:
         class ExpressionType:
@@ -216,7 +216,7 @@ class IpType(QObject):
         def max(self) -> float:
             value = self.__data.get("max", -1)
             if isinstance(value, str):
-                value = Express.floatExpr(
+                value = Express.float_expr(
                     value.replace("${INSTANCE}", self.instance()),
                     VALUE_HUB.values(),
                     {},
@@ -227,7 +227,7 @@ class IpType(QObject):
         def min(self) -> float:
             value = self.__data.get("min", -1)
             if isinstance(value, str):
-                value = Express.floatExpr(
+                value = Express.float_expr(
                     value.replace("${INSTANCE}", self.instance()),
                     VALUE_HUB.values(),
                     {},
@@ -249,12 +249,12 @@ class IpType(QObject):
                 signals = []
                 for _, value in self.values.items():
                     for name, _ in value.signals.items():
-                        signals.append(_getCondition(name, self))
+                        signals.append(_get_condition(name, self))
                 self.__signals = sorted(set(signals))
             return self.__signals
 
     class ControlModeUnitType(QObject):
-        conditionUpdated = Signal(bool)
+        condition_updated = Signal(bool)
 
         def __init__(
             self,
@@ -268,11 +268,11 @@ class IpType(QObject):
             self.__name = name
             self.__parameters = parameters
             self.__parent = parent
-            self.__conditionOrigin = None
+            self.__condition_origin = None
             self.__condition = None
             self.__dependencies = None
             self.__enabled = False
-            VALUE_HUB.itemUpdated.connect(self.__on_valueHub_itemUpdated)
+            VALUE_HUB.item_updated.connect(self.__on_valueHub_itemUpdated)
 
         def __str__(self) -> str:
             return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -299,15 +299,17 @@ class IpType(QObject):
 
         @property
         def _condition(self) -> str:
-            if self.__conditionOrigin is None:
-                self.__conditionOrigin = self.__data.get("condition", "True")
-                self.__conditionOrigin = _getCondition(self.__conditionOrigin, self)
-            return self.__conditionOrigin
+            if self.__condition_origin is None:
+                self.__condition_origin = self.__data.get("condition", "True")
+                self.__condition_origin = _get_condition(self.__condition_origin, self)
+            return self.__condition_origin
 
         @property
         def condition(self) -> bool:
             if self.__condition is None:
-                self.__condition = Express.boolExpr(self._condition, VALUE_HUB.values())
+                self.__condition = Express.bool_expr(
+                    self._condition, VALUE_HUB.values()
+                )
             return self.__condition
 
         # endregion
@@ -322,7 +324,7 @@ class IpType(QObject):
                 self.__dependencies = Express.variables(self._condition)
             return self.__dependencies
 
-        def setEnabled(self, enabled: bool):
+        def set_enabled(self, enabled: bool):
             self.__enabled = enabled
 
         def enabled(self) -> bool:
@@ -332,9 +334,11 @@ class IpType(QObject):
             key = ".".join(keys)
 
             if key in self.dependencies():
-                self.__condition = Express.boolExpr(self._condition, VALUE_HUB.values())
+                self.__condition = Express.bool_expr(
+                    self._condition, VALUE_HUB.values()
+                )
                 if self.enabled():
-                    self.conditionUpdated.emit(self.__condition)
+                    self.condition_updated.emit(self.__condition)
 
     class ConditionUnitType:
 
@@ -344,11 +348,11 @@ class IpType(QObject):
             self.__parent = parent
             self.__condition = None
             self.__content = None
-            self.__userData = None
+            self.__user_data = None
             self.__dependencies = None
 
         def __str__(self) -> str:
-            return json.dumps(self.__userData, indent=2, ensure_ascii=False)
+            return json.dumps(self.__user_data, indent=2, ensure_ascii=False)
 
         # region getter/setter
 
@@ -360,12 +364,12 @@ class IpType(QObject):
         def _condition(self) -> str:
             if self.__condition is None:
                 self.__condition = self.__data.get("condition", "True")
-                self.__condition = _getCondition(self.__condition, self)
+                self.__condition = _get_condition(self.__condition, self)
             return self.__condition
 
         @property
         def condition(self) -> bool:
-            return Express.boolExpr(self._condition, VALUE_HUB.values())
+            return Express.bool_expr(self._condition, VALUE_HUB.values())
 
         @property
         def content(self) -> dict:
@@ -388,11 +392,11 @@ class IpType(QObject):
                 self.__dependencies = Express.variables(self._condition)
             return self.__dependencies
 
-        def setUserData(self, data):
-            self.__userData = data
+        def set_user_data(self, data):
+            self.__user_data = data
 
-        def userData(self):
-            return self.__userData
+        def user_data(self):
+            return self.__user_data
 
     class PinGroupUnitType(QObject):
         def __init__(self, data: dict, parent: IpType | None):
@@ -419,29 +423,29 @@ class IpType(QObject):
         self.__data = data
         self.__parameters = None
         self.__controls = None
-        self.__pinModes = None
+        self.__pin_modes = None
         self.__modes = None
-        self.__pinGroups = None
+        self.__pin_groups = None
         self.__activated = None
         self.__instance = instance
 
         # ----------------------------------------------------------------------
 
-        self.__parametersConditions: dict[str, list[IpType.ConditionUnitType]] = {}
-        self.__parametersDependencies: dict[str, list[str]] = {}
+        self.__parameters_conditions: dict[str, list[IpType.ConditionUnitType]] = {}
+        self.__parameters_dependencies: dict[str, list[str]] = {}
 
-        self.__controlsConditions: list[IpType.ConditionUnitType] = []
-        self.__controlsDependencies: list[str] = []
+        self.__controls_conditions: list[IpType.ConditionUnitType] = []
+        self.__controls_dependencies: list[str] = []
 
-        self.__modesConditions: list[IpType.ConditionUnitType] = []
-        self.__modesDependencies: list[str] = []
+        self.__modes_conditions: list[IpType.ConditionUnitType] = []
+        self.__modes_dependencies: list[str] = []
 
         self.__signals = []
 
         self.__total = None
         self.__total2 = None
 
-        VALUE_HUB.itemUpdated.connect(self.__on_valueHub_itemUpdated)
+        VALUE_HUB.item_updated.connect(self.__on_valueHub_itemUpdated)
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -469,22 +473,22 @@ class IpType(QObject):
                     conditions: list[IpType.ConditionUnitType] = []
                     dependencies = []
                     for v in params:
-                        conditionUnit = IpType.ConditionUnitType(v, self)
-                        _condition = conditionUnit._condition
-                        condition = conditionUnit.condition
-                        unit = IpType.ParameterUnitType(conditionUnit.content, self)
+                        condition_unit = IpType.ConditionUnitType(v, self)
+                        _condition = condition_unit._condition
+                        condition = condition_unit.condition
+                        unit = IpType.ParameterUnitType(condition_unit.content, self)
                         signals.extend(unit.signals())
-                        conditionUnit.setUserData(unit)
+                        condition_unit.set_user_data(unit)
                         if _condition == "default":
                             default = unit
                         else:
                             if condition:
                                 value = unit
-                        conditions.append(conditionUnit)
-                        dependencies += conditionUnit.dependencies()
+                        conditions.append(condition_unit)
+                        dependencies += condition_unit.dependencies()
 
-                    self.__parametersConditions[name] = conditions
-                    self.__parametersDependencies[name] = sorted(set(dependencies))
+                    self.__parameters_conditions[name] = conditions
+                    self.__parameters_dependencies[name] = sorted(set(dependencies))
 
                     if value is None:
                         value = default
@@ -498,62 +502,62 @@ class IpType(QObject):
     @property
     def controls(self) -> dict[str, ControlModeUnitType]:
         if self.__controls is None:
-            controls, conditions, dependencies = self.__converterControlModeConditions(
-                "controls"
+            controls, conditions, dependencies = (
+                self.__converter_control_mode_conditions("controls")
             )
             self.__controls = controls
-            self.__controlsConditions = conditions
-            self.__controlsDependencies = dependencies
+            self.__controls_conditions = conditions
+            self.__controls_dependencies = dependencies
         return self.__controls
 
     @property
-    def pinModes(self) -> dict[str, dict[str, ControlModeUnitType]]:
-        if self.__pinModes is None:
-            self.__pinModes = {}
-            for name, modeItem in self.__data.get("pinModes", {}).items():
-                self.__pinModes[name] = {}
-                for modeName, mode in modeItem.items():
-                    self.__pinModes[name][modeName] = IpType.ControlModeUnitType(
-                        mode, modeName, self.parameters, self
+    def pin_modes(self) -> dict[str, dict[str, ControlModeUnitType]]:
+        if self.__pin_modes is None:
+            self.__pin_modes = {}
+            for name, mode_item in self.__data.get("pinModes", {}).items():
+                self.__pin_modes[name] = {}
+                for mode_name, mode in mode_item.items():
+                    self.__pin_modes[name][mode_name] = IpType.ControlModeUnitType(
+                        mode, mode_name, self.parameters, self
                     )
-        return self.__pinModes
+        return self.__pin_modes
 
     @property
     def modes(self) -> dict[str, ControlModeUnitType]:
         if self.__modes is None:
-            modes, conditions, dependencies = self.__converterControlModeConditions(
+            modes, conditions, dependencies = self.__converter_control_mode_conditions(
                 "modes"
             )
             self.__modes = modes
-            self.__modesConditions = conditions
-            self.__modesDependencies = dependencies
+            self.__modes_conditions = conditions
+            self.__modes_dependencies = dependencies
         return self.__modes
 
     @property
-    def pinGroups(self) -> dict[str, dict[str, dict[str, PinGroupUnitType]]]:
+    def pin_groups(self) -> dict[str, dict[str, dict[str, PinGroupUnitType]]]:
         # pin:signal:group:unit
-        if self.__pinGroups is None:
-            self.__pinGroups = {}
-            for pinName, signalItem in self.__data.get("pinGroups", {}).items():
+        if self.__pin_groups is None:
+            self.__pin_groups = {}
+            for pin_name, signal_item in self.__data.get("pinGroups", {}).items():
                 pin = {}
-                for signalName, groupItem in signalItem.items():
+                for signal_name, group_item in signal_item.items():
                     signal = {}
-                    for groupName, unit in groupItem.items():
-                        signal[groupName] = IpType.PinGroupUnitType(unit, self)
-                    pin[signalName] = signal
-                self.__pinGroups[pinName] = pin
-        return self.__pinGroups
+                    for group_name, unit in group_item.items():
+                        signal[group_name] = IpType.PinGroupUnitType(unit, self)
+                    pin[signal_name] = signal
+                self.__pin_groups[pin_name] = pin
+        return self.__pin_groups
 
     @property
     def _activated(self) -> str:
         if self.__activated is None:
             self.__activated = self.__data.get("activated", "True")
-            self.__activated = _getCondition(self.__activated, self)
+            self.__activated = _get_condition(self.__activated, self)
         return self.__activated
 
     @property
     def activated(self) -> bool:
-        return Express.boolExpr(self._activated, VALUE_HUB.values())
+        return Express.bool_expr(self._activated, VALUE_HUB.values())
 
     # endregion
 
@@ -582,11 +586,11 @@ class IpType(QObject):
     def instance(self) -> str:
         return self.__instance
 
-    def findPinGroups(self, name: str, signal: str) -> dict[str, PinGroupUnitType]:
+    def find_pin_groups(self, name: str, signal: str) -> dict[str, PinGroupUnitType]:
         results = {}
-        if name in self.pinGroups:
-            if signal in self.pinGroups[name]:
-                results = self.pinGroups[name][signal]
+        if name in self.pin_groups:
+            if signal in self.pin_groups[name]:
+                results = self.pin_groups[name][signal]
         return results
 
     def signals(self) -> list[str]:
@@ -594,108 +598,108 @@ class IpType(QObject):
             self.parameters  # initialize
         return self.__signals
 
-    def _parametersConditions(self) -> dict[str, list[IpType.ConditionUnitType]]:
-        if not self.__parametersConditions:
+    def _parameters_conditions(self) -> dict[str, list[IpType.ConditionUnitType]]:
+        if not self.__parameters_conditions:
             self.parameters  # initialize
-        return self.__parametersConditions
+        return self.__parameters_conditions
 
-    def _controlsConditions(self) -> list[IpType.ConditionUnitType]:
-        if not self.__controlsConditions:
+    def _controls_conditions(self) -> list[IpType.ConditionUnitType]:
+        if not self.__controls_conditions:
             self.controls  # initialize
-        return self.__controlsConditions
+        return self.__controls_conditions
 
-    def _modesConditions(self) -> list[IpType.ConditionUnitType]:
-        if not self.__modesConditions:
+    def _modes_conditions(self) -> list[IpType.ConditionUnitType]:
+        if not self.__modes_conditions:
             self.modes  # initialize
-        return self.__modesConditions
+        return self.__modes_conditions
 
     def __on_valueHub_itemUpdated(self, keys: list[str], old: object, new: object):
         key = ".".join(keys)
 
         # update parameters with conditions
-        parametersNames = []
-        for name, conditions in self._parametersConditions().items():
+        parameters_names = []
+        for name, conditions in self._parameters_conditions().items():
             default = self.parameters[name]
             value = None
-            dependencies: list[str] = self.__parametersDependencies[name]
+            dependencies: list[str] = self.__parameters_dependencies[name]
             if key not in dependencies:
                 continue
 
-            for conditionUnit in conditions:
-                if conditionUnit._condition == "default":
-                    default = conditionUnit.userData()
+            for condition_unit in conditions:
+                if condition_unit._condition == "default":
+                    default = condition_unit.user_data()
                     continue
-                if conditionUnit.condition:
-                    value = conditionUnit.userData()
+                if condition_unit.condition:
+                    value = condition_unit.user_data()
                     break
             if value is None:
                 value = default
 
             if self.parameters[name] != value:
-                parametersNames.append(name)
+                parameters_names.append(name)
                 self.parameters[name] = value  # type: ignore
-        if len(parametersNames) > 0:
-            self.__flushI18n(parametersNames)
-            self.parameterItemUpdated.emit(parametersNames)
+        if len(parameters_names) > 0:
+            self.__flush_i18n(parameters_names)
+            self.parameter_item_updated.emit(parameters_names)
 
         # update controls with conditions
-        controlsChanged = False
-        if key in self.__controlsDependencies:
+        controls_changed = False
+        if key in self.__controls_dependencies:
             default = self.controls
             value = None
-            for conditionUnit in self._controlsConditions():
-                if conditionUnit._condition == "default":
-                    default = conditionUnit.userData()
+            for condition_unit in self._controls_conditions():
+                if condition_unit._condition == "default":
+                    default = condition_unit.user_data()
                     continue
-                if conditionUnit.condition:
-                    value = conditionUnit.userData()
+                if condition_unit.condition:
+                    value = condition_unit.user_data()
                     break
             if value is None:
                 value = default
 
             if self.__controls != value:
-                controlsChanged = True
+                controls_changed = True
 
                 for name, item in self.__controls.items():  # type: ignore
-                    item.setEnabled(False)
+                    item.set_enabled(False)
 
                 for name, item in value.items():  # type: ignore
-                    item.setEnabled(True)
+                    item.set_enabled(True)
 
                 self.__controls = value
 
-        if controlsChanged:
-            self.controlsUpdated.emit()
+        if controls_changed:
+            self.controls_updated.emit()
 
         # update modes with conditions
-        modesChanged = False
-        if key in self.__modesDependencies:
+        modes_changed = False
+        if key in self.__modes_dependencies:
             default = self.modes
             value = None
-            for conditionUnit in self._modesConditions():
-                if conditionUnit._condition == "default":
-                    default = conditionUnit.userData()
+            for condition_unit in self._modes_conditions():
+                if condition_unit._condition == "default":
+                    default = condition_unit.user_data()
                     continue
-                if conditionUnit.condition:
-                    value = conditionUnit.userData()
+                if condition_unit.condition:
+                    value = condition_unit.user_data()
                     break
             if value is None:
                 value = default
 
             if self.__modes != value:
-                modesChanged = True
+                modes_changed = True
 
                 for name, item in self.__modes.items():  # type: ignore
-                    item.setEnabled(False)
+                    item.set_enabled(False)
 
                 for name, item in value.items():  # type: ignore
-                    item.setEnabled(True)
+                    item.set_enabled(True)
 
                 self.__modes = value
-        if modesChanged:
-            self.modesUpdated.emit()
+        if modes_changed:
+            self.modes_updated.emit()
 
-    def __flushI18n(self, names: list[str]):
+    def __flush_i18n(self, names: list[str]):
         locale = SETTINGS.get(SETTINGS.language).value.name()
         for name in names:
             parameter = self.parameters[name]
@@ -704,14 +708,14 @@ class IpType(QObject):
                 if self.total()[name].get(key, "") != val:
                     old = self.total()[name].get(key, "")
                     self.total()[name][key] = val
-                    self.totalChanged.emit(name, key, old, val)
+                    self.total_changed.emit(name, key, old, val)
 
                 if self.total2()[name].get(val, "") != key:
                     old = self.total2()[name].get(val, "")
                     self.total2()[name][val] = key
-                    self.total2Changed.emit(name, val, old, key)
+                    self.total2_changed.emit(name, val, old, key)
 
-    def __converterControlModeConditions(self, property: str) -> tuple[
+    def __converter_control_mode_conditions(self, property: str) -> tuple[
         dict[str, IpType.ControlModeUnitType],
         list[IpType.ConditionUnitType],
         list[str],
@@ -726,43 +730,43 @@ class IpType(QObject):
                     item, name, self.parameters, self
                 )
                 if property == "controls":
-                    results[name].conditionUpdated.connect(
-                        lambda x: self.controlsItemUpdated.emit(name, x)
+                    results[name].condition_updated.connect(
+                        lambda x: self.controls_item_updated.emit(name, x)
                     )
                 else:
-                    results[name].conditionUpdated.connect(
-                        lambda x: self.modesItemUpdated.emit(name, x)
+                    results[name].condition_updated.connect(
+                        lambda x: self.modes_item_updated.emit(name, x)
                     )
         elif isinstance(content, list):
             params: list[dict[str, dict]] = content
             value = None
             default = {}
             for v in params:
-                conditionUnit = IpType.ConditionUnitType(v, self)
-                _condition = conditionUnit._condition
-                condition = conditionUnit.condition
+                condition_unit = IpType.ConditionUnitType(v, self)
+                _condition = condition_unit._condition
+                condition = condition_unit.condition
 
                 unit = {}
-                for name, item in conditionUnit.content.items():
+                for name, item in condition_unit.content.items():
                     i = IpType.ControlModeUnitType(item, name, self.parameters, self)
                     if property == "controls":
-                        i.conditionUpdated.connect(
-                            lambda x: self.controlsItemUpdated.emit(name, x)
+                        i.condition_updated.connect(
+                            lambda x: self.controls_item_updated.emit(name, x)
                         )
                     else:
-                        i.conditionUpdated.connect(
-                            lambda x: self.modesItemUpdated.emit(name, x)
+                        i.condition_updated.connect(
+                            lambda x: self.modes_item_updated.emit(name, x)
                         )
                     unit[name] = i
 
-                conditionUnit.setUserData(unit)
+                condition_unit.set_user_data(unit)
                 if _condition == "default":
                     default = unit
                 else:
                     if condition:
                         value = unit
-                conditions.append(conditionUnit)
-                dependencies += conditionUnit.dependencies()
+                conditions.append(condition_unit)
+                dependencies += condition_unit.dependencies()
 
             dependencies = sorted(set(dependencies))
 
@@ -774,7 +778,7 @@ class IpType(QObject):
             logger.error(f"Invalid {property!r} type: {type(content)!r}")
 
         for name, item in results.items():
-            item.setEnabled(True)
+            item.set_enabled(True)
 
         return results, conditions, dependencies
 
@@ -786,15 +790,15 @@ class Ip(QObject):
         self.__ips = {}
 
         # ----------------------------------------------------------------------
-        self.__projectIps = {}
+        self.__project_ips = {}
 
-        self.__flushTotal = False
+        self.__flush_total = False
         self.__total = None
-        self.__flushTotal2 = False
+        self.__flush_total2 = False
         self.__total2 = None
 
     @logger.catch(default=False)
-    def __checkIp(self, ip: dict) -> bool:
+    def __check_ip(self, ip: dict) -> bool:
         with open(
             os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "ip.yml"),
             "r",
@@ -805,14 +809,14 @@ class Ip(QObject):
         return True
 
     @logger.catch(default=IpType({}))
-    def __getIp(self, vendor: str, instance: str, name: str) -> IpType:
+    def __get_ip(self, vendor: str, instance: str, name: str) -> IpType:
         file = os.path.join(
             SETTINGS.DATABASE_FOLDER, "ip", vendor.lower(), f"{name.lower()}.yml"
         )
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
                 ip = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkIp(ip)
+                succeed = self.__check_ip(ip)
             if succeed:
                 return IpType(ip, instance, self)
             else:
@@ -821,7 +825,7 @@ class Ip(QObject):
             logger.error(f"{file} is not file!")
             return IpType({})
 
-    def getIp(self, vendor: str, instance: str, name: str) -> IpType:
+    def get_ip(self, vendor: str, instance: str, name: str) -> IpType:
         if (
             vendor in self.__ips
             and instance in self.__ips[vendor]
@@ -829,7 +833,7 @@ class Ip(QObject):
         ):
             return self.__ips[vendor][instance][name]
         # noinspection PyTypeChecker,PyArgumentList
-        ip = self.__getIp(vendor, instance, name)
+        ip = self.__get_ip(vendor, instance, name)
         if vendor not in self.__ips:
             self.__ips[vendor] = {}
         if instance not in self.__ips[vendor]:
@@ -841,32 +845,32 @@ class Ip(QObject):
     def ips(self) -> dict[str, dict[str, dict[str, IpType]]]:
         return self.__ips
 
-    def setProjectIp(self, vendor: str, instance: str, name: str) -> IpType:
-        self.__flushTotal = True
-        self.__flushTotal2 = True
-        ip = self.getIp(vendor, instance, name)
-        self.__projectIps[instance] = ip
-        ip.totalChanged.connect(self.__on_ip_totalChanged)
-        ip.total2Changed.connect(self.__on_ip_total2Changed)
+    def set_project_ip(self, vendor: str, instance: str, name: str) -> IpType:
+        self.__flush_total = True
+        self.__flush_total2 = True
+        ip = self.get_ip(vendor, instance, name)
+        self.__project_ips[instance] = ip
+        ip.total_changed.connect(self.__on_ip_total_changed)
+        ip.total2_changed.connect(self.__on_ip_total2_changed)
 
         return ip
 
-    def projectIps(self) -> dict[str, IpType]:
-        return self.__projectIps
+    def project_ips(self) -> dict[str, IpType]:
+        return self.__project_ips
 
     def total(self) -> dict[str, dict[str, str]]:
-        if self.__total is None or self.__flushTotal:
+        if self.__total is None or self.__flush_total:
             self.__total = {}
-            self.__flushTotal = False
-            for _, ip in self.projectIps().items():
+            self.__flush_total = False
+            for _, ip in self.project_ips().items():
                 self.__total.update(ip.total())
         return self.__total
 
     def total2(self) -> dict[str, dict[str, str]]:
-        if self.__total2 is None or self.__flushTotal2:
+        if self.__total2 is None or self.__flush_total2:
             self.__total2 = {}
-            self.__flushTotal2 = False
-            for _, ip in self.projectIps().items():
+            self.__flush_total2 = False
+            for _, ip in self.project_ips().items():
                 self.__total2.update(ip.total2())
         return self.__total2
 
@@ -883,11 +887,11 @@ class Ip(QObject):
         return key
 
     # noinspection PyUnusedLocal
-    def __on_ip_totalChanged(self, name: str, key: str, old: str, new: str):
+    def __on_ip_total_changed(self, name: str, key: str, old: str, new: str):
         self.total()[name][key] = new
 
     # noinspection PyUnusedLocal
-    def __on_ip_total2Changed(self, name: str, key: str, old: str, new: str):
+    def __on_ip_total2_changed(self, name: str, key: str, old: str, new: str):
         self.total2()[name][key] = new
 
 

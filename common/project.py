@@ -43,15 +43,15 @@ from .value_hub import VALUE_HUB
 class ProjectType(QObject):
     class ConfigsType(QObject):
         changed = Signal()
-        pinConfigsChanged = Signal(list, object, object)
-        configsChanged = Signal(list, object, object)
+        pin_configs_changed = Signal(list, object, object)
+        configs_changed = Signal(list, object, object)
 
         def __init__(self, data: dict, parent=None):
             super().__init__(parent=parent)
             self.__data = data
 
-            self.pinConfigsChanged.connect(self.__on_configsChanged)
-            self.configsChanged.connect(self.__on_configsChanged)
+            self.pin_configs_changed.connect(self.__on_configs_changed)
+            self.configs_changed.connect(self.__on_configs_changed)
 
         def __str__(self) -> str:
             return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -99,14 +99,14 @@ class ProjectType(QObject):
 
             if len(keys) >= 2:
                 if keys[0] == "pin":
-                    self.pinConfigsChanged.emit(keys, old, value)
+                    self.pin_configs_changed.emit(keys, old, value)
                 else:
-                    self.configsChanged.emit(keys, old, value)
+                    self.configs_changed.emit(keys, old, value)
 
             self.changed.emit()
 
         # noinspection PyUnusedLocal
-        def __on_configsChanged(self, keys: list[str], old: object, value: object):
+        def __on_configs_changed(self, keys: list[str], old: object, value: object):
             if len(keys) >= 3:
                 keys = keys[-3:]
             else:
@@ -116,8 +116,8 @@ class ProjectType(QObject):
     class GenType(QObject):
         class LinkerType(QObject):
             changed = Signal()
-            defaultHeapSizeChanged = Signal(int, int)
-            defaultStackSizeChanged = Signal(int, int)
+            default_heap_size_changed = Signal(int, int)
+            default_stack_size_changed = Signal(int, int)
 
             def __init__(self, data: dict, parent=None):
                 super().__init__(parent=parent)
@@ -135,40 +135,40 @@ class ProjectType(QObject):
                 self.__data = origin
 
             @property
-            def defaultHeapSize(self) -> int:
+            def default_heap_size(self) -> int:
                 return self.__data.get("defaultHeapSize", -1)
 
-            @defaultHeapSize.setter
-            def defaultHeapSize(self, size: int):
-                if self.defaultHeapSize == size:
+            @default_heap_size.setter
+            def default_heap_size(self, size: int):
+                if self.default_heap_size == size:
                     return
-                old = self.defaultHeapSize
+                old = self.default_heap_size
                 self.__data["defaultHeapSize"] = size
-                self.defaultHeapSizeChanged.emit(old, size)
+                self.default_heap_size_changed.emit(old, size)
                 self.changed.emit()
 
             @property
-            def defaultStackSize(self) -> int:
+            def default_stack_size(self) -> int:
                 return self.__data.get("defaultStackSize", -1)
 
-            @defaultStackSize.setter
-            def defaultStackSize(self, size: int):
-                if self.defaultStackSize == size:
+            @default_stack_size.setter
+            def default_stack_size(self, size: int):
+                if self.default_stack_size == size:
                     return
-                old = self.defaultStackSize
+                old = self.default_stack_size
                 self.__data["defaultStackSize"] = size
-                self.defaultStackSizeChanged.emit(old, size)
+                self.default_stack_size_changed.emit(old, size)
                 self.changed.emit()
 
         changed = Signal()
-        builderChanged = Signal(str, str)
-        copyLibraryChanged = Signal(bool, bool)
-        useToolchainsPackageChanged = Signal(bool, bool)
-        toolchainsChanged = Signal(str, str)
-        builderVersionChanged = Signal(str, str)
-        toolchainsVersionChanged = Signal(str, str)
-        halChanged = Signal(str, str)
-        halVersionChanged = Signal(str, str)
+        builder_changed = Signal(str, str)
+        copy_library_changed = Signal(bool, bool)
+        use_toolchains_package_changed = Signal(bool, bool)
+        toolchains_changed = Signal(str, str)
+        builder_version_changed = Signal(str, str)
+        toolchains_version_changed = Signal(str, str)
+        hal_changed = Signal(str, str)
+        hal_version_changed = Signal(str, str)
 
         def __init__(self, data: dict, parent=None):
             super().__init__(parent=parent)
@@ -198,33 +198,33 @@ class ProjectType(QObject):
                 return
             old = self.builder
             self.__data["builder"] = builder
-            self.builderChanged.emit(old, builder)
+            self.builder_changed.emit(old, builder)
             self.changed.emit()
 
         @property
-        def copyLibrary(self) -> bool:
+        def copy_library(self) -> bool:
             return self.__data.setdefault("copyLibrary", True)
 
-        @copyLibrary.setter
-        def copyLibrary(self, copyLibrary: bool):
-            if self.copyLibrary == copyLibrary:
+        @copy_library.setter
+        def copy_library(self, copy_library: bool):
+            if self.copy_library == copy_library:
                 return
-            old = self.copyLibrary
-            self.__data["copyLibrary"] = copyLibrary
-            self.copyLibraryChanged.emit(old, copyLibrary)
+            old = self.copy_library
+            self.__data["copyLibrary"] = copy_library
+            self.copy_library_changed.emit(old, copy_library)
             self.changed.emit()
 
         @property
-        def useToolchainsPackage(self) -> bool:
+        def use_toolchains_package(self) -> bool:
             return self.__data.setdefault("useToolchainsPackage", False)
 
-        @useToolchainsPackage.setter
-        def useToolchainsPackage(self, useToolchainsPackage: bool):
-            if self.useToolchainsPackage == useToolchainsPackage:
+        @use_toolchains_package.setter
+        def use_toolchains_package(self, use_toolchains_package: bool):
+            if self.use_toolchains_package == use_toolchains_package:
                 return
-            old = self.useToolchainsPackage
-            self.__data["useToolchainsPackage"] = useToolchainsPackage
-            self.useToolchainsPackageChanged.emit(old, useToolchainsPackage)
+            old = self.use_toolchains_package
+            self.__data["useToolchainsPackage"] = use_toolchains_package
+            self.use_toolchains_package_changed.emit(old, use_toolchains_package)
             self.changed.emit()
 
         @property
@@ -237,33 +237,33 @@ class ProjectType(QObject):
                 return
             old = self.toolchains
             self.__data["toolchains"] = toolchains
-            self.toolchainsChanged.emit(old, toolchains)
+            self.toolchains_changed.emit(old, toolchains)
             self.changed.emit()
 
         @property
-        def builderVersion(self) -> str:
+        def builder_version(self) -> str:
             return self.__data.get("builderVersion", "")
 
-        @builderVersion.setter
-        def builderVersion(self, version: str):
-            if self.builderVersion == version:
+        @builder_version.setter
+        def builder_version(self, version: str):
+            if self.builder_version == version:
                 return
-            old = self.builderVersion
+            old = self.builder_version
             self.__data["builderVersion"] = version
-            self.builderVersionChanged.emit(old, version)
+            self.builder_version_changed.emit(old, version)
             self.changed.emit()
 
         @property
-        def toolchainsVersion(self) -> str:
+        def toolchains_version(self) -> str:
             return self.__data.get("toolchainsVersion", "")
 
-        @toolchainsVersion.setter
-        def toolchainsVersion(self, version: str):
-            if self.toolchainsVersion == version:
+        @toolchains_version.setter
+        def toolchains_version(self, version: str):
+            if self.toolchains_version == version:
                 return
-            old = self.toolchainsVersion
+            old = self.toolchains_version
             self.__data["toolchainsVersion"] = version
-            self.toolchainsVersionChanged.emit(old, version)
+            self.toolchains_version_changed.emit(old, version)
             self.changed.emit()
 
         @property
@@ -276,20 +276,20 @@ class ProjectType(QObject):
                 return
             old = self.hal
             self.__data["hal"] = hal
-            self.halChanged.emit(old, hal)
+            self.hal_changed.emit(old, hal)
             self.changed.emit()
 
         @property
-        def halVersion(self) -> str:
+        def hal_version(self) -> str:
             return self.__data.get("halVersion", "")
 
-        @halVersion.setter
-        def halVersion(self, version: str):
-            if self.halVersion == version:
+        @hal_version.setter
+        def hal_version(self, version: str):
+            if self.hal_version == version:
                 return
-            old = self.halVersion
+            old = self.hal_version
             self.__data["halVersion"] = version
-            self.halVersionChanged.emit(old, version)
+            self.hal_version_changed.emit(old, version)
             self.changed.emit()
 
         @property
@@ -297,11 +297,11 @@ class ProjectType(QObject):
             return self.__linker
 
     changed = Signal()
-    nameChanged = Signal(str, str)
-    targetChipChanged = Signal(str, str)
-    vendorChanged = Signal(str, str)
-    versionChanged = Signal(str, str)
-    modulesChanged = Signal(list, list)
+    name_changed = Signal(str, str)
+    target_chip_changed = Signal(str, str)
+    vendor_changed = Signal(str, str)
+    version_changed = Signal(str, str)
+    modules_changed = Signal(list, list)
 
     def __init__(self, data: dict, parent=None):
         super().__init__(parent=parent)
@@ -335,20 +335,20 @@ class ProjectType(QObject):
             return
         old = self.name
         self.__data["name"] = name
-        self.nameChanged.emit(old, name)
+        self.name_changed.emit(old, name)
         self.changed.emit()
 
     @property
-    def targetChip(self) -> str:
+    def target_chip(self) -> str:
         return self.__data.get("targetChip", "")
 
-    @targetChip.setter
-    def targetChip(self, targetChip: str):
-        if self.targetChip == targetChip:
+    @target_chip.setter
+    def target_chip(self, target_chip: str):
+        if self.target_chip == target_chip:
             return
-        old = self.targetChip
-        self.__data["targetChip"] = targetChip
-        self.targetChipChanged.emit(old, targetChip)
+        old = self.target_chip
+        self.__data["targetChip"] = target_chip
+        self.target_chip_changed.emit(old, target_chip)
         self.changed.emit()
 
     @property
@@ -361,7 +361,7 @@ class ProjectType(QObject):
             return
         old = self.vendor
         self.__data["vendor"] = vendor
-        self.vendorChanged.emit(old, vendor)
+        self.vendor_changed.emit(old, vendor)
         self.changed.emit()
 
     @property
@@ -374,7 +374,7 @@ class ProjectType(QObject):
             return
         old = self.version
         self.__data["version"] = version
-        self.versionChanged.emit(old, version)
+        self.version_changed.emit(old, version)
         self.changed.emit()
 
     @property
@@ -387,7 +387,7 @@ class ProjectType(QObject):
             return
         old = self.modules
         self.__data["modules"] = modules
-        self.modulesChanged.emit(old, modules)
+        self.modules_changed.emit(old, modules)
         self.changed.emit()
 
     @property
@@ -403,11 +403,11 @@ class ProjectType(QObject):
         # noinspection PyUnresolvedReferences
         for name, cfg in self.configs.origin.items():
             if (
-                name in SUMMARY.projectSummary().moduleList()
+                name in SUMMARY.project_summary().module_list()
                 and cfg is not None
                 and len(cfg) > 0
             ):
-                ip = IP.projectIps().get(name)
+                ip = IP.project_ips().get(name)
                 if ip and ip.activated:
                     modules.add(name)
         self.modules = sorted(modules)
@@ -415,7 +415,7 @@ class ProjectType(QObject):
 
 class Project(QObject):
     reloaded = Signal()
-    titleChanged = Signal(str)
+    title_changed = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -423,10 +423,10 @@ class Project(QObject):
         self.__valid = False
         self.__project = ProjectType({}, self)
         self.__project.changed.connect(self.__on_project_changed)
-        self.__isChanged = False
+        self.__is_changed = False
 
     @logger.catch(default=False)
-    def __checkProject(self, project: dict) -> bool:
+    def __check_project(self, project: dict) -> bool:
         with open(
             os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "project.yml"),
             "r",
@@ -437,11 +437,11 @@ class Project(QObject):
         return True
 
     @logger.catch(default={})
-    def __getProject(self, file: str) -> dict:
+    def __get_project(self, file: str) -> dict:
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
                 project = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkProject(project)
+                succeed = self.__check_project(project)
             if succeed:
                 return project
             else:
@@ -456,14 +456,14 @@ class Project(QObject):
     def path(self) -> str:
         return self.__path
 
-    def setPath(self, path: str):
+    def set_path(self, path: str):
         path = os.path.abspath(path)
         if self.__path != path:
             self.load(path)
             self.reloaded.emit()
             self.__path = path
 
-    def new(self, path: str, name: str, targetChip: str, vendor: str):
+    def new(self, path: str, name: str, target_chip: str, vendor: str):
         self.__path = os.path.abspath(os.path.join(path, name, f"{name}.csp"))
         p = os.path.dirname(self.__path)
         if not os.path.isdir(p):
@@ -471,7 +471,7 @@ class Project(QObject):
 
         project = self.project()
         project.name = name
-        project.targetChip = targetChip
+        project.target_chip = target_chip
         project.vendor = vendor
         project.version = SETTINGS.VERSION
 
@@ -481,31 +481,33 @@ class Project(QObject):
     def folder(self) -> str:
         return os.path.dirname(self.__path)
 
-    def halFolder(self) -> str:
+    def hal_folder(self) -> str:
         return PACKAGE.index().path(
-            "hal", self.__project.gen.hal, self.__project.gen.halVersion
+            "hal", self.__project.gen.hal, self.__project.gen.hal_version
         )
 
-    def toolchainsFolder(self) -> str:
+    def toolchains_folder(self) -> str:
         return PACKAGE.index().path(
             "toolchains",
             self.__project.gen.toolchains,
-            self.__project.gen.toolchainsVersion,
+            self.__project.gen.toolchains_version,
         )
 
-    def __buildValuesHub(self, nestedDict: dict, parentKey: str = "", sep: str = "."):
+    def __build_values_hub(
+        self, nested_dict: dict, parent_key: str = "", sep: str = "."
+    ):
         flattened = {}
         ignore = ["configs"]
-        for key, value in nestedDict.items():
+        for key, value in nested_dict.items():
             if isinstance(value, dict):
                 if key in ignore:
-                    new_key = parentKey
+                    new_key = parent_key
                 else:
-                    new_key = f"{parentKey}{sep}{key}" if parentKey else key
-                flattened.update(self.__buildValuesHub(value, new_key, sep))
+                    new_key = f"{parent_key}{sep}{key}" if parent_key else key
+                flattened.update(self.__build_values_hub(value, new_key, sep))
             else:
                 new_key = (
-                    f"{parentKey}{sep}{key}" if parentKey else f"project{sep}{key}"
+                    f"{parent_key}{sep}{key}" if parent_key else f"project{sep}{key}"
                 )
                 flattened[new_key] = value
         return flattened
@@ -513,18 +515,18 @@ class Project(QObject):
     def load(self, path: str) -> bool:
         self.__valid = False
         # noinspection PyTypeChecker,PyArgumentList
-        self.__project.origin = self.__getProject(path)
+        self.__project.origin = self.__get_project(path)
 
         if len(self.__project.origin) == 0:
             logger.error(f'project "{path}" load failed.')
             return self.__valid
 
-        summary = SUMMARY.setProjectSummary(
-            self.__project.vendor, self.__project.targetChip
+        summary = SUMMARY.set_project_summary(
+            self.__project.vendor, self.__project.target_chip
         )
         if len(summary.origin) == 0:
             logger.error(
-                f"invalid summary {self.__project.vendor}, {self.__project.targetChip}!"
+                f"invalid summary {self.__project.vendor}, {self.__project.target_chip}!"
             )
             return self.__valid
 
@@ -534,19 +536,19 @@ class Project(QObject):
         for _, group in modules.items():
             for name, module in group.items():
                 if module.ip != "":
-                    ip = IP.setProjectIp(self.__project.vendor, name, module.ip)
+                    ip = IP.set_project_ip(self.__project.vendor, name, module.ip)
                     if len(ip.origin) == 0:
                         logger.error(
-                            f"invalid ip {self.__project.vendor}, {self.__project.targetChip}, {name} {module.ip}!"
+                            f"invalid ip {self.__project.vendor}, {self.__project.target_chip}, {name} {module.ip}!"
                         )
                         return self.__valid
 
         # init
-        valueHub = self.__buildValuesHub(self.__project.origin)
-        for k, v in SUMMARY.projectSummary().origin.items():
+        value_hub = self.__build_values_hub(self.__project.origin)
+        for k, v in SUMMARY.project_summary().origin.items():
             if not isinstance(v, dict):
-                valueHub[f"summary.{k}"] = v
-        VALUE_HUB.assign(valueHub)
+                value_hub[f"summary.{k}"] = v
+        VALUE_HUB.assign(value_hub)
 
         self.__valid = True
         return self.__valid
@@ -557,22 +559,22 @@ class Project(QObject):
     def dump(self):
         return yaml.dump(self.__project.origin)
 
-    def isGenerateSettingValid(self) -> tuple[bool, str]:
-        if self.project().gen.useToolchainsPackage and not os.path.isdir(
-            self.toolchainsFolder()
+    def is_generate_setting_valid(self) -> tuple[bool, str]:
+        if self.project().gen.use_toolchains_package and not os.path.isdir(
+            self.toolchains_folder()
         ):
             return (
                 False,
-                f"the toolchains folder does not exist! maybe the toolchains '{self.project().gen.toolchains}:{self.project().gen.toolchainsVersion}' is not installed yet",
+                f"the toolchains folder does not exist! maybe the toolchains '{self.project().gen.toolchains}:{self.project().gen.toolchains_version}' is not installed yet",
             )
-        elif not os.path.isdir(self.halFolder()):
+        elif not os.path.isdir(self.hal_folder()):
             return (
                 False,
-                f"the hal folder does not exist! maybe the hal '{self.project().gen.hal}:{self.project().gen.halVersion}' is not installed yet",
+                f"the hal folder does not exist! maybe the hal '{self.project().gen.hal}:{self.project().gen.hal_version}' is not installed yet",
             )
         elif self.project().gen.builder == "":
             return False, "the builder is not set"
-        elif self.project().gen.builderVersion == "":
+        elif self.project().gen.builder_version == "":
             return (
                 False,
                 f"the builder {self.project().gen.builder!r} version is not set",
@@ -585,29 +587,29 @@ class Project(QObject):
             with open(self.__path, "w", encoding="utf-8") as f:
                 f.write(self.dump())
             VALUE_HUB.save(self.folder())
-            self.__isChanged = False
-            self.titleChanged.emit(self.title())
+            self.__is_changed = False
+            self.title_changed.emit(self.title())
 
     def title(self):
-        if self.__isChanged:
+        if self.__is_changed:
             return self.__project.name + "*"
         else:
             return self.__project.name
 
-    def isChanged(self) -> bool:
-        return self.__isChanged
+    def is_changed(self) -> bool:
+        return self.__is_changed
 
     def __on_project_changed(self):
-        self.__isChanged = True
-        self.titleChanged.emit(self.title())
+        self.__is_changed = True
+        self.title_changed.emit(self.title())
 
-    def pinIp(self) -> IpType | None:
-        pinInstance = SUMMARY.projectSummary().pinInstance()
-        ips = IP.projectIps()
-        if pinInstance in ips:
-            return ips[pinInstance]
+    def pin_instance(self) -> IpType | None:
+        pin_instance = SUMMARY.project_summary().pin_instance()
+        ips = IP.project_ips()
+        if pin_instance in ips:
+            return ips[pin_instance]
         else:
-            logger.error(f"invalid pin instance: {pinInstance}!")
+            logger.error(f"invalid pin instance: {pin_instance}!")
             return None
 
 

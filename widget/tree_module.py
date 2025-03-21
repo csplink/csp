@@ -46,9 +46,13 @@ from common.signal_bus import SIGNAL_BUS
 
 class _PModel:
     def __init__(
-        self, displayName: str, description: str, children: list, parent: _PModel | None
+        self,
+        display_name: str,
+        description: str,
+        children: list,
+        parent: _PModel | None,
     ):
-        self.__displayName = displayName
+        self.__display_name = display_name
         self.__description = description
         self.__children = children
         self.__parent = parent
@@ -56,8 +60,8 @@ class _PModel:
     # region getter/setter
 
     @property
-    def displayName(self) -> str:
-        return self.__displayName
+    def display_name(self) -> str:
+        return self.__display_name
 
     @property
     def description(self) -> str:
@@ -101,8 +105,8 @@ class TreeModuleModel(QAbstractItemModel):
         self.__font = QFont("JetBrains Mono")
         self.__font.setPixelSize(12)
 
-        self.__loadModule()
-        PROJECT.project().modulesChanged.connect(self.__on_project_modulesChanged)
+        self.__load_module()
+        PROJECT.project().modules_changed.connect(self.__on_project_modulesChanged)
 
     # region overrides
 
@@ -122,7 +126,7 @@ class TreeModuleModel(QAbstractItemModel):
         if (
             role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole
         ):  # 0, 2
-            return model.displayName
+            return model.display_name
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
@@ -136,7 +140,7 @@ class TreeModuleModel(QAbstractItemModel):
         elif role == Qt.ItemDataRole.BackgroundRole:  # 8
             return None
         elif role == Qt.ItemDataRole.ForegroundRole:  # 9
-            if model.displayName in PROJECT.project().modules:
+            if model.display_name in PROJECT.project().modules:
                 return self.__brush
             return None
         elif role == Qt.ItemDataRole.CheckStateRole:  # 10
@@ -153,13 +157,13 @@ class TreeModuleModel(QAbstractItemModel):
         if not self.hasIndex(row, column, parent):
             return QModelIndex()
         if not parent.isValid():
-            parentModel = self.__model
+            parent_model = self.__model
         else:
-            parentModel: _PModel = parent.internalPointer()  # type: ignore
+            parent_model: _PModel = parent.internalPointer()  # type: ignore
 
-        childModel: _PModel = parentModel.child(row)  # type: ignore
-        if childModel is not None:
-            return self.createIndex(row, column, childModel)
+        child_model: _PModel = parent_model.child(row)  # type: ignore
+        if child_model is not None:
+            return self.createIndex(row, column, child_model)
         else:
             return QModelIndex()
 
@@ -167,47 +171,47 @@ class TreeModuleModel(QAbstractItemModel):
         if not index.isValid():
             return QModelIndex()
 
-        childModel: _PModel = index.internalPointer()  # type: ignore
-        parentModel = childModel.parent
+        child_model: _PModel = index.internalPointer()  # type: ignore
+        parent_model = child_model.parent
 
-        if parentModel == self.__model:
+        if parent_model == self.__model:
             return QModelIndex()
 
-        if parentModel is None:
+        if parent_model is None:
             logger.error("The parent model is None")
             return QModelIndex()
 
-        return self.createIndex(parentModel.row(), 0, parentModel)
+        return self.createIndex(parent_model.row(), 0, parent_model)
 
     # endregion
 
-    def __loadModule(self):
+    def __load_module(self):
         locale = SETTINGS.get(SETTINGS.language).value.name()
-        peripherals = SUMMARY.projectSummary().modules.peripherals
+        peripherals = SUMMARY.project_summary().modules.peripherals
         if peripherals:
-            modelRoot = _PModel("peripherals", "", [], self.__model)
-            self.__model.append(modelRoot)
-            for group, moduleGroup in peripherals.items():
-                model = _PModel(group, "", [], modelRoot)
-                for name, module in moduleGroup.items():
+            model_root = _PModel("peripherals", "", [], self.__model)
+            self.__model.append(model_root)
+            for group, module_group in peripherals.items():
+                model = _PModel(group, "", [], model_root)
+                for name, module in module_group.items():
                     if module.ip:
                         child = _PModel(name, module.description.get(locale), [], model)
                         model.append(child)
                 if len(model.children) > 0:
-                    modelRoot.append(model)
+                    model_root.append(model)
 
-        middlewares = SUMMARY.projectSummary().modules.middlewares
+        middlewares = SUMMARY.project_summary().modules.middlewares
         if middlewares:
-            modelRoot = _PModel("middlewares", "", [], self.__model)
-            self.__model.append(modelRoot)
-            for group, moduleGroup in middlewares.items():
-                model = _PModel(group, "", [], modelRoot)
-                for name, module in moduleGroup.items():
+            model_root = _PModel("middlewares", "", [], self.__model)
+            self.__model.append(model_root)
+            for group, module_group in middlewares.items():
+                model = _PModel(group, "", [], model_root)
+                for name, module in module_group.items():
                     if module.ip:
                         child = _PModel(name, module.description.get(locale), [], model)
                         model.append(child)
                 if len(model.children) > 0:
-                    modelRoot.append(model)
+                    model_root.append(model)
 
         self.modelReset.emit()
 
@@ -215,45 +219,45 @@ class TreeModuleModel(QAbstractItemModel):
         self.refresh()
 
     def refresh(self):
-        rootIndex = QModelIndex()  # The root index is empty
-        self.__refreshRecursively(rootIndex)
+        root_index = QModelIndex()  # The root index is empty
+        self.__refresh_recursively(root_index)
 
-    def __refreshRecursively(self, parent):
+    def __refresh_recursively(self, parent):
         rows = self.rowCount(parent)
         cols = self.columnCount(parent)
         if rows == 0 or cols == 0:
             return
 
-        topLeft = self.index(0, 0, parent)
-        bottomRight = self.index(rows - 1, cols - 1, parent)
-        self.dataChanged.emit(topLeft, bottomRight)
+        top_left = self.index(0, 0, parent)
+        bottom_right = self.index(rows - 1, cols - 1, parent)
+        self.dataChanged.emit(top_left, bottom_right)
 
         for row in range(rows):
             child = self.index(row, 0, parent)
-            self.__refreshRecursively(child)
+            self.__refresh_recursively(child)
 
 
 class TreeModule(QWidget):
-    selectionChanged = Signal(str)
+    selection_changed = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
         # ----------------------------------------------------------------------
-        self.hLayout = QHBoxLayout(self)
-        self.hLayout.setContentsMargins(0, 0, 0, 0)
-        self.treeView_modules = TreeView(self)
-        self.hLayout.addWidget(self.treeView_modules)
+        self.h_layout = QHBoxLayout(self)
+        self.h_layout.setContentsMargins(0, 0, 0, 0)
+        self.tree_view_modules = TreeView(self)
+        self.h_layout.addWidget(self.tree_view_modules)
         # ----------------------------------------------------------------------
 
-        self.treeView_modules.header().hide()
+        self.tree_view_modules.header().hide()
 
-        proxyModel = QSortFilterProxyModel(self)
+        proxy_model = QSortFilterProxyModel(self)
         model = TreeModuleModel(self)
-        proxyModel.setSourceModel(model)
-        self.treeView_modules.setModel(proxyModel)
-        self.treeView_modules.expandAll()
-        self.treeView_modules.selectionModel().selectionChanged.connect(
+        proxy_model.setSourceModel(model)
+        self.tree_view_modules.setModel(proxy_model)
+        self.tree_view_modules.expandAll()
+        self.tree_view_modules.selectionModel().selectionChanged.connect(
             self.treeView_modulesSelectionChanged
         )
 
@@ -265,10 +269,10 @@ class TreeModule(QWidget):
             index = indexes[0]
             if index.parent().data() != None and index.parent().parent().data() != None:
                 instance = str(index.data())
-                ips = IP.projectIps()
+                ips = IP.project_ips()
                 ip = ips[instance]
                 pins = []
                 for signal in ip.signals():
-                    pins.extend(SUMMARY.findPinsBySignal(signal))
-                self.selectionChanged.emit(instance)
-                SIGNAL_BUS.highlightPinTriggered.emit(pins)
+                    pins.extend(SUMMARY.find_pins_by_signal(signal))
+                self.selection_changed.emit(instance)
+                SIGNAL_BUS.highlight_pin_triggered.emit(pins)

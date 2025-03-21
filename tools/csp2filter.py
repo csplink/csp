@@ -105,7 +105,7 @@ def {{ name }}(project: dict, default: {{ value.type }} | None = None) -> {{ val
 
 def __main():
     try:
-        parser = __createParser()
+        parser = __create_parser()
         args = parser.parse_args()
     except argparse.ArgumentError as e:
         print(e)
@@ -131,7 +131,7 @@ def __main():
     Csp2Filter.generate(project, output, modules)
 
 
-def __createParser() -> argparse.ArgumentParser:
+def __create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="generate jinja2 template filter from csp project",
         formatter_class=argparse.RawDescriptionHelpFormatter,

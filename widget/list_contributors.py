@@ -49,20 +49,20 @@ CONTRIBUTORS_DIR = os.path.dirname(SETTINGS.CONTRIBUTORS_FILE)
 class CardProfile(QWidget):
     """Profile card"""
 
-    def __init__(self, avatarPath: str, name: str, url: str, parent=None):
+    def __init__(self, avatar_path: str, name: str, url: str, parent=None):
         super().__init__(parent=parent)
-        self.avatar = AvatarWidget(avatarPath, self)
-        self.nameLabel = HyperlinkLabel(QUrl(url), name, self)
-        self.urlLabel = CaptionLabel(url, self)
+        self.avatar = AvatarWidget(avatar_path, self)
+        self.name_label = HyperlinkLabel(QUrl(url), name, self)
+        self.url_label = CaptionLabel(url, self)
 
         color = QColor(206, 206, 206) if isDarkTheme() else QColor(96, 96, 96)
-        self.urlLabel.setStyleSheet("QLabel{color: " + color.name() + "}")
+        self.url_label.setStyleSheet("QLabel{color: " + color.name() + "}")
 
         self.setFixedSize(307, 82)
         self.avatar.setRadius(24)
         self.avatar.move(2, 6)
-        self.nameLabel.move(64, 13)
-        self.urlLabel.move(64, 32)
+        self.name_label.move(64, 13)
+        self.url_label.move(64, 32)
 
 
 class ListContributors(QWidget):
@@ -71,23 +71,23 @@ class ListContributors(QWidget):
         super().__init__(parent=parent)
 
         # ----------------------------------------------------------------------
-        self.vLayout = QVBoxLayout(self)
-        self.vLayout.setContentsMargins(0, 0, 0, 0)
-        self.scrollArea = ScrollArea(self)
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 398, 298))
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.vLayout.addWidget(self.scrollArea)
+        self.v_layout = QVBoxLayout(self)
+        self.v_layout.setContentsMargins(0, 0, 0, 0)
+        self.scroll_area = ScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area_widget_contents = QWidget()
+        self.scroll_area_widget_contents.setGeometry(QRect(0, 0, 398, 298))
+        self.scroll_area.setWidget(self.scroll_area_widget_contents)
+        self.v_layout.addWidget(self.scroll_area)
         # ----------------------------------------------------------------------
 
-        self.flowWidget = QWidget(self)
-        self.flowLayout = FlowLayout(self.flowWidget, needAni=True)
-        self.flowLayout.setContentsMargins(0, 0, 0, 0)
-        self.flowLayout.setVerticalSpacing(20)
-        self.flowLayout.setHorizontalSpacing(10)
-        self.scrollArea.setWidget(self.flowWidget)
-        self.scrollArea.enableTransparentBackground()
+        self.flow_widget = QWidget(self)
+        self.flow_layout = FlowLayout(self.flow_widget, needAni=True)
+        self.flow_layout.setContentsMargins(0, 0, 0, 0)
+        self.flow_layout.setVerticalSpacing(20)
+        self.flow_layout.setHorizontalSpacing(10)
+        self.scroll_area.setWidget(self.flow_widget)
+        self.scroll_area.enableTransparentBackground()
 
         contributors = Contributor().contributors()
 
@@ -97,32 +97,32 @@ class ListContributors(QWidget):
             label.installEventFilter(self)
             label.setRadius(AVATAR_SIZE // 2)
             label.setProperty("info", contributor)
-            self.flowLayout.addWidget(label)
+            self.flow_layout.addWidget(label)
 
-    def createCustomWidgetMenu(self, contributor: ContributorType, pos: QPoint):
+    def create_custom_widget_menu(self, contributor: ContributorType, pos: QPoint):
         menu = RoundMenu(parent=self)
         card = CardProfile(
             f"{CONTRIBUTORS_DIR}/{contributor.avatar}",
             contributor.name,
-            contributor.htmlUrl,
+            contributor.html_url,
             menu,
         )
         menu.addWidget(card, selectable=False)
 
         menu.addSeparator()
         action = Action(Icon.GITHUB, self.tr("Open Github Url"))
-        action.setProperty("url", contributor.htmlUrl)
-        action.triggered.connect(self.__on_githubAction_triggered)
+        action.setProperty("url", contributor.html_url)
+        action.triggered.connect(self.__on_github_action_triggered)
         menu.addAction(action)
         menu.exec(pos)
 
-    def __on_githubAction_triggered(self):
+    def __on_github_action_triggered(self):
         QDesktopServices.openUrl(QUrl(self.sender().property("url")))
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         if isinstance(watched, AvatarWidget):
             if event.type() == QEvent.Type.MouseButtonRelease:
-                self.createCustomWidgetMenu(
+                self.create_custom_widget_menu(
                     watched.property("info"),
                     watched.mapToGlobal(QPoint(watched.width(), 0)),
                 )

@@ -37,7 +37,7 @@ from common import Icon
 
 
 class ComboBoxPropertySettingCard(SettingCard):
-    currentTextChanged = Signal(str)
+    current_text_changed = Signal(str)
 
     def __init__(
         self,
@@ -49,48 +49,48 @@ class ComboBoxPropertySettingCard(SettingCard):
         parent=None,
     ):
         super().__init__(icon, title, content, parent)
-        self.comboBox = ComboBox(self)
+        self.combo_box = ComboBox(self)
 
         for v in values:
-            self.comboBox.addItem(v)
+            self.combo_box.addItem(v)
 
-        self.comboBox.setCurrentText(value)
-        self.comboBox.currentTextChanged.connect(self.currentTextChanged)
+        self.combo_box.setCurrentText(value)
+        self.combo_box.currentTextChanged.connect(self.current_text_changed)
 
         self.badge = IconInfoBadge.error(
             icon=Icon.CLOSE_LARGE,
-            parent=self.comboBox.parent(),
-            target=self.comboBox,
+            parent=self.combo_box.parent(),
+            target=self.combo_box,
             position=InfoBadgePosition.TOP_RIGHT,
         )
         self.badge.hide()
 
-        self.hBoxLayout.addWidget(self.comboBox, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.combo_box, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
-    def setStatusInfo(self, error: bool, message: str):
+    def set_status_info(self, error: bool, message: str):
         self.badge.setVisible(error)
         if error:
-            self.comboBox.setToolTip(message)
+            self.combo_box.setToolTip(message)
         else:
-            self.comboBox.setToolTip("")
+            self.combo_box.setToolTip("")
 
-    def setSource(self, value: str, values: list[str]):
-        self.comboBox.currentTextChanged.disconnect(self.currentTextChanged)
+    def set_source(self, value: str, values: list[str]):
+        self.combo_box.currentTextChanged.disconnect(self.current_text_changed)
 
-        self.comboBox.clear()
+        self.combo_box.clear()
 
         for v in values:
-            self.comboBox.addItem(v)
+            self.combo_box.addItem(v)
 
-        self.comboBox.currentTextChanged.connect(self.currentTextChanged)
+        self.combo_box.currentTextChanged.connect(self.current_text_changed)
 
-        text = self.comboBox.currentText()
-        self.comboBox.setCurrentText(value)
+        text = self.combo_box.currentText()
+        self.combo_box.setCurrentText(value)
         if text == value:
-            self.currentTextChanged.emit(value)
+            self.current_text_changed.emit(value)
 
     def clear(self):
-        self.comboBox.clear()
-        self.setStatusInfo(False, "")
+        self.combo_box.clear()
+        self.set_status_info(False, "")
         self.setContent("")
