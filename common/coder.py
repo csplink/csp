@@ -128,6 +128,11 @@ class Coder(QObject):
             line_comment_prefix="//",
         )
 
+        # env.add_extension("jinja2.ext.i18n")
+        env.add_extension("jinja2.ext.debug")
+        env.add_extension("jinja2.ext.do")
+        env.add_extension("jinja2.ext.loopcontrols")
+
         if PROJECT.project().gen.useToolchainsPackage:
             data["toolchainsPath"] = PROJECT.toolchainsFolder()
 
