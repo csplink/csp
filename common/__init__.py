@@ -36,6 +36,7 @@ from .settings import Settings, SETTINGS
 from .signal_bus import SignalBus, SIGNAL_BUS
 from .style import Style
 from .summary import Summary, SummaryType, SUMMARY
+from .value_hub import ValueHub, VALUE_HUB
 
 # fmt: off
 __all__ = [
@@ -50,6 +51,7 @@ __all__ = [
     "Settings", "SETTINGS",
     "SignalBus", "SIGNAL_BUS",
     "Style",
-    "Summary", "SummaryType", "SUMMARY"
+    "Summary", "SummaryType", "SUMMARY",
+    "ValueHub", "VALUE_HUB",
 ]
 # fmt: on

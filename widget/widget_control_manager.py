@@ -21,48 +21,75 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2024-07-16     xqyjlj       initial version
+# 2024-07-02     xqyjlj       initial version
 #
 
-from enum import Enum
-
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QStackedWidget
-
-from common import SIGNAL_BUS
-from .widget_control_io_manager import WidgetControlIoManager
-from .widget_control_ip_manager import WidgetControlIpManager
+from loguru import logger
+from common import PROJECT, IP, VALUE_HUB, SUMMARY, SIGNAL_BUS
+from utils import Express
+from .widget_base_manager import WidgetBaseManager, WidgetBaseManagerType
 
 
-class StackedWidgetIndex(Enum):
-    WIDGET_CONTROL_IO_MANAGER = 0
-    WIDGET_CONTROL_IP_MANAGER = 1
-
-
-class WidgetControlManager(QWidget):
+class WidgetControlManager(WidgetBaseManager):
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(WidgetBaseManagerType.CONTROL, parent)
 
-        # ----------------------------------------------------------------------
-        self.verticalLayout = QVBoxLayout(self)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.stackedWidget = QStackedWidget(self)
-        self.widget_widgetControlIoManager = WidgetControlIoManager(self)
-        self.stackedWidget.addWidget(self.widget_widgetControlIoManager)
-        self.widget_widgetControlIpManager = WidgetControlIpManager(self)
-        self.stackedWidget.addWidget(self.widget_widgetControlIpManager)
-        self.verticalLayout.addWidget(self.stackedWidget)
-        # ----------------------------------------------------------------------
+        PROJECT.project().configs.configsChanged.connect(
+            self.__on_project_configsChanged
+        )
 
-        SIGNAL_BUS.controlManagerTriggered.connect(self.__on_x_controlManagerTriggered)
+    def __on_project_configsChanged(self, keys: list[str], old: str, new: str):
+        if len(keys) != 2:
+            return
 
-    def __on_x_controlManagerTriggered(self, module: str, widget: str):
-        if widget == "widget_control_io_manager":
-            self.stackedWidget.setCurrentIndex(
-                int(StackedWidgetIndex.WIDGET_CONTROL_IO_MANAGER.value)
-            )
-            self.widget_widgetControlIoManager.setInstance(module)
-        else:  # widget_control_ip_manager
-            self.stackedWidget.setCurrentIndex(
-                int(StackedWidgetIndex.WIDGET_CONTROL_IP_MANAGER.value)
-            )
+        instance = keys[0]
+        ips = IP.projectIps()
+
+        if instance not in ips:
+            logger.error(f"the ip instance:{instance!r} is invalid.")
+            return
+
+        ip = ips[instance]
+        param = keys[1]
+
+        if param not in ip.parameters:
+            return
+
+        oldValue = ip.parameters[param].values.get(old, None)
+        newValue = ip.parameters[param].values.get(new, None)
+
+        if oldValue is not None:
+            for name, cfg in oldValue.signals.items():
+                signal = name.replace("${INSTANCE}", instance)
+                pins = SUMMARY.findPinsBySignal(signal)
+                if len(pins) > 0:
+                    pin = pins[0]
+                    functionKey = f"pin/{pin}/function"
+                    lockedKey = f"pin/{pin}/locked"
+                    modeKey = f"pin/{pin}/mode"
+
+                    PROJECT.project().configs.set(functionKey, "")
+                    PROJECT.project().configs.set(lockedKey, False)
+                    PROJECT.project().configs.set(modeKey, "")
+
+                    SIGNAL_BUS.updatePinTriggered.emit(pin)
+
+        if newValue is not None:
+            for name, cfg in newValue.signals.items():
+                signal = name.replace("${INSTANCE}", instance)
+                pins = SUMMARY.findPinsBySignal(signal)
+                if len(pins) > 0:
+                    pin = pins[0]
+                    functionKey = f"pin/{pin}/function"
+                    lockedKey = f"pin/{pin}/locked"
+                    modeKey = f"pin/{pin}/mode"
+
+                    PROJECT.project().configs.set(functionKey, signal)
+                    PROJECT.project().configs.set(lockedKey, True)
+                    PROJECT.project().configs.set(modeKey, cfg.mode)
+
+                    SIGNAL_BUS.updatePinTriggered.emit(pin)
+
+                for pin in pins:
+                    print(pin, PROJECT.pinIp().findPinGroups(pin, signal))

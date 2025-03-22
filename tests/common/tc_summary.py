@@ -57,7 +57,9 @@ class SummaryTest(unittest.TestCase):
             # self.assertGreater(summary.hasPowerPad, 0, msg='load failed.')
             self.assertGreater(len(summary.illustrate.origin), 0, msg="load failed.")
             self.assertGreater(len(summary.introduction.origin), 0, msg="load failed.")
-            modules = summary.modules
+            modules = {}
+            modules.update(summary.modules.peripherals)
+            modules.update(summary.modules.middlewares)
             self.assertGreater(len(modules), 0, msg="load failed.")
             for _, group in modules.items():
                 self.assertGreater(len(group), 0, msg="load failed.")

@@ -30,13 +30,123 @@ properties:
       "^[A-Za-z0-9_.+-]+$":
         oneOf:
           - $ref: "#/properties/$parameter$"
-          - type: object
+          - type: array
+            items:
+              type: object
+              additionalProperties: false
+              properties:
+                condition:
+                  type: string
+                  minLength: 1
+                content:
+                  $ref: "#/properties/$parameter$"
+  controls:
+    oneOf:
+      - $ref: "#/properties/$control$"
+      - type: array
+        items:
+          type: object
+          additionalProperties: false
+          properties:
+            condition:
+              type: string
+              minLength: 1
+            content:
+              $ref: "#/properties/$control$"
+  modes:
+    $ref: "#/properties/controls"
+  pinModes:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_.+-]+$":
+        $ref: "#/properties/controls"
+  pins:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      "^[A-Za-z0-9_]+$":
+        type: object
+        additionalProperties: false
+        patternProperties:
+          "^[A-Za-z0-9_]*:[A-Za-z0-9_]+$":
+            type: object
             additionalProperties: false
             patternProperties:
-              "^\\(.*\\)$":
-                $ref: "#/properties/$parameter$"
-            required: [ "(default)" ]
-  controls:
+              "^[A-Za-z0-9_]+$":
+                type: object
+                additionalProperties: false
+                properties:
+                  default:
+                    type: boolean
+                required: [default]
+  activated:
+    type: string
+    minLength: 1
+  $parameter$:
+    type: object
+    properties:
+      display:
+        $ref: "#/properties/$language$"
+      description:
+        $ref: "#/properties/$language$"
+      readonly:
+        type: boolean
+      type:
+        enum: [enum, integer, float, boolean, radio, string]
+      values:
+        additionalProperties: false
+        patternProperties:
+          "^[A-Za-z0-9_.+-]+$":
+            type: object
+            properties:
+              expression:
+                $ref: "#/properties/$expression$"
+              comment:
+                $ref: "#/properties/$language$"
+              pins:
+                type: object
+                additionalProperties: false
+                patternProperties:
+                  ".*":
+                    type: object
+                    properties:
+                      mode:
+                        type: string
+                        minLength: 1
+                        pattern: ".*"
+                    required: [mode]
+            required: [comment]
+      group:
+        type: string
+        minLength: 1
+      default:
+        type: [string, number, boolean]
+      expression:
+        $ref: "#/properties/$expression$"
+      visible:
+        type: boolean
+      max:
+        type: [number, string]
+      min:
+        type: [number, string]
+    required: [type, description]
+  $language$:
+    type: object
+    properties:
+      en:
+        type: [string, "null"] # TODO: null
+    required: [en]
+  $expression$:
+    type: object
+    properties:
+      display:
+        type: string
+        minLength: 1
+      real:
+        type: string
+        minLength: 1
+  $control$:
     type: object
     additionalProperties: false
     patternProperties:
@@ -51,65 +161,4 @@ properties:
           default:
             type: string
             pattern: "^[A-Za-z0-9_.+-]+$"
-          pins:
-            type: object
-  modes:
-    $ref: "#/properties/controls"
-  pinModes:
-    type: object
-    additionalProperties: false
-    patternProperties:
-      "^[A-Za-z0-9_.+-]+$":
-        $ref: "#/properties/controls"
-  $parameter$:
-    type: object
-    properties:
-      display:
-        $ref: "#/properties/$language$"
-      description:
-        $ref: "#/properties/$language$"
-      readonly:
-        type: boolean
-      type:
-        enum: [ enum, integer, float, boolean, radio ]
-      values:
-        additionalProperties: false
-        patternProperties:
-          "^[A-Za-z0-9_.+-]+$":
-            type: object
-            properties:
-              expression:
-                $ref: "#/properties/$expression$"
-              comment:
-                $ref: "#/properties/$language$"
-            required: [ comment ]
-      group:
-        type: string
-        minLength: 1
-      default:
-        type: [ string, number, boolean ]
-      expression:
-        $ref: "#/properties/$expression$"
-      visible:
-        type: boolean
-      max:
-        type: number
-      min:
-        type: number
-    required: [ type, description ]
-  $language$:
-    type: object
-    properties:
-      en:
-        type: [ string, "null" ] # TODO: null
-    required: [ en ]
-  $expression$:
-    type: object
-    properties:
-      display:
-        type: string
-        minLength: 1
-      real:
-        type: string
-        minLength: 1
-required: [ parameters ]
+required: [parameters]

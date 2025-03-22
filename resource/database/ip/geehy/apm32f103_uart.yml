@@ -1,0 +1,507 @@
+# Licensed under the GNU General Public License v. 3 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.gnu.org/licenses/gpl-3.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 csplink<https://csplink.top/>
+#
+# @author      csplink
+# @file        apm32f103_uart.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-03-03     csplink      initial version
+#
+
+parameters:
+  geehy.uart_virtual_mode_t:
+    type: enum
+    values:
+      geehy.uart_virtual_mode_asynchronous:
+        comment:
+          zh_CN: Asynchronous
+          en: Asynchronous
+      geehy.uart_virtual_mode_ir_da:
+        comment:
+          zh_CN: IrDA
+          en: IrDA
+      geehy.uart_virtual_mode_lin:
+        comment:
+          zh_CN: Lin
+          en: Lin
+    default: geehy.uart_virtual_mode_asynchronous
+    display:
+      zh_CN: ""
+      en: ""
+    description:
+      zh_CN: ""
+      en: ""
+    visible: false
+    readonly: false
+  geehy.uart_baud_rate_t:
+    - condition: ${INSTANCE}.geehy.uart_virtual_mode_t == 'geehy.uart_virtual_mode_ir_da'
+      content:
+        type: integer
+        default: 115200
+        max: 115200
+        min: 110
+        display:
+          zh_CN: Baud Rate
+          en: Baud Rate
+        description:
+          zh_CN: Baud Rate
+          en: Baud Rate
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 115200
+        max: 5250000
+        min: 110
+        display:
+          zh_CN: Baud Rate
+          en: Baud Rate
+        description:
+          zh_CN: Baud Rate
+          en: Baud Rate
+        visible: true
+        readonly: false
+  geehy.uart_word_length_t:
+    - condition: ${INSTANCE}.geehy.uart_virtual_mode_t == 'geehy.uart_virtual_mode_ir_da'
+      content:
+        type: enum
+        values:
+          geehy.uart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          geehy.uart_word_length_wordlength_9_b:
+            comment:
+              zh_CN: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: geehy.uart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: (${INSTANCE}.geehy.uart_control_mode_t == 'geehy.uart_control_mode_lin')
+      content:
+        type: enum
+        values:
+          geehy.uart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+        default: geehy.uart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.uart_word_length_wordlength_8_b:
+            comment:
+              zh_CN: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          geehy.uart_word_length_wordlength_9_b:
+            comment:
+              zh_CN: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: geehy.uart_word_length_wordlength_8_b
+        display:
+          zh_CN: Word Length
+          en: Word Length
+        description:
+          zh_CN: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+  geehy.uart_stop_bits_t:
+    type: enum
+    values:
+      geehy.uart_stop_bits_uart_stopbits_1:
+        comment:
+          zh_CN: "1"
+          en: "1"
+      geehy.uart_stop_bits_uart_stopbits_2:
+        comment:
+          zh_CN: "2"
+          en: "2"
+    default: geehy.uart_stop_bits_uart_stopbits_1
+    display:
+      zh_CN: Stop Bits
+      en: Stop Bits
+    description:
+      zh_CN: Stop Bits
+      en: Stop Bits
+    visible: true
+    readonly: false
+  geehy.uart_parity_t:
+    type: enum
+    values:
+      geehy.uart_parity_parity_none:
+        comment:
+          zh_CN: None
+          en: None
+      geehy.uart_parity_parity_even:
+        comment:
+          zh_CN: Even
+          en: Even
+      geehy.uart_parity_parity_odd:
+        comment:
+          zh_CN: Odd
+          en: Odd
+    default: geehy.uart_parity_parity_none
+    display:
+      zh_CN: Parity
+      en: Parity
+    description:
+      zh_CN: Parity
+      en: Parity
+    visible: true
+    readonly: false
+  geehy.uart_mode_t:
+    type: enum
+    values:
+      geehy.uart_mode_mode_tx_rx:
+        comment:
+          zh_CN: Receive and Transmit
+          en: Receive and Transmit
+      geehy.uart_mode_mode_rx:
+        comment:
+          zh_CN: Receive Only
+          en: Receive Only
+      geehy.uart_mode_mode_tx:
+        comment:
+          zh_CN: Transmit Only
+          en: Transmit Only
+    default: geehy.uart_mode_mode_tx_rx
+    display:
+      zh_CN: Data Direction
+      en: Data Direction
+    description:
+      zh_CN: Data Direction
+      en: Data Direction
+    visible: true
+    readonly: false
+  geehy.uart_over_sampling_t:
+    - condition: (${INSTANCE}.geehy.uart_virtual_mode_t == 'geehy.uart_virtual_mode_lin')
+        or (${INSTANCE}.geehy.uart_virtual_mode_t == 'geehy.uart_virtual_mode_ir_da')
+      content:
+        type: enum
+        values:
+          geehy.uart_over_sampling_null:
+            comment:
+              zh_CN: "null"
+              en: "null"
+        default: geehy.uart_over_sampling_null
+        display:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        description:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.uart_over_sampling_uart_oversampling_16:
+            comment:
+              zh_CN: 16 Samples
+              en: 16 Samples
+        default: geehy.uart_over_sampling_uart_oversampling_16
+        display:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        description:
+          zh_CN: Over Sampling
+          en: Over Sampling
+        visible: true
+        readonly: false
+  geehy.uart_ir_da_mode_t:
+    type: enum
+    values:
+      geehy.uart_ir_da_mode_irda_powermode_lowpower:
+        comment:
+          zh_CN: Low Power
+          en: Low Power
+      geehy.uart_ir_da_mode_irda_powermode_normal:
+        comment:
+          zh_CN: Normal Power
+          en: Normal Power
+    default: geehy.uart_ir_da_mode_irda_powermode_normal
+    display:
+      zh_CN: IrDa Mode
+      en: IrDa Mode
+    description:
+      zh_CN: IrDa Mode
+      en: IrDa Mode
+    visible: true
+    readonly: false
+  geehy.uart_prescaler_t:
+    - condition: ${INSTANCE}.geehy.uart_ir_da_mode_t == 'geehy.uart_ir_da_mode_irda_powermode_normal'
+      content:
+        type: integer
+        default: 1
+        max: 1
+        min: 1
+        display:
+          zh_CN: Prescaler
+          en: Prescaler
+        description:
+          zh_CN: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 10
+        max: 255
+        min: 1
+        display:
+          zh_CN: Prescaler
+          en: Prescaler
+        description:
+          zh_CN: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+  geehy.uart_wake_up_methode_t:
+    - condition: DIE436 or DIE427 or DIE437 or DIE416 or STM32F1
+      content:
+        type: enum
+        values:
+          geehy.uart_wake_up_methode_uart_wakeupmethod_idleline:
+            comment:
+              zh_CN: Idle Line
+              en: Idle Line
+          geehy.uart_wake_up_methode_uart_wakeupmethod_addressmark:
+            comment:
+              zh_CN: Address Mark
+              en: Address Mark
+        default: geehy.uart_wake_up_methode_uart_wakeupmethod_idleline
+        display:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        description:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.uart_wake_up_methode_uart_wakeupmethod_idleline:
+            comment:
+              zh_CN: Idle Line
+              en: Idle Line
+          geehy.uart_wake_up_methode_uart_wakeupmethod_addressmark:
+            comment:
+              zh_CN: Address Mark
+              en: Address Mark
+        default: geehy.uart_wake_up_methode_uart_wakeupmethod_idleline
+        display:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        description:
+          zh_CN: Wake-Up Method
+          en: Wake-Up Method
+        visible: true
+        readonly: false
+  geehy.uart_address_t:
+    - condition: ${INSTANCE}.geehy.uart_wake_up_methode_t == 'geehy.uart_wake_up_methode_uart_wakeupmethod_addressmark'
+      content:
+        type: integer
+        default: 0
+        max: 15
+        min: 0
+        display:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        description:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        max: 0
+        min: 0
+        display:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        description:
+          zh_CN: Wake-Up Address
+          en: Wake-Up Address
+        visible: false
+        readonly: false
+  geehy.uart_break_detect_length_t:
+    type: enum
+    values:
+      geehy.uart_break_detect_length_uart_linbreakdetectlength_10_b:
+        comment:
+          zh_CN: 10 Bits
+          en: 10 Bits
+      geehy.uart_break_detect_length_uart_linbreakdetectlength_11_b:
+        comment:
+          zh_CN: 11 Bits
+          en: 11 Bits
+    default: geehy.uart_break_detect_length_uart_linbreakdetectlength_10_b
+    display:
+      zh_CN: Break Detect Length
+      en: Break Detect Length
+    description:
+      zh_CN: Break Detect Length
+      en: Break Detect Length
+    visible: true
+    readonly: false
+  geehy.uart_control_mode_t:
+    type: enum
+    values:
+      geehy.uart_control_mode_disable:
+        comment:
+          zh_CN: 关闭
+          en: Disable
+      geehy.uart_control_mode_asynchronous:
+        comment:
+          zh_CN: Asynchronous
+          en: Asynchronous
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullPULLUP
+      geehy.uart_control_mode_half_duplex_single_wire_mode:
+        comment:
+          zh_CN: Single Wire (Half-Duplex)
+          en: Single Wire (Half-Duplex)
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+      geehy.uart_control_mode_multiprocessor_communication:
+        comment:
+          zh_CN: Multiprocessor Communication
+          en: Multiprocessor Communication
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      geehy.uart_control_mode_ir_da:
+        comment:
+          zh_CN: IrDA
+          en: IrDA
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      geehy.uart_control_mode_lin:
+        comment:
+          zh_CN: LIN
+          en: LIN
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+    default: geehy.uart_control_mode_disable
+    display:
+      zh_CN: Mode
+      en: Mode
+    description:
+      zh_CN: Mode
+      en: Mode
+    visible: true
+    readonly: false
+controls:
+  geehy.uart_control_mode_t: {}
+modes:
+  - condition: (${INSTANCE}.geehy.uart_control_mode_t == 'geehy.uart_control_mode_asynchronous')
+    content:
+      geehy.uart_baud_rate_t: {}
+      geehy.uart_virtual_mode_t:
+        values:
+          - geehy.uart_virtual_mode_asynchronous
+        default: geehy.uart_virtual_mode_asynchronous
+      geehy.uart_word_length_t: {}
+      geehy.uart_parity_t: {}
+      geehy.uart_stop_bits_t: {}
+      geehy.uart_mode_t: {}
+      geehy.uart_over_sampling_t: {}
+  - condition: (${INSTANCE}.geehy.uart_control_mode_t == 'geehy.uart_control_mode_half_duplex_single_wire_mode')
+    content:
+      geehy.uart_baud_rate_t: {}
+      geehy.uart_virtual_mode_t:
+        values:
+          - geehy.uart_virtual_mode_asynchronous
+        default: geehy.uart_virtual_mode_asynchronous
+      geehy.uart_word_length_t: {}
+      geehy.uart_parity_t: {}
+      geehy.uart_stop_bits_t: {}
+      geehy.uart_mode_t: {}
+      geehy.uart_over_sampling_t: {}
+  - condition: (${INSTANCE}.geehy.uart_control_mode_t == 'geehy.uart_control_mode_multiprocessor_communication')
+    content:
+      geehy.uart_baud_rate_t: {}
+      geehy.uart_virtual_mode_t:
+        values:
+          - geehy.uart_virtual_mode_asynchronous
+        default: geehy.uart_virtual_mode_asynchronous
+      geehy.uart_word_length_t: {}
+      geehy.uart_parity_t: {}
+      geehy.uart_stop_bits_t: {}
+      geehy.uart_mode_t: {}
+      geehy.uart_over_sampling_t: {}
+      geehy.uart_wake_up_methode_t: {}
+      geehy.uart_address_t: {}
+  - condition: (${INSTANCE}.geehy.uart_control_mode_t == 'geehy.uart_control_mode_ir_da')
+    content:
+      geehy.uart_baud_rate_t: {}
+      geehy.uart_virtual_mode_t:
+        values:
+          - geehy.uart_virtual_mode_ir_da
+        default: geehy.uart_virtual_mode_ir_da
+      geehy.uart_word_length_t: {}
+      geehy.uart_parity_t: {}
+      geehy.uart_mode_t: {}
+      geehy.uart_ir_da_mode_t: {}
+      geehy.uart_prescaler_t: {}
+  - condition: (${INSTANCE}.geehy.uart_control_mode_t == 'geehy.uart_control_mode_lin')
+    content:
+      geehy.uart_baud_rate_t: {}
+      geehy.uart_virtual_mode_t:
+        values:
+          - geehy.uart_virtual_mode_asynchronous
+        default: geehy.uart_virtual_mode_asynchronous
+      geehy.uart_word_length_t: {}
+      geehy.uart_parity_t: {}
+      geehy.uart_stop_bits_t: {}
+      geehy.uart_mode_t: {}
+      geehy.uart_break_detect_length_t: {}
+activated: (${INSTANCE}.geehy.uart_control_mode_t != 'geehy.uart_control_mode_disable')

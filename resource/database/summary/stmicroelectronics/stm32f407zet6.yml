@@ -1,5 +1,11 @@
 name: STM32F407ZET6
 clockTree: STM32F4_F405-F407-F415-F417
+core: Arm Cortex-M4
+frequency: 168
+io: 114
+die: DIE413
+series: STM32F4
+line: STM32F407/417
 vendor: STMicroelectronics
 vendorUrl:
   en: https://www.st.com.com
@@ -15,7 +21,7 @@ documents:
         en: STM32 and STM8 embedded software solutions
         zh_CN: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
     stm32_eval-tools_portfolio:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32_eval-tools_portfolio.pdf
@@ -25,7 +31,7 @@ documents:
         en: STM32 Development Boards Portfolio
         zh_CN: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
     stm32_stm8_functional-safety-packages:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32_stm8_functional-safety-packages.pdf
@@ -35,7 +41,7 @@ documents:
         en: Microcontrollers Functional Safety Packages
         zh_CN: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
     stm32-stm8_software_development_tools.pdf:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32-stm8_software_development_tools.pdf
@@ -45,27 +51,17 @@ documents:
         en: STM32 and STM8 software development tools
         zh_CN: null
       size: 1 MB
-      version: '04.2020'
+      version: "04.2020"
     microcontrollers-stm32-family-overview:
       url:
         en: https://www.st.com/resource/en/product_presentation/microcontrollers-stm32-family-overview.pdf
         zh_CN: null
       type: pdf
       description:
-        en: Microcontrollers STM32 Family Overview
+        en: Microcontrollers and microprocessors STM32 Family Overview
         zh_CN: null
-      size: 5 MB
-      version: '1.0'
-    microcontrollers-stm32h7rs-lines-overview:
-      url:
-        en: https://www.st.com/resource/en/product_presentation/microcontrollers-stm32h7rs-lines-overview.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Microcontrollers STM32H7R/S High Performance lines product overview presentation
-        zh_CN: null
-      size: 2 MB
-      version: '1.0'
+      size: 8 MB
+      version: "1.0"
   flyers:
     flstm32nucleo:
       url:
@@ -75,18 +71,8 @@ documents:
       description:
         en: STM32 Nucleo boards - Unified scalable offering
         zh_CN: null
-      size: 295 KB
-      version: '1.0'
-    flstmcsuite:
-      url:
-        en: https://www.st.com/resource/en/flyer/flstmcsuite.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: ST Motor Control Suite - All-in-One online tool for motor control resources
-        zh_CN: null
-      size: 578 KB
-      version: '1.1'
+      size: 1 MB
+      version: "1.0"
     flstm32trust:
       url:
         en: https://www.st.com/resource/en/flyer/flstm32trust.pdf
@@ -96,7 +82,7 @@ documents:
         en: STM32Trust An ecosystem for embedded security
         zh_CN: null
       size: 170 KB
-      version: '1.0'
+      version: "1.0"
   product_certifications:
     stm32_authentication_can.pdf:
       url:
@@ -107,7 +93,7 @@ documents:
         en: STM32 CAN conformance test authentication sheet
         zh_CN: null
       size: 182 KB
-      version: '1.0'
+      version: "1.0"
   datasheets:
     DM00037051:
       url:
@@ -116,512 +102,10 @@ documents:
       type: pdf
       description:
         en: Arm® Cortex®-M4 32b MCU+FPU, 210DMIPS, up to 1MB Flash/192+4KB RAM, USB
-          OTG HS/FS, Ethernet, 17 TIMs, 3 ADCs, 15 comm. interfaces & camera
-        zh_CN: null
-      size: 5 MB
-      version: '9.0'
-  application_notes_for_related_tools_&_software:
-    AN1202_FreeRTOS_Guide:
-      url:
-        en: https://www.st.com/resource/en/application_note/an1202_freertos_guide-freertos-guide-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: FreeRTOS Guide
-        zh_CN: null
-      size: 716 KB
-      version: '1.0'
-    AN_1602_Semihosting_in_TrueSTUDIO:
-      url:
-        en: https://www.st.com/resource/en/application_note/an1602_semihosting_in_truestudio-how-to-do-semihosting-in-truestudio-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: How to do semihosting in TrueSTUDIO
-        zh_CN: null
-      size: 603 KB
-      version: '1.0'
-    AN1801_Cubeprogrammer_in_TrueSTUDIO:
-      url:
-        en: https://www.st.com/resource/en/application_note/an1801_stm32cubeprogrammer_in_truestudio-installing-stm32cubeprogrammer-in-truestudio-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Installing STM32Cubeprogrammer in TrueSTUDIO
-        zh_CN: null
-      size: 937 KB
-      version: '1.0'
-    Atollic_editing_keyboard_shortcuts:
-      url:
-        en: https://www.st.com/resource/en/application_note/atollic_editing_keyboard_shortcuts-atollic-editing-keyboard-shortcuts-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Atollic Editing Keyboard Shortcuts
-        zh_CN: null
-      size: 181 KB
-      version: '1.0'
-    TrueSTUDIO_for_ARM_Migration_Guide:
-      url:
-        en: https://www.st.com/resource/en/application_note/iar_to_atollic_truestudio_migration_guide-truestudio-for-arm-migration-guide-iar-embedded-workbench-to-truestudio-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: 'TrueSTUDIO for ARM® Migration Guide: IAR Embedded Workbench to TrueSTUDIO'
+          OTG HS/FS, Ethernet, 17 TIMs, 3 ADCs, 15 comm. interfaces, and camera
         zh_CN: null
       size: 2 MB
-      version: '1.0'
-    STM32CubeMX_Installation_in_TruesSTUDIO:
-      url:
-        en: https://www.st.com/resource/en/application_note/stm32cubemx_installation_in_truestudio-stm32cubemx-installation-in-truestudio-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32CubeMX Installation in TrueSTUDIO
-        zh_CN: null
-      size: 1012 KB
-      version: '1.0'
-    CD00176444:
-      url:
-        en: https://www.st.com/resource/en/application_note/an2656-stm32f10xxx-lcd-glass-driver-firmware-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32F10xxx LCD glass driver firmware
-        zh_CN: null
-      size: 850 KB
-      version: '2.7'
-    CD00201397:
-      url:
-        en: https://www.st.com/resource/en/application_note/an2790-tft-lcd-interfacing-with-the-highdensity-stm32f10xxx-fsmc-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: TFT LCD interfacing with the high-density STM32F10xxx FSMC
-        zh_CN: null
-      size: 791 KB
-      version: '2.6'
-    CD00251611:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3078-stm32-inapplication-programming-over-the-ic-bus-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32™ in-application programming over the I²C bus
-        zh_CN: null
-      size: 669 KB
-      version: '1.6'
-    CD00258017:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3116-stm32s-adc-modes-and-their-applications-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32™'s ADC modes and their applications
-        zh_CN: null
-      size: 236 KB
-      version: '1.7'
-    CD00267896:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3174-implementing-receivers-for-infrared-remote-control-protocols-using-stm32f10xxx-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Implementing receivers for infrared remote control protocols using STM32F10xxx
-          microcontrollers
-        zh_CN: null
-      size: 589 KB
-      version: '2.4'
-    CD00278141:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3241-qvga-tftlcd-direct-drive-using-the-stm32f10xx-fsmc-peripheral-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: QVGA TFT-LCD direct drive using the STM32F10xx FSMC peripheral
-        zh_CN: null
-      size: 411 KB
-      version: '1.5'
-    CD00290100:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3307-guidelines-for-obtaining-iec-60335-class-b-certification-for-any-stm32-application-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Guidelines for obtaining IEC 60335 Class B certification for any STM32
-          application
-        zh_CN: null
-      size: 652 KB
-      version: '6.0'
-    DM00024853:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3364-migration-and-compatibility-guidelines-for-stm32-microcontroller-applications-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Migration and compatibility guidelines for STM32 microcontroller applications
-        zh_CN: null
-      size: 123 KB
-      version: '3.4'
-    DM00036049:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3965-stm32f40xstm32f41x-inapplication-programming-using-the-usart-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32F40x/STM32F41x in-application programming using the USART
-        zh_CN: null
-      size: 240 KB
-      version: '1.5'
-    DM00036052:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3966-lwip-tcpip-stack-demonstration-for-stm32f4x7-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: LwIP TCP/IP stack demonstration for STM32F4x7 microcontrollers
-        zh_CN: null
-      size: 893 KB
-      version: '2.4'
-    DM00036062:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3968-stm32f407stm32f417-inapplication-programming-iap-over-ethernet-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32F407/STM32F417 in-application programming (IAP) over Ethernet
-        zh_CN: null
-      size: 297 KB
-      version: '1.4'
-    DM00036065:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3969-eeprom-emulation-in-stm32f40xstm32f41x-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: EEPROM emulation in STM32F40x/STM32F41x microcontrollers
-        zh_CN: null
-      size: 208 KB
-      version: '1.7'
-    DM00039457:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3988-clock-configuration-tool-for-stm32f40xx41xx427x437x-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Clock configuration tool for STM32F40xx/41xx/427x/437x microcontrollers
-        zh_CN: null
-      size: 789 KB
-      version: '2.3'
-    DM00039672:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3990-upgrading-stm32f4discovery-board-firmware-using-a-usb-key-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Upgrading STM32F4DISCOVERY board firmware using a USB key
-        zh_CN: null
-      size: 203 KB
-      version: '1.8'
-    DM00040802:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3997-audio-playback-and-recording-using-the-stm32f4discovery-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Audio playback and recording using the STM32F4DISCOVERY
-        zh_CN: null
-      size: 169 KB
-      version: '1.2'
-    DM00040808:
-      url:
-        en: https://www.st.com/resource/en/application_note/an3998-pdm-audio-software-decoding-on-stm32-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: PDM audio software decoding on STM32 microcontrollers
-        zh_CN: null
-      size: 88 KB
-      version: '1.5'
-    DM00047230:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4044-floating-point-unit-demonstration-on-stm32-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Floating point unit demonstration on STM32 microcontrollers
-        zh_CN: null
-      size: 786 KB
-      version: '2.0'
-    DM00089670:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4323-getting-started-with-stemwin-library-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Getting started with STemWin Library
-        zh_CN: null
-      size: 1 MB
-      version: '5.0'
-    DM00096220:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4365-using-stm32f4-mcu-power-modes-with-best-dynamic-efficiency-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Using STM32F4 MCU power modes with best dynamic efficiency
-        zh_CN: null
-      size: 823 KB
-      version: '2.2'
-    DM00105610:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4435-guidelines-for-obtaining-ulcsaiec-607301603351-class-b-certification-in-any-stm32-application-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Guidelines for obtaining UL/CSA/IEC 60730-1/60335-1 Class B certification
-          in any STM32 application
-        zh_CN: null
-      size: 1 MB
-      version: '10.0'
-    DM00110292:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4457-implementing-an-emulated-uart-on-stm32f4-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Implementing an emulated UART on STM32F4 microcontrollers
-        zh_CN: null
-      size: 496 KB
-      version: '2.0'
-    DM00117406:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4499-stm32--nrf51822-bluetooth-low-energy-system-solution-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32 - nRF51822 Bluetooth Low Energy system solution
-        zh_CN: null
-      size: 2 MB
-      version: '1.2'
-    DM00161366:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4657-stm32-inapplication-programming-iap-using-the-usart-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32 in-application programming (IAP) using the USART
-        zh_CN: null
-      size: 332 KB
-      version: '3.0'
-    DM00169730:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4666-parallel-synchronous-transmission-using-gpio-and-dma-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Parallel synchronous transmission using GPIO and DMA
-        zh_CN: null
-      size: 1 MB
-      version: '1.0'
-    DM00173754:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4678-full-duplex-spi-emulation-for-stm32f4-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Full duplex SPI emulation for STM32F4 microcontrollers
-        zh_CN: null
-      size: 1 MB
-      version: '1.0'
-    DM00186528:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4701-proprietary-code-readout-protection-on-microcontrollers-of-the-stm32f4-series-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Proprietary code read-out protection on microcontrollers of the STM32F4
-          Series
-        zh_CN: null
-      size: 893 KB
-      version: '3.0'
-    DM00213525:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4739-stm32cube-firmware-examples-for-stm32f4-series-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32Cube firmware examples for STM32F4 Series
-        zh_CN: null
-      size: 496 KB
-      version: '4.0'
-    DM00226247:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4758-proprietary-code-readout-protection-on-stm32l4-stm32l4-stm32g4-and-stm32wb-series-mcus-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Proprietary code read-out protection on STM32L4, STM32L4+, STM32G4 and
-          STM32WB Series MCUs
-        zh_CN: null
-      size: 1 MB
-      version: '6.0'
-    DM00273990:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4841-digital-signal-processing-for-stm32-microcontrollers-using-cmsis-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Digital signal processing for STM32 microcontrollers using CMSIS
-        zh_CN: null
-      size: 1 MB
-      version: '2.0'
-    DM00346619:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4968-proprietary-code-read-out-protection-pcrop-on-stm32f72xxx-and-stm32f73xxx-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Proprietary code read out protection (PCROP) on STM32F72xxx and STM32F73xxx
-          microcontrollers
-        zh_CN: null
-      size: 1 MB
-      version: '1.0'
-    DM00414677:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5056-integration-guide-for-the-xcubesbsfu-stm32cube-expansion-package-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Integration guide for the X-CUBE-SBSFU STM32Cube Expansion Package
-        zh_CN: null
-      size: 8 MB
-      version: '8.0'
-    DM00629854:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5360-getting-started-with-projects-based-on-the-stm32mp1-series-in-stm32cubeide-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Getting started with projects based on the STM32MP1 Series in STM32CubeIDE
-        zh_CN: null
-      size: 737 KB
-      version: '1.0'
-    DM00629855:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5361-getting-started-with-projects-based-on-dualcore-stm32h7-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Getting started with projects based on dual-core STM32H7 microcontrollers
-          in STM32CubeIDE
-        zh_CN: null
-      size: 1 MB
-      version: '4.0'
-    DM00652038:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5394-getting-started-with-projects-based-on-the-stm32l5-series-in-stm32cubeide-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Getting started with projects based on the STM32L5 Series in STM32CubeIDE
-        zh_CN: null
-      size: 1 MB
-      version: '3.0'
-    DM00663511:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5418-how-to-build-a-simple-usbpd-sink-application-with-stm32cubemx-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: How to build a simple USB-PD sink application with STM32CubeMX
-        zh_CN: null
-      size: 11 MB
-      version: '5.0'
-    DM00670808:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5426-migrating-graphics-middleware-projects-from-stm32cubemx-540-to-stm32cubemx-550-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Migrating graphics middleware projects from STM32CubeMX 5.4.0 to STM32CubeMX
-          5.5.0
-        zh_CN: null
-      size: 479 KB
-      version: '1.0'
-    DM00691525:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5464-position-control-of-a-threephase-permanent-magnet-motor-using-xcubemcsdk-or-xcubemcsdkful-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Position control of a three-phase permanent magnet motor using X-CUBE-MCSDK
-          or X-CUBE-MCSDK-FUL
-        zh_CN: null
-      size: 2 MB
-      version: '1.0'
-    DM00736854:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5564-getting-started-with-projects-based-on-dualcore-stm32wl-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Getting started with projects based on dual-core STM32WL microcontrollers
-          in STM32CubeIDE
-        zh_CN: null
-      size: 1 MB
-      version: '2.0'
-    DM00811430:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5698-adapting-the-xcubestl-functional-safety-package-for-stm32-iec-61508-compliant-to-other-safety-standards-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Adapting the X-CUBE-STL functional safety package for STM32 (IEC 61508
-          compliant) to other safety standards
-        zh_CN: null
-      size: 243 KB
-      version: '2.0'
-    DM00826986:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5731-stm32cubemx-and-stm32cubeide-threadsafe-solution-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32CubeMX and STM32CubeIDE thread-safe solution
-        zh_CN: null
-      size: 700 KB
-      version: '1.0'
-    DM00118362:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4502-stm32-smbuspmbus-expansion-package-for-stm32cube-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: STM32 SMBus/PMBus™ expansion package for STM32Cube™
-        zh_CN: null
-      size: 1 MB
-      version: '4.0'
-    DM00965631:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5952-how-to-use-cmake-in-stm32cubeide-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: How to use CMake in STM32CubeIDE
-        zh_CN: null
-      size: 648 KB
-      version: '1.0'
-    DM00413494:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5054-how-to-perform-secure-programming-using-stm32cubeprogrammer-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: How to perform secure programming using STM32CubeProgrammer
-        zh_CN: null
-      size: 7 MB
-      version: '15.0'
+      version: "10.0"
   application_notes:
     CD00004479:
       url:
@@ -632,7 +116,7 @@ documents:
         en: EMC design guide for STM8, STM32 and legacy MCUs
         zh_CN: null
       size: 689 KB
-      version: '4.0'
+      version: "4.0"
     CD00167594:
       url:
         en: https://www.st.com/resource/en/application_note/an2606-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf
@@ -642,29 +126,18 @@ documents:
         en: STM32 microcontroller system memory boot mode
         zh_CN: null
       size: 6 MB
-      version: '62.1'
-    CD00173820:
-      url:
-        en: https://www.st.com/resource/en/application_note/an2639-soldering-recommendations-and-package-information-for-leadfree-ecopack-mcus-and-mpus-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Soldering recommendations and package information for Lead-free ECOPACK
-          MCUs and MPUs
-        zh_CN: null
-      size: 333 KB
-      version: '7.0'
+      version: "64.0"
     CD00227488:
       url:
         en: https://www.st.com/resource/en/application_note/an2945-stm8s-and-stm32-mcus-a-consistent-832bit-product-line-for-painless-migration-stmicroelectronics.pdf
         zh_CN: null
       type: pdf
       description:
-        en: 'STM8S and STM32™ MCUs: a consistent 8/32-bit product line for painless
-          migration'
+        en: "STM8S and STM32™ MCUs: a consistent 8/32-bit product line for painless
+          migration"
         zh_CN: null
       size: 209 KB
-      version: '1.5'
+      version: "1.6"
     CD00249778:
       url:
         en: https://www.st.com/resource/en/application_note/an3070-managing-the-driver-enable-signal-for-rs485-and-iolink-communications-with-the-stm32s-usart-stmicroelectronics.pdf
@@ -675,7 +148,7 @@ documents:
           with the STM32™’s USART
         zh_CN: null
       size: 188 KB
-      version: '1.5'
+      version: "1.6"
     CD00259245:
       url:
         en: https://www.st.com/resource/en/application_note/an3126-audio-and-waveform-generation-using-the-dac-in-stm32-products-stmicroelectronics.pdf
@@ -685,7 +158,7 @@ documents:
         en: Audio and waveform generation using the DAC in STM32 products
         zh_CN: null
       size: 868 KB
-      version: '4.0'
+      version: "4.0"
     CD00264321:
       url:
         en: https://www.st.com/resource/en/application_note/an3154-can-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -695,7 +168,7 @@ documents:
         en: CAN protocol used in the STM32 bootloader
         zh_CN: null
       size: 609 KB
-      version: '8.1'
+      version: "8.1"
     CD00264342:
       url:
         en: https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -705,7 +178,7 @@ documents:
         en: USART protocol used in the STM32 bootloader
         zh_CN: null
       size: 1 MB
-      version: '17.0'
+      version: "18.0"
     CD00264379:
       url:
         en: https://www.st.com/resource/en/application_note/an3156-usb-dfu-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -714,8 +187,8 @@ documents:
       description:
         en: USB DFU protocol used in the STM32 bootloader
         zh_CN: null
-      size: 363 KB
-      version: '15.0'
+      size: 364 KB
+      version: "16.0"
     DM00024853:
       url:
         en: https://www.st.com/resource/en/application_note/an3364-migration-and-compatibility-guidelines-for-stm32-microcontroller-applications-stmicroelectronics.pdf
@@ -725,7 +198,7 @@ documents:
         en: Migration and compatibility guidelines for STM32 microcontroller applications
         zh_CN: null
       size: 123 KB
-      version: '3.4'
+      version: "3.4"
     DM00025071:
       url:
         en: https://www.st.com/resource/en/application_note/an3371-using-the-hardware-realtime-clock-rtc-in-stm32-f0-f2-f3-f4-and-l1-series-of-mcus-stmicroelectronics.pdf
@@ -736,7 +209,7 @@ documents:
           series of MCUs
         zh_CN: null
       size: 418 KB
-      version: '5.3'
+      version: "5.4"
     DM00040802:
       url:
         en: https://www.st.com/resource/en/application_note/an3997-audio-playback-and-recording-using-the-stm32f4discovery-stmicroelectronics.pdf
@@ -746,7 +219,7 @@ documents:
         en: Audio playback and recording using the STM32F4DISCOVERY
         zh_CN: null
       size: 169 KB
-      version: '1.2'
+      version: "1.2"
     DM00040808:
       url:
         en: https://www.st.com/resource/en/application_note/an3998-pdm-audio-software-decoding-on-stm32-microcontrollers-stmicroelectronics.pdf
@@ -756,7 +229,7 @@ documents:
         en: PDM audio software decoding on STM32 microcontrollers
         zh_CN: null
       size: 88 KB
-      version: '1.5'
+      version: "1.6"
     DM00046011:
       url:
         en: https://www.st.com/resource/en/application_note/an4031-using-the-stm32f2-stm32f4-and-stm32f7-series-dma-controller-stmicroelectronics.pdf
@@ -766,7 +239,7 @@ documents:
         en: Using the STM32F2, STM32F4 and STM32F7 Series DMA controller
         zh_CN: null
       size: 1 MB
-      version: '3.0'
+      version: "3.0"
     DM00050879:
       url:
         en: https://www.st.com/resource/en/application_note/an4073-how-to-improve-adc-accuracy-when-using-stm32f2xx-and-stm32f4xx-microcontrollers-stmicroelectronics.pdf
@@ -776,7 +249,7 @@ documents:
         en: How to improve ADC accuracy when using STM32F2xx and STM32F4xx microcontrollers
         zh_CN: null
       size: 521 KB
-      version: '5.3'
+      version: "5.3"
     DM00051150:
       url:
         en: https://www.st.com/resource/en/application_note/an4076-two-or-three-shunt-resistor-based-current-sensing-circuit-design-in-3phase-inverters-stmicroelectronics.pdf
@@ -787,7 +260,7 @@ documents:
           inverters
         zh_CN: null
       size: 1 MB
-      version: '1.6'
+      version: "1.6"
     DM00072315:
       url:
         en: https://www.st.com/resource/en/application_note/an4221-i2c-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -797,17 +270,7 @@ documents:
         en: I2C protocol used in the STM32 bootloader
         zh_CN: null
       size: 1 MB
-      version: '13.0'
-    DM00073742:
-      url:
-        en: https://www.st.com/resource/en/application_note/an4229-how-to-implement-a-vocoder-solution-using-stm32-microcontrollers-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: How to implement a vocoder solution using STM32 microcontrollers
-        zh_CN: null
-      size: 466 KB
-      version: '1.3'
+      version: "13.0"
     DM00081379:
       url:
         en: https://www.st.com/resource/en/application_note/an4286-spi-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -817,7 +280,7 @@ documents:
         en: SPI protocol used in the STM32 bootloader
         zh_CN: null
       size: 920 KB
-      version: '14.0'
+      version: "14.0"
     DM00115714:
       url:
         en: https://www.st.com/resource/en/application_note/an4488-getting-started-with-stm32f4xxxx-mcu-hardware-development-stmicroelectronics.pdf
@@ -827,7 +290,7 @@ documents:
         en: Getting started with STM32F4xxxx MCU hardware development
         zh_CN: null
       size: 1 MB
-      version: '7.0'
+      version: "7.0"
     DM00123028:
       url:
         en: https://www.st.com/resource/en/application_note/an4547-migrating-from-stm32f407xx417xx-to-stm32f427xx429xx437xx439xx-stmicroelectronics.pdf
@@ -837,7 +300,7 @@ documents:
         en: Migrating from STM32F407xx/417xx to STM32F427xx/429xx/437xx/439xx
         zh_CN: null
       size: 144 KB
-      version: '1.3'
+      version: "1.3"
     DM00129215:
       url:
         en: https://www.st.com/resource/en/application_note/an4566-extending-the-dac-performance-of-stm32-microcontrollers-stmicroelectronics.pdf
@@ -847,7 +310,7 @@ documents:
         en: Extending the DAC performance of STM32 microcontrollers
         zh_CN: null
       size: 379 KB
-      version: '4.0'
+      version: "4.0"
     DM00154959:
       url:
         en: https://www.st.com/resource/en/application_note/an4640-peripherals-interconnections-on-stm32f4057xx-stm32f4157xx-stm32f42xxx-stm32f43xxx-stm32f446xx-and-stm32f469479xx-stmicroelectronics.pdf
@@ -858,7 +321,7 @@ documents:
           STM32F43xxx, STM32F446xx and STM32F469/479xx
         zh_CN: null
       size: 401 KB
-      version: '3.0'
+      version: "3.0"
     DM00160482:
       url:
         en: https://www.st.com/resource/en/application_note/an4655-virtually-increasing-the-number-of-serial-communication-peripherals-in-stm32-applications-stmicroelectronics.pdf
@@ -869,7 +332,7 @@ documents:
           STM32 applications
         zh_CN: null
       size: 338 KB
-      version: '1.1'
+      version: "1.1"
     DM00213525:
       url:
         en: https://www.st.com/resource/en/application_note/an4739-stm32cube-firmware-examples-for-stm32f4-series-stmicroelectronics.pdf
@@ -879,7 +342,7 @@ documents:
         en: STM32Cube firmware examples for STM32F4 Series
         zh_CN: null
       size: 496 KB
-      version: '4.0'
+      version: "4.0"
     DM00220769:
       url:
         en: https://www.st.com/resource/en/application_note/an4750-handling-of-soft-errors-in-stm32-applications-stmicroelectronics.pdf
@@ -889,7 +352,7 @@ documents:
         en: Handling of soft errors in STM32 applications
         zh_CN: null
       size: 410 KB
-      version: '2.1'
+      version: "2.1"
     DM00236305:
       url:
         en: https://www.st.com/resource/en/application_note/an4776-generalpurpose-timer-cookbook-for-stm32-microcontrollers-stmicroelectronics.pdf
@@ -899,7 +362,7 @@ documents:
         en: General-purpose timer cookbook for STM32 microcontrollers
         zh_CN: null
       size: 2 MB
-      version: '3.0'
+      version: "3.0"
     DM00257177:
       url:
         en: https://www.st.com/resource/en/application_note/an4803-highspeed-si-simulations-using-ibis-and-boardlevel-simulations-using-hyperlynx-si-on-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -910,7 +373,7 @@ documents:
           HyperLynx® SI on STM32 MCUs and MPUs
         zh_CN: null
       size: 3 MB
-      version: '3.0'
+      version: "3.0"
     DM00263732:
       url:
         en: https://www.st.com/resource/en/application_note/an4821-migrating-from-stm32f405415-line-and-stm32f407417-line-to-stm32l4-series-and-stm32l4-series-microcontrollers-stmicroelectronics.pdf
@@ -921,7 +384,7 @@ documents:
           and STM32L4+ Series microcontrollers
         zh_CN: null
       size: 1 MB
-      version: '5.0'
+      version: "5.0"
     DM00281138:
       url:
         en: https://www.st.com/resource/en/application_note/an4850-stm32-mcus-spreadspectrum-clock-generation-principles-properties-and-implementation-stmicroelectronics.pdf
@@ -932,7 +395,7 @@ documents:
           implementation
         zh_CN: null
       size: 551 KB
-      version: '1.0'
+      version: "1.0"
     DM00354244:
       url:
         en: https://www.st.com/resource/en/application_note/an4989-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf
@@ -942,7 +405,7 @@ documents:
         en: STM32 microcontroller debug toolbox
         zh_CN: null
       size: 7 MB
-      version: '3.0'
+      version: "3.0"
     DM00356634:
       url:
         en: https://www.st.com/resource/en/application_note/an4995-using-an-electromyogram-technique-to-detect-muscle-activity-stmicroelectronics.pdf
@@ -952,17 +415,7 @@ documents:
         en: Using an electromyogram technique to detect muscle activity
         zh_CN: null
       size: 634 KB
-      version: '1.0'
-    DM00373474:
-      url:
-        en: https://www.st.com/resource/en/application_note/an5020-digital-camera-interface-dcmi-on-stm32-mcus-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: Digital camera interface (DCMI) on STM32 MCUs
-        zh_CN: null
-      size: 2 MB
-      version: '3.0'
+      version: "1.0"
     DM00380469:
       url:
         en: https://www.st.com/resource/en/application_note/an5027-interfacing-pdm-digital-microphones-using-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -972,7 +425,7 @@ documents:
         en: Interfacing PDM digital microphones using STM32 MCUs and MPUs
         zh_CN: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00431633:
       url:
         en: https://www.st.com/resource/en/application_note/an5073-receiving-spdif-audio-stream-with-the-stm32f4f7h7-series-stmicroelectronics.pdf
@@ -982,7 +435,7 @@ documents:
         en: Receiving S/PDIF audio stream with the STM32F4/F7/H7 Series
         zh_CN: null
       size: 989 KB
-      version: '2.0'
+      version: "2.0"
     DM00315319:
       url:
         en: https://www.st.com/resource/en/application_note/an4899-stm32-microcontroller-gpio-hardware-settings-and-lowpower-consumption-stmicroelectronics.pdf
@@ -992,7 +445,7 @@ documents:
         en: STM32 microcontroller GPIO hardware settings and low-power consumption
         zh_CN: null
       size: 677 KB
-      version: '3.0'
+      version: "3.0"
     DM00768710:
       url:
         en: https://www.st.com/resource/en/application_note/an5612-esd-protection-of-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -1002,7 +455,7 @@ documents:
         en: ESD protection of STM32 MCUs and MPUs
         zh_CN: null
       size: 2 MB
-      version: '1.1'
+      version: "1.1"
     DM00272912:
       url:
         en: https://www.st.com/resource/en/application_note/an4838-introduction-to-memory-protection-unit-management-on-stm32-mcus-stmicroelectronics.pdf
@@ -1012,7 +465,7 @@ documents:
         en: Introduction to memory protection unit management on STM32 MCUs
         zh_CN: null
       size: 519 KB
-      version: '8.0'
+      version: "8.0"
     DM00296349:
       url:
         en: https://www.st.com/resource/en/application_note/an4879-introduction-to-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf
@@ -1021,8 +474,8 @@ documents:
       description:
         en: Introduction to USB hardware and PCB guidelines using STM32 MCUs
         zh_CN: null
-      size: 550 KB
-      version: '6.0'
+      size: 1 MB
+      version: "9.0"
     DM00536349:
       url:
         en: https://www.st.com/resource/en/application_note/an5225-introduction-to-usb-typec-power-delivery-for-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -1032,17 +485,7 @@ documents:
         en: Introduction to USB Type-C® Power Delivery for STM32 MCUs and MPUs
         zh_CN: null
       size: 2 MB
-      version: '7.0'
-    CD00211314:
-      url:
-        en: https://www.st.com/resource/en/application_note/an2834-how-to-optimize-the-adc-accuracy-in-the-stm32-mcus-stmicroelectronics.pdf
-        zh_CN: null
-      type: pdf
-      description:
-        en: How to optimize the ADC accuracy in the STM32 MCUs
-        zh_CN: null
-      size: 1 MB
-      version: '9.0'
+      version: "7.0"
     DM00722433:
       url:
         en: https://www.st.com/resource/en/application_note/an5537-how-to-use-adc-oversampling-techniques-to-improve-signaltonoise-ratio-on-stm32-mcus-stmicroelectronics.pdf
@@ -1053,7 +496,7 @@ documents:
           on STM32 MCUs
         zh_CN: null
       size: 879 KB
-      version: '1.0'
+      version: "1.0"
     DM00395696:
       url:
         en: https://www.st.com/resource/en/application_note/an5036-guidelines-for-thermal-management-on-stm32-applications-stmicroelectronics.pdf
@@ -1063,7 +506,7 @@ documents:
         en: Guidelines for thermal management on STM32 applications
         zh_CN: null
       size: 5 MB
-      version: '5.0'
+      version: "7.0"
     DM00073853:
       url:
         en: https://www.st.com/resource/en/application_note/an4230-introduction-to-random-number-generation-validation-using-the-nist-statistical-test-suite-for-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -1074,17 +517,17 @@ documents:
           test suite for STM32 MCUs and MPUs
         zh_CN: null
       size: 1 MB
-      version: '10.0'
+      version: "11.0"
     CD00221665:
       url:
         en: https://www.st.com/resource/en/application_note/an2867-guidelines-for-oscillator-design-on-stm8afals-and-stm32-mcusmpus-stmicroelectronics.pdf
         zh_CN: null
       type: pdf
       description:
-        en: Guidelines for oscillator design on STM8AF/AL/S, and STM32 MCUs/MPUs
+        en: Guidelines for oscillator design on STM8AF/AL/S and STM32 MCUs/MPUs
         zh_CN: null
       size: 3 MB
-      version: '20.0'
+      version: "22.0"
     DM00042534:
       url:
         en: https://www.st.com/resource/en/application_note/an4013-introduction-to-timers-for-stm32-mcus-stmicroelectronics.pdf
@@ -1093,8 +536,8 @@ documents:
       description:
         en: Introduction to timers for STM32 MCUs
         zh_CN: null
-      size: 670 KB
-      version: '11.0'
+      size: 682 KB
+      version: "12.0"
     DM00080497:
       url:
         en: https://www.st.com/resource/en/application_note/an4277-how-to-use-pwm-shutdown-for-motor-control-and-digital-power-conversion-on-stm32-mcus-stmicroelectronics.pdf
@@ -1105,7 +548,7 @@ documents:
           on STM32 MCUs
         zh_CN: null
       size: 1 MB
-      version: '7.0'
+      version: "7.0"
     DM00226326:
       url:
         en: https://www.st.com/resource/en/application_note/an4759-introduction-to-using-the-hardware-realtime-clock-rtc-and-the-tamper-management-unit-tamp-with-stm32-mcus-stmicroelectronics.pdf
@@ -1116,7 +559,7 @@ documents:
           management unit (TAMP) with STM32 MCUs
         zh_CN: null
       size: 2 MB
-      version: '9.0'
+      version: "9.0"
     DM00327191:
       url:
         en: https://www.st.com/resource/en/application_note/an4908-getting-started-with-usart-automatic-baud-rater-detection-for-stm32-mcus-stmicroelectronics.pdf
@@ -1125,8 +568,8 @@ documents:
       description:
         en: Getting started with USART automatic baud rater detection for STM32 MCUs
         zh_CN: null
-      size: 1007 KB
-      version: '4.0'
+      size: 999 KB
+      version: "7.0"
     DM00493651:
       url:
         en: https://www.st.com/resource/en/application_note/an5156-introduction-to-security-for-stm32-mcus-stmicroelectronics.pdf
@@ -1136,7 +579,7 @@ documents:
         en: Introduction to security for STM32 MCUs
         zh_CN: null
       size: 4 MB
-      version: '10.0'
+      version: "10.0"
     DM00725181:
       url:
         en: https://www.st.com/resource/en/application_note/an5543-guidelines-for-enhanced-spi-communication-on-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -1145,8 +588,491 @@ documents:
       description:
         en: Guidelines for enhanced SPI communication on STM32 MCUs and MPUs
         zh_CN: null
-      size: 492 KB
-      version: '3.0'
+      size: 496 KB
+      version: "4.0"
+    CD00211314:
+      url:
+        en: https://www.st.com/resource/en/application_note/cd00211314-how-to-optimize-the-adc-accuracy-in-the-stm32-mcus-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: How to optimize the ADC accuracy in the STM32 MCUs
+        zh_CN: null
+      size: 1 MB
+      version: "10.0"
+    CD00173820:
+      url:
+        en: https://www.st.com/resource/en/application_note/an2639-soldering-recommendations-and-package-information-for-leadfree-ecopack2-mcus-and-mpus-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Soldering recommendations and package information for lead-free ECOPACK2
+          MCUs and MPUs
+        zh_CN: null
+      size: 537 KB
+      version: "8.0"
+    DM00373474:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5020-introduction-to-digital-camera-interface-dcmi-for-stm32-mcus-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Introduction to digital camera interface (DCMI) for STM32 MCUs
+        zh_CN: null
+      size: 3 MB
+      version: "4.0"
+  application_notes_for_related_tools_&_software:
+    CD00176444:
+      url:
+        en: https://www.st.com/resource/en/application_note/an2656-stm32f10xxx-lcd-glass-driver-firmware-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32F10xxx LCD glass driver firmware
+        zh_CN: null
+      size: 850 KB
+      version: "2.7"
+    CD00201397:
+      url:
+        en: https://www.st.com/resource/en/application_note/an2790-tft-lcd-interfacing-with-the-highdensity-stm32f10xxx-fsmc-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: TFT LCD interfacing with the high-density STM32F10xxx FSMC
+        zh_CN: null
+      size: 791 KB
+      version: "2.6"
+    CD00251611:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3078-stm32-inapplication-programming-over-the-ic-bus-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32™ in-application programming over the I²C bus
+        zh_CN: null
+      size: 669 KB
+      version: "1.6"
+    CD00258017:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3116-stm32s-adc-modes-and-their-applications-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32™'s ADC modes and their applications
+        zh_CN: null
+      size: 236 KB
+      version: "1.7"
+    CD00267896:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3174-implementing-receivers-for-infrared-remote-control-protocols-using-stm32f10xxx-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Implementing receivers for infrared remote control protocols using STM32F10xxx
+          microcontrollers
+        zh_CN: null
+      size: 589 KB
+      version: "2.4"
+    CD00278141:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3241-qvga-tftlcd-direct-drive-using-the-stm32f10xx-fsmc-peripheral-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: QVGA TFT-LCD direct drive using the STM32F10xx FSMC peripheral
+        zh_CN: null
+      size: 411 KB
+      version: "1.5"
+    CD00290100:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3307-guidelines-for-obtaining-iec-60335-class-b-certification-for-any-stm32-application-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Guidelines for obtaining IEC 60335 Class B certification for any STM32
+          application
+        zh_CN: null
+      size: 652 KB
+      version: "6.0"
+    DM00024853:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3364-migration-and-compatibility-guidelines-for-stm32-microcontroller-applications-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Migration and compatibility guidelines for STM32 microcontroller applications
+        zh_CN: null
+      size: 123 KB
+      version: "3.4"
+    DM00036049:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3965-stm32f40xstm32f41x-inapplication-programming-using-the-usart-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32F40x/STM32F41x in-application programming using the USART
+        zh_CN: null
+      size: 240 KB
+      version: "1.5"
+    DM00036052:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3966-lwip-tcpip-stack-demonstration-for-stm32f4x7-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: LwIP TCP/IP stack demonstration for STM32F4x7 microcontrollers
+        zh_CN: null
+      size: 893 KB
+      version: "2.4"
+    DM00036062:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3968-stm32f407stm32f417-inapplication-programming-iap-over-ethernet-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32F407/STM32F417 in-application programming (IAP) over Ethernet
+        zh_CN: null
+      size: 297 KB
+      version: "1.4"
+    DM00036065:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3969-eeprom-emulation-in-stm32f40xstm32f41x-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: EEPROM emulation in STM32F40x/STM32F41x microcontrollers
+        zh_CN: null
+      size: 208 KB
+      version: "1.7"
+    DM00039457:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3988-clock-configuration-tool-for-stm32f40xx41xx427x437x-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Clock configuration tool for STM32F40xx/41xx/427x/437x microcontrollers
+        zh_CN: null
+      size: 789 KB
+      version: "2.3"
+    DM00039672:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3990-upgrading-stm32f4discovery-board-firmware-using-a-usb-key-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Upgrading STM32F4DISCOVERY board firmware using a USB key
+        zh_CN: null
+      size: 203 KB
+      version: "1.8"
+    DM00040802:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3997-audio-playback-and-recording-using-the-stm32f4discovery-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Audio playback and recording using the STM32F4DISCOVERY
+        zh_CN: null
+      size: 169 KB
+      version: "1.2"
+    DM00040808:
+      url:
+        en: https://www.st.com/resource/en/application_note/an3998-pdm-audio-software-decoding-on-stm32-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: PDM audio software decoding on STM32 microcontrollers
+        zh_CN: null
+      size: 88 KB
+      version: "1.6"
+    DM00047230:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4044-floating-point-unit-demonstration-on-stm32-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Floating point unit demonstration on STM32 microcontrollers
+        zh_CN: null
+      size: 786 KB
+      version: "2.0"
+    DM00089670:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4323-getting-started-with-stemwin-library-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Getting started with STemWin Library
+        zh_CN: null
+      size: 1 MB
+      version: "5.0"
+    DM00096220:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4365-using-stm32f4-mcu-power-modes-with-best-dynamic-efficiency-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Using STM32F4 MCU power modes with best dynamic efficiency
+        zh_CN: null
+      size: 823 KB
+      version: "2.2"
+    DM00105610:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4435-guidelines-for-obtaining-ulcsaiec-607301603351-class-b-certification-in-any-stm32-application-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Guidelines for obtaining UL/CSA/IEC 60730-1/60335-1 Class B certification
+          in any STM32 application
+        zh_CN: null
+      size: 1 MB
+      version: "10.0"
+    DM00110292:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4457-implementing-an-emulated-uart-on-stm32f4-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Implementing an emulated UART on STM32F4 microcontrollers
+        zh_CN: null
+      size: 496 KB
+      version: "2.0"
+    DM00117406:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4499-stm32--nrf51822-bluetooth-low-energy-system-solution-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32 - nRF51822 Bluetooth Low Energy system solution
+        zh_CN: null
+      size: 2 MB
+      version: "1.2"
+    DM00161366:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4657-stm32-inapplication-programming-iap-using-the-usart-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32 in-application programming (IAP) using the USART
+        zh_CN: null
+      size: 332 KB
+      version: "3.0"
+    DM00169730:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4666-parallel-synchronous-transmission-using-gpio-and-dma-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Parallel synchronous transmission using GPIO and DMA
+        zh_CN: null
+      size: 1 MB
+      version: "1.0"
+    DM00173754:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4678-full-duplex-spi-emulation-for-stm32f4-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Full duplex SPI emulation for STM32F4 microcontrollers
+        zh_CN: null
+      size: 1 MB
+      version: "1.0"
+    DM00186528:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4701-proprietary-code-readout-protection-on-microcontrollers-of-the-stm32f4-series-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Proprietary code read-out protection on microcontrollers of the STM32F4
+          Series
+        zh_CN: null
+      size: 893 KB
+      version: "3.0"
+    DM00213525:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4739-stm32cube-firmware-examples-for-stm32f4-series-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32Cube firmware examples for STM32F4 Series
+        zh_CN: null
+      size: 496 KB
+      version: "4.0"
+    DM00226247:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4758-proprietary-code-readout-protection-on-stm32l4-stm32l4-stm32g4-and-stm32wb-series-mcus-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Proprietary code read-out protection on STM32L4, STM32L4+, STM32G4 and
+          STM32WB Series MCUs
+        zh_CN: null
+      size: 1 MB
+      version: "6.0"
+    DM00273990:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4841-digital-signal-processing-for-stm32-microcontrollers-using-cmsis-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Digital signal processing for STM32 microcontrollers using CMSIS
+        zh_CN: null
+      size: 1 MB
+      version: "2.0"
+    DM00346619:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4968-proprietary-code-read-out-protection-pcrop-on-stm32f72xxx-and-stm32f73xxx-microcontrollers-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Proprietary code read out protection (PCROP) on STM32F72xxx and STM32F73xxx
+          microcontrollers
+        zh_CN: null
+      size: 1 MB
+      version: "1.0"
+    DM00414677:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5056-integration-guide-for-the-xcubesbsfu-stm32cube-expansion-package-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Integration guide for the X-CUBE-SBSFU STM32Cube Expansion Package
+        zh_CN: null
+      size: 8 MB
+      version: "8.0"
+    DM00629854:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5360-getting-started-with-projects-based-on-the-stm32mp1-series-in-stm32cubeide-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Getting started with projects based on the STM32MP1 Series in STM32CubeIDE
+        zh_CN: null
+      size: 737 KB
+      version: "1.0"
+    DM00629855:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5361-getting-started-with-projects-based-on-dualcore-stm32h7-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Getting started with projects based on dual-core STM32H7 microcontrollers
+          in STM32CubeIDE
+        zh_CN: null
+      size: 1 MB
+      version: "4.0"
+    DM00652038:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5394-getting-started-with-projects-based-on-the-stm32l5-series-in-stm32cubeide-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Getting started with projects based on the STM32L5 Series in STM32CubeIDE
+        zh_CN: null
+      size: 1 MB
+      version: "3.0"
+    DM00663511:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5418-how-to-build-a-simple-usbpd-sink-application-with-stm32cubemx-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: How to build a simple USB-PD sink application with STM32CubeMX
+        zh_CN: null
+      size: 11 MB
+      version: "5.0"
+    DM00670808:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5426-migrating-graphics-middleware-projects-from-stm32cubemx-540-to-stm32cubemx-550-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Migrating graphics middleware projects from STM32CubeMX 5.4.0 to STM32CubeMX
+          5.5.0
+        zh_CN: null
+      size: 479 KB
+      version: "1.0"
+    DM00691525:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5464-position-control-of-a-threephase-permanent-magnet-motor-using-xcubemcsdk-or-xcubemcsdkful-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Position control of a three-phase permanent magnet motor using X-CUBE-MCSDK
+          or X-CUBE-MCSDK-FUL
+        zh_CN: null
+      size: 2 MB
+      version: "1.0"
+    DM00736854:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5564-getting-started-with-projects-based-on-dualcore-stm32wl-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Getting started with projects based on dual-core STM32WL microcontrollers
+          in STM32CubeIDE
+        zh_CN: null
+      size: 1 MB
+      version: "2.0"
+    DM00811430:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5698-adapting-the-xcubestl-functional-safety-package-for-stm32-iec-61508-compliant-to-other-safety-standards-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: Adapting the X-CUBE-STL functional safety package for STM32 (IEC 61508
+          compliant) to other safety standards
+        zh_CN: null
+      size: 243 KB
+      version: "2.0"
+    DM00826986:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5731-stm32cubemx-and-stm32cubeide-threadsafe-solution-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32CubeMX and STM32CubeIDE thread-safe solution
+        zh_CN: null
+      size: 700 KB
+      version: "1.0"
+    DM00118362:
+      url:
+        en: https://www.st.com/resource/en/application_note/an4502-stm32-smbuspmbus-expansion-package-for-stm32cube-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: STM32 SMBus/PMBus™ expansion package for STM32Cube™
+        zh_CN: null
+      size: 1 MB
+      version: "4.0"
+    DM00965631:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5952-how-to-use-cmake-in-stm32cubeide-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: How to use CMake in STM32CubeIDE
+        zh_CN: null
+      size: 648 KB
+      version: "1.0"
+    DM00413494:
+      url:
+        en: https://www.st.com/resource/en/application_note/an5054-how-to-perform-secure-programming-using-stm32cubeprogrammer-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: How to perform secure programming using STM32CubeProgrammer
+        zh_CN: null
+      size: 7 MB
+      version: "17.0"
+    DM01114150:
+      url:
+        en: https://www.st.com/resource/en/application_note/an6179-how-to-integrate-the-stl-firmware-into-a-time-critical-user-application-stmicroelectronics.pdf
+        zh_CN: null
+      type: pdf
+      description:
+        en: How to integrate the STL firmware into a time critical user application
+        zh_CN: null
+      size: 1 MB
+      version: "1.0"
   programming_manuals:
     DM00046982:
       url:
@@ -1157,7 +1083,7 @@ documents:
         en: STM32 Cortex®-M4 MCUs and MPUs programming manual
         zh_CN: null
       size: 2 MB
-      version: '10.0'
+      version: "10.0"
   references:
     DM00031020:
       url:
@@ -1169,7 +1095,7 @@ documents:
           Arm®-based 32-bit MCUs
         zh_CN: null
       size: 20 MB
-      version: '20.0'
+      version: "21.0"
   technical_notes_&_articles:
     DM00026481:
       url:
@@ -1181,7 +1107,7 @@ documents:
           single/dual FOC SDK V4.0
         zh_CN: null
       size: 284 KB
-      version: '4.3'
+      version: "4.3"
     DM00103228:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1163-description-of-wlcsp-for-microcontrollers-and-recommendations-for-its-use-stmicroelectronics.pdf
@@ -1192,7 +1118,7 @@ documents:
           use
         zh_CN: null
       size: 1 MB
-      version: '4.0'
+      version: "4.0"
     DM00156958:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1204-tape-and-reel-shipping-media-for-stm32-microcontrollers-in-bga-packages-stmicroelectronics.pdf
@@ -1202,7 +1128,7 @@ documents:
         en: Tape and reel shipping media for STM32 microcontrollers in BGA packages
         zh_CN: null
       size: 745 KB
-      version: '2.1'
+      version: "2.1"
     DM00156961:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1205-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-fpn-packages-stmicroelectronics.pdf
@@ -1213,7 +1139,7 @@ documents:
           packages
         zh_CN: null
       size: 753 KB
-      version: '3.0'
+      version: "3.0"
     DM00156963:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1206-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-qfp-packages-stmicroelectronics.pdf
@@ -1224,7 +1150,7 @@ documents:
           packages
         zh_CN: null
       size: 830 KB
-      version: '3.0'
+      version: "3.0"
     DM00157969:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1207-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-so-packages-stmicroelectronics.pdf
@@ -1235,7 +1161,7 @@ documents:
           packages
         zh_CN: null
       size: 755 KB
-      version: '1.0'
+      version: "1.0"
     DM00158090:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1208-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-tssop-and-ssop-packages-stmicroelectronics.pdf
@@ -1246,7 +1172,7 @@ documents:
           and SSOP packages
         zh_CN: null
       size: 743 KB
-      version: '1.0'
+      version: "1.0"
     DM00926061:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1433-reference-device-marking-schematics-for-stm32-microcontrollers-and-microprocessors-stmicroelectronics.pdf
@@ -1256,18 +1182,18 @@ documents:
         en: Reference device marking schematics for STM32 microcontrollers and microprocessors
         zh_CN: null
       size: 1 MB
-      version: '4.0'
+      version: "5.0"
     DM01011952:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1489-security-bulletin-tn1489stpsirt-physical-attacks-on-stm32-and-stm32cube-firmware-stmicroelectronics.pdf
         zh_CN: null
       type: pdf
       description:
-        en: 'Security bulletin TN1489-ST-PSIRT: Physical attacks on STM32 and STM32Cube
-          firmware'
+        en: "Security bulletin TN1489-ST-PSIRT: Physical attacks on STM32 and STM32Cube
+          firmware"
         zh_CN: null
       size: 157 KB
-      version: '1.0'
+      version: "1.0"
   bsdl_files:
     stm32f405-415_407-417_bsdl.zip:
       url:
@@ -1279,7 +1205,7 @@ documents:
           files
         zh_CN: null
       size: 37 KB
-      version: '1.0'
+      version: "1.0"
   ibis_models:
     stm32f405-415_407-417_ibis.zip:
       url:
@@ -1290,7 +1216,7 @@ documents:
         en: STM32F405/415 and STM32F407/417 IBIS models
         zh_CN: null
       size: 14 MB
-      version: '1.0'
+      version: "1.0"
   brochures:
     Products_and_solutions_for_PLCs_and_smart_I_Os:
       url:
@@ -1301,7 +1227,7 @@ documents:
         en: Products and solutions for PLCs and smart I/Os
         zh_CN: null
       size: 1 MB
-      version: '1.0'
+      version: "1.0"
   errata:
     DM00037591:
       url:
@@ -1312,7 +1238,7 @@ documents:
         en: STM32F405/407xx and STM32F415/417xx device errata
         zh_CN: null
       size: 2 MB
-      version: '15.0'
+      version: "16.0"
   system_view_description:
     stm32f4-svd:
       url:
@@ -1323,12 +1249,12 @@ documents:
         en: STM32F4 System View Description
         zh_CN: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
 hals:
-- csp_hal_stm32f4
+  - csp_hal_stm32f4
 hasPowerPad: false
 illustrate:
-  en: ''
+  en: ""
   zh_CN: null
 introduction:
   en: High-performance foundation line, Arm Cortex-M4 core with DSP and FPU, 512 Kbytes
@@ -1338,242 +1264,242 @@ modules:
   Analog:
     ADC1:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     ADC2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     ADC3:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     DAC:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   Misc:
     CAN1:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     CAN2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     FATFS:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     FREERTOS:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     FSMC:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     LIBJPEG:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     LWIP:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     MBEDTLS:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     PDM2PCM:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     SDIO:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM1:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM3:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM4:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM5:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM6:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM7:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM8:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM9:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM10:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM11:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM12:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM13:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     TIM14:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USB_DEVICE:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USB_HOST:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   Computing:
     CRC:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   Multimedia:
     DCMI:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     I2S2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     I2S3:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   Connectivity:
     ETH:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     I2C1:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     I2C2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     I2C3:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     SPI1:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     SPI2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     SPI3:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     UART4:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     UART5:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USART1:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USART2:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USART3:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USART6:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USB_OTG_FS:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     USB_OTG_HS:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   System Core:
     IWDG:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     RCC:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     SYS:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     WWDG:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     GPIO:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     DMA:
       description:
-        en: ''
+        en: ""
         zh_CN: null
     NVIC:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   Security:
     RNG:
       description:
-        en: ''
+        en: ""
         zh_CN: null
   Timers:
     RTC:
       description:
-        en: ''
+        en: ""
         zh_CN: null
 package: LQFP144
 url:
@@ -1582,84 +1508,84 @@ url:
 builder:
   XMake:
     v2.8.1:
-    - arm-none-eabi
+      - arm-none-eabi
   CMake:
     v3.7:
-    - arm-none-eabi
+      - arm-none-eabi
   MDK-Arm:
     v5.27:
-    - armcc
-    - armclang
+      - armcc
+      - armclang
 linker:
-  defaultHeapSize: '0x200'
-  defaultStackSize: '0x400'
+  defaultHeapSize: "0x200"
+  defaultStackSize: "0x400"
 pins:
   PE2:
     position: 1
     type: I/O
     signals:
-    - ETH:TXD3
-    - FSMC:A23
-    - SYS:TRACECLK
+      - ETH:TXD3
+      - FSMC:A23
+      - SYS:TRACECLK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE3:
     position: 2
     type: I/O
     signals:
-    - FSMC:A19
-    - SYS:TRACED0
+      - FSMC:A19
+      - SYS:TRACED0
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE4:
     position: 3
     type: I/O
     signals:
-    - DCMI:D4
-    - FSMC:A20
-    - SYS:TRACED1
+      - DCMI:D4
+      - FSMC:A20
+      - SYS:TRACED1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE5:
     position: 4
     type: I/O
     signals:
-    - DCMI:D6
-    - FSMC:A21
-    - SYS:TRACED2
-    - TIM9:CH1
+      - DCMI:D6
+      - FSMC:A21
+      - SYS:TRACED2
+      - TIM9:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE6:
     position: 5
     type: I/O
     signals:
-    - DCMI:D7
-    - FSMC:A22
-    - SYS:TRACED3
-    - TIM9:CH2
+      - DCMI:D7
+      - FSMC:A22
+      - SYS:TRACED3
+      - TIM9:CH2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VBAT:
     position: 6
     type: power
@@ -1667,110 +1593,110 @@ pins:
     position: 7
     type: I/O
     signals:
-    - RTC:AF1
+      - RTC:AF1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC14-OSC32_IN:
     position: 8
     type: I/O
     signals:
-    - RCC:OSC32_IN
+      - RCC:OSC32_IN
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC15-OSC32_OUT:
     position: 9
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - RCC:OSC32_OUT
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - RCC:OSC32_OUT
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF0:
     position: 10
     type: I/O
     signals:
-    - FSMC:A0
-    - I2C2:SDA
+      - FSMC:A0
+      - I2C2:SDA
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF1:
     position: 11
     type: I/O
     signals:
-    - FSMC:A1
-    - I2C2:SCL
+      - FSMC:A1
+      - I2C2:SCL
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF2:
     position: 12
     type: I/O
     signals:
-    - FSMC:A2
-    - I2C2:SMBA
+      - FSMC:A2
+      - I2C2:SMBA
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF3:
     position: 13
     type: I/O
     signals:
-    - ADC3:IN9
-    - FSMC:A3
+      - ADC3:IN9
+      - FSMC:A3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF4:
     position: 14
     type: I/O
     signals:
-    - ADC3:IN14
-    - FSMC:A4
+      - ADC3:IN14
+      - FSMC:A4
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF5:
     position: 15
     type: I/O
     signals:
-    - ADC3:IN15
-    - FSMC:A5
+      - ADC3:IN15
+      - FSMC:A5
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-1:
     position: 16
     type: power
@@ -1781,89 +1707,89 @@ pins:
     position: 18
     type: I/O
     signals:
-    - ADC3:IN4
-    - FSMC:NIORD
-    - TIM10:CH1
+      - ADC3:IN4
+      - FSMC:NIORD
+      - TIM10:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF7:
     position: 19
     type: I/O
     signals:
-    - ADC3:IN5
-    - FSMC:NREG
-    - TIM11:CH1
+      - ADC3:IN5
+      - FSMC:NREG
+      - TIM11:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF8:
     position: 20
     type: I/O
     signals:
-    - ADC3:IN6
-    - FSMC:NIOWR
-    - TIM13:CH1
+      - ADC3:IN6
+      - FSMC:NIOWR
+      - TIM13:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF9:
     position: 21
     type: I/O
     signals:
-    - ADC3:IN7
-    - DAC:EXTI9
-    - FSMC:CD
-    - TIM14:CH1
+      - ADC3:IN7
+      - DAC:EXTI9
+      - FSMC:CD
+      - TIM14:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF10:
     position: 22
     type: I/O
     signals:
-    - ADC3:IN8
-    - FSMC:INTR
+      - ADC3:IN8
+      - FSMC:INTR
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PH0-OSC_IN:
     position: 23
     type: I/O
     signals:
-    - RCC:OSC_IN
+      - RCC:OSC_IN
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PH1-OSC_OUT:
     position: 24
     type: I/O
     signals:
-    - RCC:OSC_OUT
+      - RCC:OSC_OUT
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   NRST:
     position: 25
     type: reset
@@ -1871,64 +1797,64 @@ pins:
     position: 26
     type: I/O
     signals:
-    - ADC1:IN10
-    - ADC2:IN10
-    - ADC3:IN10
-    - USB:OTG_HS_ULPI_STP
+      - ADC1:IN10
+      - ADC2:IN10
+      - ADC3:IN10
+      - USB:OTG_HS_ULPI_STP
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC1:
     position: 27
     type: I/O
     signals:
-    - ADC1:IN11
-    - ADC2:IN11
-    - ADC3:IN11
-    - ETH:MDC
+      - ADC1:IN11
+      - ADC2:IN11
+      - ADC3:IN11
+      - ETH:MDC
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC2:
     position: 28
     type: I/O
     signals:
-    - ADC1:IN12
-    - ADC2:IN12
-    - ADC3:IN12
-    - ETH:TXD2
-    - I2S2:ext_SD
-    - SPI2:MISO
-    - USB:OTG_HS_ULPI_DIR
+      - ADC1:IN12
+      - ADC2:IN12
+      - ADC3:IN12
+      - ETH:TXD2
+      - I2S2:ext_SD
+      - SPI2:MISO
+      - USB:OTG_HS_ULPI_DIR
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC3:
     position: 29
     type: I/O
     signals:
-    - ADC1:IN13
-    - ADC2:IN13
-    - ADC3:IN13
-    - ETH:TX_CLK
-    - I2S2:SD
-    - SPI2:MOSI
-    - USB:OTG_HS_ULPI_NXT
+      - ADC1:IN13
+      - ADC2:IN13
+      - ADC3:IN13
+      - ETH:TX_CLK
+      - I2S2:SD
+      - SPI2:MOSI
+      - USB:OTG_HS_ULPI_NXT
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VDD-2:
     position: 30
     type: power
@@ -1945,79 +1871,79 @@ pins:
     position: 34
     type: I/O
     signals:
-    - ADC1:IN0
-    - ADC2:IN0
-    - ADC3:IN0
-    - ETH:CRS
-    - SYS:WKUP
-    - TIM2:CH1
-    - TIM2:ETR
-    - TIM5:CH1
-    - TIM8:ETR
-    - UART4:TX
-    - USART2:CTS
+      - ADC1:IN0
+      - ADC2:IN0
+      - ADC3:IN0
+      - ETH:CRS
+      - SYS:WKUP
+      - TIM2:CH1
+      - TIM2:ETR
+      - TIM5:CH1
+      - TIM8:ETR
+      - UART4:TX
+      - USART2:CTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA1:
     position: 35
     type: I/O
     signals:
-    - ADC1:IN1
-    - ADC2:IN1
-    - ADC3:IN1
-    - ETH:REF_CLK
-    - ETH:RX_CLK
-    - TIM2:CH2
-    - TIM5:CH2
-    - UART4:RX
-    - USART2:RTS
+      - ADC1:IN1
+      - ADC2:IN1
+      - ADC3:IN1
+      - ETH:REF_CLK
+      - ETH:RX_CLK
+      - TIM2:CH2
+      - TIM5:CH2
+      - UART4:RX
+      - USART2:RTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA2:
     position: 36
     type: I/O
     signals:
-    - ADC1:IN2
-    - ADC2:IN2
-    - ADC3:IN2
-    - ETH:MDIO
-    - TIM2:CH3
-    - TIM5:CH3
-    - TIM9:CH1
-    - USART2:TX
+      - ADC1:IN2
+      - ADC2:IN2
+      - ADC3:IN2
+      - ETH:MDIO
+      - TIM2:CH3
+      - TIM5:CH3
+      - TIM9:CH1
+      - USART2:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA3:
     position: 37
     type: I/O
     signals:
-    - ADC1:IN3
-    - ADC2:IN3
-    - ADC3:IN3
-    - ETH:COL
-    - TIM2:CH4
-    - TIM5:CH4
-    - TIM9:CH2
-    - USART2:RX
-    - USB:OTG_HS_ULPI_D0
+      - ADC1:IN3
+      - ADC2:IN3
+      - ADC3:IN3
+      - ETH:COL
+      - TIM2:CH4
+      - TIM5:CH4
+      - TIM9:CH2
+      - USART2:RX
+      - USB:OTG_HS_ULPI_D0
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-2:
     position: 38
     type: power
@@ -2028,170 +1954,170 @@ pins:
     position: 40
     type: I/O
     signals:
-    - ADC1:IN4
-    - ADC2:IN4
-    - DAC:OUT1
-    - DCMI:HSYNC
-    - I2S3:WS
-    - SPI1:NSS
-    - SPI3:NSS
-    - USART2:CK
-    - USB:OTG_HS_SOF
+      - ADC1:IN4
+      - ADC2:IN4
+      - DAC:OUT1
+      - DCMI:HSYNC
+      - I2S3:WS
+      - SPI1:NSS
+      - SPI3:NSS
+      - USART2:CK
+      - USB:OTG_HS_SOF
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA5:
     position: 41
     type: I/O
     signals:
-    - ADC1:IN5
-    - ADC2:IN5
-    - DAC:OUT2
-    - SPI1:SCK
-    - TIM2:CH1
-    - TIM2:ETR
-    - TIM8:CH1N
-    - USB:OTG_HS_ULPI_CK
+      - ADC1:IN5
+      - ADC2:IN5
+      - DAC:OUT2
+      - SPI1:SCK
+      - TIM2:CH1
+      - TIM2:ETR
+      - TIM8:CH1N
+      - USB:OTG_HS_ULPI_CK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA6:
     position: 42
     type: I/O
     signals:
-    - ADC1:IN6
-    - ADC2:IN6
-    - DCMI:PIXCLK
-    - SPI1:MISO
-    - TIM13:CH1
-    - TIM1:BKIN
-    - TIM3:CH1
-    - TIM8:BKIN
+      - ADC1:IN6
+      - ADC2:IN6
+      - DCMI:PIXCLK
+      - SPI1:MISO
+      - TIM13:CH1
+      - TIM1:BKIN
+      - TIM3:CH1
+      - TIM8:BKIN
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA7:
     position: 43
     type: I/O
     signals:
-    - ADC1:IN7
-    - ADC2:IN7
-    - ETH:CRS_DV
-    - ETH:RX_DV
-    - SPI1:MOSI
-    - TIM14:CH1
-    - TIM1:CH1N
-    - TIM3:CH2
-    - TIM8:CH1N
+      - ADC1:IN7
+      - ADC2:IN7
+      - ETH:CRS_DV
+      - ETH:RX_DV
+      - SPI1:MOSI
+      - TIM14:CH1
+      - TIM1:CH1N
+      - TIM3:CH2
+      - TIM8:CH1N
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC4:
     position: 44
     type: I/O
     signals:
-    - ADC1:IN14
-    - ADC2:IN14
-    - ETH:RXD0
+      - ADC1:IN14
+      - ADC2:IN14
+      - ETH:RXD0
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC5:
     position: 45
     type: I/O
     signals:
-    - ADC1:IN15
-    - ADC2:IN15
-    - ETH:RXD1
+      - ADC1:IN15
+      - ADC2:IN15
+      - ETH:RXD1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB0:
     position: 46
     type: I/O
     signals:
-    - ADC1:IN8
-    - ADC2:IN8
-    - ETH:RXD2
-    - TIM1:CH2N
-    - TIM3:CH3
-    - TIM8:CH2N
-    - USB:OTG_HS_ULPI_D1
+      - ADC1:IN8
+      - ADC2:IN8
+      - ETH:RXD2
+      - TIM1:CH2N
+      - TIM3:CH3
+      - TIM8:CH2N
+      - USB:OTG_HS_ULPI_D1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB1:
     position: 47
     type: I/O
     signals:
-    - ADC1:IN9
-    - ADC2:IN9
-    - ETH:RXD3
-    - TIM1:CH3N
-    - TIM3:CH4
-    - TIM8:CH3N
-    - USB:OTG_HS_ULPI_D2
+      - ADC1:IN9
+      - ADC2:IN9
+      - ETH:RXD3
+      - TIM1:CH3N
+      - TIM3:CH4
+      - TIM8:CH3N
+      - USB:OTG_HS_ULPI_D2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB2:
     position: 48
     type: I/O
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF11:
     position: 49
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - DCMI:D12
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - DCMI:D12
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF12:
     position: 50
     type: I/O
     signals:
-    - FSMC:A6
+      - FSMC:A6
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-3:
     position: 51
     type: power
@@ -2202,100 +2128,100 @@ pins:
     position: 53
     type: I/O
     signals:
-    - FSMC:A7
+      - FSMC:A7
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF14:
     position: 54
     type: I/O
     signals:
-    - FSMC:A8
+      - FSMC:A8
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PF15:
     position: 55
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - FSMC:A9
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - FSMC:A9
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG0:
     position: 56
     type: I/O
     signals:
-    - FSMC:A10
+      - FSMC:A10
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG1:
     position: 57
     type: I/O
     signals:
-    - FSMC:A11
+      - FSMC:A11
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE7:
     position: 58
     type: I/O
     signals:
-    - FSMC:D4
-    - FSMC:DA4
-    - TIM1:ETR
+      - FSMC:D4
+      - FSMC:DA4
+      - TIM1:ETR
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE8:
     position: 59
     type: I/O
     signals:
-    - FSMC:D5
-    - FSMC:DA5
-    - TIM1:CH1N
+      - FSMC:D5
+      - FSMC:DA5
+      - TIM1:CH1N
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE9:
     position: 60
     type: I/O
     signals:
-    - DAC:EXTI9
-    - FSMC:D6
-    - FSMC:DA6
-    - TIM1:CH1
+      - DAC:EXTI9
+      - FSMC:D6
+      - FSMC:DA6
+      - TIM1:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-4:
     position: 61
     type: power
@@ -2306,121 +2232,121 @@ pins:
     position: 63
     type: I/O
     signals:
-    - FSMC:D7
-    - FSMC:DA7
-    - TIM1:CH2N
+      - FSMC:D7
+      - FSMC:DA7
+      - TIM1:CH2N
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE11:
     position: 64
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - FSMC:D8
-    - FSMC:DA8
-    - TIM1:CH2
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - FSMC:D8
+      - FSMC:DA8
+      - TIM1:CH2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE12:
     position: 65
     type: I/O
     signals:
-    - FSMC:D9
-    - FSMC:DA9
-    - TIM1:CH3N
+      - FSMC:D9
+      - FSMC:DA9
+      - TIM1:CH3N
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE13:
     position: 66
     type: I/O
     signals:
-    - FSMC:D10
-    - FSMC:DA10
-    - TIM1:CH3
+      - FSMC:D10
+      - FSMC:DA10
+      - TIM1:CH3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE14:
     position: 67
     type: I/O
     signals:
-    - FSMC:D11
-    - FSMC:DA11
-    - TIM1:CH4
+      - FSMC:D11
+      - FSMC:DA11
+      - TIM1:CH4
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE15:
     position: 68
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - FSMC:D12
-    - FSMC:DA12
-    - TIM1:BKIN
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - FSMC:D12
+      - FSMC:DA12
+      - TIM1:BKIN
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB10:
     position: 69
     type: I/O
     signals:
-    - ETH:RX_ER
-    - I2C2:SCL
-    - I2S2:CK
-    - SPI2:SCK
-    - TIM2:CH3
-    - USART3:TX
-    - USB:OTG_HS_ULPI_D3
+      - ETH:RX_ER
+      - I2C2:SCL
+      - I2S2:CK
+      - SPI2:SCK
+      - TIM2:CH3
+      - USART3:TX
+      - USB:OTG_HS_ULPI_D3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB11:
     position: 70
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - ETH:TX_EN
-    - I2C2:SDA
-    - TIM2:CH4
-    - USART3:RX
-    - USB:OTG_HS_ULPI_D4
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - ETH:TX_EN
+      - I2C2:SDA
+      - TIM2:CH4
+      - USART3:RX
+      - USB:OTG_HS_ULPI_D4
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VCAP_1:
     position: 71
     type: power
@@ -2431,158 +2357,158 @@ pins:
     position: 73
     type: I/O
     signals:
-    - CAN2:RX
-    - ETH:TXD0
-    - I2C2:SMBA
-    - I2S2:WS
-    - SPI2:NSS
-    - TIM1:BKIN
-    - USART3:CK
-    - USB:OTG_HS_ID
-    - USB:OTG_HS_ULPI_D5
+      - CAN2:RX
+      - ETH:TXD0
+      - I2C2:SMBA
+      - I2S2:WS
+      - SPI2:NSS
+      - TIM1:BKIN
+      - USART3:CK
+      - USB:OTG_HS_ID
+      - USB:OTG_HS_ULPI_D5
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB13:
     position: 74
     type: I/O
     signals:
-    - CAN2:TX
-    - ETH:TXD1
-    - I2S2:CK
-    - SPI2:SCK
-    - TIM1:CH1N
-    - USART3:CTS
-    - USB:OTG_HS_ULPI_D6
-    - USB:OTG_HS_VBUS
+      - CAN2:TX
+      - ETH:TXD1
+      - I2S2:CK
+      - SPI2:SCK
+      - TIM1:CH1N
+      - USART3:CTS
+      - USB:OTG_HS_ULPI_D6
+      - USB:OTG_HS_VBUS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB14:
     position: 75
     type: I/O
     signals:
-    - I2S2:ext_SD
-    - SPI2:MISO
-    - TIM12:CH1
-    - TIM1:CH2N
-    - TIM8:CH2N
-    - USART3:RTS
-    - USB:OTG_HS_DM
+      - I2S2:ext_SD
+      - SPI2:MISO
+      - TIM12:CH1
+      - TIM1:CH2N
+      - TIM8:CH2N
+      - USART3:RTS
+      - USB:OTG_HS_DM
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB15:
     position: 76
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - I2S2:SD
-    - RTC:REFIN
-    - SPI2:MOSI
-    - TIM12:CH2
-    - TIM1:CH3N
-    - TIM8:CH3N
-    - USB:OTG_HS_DP
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - I2S2:SD
+      - RTC:REFIN
+      - SPI2:MOSI
+      - TIM12:CH2
+      - TIM1:CH3N
+      - TIM8:CH3N
+      - USB:OTG_HS_DP
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD8:
     position: 77
     type: I/O
     signals:
-    - FSMC:D13
-    - FSMC:DA13
-    - USART3:TX
+      - FSMC:D13
+      - FSMC:DA13
+      - USART3:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD9:
     position: 78
     type: I/O
     signals:
-    - DAC:EXTI9
-    - FSMC:D14
-    - FSMC:DA14
-    - USART3:RX
+      - DAC:EXTI9
+      - FSMC:D14
+      - FSMC:DA14
+      - USART3:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD10:
     position: 79
     type: I/O
     signals:
-    - FSMC:D15
-    - FSMC:DA15
-    - USART3:CK
+      - FSMC:D15
+      - FSMC:DA15
+      - USART3:CK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD11:
     position: 80
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - FSMC:A16
-    - FSMC:CLE
-    - USART3:CTS
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - FSMC:A16
+      - FSMC:CLE
+      - USART3:CTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD12:
     position: 81
     type: I/O
     signals:
-    - FSMC:A17
-    - FSMC:ALE
-    - TIM4:CH1
-    - USART3:RTS
+      - FSMC:A17
+      - FSMC:ALE
+      - TIM4:CH1
+      - USART3:RTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD13:
     position: 82
     type: I/O
     signals:
-    - FSMC:A18
-    - TIM4:CH2
+      - FSMC:A18
+      - TIM4:CH2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-5:
     position: 83
     type: power
@@ -2593,110 +2519,110 @@ pins:
     position: 85
     type: I/O
     signals:
-    - FSMC:D0
-    - FSMC:DA0
-    - TIM4:CH3
+      - FSMC:D0
+      - FSMC:DA0
+      - TIM4:CH3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD15:
     position: 86
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - FSMC:D1
-    - FSMC:DA1
-    - TIM4:CH4
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - FSMC:D1
+      - FSMC:DA1
+      - TIM4:CH4
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG2:
     position: 87
     type: I/O
     signals:
-    - FSMC:A12
+      - FSMC:A12
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG3:
     position: 88
     type: I/O
     signals:
-    - FSMC:A13
+      - FSMC:A13
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG4:
     position: 89
     type: I/O
     signals:
-    - FSMC:A14
+      - FSMC:A14
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG5:
     position: 90
     type: I/O
     signals:
-    - FSMC:A15
+      - FSMC:A15
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG6:
     position: 91
     type: I/O
     signals:
-    - FSMC:INT2
+      - FSMC:INT2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG7:
     position: 92
     type: I/O
     signals:
-    - FSMC:INT3
-    - USART6:CK
+      - FSMC:INT3
+      - USART6:CK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG8:
     position: 93
     type: I/O
     signals:
-    - ETH:PPS_OUT
-    - USART6:RTS
+      - ETH:PPS_OUT
+      - USART6:RTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-6:
     position: 94
     type: power
@@ -2707,154 +2633,154 @@ pins:
     position: 96
     type: I/O
     signals:
-    - DCMI:D0
-    - I2S2:MCK
-    - SDIO:D6
-    - TIM3:CH1
-    - TIM8:CH1
-    - USART6:TX
+      - DCMI:D0
+      - I2S2:MCK
+      - SDIO:D6
+      - TIM3:CH1
+      - TIM8:CH1
+      - USART6:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC7:
     position: 97
     type: I/O
     signals:
-    - DCMI:D1
-    - I2S3:MCK
-    - SDIO:D7
-    - TIM3:CH2
-    - TIM8:CH2
-    - USART6:RX
+      - DCMI:D1
+      - I2S3:MCK
+      - SDIO:D7
+      - TIM3:CH2
+      - TIM8:CH2
+      - USART6:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC8:
     position: 98
     type: I/O
     signals:
-    - DCMI:D2
-    - SDIO:D0
-    - TIM3:CH3
-    - TIM8:CH3
-    - USART6:CK
+      - DCMI:D2
+      - SDIO:D0
+      - TIM3:CH3
+      - TIM8:CH3
+      - USART6:CK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC9:
     position: 99
     type: I/O
     signals:
-    - DAC:EXTI9
-    - DCMI:D3
-    - I2C3:SDA
-    - I2S:CKIN
-    - RCC:MCO_2
-    - SDIO:D1
-    - TIM3:CH4
-    - TIM8:CH4
+      - DAC:EXTI9
+      - DCMI:D3
+      - I2C3:SDA
+      - I2S:CKIN
+      - RCC:MCO_2
+      - SDIO:D1
+      - TIM3:CH4
+      - TIM8:CH4
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA8:
     position: 100
     type: I/O
     signals:
-    - I2C3:SCL
-    - RCC:MCO_1
-    - TIM1:CH1
-    - USART1:CK
-    - USB:OTG_FS_SOF
+      - I2C3:SCL
+      - RCC:MCO_1
+      - TIM1:CH1
+      - USART1:CK
+      - USB:OTG_FS_SOF
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA9:
     position: 101
     type: I/O
     signals:
-    - DAC:EXTI9
-    - DCMI:D0
-    - I2C3:SMBA
-    - TIM1:CH2
-    - USART1:TX
-    - USB:OTG_FS_VBUS
+      - DAC:EXTI9
+      - DCMI:D0
+      - I2C3:SMBA
+      - TIM1:CH2
+      - USART1:TX
+      - USB:OTG_FS_VBUS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA10:
     position: 102
     type: I/O
     signals:
-    - DCMI:D1
-    - TIM1:CH3
-    - USART1:RX
-    - USB:OTG_FS_ID
+      - DCMI:D1
+      - TIM1:CH3
+      - USART1:RX
+      - USB:OTG_FS_ID
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA11:
     position: 103
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - CAN1:RX
-    - TIM1:CH4
-    - USART1:CTS
-    - USB:OTG_FS_DM
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - CAN1:RX
+      - TIM1:CH4
+      - USART1:CTS
+      - USB:OTG_FS_DM
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA12:
     position: 104
     type: I/O
     signals:
-    - CAN1:TX
-    - TIM1:ETR
-    - USART1:RTS
-    - USB:OTG_FS_DP
+      - CAN1:TX
+      - TIM1:ETR
+      - USART1:RTS
+      - USB:OTG_FS_DP
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA13:
     position: 105
     type: I/O
     signals:
-    - SYS:JTMS-SWDIO
+      - SYS:JTMS-SWDIO
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VCAP_2:
     position: 106
     type: power
@@ -2868,159 +2794,159 @@ pins:
     position: 109
     type: I/O
     signals:
-    - SYS:JTCK-SWCLK
+      - SYS:JTCK-SWCLK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PA15:
     position: 110
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - I2S3:WS
-    - SPI1:NSS
-    - SPI3:NSS
-    - SYS:JTDI
-    - TIM2:CH1
-    - TIM2:ETR
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - I2S3:WS
+      - SPI1:NSS
+      - SPI3:NSS
+      - SYS:JTDI
+      - TIM2:CH1
+      - TIM2:ETR
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC10:
     position: 111
     type: I/O
     signals:
-    - DCMI:D8
-    - I2S3:CK
-    - SDIO:D2
-    - SPI3:SCK
-    - UART4:TX
-    - USART3:TX
+      - DCMI:D8
+      - I2S3:CK
+      - SDIO:D2
+      - SPI3:SCK
+      - UART4:TX
+      - USART3:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC11:
     position: 112
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - DCMI:D4
-    - I2S3:ext_SD
-    - SDIO:D3
-    - SPI3:MISO
-    - UART4:RX
-    - USART3:RX
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - DCMI:D4
+      - I2S3:ext_SD
+      - SDIO:D3
+      - SPI3:MISO
+      - UART4:RX
+      - USART3:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PC12:
     position: 113
     type: I/O
     signals:
-    - DCMI:D9
-    - I2S3:SD
-    - SDIO:CK
-    - SPI3:MOSI
-    - UART5:TX
-    - USART3:CK
+      - DCMI:D9
+      - I2S3:SD
+      - SDIO:CK
+      - SPI3:MOSI
+      - UART5:TX
+      - USART3:CK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD0:
     position: 114
     type: I/O
     signals:
-    - CAN1:RX
-    - FSMC:D2
-    - FSMC:DA2
+      - CAN1:RX
+      - FSMC:D2
+      - FSMC:DA2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD1:
     position: 115
     type: I/O
     signals:
-    - CAN1:TX
-    - FSMC:D3
-    - FSMC:DA3
+      - CAN1:TX
+      - FSMC:D3
+      - FSMC:DA3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD2:
     position: 116
     type: I/O
     signals:
-    - DCMI:D11
-    - SDIO:CMD
-    - TIM3:ETR
-    - UART5:RX
+      - DCMI:D11
+      - SDIO:CMD
+      - TIM3:ETR
+      - UART5:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD3:
     position: 117
     type: I/O
     signals:
-    - FSMC:CLK
-    - USART2:CTS
+      - FSMC:CLK
+      - USART2:CTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD4:
     position: 118
     type: I/O
     signals:
-    - FSMC:NOE
-    - USART2:RTS
+      - FSMC:NOE
+      - USART2:RTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD5:
     position: 119
     type: I/O
     signals:
-    - FSMC:NWE
-    - USART2:TX
+      - FSMC:NWE
+      - USART2:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-8:
     position: 120
     type: power
@@ -3031,106 +2957,106 @@ pins:
     position: 122
     type: I/O
     signals:
-    - FSMC:NWAIT
-    - USART2:RX
+      - FSMC:NWAIT
+      - USART2:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PD7:
     position: 123
     type: I/O
     signals:
-    - FSMC:NCE2
-    - FSMC:NE1
-    - USART2:CK
+      - FSMC:NCE2
+      - FSMC:NE1
+      - USART2:CK
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG9:
     position: 124
     type: I/O
     signals:
-    - DAC:EXTI9
-    - FSMC:NCE3
-    - FSMC:NE2
-    - USART6:RX
+      - DAC:EXTI9
+      - FSMC:NCE3
+      - FSMC:NE2
+      - USART6:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG10:
     position: 125
     type: I/O
     signals:
-    - FSMC:NCE4_1
-    - FSMC:NE3
+      - FSMC:NCE4_1
+      - FSMC:NE3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG11:
     position: 126
     type: I/O
     signals:
-    - ADC1:EXTI11
-    - ADC2:EXTI11
-    - ADC3:EXTI11
-    - ETH:TX_EN
-    - FSMC:NCE4_2
+      - ADC1:EXTI11
+      - ADC2:EXTI11
+      - ADC3:EXTI11
+      - ETH:TX_EN
+      - FSMC:NCE4_2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG12:
     position: 127
     type: I/O
     signals:
-    - FSMC:NE4
-    - USART6:RTS
+      - FSMC:NE4
+      - USART6:RTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG13:
     position: 128
     type: I/O
     signals:
-    - ETH:TXD0
-    - FSMC:A24
-    - USART6:CTS
+      - ETH:TXD0
+      - FSMC:A24
+      - USART6:CTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PG14:
     position: 129
     type: I/O
     signals:
-    - ETH:TXD1
-    - FSMC:A25
-    - USART6:TX
+      - ETH:TXD1
+      - FSMC:A25
+      - USART6:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   VSS-9:
     position: 130
     type: power
@@ -3141,96 +3067,96 @@ pins:
     position: 132
     type: I/O
     signals:
-    - ADC1:EXTI15
-    - ADC2:EXTI15
-    - ADC3:EXTI15
-    - DCMI:D13
-    - USART6:CTS
+      - ADC1:EXTI15
+      - ADC2:EXTI15
+      - ADC3:EXTI15
+      - DCMI:D13
+      - USART6:CTS
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB3:
     position: 133
     type: I/O
     signals:
-    - I2S3:CK
-    - SPI1:SCK
-    - SPI3:SCK
-    - SYS:JTDO-SWO
-    - TIM2:CH2
+      - I2S3:CK
+      - SPI1:SCK
+      - SPI3:SCK
+      - SYS:JTDO-SWO
+      - TIM2:CH2
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB4:
     position: 134
     type: I/O
     signals:
-    - I2S3:ext_SD
-    - SPI1:MISO
-    - SPI3:MISO
-    - SYS:JTRST
-    - TIM3:CH1
+      - I2S3:ext_SD
+      - SPI1:MISO
+      - SPI3:MISO
+      - SYS:JTRST
+      - TIM3:CH1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB5:
     position: 135
     type: I/O
     signals:
-    - CAN2:RX
-    - DCMI:D10
-    - ETH:PPS_OUT
-    - I2C1:SMBA
-    - I2S3:SD
-    - SPI1:MOSI
-    - SPI3:MOSI
-    - TIM3:CH2
-    - USB:OTG_HS_ULPI_D7
+      - CAN2:RX
+      - DCMI:D10
+      - ETH:PPS_OUT
+      - I2C1:SMBA
+      - I2S3:SD
+      - SPI1:MOSI
+      - SPI3:MOSI
+      - TIM3:CH2
+      - USB:OTG_HS_ULPI_D7
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB6:
     position: 136
     type: I/O
     signals:
-    - CAN2:TX
-    - DCMI:D5
-    - I2C1:SCL
-    - TIM4:CH1
-    - USART1:TX
+      - CAN2:TX
+      - DCMI:D5
+      - I2C1:SCL
+      - TIM4:CH1
+      - USART1:TX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB7:
     position: 137
     type: I/O
     signals:
-    - DCMI:VSYNC
-    - FSMC:NL
-    - I2C1:SDA
-    - TIM4:CH2
-    - USART1:RX
+      - DCMI:VSYNC
+      - FSMC:NL
+      - I2C1:SDA
+      - TIM4:CH2
+      - USART1:RX
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   BOOT0:
     position: 138
     type: boot
@@ -3238,63 +3164,63 @@ pins:
     position: 139
     type: I/O
     signals:
-    - CAN1:RX
-    - DCMI:D6
-    - ETH:TXD3
-    - I2C1:SCL
-    - SDIO:D4
-    - TIM10:CH1
-    - TIM4:CH3
+      - CAN1:RX
+      - DCMI:D6
+      - ETH:TXD3
+      - I2C1:SCL
+      - SDIO:D4
+      - TIM10:CH1
+      - TIM4:CH3
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PB9:
     position: 140
     type: I/O
     signals:
-    - CAN1:TX
-    - DAC:EXTI9
-    - DCMI:D7
-    - I2C1:SDA
-    - I2S2:WS
-    - SDIO:D5
-    - SPI2:NSS
-    - TIM11:CH1
-    - TIM4:CH4
+      - CAN1:TX
+      - DAC:EXTI9
+      - DCMI:D7
+      - I2C1:SDA
+      - I2S2:WS
+      - SDIO:D5
+      - SPI2:NSS
+      - TIM11:CH1
+      - TIM4:CH4
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE0:
     position: 141
     type: I/O
     signals:
-    - DCMI:D2
-    - FSMC:NBL0
-    - TIM4:ETR
+      - DCMI:D2
+      - FSMC:NBL0
+      - TIM4:ETR
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PE1:
     position: 142
     type: I/O
     signals:
-    - DCMI:D3
-    - FSMC:NBL1
+      - DCMI:D3
+      - FSMC:NBL1
     modes:
-    - GPIO:Input
-    - GPIO:Output
-    - GPIO:Analog
-    - GPIO:EVENTOUT
-    - GPIO:EXTI
+      - GPIO:Input
+      - GPIO:Output
+      - GPIO:Analog
+      - GPIO:EVENTOUT
+      - GPIO:EXTI
   PDR_ON:
     position: 143
     type: reset

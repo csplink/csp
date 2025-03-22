@@ -84,32 +84,34 @@ parameters:
     max: 32768
     min: 32768
   geehy.rcm_hse_value_t:
-    (RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_bypass'):
-      type: float
-      description:
-        zh_CN: HSE 晶振
-        en: HSE OSC
-      expression:
-        display: value/1000000
-        real: value*1000000
-      default: 8000000
-      readonly: false
-      visible: false
-      max: 25000000
-      min: 1000000
-    (default):
-      type: float
-      description:
-        zh_CN: HSE 晶振
-        en: HSE OSC
-      expression:
-        display: value/1000000
-        real: value*1000000
-      default: 8000000
-      readonly: false
-      visible: false
-      max: 16000000
-      min: 4000000
+    - condition: RCM.geehy.rcm_hse_clock_source_t == 'geehy.rcm_hse_clock_source_bypass'
+      content:
+        type: float
+        description:
+          zh_CN: HSE 晶振
+          en: HSE OSC
+        expression:
+          display: value/1000000
+          real: value*1000000
+        default: 8000000
+        readonly: false
+        visible: false
+        max: 25000000
+        min: 1000000
+    - condition: default
+      content:
+        type: float
+        description:
+          zh_CN: HSE 晶振
+          en: HSE OSC
+        expression:
+          display: value/1000000
+          real: value*1000000
+        default: 8000000
+        readonly: false
+        visible: false
+        max: 16000000
+        min: 4000000
   geehy.rcm_hse_div_pll_t:
     type: enum
     values:
@@ -232,17 +234,18 @@ parameters:
     readonly: false
     visible: false
   geehy.rcm_rtc_clk_t:
-    (default):
-      type: float
-      description:
-        zh_CN: RTC 时钟
-        en: RTC clock
-      expression:
-        display: value/1000
-        real: value*1000
-      default: 40000
-      readonly: true
-      visible: false
+    - condition: default
+      content:
+        type: float
+        description:
+          zh_CN: RTC 时钟
+          en: RTC clock
+        expression:
+          display: value/1000
+          real: value*1000
+        default: 40000
+        readonly: true
+        visible: false
   geehy.rcm_iwdg_clk_t:
     type: float
     description:
@@ -392,17 +395,18 @@ parameters:
     readonly: false
     visible: false
   geehy.rcm_hclk_t:
-    (default):
-      type: float
-      description:
-        zh_CN: AHB 时钟
-        en: AHB clock
-      expression:
-        display: value/1000000
-        real: value*1000000
-      default: 8000000
-      readonly: true
-      visible: false
+    - condition: default
+      content:
+        type: float
+        description:
+          zh_CN: AHB 时钟
+          en: AHB clock
+        expression:
+          display: value/1000000
+          real: value*1000000
+        default: 8000000
+        readonly: true
+        visible: false
   geehy.rcm_ahb_div_sdio_t:
     type: enum
     values:
@@ -556,36 +560,38 @@ parameters:
     readonly: true
     visible: false
   geehy.rcm_apb1_timers_mul_t:
-    (RCM.geehy.rcm_apb1_div_t == 'geehy.rcm_apb1_div1'):
-      type: enum
-      values:
-        geehy.rcm_apb1_timers_mul1:
-          expression:
-            real: value*1
-          comment:
-            zh_CN: '*1'
-            en: '*1'
-      description:
-        zh_CN: APB1 倍频器
-        en: APB1 CLK Multiplier
-      default: geehy.rcm_apb1_timers_mul1
-      readonly: true
-      visible: false
-    (default):
-      type: enum
-      values:
-        geehy.rcm_apb1_timers_mul2:
-          expression:
-            real: value*2
-          comment:
-            zh_CN: '*2'
-            en: '*2'
-      description:
-        zh_CN: APB1 倍频器
-        en: APB1 CLK Multiplier
-      default: geehy.rcm_apb1_timers_mul2
-      readonly: true
-      visible: false
+    - condition: RCM.geehy.rcm_apb1_div_t == 'geehy.rcm_apb1_div1'
+      content:
+        type: enum
+        values:
+          geehy.rcm_apb1_timers_mul1:
+            expression:
+              real: value*1
+            comment:
+              zh_CN: "*1"
+              en: "*1"
+        description:
+          zh_CN: APB1 倍频器
+          en: APB1 CLK Multiplier
+        default: geehy.rcm_apb1_timers_mul1
+        readonly: true
+        visible: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.rcm_apb1_timers_mul2:
+            expression:
+              real: value*2
+            comment:
+              zh_CN: "*2"
+              en: "*2"
+        description:
+          zh_CN: APB1 倍频器
+          en: APB1 CLK Multiplier
+        default: geehy.rcm_apb1_timers_mul2
+        readonly: true
+        visible: false
   geehy.rcm_apb1_timers_out_t:
     type: float
     description:
@@ -648,36 +654,38 @@ parameters:
     readonly: true
     visible: false
   geehy.rcm_apb2_timers_mul_t:
-    (RCM.geehy.rcm_apb2_div_t == 'geehy.rcm_apb2_div1'):
-      type: enum
-      values:
-        geehy.rcm_apb2_timers_mul1:
-          expression:
-            real: value*1
-          comment:
-            zh_CN: '*1'
-            en: '*1'
-      description:
-        zh_CN: APB2 倍频器
-        en: APB2 CLK Multiplier
-      default: geehy.rcm_apb2_timers_mul1
-      readonly: true
-      visible: false
-    (default):
-      type: enum
-      values:
-        geehy.rcm_apb2_timers_mul2:
-          expression:
-            real: value*2
-          comment:
-            zh_CN: '*2'
-            en: '*2'
-      description:
-        zh_CN: APB2 倍频器
-        en: APB2 CLK Multiplier
-      default: geehy.rcm_apb2_timers_mul2
-      readonly: true
-      visible: false
+    - condition: RCM.geehy.rcm_apb2_div_t == 'geehy.rcm_apb2_div1'
+      content:
+        type: enum
+        values:
+          geehy.rcm_apb2_timers_mul1:
+            expression:
+              real: value*1
+            comment:
+              zh_CN: "*1"
+              en: "*1"
+        description:
+          zh_CN: APB2 倍频器
+          en: APB2 CLK Multiplier
+        default: geehy.rcm_apb2_timers_mul1
+        readonly: true
+        visible: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.rcm_apb2_timers_mul2:
+            expression:
+              real: value*2
+            comment:
+              zh_CN: "*2"
+              en: "*2"
+        description:
+          zh_CN: APB2 倍频器
+          en: APB2 CLK Multiplier
+        default: geehy.rcm_apb2_timers_mul2
+        readonly: true
+        visible: false
   geehy.rcm_apb2_timers_out_t:
     type: float
     description:
@@ -805,117 +813,119 @@ parameters:
     readonly: false
     visible: false
   geehy.rcm_pll_t:
-    (default):
-      type: float
-      description:
-        zh_CN: PLL 时钟
-        en: PLL clock
-      expression:
-        display: value/1000000
-        real: value*1000000
-      default: 4000000
-      readonly: true
-      visible: false
+    - condition: default
+      content:
+        type: float
+        description:
+          zh_CN: PLL 时钟
+          en: PLL clock
+        expression:
+          display: value/1000000
+          real: value*1000000
+        default: 4000000
+        readonly: true
+        visible: false
   geehy.rcm_pll_mul_t:
-    (default):
-      type: enum
-      values:
-        geehy.rcm_pll_mul2:
-          expression:
-            real: value*2
-          comment:
-            zh_CN: '*2'
-            en: '*2'
-        geehy.rcm_pll_mul3:
-          expression:
-            real: value*3
-          comment:
-            zh_CN: '*3'
-            en: '*3'
-        geehy.rcm_pll_mul4:
-          expression:
-            real: value*4
-          comment:
-            zh_CN: '*4'
-            en: '*4'
-        geehy.rcm_pll_mul5:
-          expression:
-            real: value*5
-          comment:
-            zh_CN: '*5'
-            en: '*5'
-        geehy.rcm_pll_mul6:
-          expression:
-            real: value*6
-          comment:
-            zh_CN: '*6'
-            en: '*6'
-        geehy.rcm_pll_mul7:
-          expression:
-            real: value*7
-          comment:
-            zh_CN: '*7'
-            en: '*7'
-        geehy.rcm_pll_mul8:
-          expression:
-            real: value*8
-          comment:
-            zh_CN: '*8'
-            en: '*8'
-        geehy.rcm_pll_mul9:
-          expression:
-            real: value*9
-          comment:
-            zh_CN: '*9'
-            en: '*9'
-        geehy.rcm_pll_mul10:
-          expression:
-            real: value*10
-          comment:
-            zh_CN: '*10'
-            en: '*10'
-        geehy.rcm_pll_mul11:
-          expression:
-            real: value*11
-          comment:
-            zh_CN: '*11'
-            en: '*11'
-        geehy.rcm_pll_mul12:
-          expression:
-            real: value*12
-          comment:
-            zh_CN: '*12'
-            en: '*12'
-        geehy.rcm_pll_mul13:
-          expression:
-            real: value*13
-          comment:
-            zh_CN: '*13'
-            en: '*13'
-        geehy.rcm_pll_mul14:
-          expression:
-            real: value*14
-          comment:
-            zh_CN: '*14'
-            en: '*14'
-        geehy.rcm_pll_mul15:
-          expression:
-            real: value*15
-          comment:
-            zh_CN: '*15'
-            en: '*15'
-        geehy.rcm_pll_mul16:
-          expression:
-            real: value*16
-          comment:
-            zh_CN: '*16'
-            en: '*16'
-      description:
-        zh_CN: PLL 倍频器
-        en: PLL Multiplier
-      default: geehy.rcm_pll_mul2
-      readonly: false
-      visible: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.rcm_pll_mul2:
+            expression:
+              real: value*2
+            comment:
+              zh_CN: "*2"
+              en: "*2"
+          geehy.rcm_pll_mul3:
+            expression:
+              real: value*3
+            comment:
+              zh_CN: "*3"
+              en: "*3"
+          geehy.rcm_pll_mul4:
+            expression:
+              real: value*4
+            comment:
+              zh_CN: "*4"
+              en: "*4"
+          geehy.rcm_pll_mul5:
+            expression:
+              real: value*5
+            comment:
+              zh_CN: "*5"
+              en: "*5"
+          geehy.rcm_pll_mul6:
+            expression:
+              real: value*6
+            comment:
+              zh_CN: "*6"
+              en: "*6"
+          geehy.rcm_pll_mul7:
+            expression:
+              real: value*7
+            comment:
+              zh_CN: "*7"
+              en: "*7"
+          geehy.rcm_pll_mul8:
+            expression:
+              real: value*8
+            comment:
+              zh_CN: "*8"
+              en: "*8"
+          geehy.rcm_pll_mul9:
+            expression:
+              real: value*9
+            comment:
+              zh_CN: "*9"
+              en: "*9"
+          geehy.rcm_pll_mul10:
+            expression:
+              real: value*10
+            comment:
+              zh_CN: "*10"
+              en: "*10"
+          geehy.rcm_pll_mul11:
+            expression:
+              real: value*11
+            comment:
+              zh_CN: "*11"
+              en: "*11"
+          geehy.rcm_pll_mul12:
+            expression:
+              real: value*12
+            comment:
+              zh_CN: "*12"
+              en: "*12"
+          geehy.rcm_pll_mul13:
+            expression:
+              real: value*13
+            comment:
+              zh_CN: "*13"
+              en: "*13"
+          geehy.rcm_pll_mul14:
+            expression:
+              real: value*14
+            comment:
+              zh_CN: "*14"
+              en: "*14"
+          geehy.rcm_pll_mul15:
+            expression:
+              real: value*15
+            comment:
+              zh_CN: "*15"
+              en: "*15"
+          geehy.rcm_pll_mul16:
+            expression:
+              real: value*16
+            comment:
+              zh_CN: "*16"
+              en: "*16"
+        description:
+          zh_CN: PLL 倍频器
+          en: PLL Multiplier
+        default: geehy.rcm_pll_mul2
+        readonly: false
+        visible: false
   geehy.rcm_fpu_clk_div_t:
     type: enum
     values:
@@ -961,97 +971,108 @@ parameters:
     max: 31
     min: 0
   geehy.rcm_flash_latency_t:
-    ((RCM.geehy.rcm_sys_clk_freq_value_t > 0) and (RCM.geehy.rcm_sys_clk_freq_value_t <= 24000000)):
-      type: enum
-      values:
-        geehy.rcm_flash_latency_0:
-          comment:
-            zh_CN: 0 等待周期 (1 CPU 周期)
-            en: 0 WS (1 CPU cycle)
-      display:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      description:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      default: geehy.rcm_flash_latency_0
-      readonly: true
-    ((RCM.geehy.rcm_sys_clk_freq_value_t > 24000000) and (RCM.geehy.rcm_sys_clk_freq_value_t <= 48000000)):
-      type: enum
-      values:
-        geehy.rcm_flash_latency_1:
-          comment:
-            zh_CN: 1 等待周期 (2 CPU 周期)
-            en: 1 WS (2 CPU cycle)
-      display:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      description:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      default: geehy.rcm_flash_latency_1
-      readonly: true
-    ((RCM.geehy.rcm_sys_clk_freq_value_t > 48000000) and (RCM.geehy.rcm_sys_clk_freq_value_t <= 76000000)):
-      type: enum
-      values:
-        geehy.rcm_flash_latency_2:
-          comment:
-            zh_CN: 2 等待周期 (3 CPU 周期)
-            en: 2 WS (3 CPU cycle)
-      display:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      description:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      default: geehy.rcm_flash_latency_2
-      readonly: true
-    (default):
-      type: enum
-      values:
-        geehy.rcm_flash_latency_3:
-          comment:
-            zh_CN: 3 等待周期 (4 CPU 周期)
-            en: 3 WS (4 CPU cycle)
-      display:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      description:
-        zh_CN: Flash 等待周期
-        en: Flash Wait State
-      default: geehy.rcm_flash_latency_3
-      readonly: true
+    - condition: (RCM.geehy.rcm_sys_clk_freq_value_t > 0) and (RCM.geehy.rcm_sys_clk_freq_value_t
+        <= 24000000)
+      content:
+        type: enum
+        values:
+          geehy.rcm_flash_latency_0:
+            comment:
+              zh_CN: 0 等待周期 (1 CPU 周期)
+              en: 0 WS (1 CPU cycle)
+        display:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        default: geehy.rcm_flash_latency_0
+        readonly: true
+    - condition: (RCM.geehy.rcm_sys_clk_freq_value_t > 24000000) and (RCM.geehy.rcm_sys_clk_freq_value_t
+        <= 48000000)
+      content:
+        type: enum
+        values:
+          geehy.rcm_flash_latency_1:
+            comment:
+              zh_CN: 1 等待周期 (2 CPU 周期)
+              en: 1 WS (2 CPU cycle)
+        display:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        default: geehy.rcm_flash_latency_1
+        readonly: true
+    - condition: (RCM.geehy.rcm_sys_clk_freq_value_t > 48000000) and (RCM.geehy.rcm_sys_clk_freq_value_t
+        <= 76000000)
+      content:
+        type: enum
+        values:
+          geehy.rcm_flash_latency_2:
+            comment:
+              zh_CN: 2 等待周期 (3 CPU 周期)
+              en: 2 WS (3 CPU cycle)
+        display:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        default: geehy.rcm_flash_latency_2
+        readonly: true
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.rcm_flash_latency_3:
+            comment:
+              zh_CN: 3 等待周期 (4 CPU 周期)
+              en: 3 WS (4 CPU cycle)
+        display:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh_CN: Flash 等待周期
+          en: Flash Wait State
+        default: geehy.rcm_flash_latency_3
+        readonly: true
   geehy.rcm_css_t:
-    (((RCM.geehy.rcm_pll_clk_selector_t == 'geehy.rcm_pll_hse_t') and (RCM.geehy.rcm_system_clk_selector_t == 'geehy.rcm_system_clk_pll_t') or (RCM.geehy.rcm_system_clk_selector_t == 'geehy.rcm_system_clk_hse_t')) and (RCM.geehy.rcm_hse_clock_source_t != 'geehy.rcm_hse_clock_source_disable')):
-      type: enum
-      values:
-        geehy.rcm_css_disable:
-          comment:
-            zh_CN: CSS 关闭
-            en: CSS Disable
-        geehy.rcm_css_enable:
-          comment:
-            zh_CN: CSS 打开
-            en: CSS Enable
-      description:
-        zh_CN: 时钟安全系统
-        en: Clock Security System
-      default: geehy.rcm_css_disable
-      readonly: false
-      visible: false
-    (default):
-      type: enum
-      values:
-        geehy.rcm_css_disable:
-          comment:
-            zh_CN: CSS 关闭
-            en: CSS Disable
-      description:
-        zh_CN: 时钟安全系统
-        en: Clock Security System
-      default: geehy.rcm_css_disable
-      readonly: false
-      visible: false
+    - condition: ((RCM.geehy.rcm_pll_clk_selector_t == 'geehy.rcm_pll_hse_t') and (RCM.geehy.rcm_system_clk_selector_t
+        == 'geehy.rcm_system_clk_pll_t') or (RCM.geehy.rcm_system_clk_selector_t ==
+        'geehy.rcm_system_clk_hse_t')) and (RCM.geehy.rcm_hse_clock_source_t != 'geehy.rcm_hse_clock_source_disable')
+      content:
+        type: enum
+        values:
+          geehy.rcm_css_disable:
+            comment:
+              zh_CN: CSS 关闭
+              en: CSS Disable
+          geehy.rcm_css_enable:
+            comment:
+              zh_CN: CSS 打开
+              en: CSS Enable
+        description:
+          zh_CN: 时钟安全系统
+          en: Clock Security System
+        default: geehy.rcm_css_disable
+        readonly: false
+        visible: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.rcm_css_disable:
+            comment:
+              zh_CN: CSS 关闭
+              en: CSS Disable
+        description:
+          zh_CN: 时钟安全系统
+          en: Clock Security System
+        default: geehy.rcm_css_disable
+        readonly: false
+        visible: false
   geehy.rcm_hse_clock_source_t:
     type: enum
     values:
@@ -1059,10 +1080,20 @@ parameters:
         comment:
           zh_CN: 旁路时钟源
           en: BYPASS Clock Source
+        signals:
+          RCM:OSC-IN:
+            mode: GPIO:System
+          RCM:OSC-OUT:
+            mode: GPIO:System
       geehy.rcm_hse_clock_source_oscillator:
         comment:
           zh_CN: 晶体/陶瓷谐振器
           en: Crystal/Ceramic Resonator
+        signals:
+          RCM:OSC-IN:
+            mode: GPIO:System
+          RCM:OSC-OUT:
+            mode: GPIO:System
       geehy.rcm_hse_clock_source_disable:
         comment:
           zh_CN: 关闭
@@ -1082,10 +1113,20 @@ parameters:
         comment:
           zh_CN: 旁路时钟源
           en: BYPASS Clock Source
+        signals:
+          RCM:OSC32-IN:
+            mode: GPIO:System
+          RCM:OSC32-OUT:
+            mode: GPIO:System
       geehy.rcm_lse_clock_source_oscillator:
         comment:
           zh_CN: 晶体/陶瓷谐振器
           en: Crystal/Ceramic Resonator
+        signals:
+          RCM:OSC32-IN:
+            mode: GPIO:System
+          RCM:OSC32-OUT:
+            mode: GPIO:System
       geehy.rcm_lse_clock_source_disable:
         comment:
           zh_CN: 关闭
@@ -1099,42 +1140,56 @@ parameters:
     default: geehy.rcm_lse_clock_source_disable
     readonly: false
   geehy.rcm_prefetch_buffer_enabled_t:
-    (RCM.geehy.rcm_ahb_div_t != 'geehy.rcm_ahb_div1'):
-      type: enum
-      values:
-        geehy.rcm_prefetch_buffer_enable:
-          comment:
-            zh_CN: 使能
-            en: Enable
-      display:
-        zh_CN: Flash 预取缓冲区
-        en: Prefetch Buffer
-      description:
-        zh_CN: Flash 预取缓冲区
-        en: Prefetch Buffer
-      default: geehy.rcm_prefetch_buffer_enable
-      readonly: false
-    (default):
-      type: enum
-      values:
-        geehy.rcm_prefetch_buffer_enable:
-          comment:
-            zh_CN: 使能
-            en: Enable
-        geehy.rcm_prefetch_buffer_disable:
-          comment:
-            zh_CN: 关闭
-            en: Disable
-      display:
-        zh_CN: Flash 预取缓冲区
-        en: Prefetch Buffer
-      description:
-        zh_CN: Flash 预取缓冲区
-        en: Prefetch Buffer
-      default: geehy.rcm_prefetch_buffer_enable
-      readonly: false
+    - condition: RCM.geehy.rcm_ahb_div_t != 'geehy.rcm_ahb_div1'
+      content:
+        type: enum
+        values:
+          geehy.rcm_prefetch_buffer_enable:
+            comment:
+              zh_CN: 使能
+              en: Enable
+        display:
+          zh_CN: Flash 预取缓冲区
+          en: Prefetch Buffer
+        description:
+          zh_CN: Flash 预取缓冲区
+          en: Prefetch Buffer
+        default: geehy.rcm_prefetch_buffer_enable
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          geehy.rcm_prefetch_buffer_enable:
+            comment:
+              zh_CN: 使能
+              en: Enable
+          geehy.rcm_prefetch_buffer_disable:
+            comment:
+              zh_CN: 关闭
+              en: Disable
+        display:
+          zh_CN: Flash 预取缓冲区
+          en: Prefetch Buffer
+        description:
+          zh_CN: Flash 预取缓冲区
+          en: Prefetch Buffer
+        default: geehy.rcm_prefetch_buffer_enable
+        readonly: false
   geehy.rcm_mco_enabled_t:
-    type: boolean
+    type: enum
+    values:
+      geehy.rcm_mco_enabled:
+        comment:
+          zh_CN: 使能
+          en: Enable
+        signals:
+          RCM:MCO:
+            mode: GPIO:AlternateFunctionPushPull
+      geehy.rcm_mco_disabled:
+        comment:
+          zh_CN: 关闭
+          en: Disable
     display:
       zh_CN: 主时钟输出
       en: Master Clock Output
@@ -1144,21 +1199,10 @@ parameters:
     default: false
     readonly: false
 controls:
-  geehy.rcm_hse_clock_source_t:
-    (True):
-      pins:
-        OSC_IN: System
-        OSC_OUT: System
-  geehy.rcm_lse_clock_source_t:
-    (True):
-      pins:
-        OSC32-IN: System
-        OSC32-OUT: System
-  geehy.rcm_hsi_calibration_t: { }
-  geehy.rcm_mco_enabled_t:
-    (True):
-      pins:
-        MCO: AlternateFunctionPushPull
+  geehy.rcm_hse_clock_source_t: {}
+  geehy.rcm_lse_clock_source_t: {}
+  geehy.rcm_hsi_calibration_t: {}
+  geehy.rcm_mco_enabled_t: {}
 modes:
-  geehy.rcm_flash_latency_t: { }
-  geehy.rcm_prefetch_buffer_enabled_t: { }
+  geehy.rcm_flash_latency_t: {}
+  geehy.rcm_prefetch_buffer_enabled_t: {}

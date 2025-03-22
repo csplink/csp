@@ -28,14 +28,7 @@ import os
 
 from PySide6.QtCore import QUrl, QPoint, QSize, QEventLoop, QTimer, Qt
 from PySide6.QtGui import QIcon, QDesktopServices, QCloseEvent
-from PySide6.QtWidgets import (
-    QHBoxLayout,
-    QApplication,
-    QWidget,
-    QSplitter,
-    QVBoxLayout,
-    QMessageBox,
-)
+from PySide6.QtWidgets import QHBoxLayout, QApplication, QWidget, QSplitter, QMessageBox
 from loguru import logger
 from qfluentwidgets import (
     NavigationItemPosition,
@@ -51,13 +44,12 @@ from qfluentwidgets import (
     BodyLabel,
     getFont,
     FluentStyleSheet,
-    Pivot,
 )
 
 from common import Icon, SETTINGS, SIGNAL_BUS, PROJECT, Coder
 from dialogs import PackageInstallDialog
 from view import ClockTreeView, CodeView, PackageView, SettingView, SocView
-from widget import StackedWidget, PlainTextEditLogger
+from widget import StackedWidget, PlainTextEditLogger, TabWidget
 
 
 class CustomTitleBar(MSFluentTitleBar):
@@ -70,7 +62,7 @@ class CustomTitleBar(MSFluentTitleBar):
         self.btnLayout = QHBoxLayout()
 
         # ----------------------------------------------------------------------
-        self.projectBtn = TransparentPushButton(self.tr("Project"), self)
+        self.projectBtn = TransparentPushButton(self.tr("Project"), self)  # type: ignore
         self.projectMenu = self.__createProjectMenu()
         self.projectBtn.clicked.connect(
             lambda: self.projectMenu.exec(
@@ -79,7 +71,7 @@ class CustomTitleBar(MSFluentTitleBar):
             )
         )
         # ----------------------------------------------------------------------
-        self.helpBtn = TransparentPushButton(self.tr("Help"), self)
+        self.helpBtn = TransparentPushButton(self.tr("Help"), self)  # type: ignore
         self.helpMenu = self.__createHelpMenu()
         self.helpBtn.clicked.connect(
             lambda: self.helpMenu.exec(
@@ -87,7 +79,7 @@ class CustomTitleBar(MSFluentTitleBar):
             )
         )
         # ----------------------------------------------------------------------
-        self.packageBtn = TransparentPushButton(self.tr("Package"), self)
+        self.packageBtn = TransparentPushButton(self.tr("Package"), self)  # type: ignore
         self.packageMenu = self.__createPackageMenu()
         self.packageBtn.clicked.connect(
             lambda: self.packageMenu.exec(
@@ -130,14 +122,14 @@ class CustomTitleBar(MSFluentTitleBar):
         # self.openAction.setShortcut("Ctrl+O")
         # menu.addAction(self.openAction)
 
-        self.saveAction = Action(self.tr("Save"))
+        self.saveAction = Action(self.tr("Save"))  # type: ignore
         # self.saveAction.setShortcut("Ctrl+S")
         self.saveAction.triggered.connect(lambda: PROJECT.save())
         menu.addAction(self.saveAction)
 
         menu.addSeparator()
 
-        self.generateAction = Action(self.tr("Generate"))
+        self.generateAction = Action(self.tr("Generate"))  # type: ignore
         # self.generateAction.setShortcut("Ctrl+G")
         self.generateAction.triggered.connect(lambda: self.generateCode())
         menu.addAction(self.generateAction)
@@ -147,18 +139,18 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createHelpMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.aboutQtAction = Action(self.tr("About Qt"))
+        self.aboutQtAction = Action(self.tr("About Qt"))  # type: ignore
         self.aboutQtAction.triggered.connect(
-            lambda: QMessageBox.aboutQt(self.window(), self.tr("About Qt"))
+            lambda: QMessageBox.aboutQt(self.window(), self.tr("About Qt"))  # type: ignore
         )
         menu.addAction(self.aboutQtAction)
 
-        self.aboutAction = Action(self.tr("About"))
+        self.aboutAction = Action(self.tr("About"))  # type: ignore
         menu.addAction(self.aboutAction)
 
         menu.addSeparator()
 
-        self.openSourceLicenseAction = Action(self.tr("Open Source License"))
+        self.openSourceLicenseAction = Action(self.tr("Open Source License"))  # type: ignore
         menu.addAction(self.openSourceLicenseAction)
 
         return menu
@@ -166,7 +158,7 @@ class CustomTitleBar(MSFluentTitleBar):
     def __createPackageMenu(self) -> RoundMenu:
         menu = RoundMenu(parent=self)
 
-        self.installPackageAction = Action(self.tr("Install"))
+        self.installPackageAction = Action(self.tr("Install"))  # type: ignore
         self.installPackageAction.triggered.connect(
             lambda: PackageInstallDialog(self.window()).exec()
         )
@@ -178,8 +170,8 @@ class CustomTitleBar(MSFluentTitleBar):
         succeed, msg = PROJECT.isGenerateSettingValid()
         if not succeed:
             logger.error(msg)
-            title = self.tr("Error")
-            content = self.tr("The coder settings is invalid. Please check it.")
+            title = self.tr("Error")  # type: ignore
+            content = self.tr("The coder settings is invalid. Please check it.")  # type: ignore
             message = MessageBox(title, content, self.window())
             message.setContentCopyable(True)
             message.cancelButton.setDisabled(True)
@@ -190,63 +182,6 @@ class CustomTitleBar(MSFluentTitleBar):
 
         coder = Coder()
         coder.generate()
-
-
-class SubTabViewWidget(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-
-        self.tabBar = Pivot(self)
-        self.stackedWidget = StackedWidget(self)
-
-        self.vBoxLayout = QVBoxLayout(self)
-
-        self.vBoxLayout.addWidget(self.tabBar, 0, Qt.AlignLeft)
-        self.vBoxLayout.addWidget(self.stackedWidget)
-        self.vBoxLayout.setContentsMargins(0, 0, 0, 0)
-
-        # self.tabBar.setTabsClosable(False)
-        # self.tabBar.setTabShadowEnabled(False)
-        # self.tabBar.setAddButtonVisible(False)
-        # self.tabBar.setTabMinimumWidth(30)
-
-    def addSubInterface(self, view: QWidget, text, isTransparent=False):
-        if not view.objectName():
-            raise ValueError("The object name of `interface` can't be empty string.")
-        view.setProperty("isStackedTransparent", isTransparent)
-        self.stackedWidget.addWidget(view)
-
-        routeKey = view.objectName()
-        item = self.tabBar.addItem(
-            routeKey=routeKey,
-            text=text,
-            onClick=lambda: self.stackedWidget.setCurrentWidget(view),
-        )
-        item.setFont(getFont(13))
-
-        if self.stackedWidget.count() == 1:
-            self.stackedWidget.currentChanged.connect(
-                self.__on_stackedWidget_currentChanged
-            )
-            self.tabBar.setCurrentItem(routeKey)
-
-        self.__updateStackedBackground()
-
-    def __on_stackedWidget_currentChanged(self, index: int):
-        widget = self.stackedWidget.widget(index)
-        self.tabBar.setCurrentItem(widget.objectName())
-
-        self.__updateStackedBackground()
-
-    def __updateStackedBackground(self):
-        isTransparent = self.stackedWidget.currentWidget().property(
-            "isStackedTransparent"
-        )
-        if bool(self.stackedWidget.property("isTransparent")) == isTransparent:
-            return
-
-        self.stackedWidget.setProperty("isTransparent", isTransparent)
-        self.stackedWidget.setStyle(QApplication.style())
 
 
 class MainWindow(MSFluentWindow):
@@ -273,7 +208,7 @@ class MainWindow(MSFluentWindow):
         self.settingView = SettingView(self)
 
         self.viewSplitter = QSplitter(Qt.Orientation.Vertical, self)
-        self.subTabView = SubTabViewWidget(self.viewSplitter)
+        self.subTabView = TabWidget(self.viewSplitter)
         self.plainTextEditLogger = PlainTextEditLogger(self.subTabView)
         self.plainTextEditLogger.setObjectName("plainTextEditLogger")
 
@@ -303,8 +238,8 @@ class MainWindow(MSFluentWindow):
 
     def closeEvent(self, event: QCloseEvent):
         if PROJECT.isChanged():
-            title = self.tr("Warning")
-            content = self.tr(
+            title = self.tr("Warning")  # type: ignore
+            content = self.tr(  # type: ignore
                 "The project {!r} has not been saved yet, do you want to exit?"
             ).format(PROJECT.project().name)
             message = MessageBox(title, content, self.window())
@@ -318,15 +253,15 @@ class MainWindow(MSFluentWindow):
             event.accept()
 
     def __initNavigation(self):
-        self.__addView(self.socView, Icon.CPU, self.tr("SOC"), Icon.CPU)
-        self.__addView(self.clockTreeView, Icon.TIME, self.tr("Clock"), Icon.TIME)
-        self.__addView(self.codeView, Icon.CODE, self.tr("Code"), Icon.CODE)
+        self.__addView(self.socView, Icon.CPU, self.tr("SOC"), Icon.CPU)  # type: ignore
+        self.__addView(self.clockTreeView, Icon.TIME, self.tr("Clock"), Icon.TIME)  # type: ignore
+        self.__addView(self.codeView, Icon.CODE, self.tr("Code"), Icon.CODE)  # type: ignore
 
         self.navigationInterface.addItem(
             routeKey="Generate",
             icon=Icon.FOLDER_TRANSFER,
-            text=self.tr("Generate"),
-            onClick=lambda: self.titleBar.generateCode(),
+            text=self.tr("Generate"),  # type: ignore
+            onClick=lambda: self.titleBar.generateCode(),  # type: ignore
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
         )
@@ -334,7 +269,7 @@ class MainWindow(MSFluentWindow):
         self.navigationInterface.addItem(
             routeKey="Sponsor",
             icon=Icon.MONEY,
-            text=self.tr("Sponsor"),
+            text=self.tr("Sponsor"),  # type: ignore
             onClick=self.__on_sponsorKey_clicked,
             selectable=False,
             position=NavigationItemPosition.BOTTOM,
@@ -343,14 +278,14 @@ class MainWindow(MSFluentWindow):
         self.__addView(
             self.packageView,
             Icon.BOOK_SHELF,
-            self.tr("Package"),
+            self.tr("Package"),  # type: ignore
             Icon.BOOK_SHELF,
             NavigationItemPosition.BOTTOM,
         )
         self.__addView(
             self.settingView,
             Icon.SETTING,
-            self.tr("Settings"),
+            self.tr("Settings"),  # type: ignore
             Icon.SETTING,
             NavigationItemPosition.BOTTOM,
         )
@@ -392,7 +327,7 @@ class MainWindow(MSFluentWindow):
         self.show()
 
     def __initSubTabView(self):
-        self.subTabView.addSubInterface(self.plainTextEditLogger, self.tr("Log"))
+        self.subTabView.addSubInterface(self.plainTextEditLogger, self.tr("Log"))  # type: ignore
 
     def __addView(
         self,
@@ -410,15 +345,15 @@ class MainWindow(MSFluentWindow):
 
     def __on_sponsorKey_clicked(self):
         message = MessageBox(
-            self.tr("Sponsor"),
-            self.tr(
+            self.tr("Sponsor"),  # type: ignore
+            self.tr(  # type: ignore
                 """The csplink projects are personal open-source projects, their development need your help.
 If you would like to support the development of csplink, you are encouraged to donate!"""
             ),
             self,
         )
-        message.yesButton.setText(self.tr("OK"))
-        message.cancelButton.setText(self.tr("Cancel"))
+        message.yesButton.setText(self.tr("OK"))  # type: ignore
+        message.cancelButton.setText(self.tr("Cancel"))  # type: ignore
 
         if message.exec():
             QDesktopServices.openUrl(QUrl(SETTINGS.AUTHOR_BLOG_URL))

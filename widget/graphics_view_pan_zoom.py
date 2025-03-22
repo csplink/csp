@@ -47,7 +47,7 @@ from PySide6.QtWidgets import (
 from loguru import logger
 from qfluentwidgets import MessageBoxBase, SubtitleLabel, LineEdit, MenuAnimationType
 
-from common import PROJECT, SIGNAL_BUS, SETTINGS
+from common import SETTINGS
 from . import EnumClockTreeWidget
 from .graphics_item_pin import GraphicsItemPin
 
@@ -118,19 +118,19 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def mousePressEvent(self, event: QMouseEvent):
         super().mousePressEvent(event)
-        if event.button() & Qt.MouseButton.LeftButton:
-            item = self.itemAt(event.pos())
-            if (
-                item is not None
-                and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable
-            ):
-                if isinstance(item, GraphicsItemPin):
-                    name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
-                    functionKey = item.data(GraphicsItemPin.Data.FUNCTION_DATA.value)
-                    function = str(PROJECT.project().configs.get(functionKey, "None"))
-                    seqs = function.split(":")
-                    if len(seqs) == 2:
-                        SIGNAL_BUS.modeManagerTriggered.emit(seqs[0], name)
+        # if event.button() & Qt.MouseButton.LeftButton:
+        #     item = self.itemAt(event.pos())
+        #     if (
+        #         item is not None
+        #         and item.flags() & QGraphicsItem.GraphicsItemFlag.ItemIsFocusable
+        #     ):
+        #         if isinstance(item, GraphicsItemPin):
+        #             name = item.data(GraphicsItemPin.Data.NAME_DATA.value)
+        #             functionKey = item.data(GraphicsItemPin.Data.FUNCTION_DATA.value)
+        #             function = str(PROJECT.project().configs.get(functionKey, "None"))
+        #             seqs = function.split(":")
+        #             if len(seqs) == 2:
+        #                 SIGNAL_BUS.modeManagerTriggered.emit(seqs[0], name)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         super().mouseReleaseEvent(event)
