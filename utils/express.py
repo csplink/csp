@@ -53,30 +53,30 @@ class Express:
 
     @staticmethod
     @logger.catch(default=-1.0)
-    def __floatExpr(expression: str, values: dict, replaces: dict) -> float:
+    def __float_expr(expression: str, values: dict, replaces: dict) -> float:
         return float(Express.__eval(expression, values, replaces, -1.0))
 
     @staticmethod
-    def floatExpr(expression: str, values: dict, replaces: dict = {}) -> float:
-        return Express.__floatExpr(expression, values, replaces)
+    def float_expr(expression: str, values: dict, replaces: dict = {}) -> float:
+        return Express.__float_expr(expression, values, replaces)
 
     @staticmethod
     @logger.catch(default=-1)
-    def __intExpr(expression: str, values: dict, replaces: dict) -> int:
+    def __int_expr(expression: str, values: dict, replaces: dict) -> int:
         return int(Express.__eval(expression, values, replaces, -1))
 
     @staticmethod
-    def intExpr(expression: str, values: dict, replaces: dict = {}) -> int:
-        return Express.__intExpr(expression, values, replaces)
+    def int_expr(expression: str, values: dict, replaces: dict = {}) -> int:
+        return Express.__int_expr(expression, values, replaces)
 
     @staticmethod
     @logger.catch(default=False)
-    def __boolExpr(expression: str, values: dict[str, bool], replaces: dict) -> bool:
+    def __bool_expr(expression: str, values: dict[str, bool], replaces: dict) -> bool:
         return bool(Express.__eval(expression, values, replaces, False))
 
     @staticmethod
-    def boolExpr(expression: str, values: dict, replaces: dict = {}) -> bool:
-        return Express.__boolExpr(expression, values, replaces)
+    def bool_expr(expression: str, values: dict, replaces: dict = {}) -> bool:
+        return Express.__bool_expr(expression, values, replaces)
 
     @staticmethod
     def variables(expression: str) -> list[str]:

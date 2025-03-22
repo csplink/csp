@@ -35,49 +35,49 @@ class TabWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
-        self.tabBar = Pivot(self)
-        self.stackedWidget = StackedWidget(self)
+        self.tab_bar = Pivot(self)
+        self.stacked_widget = StackedWidget(self)
 
-        self.vBoxLayout = QVBoxLayout(self)
+        self.v_box_layout = QVBoxLayout(self)
 
-        self.vBoxLayout.addWidget(self.tabBar, 0, Qt.AlignmentFlag.AlignLeft)
-        self.vBoxLayout.addWidget(self.stackedWidget)
-        self.vBoxLayout.setContentsMargins(0, 0, 0, 0)
+        self.v_box_layout.addWidget(self.tab_bar, 0, Qt.AlignmentFlag.AlignLeft)
+        self.v_box_layout.addWidget(self.stacked_widget)
+        self.v_box_layout.setContentsMargins(0, 0, 0, 0)
 
-    def addSubInterface(self, view: QWidget, text, isTransparent=False):
+    def add_sub_interface(self, view: QWidget, text, is_transparent=False):
         if not view.objectName():
             raise ValueError("The object name of `interface` can't be empty string.")
-        view.setProperty("isStackedTransparent", isTransparent)
-        self.stackedWidget.addWidget(view)
+        view.setProperty("isStackedTransparent", is_transparent)
+        self.stacked_widget.addWidget(view)
 
         routeKey = view.objectName()
-        item = self.tabBar.addItem(
+        item = self.tab_bar.addItem(
             routeKey=routeKey,
             text=text,
-            onClick=lambda: self.stackedWidget.setCurrentWidget(view),
+            onClick=lambda: self.stacked_widget.setCurrentWidget(view),
         )
         item.setFont(getFont(13))  # type: ignore
 
-        if self.stackedWidget.count() == 1:
-            self.stackedWidget.currentChanged.connect(
+        if self.stacked_widget.count() == 1:
+            self.stacked_widget.current_changed.connect(
                 self.__on_stackedWidget_currentChanged
             )
-            self.tabBar.setCurrentItem(routeKey)
+            self.tab_bar.setCurrentItem(routeKey)
 
-        self.__updateStackedBackground()
+        self.__update_stacked_background()
 
     def __on_stackedWidget_currentChanged(self, index: int):
-        widget = self.stackedWidget.widget(index)
-        self.tabBar.setCurrentItem(widget.objectName())
+        widget = self.stacked_widget.widget(index)
+        self.tab_bar.setCurrentItem(widget.objectName())
 
-        self.__updateStackedBackground()
+        self.__update_stacked_background()
 
-    def __updateStackedBackground(self):
-        isTransparent = self.stackedWidget.currentWidget().property(
+    def __update_stacked_background(self):
+        is_transparent = self.stacked_widget.currentWidget().property(
             "isStackedTransparent"
         )
-        if bool(self.stackedWidget.property("isTransparent")) == isTransparent:
+        if bool(self.stacked_widget.property("isTransparent")) == is_transparent:
             return
 
-        self.stackedWidget.setProperty("isTransparent", isTransparent)
-        self.stackedWidget.setStyle(QApplication.style())
+        self.stacked_widget.setProperty("isTransparent", is_transparent)
+        self.stacked_widget.setStyle(QApplication.style())

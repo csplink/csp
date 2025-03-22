@@ -49,7 +49,7 @@ from window import MainWindow, StartupWindow, NewProjectWindow
 
 def main():
     try:
-        parser = createParser()
+        parser = create_parser()
         args = parser.parse_args()
     except argparse.ArgumentError as e:
         print(e)
@@ -74,15 +74,15 @@ def main():
             )
             print(f"copyright (C) 2023-present xqyjlj, csplink.top, xqyjlj@126.com")
         elif args.file:
-            handleMain(args, parser, app)
+            handle_main(args, parser, app)
         else:
-            handleStartup(args, parser, app)
+            handle_startup(args, parser, app)
 
 
-def __initQtEnv(app: QApplication):
-    if SETTINGS.get(SETTINGS.dpiScale) != "Auto":
+def __init_qt_env(app: QApplication):
+    if SETTINGS.get(SETTINGS.dpi_scale) != "Auto":
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
-        os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpiScale))
+        os.environ["QT_SCALE_FACTOR"] = str(SETTINGS.get(SETTINGS.dpi_scale))
 
     locale = SETTINGS.get(SETTINGS.language).value
     translator = FluentTranslator(locale, app)
@@ -101,22 +101,22 @@ def __initQtEnv(app: QApplication):
             QFontDatabase.addApplicationFont(file)
 
 
-def __setProject(file: str):
+def __set_project(file: str):
     if not os.path.isfile(file):
         print(f"The file {file!r} is not exist.")
         sys.exit(1)
 
-    PROJECT.setPath(file)
+    PROJECT.set_path(file)
     if not PROJECT.valid():
         print(f"The csp project file {file!r} is invalid.")
         sys.exit(1)
 
 
 # noinspection PyUnusedLocal
-def handleNew(
+def handle_new(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
-    __initQtEnv(app)
+    __init_qt_env(app)
     window = NewProjectWindow()
     window.updateFrameless()
     window.show()
@@ -124,39 +124,37 @@ def handleNew(
 
 
 # noinspection PyUnusedLocal
-def handleStartup(
+def handle_startup(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
-    __initQtEnv(app)
+    __init_qt_env(app)
     window = StartupWindow()
     window.updateFrameless()
     window.show()
     app.exec()
 
 
-# noinspection PyUnusedLocal
-def handleMain(
+def handle_main(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
     file: str = args.file
-    __setProject(file)
-    __initQtEnv(app)
+    __set_project(file)
+    __init_qt_env(app)
     window = MainWindow()
     window.updateFrameless()
     window.show()
     app.exec()
 
 
-# noinspection PyUnusedLocal
-def handleGen(
+def handle_gen(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
     file: str = args.file
     progress: bool = args.progress
     output: str = args.output
-    __setProject(file)
+    __set_project(file)
 
-    succeed, msg = PROJECT.isGenerateSettingValid()
+    succeed, msg = PROJECT.is_generate_setting_valid()
     if not succeed:
         print(f"the coder settings is invalid, reason: {msg!r}. please check it.")
         sys.exit(1)
@@ -165,8 +163,7 @@ def handleGen(
     generator.gen()
 
 
-# noinspection PyUnusedLocal
-def handleInstall(
+def handle_install(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
     path: str = args.path
@@ -183,8 +180,7 @@ def handleInstall(
         sys.exit(1)
 
 
-# noinspection PyUnusedLocal
-def handleUninstall(
+def handle_uninstall(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
     kind: str = args.type
@@ -202,8 +198,7 @@ def handleUninstall(
         sys.exit(1)
 
 
-# noinspection PyUnusedLocal
-def handleList(
+def handle_list(
     args: argparse.Namespace, parser: argparse.ArgumentParser, app: QApplication
 ):
     for kind, package in PACKAGE.index().origin.items():
@@ -214,7 +209,7 @@ def handleList(
                 print(f"    {version}: {PACKAGE.index().path(kind, name, version)}")
 
 
-def createParser() -> argparse.ArgumentParser:
+def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="a fully open source chip configuration software system",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -225,7 +220,7 @@ def createParser() -> argparse.ArgumentParser:
     )
 
     new = subparsers.add_parser("new", help="new a project")
-    new.set_defaults(func=handleNew)
+    new.set_defaults(func=handle_new)
 
     gen = subparsers.add_parser("gen", help="generate code from csp project")
     gen.add_argument("-f", "--file", required=True, help="csp project file")
@@ -236,7 +231,7 @@ def createParser() -> argparse.ArgumentParser:
         help="enable progress bar printing",
         action="store_true",
     )
-    gen.set_defaults(func=handleGen)
+    gen.set_defaults(func=handle_gen)
 
     install = subparsers.add_parser("install", help="install csp package")
     install.add_argument("-p", "--path", required=True, help="csp package path")
@@ -252,16 +247,16 @@ def createParser() -> argparse.ArgumentParser:
         help="enable verbose information for users.",
         action="store_true",
     )
-    install.set_defaults(func=handleInstall)
+    install.set_defaults(func=handle_install)
 
     uninstall = subparsers.add_parser("uninstall", help="uninstall csp package")
     uninstall.add_argument("-t", "--type", required=True, help="csp package type")
     uninstall.add_argument("-n", "--name", required=True, help="csp package name")
     uninstall.add_argument("-v", "--version", required=True, help="csp package version")
-    uninstall.set_defaults(func=handleUninstall)
+    uninstall.set_defaults(func=handle_uninstall)
 
     list_ = subparsers.add_parser("list", help="list csp package")
-    list_.set_defaults(func=handleList)
+    list_.set_defaults(func=handle_list)
 
     parser.add_argument("-f", "--file", required=False, help="csp project file")
     parser.add_argument(

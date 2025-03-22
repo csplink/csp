@@ -45,7 +45,7 @@ class PackageTest(unittest.TestCase):
         self.assertNotEqual(sc.license, "", msg="failed.")
         self.assertNotEqual(sc.type, "", msg="failed.")
         self.assertNotEqual(sc.vendor, "", msg="failed.")
-        self.assertGreater(len(sc.vendorUrl.origin), 0, msg="install failed.")
+        self.assertGreater(len(sc.vendor_url.origin), 0, msg="install failed.")
         self.assertGreater(len(sc.description.origin), 0, msg="install failed.")
         self.assertGreater(len(sc.url.origin), 0, msg="install failed.")
         self.assertNotEqual(sc.support, "", msg="failed.")
@@ -54,16 +54,16 @@ class PackageTest(unittest.TestCase):
         file = os.path.join(
             os.path.dirname(__file__), "resource", "package", "test.csppdsc"
         )
-        sc = PACKAGE.getPackageDescription(file)
+        sc = PACKAGE.get_package_description(file)
         self.check_getPackageDescription(sc)
 
         folder = os.path.join(os.path.dirname(__file__), "resource", "package")
-        sc = PACKAGE.getPackageDescription(folder)
+        sc = PACKAGE.get_package_description(folder)
         self.check_getPackageDescription(sc)
 
     def test_getPackageIndex(self):
         self.test_install()
-        index = PACKAGE.getPackageIndex()
+        index = PACKAGE.get_package_index()
         self.test_uninstall()
         self.assertGreater(len(index.origin), 0, msg="install failed.")
 

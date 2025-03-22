@@ -41,7 +41,7 @@ from common import Icon
 
 
 class LineEditPropertySettingCard(SettingCard):
-    textChanged = Signal(str)
+    text_changed = Signal(str)
 
     def __init__(
         self,
@@ -53,33 +53,33 @@ class LineEditPropertySettingCard(SettingCard):
         parent=None,
     ):
         super().__init__(icon, title, content, parent)
-        self.lineEdit = LineEdit(self)
+        self.line_edit = LineEdit(self)
         if validator is not None:
-            self.lineEdit.setValidator(
+            self.line_edit.setValidator(
                 QRegularExpressionValidator(QRegularExpression(validator))
             )
-        self.lineEdit.setText(value)
-        self.lineEdit.textChanged.connect(self.textChanged)
+        self.line_edit.setText(value)
+        self.line_edit.textChanged.connect(self.text_changed)
 
         self.badge = IconInfoBadge.error(
             icon=Icon.CLOSE_LARGE,
-            parent=self.lineEdit.parent(),
-            target=self.lineEdit,
+            parent=self.line_edit.parent(),
+            target=self.line_edit,
             position=InfoBadgePosition.TOP_RIGHT,
         )
         self.badge.hide()
 
-        self.hBoxLayout.addWidget(self.lineEdit, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.line_edit, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
-    def setStatusInfo(self, error: bool, message: str):
+    def set_status_info(self, error: bool, message: str):
         self.badge.setVisible(error)
         if error:
-            self.lineEdit.setToolTip(message)
+            self.line_edit.setToolTip(message)
         else:
-            self.lineEdit.setToolTip("")
+            self.line_edit.setToolTip("")
 
     def clear(self):
-        self.lineEdit.clear()
-        self.setStatusInfo(False, "")
+        self.line_edit.clear()
+        self.set_status_info(False, "")
         self.setContent("")

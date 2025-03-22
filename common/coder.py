@@ -55,22 +55,22 @@ _filters = {
 
 
 class Coder(QObject):
-    dumpProgressUpdated = Signal(str, int, int)
-    generateProgressUpdated = Signal(str, int, int, bool)
-    copyLibraryProgressUpdated = Signal(str, int, int, bool, str)
+    dump_progress_updated = Signal(str, int, int)
+    generate_progress_updated = Signal(str, int, int, bool)
+    copy_library_progress_updated = Signal(str, int, int, bool, str)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
-        self.__contextTable = {}
+        self.__context_table = {}
         self.__files = {}
         self.__generator = None
 
-        self.__generator = self.__loadGenerator()
-        self.__files = self.__getFilesTable()
+        self.__generator = self.__load_generator()
+        self.__files = self.__get_files_table()
 
     def generate(self, output: str = ""):
-        if not self.__checkHalFolder():
+        if not self.__check_hal_folder():
             return
 
         if output is None or not os.path.isdir(output):
@@ -79,21 +79,21 @@ class Coder(QObject):
         files = self.dump()
         count = len(files)
         for index, (path, context) in enumerate(files.items(), start=1):
-            genMd5 = hashlib.md5(context.encode("utf-8")).hexdigest()
+            gen_md5 = hashlib.md5(context.encode("utf-8")).hexdigest()
             path = f"{output}/{path}".replace("\\", "/")
             if os.path.isfile(path):
                 with open(path, "r", encoding="utf-8") as file:
-                    fileContext = file.read()
-                    fileMd5 = hashlib.md5(fileContext.encode("utf-8")).hexdigest()
+                    file_context = file.read()
+                    file_md5 = hashlib.md5(file_context.encode("utf-8")).hexdigest()
             else:
                 Path(path).parent.mkdir(parents=True, exist_ok=True)
-                fileMd5 = ""
-            if genMd5 != fileMd5:
-                self.generateProgressUpdated.emit(path, index, count, True)
+                file_md5 = ""
+            if gen_md5 != file_md5:
+                self.generate_progress_updated.emit(path, index, count, True)
                 with open(path, "w", encoding="utf-8") as file:
                     file.write(context)
             else:
-                self.generateProgressUpdated.emit(path, index, count, False)
+                self.generate_progress_updated.emit(path, index, count, False)
 
         for file, info in self.__files.items():
             if not info.get("gen", True):
@@ -101,10 +101,10 @@ class Coder(QObject):
                 if os.path.isfile(path):
                     os.remove(path)
 
-        self.__copyLibrary()
+        self.__copy_library()
 
     def dump(self) -> dict:
-        packageFolder = PROJECT.halFolder()
+        package_folder = PROJECT.hal_folder()
 
         if len(self.__files) == 0:
             return {}
@@ -122,7 +122,7 @@ class Coder(QObject):
             loader=jinja2.FileSystemLoader(
                 [
                     f"{SETTINGS.EXE_FOLDER}/resource/templates",
-                    f"{packageFolder}/tools/generator/templates",
+                    f"{package_folder}/tools/generator/templates",
                 ]
             ),
             line_comment_prefix="//",
@@ -133,11 +133,11 @@ class Coder(QObject):
         env.add_extension("jinja2.ext.do")
         env.add_extension("jinja2.ext.loopcontrols")
 
-        if PROJECT.project().gen.useToolchainsPackage:
-            data["toolchainsPath"] = PROJECT.toolchainsFolder()
+        if PROJECT.project().gen.use_toolchains_package:
+            data["toolchainsPath"] = PROJECT.toolchains_folder()
 
-        files = glob.glob(f"{packageFolder}/tools/generator/filters/*.py")
-        sys.path = SETTINGS.SYS_PATH + [f"{packageFolder}/tools/generator/filters"]
+        files = glob.glob(f"{package_folder}/tools/generator/filters/*.py")
+        sys.path = SETTINGS.SYS_PATH + [f"{package_folder}/tools/generator/filters"]
         for file in files:
             spec = importlib.util.spec_from_file_location(Path(file).stem, file)
             if spec is None or spec.loader is None:
@@ -153,7 +153,7 @@ class Coder(QObject):
                     env.filters[fun] = function
         env.filters.update(_filters)
 
-        self.__contextTable.clear()
+        self.__context_table.clear()
         count = 0
         for file, info in self.__files.items():
             if info.get("gen", True):
@@ -162,17 +162,17 @@ class Coder(QObject):
         for file, info in self.__files.items():
             if info.get("gen", True):
                 index += 1
-                self.dumpProgressUpdated.emit(file, index, count)
+                self.dump_progress_updated.emit(file, index, count)
                 suffix = Path(file).suffix
                 context = self.__render(file, info, env, data)
                 if context is not None:
-                    self.__contextTable[file] = context
+                    self.__context_table[file] = context
                 elif suffix == ".uvprojx" or suffix == ".uvproj":
                     pass
 
             # self.dumped.emit(file)
 
-        return self.__contextTable
+        return self.__context_table
 
     def deploy(self):
         if self.__generator is None:
@@ -183,13 +183,13 @@ class Coder(QObject):
         )
         return data
 
-    def filesList(self) -> list[str]:
+    def files_list(self) -> list[str]:
         return list(self.__files.keys())
 
-    def __loadGenerator(self) -> ModuleType | None:
-        if self.__checkHalFolder():
+    def __load_generator(self) -> ModuleType | None:
+        if self.__check_hal_folder():
             spec = importlib.util.spec_from_file_location(
-                "coder", f"{PROJECT.halFolder()}/tools/generator/generator.py"
+                "coder", f"{PROJECT.hal_folder()}/tools/generator/generator.py"
             )
             if spec is None or spec.loader is None:
                 return None
@@ -198,36 +198,36 @@ class Coder(QObject):
             return module
         return None
 
-    def __getFilesTable(self) -> dict[str, dict[str, str]]:
+    def __get_files_table(self) -> dict[str, dict[str, str]]:
         if self.__generator is None:
             return {}
         files = self.__generator.files_table(copy.deepcopy(PROJECT.project().origin))
         return files
 
-    def __copyLibrary(self):
+    def __copy_library(self):
         if self.__generator is None:
             return
-        outputDir = os.path.dirname(PROJECT.path())
+        output_dir = os.path.dirname(PROJECT.path())
         self.__generator.copy_library(
             copy.deepcopy(PROJECT.project().origin),
-            outputDir,
-            self.__emitCopyLibrarySignal,
+            output_dir,
+            self.__emit_copy_library_signal,
         )
 
-    def __emitCopyLibrarySignal(
+    def __emit_copy_library_signal(
         self, path: str, index: int, count: int, success: bool, reason: str
     ):
-        self.copyLibraryProgressUpdated.emit(path, index, count, success, reason)
+        self.copy_library_progress_updated.emit(path, index, count, success, reason)
 
-    def __checkHalFolder(self) -> bool:
-        if not os.path.isfile(f"{PROJECT.halFolder()}/tools/generator/generator.py"):
+    def __check_hal_folder(self) -> bool:
+        if not os.path.isfile(f"{PROJECT.hal_folder()}/tools/generator/generator.py"):
             logger.error(
-                f"{PROJECT.halFolder()} is not directory! maybe package({PROJECT.project().gen.hal}) not yet installed."
+                f"{PROJECT.hal_folder()} is not directory! maybe package({PROJECT.project().gen.hal}) not yet installed."
             )
             return False
         return True
 
-    def __matchUser(
+    def __match_user(
         self, path: str, prefix1: str, suffix1: str, prefix2: str, suffix2: str
     ) -> dict:
         code = {}
@@ -253,42 +253,42 @@ class Coder(QObject):
     def __render(
         self, path: str, info: dict, env: jinja2.Environment, args: dict
     ) -> str | None:
-        absPath = f"{PROJECT.folder()}/{path}"
+        abs_path = f"{PROJECT.folder()}/{path}"
         template_name = info.get("template")
         if template_name is None:
             template_name = f"{os.path.basename(path)}.j2"
         template = env.get_template(template_name)
-        suffix = Path(absPath).suffix
+        suffix = Path(abs_path).suffix
         if suffix == ".h" or suffix == ".c":
-            args["userCode"] = self.__matchUser(
-                absPath, r"/\*\*<", r" \*/", r"/\*\*>", r" \*/"
+            args["userCode"] = self.__match_user(
+                abs_path, r"/\*\*<", r" \*/", r"/\*\*>", r" \*/"
             )
-        elif Path(absPath).name == "xmake.lua":
-            args["userCode"] = self.__matchUser(absPath, "----<", "", "---->", "")
-        elif Path(absPath).name == "CMakeLists.txt":
-            args["userCode"] = self.__matchUser(absPath, "##==<", "", "##==>", "")
+        elif Path(abs_path).name == "xmake.lua":
+            args["userCode"] = self.__match_user(abs_path, "----<", "", "---->", "")
+        elif Path(abs_path).name == "CMakeLists.txt":
+            args["userCode"] = self.__match_user(abs_path, "##==<", "", "##==>", "")
 
         args["file"] = os.path.basename(path)
         args["brief"] = info.get("brief", "file automatically-generated by tool: [csp]")
         context = template.render({"CSP": args})
         context = context.strip() + "\n"
 
-        timePattern = r"\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b"  # YYYY-MM-DD HH:MM:SS
-        genMd5 = hashlib.md5(
-            re.sub(timePattern, "", context).encode("utf-8")
+        time_pattern = r"\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\b"  # YYYY-MM-DD HH:MM:SS
+        gen_md5 = hashlib.md5(
+            re.sub(time_pattern, "", context).encode("utf-8")
         ).hexdigest()
-        fileContext = ""
-        if os.path.isfile(absPath):
-            with open(absPath, "r", encoding="utf-8") as file:
-                fileContext = file.read()
-                fileMd5 = hashlib.md5(
-                    re.sub(timePattern, "", fileContext).encode("utf-8")
+        file_context = ""
+        if os.path.isfile(abs_path):
+            with open(abs_path, "r", encoding="utf-8") as file:
+                file_context = file.read()
+                file_md5 = hashlib.md5(
+                    re.sub(time_pattern, "", file_context).encode("utf-8")
                 ).hexdigest()
         else:
-            fileMd5 = ""
+            file_md5 = ""
 
-        if genMd5 == fileMd5:
-            context = fileContext
+        if gen_md5 == file_md5:
+            context = file_context
 
         return context
 
@@ -316,42 +316,42 @@ class CoderCmd(QObject):
 
         self.output = output
         self.progress = progress
-        self.dumpedBar = None
-        self.generatedBar = None
-        self.libraryCopiedBar = None
+        self.dumped_bar = None
+        self.generated_bar = None
+        self.library_copied_bar = None
 
         self.coder = Coder()
-        self.coder.dumpProgressUpdated.connect(self.__on_coder_dumpProgressUpdated)
-        self.coder.generateProgressUpdated.connect(
+        self.coder.dump_progress_updated.connect(self.__on_coder_dumpProgressUpdated)
+        self.coder.generate_progress_updated.connect(
             self.__on_coder_generateProgressUpdated
         )
-        self.coder.copyLibraryProgressUpdated.connect(
+        self.coder.copy_library_progress_updated.connect(
             self.__on_coder_copyLibraryProgressUpdated
         )
 
     def __on_coder_dumpProgressUpdated(self, path: str, index: int, count: int):
         if self.progress:
-            if self.dumpedBar is None:
-                self.dumpedBar = tqdm(total=count, desc="dump", unit="file")
-            self.dumpedBar.set_description(f"dump {path}")
-            self.dumpedBar.n = index
-            self.dumpedBar.refresh()
+            if self.dumped_bar is None:
+                self.dumped_bar = tqdm(total=count, desc="dump", unit="file")
+            self.dumped_bar.set_description(f"dump {path}")
+            self.dumped_bar.n = index
+            self.dumped_bar.refresh()
             if index == count:
-                self.dumpedBar.set_description("dump")
-                self.dumpedBar.close()
+                self.dumped_bar.set_description("dump")
+                self.dumped_bar.close()
 
     def __on_coder_generateProgressUpdated(
         self, path: str, index: int, count: int, success: bool
     ):
         if self.progress:
-            if self.generatedBar is None:
-                self.generatedBar = tqdm(total=count, desc="generate", unit="file")
-            self.generatedBar.set_description(f"generate {os.path.basename(path)}")
-            self.generatedBar.n = index
-            self.generatedBar.refresh()
+            if self.generated_bar is None:
+                self.generated_bar = tqdm(total=count, desc="generate", unit="file")
+            self.generated_bar.set_description(f"generate {os.path.basename(path)}")
+            self.generated_bar.n = index
+            self.generated_bar.refresh()
             if index == count:
-                self.generatedBar.set_description("generate")
-                self.generatedBar.close()
+                self.generated_bar.set_description("generate")
+                self.generated_bar.close()
         else:
             if success:
                 print(
@@ -365,14 +365,14 @@ class CoderCmd(QObject):
         self, path: str, index: int, count: int, success: bool, reason: str
     ):
         if self.progress:
-            if self.libraryCopiedBar is None:
-                self.libraryCopiedBar = tqdm(total=count, desc="copy", unit="file")
-            self.libraryCopiedBar.set_description(f"copy {os.path.basename(path)}")
-            self.libraryCopiedBar.n = index
-            self.libraryCopiedBar.refresh()
+            if self.library_copied_bar is None:
+                self.library_copied_bar = tqdm(total=count, desc="copy", unit="file")
+            self.library_copied_bar.set_description(f"copy {os.path.basename(path)}")
+            self.library_copied_bar.n = index
+            self.library_copied_bar.refresh()
             if index == count:
-                self.libraryCopiedBar.set_description("copy")
-                self.libraryCopiedBar.close()
+                self.library_copied_bar.set_description("copy")
+                self.library_copied_bar.close()
         else:
             if success:
                 print(f"copy {path!r}, {reason}.")

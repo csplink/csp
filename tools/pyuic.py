@@ -32,7 +32,7 @@ import sys
 
 from pathlib import Path
 
-__rootDir = os.path.join(os.path.dirname(__file__), "..")
+__root_dir = os.path.join(os.path.dirname(__file__), "..")
 
 
 class Pyuic:
@@ -49,15 +49,15 @@ class Pyuic:
 
         if len(exes) > 0:
             exe = exes[0]
-            uiFiles = glob.glob(f"{root}/**/*.ui", recursive=True)
-            for uiFile in uiFiles:
-                uiFile = Path(uiFile)
-                targetFile = uiFile.parent / f"{uiFile.stem}_ui.py"
-                print(f"Updating '{targetFile}'...")
-                subprocess.call([exe, uiFile, "-o", targetFile])
+            ui_files = glob.glob(f"{root}/**/*.ui", recursive=True)
+            for ui_file in ui_files:
+                ui_file = Path(ui_file)
+                target_file = ui_file.parent / f"{ui_file.stem}_ui.py"
+                print(f"Updating '{target_file}'...")
+                subprocess.call([exe, ui_file, "-o", target_file])
         else:
             print("can not find pyside6-uic")
 
 
 if __name__ == "__main__":
-    Pyuic.run(__rootDir)
+    Pyuic.run(__root_dir)

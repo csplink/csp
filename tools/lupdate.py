@@ -33,7 +33,7 @@ import sys
 
 __languages = ["zh_CN"]
 
-__rootDir = os.path.join(os.path.dirname(__file__), "..")
+__root_dir = os.path.join(os.path.dirname(__file__), "..")
 
 
 class Lupdate:
@@ -51,33 +51,33 @@ class Lupdate:
 
         if len(exes) > 0:
             exe = exes[0]
-            pyFiles = glob.glob(f"{root}/**/*.py", recursive=True)
-            uiFiles = glob.glob(f"{root}/**/*.ui", recursive=True)
-            srcFiles = []
+            py_files = glob.glob(f"{root}/**/*.py", recursive=True)
+            ui_files = glob.glob(f"{root}/**/*.ui", recursive=True)
+            src_files = []
 
-            for file in pyFiles:
+            for file in py_files:
                 with open(file, "r", encoding="utf-8") as f:
                     text = f.read()
                     if re.search(r'.tr\((["\'])(.*?)\1\)', text) or re.search(
                         r'QCoreApplication.translate\((["\'])(.*?)\1\)', text
                     ):
-                        srcFiles.append(file)
+                        src_files.append(file)
 
-            for file in uiFiles:
-                srcFiles.append(file)
+            for file in ui_files:
+                src_files.append(file)
 
             for lang in languages:
-                tsFile = os.path.join(root, "resource", "i18n", f"csplink.{lang}.ts")
-                if not os.path.isdir(os.path.dirname(tsFile)):
-                    os.makedirs(os.path.dirname(tsFile))
+                ts_file = os.path.join(root, "resource", "i18n", f"csplink.{lang}.ts")
+                if not os.path.isdir(os.path.dirname(ts_file)):
+                    os.makedirs(os.path.dirname(ts_file))
                 subprocess.call(
                     [exe, "-source-language", "en_US", "-target-language", lang]
-                    + srcFiles
-                    + ["-ts", tsFile]
+                    + src_files
+                    + ["-ts", ts_file]
                 )
         else:
             print("can not find lupdate")
 
 
 if __name__ == "__main__":
-    Lupdate.run(__rootDir, __languages)
+    Lupdate.run(__root_dir, __languages)

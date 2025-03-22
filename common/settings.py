@@ -84,7 +84,7 @@ class Settings(QConfig):
         DEBUG = False
 
     # folders ----------------------------------------------------------------------------------------------------------
-    packageFolder = ConfigItem(
+    package_folder = ConfigItem(
         "Folders",
         "Packages",
         os.path.join(EXE_FOLDER, "resource", "packages"),
@@ -101,22 +101,22 @@ class Settings(QConfig):
         restart=True,
     )
 
-    dpiScale = OptionsConfigItem(
+    dpi_scale = OptionsConfigItem(
         "System",
         "DpiScale",
         "Auto",
         OptionsValidator([1, 1.25, 1.5, 1.75, 2, "Auto"]),
         restart=True,
     )
-    isUseOpenGL = ConfigItem(
+    is_use_opengl = ConfigItem(
         "System", "UseOpenGL", False, BoolValidator(), restart=True
     )
-    openGLSamples = OptionsConfigItem(
+    opengl_samples = OptionsConfigItem(
         "System", "OpenGLSamples", 4, OptionsValidator([4, 8, 12, 16]), restart=True
     )
 
     # update
-    isUpdateAtStartup = ConfigItem(
+    is_update_at_startup = ConfigItem(
         "Update", "CheckUpdateAtStartup", True, BoolValidator()
     )
 
@@ -125,10 +125,13 @@ class Settings(QConfig):
         "Style", "ThemeMode", Theme.AUTO, OptionsValidator(Theme), EnumSerializer(Theme)
     )
     themeColor = ColorConfigItem("Style", "ThemeColor", "#009faa")
-    alertColor = ColorConfigItem("Style", "AlertColor", "#c04851")
+
+    theme_mode = themeMode
+    theme_color = themeColor
+    alert_color = ColorConfigItem("Style", "AlertColor", "#c04851")
 
     # misc -------------------------------------------------------------------------------------------------------------
-    lastOpenProjectFolder = ConfigItem(
+    last_open_project_folder = ConfigItem(
         "Misc",
         "LastOpenProjectFolder",
         QStandardPaths.writableLocation(
@@ -136,7 +139,7 @@ class Settings(QConfig):
         ),
         FolderValidator(),
     )
-    lastPackageFileFolder = ConfigItem(
+    last_package_file_folder = ConfigItem(
         "Misc",
         "LastPackageFileFolder",
         QStandardPaths.writableLocation(
@@ -144,7 +147,7 @@ class Settings(QConfig):
         ),
         FolderValidator(),
     )
-    lastNewProjectFolder = ConfigItem(
+    last_new_project_folder = ConfigItem(
         "Misc",
         "LastNewProjectFolder",
         QStandardPaths.writableLocation(
@@ -160,7 +163,7 @@ class Settings(QConfig):
     I18N_FOLDER = os.path.join(EXE_FOLDER, "resource", "i18n")
     PACKAGES_IMAGE_FOLDER = os.path.join(EXE_FOLDER, "resource", "images", "packages")
     FONTS_FOLDER = os.path.join(EXE_FOLDER, "resource", "fonts")
-    PACKAGE_INDEX_FILE = os.path.join(packageFolder.value, "packages.index")
+    PACKAGE_INDEX_FILE = os.path.join(package_folder.value, "packages.index")
     CONTRIBUTORS_FILE = os.path.join(
         EXE_FOLDER, "resource", "contributors", "contributors"
     )

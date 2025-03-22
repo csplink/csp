@@ -32,25 +32,25 @@ from pathlib import Path
 
 import yaml
 
-__rootDir = os.path.join(os.path.dirname(__file__), "..")
+__root_dir = os.path.join(os.path.dirname(__file__), "..")
 
 
 class Schema:
     @staticmethod
     def run(root: str):
         files = glob.glob(f"{root}/resource/database/schema/*.yml", recursive=False)
-        for yamlFile in files:
-            file = Path(yamlFile)
-            jsonFile = file.parent / f"{file.stem}.json"
+        for yaml_file in files:
+            file = Path(yaml_file)
+            json_file = file.parent / f"{file.stem}.json"
 
-            with open(yamlFile, "r", encoding="utf-8") as fp:
+            with open(yaml_file, "r", encoding="utf-8") as fp:
                 yaml_data = yaml.safe_load(fp)
 
-            with open(jsonFile, "w", encoding="utf-8") as fp:
+            with open(json_file, "w", encoding="utf-8") as fp:
                 json.dump(yaml_data, fp, indent=4, ensure_ascii=False)
 
-            print(f"Updating {jsonFile!r}...")
+            print(f"Updating {json_file!r}...")
 
 
 if __name__ == "__main__":
-    Schema.run(__rootDir)
+    Schema.run(__root_dir)

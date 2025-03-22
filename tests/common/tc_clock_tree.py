@@ -87,39 +87,39 @@ class ClockTreeTest(unittest.TestCase):
 
         return all_cycles
 
-    def test_getClockTree(self):
+    def test_get_clock_tree(self):
         repository = Repository()
-        socs = repository.repository().allSoc()
+        socs = repository.repository().all_soc()
         dones = []
         for soc in socs:
-            summary = SUMMARY.getSummary(soc.vendor, soc.name)
-            if summary.clockTree in dones:
+            summary = SUMMARY.get_summary(soc.vendor, soc.name)
+            if summary.clock_tree in dones:
                 continue
-            dones.append(summary.clockTree)
-            clockTree = CLOCK_TREE.getClockTree(soc.vendor, summary.clockTree)
+            dones.append(summary.clock_tree)
+            clock_tree = CLOCK_TREE.get_clock_tree(soc.vendor, summary.clock_tree)
 
-            for _, elem in clockTree.elements.items():
+            for _, elem in clock_tree.elements.items():
                 for name in elem.input:
                     self.assertTrue(
-                        name in clockTree.elements, msg=f"the {name!r} is not exits!"
+                        name in clock_tree.elements, msg=f"the {name!r} is not exits!"
                     )
                 for name in elem.output:
                     self.assertTrue(
-                        name in clockTree.elements, msg=f"the {name!r} is not exits!"
+                        name in clock_tree.elements, msg=f"the {name!r} is not exits!"
                     )
 
-            inputCycles = self.detect_all_cycles(clockTree.elements, "input")
-            if inputCycles:
+            input_cycles = self.detect_all_cycles(clock_tree.elements, "input")
+            if input_cycles:
                 print("input node cycles detected!")
-                for i, cycle in enumerate(inputCycles, 1):
+                for i, cycle in enumerate(input_cycles, 1):
                     print(f"    cycle {i}: {' -> '.join(cycle)}")
-            outputCycles = self.detect_all_cycles(clockTree.elements, "output")
-            if outputCycles:
+            output_cycles = self.detect_all_cycles(clock_tree.elements, "output")
+            if output_cycles:
                 print("output node cycles detected!")
-                for i, cycle in enumerate(outputCycles, 1):
+                for i, cycle in enumerate(output_cycles, 1):
                     print(f"    cycle {i}: {' -> '.join(cycle)}")
             self.assertEqual(
-                len(inputCycles) + len(outputCycles), 0, msg="exits cycles detected!"
+                len(input_cycles) + len(output_cycles), 0, msg="exits cycles detected!"
             )
 
     def tearDown(self):

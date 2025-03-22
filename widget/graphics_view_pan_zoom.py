@@ -56,18 +56,18 @@ class LabelMessageBox(MessageBoxBase):
 
     def __init__(self, text: str, parent=None):
         super().__init__(parent)
-        self.titleLabel = SubtitleLabel(self.tr("Set label"), self)  # type: ignore
-        self.labelLineEdit = LineEdit(self)
+        self.title_label = SubtitleLabel(self.tr("Set label"), self)  # type: ignore
+        self.label_line_edit = LineEdit(self)
 
-        self.labelLineEdit.setText(text)
-        self.labelLineEdit.setPlaceholderText(self.tr("Enter the user label"))  # type: ignore
-        self.labelLineEdit.setClearButtonEnabled(True)
-        self.labelLineEdit.setValidator(
+        self.label_line_edit.setText(text)
+        self.label_line_edit.setPlaceholderText(self.tr("Enter the user label"))  # type: ignore
+        self.label_line_edit.setClearButtonEnabled(True)
+        self.label_line_edit.setValidator(
             QRegularExpressionValidator(QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$"))
         )
 
-        self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.labelLineEdit)
+        self.viewLayout.addWidget(self.title_label)
+        self.viewLayout.addWidget(self.label_line_edit)
 
         self.yesButton.setText(self.tr("OK"))  # type: ignore
         self.cancelButton.setText(self.tr("Cancel"))  # type: ignore
@@ -83,10 +83,10 @@ class GraphicsViewPanZoom(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.m_scale = (self.MIN_SCALE + self.MAX_SCALE) // 2
-        if SETTINGS.isUseOpenGL.value:
+        if SETTINGS.is_use_opengl.value:
             self.m_opengl = QOpenGLWidget(self)
             fmt = QSurfaceFormat()
-            fmt.setSamples(SETTINGS.openGLSamples.value)
+            fmt.setSamples(SETTINGS.opengl_samples.value)
             self.m_opengl.setFormat(fmt)
 
             self.setViewport(self.m_opengl)
@@ -106,7 +106,7 @@ class GraphicsViewPanZoom(QGraphicsView):
         # INT_MIN = -2147483648
         # self.setSceneRect(INT_MIN / 2, INT_MIN / 2, INT_MAX, INT_MAX)
 
-    def setupMatrix(self):
+    def setup_matrix(self):
         scale = math.pow(
             2, (self.m_scale - (self.MIN_SCALE + self.MAX_SCALE) / 2) / self.RESOLUTION
         )
@@ -115,6 +115,8 @@ class GraphicsViewPanZoom(QGraphicsView):
         # matrix.rotate(90)
 
         self.setTransform(matrix)
+
+    # region overrides
 
     def mousePressEvent(self, event: QMouseEvent):
         super().mousePressEvent(event)
@@ -146,19 +148,19 @@ class GraphicsViewPanZoom(QGraphicsView):
             | QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges
             | QGraphicsItem.GraphicsItemFlag.ItemIsPanel
         ):
-            parentItem = item.parentItem()
-            if parentItem is not None and isinstance(parentItem, QGraphicsProxyWidget):
-                if isinstance(parentItem.widget(), EnumClockTreeWidget):
+            parent_item = item.parentItem()
+            if parent_item is not None and isinstance(parent_item, QGraphicsProxyWidget):
+                if isinstance(parent_item.widget(), EnumClockTreeWidget):
                     QCoreApplication.sendEvent(
                         self.scene(), self.QWheelEvent2QGraphicsSceneWheelEvent(event)
                     )
                     return
 
-        scrollAmount = event.angleDelta()
-        if scrollAmount.y() > 0:
-            self.zoomIn(6)
+        scroll_amount = event.angleDelta()
+        if scroll_amount.y() > 0:
+            self.zoom_in(6)
         else:
-            self.zoomOut(6)
+            self.zoom_out(6)
 
     def contextMenuEvent(self, event: QContextMenuEvent):
         super().contextMenuEvent(event)
@@ -173,45 +175,47 @@ class GraphicsViewPanZoom(QGraphicsView):
 
     def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
-        xHeight = event.size().height() - event.oldSize().height()
-        if xHeight != 0:
+        x_height = event.size().height() - event.oldSize().height()
+        if x_height != 0:
             self.rescale()
 
     def QWheelEvent2QGraphicsSceneWheelEvent(
         self, event: QWheelEvent
     ) -> QGraphicsSceneWheelEvent:
-        wheelEvent = QGraphicsSceneWheelEvent(QEvent.Type.GraphicsSceneWheel)
-        wheelEvent.setScenePos(self.mapToScene(event.position().toPoint()))
-        wheelEvent.setScreenPos(event.globalPosition().toPoint())
-        wheelEvent.setButtons(event.buttons())
-        wheelEvent.setModifiers(event.modifiers())
+        wheel_event = QGraphicsSceneWheelEvent(QEvent.Type.GraphicsSceneWheel)
+        wheel_event.setScenePos(self.mapToScene(event.position().toPoint()))
+        wheel_event.setScreenPos(event.globalPosition().toPoint())
+        wheel_event.setButtons(event.buttons())
+        wheel_event.setModifiers(event.modifiers())
         horizontal = abs(event.angleDelta().x()) > abs(event.angleDelta().y())
-        wheelEvent.setDelta(
+        wheel_event.setDelta(
             event.angleDelta().x() if horizontal else event.angleDelta().y()
         )
-        wheelEvent.setPixelDelta(event.pixelDelta())
-        wheelEvent.setPhase(event.phase())
-        wheelEvent.setInverted(event.isInverted())
-        wheelEvent.setOrientation(
+        wheel_event.setPixelDelta(event.pixelDelta())
+        wheel_event.setPhase(event.phase())
+        wheel_event.setInverted(event.isInverted())
+        wheel_event.setOrientation(
             Qt.Orientation.Horizontal if horizontal else Qt.Orientation.Vertical
         )
-        wheelEvent.setAccepted(False)
-        wheelEvent.setTimestamp(event.timestamp())
-        return wheelEvent
+        wheel_event.setAccepted(False)
+        wheel_event.setTimestamp(event.timestamp())
+        return wheel_event
 
-    def zoomIn(self, value: int):
+    # endregion
+
+    def zoom_in(self, value: int):
         self.m_scale += value
         if self.m_scale >= self.MAX_SCALE:
             self.m_scale = self.MAX_SCALE
 
-        self.setupMatrix()
+        self.setup_matrix()
 
-    def zoomOut(self, value: int):
+    def zoom_out(self, value: int):
         self.m_scale -= value
         if self.m_scale <= self.MIN_SCALE:
             self.m_scale = self.MIN_SCALE
 
-        self.setupMatrix()
+        self.setup_matrix()
 
     def zoom(self, value):
         if value <= 0:
@@ -225,27 +229,27 @@ class GraphicsViewPanZoom(QGraphicsView):
         if self.m_scale <= self.MIN_SCALE:
             self.m_scale = self.MIN_SCALE
 
-        self.setupMatrix()
+        self.setup_matrix()
 
     def rescale(self):
         scene = self.scene()
 
         if scene is not None:
-            sceneWidth = scene.itemsBoundingRect().width()
-            sceneHeight = scene.itemsBoundingRect().height()
-            viewWidth = self.width()
-            viewHeight = self.height()
+            scene_width = scene.itemsBoundingRect().width()
+            scene_height = scene.itemsBoundingRect().height()
+            view_width = self.width()
+            view_height = self.height()
 
-            if sceneWidth == 0:
+            if scene_width == 0:
                 logger.error(f"the scene width is 0.")
                 return
 
-            if sceneHeight == 0:
+            if scene_height == 0:
                 logger.error(f"the scene height is 0.")
                 return
 
-            scaleWidth = viewWidth / sceneWidth
-            scaleHeight = viewHeight / sceneHeight
+            scale_width = view_width / scene_width
+            scale_height = view_height / scene_height
 
-            self.centerOn(sceneWidth / 2, sceneHeight / 2)
-            self.zoom(min(scaleWidth, scaleHeight))
+            self.centerOn(scene_width / 2, scene_height / 2)
+            self.zoom(min(scale_width, scale_height))

@@ -47,7 +47,7 @@ class CodeView(Ui_CodeView, QWidget):
         self.fileCard.setFixedWidth(300)
         self.fileTree.header().setVisible(False)
         self.fileTree.selectionModel().selectionChanged.connect(
-            self.__on_fileTree_selectionChanged
+            self.__on_file_tree_selection_changed
         )
 
         layout = FlowLayout(None, False)
@@ -63,7 +63,7 @@ class CodeView(Ui_CodeView, QWidget):
         self.fileTree.clear()
         self.plainTextEdit.clear()
 
-        succeed, msg = PROJECT.isGenerateSettingValid()
+        succeed, msg = PROJECT.is_generate_setting_valid()
         if not succeed:
             logger.error(msg)
             title = self.tr("Error")  # type: ignore
@@ -73,22 +73,22 @@ class CodeView(Ui_CodeView, QWidget):
             message.cancelButton.setDisabled(True)
             message.raise_()
             message.exec()
-            SIGNAL_BUS.navigationRequested.emit("SettingView", "GenerateSettingView")
+            SIGNAL_BUS.navigation_requested.emit("SettingView", "GenerateSettingView")
             return
 
         coder = Coder()
         self.codes = coder.dump()
         tree = Converters.paths2dict(list(self.codes.keys()))
 
-        def traverseTree(treeItem: dict, topItem: QTreeWidgetItem, path: str):
-            for k, v in treeItem.items():
+        def traverse_tree(tree_item: dict, top_item: QTreeWidgetItem, path: str):
+            for k, v in tree_item.items():
                 if isinstance(v, dict):
-                    item = QTreeWidgetItem(topItem, [k])
+                    item = QTreeWidgetItem(top_item, [k])
                     item.setIcon(0, Icon.M_FOLDER_LIB.qicon())
-                    traverseTree(v, item, f"{path}/{k}")
+                    traverse_tree(v, item, f"{path}/{k}")
                     item.setExpanded(True)
                 else:
-                    item = QTreeWidgetItem(topItem, [k])
+                    item = QTreeWidgetItem(top_item, [k])
                     item.setData(0, Qt.ItemDataRole.StatusTipRole, f"{path}/{k}")
                     if k.lower().endswith(".h"):
                         item.setIcon(0, Icon.M_H.qicon())
@@ -96,18 +96,18 @@ class CodeView(Ui_CodeView, QWidget):
                         item.setIcon(0, Icon.M_C.qicon())
 
         for key, di in tree.items():
-            topLevelItem = QTreeWidgetItem([key])
-            topLevelItem.setExpanded(True)
-            self.fileTree.addTopLevelItem(topLevelItem)
+            top_level_item = QTreeWidgetItem([key])
+            top_level_item.setExpanded(True)
+            self.fileTree.addTopLevelItem(top_level_item)
             if isinstance(di, dict):
-                topLevelItem.setIcon(0, Icon.M_FOLDER_LIB.qicon())
-                traverseTree(di, topLevelItem, key)
+                top_level_item.setIcon(0, Icon.M_FOLDER_LIB.qicon())
+                traverse_tree(di, top_level_item, key)
             else:
-                topLevelItem.setIcon(0, Icon.M_FILE.qicon())
-                topLevelItem.setData(0, Qt.ItemDataRole.StatusTipRole, key)
-            topLevelItem.setExpanded(True)
+                top_level_item.setIcon(0, Icon.M_FILE.qicon())
+                top_level_item.setData(0, Qt.ItemDataRole.StatusTipRole, key)
+            top_level_item.setExpanded(True)
 
-    def __on_fileTree_selectionChanged(
+    def __on_file_tree_selection_changed(
         self, selected: QItemSelection, _: QItemSelection
     ):
         indexes = selected.indexes()

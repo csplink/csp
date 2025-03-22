@@ -76,45 +76,45 @@ class NewMessageBox(MessageBoxBase):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.titleLabel = SubtitleLabel(self.tr("Create a new project"), self)
+        self.title_label = SubtitleLabel(self.tr("Create a new project"), self)  # type: ignore
         # ----------------------------------------------------------------------
-        self.nameLineEdit = LineEdit(self)
-        self.nameLineEdit.setPlaceholderText(self.tr("Project Name"))
-        self.nameLineEdit.setClearButtonEnabled(True)
-        self.nameLineEdit.textChanged.connect(self.__on_xLineEdit_textChanged)
+        self.name_line_edit = LineEdit(self)
+        self.name_line_edit.setPlaceholderText(self.tr("Project Name"))  # type: ignore
+        self.name_line_edit.setClearButtonEnabled(True)
+        self.name_line_edit.textChanged.connect(self.__on_xLineEdit_textChanged)
         # ----------------------------------------------------------------------
-        self.pathLayout = QHBoxLayout()
+        self.path_layout = QHBoxLayout()
 
-        self.pathLineEdit = LineEdit(self)
-        self.pathLineEdit.setReadOnly(True)
-        self.pathLineEdit.setPlaceholderText(self.tr("Project Path"))
-        self.pathLineEdit.setClearButtonEnabled(True)
-        self.pathLineEdit.textChanged.connect(self.__on_xLineEdit_textChanged)
+        self.path_line_edit = LineEdit(self)
+        self.path_line_edit.setReadOnly(True)
+        self.path_line_edit.setPlaceholderText(self.tr("Project Path"))  # type: ignore
+        self.path_line_edit.setClearButtonEnabled(True)
+        self.path_line_edit.textChanged.connect(self.__on_xLineEdit_textChanged)
 
-        self.folderBtn = ToolButton()
-        self.folderBtn.pressed.connect(self.__on_folderBtn_pressed)
-        self.folderBtn.setIcon(Icon.FOLDER)
+        self.folder_btn = ToolButton()
+        self.folder_btn.pressed.connect(self.__on_folderBtn_pressed)
+        self.folder_btn.setIcon(Icon.FOLDER)
 
-        self.pathLayout.addWidget(self.pathLineEdit)
-        self.pathLayout.addWidget(self.folderBtn)
+        self.path_layout.addWidget(self.path_line_edit)
+        self.path_layout.addWidget(self.folder_btn)
         # ----------------------------------------------------------------------
-        self.viewLayout.addWidget(self.titleLabel)
-        self.viewLayout.addWidget(self.nameLineEdit)
-        self.viewLayout.addLayout(self.pathLayout)
+        self.viewLayout.addWidget(self.title_label)
+        self.viewLayout.addWidget(self.name_line_edit)
+        self.viewLayout.addLayout(self.path_layout)
         # ----------------------------------------------------------------------
-        self.yesButton.setText(self.tr("OK"))
+        self.yesButton.setText(self.tr("OK"))  # type: ignore
         self.yesButton.setEnabled(False)
         self.yesButton.clicked.disconnect()  # self._MessageBoxBase__onYesButtonClicked
         self.yesButton.clicked.connect(self.__on_yesButton_clicked)
-        self.cancelButton.setText(self.tr("Cancel"))
+        self.cancelButton.setText(self.tr("Cancel"))  # type: ignore
 
         self.widget.setFixedWidth(560)
 
     # noinspection PyUnusedLocal
     def __on_xLineEdit_textChanged(self, text: str):
         if (
-            os.path.isdir(self.pathLineEdit.text())
-            and len(self.nameLineEdit.text()) > 0
+            os.path.isdir(self.path_line_edit.text())
+            and len(self.name_line_edit.text()) > 0
         ):
             self.yesButton.setEnabled(True)
         else:
@@ -122,17 +122,17 @@ class NewMessageBox(MessageBoxBase):
 
     def __on_folderBtn_pressed(self):
         path = QFileDialog.getExistingDirectory(
-            self, self.tr("Choose project path"), SETTINGS.lastNewProjectFolder.value
+            self, self.tr("Choose project path"), SETTINGS.last_new_project_folder.value  # type: ignore
         )
         if os.path.isdir(path):
-            SETTINGS.set(SETTINGS.lastNewProjectFolder, path)
-            self.pathLineEdit.setText(path)
+            SETTINGS.set(SETTINGS.last_new_project_folder, path)
+            self.path_line_edit.setText(path)
 
     def __on_yesButton_clicked(self):
-        path = os.path.join(self.pathLineEdit.text(), self.nameLineEdit.text())
+        path = os.path.join(self.path_line_edit.text(), self.name_line_edit.text())
         if os.path.isdir(path):
-            title = self.tr("Warning")
-            content = self.tr(
+            title = self.tr("Warning")  # type: ignore
+            content = self.tr(  # type: ignore
                 "The path {!r} already exists. Do you still want to create a project in this path?"
             ).format(path)
             message = MessageBox(title, content, self.window())
@@ -149,74 +149,78 @@ class SocFeatureView(QWidget):
         super().__init__(parent=parent)
 
         self.Icon = None
-        self.mainVLayout = QVBoxLayout(self)
-        self.mainVLayout.setContentsMargins(0, 0, 0, 0)
-        self.infoHLayout = QHBoxLayout()
+        self.main_v_layout = QVBoxLayout(self)
+        self.main_v_layout.setContentsMargins(0, 0, 0, 0)
+        self.info_h_layout = QHBoxLayout()
 
-        self.textBrowser = TextBrowser(self)
-        self.textBrowser.setObjectName("readmeTextBrowser")
-        self.textBrowser.setReadOnly(True)
+        self.text_browser = TextBrowser(self)
+        self.text_browser.setObjectName("readmeTextBrowser")
+        self.text_browser.setReadOnly(True)
 
         # ----------------------------------------------------------------------
-        self.urlBtnGroupLayout = QVBoxLayout()
-        self.socNameLabel = StrongBodyLabel("SOC Name", self)
-        self.socNameLabel.destroyed.connect(self.__destroyed)
-        self.vendorNameLabel = StrongBodyLabel("Vendor Name", self)
-        self.socNameLabel.installEventFilter(self)
-        self.vendorNameLabel.installEventFilter(self)
-        self.socNameLabel.setFixedSize(200, 19)
-        self.vendorNameLabel.setFixedSize(200, 19)
-        self.urlBtnGroupLayout.addWidget(
-            self.socNameLabel, 0, Qt.AlignmentFlag.AlignTop
+        self.url_btn_group_layout = QVBoxLayout()
+        self.soc_name_label = StrongBodyLabel("SOC Name", self)
+        self.vendor_name_label = StrongBodyLabel("Vendor Name", self)
+        self.soc_name_label.installEventFilter(self)
+        self.vendor_name_label.installEventFilter(self)
+        self.soc_name_label.setFixedSize(200, 19)
+        self.vendor_name_label.setFixedSize(200, 19)
+        self.url_btn_group_layout.addWidget(
+            self.soc_name_label, 0, Qt.AlignmentFlag.AlignTop
         )
-        self.urlBtnGroupLayout.addWidget(
-            self.vendorNameLabel, 0, Qt.AlignmentFlag.AlignTop
+        self.url_btn_group_layout.addWidget(
+            self.vendor_name_label, 0, Qt.AlignmentFlag.AlignTop
         )
-        self.infoHLayout.addLayout(self.urlBtnGroupLayout)
-        self.infoHLayout.addSpacing(50)
+        self.info_h_layout.addLayout(self.url_btn_group_layout)
+        self.info_h_layout.addSpacing(50)
 
         # ----------------------------------------------------------------------
-        self.info1Layout = QVBoxLayout()
-        self.packageNameLabel = BodyLabel("Package Name", self)
-        self.marketStatusLabel = BodyLabel("Market Name", self)
-        self.packageNameLabel.setFixedSize(100, 19)
-        self.marketStatusLabel.setFixedSize(100, 19)
-        self.info1Layout.addWidget(self.packageNameLabel, 0, Qt.AlignmentFlag.AlignTop)
-        self.info1Layout.addWidget(self.marketStatusLabel, 0, Qt.AlignmentFlag.AlignTop)
-        self.infoHLayout.addLayout(self.info1Layout)
-        self.infoHLayout.addSpacing(20)
-
-        # ----------------------------------------------------------------------
-        self.packagePixmapLabel = PixmapLabel(self)
-        self.packagePixmapLabel.setFixedSize(80, 80)
-        self.infoHLayout.addWidget(
-            self.packagePixmapLabel, 0, Qt.AlignmentFlag.AlignLeft
+        self.info1_layout = QVBoxLayout()
+        self.package_name_label = BodyLabel("Package Name", self)
+        self.market_status_label = BodyLabel("Market Name", self)
+        self.package_name_label.setFixedSize(100, 19)
+        self.market_status_label.setFixedSize(100, 19)
+        self.info1_layout.addWidget(
+            self.package_name_label, 0, Qt.AlignmentFlag.AlignTop
         )
-        self.infoHLayout.addSpacing(20)
+        self.info1_layout.addWidget(
+            self.market_status_label, 0, Qt.AlignmentFlag.AlignTop
+        )
+        self.info_h_layout.addLayout(self.info1_layout)
+        self.info_h_layout.addSpacing(20)
 
         # ----------------------------------------------------------------------
-        self.info2Layout = QVBoxLayout()
-        self.info2ChildLayout = QHBoxLayout()
-        self.introductionLabel = StrongBodyLabel("Introduction", self)
-        self.priceLabel = BodyLabel("Price", self)
-        self.introductionLabel.setSizePolicy(
+        self.package_pixmap_label = PixmapLabel(self)
+        self.package_pixmap_label.setFixedSize(80, 80)
+        self.info_h_layout.addWidget(
+            self.package_pixmap_label, 0, Qt.AlignmentFlag.AlignLeft
+        )
+        self.info_h_layout.addSpacing(20)
+
+        # ----------------------------------------------------------------------
+        self.info2_layout = QVBoxLayout()
+        self.info2_child_layout = QHBoxLayout()
+        self.introduction_label = StrongBodyLabel("Introduction", self)
+        self.price_label = BodyLabel("Price", self)
+        self.introduction_label.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred
         )
 
-        self.info2ChildLayout.addWidget(self.priceLabel)
-        self.info2Layout.addWidget(self.introductionLabel, 0, Qt.AlignmentFlag.AlignTop)
-        self.info2Layout.addLayout(self.info2ChildLayout)
-        self.infoHLayout.addLayout(self.info2Layout)
+        self.info2_child_layout.addWidget(self.price_label)
+        self.info2_layout.addWidget(
+            self.introduction_label, 0, Qt.AlignmentFlag.AlignTop
+        )
+        self.info2_layout.addLayout(self.info2_child_layout)
+        self.info_h_layout.addLayout(self.info2_layout)
 
         # ----------------------------------------------------------------------
 
-        self.mainVLayout.addLayout(self.infoHLayout)
-        self.mainVLayout.addWidget(self.textBrowser)
+        self.main_v_layout.addLayout(self.info_h_layout)
+        self.main_v_layout.addWidget(self.text_browser)
 
-        Style.NEW_PROJECT_WINDOW.apply(self.textBrowser)
+        Style.NEW_PROJECT_WINDOW.apply(self.text_browser)
 
-    def __destroyed(self):
-        print("destroyed")
+    # region overrides
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         if isinstance(watched, StrongBodyLabel):
@@ -226,19 +230,21 @@ class SocFeatureView(QWidget):
                     QDesktopServices.openUrl(QUrl(url))
         return super().eventFilter(watched, event)
 
-    def setInfo(self, vendor: str, name: str):
-        summary = SUMMARY.getSummary(vendor, name)
+    # endregion
+
+    def set_info(self, vendor: str, name: str):
+        summary = SUMMARY.get_summary(vendor, name)
         locale = SETTINGS.get(SETTINGS.language).value.name()
-        self.socNameLabel.setText(name)
-        self.vendorNameLabel.setText(vendor)
-        self.packageNameLabel.setText(summary.package)
-        self.marketStatusLabel.setText("")
-        self.introductionLabel.setText(summary.introduction.get(locale))
-        self.textBrowser.setMarkdown(summary.illustrate.get(locale))
-        self.priceLabel.setText("")
-        packagePath = f"{SETTINGS.PACKAGES_IMAGE_FOLDER}/{summary.package.upper()}.png"
-        if os.path.exists(packagePath):
-            pixmap = QPixmap(packagePath)
+        self.soc_name_label.setText(name)
+        self.vendor_name_label.setText(vendor)
+        self.package_name_label.setText(summary.package)
+        self.market_status_label.setText("")
+        self.introduction_label.setText(summary.introduction.get(locale))
+        self.text_browser.setMarkdown(summary.illustrate.get(locale))
+        self.price_label.setText("")
+        package_path = f"{SETTINGS.PACKAGES_IMAGE_FOLDER}/{summary.package.upper()}.png"
+        if os.path.exists(package_path):
+            pixmap = QPixmap(package_path)
         else:
             pixmap = QPixmap(f"{SETTINGS.PACKAGES_IMAGE_FOLDER}/unknown.png")
         pixmap = pixmap.scaled(
@@ -247,7 +253,7 @@ class SocFeatureView(QWidget):
             Qt.AspectRatioMode.KeepAspectRatio,
             Qt.TransformationMode.SmoothTransformation,
         )
-        self.packagePixmapLabel.setPixmap(pixmap)
+        self.package_pixmap_label.setPixmap(pixmap)
         self.show()
 
 
@@ -259,13 +265,13 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         self.setupUi(self)
 
         self.__repo = Repository().repository()
-        self.__targetChip = ""
+        self.__target_chip = ""
         self.__vendor = ""
 
-        self.createBtn = PushButton(self.tr("Create"), self)
-        self.createBtn.setEnabled(False)
+        self.create_btn = PushButton(self.tr("Create"), self)  # type: ignore
+        self.create_btn.setEnabled(False)
         self.btnGroupHorizontalLayout.addWidget(
-            self.createBtn, 0, Qt.AlignmentFlag.AlignRight
+            self.create_btn, 0, Qt.AlignmentFlag.AlignRight
         )
 
         self.treeView.header().setVisible(False)
@@ -281,19 +287,19 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         self.tableView.setBorderRadius(8)
         self.tableView.setSortingEnabled(True)
 
-        self.__initTreeView()
-        self.__initTableView()
+        self.__init_tree_view()
+        self.__init_table_view()
 
-        self.socFeatureView = SocFeatureView(self)
+        self.soc_feature_view = SocFeatureView(self)
 
-        self.addSubInterface(self.socFeatureView, Icon.FOLDER, self.tr("Feature"))
+        self.add_sub_interface(self.soc_feature_view, Icon.FOLDER, self.tr("Feature"))  # type: ignore
 
-        self.tabBar.setCurrentItem(self.socFeatureView.objectName())
-        self.socFeatureView.hide()
+        self.tabBar.setCurrentItem(self.soc_feature_view.objectName())
+        self.soc_feature_view.hide()
 
-        self.createBtn.clicked.connect(self.__on_createBtn_clicked)
+        self.create_btn.clicked.connect(self.__on_createBtn_clicked)
 
-    def addSubInterface(self, interface: QWidget, icon: FluentIconBase, text: str):
+    def add_sub_interface(self, interface: QWidget, icon: FluentIconBase, text: str):
         self.stackedWidget.addWidget(interface)
         self.tabBar.addItem(
             routeKey=interface.objectName(),
@@ -302,122 +308,124 @@ class NewProjectView(Ui_NewProjectView, QWidget):
             onClick=lambda: self.stackedWidget.setCurrentWidget(interface),
         )
 
-    def __initTreeView(self):
-        self.__proxyModelTreeView = QSortFilterProxyModel(self)
-        self.__modelTreeView = QStandardItemModel(self.treeView)
+    def __init_tree_view(self):
+        self.__proxy_model_tree_view = QSortFilterProxyModel(self)
+        self.__model_tree_view = QStandardItemModel(self.treeView)
 
-        self.__typeTreeViewRootItem = QStandardItem(self.tr("Type"))
-        self.__vendorTreeViewRootItem = QStandardItem(self.tr("Vendor"))
-        self.__seriesTreeViewRootItem = QStandardItem(self.tr("Series"))
-        self.__lineTreeViewRootItem = QStandardItem(self.tr("Line"))
-        self.__coreTreeViewRootItem = QStandardItem(self.tr("Core"))
-        self.__packageTreeViewRootItem = QStandardItem(self.tr("Package"))
+        self.__type_tree_view_root_item = QStandardItem(self.tr("Type"))  # type: ignore
+        self.__vendor_tree_view_root_item = QStandardItem(self.tr("Vendor"))  # type: ignore
+        self.__series_tree_view_root_item = QStandardItem(self.tr("Series"))  # type: ignore
+        self.__line_tree_view_root_item = QStandardItem(self.tr("Line"))  # type: ignore
+        self.__core_tree_view_root_item = QStandardItem(self.tr("Core"))  # type: ignore
+        self.__package_tree_view_root_item = QStandardItem(self.tr("Package"))  # type: ignore
 
-        self.__typeTreeViewRootItem.setCheckable(True)
-        self.__vendorTreeViewRootItem.setCheckable(True)
-        self.__seriesTreeViewRootItem.setCheckable(True)
-        self.__lineTreeViewRootItem.setCheckable(True)
-        self.__coreTreeViewRootItem.setCheckable(True)
-        self.__packageTreeViewRootItem.setCheckable(True)
+        self.__type_tree_view_root_item.setCheckable(True)
+        self.__vendor_tree_view_root_item.setCheckable(True)
+        self.__series_tree_view_root_item.setCheckable(True)
+        self.__line_tree_view_root_item.setCheckable(True)
+        self.__core_tree_view_root_item.setCheckable(True)
+        self.__package_tree_view_root_item.setCheckable(True)
 
-        self.__typeTreeViewRootItem.setEditable(False)
-        self.__vendorTreeViewRootItem.setEditable(False)
-        self.__seriesTreeViewRootItem.setEditable(False)
-        self.__lineTreeViewRootItem.setEditable(False)
-        self.__coreTreeViewRootItem.setEditable(False)
-        self.__packageTreeViewRootItem.setEditable(False)
+        self.__type_tree_view_root_item.setEditable(False)
+        self.__vendor_tree_view_root_item.setEditable(False)
+        self.__series_tree_view_root_item.setEditable(False)
+        self.__line_tree_view_root_item.setEditable(False)
+        self.__core_tree_view_root_item.setEditable(False)
+        self.__package_tree_view_root_item.setEditable(False)
 
-        self.__modelTreeView.appendRow(self.__typeTreeViewRootItem)
-        self.__modelTreeView.appendRow(self.__vendorTreeViewRootItem)
-        self.__modelTreeView.appendRow(self.__seriesTreeViewRootItem)
-        self.__modelTreeView.appendRow(self.__lineTreeViewRootItem)
-        self.__modelTreeView.appendRow(self.__coreTreeViewRootItem)
-        self.__modelTreeView.appendRow(self.__packageTreeViewRootItem)
+        self.__model_tree_view.appendRow(self.__type_tree_view_root_item)
+        self.__model_tree_view.appendRow(self.__vendor_tree_view_root_item)
+        self.__model_tree_view.appendRow(self.__series_tree_view_root_item)
+        self.__model_tree_view.appendRow(self.__line_tree_view_root_item)
+        self.__model_tree_view.appendRow(self.__core_tree_view_root_item)
+        self.__model_tree_view.appendRow(self.__package_tree_view_root_item)
 
-        for kind in self.__repo.allTypes():
+        for kind in self.__repo.all_types():
             item = QStandardItem(kind)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__typeTreeViewRootItem.appendRow(item)
+            self.__type_tree_view_root_item.appendRow(item)
 
-        for vendor in self.__repo.allVendors():
+        for vendor in self.__repo.all_vendors():
             item = QStandardItem(vendor)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__vendorTreeViewRootItem.appendRow(item)
+            self.__vendor_tree_view_root_item.appendRow(item)
 
-        for series in self.__repo.allSeries():
+        for series in self.__repo.all_series():
             item = QStandardItem(series)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__seriesTreeViewRootItem.appendRow(item)
+            self.__series_tree_view_root_item.appendRow(item)
 
-        for line in self.__repo.allLines():
+        for line in self.__repo.all_lines():
             item = QStandardItem(line)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__lineTreeViewRootItem.appendRow(item)
+            self.__line_tree_view_root_item.appendRow(item)
 
-        for core in self.__repo.allCores():
+        for core in self.__repo.all_cores():
             item = QStandardItem(core)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__coreTreeViewRootItem.appendRow(item)
+            self.__core_tree_view_root_item.appendRow(item)
 
-        for package in self.__repo.allPackage():
+        for package in self.__repo.all_package():
             item = QStandardItem(package)
             item.setCheckable(True)
             item.setEditable(False)
-            self.__packageTreeViewRootItem.appendRow(item)
+            self.__package_tree_view_root_item.appendRow(item)
 
-        self.__proxyModelTreeView.setSourceModel(self.__modelTreeView)
-        self.treeView.setModel(self.__proxyModelTreeView)
+        self.__proxy_model_tree_view.setSourceModel(self.__model_tree_view)
+        self.treeView.setModel(self.__proxy_model_tree_view)
         self.treeView.expandAll()
 
-        self.__modelTreeView.itemChanged.connect(self.__on_modelTreeView_itemChanged)
+        self.__model_tree_view.itemChanged.connect(self.__on_modelTreeView_itemChanged)
 
-    def __initTableView(self):
-        self.__proxyModelTableView = QSortFilterProxyModel(self)
-        self.__modelTableView = QStandardItemModel(self.tableView)
+    def __init_table_view(self):
+        self.__proxy_model_table_view = QSortFilterProxyModel(self)
+        self.__model_table_view = QStandardItemModel(self.tableView)
 
-        self.__modelTableView.setColumnCount(11)
-        self.__modelTableView.setHeaderData(
-            0, Qt.Orientation.Horizontal, self.tr("Name")
+        self.__model_table_view.setColumnCount(11)
+        self.__model_table_view.setHeaderData(
+            0, Qt.Orientation.Horizontal, self.tr("Name")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            1, Qt.Orientation.Horizontal, self.tr("Market status")
+        self.__model_table_view.setHeaderData(
+            1, Qt.Orientation.Horizontal, self.tr("Market status")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            2, Qt.Orientation.Horizontal, self.tr("Unit price for 10kU")
+        self.__model_table_view.setHeaderData(
+            2, Qt.Orientation.Horizontal, self.tr("Unit price for 10kU")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            3, Qt.Orientation.Horizontal, self.tr("Package")
+        self.__model_table_view.setHeaderData(
+            3, Qt.Orientation.Horizontal, self.tr("Package")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            4, Qt.Orientation.Horizontal, self.tr("Flash")
+        self.__model_table_view.setHeaderData(
+            4, Qt.Orientation.Horizontal, self.tr("Flash")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            5, Qt.Orientation.Horizontal, self.tr("RAM")
+        self.__model_table_view.setHeaderData(
+            5, Qt.Orientation.Horizontal, self.tr("RAM")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(6, Qt.Orientation.Horizontal, self.tr("IO"))
-        self.__modelTableView.setHeaderData(
-            7, Qt.Orientation.Horizontal, self.tr("Frequency")
+        self.__model_table_view.setHeaderData(
+            6, Qt.Orientation.Horizontal, self.tr("IO")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            8, Qt.Orientation.Horizontal, self.tr("Vendor")
+        self.__model_table_view.setHeaderData(
+            7, Qt.Orientation.Horizontal, self.tr("Frequency")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            9, Qt.Orientation.Horizontal, self.tr("Core")
+        self.__model_table_view.setHeaderData(
+            8, Qt.Orientation.Horizontal, self.tr("Vendor")  # type: ignore
         )
-        self.__modelTableView.setHeaderData(
-            10, Qt.Orientation.Horizontal, self.tr("Type")
+        self.__model_table_view.setHeaderData(
+            9, Qt.Orientation.Horizontal, self.tr("Core")  # type: ignore
+        )
+        self.__model_table_view.setHeaderData(
+            10, Qt.Orientation.Horizontal, self.tr("Type")  # type: ignore
         )
 
-        for soc in self.__repo.allSoc():
+        for soc in self.__repo.all_soc():
             items = [
                 QStandardItem(soc.name),
-                QStandardItem(self.tr("Unavailable")),
-                QStandardItem(self.tr("Unavailable")),
+                QStandardItem(self.tr("Unavailable")),  # type: ignore
+                QStandardItem(self.tr("Unavailable")),  # type: ignore
                 QStandardItem(soc.package),
                 QStandardItem("%.2f" % soc.flash),
                 QStandardItem("%.2f" % soc.ram),
@@ -429,16 +437,16 @@ class NewProjectView(Ui_NewProjectView, QWidget):
             ]
             for item in items:
                 item.setEditable(False)
-            self.__modelTableView.appendRow(items)
+            self.__model_table_view.appendRow(items)
 
-        self.__proxyModelTableView.setSourceModel(self.__modelTableView)
-        self.tableView.setModel(self.__proxyModelTableView)
+        self.__proxy_model_table_view.setSourceModel(self.__model_table_view)
+        self.tableView.setModel(self.__proxy_model_table_view)
         self.tableView.setSelectionBehavior(
             QAbstractItemView.SelectionBehavior.SelectRows
         )
         self.tableView.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.tableView.setSortingEnabled(True)
-        self.tableView.sortByColumn(0, Qt.AscendingOrder)
+        self.tableView.sortByColumn(0, Qt.SortOrder.AscendingOrder)
         self.tableView.horizontalHeader().setMinimumSectionSize(10)
         self.tableView.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch
@@ -449,9 +457,9 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         )
 
     def __on_modelTreeView_itemChanged(self, item: QStandardItem):
-        rowCount = item.rowCount()
-        if rowCount > 0:  # root item
-            for i in range(rowCount):
+        row_count = item.rowCount()
+        if row_count > 0:  # root item
+            for i in range(row_count):
                 child = item.child(i)
                 if item.checkState() == Qt.CheckState.Checked:
                     child.setCheckState(Qt.CheckState.Checked)
@@ -460,15 +468,15 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         else:  # root item's child
             parent = item.parent()
             count = parent.rowCount()
-            checkedCount = 0
+            checked_count = 0
             for i in range(count):
                 child = parent.child(i)
                 if child.checkState() == Qt.CheckState.Checked:
-                    checkedCount += 1
+                    checked_count += 1
 
-            if checkedCount == count:
+            if checked_count == count:
                 parent.setCheckState(Qt.CheckState.Checked)
-            elif checkedCount == 0:
+            elif checked_count == 0:
                 parent.setCheckState(Qt.CheckState.Unchecked)
             else:
                 parent.setCheckState(Qt.CheckState.PartiallyChecked)
@@ -482,19 +490,19 @@ class NewProjectView(Ui_NewProjectView, QWidget):
         vendor: str = indexes[8].data()
         kind: str = indexes[10].data()
         if kind == "SOC":
-            self.socFeatureView.setInfo(vendor, name)
-            self.createBtn.setEnabled(True)
-            self.__targetChip = name
+            self.soc_feature_view.set_info(vendor, name)
+            self.create_btn.setEnabled(True)
+            self.__target_chip = name
             self.__vendor = vendor
         else:
-            self.createBtn.setEnabled(False)
+            self.create_btn.setEnabled(False)
 
     def __on_createBtn_clicked(self):
-        messageBox = NewMessageBox(self.window())
-        if messageBox.exec():
-            name = messageBox.nameLineEdit.text()
-            path = messageBox.pathLineEdit.text()
-            self.created.emit(path, name, self.__targetChip, self.__vendor)
+        message_box = NewMessageBox(self.window())
+        if message_box.exec():
+            name = message_box.name_line_edit.text()
+            path = message_box.path_line_edit.text()
+            self.created.emit(path, name, self.__target_chip, self.__vendor)
 
 
 class NewProjectWindow(MSFluentWindow):
@@ -506,17 +514,17 @@ class NewProjectWindow(MSFluentWindow):
         self.navigationInterface.hide()
         self.stackedWidget.hide()
 
-        self.__mainWindow = None
+        self.__main_window = None
 
         self.view = NewProjectView()
         self.view.created.connect(self.__on_view_create)
         self.hBoxLayout.addWidget(self.view)
 
-        self.__initWindow()
+        self.__init_window()
         self.showMaximized()
 
     # noinspection DuplicatedCode
-    def __initWindow(self):
+    def __init_window(self):
         self.resize(1100, 750)
         self.setWindowIcon(
             QIcon(os.path.join(SETTINGS.EXE_FOLDER, "resource", "images", "logo.svg"))
@@ -530,12 +538,12 @@ class NewProjectWindow(MSFluentWindow):
         w, h = desktop.width(), desktop.height()
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
 
-    def __on_view_create(self, path: str, name: str, targetChip: str, vendor: str):
-        PROJECT.new(path, name, targetChip, vendor)
+    def __on_view_create(self, path: str, name: str, target_chip: str, vendor: str):
+        PROJECT.new(path, name, target_chip, vendor)
         self.deleteLater()
         self.hide()
         self.succeed.emit()
-        self.__mainWindow = MainWindow()
-        self.__mainWindow.updateFrameless()
-        self.__mainWindow.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
-        self.__mainWindow.show()
+        self.__main_window = MainWindow()
+        self.__main_window.updateFrameless()
+        self.__main_window.setAttribute(Qt.WidgetAttribute.WA_ShowModal, True)
+        self.__main_window.show()

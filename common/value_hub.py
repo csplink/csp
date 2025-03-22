@@ -33,7 +33,7 @@ from PySide6.QtCore import QObject, Signal
 
 class ValueHub(QObject):
     changed = Signal()
-    itemUpdated = Signal(list, object, object)
+    item_updated = Signal(list, object, object)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -46,7 +46,7 @@ class ValueHub(QObject):
         return self.__data
 
     def assign(self, values: dict):
-        self.__data = self.__convertToNestedDict(values)
+        self.__data = self.__convert2nested_dict(values)
         self.changed.emit()
 
     def set(self, path: str, value: object):
@@ -76,7 +76,7 @@ class ValueHub(QObject):
         ) or value is None:
             item.pop(keys[-1])
 
-        self.itemUpdated.emit(keys, old, value)
+        self.item_updated.emit(keys, old, value)
         self.changed.emit()
 
     def save(self, folder: str):
@@ -87,8 +87,8 @@ class ValueHub(QObject):
         with open(path, "w", encoding="utf-8") as f:
             f.write(yaml.dump(self.__data))
 
-    def __convertToNestedDict(self, data: dict[str, str]) -> dict:
-        def __nestedSet(dic, keys_, value_):
+    def __convert2nested_dict(self, data: dict[str, str]) -> dict:
+        def __nested_set(dic, keys_, value_):
             for key_ in keys_[:-1]:
                 dic = dic.setdefault(key_, {})
             dic[keys_[-1]] = value_
@@ -98,7 +98,7 @@ class ValueHub(QObject):
         for key, value in data.items():
             # split the key into parts by '.'
             keys = key.split(".")
-            __nestedSet(nested, keys, value)
+            __nested_set(nested, keys, value)
         return nested
 
 

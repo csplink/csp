@@ -195,33 +195,33 @@ class RepositorySocType:
 class RepositoryType:
     def __init__(self, data: dict):
         self.__data = data
-        self.__allTypes = []
-        self.__allVendors = []
-        self.__allSeries = []
-        self.__allLines = []
-        self.__allSoc = []
-        self.__allCores = []
-        self.__allPackage = []
+        self.__all_types = []
+        self.__all_vendors = []
+        self.__all_series = []
+        self.__all_lines = []
+        self.__all_soc = []
+        self.__all_cores = []
+        self.__all_package = []
 
-        for kind, kindItem in self.__data.items():
-            self.__allTypes.append(kind)
-            for vendor, vendorItem in kindItem.items():
-                self.__allVendors.append(vendor)
-                for series, seriesItem in vendorItem.items():
-                    self.__allSeries.append(series)
-                    for line, lineItem in seriesItem.items():
-                        self.__allLines.append(line)
-                        for soc, socItem in lineItem.items():
+        for kind, kind_item in self.__data.items():
+            self.__all_types.append(kind)
+            for vendor, vendor_item in kind_item.items():
+                self.__all_vendors.append(vendor)
+                for series, series_item in vendor_item.items():
+                    self.__all_series.append(series)
+                    for line, line_item in series_item.items():
+                        self.__all_lines.append(line)
+                        for soc, soc_item in line_item.items():
                             if kind == "soc":
                                 item = RepositorySocType(
-                                    socItem, kind, vendor, series, line, soc
+                                    soc_item, kind, vendor, series, line, soc
                                 )
-                                self.__allSoc.append(item)
-                                self.__allCores.append(item.core)
-                                self.__allPackage.append(item.package)
+                                self.__all_soc.append(item)
+                                self.__all_cores.append(item.core)
+                                self.__all_package.append(item.package)
 
-        self.__allCores = list(set(self.__allCores))
-        self.__allPackage = list(set(self.__allPackage))
+        self.__all_cores = list(set(self.__all_cores))
+        self.__all_package = list(set(self.__all_package))
 
     def __str__(self) -> str:
         return json.dumps(self.__data, indent=2, ensure_ascii=False)
@@ -231,28 +231,28 @@ class RepositoryType:
         return self.__data
 
     def types(self) -> list[str]:
-        return self.__allTypes
+        return self.__all_types
 
-    def allTypes(self) -> list[str]:
+    def all_types(self) -> list[str]:
         return self.types()
 
     def vendors(self, kind: str) -> list[str]:
         return list(self.__data.get(kind, {}).keys())
 
-    def allVendors(self) -> list[str]:
-        return self.__allVendors
+    def all_vendors(self) -> list[str]:
+        return self.__all_vendors
 
     def series(self, kind: str, vendor: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).keys())
 
-    def allSeries(self) -> list[str]:
-        return self.__allSeries
+    def all_series(self) -> list[str]:
+        return self.__all_series
 
     def lines(self, kind: str, vendor: str, series: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(vendor, {}).get(series, {}).keys())
 
-    def allLines(self) -> list[str]:
-        return self.__allLines
+    def all_lines(self) -> list[str]:
+        return self.__all_lines
 
     def names(self, kind: str, vendor: str, series: str, line: str) -> list[str]:
         return list(
@@ -284,23 +284,23 @@ class RepositoryType:
             name,
         )
 
-    def allSoc(self) -> list[RepositorySocType]:
-        return self.__allSoc
+    def all_soc(self) -> list[RepositorySocType]:
+        return self.__all_soc
 
-    def allCores(self) -> list[str]:
-        return self.__allCores
+    def all_cores(self) -> list[str]:
+        return self.__all_cores
 
-    def allPackage(self) -> list[str]:
-        return self.__allPackage
+    def all_package(self) -> list[str]:
+        return self.__all_package
 
 
 class Repository:
 
     def __init__(self):
-        self.__repository = self.getRepository()
+        self.__repository = self.get_repository()
 
     @logger.catch(default=False)
-    def __checkRepository(self, repository: dict) -> bool:
+    def __check_repository(self, repository: dict) -> bool:
         with open(
             os.path.join(SETTINGS.DATABASE_FOLDER, "schema", "repository.yml"),
             "r",
@@ -311,12 +311,12 @@ class Repository:
         return True
 
     @logger.catch(default=RepositoryType({}))
-    def __getRepository(self) -> RepositoryType:
+    def __get_repository(self) -> RepositoryType:
         file = os.path.join(SETTINGS.DATABASE_FOLDER, "repository.yml")
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
                 repository = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = self.__checkRepository(repository)
+                succeed = self.__check_repository(repository)
             if succeed:
                 return RepositoryType(repository)
             else:
@@ -325,9 +325,8 @@ class Repository:
             logger.error(f"{file} is not file!")
             return RepositoryType({})
 
-    def getRepository(self) -> RepositoryType:
-        # noinspection PyTypeChecker,PyArgumentList
-        return self.__getRepository()
+    def get_repository(self) -> RepositoryType:
+        return self.__get_repository()
 
     def repository(self) -> RepositoryType:
         return self.__repository

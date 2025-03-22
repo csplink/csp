@@ -42,7 +42,7 @@ class BaseClockTreeWidget:
         param: str,
         element: ClockTreeType.ElementUnitType,
         parameter: IpType.ParameterUnitType,
-        clockTree: ClockTreeType,
+        clock_tree: ClockTreeType,
         template: Template,
         data: dict,
     ):
@@ -51,20 +51,20 @@ class BaseClockTreeWidget:
         self.param = param
         self.element = element
         self.parameter = parameter
-        self.clockTree = clockTree
-        self.ip = IP.projectIps()[self.instance]
+        self.clock_tree = clock_tree
+        self.ip = IP.project_ips()[self.instance]
         self.template = template
         self.data = copy.deepcopy(data)
         self.data["valid"] = True
 
         self.__inputs = {}
         self.__outputs = {}
-        self.__isSetup = False
+        self.__is_setup = False
 
         context = template.render(self.data)
         self.stylesheet = applyThemeColor(context)
 
-        self.ip.parameterItemUpdated.connect(self.__on_ip_parameterItemUpdated)
+        self.ip.parameter_item_updated.connect(self.__on_ip_parameterItemUpdated)
 
     def __repr__(self):
         module = self.__class__.__module__
@@ -75,7 +75,7 @@ class BaseClockTreeWidget:
         return f"<{module}.{classname}({address}, id={self.id!r}, name={self.objectName()!r}, value={self.value()!r}) at {address}>"  # type: ignore
 
     def value(self) -> float:
-        if not self.__isSetup:
+        if not self.__is_setup:
             self.setup()
         return -1
 
@@ -98,7 +98,7 @@ class BaseClockTreeWidget:
                 self.__outputs[id_] = group[id_]
 
     def setup(self):
-        self.__isSetup = True
+        self.__is_setup = True
 
     def flush(self, source: BaseClockTreeWidget):
         for id_, widget in self.outputs().items():

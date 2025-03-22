@@ -46,15 +46,15 @@ class Converters:
 
     @staticmethod
     def paths2dict(paths: list[str], separator="/"):
-        pathDict = {}
+        path_dict = {}
         for path in paths:
             parts = path.strip().split(separator)
 
-            def updateDict(dt, key):
+            def update_dict(dt, key):
                 if key not in dt:
                     dt[key] = {}
                 return dt[key]
 
-            currentDict = reduce(updateDict, parts[:-1], pathDict)
-            currentDict[parts[-1]] = ""
-        return pathDict
+            current_dict = reduce(update_dict, parts[:-1], path_dict)
+            current_dict[parts[-1]] = ""
+        return path_dict

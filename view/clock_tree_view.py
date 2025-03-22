@@ -60,21 +60,21 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.__resPath = (
+        self.__res_path = (
             Path(SETTINGS.DATABASE_FOLDER)
             / "clock"
             / PROJECT.project().vendor.lower()
-            / SUMMARY.projectSummary().clockTree.lower()
+            / SUMMARY.project_summary().clock_tree.lower()
         )
-        self.__svgPath = str(self.__resPath) + ".svg"
-        self.__ymlPath = str(self.__resPath) + ".yml"
+        self.__svg_path = str(self.__res_path) + ".svg"
+        self.__yml_path = str(self.__res_path) + ".yml"
 
-        self.__clockTree = CLOCK_TREE.getClockTree(
-            PROJECT.project().vendor, SUMMARY.projectSummary().clockTree
+        self.__clock_tree = CLOCK_TREE.get_clock_tree(
+            PROJECT.project().vendor, SUMMARY.project_summary().clock_tree
         )
         self.__drawio = Drawio(
-            self.__svgPath,
-            self.__clockTree.i18nOrigin(),
+            self.__svg_path,
+            self.__clock_tree.i18n_origin(),
             SETTINGS.get(SETTINGS.language).value.name(),
         )
         self.__radioGroup: dict[str, QButtonGroup] = {}
@@ -86,16 +86,16 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         self.__scene = QGraphicsScene(self.graphicsView)
         self.graphicsView.setScene(self.__scene)
 
-        self.zoomInBtn.pressed.connect(lambda: self.graphicsView.zoomIn(6))
+        self.zoomInBtn.pressed.connect(lambda: self.graphicsView.zoom_in(6))
         self.zoomResetBtn.pressed.connect(lambda: self.graphicsView.rescale())
-        self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoomOut(6))
+        self.zoomOutBtn.pressed.connect(lambda: self.graphicsView.zoom_out(6))
 
-        self.__updateGraphicsViewBackgroundColor()
+        self.__update_graphics_view_background_color()
         SETTINGS.themeChanged.connect(
-            lambda theme: self.__updateGraphicsViewBackgroundColor()
+            lambda theme: self.__update_graphics_view_background_color()
         )
 
-    def __getSvg(self) -> QGraphicsSvgItem | QGraphicsPixmapItem:
+    def __get_svg(self) -> QGraphicsSvgItem | QGraphicsPixmapItem:
 
         renderer = QSvgRenderer(self.__drawio.svg, self)
 
@@ -105,21 +105,21 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
 
         return item
 
-    def __updateGraphicsViewBackgroundColor(self):
+    def __update_graphics_view_background_color(self):
         self.__scene.clear()
         self.__scene.setBackgroundBrush(
             QColor(50, 50, 50) if isDarkTheme() else QColor(253, 253, 253)
         )
-        self.__scene.addItem(self.__getSvg())
-        self.__addWidget()
+        self.__scene.addItem(self.__get_svg())
+        self.__add_widget()
 
         self.graphicsView.rescale()
         self.graphicsView.update()
 
-    def __addWidget(self):
+    def __add_widget(self):
         geoms = self.__drawio.widgets
 
-        elements = self.__clockTree.elements
+        elements = self.__clock_tree.elements
 
         data = {}
         data["isDarkMode"] = isDarkTheme()
@@ -132,7 +132,7 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
         )
         template = env.get_template("clock_tree_view.qss.j2")
 
-        widgetGroups = {}
+        widget_groups = {}
         for id_, geom in geoms.items():
             data["width"] = geom.width
             data["height"] = geom.height
@@ -145,13 +145,13 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                     and element.origin is not None
                     and len(element.origin) > 0
                 ):
-                    refParameter: str = element.refParameter
+                    ref_parameter: str = element.ref_parameter
                     z = element.z
-                    seqs = refParameter.split(":")
+                    seqs = ref_parameter.split(":")
                     if len(seqs) == 2:
                         instance = seqs[0]
                         name = seqs[1]
-                        ip = IP.projectIps().get(instance)
+                        ip = IP.project_ips().get(instance)
                         if ip is None:
                             logger.error(f"The {instance} ip is not found")
                             break
@@ -165,7 +165,7 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                                     name,
                                     element,
                                     parameter,
-                                    self.__clockTree,
+                                    self.__clock_tree,
                                     template,
                                     data,
                                 )
@@ -176,7 +176,7 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                                     name,
                                     element,
                                     parameter,
-                                    self.__clockTree,
+                                    self.__clock_tree,
                                     template,
                                     data,
                                 )
@@ -187,7 +187,7 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                                     name,
                                     element,
                                     parameter,
-                                    self.__clockTree,
+                                    self.__clock_tree,
                                     template,
                                     data,
                                 )
@@ -203,13 +203,13 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                                     name,
                                     element,
                                     parameter,
-                                    self.__clockTree,
+                                    self.__clock_tree,
                                     template,
                                     data,
                                 )
                                 group.addButton(widget)
                             if widget is not None:
-                                widgetGroups[id_] = widget
+                                widget_groups[id_] = widget
             if widget is None:  # default use body label, and font is red
                 # noinspection PyTypeChecker
                 widget = BodyLabel(id_)
@@ -228,17 +228,17 @@ class ClockTreeView(Ui_ClockTreeView, QWidget):
                 proxy.setZValue(1)
             self.__scene.addItem(proxy)
 
-        for id_, widget in widgetGroups.items():  # init connect
-            widget.binding(widgetGroups)
+        for id_, widget in widget_groups.items():  # init connect
+            widget.binding(widget_groups)
 
-        for id_, widget in widgetGroups.items():
+        for id_, widget in widget_groups.items():
             if not (
                 isinstance(widget, NumberClockTreeWidget)
                 and not widget.parameter.readonly
             ):
                 widget.setup()
 
-        for id_, widget in widgetGroups.items():
+        for id_, widget in widget_groups.items():
             if (
                 isinstance(widget, NumberClockTreeWidget)
                 and not widget.parameter.readonly

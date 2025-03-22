@@ -139,6 +139,8 @@ class CHighlighter(BaseHighlighter):
             (QRegularExpression(pat), index, fmt) for (pat, index, fmt) in rules
         ]
 
+    # region overrides
+
     def highlightBlock(self, text: str):
         for expression, nth, fm in self.rules:
             match_iterator = expression.globalMatch(text)
@@ -149,6 +151,8 @@ class CHighlighter(BaseHighlighter):
         self.setCurrentBlockState(0)
 
         self.match_multiline(text, *self.multiline_comment)
+
+    # endregion
 
     def match_multiline(
         self,

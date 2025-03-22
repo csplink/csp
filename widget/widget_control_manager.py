@@ -35,7 +35,7 @@ class WidgetControlManager(WidgetBaseManager):
     def __init__(self, parent=None):
         super().__init__(WidgetBaseManagerType.CONTROL, parent)
 
-        PROJECT.project().configs.configsChanged.connect(
+        PROJECT.project().configs.configs_changed.connect(
             self.__on_project_configsChanged
         )
 
@@ -44,7 +44,7 @@ class WidgetControlManager(WidgetBaseManager):
             return
 
         instance = keys[0]
-        ips = IP.projectIps()
+        ips = IP.project_ips()
 
         if instance not in ips:
             logger.error(f"the ip instance:{instance!r} is invalid.")
@@ -56,40 +56,40 @@ class WidgetControlManager(WidgetBaseManager):
         if param not in ip.parameters:
             return
 
-        oldValue = ip.parameters[param].values.get(old, None)
-        newValue = ip.parameters[param].values.get(new, None)
+        old_value = ip.parameters[param].values.get(old, None)
+        new_value = ip.parameters[param].values.get(new, None)
 
-        if oldValue is not None:
-            for name, cfg in oldValue.signals.items():
+        if old_value is not None:
+            for name, cfg in old_value.signals.items():
                 signal = name.replace("${INSTANCE}", instance)
-                pins = SUMMARY.findPinsBySignal(signal)
+                pins = SUMMARY.find_pins_by_signal(signal)
                 if len(pins) > 0:
                     pin = pins[0]
-                    functionKey = f"pin/{pin}/function"
-                    lockedKey = f"pin/{pin}/locked"
-                    modeKey = f"pin/{pin}/mode"
+                    function_key = f"pin/{pin}/function"
+                    locked_key = f"pin/{pin}/locked"
+                    mode_key = f"pin/{pin}/mode"
 
-                    PROJECT.project().configs.set(functionKey, "")
-                    PROJECT.project().configs.set(lockedKey, False)
-                    PROJECT.project().configs.set(modeKey, "")
+                    PROJECT.project().configs.set(function_key, "")
+                    PROJECT.project().configs.set(locked_key, False)
+                    PROJECT.project().configs.set(mode_key, "")
 
-                    SIGNAL_BUS.updatePinTriggered.emit(pin)
+                    SIGNAL_BUS.update_pin_triggered.emit(pin)
 
-        if newValue is not None:
-            for name, cfg in newValue.signals.items():
+        if new_value is not None:
+            for name, cfg in new_value.signals.items():
                 signal = name.replace("${INSTANCE}", instance)
-                pins = SUMMARY.findPinsBySignal(signal)
+                pins = SUMMARY.find_pins_by_signal(signal)
                 if len(pins) > 0:
                     pin = pins[0]
-                    functionKey = f"pin/{pin}/function"
-                    lockedKey = f"pin/{pin}/locked"
-                    modeKey = f"pin/{pin}/mode"
+                    function_key = f"pin/{pin}/function"
+                    locked_key = f"pin/{pin}/locked"
+                    mode_key = f"pin/{pin}/mode"
 
-                    PROJECT.project().configs.set(functionKey, signal)
-                    PROJECT.project().configs.set(lockedKey, True)
-                    PROJECT.project().configs.set(modeKey, cfg.mode)
+                    PROJECT.project().configs.set(function_key, signal)
+                    PROJECT.project().configs.set(locked_key, True)
+                    PROJECT.project().configs.set(mode_key, cfg.mode)
 
-                    SIGNAL_BUS.updatePinTriggered.emit(pin)
+                    SIGNAL_BUS.update_pin_triggered.emit(pin)
 
                 for pin in pins:
-                    print(pin, PROJECT.pinIp().findPinGroups(pin, signal))
+                    print(pin, PROJECT.pin_instance().find_pin_groups(pin, signal))

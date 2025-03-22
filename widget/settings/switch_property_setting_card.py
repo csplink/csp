@@ -42,34 +42,34 @@ from common import Icon
 
 
 class SwitchPropertySettingCard(SettingCard):
-    checkedChanged = Signal(bool)
+    checked_changed = Signal(bool)
 
     def __init__(
         self, icon: FluentIconBase, title: str, value: bool, content=None, parent=None
     ):
         super().__init__(icon, title, content, parent)
-        self.switchButton = SwitchButton(self, indicatorPos=IndicatorPosition.RIGHT)
-        self.switchButton.setChecked(value)
-        self.switchButton.checkedChanged.connect(self.checkedChanged)
+        self.switch_button = SwitchButton(self, indicatorPos=IndicatorPosition.RIGHT)
+        self.switch_button.setChecked(value)
+        self.switch_button.checkedChanged.connect(self.checked_changed)
 
         self.badge = IconInfoBadge.error(
             icon=Icon.CLOSE_LARGE,
-            parent=self.switchButton.parent(),
-            target=self.switchButton,
+            parent=self.switch_button.parent(),
+            target=self.switch_button,
             position=InfoBadgePosition.TOP_RIGHT,
         )
         self.badge.hide()
 
-        self.hBoxLayout.addWidget(self.switchButton, 0, Qt.AlignmentFlag.AlignRight)
+        self.hBoxLayout.addWidget(self.switch_button, 0, Qt.AlignmentFlag.AlignRight)
         self.hBoxLayout.addSpacing(16)
 
-    def setStatusInfo(self, error: bool, message: str):
+    def set_status_info(self, error: bool, message: str):
         self.badge.setVisible(error)
         if error:
-            self.switchButton.setToolTip(message)
+            self.switch_button.setToolTip(message)
         else:
-            self.switchButton.setToolTip("")
+            self.switch_button.setToolTip("")
 
     def clear(self):
-        self.setStatusInfo(False, "")
+        self.set_status_info(False, "")
         self.setContent("")

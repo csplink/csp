@@ -41,13 +41,13 @@ class EnumClockTreeWidget(BaseClockTreeWidget, QComboBox):
         param: str,
         element: ClockTreeType.ElementUnitType,
         parameter: IpType.ParameterUnitType,
-        clockTree: ClockTreeType,
+        clock_tree: ClockTreeType,
         template: Template,
         data: dict,
         parent=None,
     ):
         BaseClockTreeWidget.__init__(
-            self, id_, instance, param, element, parameter, clockTree, template, data
+            self, id_, instance, param, element, parameter, clock_tree, template, data
         )
         QComboBox.__init__(self, parent)
 
@@ -57,15 +57,17 @@ class EnumClockTreeWidget(BaseClockTreeWidget, QComboBox):
         )  # Removing this will cause qss rendering exception
         self.setStyleSheet(self.stylesheet)
 
-        self.__listWidget = QListWidget(self)
-        self.__listWidget.setObjectName("listWidget")
-        self.__listWidget.setStyleSheet(self.stylesheet)
+        self.__list_widget = QListWidget(self)
+        self.__list_widget.setObjectName("listWidget")
+        self.__list_widget.setStyleSheet(self.stylesheet)
 
-        self.setView(self.__listWidget)
+        self.setView(self.__list_widget)
 
         self.readonly = parameter.readonly
 
         self.currentTextChanged.connect(self.__on_currentTextChanged)
+
+    # region overrides
 
     def mousePressEvent(self, event: QMouseEvent):
         if not self.readonly:
@@ -79,6 +81,8 @@ class EnumClockTreeWidget(BaseClockTreeWidget, QComboBox):
         if not self.readonly:
             super().wheelEvent(event)
 
+    # endregion
+
     def value(self) -> float:
         super().value()
         value = self.parameter.values.get(IP.iptr2(self.param, self.currentText()))
@@ -87,7 +91,7 @@ class EnumClockTreeWidget(BaseClockTreeWidget, QComboBox):
         expression = value.expression.real
         if len(expression) > 0:
             if len(self.inputs()) == 1:
-                num = Express.floatExpr(
+                num = Express.float_expr(
                     expression, {"value": self.inputs()[self.element.input[0]].value()}
                 )
                 return num
@@ -97,13 +101,13 @@ class EnumClockTreeWidget(BaseClockTreeWidget, QComboBox):
         super().setup()
         self.currentTextChanged.disconnect(self.__on_currentTextChanged)
 
-        self.__listWidget.clear()
+        self.__list_widget.clear()
 
         for key, value in self.parameter.values.items():
             item = QListWidgetItem(IP.iptr(self.param, key))
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.__listWidget.addItem(item)
-        self.setModel(self.__listWidget.model())
+            self.__list_widget.addItem(item)
+        self.setModel(self.__list_widget.model())
 
         val = PROJECT.project().configs.get(f"{self.instance}/{self.param}")
         if val is None:

@@ -85,7 +85,7 @@ class _PModel:
         name: str,
         path: str,
         value: str | int | float | bool,
-        possibleValues: list[str] = [],
+        possible_values: list[str] = [],
         description: str = "",
         param: str = "",
         parameter: IpType.ParameterUnitType = IpType.ParameterUnitType({}, None),
@@ -93,7 +93,7 @@ class _PModel:
         self.__name = name
         self.__path = path
         self.__value = value
-        self.__possibleValues = possibleValues
+        self.__possible_values = possible_values
         self.__description = description
         self.__param = param
         self.__parameter = parameter
@@ -156,12 +156,12 @@ class _PModel:
         self.__type = value
 
     @property
-    def possibleValues(self) -> list[str]:
-        return self.__possibleValues
+    def possible_values(self) -> list[str]:
+        return self.__possible_values
 
-    @possibleValues.setter
-    def possibleValues(self, value: list[str]):
-        self.__possibleValues = value
+    @possible_values.setter
+    def possible_values(self, value: list[str]):
+        self.__possible_values = value
 
     @property
     def readonly(self) -> bool:
@@ -181,30 +181,21 @@ class _PModel:
 
     # endregion
 
-    def setProperty(self, name: str, value: Any):
+    def set_property(self, name: str, value: Any):
         self.__property[name] = value
 
-    def getProperty(self, name: str, default: Any = None) -> Any:
+    def get_property(self, name: str, default: Any = None) -> Any:
         return self.__property.get(name, default)
-
-
-class _ComboBox(ComboBox):
-    def __init__(self, parent: QWidget):
-        super().__init__(parent)
-
-    def mouseReleaseEvent(self, e):
-        super().mouseReleaseEvent(e)
-        if self.dropMenu:
-            for action in self.dropMenu.actions():
-                action.setEnabled(False)
 
 
 class WidgetBaseManagerEditorDelegate(TableItemDelegate):
 
-    def __init__(self, dataModels: list[_PModel], parent: QTableView):
+    def __init__(self, data_models: list[_PModel], parent: QTableView):
         super().__init__(parent)
 
-        self.__dataModels = dataModels
+        self.__data_models = data_models
+
+    # region overrides
 
     def editorEvent(
         self,
@@ -216,23 +207,23 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
         column = index.column()
         row = index.row()
 
-        dataModel = self.__dataModels[row]
+        data_model = self.__data_models[row]
 
         # for boolean type, click to toggle value (check box)
-        if column == 1 and dataModel.type == "boolean":
+        if column == 1 and data_model.type == "boolean":
             if (
                 event.type() == QEvent.Type.MouseButtonRelease
                 or event.type() == QEvent.Type.MouseButtonDblClick
             ):
-                mouseEvent: QMouseEvent = event  # type: ignore
-                if mouseEvent.button() == Qt.MouseButton.LeftButton:
+                mouse_event: QMouseEvent = event  # type: ignore
+                if mouse_event.button() == Qt.MouseButton.LeftButton:
                     x = option.rect.x() + 15  # type: ignore
                     y = option.rect.center().y() - 9.5  # type: ignore
                     rect = QRectF(x, y, 19, 19)
-                    if rect.contains(mouseEvent.pos()):
+                    if rect.contains(mouse_event.pos()):
                         return model.setData(
                             index,
-                            not dataModel.value,
+                            not data_model.value,
                             Qt.ItemDataRole.EditRole,
                         )
 
@@ -246,47 +237,47 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
         if column == 0:
             return None
 
-        dataModel = self.__dataModels[row]
+        data_model = self.__data_models[row]
 
-        if dataModel.type == "string":
-            lineEdit = LineEdit(parent)
-            lineEdit.setProperty("transparent", False)
-            lineEdit.setStyle(QApplication.style())
-            lineEdit.setText(dataModel.value)  # type: ignore
-            lineEdit.setValidator(
+        if data_model.type == "string":
+            line_edit = LineEdit(parent)
+            line_edit.setProperty("transparent", False)
+            line_edit.setStyle(QApplication.style())
+            line_edit.setText(data_model.value)  # type: ignore
+            line_edit.setValidator(
                 QRegularExpressionValidator(
                     QRegularExpression("^[A-Za-z_][A-Za-z0-9_]+$")
                 )
             )
-            return lineEdit
-        elif dataModel.type == "enum":
-            comboBox = QComboBox(parent)
-            Style.WIDGET_BASE_MANAGER.apply(comboBox)
-            # comboBox.setStyle(QApplication.style())
-            for value in dataModel.possibleValues:
-                comboBox.addItem(IP.iptr(dataModel.param, value))
-            comboBox.setCurrentText(IP.iptr(dataModel.param, dataModel.value))  # type: ignore
-            return comboBox
-        elif dataModel.type == "integer":
-            spinBox = SpinBox(parent)
-            Style.WIDGET_BASE_MANAGER.apply(spinBox)
-            parameter = dataModel.parameter
+            return line_edit
+        elif data_model.type == "enum":
+            combo_box = QComboBox(parent)
+            Style.WIDGET_BASE_MANAGER.apply(combo_box)
+            # combo_box.setStyle(QApplication.style())
+            for value in data_model.possible_values:
+                combo_box.addItem(IP.iptr(data_model.param, value))
+            combo_box.setCurrentText(IP.iptr(data_model.param, data_model.value))  # type: ignore
+            return combo_box
+        elif data_model.type == "integer":
+            spin_box = SpinBox(parent)
+            Style.WIDGET_BASE_MANAGER.apply(spin_box)
+            parameter = data_model.parameter
             if parameter.max > -1:
-                spinBox.setMaximum(int(parameter.max))
-                spinBox.setMinimum(int(parameter.min))
-            spinBox.setValue(dataModel.value)  # type: ignore
-            return spinBox
-        elif dataModel.type == "float":
-            spinBox = DoubleSpinBox(parent)
-            Style.WIDGET_BASE_MANAGER.apply(spinBox)
-            parameter = dataModel.parameter
+                spin_box.setMaximum(int(parameter.max))
+                spin_box.setMinimum(int(parameter.min))
+            spin_box.setValue(data_model.value)  # type: ignore
+            return spin_box
+        elif data_model.type == "float":
+            spin_box = DoubleSpinBox(parent)
+            Style.WIDGET_BASE_MANAGER.apply(spin_box)
+            parameter = data_model.parameter
             if parameter.max > -1:
-                spinBox.setMaximum(parameter.max)
-                spinBox.setMinimum(parameter.min)
-            spinBox.setValue(dataModel.value)  # type: ignore
-            return spinBox
+                spin_box.setMaximum(parameter.max)
+                spin_box.setMinimum(parameter.min)
+            spin_box.setValue(data_model.value)  # type: ignore
+            return spin_box
         else:
-            logger.warning(f"unknown type {dataModel.type!r}")
+            logger.warning(f"unknown type {data_model.type!r}")
 
         return None
 
@@ -298,40 +289,42 @@ class WidgetBaseManagerEditorDelegate(TableItemDelegate):
         if column == 0:
             return
 
-        dataModel = self.__dataModels[row]
+        data_model = self.__data_models[row]
 
-        if dataModel.type == "string":
-            lineEdit: LineEdit = editor  # type: ignore
-            model.setData(index, lineEdit.text(), Qt.ItemDataRole.EditRole)
-        elif dataModel.type == "enum":
-            comboBox: ComboBox = editor  # type: ignore
-            model.setData(index, comboBox.currentText(), Qt.ItemDataRole.EditRole)
-        elif dataModel.type == "integer":
-            spinBox: SpinBox = editor  # type: ignore
-            model.setData(index, spinBox.value(), Qt.ItemDataRole.EditRole)
-        elif dataModel.type == "float":
-            spinBox: SpinBox = editor  # type: ignore
-            model.setData(index, spinBox.value(), Qt.ItemDataRole.EditRole)
+        if data_model.type == "string":
+            line_edit: LineEdit = editor  # type: ignore
+            model.setData(index, line_edit.text(), Qt.ItemDataRole.EditRole)
+        elif data_model.type == "enum":
+            combo_box: ComboBox = editor  # type: ignore
+            model.setData(index, combo_box.currentText(), Qt.ItemDataRole.EditRole)
+        elif data_model.type == "integer":
+            spin_box: SpinBox = editor  # type: ignore
+            model.setData(index, spin_box.value(), Qt.ItemDataRole.EditRole)
+        elif data_model.type == "float":
+            spin_box: SpinBox = editor  # type: ignore
+            model.setData(index, spin_box.value(), Qt.ItemDataRole.EditRole)
         else:
-            logger.warning(f"unknown type {dataModel.type!r}")
+            logger.warning(f"unknown type {data_model.type!r}")
+
+    # endregion
 
 
 class WidgetBaseManagerModel(QAbstractTableModel):
     def __init__(
         self,
-        dataModels: list[_PModel],
+        data_models: list[_PModel],
         type_: WidgetBaseManagerType,
         parent=None,
     ):
         super().__init__(parent)
 
-        self.__dataModels = dataModels
+        self.__data_models = data_models
         self.__type = type_
-        self.__pinInstance = SUMMARY.projectSummary().pinInstance()
+        self.__pin_instance = SUMMARY.project_summary().pin_instance()
         self.__ip = None
-        self.__workType = WidgetBaseManagerWorkType.CONTROL
+        self.__work_type = WidgetBaseManagerWorkType.CONTROL
 
-        self.__preBuildParameters = {
+        self.__pre_build_parameters = {
             "name": IpType.ParameterUnitType(
                 {
                     "type": "string",
@@ -352,8 +345,9 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         self.__font.setPixelSize(12)
 
     # region overrides
+
     def rowCount(self, parent: QModelIndex) -> int:
-        return len(self.__dataModels)
+        return len(self.__data_models)
 
     def columnCount(self, parent: QModelIndex) -> int:
         return 2
@@ -362,25 +356,25 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         column = index.column()
         row = index.row()
 
-        if len(self.__dataModels) == 0:
+        if len(self.__data_models) == 0:
             return
 
-        dataModel = self.__dataModels[row]
+        data_model = self.__data_models[row]
 
         if (
             role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole
         ):  # 0, 2
             if column == 0:
-                return dataModel.name
+                return data_model.name
             elif column == 1:
-                if dataModel.type == "boolean":
+                if data_model.type == "boolean":
                     return None
-                return IP.iptr(dataModel.param, dataModel.value)  # type: ignore
+                return IP.iptr(data_model.param, data_model.value)  # type: ignore
         elif role == Qt.ItemDataRole.DecorationRole:  # 1
             return None
         elif role == Qt.ItemDataRole.ToolTipRole:  # 3
             if column == 1:
-                return dataModel.description
+                return data_model.description
             else:
                 return ""
         elif role == Qt.ItemDataRole.StatusTipRole:  # 4
@@ -399,10 +393,10 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             return None
         elif role == Qt.ItemDataRole.CheckStateRole:  # 10
             if column == 1:
-                if dataModel.type == "boolean":
+                if data_model.type == "boolean":
                     return (
                         Qt.CheckState.Checked
-                        if dataModel.value
+                        if data_model.value
                         else Qt.CheckState.Unchecked
                     )
         elif role == Qt.ItemDataRole.SizeHintRole:  # 13
@@ -414,30 +408,30 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         column = index.column()
         row = index.row()
 
-        if len(self.__dataModels) == 0:
+        if len(self.__data_models) == 0:
             return False
 
-        dataModel = self.__dataModels[row]
+        data_model = self.__data_models[row]
 
         if role == Qt.ItemDataRole.EditRole and column == 1:
-            if dataModel.type == "string":
-                PROJECT.project().configs.set(dataModel.path, value)
-                dataModel.value = value  # type: ignore
-            elif dataModel.type == "enum":
-                val = IP.iptr2(dataModel.param, value)  # type: ignore
-                PROJECT.project().configs.set(dataModel.path, val)
-                dataModel.value = value  # type: ignore
-            elif dataModel.type == "integer":
-                PROJECT.project().configs.set(dataModel.path, value)
-                dataModel.value = value  # type: ignore
-            elif dataModel.type == "float":
-                PROJECT.project().configs.set(dataModel.path, value)
-                dataModel.value = value  # type: ignore
-            elif dataModel.type == "boolean":
-                PROJECT.project().configs.set(dataModel.path, value)
-                dataModel.value = value  # type: ignore
+            if data_model.type == "string":
+                PROJECT.project().configs.set(data_model.path, value)
+                data_model.value = value  # type: ignore
+            elif data_model.type == "enum":
+                val = IP.iptr2(data_model.param, value)  # type: ignore
+                PROJECT.project().configs.set(data_model.path, val)
+                data_model.value = value  # type: ignore
+            elif data_model.type == "integer":
+                PROJECT.project().configs.set(data_model.path, value)
+                data_model.value = value  # type: ignore
+            elif data_model.type == "float":
+                PROJECT.project().configs.set(data_model.path, value)
+                data_model.value = value  # type: ignore
+            elif data_model.type == "boolean":
+                PROJECT.project().configs.set(data_model.path, value)
+                data_model.value = value  # type: ignore
             else:
-                logger.warning(f"unknown type {dataModel.type} with value {value}")
+                logger.warning(f"unknown type {data_model.type} with value {value}")
                 return False
             return True
         else:
@@ -448,20 +442,20 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         column = index.column()
         row = index.row()
 
-        if len(self.__dataModels) == 0:
+        if len(self.__data_models) == 0:
             return flag
 
-        dataModel = self.__dataModels[row]
+        data_model = self.__data_models[row]
         if column == 0:
-            if dataModel.type == "boolean":
+            if data_model.type == "boolean":
                 flag &= Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsUserTristate
         elif column == 1:
-            if dataModel.readonly:
+            if data_model.readonly:
                 flag &= ~Qt.ItemFlag.ItemIsEnabled
             else:
                 flag |= Qt.ItemFlag.ItemIsEditable
 
-        if not self.__isPModelEnabled(dataModel):
+        if not self.__is_pmodel_enabled(data_model):
             flag = Qt.ItemFlag.NoItemFlags
 
         return flag
@@ -473,13 +467,13 @@ class WidgetBaseManagerModel(QAbstractTableModel):
 
     # endregion
 
-    def setTarget(self, instance: str, target: str):
-        self.__dataModels.clear()
+    def set_target(self, instance: str, target: str):
+        self.__data_models.clear()
 
         if self.__ip:
-            self.__disconnectIpSignal(self.__ip)
+            self.__disconnect_ip_signal(self.__ip)
 
-        ip = IP.projectIps().get(instance)
+        ip = IP.project_ips().get(instance)
         if ip is None:
             logger.error(f"the ip instance:{instance!r} is invalid.")
             self.modelReset.emit()
@@ -488,107 +482,109 @@ class WidgetBaseManagerModel(QAbstractTableModel):
         self.__ip = ip
         models = []
         if self.__type == WidgetBaseManagerType.MODE:
-            if self.__pinInstance == instance:
-                self.__workType = WidgetBaseManagerWorkType.PIN_MODE
+            if self.__pin_instance == instance:
+                self.__work_type = WidgetBaseManagerWorkType.PIN_MODE
                 function: str = PROJECT.project().configs.get(
                     f"pin/{target}/mode", ""
                 ) or PROJECT.project().configs.get(f"pin/{target}/function", "")
                 seqs = function.split(":")
 
-                if len(seqs) == 2 and seqs[0] == self.__pinInstance:
+                if len(seqs) == 2 and seqs[0] == self.__pin_instance:
                     mode = seqs[1]
-                    models = self.__createPinModePModels(target, mode)
+                    models = self.__create_pin_mode_pmodels(target, mode)
                 else:
                     if function:
                         logger.error(f"the pin mode function:{function!r} is invalid.")
             else:
-                self.__workType = WidgetBaseManagerWorkType.NORMAL_MODE
-                models = self.__createControlModePModels(self.__ip.modes)
+                self.__work_type = WidgetBaseManagerWorkType.NORMAL_MODE
+                models = self.__create_control_mode_pmodels(self.__ip.modes)
         else:
-            self.__workType = WidgetBaseManagerWorkType.CONTROL
-            models = self.__createControlModePModels(self.__ip.controls)
+            self.__work_type = WidgetBaseManagerWorkType.CONTROL
+            models = self.__create_control_mode_pmodels(self.__ip.controls)
 
-        self.__dataModels.extend(models)
+        self.__data_models.extend(models)
 
         self.modelReset.emit()
-        self.__connectIpSignal(self.__ip)
+        self.__connect_ip_signal(self.__ip)
 
-    def __on_ip_parameterItemUpdated(self, names: list[str]):
+    def __on_ip_parameter_item_updated(self, names: list[str]):
         if self.__ip is None:
             return
 
-        self.__disconnectIpSignal(self.__ip)
-        for index, model in enumerate(self.__dataModels, start=0):
+        self.__disconnect_ip_signal(self.__ip)
+        for index, model in enumerate(self.__data_models, start=0):
             param = model.param
             if model.param in names:
-                if self.__workType == WidgetBaseManagerWorkType.PIN_MODE:
-                    configs = self.__ip.pinModes[model.getProperty("mode")][model.param]
-                elif self.__workType == WidgetBaseManagerWorkType.NORMAL_MODE:
+                if self.__work_type == WidgetBaseManagerWorkType.PIN_MODE:
+                    configs = self.__ip.pin_modes[model.get_property("mode")][
+                        model.param
+                    ]
+                elif self.__work_type == WidgetBaseManagerWorkType.NORMAL_MODE:
                     configs = self.__ip.modes[model.param]
                 else:
                     configs = self.__ip.controls[model.param]
-                newModel = self.__createPModel(
+                new_model = self.__create_pmodel(
                     model.path, param, self.__ip.parameters[model.param], configs
                 )
-                if newModel is None:
+                if new_model is None:
                     continue
-                model.name = newModel.name
-                model.value = newModel.value
-                model.type = newModel.type
-                model.possibleValues = newModel.possibleValues
-                model.readonly = newModel.readonly
-                model.description = newModel.description
+                model.name = new_model.name
+                model.value = new_model.value
+                model.type = new_model.type
+                model.possible_values = new_model.possible_values
+                model.readonly = new_model.readonly
+                model.description = new_model.description
                 model.param = param
-                model.parameter = newModel.parameter
+                model.parameter = new_model.parameter
 
                 self.dataChanged.emit(
                     self.createIndex(index, 0), self.createIndex(index, 1)
                 )
-        self.__connectIpSignal(self.__ip)
+        self.__connect_ip_signal(self.__ip)
 
-    def __on_ip_modesUpdated(self):
-        if self.__workType != WidgetBaseManagerWorkType.NORMAL_MODE:
+    def __on_ip_modes_updated(self):
+        if self.__work_type != WidgetBaseManagerWorkType.NORMAL_MODE:
             return
 
-        self.__dataModels.clear()
+        self.__data_models.clear()
         if self.__ip is None:
             logger.error(f"the ip is invalid.")
             self.modelReset.emit()
             return
 
-        self.__disconnectIpSignal(self.__ip)
+        self.__disconnect_ip_signal(self.__ip)
 
-        models = self.__createControlModePModels(self.__ip.modes)
-        self.__dataModels.extend(models)
+        models = self.__create_control_mode_pmodels(self.__ip.modes)
+        self.__data_models.extend(models)
 
         self.modelReset.emit()
-        self.__connectIpSignal(self.__ip)
+        self.__connect_ip_signal(self.__ip)
 
-    def __on_ip_controlsUpdated(self):
-        if self.__workType != WidgetBaseManagerWorkType.CONTROL:
+    def __on_ip_controls_updated(self):
+        if self.__work_type != WidgetBaseManagerWorkType.CONTROL:
             return
 
-        self.__dataModels.clear()
+        self.__data_models.clear()
         if self.__ip is None:
             logger.error(f"the ip is invalid.")
             self.modelReset.emit()
             return
 
-        self.__disconnectIpSignal(self.__ip)
+        self.__disconnect_ip_signal(self.__ip)
 
-        models = self.__createControlModePModels(self.__ip.controls)
-        self.__dataModels.extend(models)
+        models = self.__create_control_mode_pmodels(self.__ip.controls)
+        self.__data_models.extend(models)
 
         self.modelReset.emit()
-        self.__connectIpSignal(self.__ip)
+        self.__connect_ip_signal(self.__ip)
 
-    def __on_ip_modesItemUpdated(self, param: str, value: bool):
+    def __on_ip_modes_item_updated(self, param: str, value: bool):
         print(param, value)
 
-    def __on_ip_controlsItemUpdated(self, param: str, value: bool):
+    def __on_ip_controls_item_updated(self, param: str, value: bool):
         print(param, value)
 
-    def __createPModel(
+    def __create_pmodel(
         self,
         path: str,
         param: str,
@@ -630,15 +626,15 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             name=parameter.display.get(local),
             path=path,
             value=val,  # type: ignore
-            possibleValues=config.values,
+            possible_values=config.values,
             description=parameter.description.get(local),
             param=param,
             parameter=parameter,
         )
 
-    def __isPModelEnabled(self, model: _PModel) -> bool:
+    def __is_pmodel_enabled(self, model: _PModel) -> bool:
         if self.__ip is not None:
-            if self.__workType == WidgetBaseManagerWorkType.NORMAL_MODE:
+            if self.__work_type == WidgetBaseManagerWorkType.NORMAL_MODE:
                 if (
                     model.param in self.__ip.modes
                     and self.__ip.modes[model.param].condition
@@ -646,7 +642,7 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                     return True
                 else:
                     return False
-            elif self.__workType == WidgetBaseManagerWorkType.CONTROL:
+            elif self.__work_type == WidgetBaseManagerWorkType.CONTROL:
                 if (
                     model.param in self.__ip.controls
                     and self.__ip.controls[model.param].condition
@@ -656,26 +652,26 @@ class WidgetBaseManagerModel(QAbstractTableModel):
                     return False
         return True
 
-    def __createPinModePModels(self, target: str, mode: str) -> list[_PModel]:
+    def __create_pin_mode_pmodels(self, target: str, mode: str) -> list[_PModel]:
         results = [
             _PModel(
                 name=self.tr("Name"),  # type: ignore
                 path="",
                 value=target,
-                parameter=self.__preBuildParameters["name"],
+                parameter=self.__pre_build_parameters["name"],
             ),
             _PModel(
                 name=self.tr("Label"),  # type: ignore
                 path=f"pin/{target}/label",
                 value=PROJECT.project().configs.get(f"pin/{target}/label", ""),  # type: ignore
-                parameter=self.__preBuildParameters["label"],
+                parameter=self.__pre_build_parameters["label"],
             ),
         ]
 
         if self.__ip is None:
             return []
 
-        configs = self.__ip.pinModes.get(mode, {})
+        configs = self.__ip.pin_modes.get(mode, {})
 
         parameters = self.__ip.parameters
         instance = self.__ip.instance()
@@ -683,14 +679,14 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             for param, cfg in configs.items():
                 parameter = parameters[param]
                 path = f"{instance}/{target}/{param}"
-                model = self.__createPModel(path, param, parameter, cfg)
+                model = self.__create_pmodel(path, param, parameter, cfg)
                 if model is not None:
-                    model.setProperty("mode", mode)
+                    model.set_property("mode", mode)
                     results.append(model)
 
         return results
 
-    def __createControlModePModels(
+    def __create_control_mode_pmodels(
         self, configs: dict[str, IpType.ControlModeUnitType]
     ) -> list[_PModel]:
         results = []
@@ -704,25 +700,25 @@ class WidgetBaseManagerModel(QAbstractTableModel):
             for param, cfg in configs.items():
                 parameter = parameters[param]
                 path = f"{instance}/{param}"
-                model = self.__createPModel(path, param, parameter, cfg)
+                model = self.__create_pmodel(path, param, parameter, cfg)
                 if model is not None:
                     results.append(model)
 
         return results
 
-    def __disconnectIpSignal(self, ip: IpType):
-        ip.parameterItemUpdated.disconnect(self.__on_ip_parameterItemUpdated)
-        ip.modesUpdated.disconnect(self.__on_ip_modesUpdated)
-        ip.controlsUpdated.disconnect(self.__on_ip_controlsUpdated)
-        ip.modesItemUpdated.disconnect(self.__on_ip_modesItemUpdated)
-        ip.controlsItemUpdated.disconnect(self.__on_ip_controlsItemUpdated)
+    def __disconnect_ip_signal(self, ip: IpType):
+        ip.parameter_item_updated.disconnect(self.__on_ip_parameter_item_updated)
+        ip.modes_updated.disconnect(self.__on_ip_modes_updated)
+        ip.controls_updated.disconnect(self.__on_ip_controls_updated)
+        ip.modes_item_updated.disconnect(self.__on_ip_modes_item_updated)
+        ip.controls_item_updated.disconnect(self.__on_ip_controls_item_updated)
 
-    def __connectIpSignal(self, ip: IpType):
-        ip.parameterItemUpdated.connect(self.__on_ip_parameterItemUpdated)
-        ip.modesUpdated.connect(self.__on_ip_modesUpdated)
-        ip.controlsUpdated.connect(self.__on_ip_controlsUpdated)
-        ip.modesItemUpdated.connect(self.__on_ip_modesItemUpdated)
-        ip.controlsItemUpdated.connect(self.__on_ip_controlsItemUpdated)
+    def __connect_ip_signal(self, ip: IpType):
+        ip.parameter_item_updated.connect(self.__on_ip_parameter_item_updated)
+        ip.modes_updated.connect(self.__on_ip_modes_updated)
+        ip.controls_updated.connect(self.__on_ip_controls_updated)
+        ip.modes_item_updated.connect(self.__on_ip_modes_item_updated)
+        ip.controls_item_updated.connect(self.__on_ip_controls_item_updated)
 
 
 class WidgetBaseManager(QWidget):
@@ -731,34 +727,36 @@ class WidgetBaseManager(QWidget):
         super().__init__(parent)
 
         # ----------------------------------------------------------------------
-        self.vLayout = QVBoxLayout(self)
-        self.vLayout.setContentsMargins(9, 9, 9, 9)
-        self.tableView_property = TableView(self)
-        self.tableView_property.horizontalHeader().hide()
-        self.vLayout.addWidget(self.tableView_property)
+        self.v_layout = QVBoxLayout(self)
+        self.v_layout.setContentsMargins(9, 9, 9, 9)
+        self.table_view_property = TableView(self)
+        self.table_view_property.horizontalHeader().hide()
+        self.v_layout.addWidget(self.table_view_property)
         # ----------------------------------------------------------------------
 
         self.__type = type_
-        self.__dataModels: list[_PModel] = []
+        self.__data_models: list[_PModel] = []
         self.__instance = ""
         self.__target = ""
 
-        proxyModel = QSortFilterProxyModel(self)
-        self.m_model = WidgetBaseManagerModel(self.__dataModels, self.__type, self)
-        proxyModel.setSourceModel(self.m_model)
-        self.tableView_property.setModel(proxyModel)
-        self.tableView_property.horizontalHeader().setSectionResizeMode(
+        proxy_model = QSortFilterProxyModel(self)
+        self.m_model = WidgetBaseManagerModel(self.__data_models, self.__type, self)
+        proxy_model.setSourceModel(self.m_model)
+        self.table_view_property.setModel(proxy_model)
+        self.table_view_property.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch
         )
-        self.tableView_property.verticalHeader().setVisible(False)
-        self.tableView_property.setBorderVisible(True)
-        self.tableView_property.setBorderRadius(8)
-        self.tableView_property.setSelectionMode(
+        self.table_view_property.verticalHeader().setVisible(False)
+        self.table_view_property.setBorderVisible(True)
+        self.table_view_property.setBorderRadius(8)
+        self.table_view_property.setSelectionMode(
             QAbstractItemView.SelectionMode.NoSelection
         )
-        self.tableView_property.setItemDelegateForColumn(
+        self.table_view_property.setItemDelegateForColumn(
             1,
-            WidgetBaseManagerEditorDelegate(self.__dataModels, self.tableView_property),
+            WidgetBaseManagerEditorDelegate(
+                self.__data_models, self.table_view_property
+            ),
         )
 
     # region getter/setter
@@ -773,11 +771,11 @@ class WidgetBaseManager(QWidget):
 
     # endregion
 
-    def setTarget(self, instance: str, target: str):
+    def set_target(self, instance: str, target: str):
         self.__instance = instance
         self.__target = target
-        self.m_model.setTarget(instance, target)
+        self.m_model.set_target(instance, target)
 
-        ip = IP.projectIps()[instance]
-        for signal in ip.signals():
-            print(signal, PROJECT.findAvailablePinsBySignal(signal))
+        ip = IP.project_ips()[instance]
+        # for signal in ip.signals():
+        #     print(signal, PROJECT.findAvailablePinsBySignal(signal))

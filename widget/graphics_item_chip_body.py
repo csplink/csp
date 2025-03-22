@@ -46,6 +46,8 @@ class GraphicsItemChipBody(QGraphicsObject):
         self.font = QFont("JetBrains Mono", QFont.Weight.ExtraBold)
         self.font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias)
 
+    # region overrides
+
     def boundingRect(self) -> QRectF:
         return QRectF(0, 0, self.width, self.height)
 
@@ -54,7 +56,6 @@ class GraphicsItemChipBody(QGraphicsObject):
         path.addRect(self.boundingRect())
         return path
 
-    # noinspection PyMethodOverriding
     def paint(
         self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: QWidget
     ):
@@ -119,3 +120,5 @@ class GraphicsItemChipBody(QGraphicsObject):
         )
 
         painter.setBrush(brush)
+
+    # endregion

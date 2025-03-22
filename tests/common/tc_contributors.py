@@ -35,10 +35,10 @@ class ContributorTest(unittest.TestCase):
         pass
 
     def test_getContributor(self):
-        contributors = Contributor().getContributors()
+        contributors = Contributor().get_contributors()
         for contributor in contributors:
             self.assertGreater(len(contributor.name), 0, msg="load failed.")
-            self.assertGreater(len(contributor.htmlUrl), 0, msg="load failed.")
+            self.assertGreater(len(contributor.html_url), 0, msg="load failed.")
             self.assertGreater(contributor.contributions, 0, msg="load failed.")
             self.assertGreater(len(contributor.avatar), 0, msg="load failed.")
 

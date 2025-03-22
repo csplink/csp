@@ -31,7 +31,7 @@ import filetype
 import requests
 import yaml
 
-__rootDir = os.path.join(os.path.dirname(__file__), "..")
+__root_dir = os.path.join(os.path.dirname(__file__), "..")
 __owner = "csplink"
 __repo = "csp"
 __token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
@@ -40,14 +40,14 @@ __token = os.getenv("GITHUB_CSPLINK_DEVELOPER_TOKEN", "None")
 class Contributors:
 
     @staticmethod
-    def getUser(name: str):
+    def get_user(name: str):
         url = f"https://api.github.com/users/{name}"
         resp = requests.get(url)
         json = resp.json()
         return json
 
     @staticmethod
-    def getContributors(owner: str, repo: str, token: str):
+    def get_contributors(owner: str, repo: str, token: str):
         url = f"https://api.github.com/repos/{owner}/{repo}/contributors"
         headers = {"Authorization": f"token {token}"}
         resp = requests.get(url, headers=headers)
@@ -56,13 +56,13 @@ class Contributors:
         for info in json:
             names.append(info["login"])
         if "HalfSweet" not in names:  # for branch stable/cpp-qt
-            userInfo = Contributors.getUser("HalfSweet")
+            user_info = Contributors.get_user("HalfSweet")
             json.append(
                 {
-                    "login": userInfo["login"],
-                    "avatar_url": userInfo["avatar_url"],
-                    "html_url": userInfo["html_url"],
-                    "id": userInfo["id"],
+                    "login": user_info["login"],
+                    "avatar_url": user_info["avatar_url"],
+                    "html_url": user_info["html_url"],
+                    "id": user_info["id"],
                     "contributions": 1,
                 }
             )
@@ -71,26 +71,26 @@ class Contributors:
 
     @staticmethod
     def generate(root: str, owner: str, repo: str, token: str):
-        contributors = Contributors.getContributors(owner, repo, token)
+        contributors = Contributors.get_contributors(owner, repo, token)
 
-        avatarFolder = os.path.join(root, "resource", "contributors", "avatar")
-        if os.path.isdir(avatarFolder):
-            shutil.rmtree(avatarFolder)
-        os.makedirs(avatarFolder)
+        avatar_folder = os.path.join(root, "resource", "contributors", "avatar")
+        if os.path.isdir(avatar_folder):
+            shutil.rmtree(avatar_folder)
+        os.makedirs(avatar_folder)
 
-        contributorList = []
+        contributor_list = []
 
         for contributor in contributors:
             response = requests.get(contributor["avatar_url"])
             extension = filetype.guess_extension(response.content)
             extension = f".{extension}" if extension else ""
-            file = f"{avatarFolder}/{contributor['id']}{extension}"
+            file = f"{avatar_folder}/{contributor['id']}{extension}"
             with open(file, "wb") as fp:
                 fp.write(response.content)
             print(
                 f"Author: {contributor['login']}, Contributions: {contributor['contributions']}"
             )
-            contributorList.append(
+            contributor_list.append(
                 {
                     "name": contributor["login"],
                     "avatar": f"avatar/{os.path.basename(file)}",
@@ -100,12 +100,12 @@ class Contributors:
             )
 
         with open(
-            f"{os.path.join(os.path.dirname(avatarFolder), 'contributors')}",
+            f"{os.path.join(os.path.dirname(avatar_folder), 'contributors')}",
             "w",
             encoding="utf-8",
         ) as f:
-            f.write(yaml.dump(contributorList))
+            f.write(yaml.dump(contributor_list))
 
 
 if __name__ == "__main__":
-    Contributors.generate(__rootDir, __owner, __repo, __token)
+    Contributors.generate(__root_dir, __owner, __repo, __token)
