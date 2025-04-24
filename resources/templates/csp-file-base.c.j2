@@ -1,0 +1,97 @@
+{#
+ # Licensed under the Apache License v. 2 (the "License")
+ # You may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ #     https://www.apache.org/licenses/LICENSE-2.0.html
+ #
+ # Unless required by applicable law or agreed to in writing, software
+ # distributed under the License is distributed on an "AS IS" BASIS,
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ #
+ # Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+ #
+ # @author      xqyjlj
+ # @file        csp-file-base.c.j2
+ #
+ # Change Logs:
+ # Date           Author       Notes
+ # ------------   ----------   -----------------------------------------------
+ # 2025-05-15     xqyjlj       initial version
+ #}
+/**
+ * *****************************************************************************
+ *  @author:            {{ CSP.author }}
+ *  @file:              {{ CSP.file }}
+ *  @brief:             {{ CSP.brief }}
+ *  @version:           {{ CSP.version }}
+ *  @hal:               {{ CSP.project.vendor }}.{{ CSP.project.gen.hal }}@{{ CSP.project.gen.hal_version }}
+ *  @project:           {{ CSP.project.name }}
+ *  @targetChip:        {{ CSP.project.target_chip }}
+ *  @time:              {{ CSP.time }}
+ *
+ * *****************************************************************************
+ *  @attention
+ *
+ *  Copyright (C) {{ CSP.year }} csplink software.
+ *  All rights reserved.
+ *
+ * *****************************************************************************
+ */
+
+/**< user code begin header, do not change this comment! */
+{{ CSP.user_code["header"] }}
+/**> user code end header, do not change this comment! */
+
+/********************************** includes **********************************/
+{%- block includes %}
+{%- endblock %}
+/**< user code begin includes, do not change this comment! */
+{{ CSP.user_code["includes"] }}
+/**> user code end includes, do not change this comment! */
+
+/*********************************** typedef **********************************/
+{%- block typedef %}
+{%- endblock %}
+/**< user code begin typedef, do not change this comment! */
+{{ CSP.user_code["typedef"] }}
+/**> user code end typedef, do not change this comment! */
+
+/*********************************** define ***********************************/
+{%- block define %}
+{%- endblock %}
+/**< user code begin define, do not change this comment! */
+{{ CSP.user_code["define"] }}
+/**> user code end define, do not change this comment! */
+
+/*********************************** extern ***********************************/
+{%- block extern %}
+{%- endblock %}
+/**< user code begin extern, do not change this comment! */
+{{ CSP.user_code["extern"] }}
+/**> user code end extern, do not change this comment! */
+
+/********************************** variables *********************************/
+{%- block variables %}
+{%- endblock %}
+/**< user code begin variables, do not change this comment! */
+{{ CSP.user_code["variables"] }}
+/**> user code end variables, do not change this comment! */
+
+/********************************** functions *********************************/
+{%- block functions_prototypes %}
+{%- endblock %}
+/**< user code begin functions prototypes, do not change this comment! */
+{{ CSP.user_code["functions prototypes"] }}
+/**> user code end functions prototypes, do not change this comment! */
+
+/**< user code begin 0, do not change this comment! */
+{{ CSP.user_code["0"] }}
+/**> user code end 0, do not change this comment! */
+{%- block function_body %}
+{%- endblock %}
+/**< user code begin 1, do not change this comment! */
+{{ CSP.user_code["1"] }}
+/**> user code end 1, do not change this comment! */

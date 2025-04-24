@@ -1,0 +1,113 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_wwdt.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+parameters:
+  wwdt_prescaler_t:
+    type: enum
+    values:
+      '1':
+        comment:
+          zh-cn: '1'
+          en: '1'
+      '2':
+        comment:
+          zh-cn: '2'
+          en: '2'
+      '4':
+        comment:
+          zh-cn: '4'
+          en: '4'
+      '8':
+        comment:
+          zh-cn: '8'
+          en: '8'
+    default: '1'
+    display:
+      zh-cn: 预分频器
+      en: Clock prescaler
+    description:
+      zh-cn: WWDT 时钟预分频器
+      en: WWDT counter clock prescaler
+    visible: true
+    readonly: false
+  wwdt_window_t:
+    type: integer
+    default: 64
+    max: 127
+    min: 64
+    display:
+      zh-cn: 窗口值
+      en: Window value
+    description:
+      zh-cn: WWDT 窗口值
+      en: WWDT window value
+    visible: true
+    readonly: false
+  wwdt_counter_t:
+    type: integer
+    default: 64
+    max: 127
+    min: ${INSTANCE}.wwdt_window_t
+    display:
+      zh-cn: 计数器值（向下计数）
+      en: free-running downcounter value
+    description:
+      zh-cn: WWDT 计数器值（向下计数）
+      en: WWDT free-running downcounter value
+    visible: true
+    readonly: false
+  wwdt_ewi_enabled_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: 提前唤醒中断
+      en: Early wakeup interrupt
+    description:
+      zh-cn: 提前唤醒中断
+      en: Early wakeup interrupt
+    visible: true
+    readonly: false
+  wwdt_enabled_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: WWDT
+      en: WWDT
+    description:
+      zh-cn: WWDT
+      en: WWDT
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      wwdt_enabled_t: {}
+  configurations:
+    - condition: configs.${INSTANCE}.wwdt_enabled_t
+      content:
+        refParameters:
+          wwdt_prescaler_t: {}
+          wwdt_window_t: {}
+          wwdt_counter_t: {}
+          wwdt_ewi_enabled_t: {}
+activated: configs.${INSTANCE}.wwdt_enabled_t

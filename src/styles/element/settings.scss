@@ -1,0 +1,64 @@
+/**
+ * ****************************************************************************
+ *  @author      xqyjlj
+ *  @file        settings.scss
+ *  @brief
+ *
+ * ****************************************************************************
+ *  @attention
+ *  Licensed under the Apache License v. 2 (the "License");
+ *  You may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0.html
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *  Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+ *
+ * ****************************************************************************
+ *  Change Logs:
+ *  Date           Author       Notes
+ *  ------------   ----------   -----------------------------------------------
+ *  2025-05-19     xqyjlj       initial version
+ */
+
+.setting-content {
+  flex: 1;
+  margin: 0px 20px;
+  padding-bottom: 20px;
+}
+
+.setting-content h2 {
+  text-align: left;
+  margin-top: 30px;
+}
+
+.label-col {
+  display: flex;
+}
+
+.widget-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ep-card {
+  --ep-card-padding: 12px;
+}
+
+.ep-row:last-child {
+  margin-bottom: 0;
+}
+
+.ep-col {
+  border-radius: 4px;
+}
+
+.ep-divider--horizontal {
+  margin: 12px 0;
+}

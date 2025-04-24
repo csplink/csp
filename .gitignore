@@ -1,0 +1,40 @@
+# nodejs
+node_modules
+dist
+yarn.lock
+package-lock.json
+
+# electron
+dist-electron
+release
+
+# vue
+src/components.d.ts
+src/typed-router.d.ts
+
+# vscode
+.vscode/*
+!.vscode/settings.json
+
+# python
+__pycache__
+
+#project
+csplink.config
+repository
+repository.index
+*.log
+
+# csplink
+resources/contributors
+resources/repository
+resources/packages
+resources/database/schema/*.json
+resources/database/**/*.xml
+
+# build
+build
+build-*
+
+# drawio
+*.bkp

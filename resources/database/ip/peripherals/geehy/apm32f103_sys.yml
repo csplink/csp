@@ -1,0 +1,332 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_sys.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+parameters:
+  sys_debug_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+      serial_wire:
+        comment:
+          zh-cn: SWD
+          en: SWD
+        signals:
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+      jtag_4_pins:
+        comment:
+          zh-cn: JTAG-4
+          en: JTAG-4
+        signals:
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+      jtag_5_pins:
+        comment:
+          zh-cn: JTAG-5
+          en: JTAG-5
+        signals:
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:NJTRST:
+            mode: GPIO:System
+      trace_asynchronous_sw:
+        comment:
+          zh-cn: 异步跟踪调试 SWD
+          en: Trace Asynchronous SWD
+        signals:
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+      trace_synchro_1bit_jtag:
+        comment:
+          zh-cn: 同步跟踪调试 JTAG (1 bit)
+          en: JTAG with Trace Synchro (1 bit)
+        signals:
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED0:
+            mode: GPIO:System
+      trace_synchro_2bits_jtag:
+        comment:
+          zh-cn: 同步跟踪调试 JTAG (2 bit)
+          en: JTAG with Trace Synchro (2 bits)
+        signals:
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED1:
+            mode: GPIO:System
+      trace_synchro_4bits_jtag:
+        comment:
+          zh-cn: 同步跟踪调试 JTAG (4 bits)
+          en: JTAG with Trace Synchro (4 bits)
+        signals:
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED1:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED2:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED3:
+            mode: GPIO:System
+      trace_synchro_1bit_sw:
+        comment:
+          zh-cn: 同步跟踪调试 SWD (1 bit)
+          en: Trace Synchro SWD (1 bit)
+        signals:
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED0:
+            mode: GPIO:System
+      trace_synchro_2bits_sw:
+        comment:
+          zh-cn: 同步跟踪调试 SWD (2 bits)
+          en: Trace Synchro SWD (2 bits)
+        signals:
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED1:
+            mode: GPIO:System
+      trace_synchro_4bits_sw:
+        comment:
+          zh-cn: 同步跟踪调试 SWD (4 bits)
+          en: Trace Synchro SWD (4 bits)
+        signals:
+          ${INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED1:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED2:
+            mode: GPIO:System
+          ${INSTANCE}:TRACED3:
+            mode: GPIO:System
+    default: jtag_5_pins
+    display:
+      zh-cn: 调试
+      en: Debug
+    description:
+      zh-cn: 调试
+      en: Debug
+    visible: true
+    readonly: false
+  sys_wake_up0_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+      enable:
+        comment:
+          zh-cn: 使能
+          en: Enable
+        signals:
+          ${INSTANCE}:WKUP:
+            mode: GPIO:System
+    default: disable
+    display:
+      zh-cn: WKUP 引脚
+      en: WKUP Pin
+    description:
+      zh-cn: WKUP 引脚
+      en: WKUP Pin
+    visible: true
+    readonly: false
+  sys_time_base_t:
+    type: enum
+    values:
+      sys_tick:
+        comment:
+          zh-cn: SysTick
+          en: SysTick
+      tmr1:
+        comment:
+          zh-cn: TMR1
+          en: TMR1
+      tmr2:
+        comment:
+          zh-cn: TMR2
+          en: TMR2
+      tmr3:
+        comment:
+          zh-cn: TMR3
+          en: TMR3
+      tmr4:
+        comment:
+          zh-cn: TMR4
+          en: TMR4
+      tmr5:
+        comment:
+          zh-cn: TMR5
+          en: TMR5
+      tmr6:
+        comment:
+          zh-cn: TMR6
+          en: TMR6
+      tmr7:
+        comment:
+          zh-cn: TMR7
+          en: TMR7
+      tmr8:
+        comment:
+          zh-cn: TMR8
+          en: TMR8
+      tmr9:
+        comment:
+          zh-cn: TMR9
+          en: TMR9
+      tmr10:
+        comment:
+          zh-cn: TMR10
+          en: TMR10
+      tmr11:
+        comment:
+          zh-cn: TMR11
+          en: TMR11
+      tmr12:
+        comment:
+          zh-cn: TMR12
+          en: TMR12
+      tmr13:
+        comment:
+          zh-cn: TMR13
+          en: TMR13
+      tmr14:
+        comment:
+          zh-cn: TMR14
+          en: TMR14
+      tmr15:
+        comment:
+          zh-cn: TMR15
+          en: TMR15
+      tmr16:
+        comment:
+          zh-cn: TMR16
+          en: TMR16
+      tmr17:
+        comment:
+          zh-cn: TMR17
+          en: TMR17
+      tmr18:
+        comment:
+          zh-cn: TMR18
+          en: TMR18
+      tmr19:
+        comment:
+          zh-cn: TMR19
+          en: TMR19
+      tmr20:
+        comment:
+          zh-cn: TMR20
+          en: TMR20
+      tmr21:
+        comment:
+          zh-cn: TMR21
+          en: TMR21
+      tmr22:
+        comment:
+          zh-cn: TMR22
+          en: TMR22
+      tmr23:
+        comment:
+          zh-cn: TMR23
+          en: TMR23
+    default: sys_tick
+    display:
+      zh-cn: 时基
+      en: TimeBase
+    description:
+      zh-cn: 时基
+      en: TimeBase
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      sys_debug_t: {}
+      sys_wake_up0_t: {}
+      sys_time_base_t: {}
+  configurations: {}

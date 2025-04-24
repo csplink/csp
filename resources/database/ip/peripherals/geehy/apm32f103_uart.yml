@@ -1,0 +1,488 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_uart.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+parameters:
+  uart_virtual_mode_t:
+    type: enum
+    values:
+      asynchronous:
+        comment:
+          en: asynchronous
+      ir_da:
+        comment:
+          en: ir_da
+      lin:
+        comment:
+          en: lin
+    default: asynchronous
+    display:
+      zh-cn: ''
+      en: ''
+    description:
+      zh-cn: ''
+      en: ''
+    visible: false
+    readonly: false
+  uart_baud_rate_t:
+    - condition: configs.${INSTANCE}.uart_virtual_mode_t == 'ir_da'
+      content:
+        type: integer
+        default: 115200
+        max: 115200
+        min: 110
+        display:
+          zh-cn: 波特率
+          en: Baud Rate
+        description:
+          zh-cn: 波特率
+          en: Baud Rate
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 115200
+        max: 5250000
+        min: 110
+        display:
+          zh-cn: 波特率
+          en: Baud Rate
+        description:
+          zh-cn: 波特率
+          en: Baud Rate
+        visible: true
+        readonly: false
+  uart_word_length_t:
+    - condition: configs.${INSTANCE}.uart_virtual_mode_t == 'ir_da'
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+          '9':
+            comment:
+              zh-cn: 9 Bits (包括校验位)
+              en: 9 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.uart_control_mode_t == 'lin'
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+          '9':
+            comment:
+              zh-cn: 9 Bits (包括校验位)
+              en: 9 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+  uart_stop_bits_t:
+    type: enum
+    values:
+      '1':
+        comment:
+          zh-cn: '1'
+          en: '1'
+      '2':
+        comment:
+          zh-cn: '2'
+          en: '2'
+    default: '1'
+    display:
+      zh-cn: 停止位
+      en: Stop Bits
+    description:
+      zh-cn: 停止位
+      en: Stop Bits
+    visible: true
+    readonly: false
+  uart_parity_t:
+    type: enum
+    values:
+      none:
+        comment:
+          zh-cn: 无
+          en: None
+      even:
+        comment:
+          zh-cn: 偶校验
+          en: Even
+      odd:
+        comment:
+          zh-cn: 奇校验
+          en: Odd
+    default: none
+    display:
+      zh-cn: 校验方式
+      en: Parity
+    description:
+      zh-cn: 校验方式
+      en: Parity
+    visible: true
+    readonly: false
+  uart_mode_t:
+    type: enum
+    values:
+      tx_rx:
+        comment:
+          zh-cn: 收发
+          en: Receive and Transmit
+      rx:
+        comment:
+          zh-cn: 只收
+          en: Receive Only
+      tx:
+        comment:
+          zh-cn: 只发
+          en: Transmit Only
+    default: tx_rx
+    display:
+      zh-cn: 数据方向
+      en: Data Direction
+    description:
+      zh-cn: 数据方向
+      en: Data Direction
+    visible: true
+    readonly: false
+  uart_over_sampling_t:
+    - condition: "(configs.${INSTANCE}.uart_virtual_mode_t == 'lin') ||
+        (configs.${INSTANCE}.uart_virtual_mode_t == 'ir_da')"
+      content:
+        type: enum
+        values:
+          none:
+            comment:
+              zh-cn: 无
+              en: None
+        default: none
+        display:
+          zh-cn: 过采样
+          en: Over Sampling
+        description:
+          zh-cn: 过采样
+          en: Over Sampling
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          '16':
+            comment:
+              zh-cn: 16 倍过采样
+              en: 16 Samples
+        default: '16'
+        display:
+          zh-cn: 过采样
+          en: Over Sampling
+        description:
+          zh-cn: 过采样
+          en: Over Sampling
+        visible: true
+        readonly: false
+  uart_ir_da_mode_t:
+    type: enum
+    values:
+      low_power:
+        comment:
+          zh-cn: 低功耗
+          en: Low Power
+      normal:
+        comment:
+          zh-cn: 普通功耗
+          en: Normal Power
+    default: normal
+    display:
+      zh-cn: IrDa 模式
+      en: IrDa Mode
+    description:
+      zh-cn: IrDa 模式
+      en: IrDa Mode
+    visible: true
+    readonly: false
+  uart_prescaler_t:
+    - condition: configs.${INSTANCE}.uart_ir_da_mode_t == 'normal'
+      content:
+        type: integer
+        default: 1
+        max: 1
+        min: 1
+        display:
+          zh-cn: 预分频
+          en: Prescaler
+        description:
+          zh-cn: 预分频
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 10
+        max: 255
+        min: 1
+        display:
+          zh-cn: 预分频
+          en: Prescaler
+        description:
+          zh-cn: 预分频
+          en: Prescaler
+        visible: true
+        readonly: false
+  uart_wake_up_methode_t:
+    type: enum
+    values:
+      idle_line:
+        comment:
+          zh-cn: 空闲总线
+          en: Idle Line
+      address_mark:
+        comment:
+          zh-cn: 地址标记
+          en: Address Mark
+    default: idle_line
+    display:
+      zh-cn: 唤醒方式
+      en: Wake-Up Method
+    description:
+      zh-cn: 唤醒方式
+      en: Wake-Up Method
+    visible: true
+    readonly: false
+  uart_address_t:
+    - condition: configs.${INSTANCE}.uart_wake_up_methode_t == 'address_mark'
+      content:
+        type: integer
+        default: 0
+        max: 15
+        min: 0
+        display:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        description:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        max: 0
+        min: 0
+        display:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        description:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        visible: false
+        readonly: false
+  uart_break_detect_length_t:
+    type: enum
+    values:
+      '10':
+        comment:
+          zh-cn: 10 Bits
+          en: 10 Bits
+      '11':
+        comment:
+          zh-cn: 11 Bits
+          en: 11 Bits
+    default: '10'
+    display:
+      zh-cn: 断开符检测长度
+      en: Break Detect Length
+    description:
+      zh-cn: 断开符检测长度
+      en: Break Detect Length
+    visible: true
+    readonly: false
+  uart_control_mode_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+      asynchronous:
+        comment:
+          zh-cn: 异步
+          en: Asynchronous
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPull
+      half_duplex_single_wire_mode:
+        comment:
+          zh-cn: 单线（半双工）
+          en: Single Wire (Half-Duplex)
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+      multiprocessor_communication:
+        comment:
+          zh-cn: 多处理器通信
+          en: Multiprocessor Communication
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      ir_da:
+        comment:
+          zh-cn: IrDA
+          en: IrDA
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      lin:
+        comment:
+          zh-cn: LIN
+          en: LIN
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+    default: disable
+    display:
+      zh-cn: 模式
+      en: Mode
+    description:
+      zh-cn: 模式
+      en: Mode
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      uart_control_mode_t: {}
+  configurations:
+    - condition: configs.${INSTANCE}.uart_control_mode_t == 'asynchronous'
+      content:
+        refParameters:
+          uart_baud_rate_t: {}
+          uart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          uart_word_length_t: {}
+          uart_parity_t: {}
+          uart_stop_bits_t: {}
+          uart_mode_t: {}
+          uart_over_sampling_t: {}
+    - condition: configs.${INSTANCE}.uart_control_mode_t == 'half_duplex_single_wire_mode'
+      content:
+        refParameters:
+          uart_baud_rate_t: {}
+          uart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          uart_word_length_t: {}
+          uart_parity_t: {}
+          uart_stop_bits_t: {}
+          uart_mode_t: {}
+          uart_over_sampling_t: {}
+    - condition: configs.${INSTANCE}.uart_control_mode_t == 'multiprocessor_communication'
+      content:
+        refParameters:
+          uart_baud_rate_t: {}
+          uart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          uart_word_length_t: {}
+          uart_parity_t: {}
+          uart_stop_bits_t: {}
+          uart_mode_t: {}
+          uart_over_sampling_t: {}
+          uart_wake_up_methode_t: {}
+          uart_address_t: {}
+    - condition: configs.${INSTANCE}.uart_control_mode_t == 'ir_da'
+      content:
+        refParameters:
+          uart_baud_rate_t: {}
+          uart_virtual_mode_t:
+            values:
+              - ir_da
+            default: ir_da
+          uart_word_length_t: {}
+          uart_parity_t: {}
+          uart_mode_t: {}
+          uart_ir_da_mode_t: {}
+          uart_prescaler_t: {}
+    - condition: configs.${INSTANCE}.uart_control_mode_t == 'lin'
+      content:
+        refParameters:
+          uart_baud_rate_t: {}
+          uart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          uart_word_length_t: {}
+          uart_parity_t: {}
+          uart_stop_bits_t: {}
+          uart_mode_t: {}
+          uart_break_detect_length_t: {}
+activated: configs.${INSTANCE}.uart_control_mode_t != 'disable'

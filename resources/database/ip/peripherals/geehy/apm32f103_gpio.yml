@@ -1,0 +1,682 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_gpio.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+parameters:
+  gpio_level_t:
+    type: enum
+    values:
+      low:
+        comment:
+          zh-cn: 低电平
+          en: Low
+      high:
+        comment:
+          zh-cn: 高电平
+          en: High
+    display:
+      zh-cn: 电平
+      en: Level
+    description:
+      zh-cn: GPIO-电平
+      en: GPIO Output level
+    default: low
+    readonly: false
+  gpio_mode_t:
+    type: enum
+    values:
+      analog:
+        comment:
+          zh-cn: 模拟模式
+          en: Analog mode
+      input:
+        comment:
+          zh-cn: 输入模式
+          en: Input mode
+      output:
+        comment:
+          zh-cn: 输出模式
+          en: Output mode
+      af_pp:
+        comment:
+          zh-cn: 复用功能推挽输出模式
+          en: Alternate Function Push Pull
+      af_od:
+        comment:
+          zh-cn: 复用功能开漏输出模式
+          en: Alternate Function Open Drain
+    display:
+      zh-cn: 模式
+      en: mode
+    description:
+      zh-cn: GPIO-模式
+      en: GPIO mode
+    default: input
+    readonly: false
+  gpio_output_type_t:
+    type: enum
+    values:
+      pp:
+        comment:
+          zh-cn: 推挽输出
+          en: Output Push Pull
+      od:
+        comment:
+          zh-cn: 开漏输出
+          en: Output Open Drain
+    display:
+      zh-cn: 输出类型
+      en: Output Type
+    description:
+      zh-cn: GPIO-输出类型
+      en: GPIO Output Type
+    default: pp
+    readonly: false
+  gpio_pull_t:
+    type: enum
+    values:
+      down:
+        comment:
+          zh-cn: 下拉
+          en: Pull-down
+      up:
+        comment:
+          zh-cn: 上拉
+          en: Pull-up
+      no:
+        comment:
+          zh-cn: 浮空
+          en: No pull-up and no pull-down
+    display:
+      zh-cn: 上拉/下拉
+      en: Pull-up/Pull-down
+    description:
+      zh-cn: GPIO 上拉/下拉
+      en: GPIO Pull-up/Pull-down
+    default: no
+    readonly: false
+  gpio_speed_t:
+    type: enum
+    values:
+      2mhz:
+        comment:
+          zh-cn: 2 MHz
+          en: 2 MHz
+      10mhz:
+        comment:
+          zh-cn: 10 MHz
+          en: 10 MHz
+      50mhz:
+        comment:
+          zh-cn: 50 MHz
+          en: 50 MHz
+    display:
+      zh-cn: 速度
+      en: Speed
+    description:
+      zh-cn: GPIO-速度
+      en: GPIO Maximum output speed
+    default: 2mhz
+    readonly: false
+presets:
+  Input:
+    refParameters:
+      gpio_pull_t: {}
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  Output:
+    refParameters:
+      gpio_level_t: {}
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - output
+        default: output
+      gpio_output_type_t: {}
+  Analog:
+    refParameters:
+      gpio_mode_t:
+        values:
+          - analog
+        default: analog
+  EVENTOUT:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+          - af_od
+        default: af_pp
+      gpio_output_type_t:
+        values:
+          - pp
+          - od
+        default: pp
+  EXTI:
+    refParameters:
+      gpio_pull_t: {}
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  AlternateFunctionPushPull:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+        default: af_pp
+  System: {}
+  InputFloatingAndPullUp:
+    refParameters:
+      gpio_pull_t:
+        values:
+          - no
+          - up
+        default: no
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+containers:
+  overview:
+    refParameters:
+      gpio_level_t:
+        readonly: true
+      gpio_mode_t:
+        readonly: true
+      gpio_output_type_t:
+        readonly: true
+      gpio_pull_t:
+        readonly: true
+      gpio_speed_t:
+        readonly: true
+# pinGroups:
+#   PA0:
+#     TMR2:CH1:
+#       TMR2_GROUP0:
+#         default: true
+#       TMR2_GROUP2:
+#         default: false
+#     TMR2:ETR:
+#       TMR2_GROUP0:
+#         default: true
+#       TMR2_GROUP2:
+#         default: false
+#     USART2:CTS:
+#       USART2_GROUP0:
+#         default: true
+#   PA1:
+#     TMR2:CH2:
+#       TMR2_GROUP0:
+#         default: true
+#       TMR2_GROUP2:
+#         default: false
+#     USART2:RTS:
+#       USART2_GROUP0:
+#         default: true
+#   PA10:
+#     TMR1:CH3:
+#       TMR1_GROUP0:
+#         default: true
+#       TMR1_GROUP1:
+#         default: false
+#     USART1:RX:
+#       USART1_GROUP0:
+#         default: true
+#   PA11:
+#     CAN:RX:
+#       CAN_GROUP0:
+#         default: true
+#     TMR1:CH4:
+#       TMR1_GROUP0:
+#         default: true
+#       TMR1_GROUP1:
+#         default: false
+#   PA12:
+#     CAN:TX:
+#       CAN_GROUP0:
+#         default: true
+#     TMR1:ETR:
+#       TMR1_GROUP0:
+#         default: true
+#       TMR1_GROUP1:
+#         default: false
+#   PA15:
+#     I2S3:WS:
+#       I2S3_GROUP0:
+#         default: true
+#     SPI1:NSS:
+#       SPI1_GROUP1:
+#         default: false
+#     SPI3:NSS:
+#       SPI3_GROUP0:
+#         default: true
+#     TMR2:CH1:
+#       TMR2_GROUP1:
+#         default: false
+#       TMR2_GROUP3:
+#         default: false
+#     TMR2:ETR:
+#       TMR2_GROUP1:
+#         default: false
+#       TMR2_GROUP3:
+#         default: false
+#   PA2:
+#     TMR2:CH3:
+#       TMR2_GROUP0:
+#         default: true
+#       TMR2_GROUP1:
+#         default: false
+#     TMR9:CH1:
+#       TMR9_GROUP0:
+#         default: true
+#     USART2:TX:
+#       USART2_GROUP0:
+#         default: true
+#   PA3:
+#     TMR2:CH4:
+#       TMR2_GROUP0:
+#         default: true
+#       TMR2_GROUP1:
+#         default: false
+#     TMR9:CH2:
+#       TMR9_GROUP0:
+#         default: true
+#     USART2:RX:
+#       USART2_GROUP0:
+#         default: true
+#   PA4:
+#     I2S3:WS:
+#       I2S3_GROUP1:
+#         default: false
+#     SPI1:NSS:
+#       SPI1_GROUP0:
+#         default: true
+#     SPI3:NSS:
+#       SPI3_GROUP1:
+#         default: false
+#     USART2:CK:
+#       USART2_GROUP0:
+#         default: true
+#   PA5:
+#     SPI1:SCK:
+#       SPI1_GROUP0:
+#         default: true
+#   PA6:
+#     SPI1:MISO:
+#       SPI1_GROUP0:
+#         default: true
+#     TMR13:CH1:
+#       TMR13_GROUP0:
+#         default: true
+#     TMR1:BKIN:
+#       TMR1_GROUP1:
+#         default: false
+#     TMR3:CH1:
+#       TMR3_GROUP0:
+#         default: true
+#   PA7:
+#     SPI1:MOSI:
+#       SPI1_GROUP0:
+#         default: true
+#     TMR14:CH1:
+#       TMR14_GROUP0:
+#         default: true
+#     TMR1:CH1N:
+#       TMR1_GROUP1:
+#         default: false
+#     TMR3:CH2:
+#       TMR3_GROUP0:
+#         default: true
+#   PA8:
+#     TMR1:CH1:
+#       TMR1_GROUP0:
+#         default: true
+#       TMR1_GROUP1:
+#         default: false
+#   PA9:
+#     TMR1:CH2:
+#       TMR1_GROUP0:
+#         default: true
+#       TMR1_GROUP1:
+#         default: false
+#     USART1:TX:
+#       USART1_GROUP0:
+#         default: true
+#   PB0:
+#     TMR1:CH2N:
+#       TMR1_GROUP1:
+#         default: false
+#     TMR3:CH3:
+#       TMR3_GROUP0:
+#         default: true
+#       TMR3_GROUP1:
+#         default: false
+#   PB1:
+#     TMR1:CH3N:
+#       TMR1_GROUP1:
+#         default: false
+#     TMR3:CH4:
+#       TMR3_GROUP0:
+#         default: true
+#       TMR3_GROUP1:
+#         default: false
+#   PB10:
+#     TMR2:CH3:
+#       TMR2_GROUP2:
+#         default: false
+#       TMR2_GROUP3:
+#         default: false
+#     USART3:TX:
+#       USART3_GROUP0:
+#         default: true
+#   PB11:
+#     TMR2:CH4:
+#       TMR2_GROUP2:
+#         default: false
+#       TMR2_GROUP3:
+#         default: false
+#     USART3:RX:
+#       USART3_GROUP0:
+#         default: true
+#   PB12:
+#     TMR1:BKIN:
+#       TMR1_GROUP0:
+#         default: true
+#     USART3:CK:
+#       USART3_GROUP0:
+#         default: true
+#   PB13:
+#     TMR1:CH1N:
+#       TMR1_GROUP0:
+#         default: true
+#     USART3:CTS:
+#       USART3_GROUP0:
+#         default: true
+#       USART3_GROUP1:
+#         default: false
+#   PB14:
+#     TMR1:CH2N:
+#       TMR1_GROUP0:
+#         default: true
+#     USART3:RTS:
+#       USART3_GROUP0:
+#         default: true
+#       USART3_GROUP1:
+#         default: false
+#   PB15:
+#     TMR1:CH3N:
+#       TMR1_GROUP0:
+#         default: true
+#   PB3:
+#     I2S3:CK:
+#       I2S3_GROUP0:
+#         default: true
+#     SPI1:SCK:
+#       SPI1_GROUP1:
+#         default: false
+#     SPI3:SCK:
+#       SPI3_GROUP0:
+#         default: true
+#     TMR2:CH2:
+#       TMR2_GROUP1:
+#         default: false
+#       TMR2_GROUP3:
+#         default: false
+#   PB4:
+#     SPI1:MISO:
+#       SPI1_GROUP1:
+#         default: false
+#     SPI3:MISO:
+#       SPI3_GROUP0:
+#         default: true
+#     TMR3:CH1:
+#       TMR3_GROUP1:
+#         default: false
+#   PB5:
+#     I2S3:SD:
+#       I2S3_GROUP0:
+#         default: true
+#     SPI1:MOSI:
+#       SPI1_GROUP1:
+#         default: false
+#     SPI3:MOSI:
+#       SPI3_GROUP0:
+#         default: true
+#     TMR3:CH2:
+#       TMR3_GROUP1:
+#         default: false
+#   PB6:
+#     I2C1:SCL:
+#       I2C1_GROUP0:
+#         default: true
+#     TMR4:CH1:
+#       TMR4_GROUP0:
+#         default: true
+#     USART1:TX:
+#       USART1_GROUP1:
+#         default: false
+#   PB7:
+#     I2C1:SDA:
+#       I2C1_GROUP0:
+#         default: true
+#     TMR4:CH2:
+#       TMR4_GROUP0:
+#         default: true
+#     USART1:RX:
+#       USART1_GROUP1:
+#         default: false
+#   PB8:
+#     CAN:RX:
+#       CAN_GROUP1:
+#         default: false
+#     I2C1:SCL:
+#       I2C1_GROUP1:
+#         default: false
+#     TMR10:CH1:
+#       TMR10_GROUP0:
+#         default: true
+#     TMR4:CH3:
+#       TMR4_GROUP0:
+#         default: true
+#   PB9:
+#     CAN:TX:
+#       CAN_GROUP1:
+#         default: false
+#     I2C1:SDA:
+#       I2C1_GROUP1:
+#         default: false
+#     TMR11:CH1:
+#       TMR11_GROUP0:
+#         default: true
+#     TMR4:CH4:
+#       TMR4_GROUP0:
+#         default: true
+#   PC10:
+#     I2S3:CK:
+#       I2S3_GROUP1:
+#         default: false
+#     SPI3:SCK:
+#       SPI3_GROUP1:
+#         default: false
+#     USART3:TX:
+#       USART3_GROUP1:
+#         default: false
+#   PC11:
+#     SPI3:MISO:
+#       SPI3_GROUP1:
+#         default: false
+#     USART3:RX:
+#       USART3_GROUP1:
+#         default: false
+#   PC12:
+#     I2S3:SD:
+#       I2S3_GROUP1:
+#         default: false
+#     SPI3:MOSI:
+#       SPI3_GROUP1:
+#         default: false
+#     USART3:CK:
+#       USART3_GROUP1:
+#         default: false
+#   PC6:
+#     TMR3:CH1:
+#       TMR3_GROUP2:
+#         default: false
+#   PC7:
+#     TMR3:CH2:
+#       TMR3_GROUP2:
+#         default: false
+#   PC8:
+#     TMR3:CH3:
+#       TMR3_GROUP2:
+#         default: false
+#   PC9:
+#     TMR3:CH4:
+#       TMR3_GROUP2:
+#         default: false
+#   PD0:
+#     CAN:RX:
+#       CAN_GROUP2:
+#         default: false
+#   PD1:
+#     CAN:TX:
+#       CAN_GROUP2:
+#         default: false
+#   PD10:
+#     USART3:CK:
+#       USART3_GROUP2:
+#         default: false
+#   PD11:
+#     USART3:CTS:
+#       USART3_GROUP2:
+#         default: false
+#   PD12:
+#     TMR4:CH1:
+#       TMR4_GROUP1:
+#         default: false
+#     USART3:RTS:
+#       USART3_GROUP2:
+#         default: false
+#   PD13:
+#     TMR4:CH2:
+#       TMR4_GROUP1:
+#         default: false
+#   PD14:
+#     TMR4:CH3:
+#       TMR4_GROUP1:
+#         default: false
+#   PD15:
+#     TMR4:CH4:
+#       TMR4_GROUP1:
+#         default: false
+#   PD3:
+#     USART2:CTS:
+#       USART2_GROUP1:
+#         default: false
+#   PD4:
+#     USART2:RTS:
+#       USART2_GROUP1:
+#         default: false
+#   PD5:
+#     USART2:TX:
+#       USART2_GROUP1:
+#         default: false
+#   PD6:
+#     USART2:RX:
+#       USART2_GROUP1:
+#         default: false
+#   PD7:
+#     USART2:CK:
+#       USART2_GROUP1:
+#         default: false
+#   PD8:
+#     USART3:TX:
+#       USART3_GROUP2:
+#         default: false
+#   PD9:
+#     USART3:RX:
+#       USART3_GROUP2:
+#         default: false
+#   PE10:
+#     TMR1:CH2N:
+#       TMR1_GROUP2:
+#         default: false
+#   PE11:
+#     TMR1:CH2:
+#       TMR1_GROUP2:
+#         default: false
+#   PE12:
+#     TMR1:CH3N:
+#       TMR1_GROUP2:
+#         default: false
+#   PE13:
+#     TMR1:CH3:
+#       TMR1_GROUP2:
+#         default: false
+#   PE14:
+#     TMR1:CH4:
+#       TMR1_GROUP2:
+#         default: false
+#   PE15:
+#     TMR1:BKIN:
+#       TMR1_GROUP2:
+#         default: false
+#   PE5:
+#     TMR9:CH1:
+#       TMR9_GROUP1:
+#         default: false
+#   PE6:
+#     TMR9:CH2:
+#       TMR9_GROUP1:
+#         default: false
+#   PE7:
+#     TMR1:ETR:
+#       TMR1_GROUP2:
+#         default: false
+#   PE8:
+#     TMR1:CH1N:
+#       TMR1_GROUP2:
+#         default: false
+#   PE9:
+#     TMR1:CH1:
+#       TMR1_GROUP2:
+#         default: false
+#   PF6:
+#     TMR10:CH1:
+#       TMR10_GROUP1:
+#         default: false
+#   PF7:
+#     TMR11:CH1:
+#       TMR11_GROUP1:
+#         default: false
+#   PF8:
+#     TMR13:CH1:
+#       TMR13_GROUP1:
+#         default: false
+#   PF9:
+#     TMR14:CH1:
+#       TMR14_GROUP1:
+#         default: false

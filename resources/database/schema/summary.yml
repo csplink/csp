@@ -1,0 +1,216 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        summary.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+properties:
+  name:
+    type: string
+    minLength: 1
+  clockTree:
+    type: object
+    properties:
+      svg:
+        type: string
+        minLength: 1
+      ip:
+        type: string
+        minLength: 1
+    required: [svg, ip]
+  core:
+    type: string
+    minLength: 1
+  io:
+    type: integer
+  die:
+    type: string
+    minLength: 1
+  frequency:
+    type: integer
+  series:
+    type: string
+    minLength: 1
+  line:
+    type: string
+    minLength: 1
+  vendor:
+    type: string
+    minLength: 1
+  vendorUrl:
+    $ref: '#/properties/url'
+  documents:
+    type: object
+    properties:
+      datasheets:
+        type: object
+        patternProperties:
+          '.*':
+            type: object
+            properties:
+              url:
+                $ref: '#/properties/url'
+              type:
+                enum: [pdf]
+              description:
+                $ref: '#/properties/illustrate'
+              size:
+                type: string
+                minLength: 1
+              version:
+                type: string
+                pattern: '^(?:v|V)?\d+(?:\.\d+){1,2}$'
+            required: [url, type, description, size, version]
+      errata:
+        $ref: '#/properties/documents/properties/datasheets'
+      references:
+        $ref: '#/properties/documents/properties/datasheets'
+  illustrate:
+    type: object
+    properties:
+      en:
+        type: [string]
+    required: [en]
+  introduction:
+    $ref: '#/properties/illustrate'
+  modules:
+    type: object
+    additionalProperties: false
+    properties:
+      peripherals:
+        type: object
+        additionalProperties: false
+        patternProperties:
+          '^[A-Za-z0-9_\s+-]+$':
+            type: object
+            additionalProperties: false
+            properties:
+              description:
+                $ref: '#/properties/illustrate'
+              define:
+                type: string
+                minLength: 1
+              children:
+                type: object
+                additionalProperties: false
+                patternProperties:
+                  '^[A-Za-z0-9_+-]+$':
+                    $ref: '#/properties/modules/properties/peripherals/patternProperties/^[A-Za-z0-9_\s+-]+$'
+            # required:
+            #   - define
+      middlewares:
+        $ref: '#/properties/modules/properties/peripherals'
+    required: [peripherals, middlewares]
+  url:
+    type: object
+    properties:
+      en:
+        type: string
+        pattern: 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    required: [en]
+  builder:
+    type: object
+    properties:
+      XMake:
+        type: object
+        additionalProperties: false
+        patternProperties:
+          '^(?:v|V)?\d+(?:\.\d+){1,2}$':
+            type: array
+            items:
+              type: string
+              minLength: 1
+      CMake:
+        $ref: '#/properties/builder/properties/XMake'
+      MDK-Arm:
+        $ref: '#/properties/builder/properties/XMake'
+  hals:
+    type: array
+    items:
+      type: string
+      minLength: 1
+    minItems: 1
+  hasPowerPad:
+    type: boolean
+  package:
+    type: string
+    minLength: 1
+  linker:
+    type: object
+    properties:
+      defaultHeapSize:
+        oneOf:
+          - type: integer
+          - type: string
+            pattern: '^0x[0-9A-Fa-f]+$'
+      defaultStackSize:
+        oneOf:
+          - type: integer
+          - type: string
+            pattern: '^0x[0-9A-Fa-f]+$'
+    required: [defaultStackSize]
+  pins:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      '^[A-Za-z0-9_+-]+(?:.*)?$':
+        type: object
+        properties:
+          position:
+            anyOf:
+              - type: integer
+              - type: string
+          type:
+            enum: [I/O, power, reset, nc, boot, monoIO]
+          signals:
+            type: array
+            items:
+              type: string
+              pattern: '^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$'
+            minItems: 1
+          modes:
+            type: array
+            items:
+              type: string
+              pattern: '^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$'
+            minItems: 1
+        required: [position, type]
+required:
+  - name
+  - clockTree
+  - core
+  - io
+  - frequency
+  - series
+  - line
+  - vendor
+  - vendorUrl
+  - documents
+  - illustrate
+  - introduction
+  - modules
+  - url
+  - builder
+  - hals
+  - hasPowerPad
+  - package
+  - pins

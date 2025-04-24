@@ -1,0 +1,1065 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_usart.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+parameters:
+  usart_virtual_mode_t:
+    type: enum
+    values:
+      asynchronous:
+        comment:
+          en: asynchronous
+      synchronous:
+        comment:
+          en: synchronous
+      ir_da:
+        comment:
+          en: ir_da
+      smart_card:
+        comment:
+          en: smart_card
+    default: asynchronous
+    display:
+      zh-cn: ''
+      en: ''
+    description:
+      zh-cn: ''
+      en: ''
+    visible: false
+    readonly: false
+  usart_virtual_clock_mode_t:
+    type: enum
+    values:
+      synchronous:
+        comment:
+          en: synchronous
+      smart_card:
+        comment:
+          en: smart_card
+    default: synchronous
+    display:
+      zh-cn: ''
+      en: ''
+    description:
+      zh-cn: ''
+      en: ''
+    visible: false
+    readonly: false
+  usart_baud_rate_t:
+    type: integer
+    default: 115200
+    max: 10500000
+    min: 110
+    display:
+      zh-cn: 波特率
+      en: Baud Rate
+    description:
+      zh-cn: 波特率
+      en: Baud Rate
+    visible: true
+    readonly: false
+  usart_word_length_t:
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'synchronous'
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+          '9':
+            comment:
+              zh-cn: 9 Bits (包括校验位)
+              en: 9 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'ir_da'
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+          '9':
+            comment:
+              zh-cn: 9 Bits (包括校验位)
+              en: 9 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'smart_card'
+      content:
+        type: enum
+        values:
+          '9':
+            comment:
+              zh-cn: 9 Bits (包括校验位)
+              en: 9 Bits (including Parity)
+        default: '9'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'lin'
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          '8':
+            comment:
+              zh-cn: 8 Bits (包括校验位)
+              en: 8 Bits (including Parity)
+          '9':
+            comment:
+              zh-cn: 9 Bits (包括校验位)
+              en: 9 Bits (including Parity)
+        default: '8'
+        display:
+          zh-cn: 数据字长
+          en: Word Length
+        description:
+          zh-cn: 数据字长
+          en: Word Length
+        visible: true
+        readonly: false
+  usart_stop_bits_t:
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'synchronous'
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+          '0.5':
+            comment:
+              zh-cn: '0.5'
+              en: '0.5'
+          '1.5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1'
+        display:
+          zh-cn: 停止位
+          en: Stop Bits
+        description:
+          zh-cn: 停止位
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'asynchronous'
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+          '0.5':
+            comment:
+              zh-cn: '0.5'
+              en: '0.5'
+          '1.5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1'
+        display:
+          zh-cn: 停止位
+          en: Stop Bits
+        description:
+          zh-cn: 停止位
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'asynchronous'
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+          '1.5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1'
+        display:
+          zh-cn: 停止位
+          en: Stop Bits
+        description:
+          zh-cn: 停止位
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'smart_card'
+      content:
+        type: enum
+        values:
+          '0.5':
+            comment:
+              zh-cn: '0.5'
+              en: '0.5'
+          '1.5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1.5'
+        display:
+          zh-cn: 停止位
+          en: Stop Bits
+        description:
+          zh-cn: 停止位
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+        default: '1'
+        display:
+          zh-cn: 停止位
+          en: Stop Bits
+        description:
+          zh-cn: 停止位
+          en: Stop Bits
+        visible: true
+        readonly: false
+  usart_parity_t:
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'smart_card'
+      content:
+        type: enum
+        values:
+          even:
+            comment:
+              zh-cn: 偶校验
+              en: Even
+          odd:
+            comment:
+              zh-cn: 奇校验
+              en: Odd
+        default: even
+        display:
+          zh-cn: 校验方式
+          en: Parity
+        description:
+          zh-cn: 校验方式
+          en: Parity
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          none:
+            comment:
+              zh-cn: 无
+              en: None
+          even:
+            comment:
+              zh-cn: 偶校验
+              en: Even
+          odd:
+            comment:
+              zh-cn: 奇校验
+              en: Odd
+        default: none
+        display:
+          zh-cn: 校验方式
+          en: Parity
+        description:
+          zh-cn: 校验方式
+          en: Parity
+        visible: true
+        readonly: false
+  usart_mode_t:
+    type: enum
+    values:
+      tx_rx:
+        comment:
+          zh-cn: 收发
+          en: Receive and Transmit
+      rx:
+        comment:
+          zh-cn: 只收
+          en: Receive Only
+      tx:
+        comment:
+          zh-cn: 只发
+          en: Transmit Only
+    default: tx_rx
+    display:
+      zh-cn: 数据方向
+      en: Data Direction
+    description:
+      zh-cn: 数据方向
+      en: Data Direction
+    visible: true
+    readonly: false
+  usart_hw_flow_ctl_t:
+    - condition: configs.${INSTANCE}.usart_control_hardware_flow_control_rs232_t == 'rts'
+      content:
+        type: enum
+        values:
+          rts:
+            comment:
+              zh-cn: RTS
+              en: RTS Only
+        default: rts
+        display:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        description:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_control_hardware_flow_control_rs232_t == 'cts'
+      content:
+        type: enum
+        values:
+          cts:
+            comment:
+              zh-cn: CTS
+              en: CTS Only
+        default: cts
+        display:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        description:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_control_hardware_flow_control_rs232_t == 'cts_rts'
+      content:
+        type: enum
+        values:
+          rts_cts:
+            comment:
+              zh-cn: RTS/CTS
+              en: RTS/CTS
+        default: rts_cts
+        display:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        description:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          none:
+            comment:
+              zh-cn: 无
+              en: None
+        default: none
+        display:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        description:
+          zh-cn: 硬件流控制
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+  usart_over_sampling_t:
+    - condition: ((configs.${INSTANCE}.usart_virtual_mode_t == 'synchronous') or
+        (configs.${INSTANCE}.usart_virtual_mode_t == 'ir_da') or
+        (configs.${INSTANCE}.usart_virtual_mode_t == 'smart_card') or
+        (configs.${INSTANCE}.usart_control_mode_t == 'lin'))
+      content:
+        type: enum
+        values:
+          none:
+            comment:
+              zh-cn: 无
+              en: None
+        default: none
+        display:
+          zh-cn: 过采样
+          en: Over Sampling
+        description:
+          zh-cn: 过采样
+          en: Over Sampling
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          '16':
+            comment:
+              zh-cn: 16 倍过采样
+              en: 16 Samples
+        default: '16'
+        display:
+          zh-cn: 过采样
+          en: Over Sampling
+        description:
+          zh-cn: 过采样
+          en: Over Sampling
+        visible: true
+        readonly: false
+  usart_clk_polarity_t:
+    - condition: configs.${INSTANCE}.usart_virtual_clock_mode_t == 'smart_card'
+      content:
+        type: enum
+        values:
+          low:
+            comment:
+              zh-cn: 低
+              en: Low
+          high:
+            comment:
+              zh-cn: 高
+              en: High
+        default: low
+        display:
+          zh-cn: 时钟极性
+          en: Clock Polarity
+        description:
+          zh-cn: 时钟极性
+          en: Clock Polarity
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'synchronous'
+      content:
+        type: enum
+        values:
+          low:
+            comment:
+              zh-cn: 低
+              en: Low
+          high:
+            comment:
+              zh-cn: 高
+              en: High
+        default: low
+        display:
+          zh-cn: 时钟极性
+          en: Clock Polarity
+        description:
+          zh-cn: 时钟极性
+          en: Clock Polarity
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh-cn: 时钟极性
+          en: Clock Polarity
+        description:
+          zh-cn: 时钟极性
+          en: Clock Polarity
+        visible: false
+        readonly: false
+  usart_clk_phase_t:
+    - condition: configs.${INSTANCE}.usart_virtual_clock_mode_t == 'smart_card'
+      content:
+        type: enum
+        values:
+          1_edge:
+            comment:
+              zh-cn: 第一个边沿
+              en: One Edge
+          2_edge:
+            comment:
+              zh-cn: 第二个边沿
+              en: Two Edge
+        default: 1_edge
+        display:
+          zh-cn: 时钟相位
+          en: Clock Phase
+        description:
+          zh-cn: 时钟相位
+          en: Clock Phase
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'synchronous'
+      content:
+        type: enum
+        values:
+          1_edge:
+            comment:
+              zh-cn: 第一个边沿
+              en: One Edge
+          2_edge:
+            comment:
+              zh-cn: 第二个边沿
+              en: Two Edge
+        default: 1_edge
+        display:
+          zh-cn: 时钟相位
+          en: Clock Phase
+        description:
+          zh-cn: 时钟相位
+          en: Clock Phase
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh-cn: 时钟相位
+          en: Clock Phase
+        description:
+          zh-cn: 时钟相位
+          en: Clock Phase
+        visible: false
+        readonly: false
+  usart_clk_last_bit_t:
+    - condition: configs.${INSTANCE}.usart_virtual_clock_mode_t == 'smart_card'
+      content:
+        type: boolean
+        default: false
+        display:
+          zh-cn: 最后一位时钟脉冲
+          en: Clock Last Bit
+        description:
+          zh-cn: 最后一位时钟脉冲
+          en: Clock Last Bit
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'synchronous'
+      content:
+        type: boolean
+        default: false
+        display:
+          zh-cn: 最后一位时钟脉冲
+          en: Clock Last Bit
+        description:
+          zh-cn: 最后一位时钟脉冲
+          en: Clock Last Bit
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh-cn: 最后一位时钟脉冲
+          en: Clock Last Bit
+        description:
+          zh-cn: 最后一位时钟脉冲
+          en: Clock Last Bit
+        visible: false
+        readonly: false
+  usart_ir_da_mode_t:
+    type: enum
+    values:
+      low_power:
+        comment:
+          zh-cn: 低功耗
+          en: Low Power
+      normal:
+        comment:
+          zh-cn: 普通功耗
+          en: Normal Power
+    default: normal
+    display:
+      zh-cn: IrDa 模式
+      en: IrDa Mode
+    description:
+      zh-cn: IrDa 模式
+      en: IrDa Mode
+    visible: true
+    readonly: false
+  usart_prescaler_t:
+    - condition: "(configs.${INSTANCE}.usart_ir_da_mode_t == 'normal') and
+        (configs.${INSTANCE}.usart_virtual_mode_t == 'ir_da')"
+      content:
+        type: integer
+        default: 1
+        max: 1
+        min: 1
+        display:
+          zh-cn: 预分频
+          en: Prescaler
+        description:
+          zh-cn: 预分频
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: "(configs.${INSTANCE}.usart_virtual_mode_t == 'smart_card') and
+        (configs.${INSTANCE}.usart_virtual_clock_mode_t == 'smart_card')"
+      content:
+        type: integer
+        default: 10
+        max: 31
+        min: 1
+        display:
+          zh-cn: 预分频
+          en: Prescaler
+        description:
+          zh-cn: 预分频
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: configs.${INSTANCE}.usart_virtual_mode_t == 'smart_card'
+      content:
+        type: integer
+        default: 0
+        max: 255
+        min: 1
+        display:
+          zh-cn: 预分频
+          en: Prescaler
+        description:
+          zh-cn: 预分频
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 10
+        max: 255
+        min: 1
+        display:
+          zh-cn: 预分频
+          en: Prescaler
+        description:
+          zh-cn: 预分频
+          en: Prescaler
+        visible: true
+        readonly: false
+  usart_calculate_speed_t:
+    type: string
+    default: '5000000'
+    readonly: true
+    display:
+      zh-cn: 智能卡时钟频率
+      en: SmartCard Clock Frequency
+    description:
+      zh-cn: 智能卡时钟频率
+      en: SmartCard Clock Frequency
+    visible: true
+  usart_nack_state_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: 如果校验失败，发送 NACK
+      en: NAck if Parity Error
+    description:
+      zh-cn: 如果校验失败，发送 NACK
+      en: NAck if Parity Error
+    visible: true
+    readonly: false
+  usart_guard_time_t:
+    type: integer
+    default: 0
+    max: 255
+    min: 0
+    display:
+      zh-cn: 保护时间
+      en: Guard Time
+    description:
+      zh-cn: 保护时间
+      en: Guard Time
+    visible: true
+    readonly: false
+  usart_wake_up_methode_t:
+    type: enum
+    values:
+      idle_line:
+        comment:
+          zh-cn: 空闲总线
+          en: Idle Line
+      address_mark:
+        comment:
+          zh-cn: 地址标记
+          en: Address Mark
+    default: idle_line
+    display:
+      zh-cn: 唤醒方式
+      en: Wake-Up Method
+    description:
+      zh-cn: 唤醒方式
+      en: Wake-Up Method
+    visible: true
+    readonly: false
+  usart_address_t:
+    - condition: configs.${INSTANCE}.usart_wake_up_methode_t == 'address_mark'
+      content:
+        type: integer
+        default: 0
+        max: 15
+        min: 0
+        display:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        description:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        max: 0
+        min: 0
+        display:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        description:
+          zh-cn: 唤醒地址
+          en: Wake-Up Address
+        visible: false
+        readonly: false
+  usart_break_detect_length_t:
+    type: enum
+    values:
+      '10':
+        comment:
+          zh-cn: 10 Bits
+          en: 10 Bits
+      '11':
+        comment:
+          zh-cn: 11 Bits
+          en: 11 Bits
+    default: '10'
+    display:
+      zh-cn: 断开符检测长度
+      en: Break Detect Length
+    description:
+      zh-cn: 断开符检测长度
+      en: Break Detect Length
+    visible: true
+    readonly: false
+  usart_control_mode_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+      asynchronous:
+        comment:
+          zh-cn: 异步
+          en: Asynchronous
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPull
+      synchronous:
+        comment:
+          zh-cn: 同步
+          en: Synchronous
+        signals:
+          ${INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPull
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      half_duplex_single_wire_mode:
+        comment:
+          zh-cn: 单线（半双工）
+          en: Single Wire (Half-Duplex)
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+      multiprocessor_communication:
+        comment:
+          zh-cn: 多处理器通信
+          en: Multiprocessor Communication
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      ir_da:
+        comment:
+          zh-cn: IrDA
+          en: IrDA
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      lin:
+        comment:
+          zh-cn: LIN
+          en: LIN
+        signals:
+          ${INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      smart_card:
+        comment:
+          zh-cn: 智能卡
+          en: SmartCard
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+      smart_card_with_clock:
+        comment:
+          zh-cn: 带卡时钟的智能卡
+          en: SmartCard with Card Clock
+        signals:
+          ${INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionOpenDrain
+          ${INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPull
+    default: disable
+    display:
+      zh-cn: 模式
+      en: Mode
+    description:
+      zh-cn: 模式
+      en: Mode
+    visible: true
+    readonly: false
+  usart_control_hardware_flow_control_rs232_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+      cts:
+        comment:
+          zh-cn: CTS
+          en: CTS Only
+        signals:
+          ${INSTANCE}:CTS:
+            mode: GPIO:InputFloatingAndPullUp
+      rts:
+        comment:
+          zh-cn: RTS
+          en: RTS Only
+        signals:
+          ${INSTANCE}:RTS:
+            mode: GPIO:AlternateFunctionPushPull
+      cts_rts:
+        comment:
+          zh-cn: CTS/RTS
+          en: CTS/RTS
+        signals:
+          ${INSTANCE}:CTS:
+            mode: GPIO:InputFloatingAndPullUp
+          ${INSTANCE}:RTS:
+            mode: GPIO:AlternateFunctionPushPull
+    default: disable
+    display:
+      zh-cn: 硬件流控制 (RS232)
+      en: Hardware Flow Control (RS232)
+    description:
+      zh-cn: 只在异步模式下激活
+      en: Active only with Asynchronous Mode
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      usart_control_mode_t: {}
+      usart_control_hardware_flow_control_rs232_t:
+        condition: configs.${INSTANCE}.usart_control_mode_t == 'asynchronous'
+  configurations:
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'asynchronous'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_hw_flow_ctl_t: {}
+          usart_mode_t: {}
+          usart_over_sampling_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'synchronous'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - synchronous
+            default: synchronous
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_clk_polarity_t: {}
+          usart_clk_phase_t: {}
+          usart_clk_last_bit_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'half_duplex_single_wire_mode'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_over_sampling_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'multiprocessor_communication'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_over_sampling_t: {}
+          usart_wake_up_methode_t: {}
+          usart_address_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'ir_da'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - ir_da
+            default: ir_da
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_mode_t: {}
+          usart_ir_da_mode_t: {}
+          usart_prescaler_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'lin'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - asynchronous
+            default: asynchronous
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_break_detect_length_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'smart_card'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - smart_card
+            default: smart_card
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_nack_state_t: {}
+          usart_guard_time_t: {}
+    - condition: configs.${INSTANCE}.usart_control_mode_t == 'smart_card_with_clock'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - smart_card
+            default: smart_card
+          usart_virtual_clock_mode_t:
+            values:
+              - smart_card
+            default: smart_card
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_nack_state_t: {}
+          usart_guard_time_t: {}
+          usart_prescaler_t: {}
+          usart_calculate_speed_t: {}
+          usart_clk_polarity_t: {}
+          usart_clk_phase_t: {}
+          usart_clk_last_bit_t: {}
+activated: "(configs.${INSTANCE}.usart_control_mode_t != 'disable') or
+  (configs.${INSTANCE}.usart_control_hardware_flow_control_rs232_t != 'disable')"

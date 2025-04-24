@@ -1,0 +1,329 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        ip.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-20     xqyjlj       initial version
+#
+
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  parameters:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      '^[A-Za-z0-9_.+-]+$':
+        oneOf:
+          - $ref: '#/properties/$parameter$'
+          - type: array
+            items:
+              type: object
+              additionalProperties: false
+              properties:
+                condition:
+                  type: string
+                  minLength: 1
+                content:
+                  $ref: '#/properties/$parameter$'
+  containers:
+    type: object
+    additionalProperties: false
+    properties:
+      overview:
+        $ref: '#/properties/containers/properties/modes'
+      modes:
+        oneOf:
+          - $ref: '#/properties/$containerObject$'
+          - type: array
+            items:
+              type: object
+              additionalProperties: false
+              properties:
+                condition:
+                  type: string
+                  minLength: 1
+                content:
+                  $ref: '#/properties/$containerObject$'
+      configurations:
+        $ref: '#/properties/containers/properties/modes'
+  presets:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      '^[A-Za-z0-9_.+-]+$':
+        oneOf:
+          - $ref: '#/properties/$object$'
+          - type: array
+            items:
+              type: object
+              additionalProperties: false
+              properties:
+                condition:
+                  type: string
+                  minLength: 1
+                content:
+                  $ref: '#/properties/$object$'
+  pins:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      '^[A-Za-z0-9_]+$':
+        type: object
+        additionalProperties: false
+        patternProperties:
+          '^[A-Za-z0-9_]*:[A-Za-z0-9_]+$':
+            type: object
+            additionalProperties: false
+            patternProperties:
+              '^[A-Za-z0-9_]+$':
+                type: object
+                additionalProperties: false
+                properties:
+                  default:
+                    type: boolean
+                required: [default]
+  clockTree:
+    type: object
+    properties:
+      elements:
+        type: object
+        additionalProperties: false
+        patternProperties:
+          '.*':
+            type: object
+            properties:
+              refParameter:
+                type: string
+                pattern: '^[A-Za-z0-9_.+-]+$'
+              type:
+                enum: [divisor, multiplexed, multiple]
+              enable:
+                anyOf:
+                  - type: string
+                  - type: boolean
+              output:
+                type: array
+                items:
+                  type: string
+                  pattern: '^[A-Za-z0-9_.+-]+$'
+              input:
+                $ref: '#/properties/clockTree/properties/elements/patternProperties/.*/properties/output'
+            required: [refParameter]
+      i18n:
+        type: object
+        additionalProperties: false
+        patternProperties:
+          '^\$\(.*\)$':
+            $ref: '#/properties/$language$'
+    required: [elements]
+  activated:
+    type: string
+    minLength: 1
+  $parameter$:
+    type: object
+    additionalProperties: false
+    properties:
+      display:
+        $ref: '#/properties/$i18n$'
+      description:
+        $ref: '#/properties/$i18n$'
+      readonly:
+        type: boolean
+      type:
+        enum: [enum, integer, float, boolean, radio, string]
+      values:
+        type: object
+        additionalProperties: false
+        patternProperties:
+          '^[A-Za-z0-9_.+-]+$':
+            type: object
+            additionalProperties: false
+            properties:
+              expression:
+                $ref: '#/properties/$expression$'
+              comment:
+                $ref: '#/properties/$i18n$'
+              signals:
+                type: object
+                additionalProperties: false
+                patternProperties:
+                  '.*':
+                    type: object
+                    properties:
+                      mode:
+                        type: string
+                        minLength: 1
+                        pattern: '.*'
+                    required: [mode]
+            required: [comment]
+      group:
+        type: string
+        minLength: 1
+      default:
+        oneOf:
+          - type: number
+          - type: string
+          - type: boolean
+      expression:
+        $ref: '#/properties/$expression$'
+      visible:
+        type: boolean
+      max:
+        oneOf:
+          - type: number
+          - type: string
+      min:
+        oneOf:
+          - type: number
+          - type: string
+    required: [type, description, default]
+    allOf:
+      - if: # enum
+          properties:
+            type:
+              enum: [enum]
+        then:
+          required: [values]
+          properties:
+            default:
+              type: string
+          not:
+            anyOf:
+              - required: [group]
+              - required: [max]
+              - required: [min]
+      - if: # float
+          properties:
+            type:
+              enum: [float]
+        then:
+          properties:
+            default:
+              type: number
+          not:
+            anyOf:
+              - required: [values]
+              - required: [group]
+      - if: # integer
+          properties:
+            type:
+              enum: [integer]
+        then:
+          properties:
+            default:
+              type: integer
+          not:
+            anyOf:
+              - required: [values]
+              - required: [group]
+      - if: # boolean
+          properties:
+            type:
+              enum: [boolean]
+        then:
+          properties:
+            default:
+              type: boolean
+          not:
+            anyOf:
+              - required: [values]
+              - required: [group]
+              - required: [max]
+              - required: [min]
+      - if: # radio
+          properties:
+            type:
+              enum: [radio]
+        then:
+          required: [group]
+          properties:
+            default:
+              type: boolean
+          not:
+            anyOf:
+              - required: [values]
+              - required: [max]
+              - required: [min]
+      - if: # string
+          properties:
+            type:
+              enum: [string]
+        then:
+          properties:
+            default:
+              type: string
+          not:
+            anyOf:
+              - required: [values]
+              - required: [group]
+              - required: [max]
+              - required: [min]
+  $i18n$:
+    type: object
+    properties:
+      en:
+        type: string
+    required: [en]
+  $expression$:
+    type: object
+    properties:
+      display:
+        type: string
+        minLength: 1
+  $object$:
+    type: object
+    additionalProperties: false
+    properties:
+      refParameters:
+        $ref: '#/properties/$refParameters$'
+  $containerObject$:
+    type: object
+    additionalProperties: false
+    properties:
+      refParameters:
+        $ref: '#/properties/$refParameters$'
+  $refParameters$:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      '^[A-Za-z0-9_.+-]+$':
+        type: object
+        additionalProperties: false
+        properties:
+          values:
+            type: array
+            items:
+              type: string
+              pattern: '^[A-Za-z0-9_.+-]+$'
+          default:
+            type: string
+            pattern: '^[A-Za-z0-9_.+-]+$'
+          condition:
+            type: string
+            minLength: 1
+          readonly:
+            type: boolean
+  $language$:
+    type: object
+    properties:
+      en:
+        type: string
+    required: [en]
+required: [parameters]
