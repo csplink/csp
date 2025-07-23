@@ -42,14 +42,13 @@ export default antfu(
   },
   {
     ignores: [
-      'docs',
       'dist',
       'public',
       'node_modules',
       'components.d.ts',
+      'docs/.vitepress/cache',
       '**/dist/**',
       '**/public/**',
-      '**/docs/**',
       '**/node_modules/**',
     ],
   },
