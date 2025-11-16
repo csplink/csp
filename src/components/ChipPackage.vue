@@ -29,26 +29,23 @@
 
 <script lang="ts" setup>
 import type Konva from 'konva'
+import type { ComputedRef, Ref } from 'vue'
 import type { PanZoomMenuItemModelType } from './containers/PanZoom'
 import type { PanZoomInstance } from '~/components/instance'
 import type { IPackageBase, PackageModelPinType, PackageModelType } from '~/composables/packages/base'
-import type { Project, ProjectConfigsPinUnitType, Summary } from '~/database'
 import { ElMessageBox } from 'element-plus'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, shallowReactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as chipPackages from '~/composables/packages'
-import { useIpManager, useProjectManager, useSummaryManager } from '~/database'
+import { useSummaryManager } from '~/database'
+import { getTextColorPrimary, usePinsManager, useProjectManager, useThemeStore } from '~/utils'
 
 interface PinModelType {
   base: PackageModelPinType
-  color: string
-  originColor: string
-  textColor: string
-  comment: string
-  label?: string
-  function?: string
-  locked?: boolean
-  mode?: string
+  highlight: Ref<boolean>
+  color: ComputedRef<string>
+  textColor: ComputedRef<string>
+  comment: ComputedRef<string>
 }
 
 /*! < see more https://zhongguose.com/ */
@@ -63,33 +60,43 @@ const HIGHLIGHT_BG_COLOR = '#2d0c13' /*! < 茄皮紫 */
 const HIGHLIGHT_FG_COLOR = '#cdd1d3' /*! < 银鱼白 */
 const FG_COLOR = '#1f2623' /*! < 苷蓝绿 */
 
-const ipManager = useIpManager()
 const projectManager = useProjectManager()
 const summaryManager = useSummaryManager()
+const pinsManager = usePinsManager()
 const { t } = useI18n()
 
-const projectRef = ref<Project>()
-const summaryRef = ref<Summary>()
-const pinsModelRef = ref<Record<string, PinModelType>>({})
+const project = projectManager.get()!
+const summary = summaryManager.get(project.vendor, project.targetChip)!
+const pins = pinsManager.pins
+
+const pinModels = shallowReactive<Record<string, PinModelType>>({})
 const packageModelRef = ref<PackageModelType>()
 const panZoomRef = ref<PanZoomInstance>()
+const textColorPrimaryRef = ref('#ff0000')
 const modelWidth = computed(() => packageModelRef.value?.width || 0)
 const modelHeight = computed(() => packageModelRef.value?.height || 0)
 let intervalTimerId: number | null = null
 let highlightedNames: string[] = []
 
-function updatePinColor(pin: PinModelType) {
-  switch (pin.base.type) {
+const themeStore = useThemeStore()
+
+watch(() => themeStore.theme, (_newTheme) => {
+  textColorPrimaryRef.value = getTextColorPrimary()
+})
+
+function getPinColor(model: PinModelType): string {
+  let color: string = 'white'
+  switch (model.base.pin.type) {
     case 'I/O':
     {
-      if (pin.locked) {
-        pin.originColor = SELECTED_COLOR
+      if (model.base.pin.locked.value) {
+        color = SELECTED_COLOR
       }
-      else if (pin.function) {
-        pin.originColor = UNSUPPORTED_COLOR
+      else if (model.base.pin.function.value) {
+        color = UNSUPPORTED_COLOR
       }
       else {
-        pin.originColor = DEFAULT_COLOR
+        color = DEFAULT_COLOR
       }
 
       break
@@ -97,109 +104,52 @@ function updatePinColor(pin: PinModelType) {
     case 'monoIO':
     case 'power':
     {
-      pin.originColor = POWER_COLOR
+      color = POWER_COLOR
       break
     }
     case 'reset':
     {
-      pin.originColor = RESET_COLOR
+      color = RESET_COLOR
       break
     }
     case 'nc':
     {
-      pin.originColor = NC_COLOR
+      color = NC_COLOR
       break
     }
     case 'boot':
     {
-      pin.originColor = BOOT_COLOR
+      color = BOOT_COLOR
       break
     }
   }
 
-  pin.color = pin.originColor
+  return color
 }
 
-function updatePinComment(pin: PinModelType) {
-  if (pin.base.type === 'I/O') {
-    if (!pin.label && !pin.function) {
-      pin.comment = ''
-      return
-    }
-
-    if (!pin.label) {
-      pin.comment = pin.function ?? ''
-    }
-    else {
-      if (!pin.function) {
-        pin.comment = pin.label
-      }
-      else {
-        pin.comment = `${pin.label}(${pin.function})`
-      }
-    }
+function getPinComment(model: PinModelType): string {
+  if (model.base.pin.type !== 'I/O') {
+    return ''
   }
-}
 
-function updataPinUI(pin: PinModelType) {
-  updatePinColor(pin)
-  updatePinComment(pin)
-}
+  const label = model.base.pin.label.value
+  const fn = model.base.pin.function.value
 
-function updatePin(pin: PinModelType) {
-  const pinInstance = summaryRef.value!.pinInstance()
+  if (!label && !fn)
+    return ''
+  if (!label)
+    return fn ?? ''
+  if (!fn)
+    return label
 
-  if (pin.function) { /*! < set function */
-    const instance = pin.function.split(':')[0]
-    const ip = ipManager.getPeripheral(projectRef.value!.vendor, instance)
-
-    if (!ip) {
-      console.error(`The define '${instance}' not found.`)
-      return
-    }
-
-    let func = pin.function
-    if (pinInstance !== instance) {
-      if (!pin.mode) {
-        return
-      }
-      func = pin.mode
-    }
-
-    const seqs = func.split(':')
-    if (seqs.length !== 2) {
-      console.error(`Invalid function '${func}'.`)
-      return
-    }
-
-    const mode = seqs[1]
-    let presets = null
-    if (mode in ip.presets) {
-      presets = ip.presets[mode]
-    }
-    else {
-      console.error(`Invalid mode '${mode}'.`)
-      return
-    }
-
-    const model: Record<string, any> = {}
-    for (const [key, refParameter] of Object.entries(presets.refParameters)) {
-      model[key] = refParameter.default
-    }
-    projectRef.value!.configs.set(`${pinInstance}.${pin.base.name}`, model)
-  }
-  else { /*! < clear function */
-    projectRef.value!.configs.set(`${pinInstance}.${pin.base.name}`, {})
-  }
+  return `${label}(${fn})`
 }
 
 async function loadPackageModel() {
-  if (!projectRef.value || !summaryRef.value) {
+  if (!summary) {
     return
   }
 
-  const summary = summaryRef.value
-  const project = projectRef.value
   const chipPackagesTyped = chipPackages as Record<string, typeof IPackageBase>
   const chipPackageKeys = Object.keys(chipPackagesTyped)
   let packType = ''
@@ -209,26 +159,31 @@ async function loadPackageModel() {
 
   if (chipPackageKeys.includes(packType)) {
     const ChipPackageClass = chipPackagesTyped[packType]
-    const instance = new ChipPackageClass(summary)
-    const model = await instance.getPackageModel()
-    if (model) {
-      for (const pin of model.pins) {
-        const pinConfig = project.configs.get<ProjectConfigsPinUnitType | null>(`pins.${pin.name}`)
+    const instance = new ChipPackageClass(summary.name, summary.vendor, pinsManager.pins)
+    const packageModel = await instance.getPackageModel()
+    if (packageModel) {
+      for (const pin of packageModel.pins) {
         const model: PinModelType = {
-          color: 'white',
-          originColor: 'white',
-          textColor: FG_COLOR,
           base: pin,
-          comment: '',
-          label: pinConfig?.label,
-          function: pinConfig?.function,
-          mode: pinConfig?.mode,
-          locked: pinConfig?.locked,
+          highlight: ref(false),
+          color: computed((): string => {
+            if (model.highlight.value) {
+              return HIGHLIGHT_BG_COLOR
+            }
+            return getPinColor(model)
+          }),
+          textColor: computed((): string => {
+            if (model.highlight.value) {
+              return HIGHLIGHT_FG_COLOR
+            }
+            return FG_COLOR
+          }),
+          comment: computed((): string => getPinComment(model)),
         }
-        pinsModelRef.value[pin.name] = model
-        updataPinUI(model)
+
+        pinModels[pin.name] = model
       }
-      packageModelRef.value = model
+      packageModelRef.value = packageModel
     }
   }
 }
@@ -259,8 +214,8 @@ function highlightBySignals(signals: string[]) {
 
   const names: string[] = []
   for (const signal of signals) {
-    for (const [_name, pin] of Object.entries(pinsModelRef.value)) {
-      if (pin.base.functions.includes(signal)) {
+    for (const [_name, pin] of Object.entries(pinModels)) {
+      if (pin.base.pin.functions.includes(signal)) {
         names.push(_name)
       }
     }
@@ -322,22 +277,23 @@ function handClick(event: Konva.KonvaEventObject<MouseEvent>) {
   if (panZoomRef.value && panZoomRef.value.container) {
     const container = panZoomRef.value.container
     const shape = event.target
-    const pin: PinModelType = shape.attrs.pin
-    if (pin && pin.base.functions.length > 0) {
+    const model: PinModelType = shape.attrs.pin
+    if (model && model.base.pin.functions.length > 0) {
       /*! < mouse left click */
       if (event.evt.button === 0) {
         /*! < alt + mouse left click */
         if (event.evt.altKey) {
           ElMessageBox.prompt(t('chipPackage.labelMessageBoxMessage'), t('chipPackage.labelMessageBoxTitle'), {
-            confirmButtonText: t('base.ok'),
-            cancelButtonText: t('base.cancel'),
+            confirmButtonText: t('command.ok'),
+            cancelButtonText: t('command.cancel'),
+            closeOnClickModal: false,
             inputPattern: /^[A-Z_]\w+$/i,
-            inputValue: pin.label,
+            inputValue: model.base.pin.label.value,
             inputPlaceholder: t('chipPackage.labelMessageBoxInputPlaceholder'),
             inputErrorMessage: t('chipPackage.labelMessageBoxInputErrorMessage'),
           })
             .then(({ value }) => {
-              projectRef.value?.configs.set(`pins.${pin.base.name}.label`, value)
+              model.base.pin.label.value = value
             })
             .catch(() => {
             })
@@ -350,15 +306,16 @@ function handClick(event: Konva.KonvaEventObject<MouseEvent>) {
           let x = 0
           let y = 0
 
-          if (pin.base.direction === 'left') {
+          const direction = model.base.direction
+          if (direction === 'left') {
             x = shape.getAbsolutePosition().x + containerRect.left + width
             y = shape.getAbsolutePosition().y + containerRect.top + height
           }
-          else if (pin.base.direction === 'bottom') {
+          else if (direction === 'bottom') {
             x = shape.getAbsolutePosition().x + containerRect.left + height / 2
             y = shape.getAbsolutePosition().y + containerRect.top - width
           }
-          else if (pin.base.direction === 'right') {
+          else if (direction === 'right') {
             x = shape.getAbsolutePosition().x + containerRect.left
             y = shape.getAbsolutePosition().y + containerRect.top + height
           }
@@ -367,17 +324,17 @@ function handClick(event: Konva.KonvaEventObject<MouseEvent>) {
             y = shape.getAbsolutePosition().y + containerRect.top
           }
 
-          const model: PanZoomMenuItemModelType[] = [
-            { key: 'Reset State', command: t('chipPackage.resetState'), divided: false },
+          const menuModel: PanZoomMenuItemModelType[] = [
+            { key: 'Reset State', command: t('chipPackage.resetState'), divided: false, icon: 'ri-refresh-line' },
           ]
 
           let divided = true
-          for (const func of pin.base.functions) {
-            model.push({ key: func, command: func, divided, highlight: pin.function === func })
+          for (const func of model.base.pin.functions) {
+            menuModel.push({ key: func, command: func, divided, highlight: model.base.pin.function.value === func })
             divided = false
           }
 
-          panZoomRef.value.openMenu(pin.base.name, { x, y }, model)
+          panZoomRef.value.openMenu(model.base.name, { x, y }, menuModel)
         }
       }
       else {
@@ -392,94 +349,24 @@ function handClick(event: Konva.KonvaEventObject<MouseEvent>) {
 }
 
 function handMenuSelect(pinName: string, command: string) {
+  const pin = pins[pinName]
   if (command === t('chipPackage.resetState')) {
-    projectRef.value!.configs.set<ProjectConfigsPinUnitType>(`pins.${pinName}`, {
-      locked: false,
-      function: '',
-      mode: '',
-      label: '',
-    })
+    pin.reset()
   }
   else {
-    const pinConfig = projectRef.value!.configs.get<ProjectConfigsPinUnitType | null>(`pins.${pinName}`)
-    if (command === pinConfig?.function) { /*! < unset function */
-      projectRef.value!.configs.set<ProjectConfigsPinUnitType>(`pins.${pinName}`, {
-        locked: false,
-        function: '',
-        mode: '',
-        label: pinConfig?.label,
-      })
+    if (command === pin.function.value) { /*! < unset function */
+      pin.unsetFunction()
     }
     else { /*! < set function */
-      const seqs = command.split(':')
-      const instance = seqs[0]
-      let locked = false
-      if (instance === summaryRef.value?.pinInstance() && summaryRef.value?.pins[pinName].modes.includes(command)) {
-        locked = true
-      }
-      projectRef.value!.configs.set<ProjectConfigsPinUnitType>(`pins.${pinName}`, {
-        locked,
-        function: command,
-        mode: '',
-        label: pinConfig?.label,
-      })
+      pin.setFunction(command)
     }
-  }
-}
-
-function onPinConfigChanged(payload: { path: string[], oldValue: any, newValue: any }) {
-  if (payload.path.length === 2) {
-    const name = payload.path.at(-1)!
-    const value = payload.newValue as ProjectConfigsPinUnitType
-
-    const model = pinsModelRef.value[name]
-    model.label = value?.label
-    model.function = value?.function
-    model.mode = value?.mode
-    model.locked = value?.locked
-
-    updataPinUI(model)
-    updatePin(model)
-  }
-  else if (payload.path.length === 3) {
-    const name = payload.path[1]
-
-    switch (payload.path.at(-1)) {
-      case 'label':{
-        pinsModelRef.value[name].label = payload.newValue as string
-        break
-      }
-      case 'function':{
-        pinsModelRef.value[name].function = payload.newValue as string
-        updatePin(pinsModelRef.value[name])
-        break
-      }
-      case 'mode':{
-        pinsModelRef.value[name].mode = payload.newValue as string
-        updatePin(pinsModelRef.value[name])
-        break
-      }
-      case 'locked':{
-        pinsModelRef.value[name].locked = payload.newValue as boolean
-        break
-      }
-    }
-
-    updataPinUI(pinsModelRef.value[name])
   }
 }
 
 function onTimerTimeout() {
-  for (const [name, pin] of Object.entries(pinsModelRef.value)) {
+  for (const [name, model] of Object.entries(pinModels)) {
     if (highlightedNames.includes(name)) {
-      if (pin.color === HIGHLIGHT_BG_COLOR) {
-        pin.color = pin.originColor
-        pin.textColor = FG_COLOR
-      }
-      else {
-        pin.color = HIGHLIGHT_BG_COLOR
-        pin.textColor = HIGHLIGHT_FG_COLOR
-      }
+      model.highlight.value = !model.highlight.value
     }
   }
 }
@@ -488,33 +375,19 @@ function cleanUpTimer() {
   if (intervalTimerId !== null) {
     clearInterval(intervalTimerId)
     intervalTimerId = null
-    for (const [_name, pin] of Object.entries(pinsModelRef.value)) {
-      if (pin.color === HIGHLIGHT_BG_COLOR) {
-        pin.color = pin.originColor
-        pin.textColor = FG_COLOR
-      }
+    for (const [_name, model] of Object.entries(pinModels)) {
+      model.highlight.value = false
     }
   }
 }
 
-onMounted(async () => {
-  const project = projectManager.get()
-  if (project) {
-    projectRef.value = project
-    project.configs.emitter.on('pinConfigChanged', onPinConfigChanged)
-    const summary = summaryManager.get(project.vendor, project.targetChip)
-    if (summary) {
-      summaryRef.value = summary
-      loadPackageModel()
-    }
-  }
+onMounted(() => {
+  textColorPrimaryRef.value = getTextColorPrimary()
+  loadPackageModel()
 })
 
 onBeforeUnmount(() => {
   cleanUpTimer()
-  if (projectRef.value) {
-    projectRef.value.configs.emitter.off('pinConfigChanged', onPinConfigChanged)
-  }
 })
 
 defineExpose({
@@ -538,7 +411,7 @@ defineExpose({
       <v-layer>
         <!-- pin label -->
         <v-text
-          v-for="[name, pin] in Object.entries(pinsModelRef)"
+          v-for="[name, pin] in Object.entries(pinModels)"
           :key="`${name}-l`"
           :config="{
             x: pin.base.rotation ? pin.base.label.x : pin.base.label.x + 5,
@@ -546,9 +419,10 @@ defineExpose({
             width: pin.base.label.width - 10,
             height: pin.base.label.height,
             ellipsis: true,
-            text: pin.comment,
+            text: pin.comment.value,
             fontSize: 12,
             fontStyle: 'bold',
+            fill: textColorPrimaryRef,
             wrap: 'none',
             align: pin.base.label.align,
             verticalAlign: 'middle',
@@ -632,7 +506,7 @@ defineExpose({
         </v-group>
         <!-- chip pin body -->
         <v-group
-          v-for="[name, pin] in Object.entries(pinsModelRef)"
+          v-for="[name, pin] in Object.entries(pinModels)"
           :key="name"
           @mouseenter="handMouseenter($event, pin)"
           @mouseleave="handMouseleave($event, pin)"
@@ -644,7 +518,7 @@ defineExpose({
               y: pin.base.y,
               width: pin.base.width,
               height: pin.base.height,
-              fill: pin.color,
+              fill: pin.color.value,
               stroke: 'black',
               rotation: pin.base.rotation,
               strokeWidth: 1,
@@ -658,7 +532,7 @@ defineExpose({
               y: pin.base.y,
               width: pin.base.width,
               height: pin.base.height,
-              fill: pin.textColor,
+              fill: pin.textColor.value,
               ellipsis: true,
               text: ` ${name}`,
               fontSize: 12,

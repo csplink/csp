@@ -28,8 +28,10 @@
 -->
 
 <script setup lang="ts">
+import type { ThemeModeType } from '@/electron/types'
 import Prism from 'prismjs'
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { getRealTheme, useThemeStore } from '~/utils'
 
 interface PropsType {
   code: string
@@ -40,17 +42,65 @@ const props = defineProps<PropsType>()
 
 const htmlRef = ref<string>('')
 const codeRef = ref<HTMLElement>()
+const themeStore = useThemeStore()
+
+const themeMap = {
+  light: new URL('~/styles/prism/one-light.css', import.meta.url).href,
+  dark: new URL('~/styles/prism/vsc-dark-plus.css', import.meta.url).href,
+}
+
+watch(() => themeStore.theme, async (theme) => {
+  await setTheme(theme)
+})
 
 watch(
   () => [props.code],
   async () => {
-    const grammar = Prism.languages.c
-    htmlRef.value = Prism.highlight(props.code, grammar, props.language)
+    const language = props.language
+    const grammar = Prism.languages[language] ?? Prism.languages.c
+    htmlRef.value = Prism.highlight(props.code, grammar, language)
     await nextTick()
     Prism.highlightElement(codeRef.value!)
   },
   { immediate: true },
 )
+
+async function setPrismTheme(theme: 'light' | 'dark') {
+  document.querySelectorAll('link[data-prism-theme], style[data-prism-theme]')
+    .forEach(el => el.remove())
+
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = themeMap[theme]
+  link.setAttribute('data-prism-theme', theme)
+  document.head.appendChild(link)
+
+  await nextTick()
+  updateScrollbarBackground()
+}
+
+function getPrismCodeBackground() {
+  const codeEl = document.querySelector('code[class*=\'language-\']')
+  if (!codeEl)
+    return null
+  return window.getComputedStyle(codeEl).backgroundColor
+}
+
+function updateScrollbarBackground() {
+  const bg = getPrismCodeBackground()
+  if (bg) {
+    document.documentElement.style.setProperty('--code-bg-color', bg)
+  }
+}
+
+async function setTheme(theme: ThemeModeType) {
+  const actualTheme: 'light' | 'dark' = theme === 'auto' ? getRealTheme() : theme
+  await setPrismTheme(actualTheme)
+}
+
+onMounted(async () => {
+  await setTheme(themeStore.theme)
+})
 </script>
 
 <template>
@@ -74,7 +124,7 @@ watch(
   flex: 1;
   min-width: 0;
   min-height: 0;
-  background: var(--ep-bg-color-page); /* !< 这里还需要适配其他主题，暂时先强制使用 --ep-bg-color-page */
+  background: var(--ep-bg-color-page);
 }
 
 .code-pre {
@@ -82,6 +132,6 @@ watch(
   margin: 0;
   overflow: hidden;
   width: fit-content;
-  background: var(--ep-bg-color-page); /* !< 这里还需要适配其他主题，暂时先强制使用 --ep-bg-color-page */
+  background: var(--ep-bg-color-page);
 }
 </style>

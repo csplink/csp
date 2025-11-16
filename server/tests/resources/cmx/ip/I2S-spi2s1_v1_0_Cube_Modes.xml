@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V4.0" IPType="peripheral" IpGroup="Multimedia" Name="I2S" Version="spi2s1_v1_0_Cube" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+    ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../../../../../../doc/V4/Development/Specifications/db/IP_Modes.xsd"
+    xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+
+    <!-- Description of IP. -->
+    <About>I2S: Inter Integrated Sound</About>
+
+    <!-- Generic RefParameters for I2S. Instance is SPI because I2S is same IP that SPI. -->
+    <RefParameter Comment="Instance" Name="Instance" DefaultValue="SPI$Index" Type="" Visible="false" />
+
+    <RefParameter Comment="Mode" DefaultValue="I2S_MODE_MASTER" Name="VirtualMode" Type="list" Group="Generic Parameters" Visible="false">
+        <PossibleValue Comment="Master" Value="I2S_MODE_MASTER" />
+        <PossibleValue Comment="Slave" Value="I2S_MODE_SLAVE" />
+    </RefParameter>
+
+    <RefParameter Comment="Transmission Mode" DefaultValue="I2S_MODE_MASTER_TX" Name="Mode" Type="list" Group="Generic Parameters">
+        <Condition Expression="$IpInstance_Master&amp;$IpInstance_TX" Diagnostic="" />
+        <PossibleValue Comment="Mode Master Transmit" Value="I2S_MODE_MASTER_TX" />
+    </RefParameter>
+    <RefParameter Comment="Transmission Mode" DefaultValue="I2S_MODE_MASTER_RX" Name="Mode" Type="list" Group="Generic Parameters">
+        <Condition Expression="$IpInstance_Master&amp;$IpInstance_RX" Diagnostic="" />
+        <PossibleValue Comment="Mode Master Receive" Value="I2S_MODE_MASTER_RX" />
+    </RefParameter>
+    <RefParameter Comment="Transmission Mode" DefaultValue="I2S_MODE_SLAVE_TX" Name="Mode" Type="list" Group="Generic Parameters">
+        <Condition Expression="$IpInstance_Slave&amp;$IpInstance_TX" Diagnostic="" />
+        <PossibleValue Comment="Mode Slave Transmit" Value="I2S_MODE_SLAVE_TX" />
+    </RefParameter>
+    <RefParameter Comment="Transmission Mode" DefaultValue="I2S_MODE_SLAVE_RX" Name="Mode" Type="list" Group="Generic Parameters">
+        <Condition Expression="$IpInstance_Slave&amp;$IpInstance_RX" Diagnostic="" />
+        <PossibleValue Comment="Mode Slave Receive" Value="I2S_MODE_SLAVE_RX" />
+    </RefParameter>
+    <RefParameter Comment="Mode" DefaultValue="I2S_MODE_SLAVE_TX" Name="Mode" Type="string" Group="Generic Parameters" Visible="false" />
+
+    <RefParameter Comment="Communication Standard" DefaultValue="I2S_STANDARD_PHILIPS" Name="Standard" Type="list" Group="Generic Parameters">
+        <PossibleValue Comment="I2S Philips" Value="I2S_STANDARD_PHILIPS" />
+        <PossibleValue Comment="MSB First (Left Justified)" Value="I2S_STANDARD_MSB" />
+        <PossibleValue Comment="LSB First (Right Justified)" Value="I2S_STANDARD_LSB" />
+        <PossibleValue Comment="PCM with Short Synchro Frame" Value="I2S_STANDARD_PCM_SHORT" />
+        <PossibleValue Comment="PCM with Long Synchro Frame" Value="I2S_STANDARD_PCM_LONG" />
+    </RefParameter>
+
+    <RefParameter Comment="Data and Frame Format" DefaultValue="I2S_DATAFORMAT_16B" Name="DataFormat" Type="list" Group="Generic Parameters">
+        <PossibleValue Comment="16 Bits Data on 16 Bits Frame" Value="I2S_DATAFORMAT_16B" />
+        <PossibleValue Comment="16 Bits Data on 32 Bits Frame" Value="I2S_DATAFORMAT_16B_EXTENDED" />
+        <PossibleValue Comment="24 Bits Data on 32 Bits Frame" Value="I2S_DATAFORMAT_24B" />
+        <PossibleValue Comment="32 Bits Data on 32 Bits Frame" Value="I2S_DATAFORMAT_32B" />
+    </RefParameter>
+
+    <RefParameter Comment="Selected Audio Frequency" DefaultValue="I2S_AUDIOFREQ_8K" Name="AudioFreq" Type="list" Group="Generic Parameters">
+        <PossibleValue Comment="Custom Freq" Value="AudioFreqCustomValue" Semaphore="SEM_I2S_AUDIOFREQ_CUSTOM_$IpInstance" />
+        <PossibleValue Comment="192 KHz" Value="I2S_AUDIOFREQ_192K" />
+        <PossibleValue Comment="96 KHz" Value="I2S_AUDIOFREQ_96K" />
+        <PossibleValue Comment="48 KHz" Value="I2S_AUDIOFREQ_48K" />
+        <PossibleValue Comment="44 KHz" Value="I2S_AUDIOFREQ_44K" />
+        <PossibleValue Comment="32 KHz" Value="I2S_AUDIOFREQ_32K" />
+        <PossibleValue Comment="22 KHz" Value="I2S_AUDIOFREQ_22K" />
+        <PossibleValue Comment="16 KHz" Value="I2S_AUDIOFREQ_16K" />
+        <PossibleValue Comment="11 KHz" Value="I2S_AUDIOFREQ_11K" />
+        <PossibleValue Comment="8 KHz" Value="I2S_AUDIOFREQ_8K" />
+        <!-- <PossibleValue Comment="Default" Value="I2S_AUDIOFREQ_DEFAULT"/> -->
+    </RefParameter>
+
+    <!-- Customize the I2S frequency -->
+    <RefParameter Name="AudioFreqCustom" Comment="Custom I2S Frequency (Hz)" DefaultValue="68000" Max="192000" Min="8000" Type="integer" Unit="Hz" Visible="true" Group="Generic Parameters">
+        <Condition Diagnostic="" Expression="SEM_I2S_AUDIOFREQ_CUSTOM_$IpInstance" />
+        <Description>Value must be enterred as a 1000 multiple</Description>
+    </RefParameter>
+    <RefParameter Name="AudioFreqCustom" Comment="Custom I2S Frequency (Hz)" DefaultValue="=AudioFreq" Type="list" Visible="false">
+        <Description>Value must be enterred as a 1000 multiple</Description>
+    </RefParameter>
+
+    <!-- Calculated Value for Audio Frequency -->
+    <RefParameter Comment="Real Audio Frequency" DefaultValue="0" Name="RealAudioFreq" Type="string" Group="Generic Parameters" />
+    <RefParameter Comment="Error between Selected and Real" DefaultValue="0" Name="ErrorAudioFreq" Type="string" Group="Generic Parameters" />
+
+    <!-- Clock RefParamater for I2S -->
+    <RefParameter Comment="Master Clock Output" DefaultValue="I2S_MCLKOUTPUT_DISABLE" Name="MCLKOutput" Type="list" Group="Clock Parameters" Visible="false">
+        <PossibleValue Comment="Disable" Value="I2S_MCLKOUTPUT_DISABLE" />
+        <PossibleValue Comment="Enable" Value="I2S_MCLKOUTPUT_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Clock Polarity" DefaultValue="I2S_CPOL_LOW" Name="CPOL" Type="list" Group="Clock Parameters">
+        <PossibleValue Comment="Low" Value="I2S_CPOL_LOW" />
+        <PossibleValue Comment="High" Value="I2S_CPOL_HIGH" />
+    </RefParameter>
+
+    <!-- RefModes for 'Half-Duplex Master' I2S -->
+    <RefMode Name="Half_Duplex_Master">
+        <ConfigForMode>I2S_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="Instance">
+            <PossibleValue>SPI$Index</PossibleValue>
+        </Parameter>
+        <Parameter Name="VirtualMode">
+            <PossibleValue>I2S_MODE_MASTER</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="Mode" />
+        <Parameter Name="Standard" />
+        <Parameter Name="DataFormat" />
+        <Parameter Name="AudioFreq" />
+        <Parameter Name="AudioFreqCustom" />
+        <Parameter Name="RealAudioFreq" />
+        <Parameter Name="ErrorAudioFreq" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="CPOL" />
+    </RefMode>
+    <RefMode Name="Half_Duplex_Master" Abstract="true">
+        <ConfigForMode>I2S_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="Instance">
+            <PossibleValue>SPI$Index</PossibleValue>
+        </Parameter>
+        <Parameter Name="VirtualMode">
+            <PossibleValue>I2S_MODE_MASTER</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="Mode" />
+        <Parameter Name="Standard" />
+        <Parameter Name="DataFormat" />
+        <Parameter Name="AudioFreq" />
+        <Parameter Name="AudioFreqCustom" />
+        <Parameter Name="RealAudioFreq" />
+        <Parameter Name="ErrorAudioFreq" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="CPOL" />
+    </RefMode>
+    <RefMode Name="Half_Duplex_Master_TX" BaseMode="Half_Duplex_Master">
+
+	</RefMode>
+    <!-- RefModes for 'Half-Duplex Master RX' I2S -->
+    <RefMode Name="Half_Duplex_Master_RX" BaseMode="Half_Duplex_Master">
+
+	</RefMode>
+
+    <!-- RefModes for 'Half-Duplex Slave' I2S -->
+    <RefMode Name="Half_Duplex_Slave" Abstract="true">
+        <ConfigForMode>I2S_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="Instance">
+            <PossibleValue>SPI$Index</PossibleValue>
+        </Parameter>
+        <Parameter Name="VirtualMode">
+            <PossibleValue>I2S_MODE_SLAVE</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="Mode" />
+        <Parameter Name="Standard" />
+        <Parameter Name="DataFormat" />
+        <Parameter Name="AudioFreq" />
+        <Parameter Name="AudioFreqCustom" />
+        <Parameter Name="RealAudioFreq" />
+        <Parameter Name="ErrorAudioFreq" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="CPOL" />
+    </RefMode>
+    <RefMode Name="Half_Duplex_Slave_TX" BaseMode="Half_Duplex_Slave">
+
+	</RefMode>
+    <RefMode Name="Half_Duplex_Slave_RX" BaseMode="Half_Duplex_Slave">
+
+	</RefMode>
+    <!-- RefModes for I2S Master Clock -->
+    <RefMode Name="Master_Clock_Activated">
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="MCLKOutput">
+            <PossibleValue>I2S_MCLKOUTPUT_ENABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+
+
+    <!-- ModeLogicOperator for I2S -->
+    <ModeLogicOperator Name="OR">
+        <Mode Name="Mode">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="Half_Duplex_Master_TX" UserName="Half-Duplex Transmit Only Master">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="CK" />
+                        <Signal Name="SD" />
+                        <Signal Name="WS" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_TX</Semaphore>
+                    <Semaphore>$IpInstance_Master</Semaphore>
+                </Mode>
+                <Mode Name="Half_Duplex_Master_RX" UserName="Half-Duplex Receive Only Master">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="CK" />
+                        <Signal Name="SD" IOMode="Input" />
+                        <Signal Name="WS" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_RX</Semaphore>
+                    <Semaphore>$IpInstance_Master</Semaphore>
+                </Mode>
+                <Mode Name="Half_Duplex_Slave_TX" UserName="Half-Duplex Transmit Only Slave">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="CK" IOMode="InputFloating" />
+                        <Signal Name="SD" />
+                        <Signal Name="WS" IOMode="InputFloating" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_TX</Semaphore>
+                    <Semaphore>$IpInstance_Slave</Semaphore>
+                </Mode>
+                <Mode Name="Half_Duplex_Slave_RX" UserName="Half-Duplex Receive Only Slave">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="CK" IOMode="InputFloating" />
+                        <Signal Name="SD" IOMode="Input" />
+                        <Signal Name="WS" IOMode="InputFloating" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_RX</Semaphore>
+                    <Semaphore>$IpInstance_Slave</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+            <Semaphore>$IpInstance</Semaphore>
+            <Condition Expression="!SPI$IpNumber" Diagnostic="SPI$IpNumber must be disabled" />
+        </Mode>
+
+        <Mode Name="Master_Clock" UserName="Master Clock Output">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="Master_Clock_Activated" UserName="Activated">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="MCK" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+            <Condition Expression="!SPI$IpNumber" Diagnostic="SPI$IpNumber must be disabled" />
+            <Condition Expression="$IpInstance_Master" Diagnostic="$IpInstance must have a master mode selected" />
+        </Mode>
+    </ModeLogicOperator>
+
+    <!-- RefSignal for I2S -->
+    <RefSignal Name="CK" IOMode="AlternateFunctionPushPull" />
+    <RefSignal Name="SD" IOMode="AlternateFunctionPushPull" />
+    <RefSignal Name="WS" IOMode="AlternateFunctionPushPull" />
+    <RefSignal Name="MCK" IOMode="AlternateFunctionPushPull" />
+
+    <!-- Clock Semaphore for this IP. -->
+    <Semaphore>$IpInstanceUsed_ForRCC</Semaphore>
+</IP>

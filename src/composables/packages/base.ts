@@ -27,7 +27,7 @@
  *  2025-05-24     xqyjlj       initial version
  */
 
-import type { Summary } from '~/database'
+import type { Pin } from '~/utils'
 
 export interface PackageModelType {
   width: number
@@ -49,7 +49,6 @@ export interface PackageModelBodyType {
 
 export interface PackageModelPinType {
   name: string
-  type: string
   position: number
   width: number
   height: number
@@ -57,7 +56,7 @@ export interface PackageModelPinType {
   y: number
   rotation: number
   direction: string
-  functions: string[]
+  pin: Pin
   label: {
     width: number
     height: number
@@ -68,10 +67,11 @@ export interface PackageModelPinType {
 }
 
 export class IPackageBase {
-  protected _summary: Summary
-
-  constructor(summary: Summary) {
-    this._summary = summary
+  constructor(
+    protected _name: string,
+    protected _vendor: string,
+    protected _pins: Record<string, Pin>,
+  ) {
   }
 
   async getPackageModel(): Promise<PackageModelType | null> {

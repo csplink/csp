@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V4.0" IPType="peripheral" Name="CAN" Version="bxcan1_v1_1_F1_Cube"
+    xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../../../../../../doc/V4/Development/Specifications/db/IP_Modes.xsd"
+    xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+    <About>CAN: Controller Area Network</About>
+
+    <!--**** Generic RefParameters for CAN Modes ****-->
+    <RefParameter Name="Instance" DefaultValue="CAN1" Comment="Instance" Type="" Visible="false" Group="Basic Parameters">
+        <Condition Expression="!($Index=2) &amp; STM32F1 " Diagnostic="" />
+    </RefParameter>
+    <RefParameter Name="Instance" DefaultValue="CAN$Index" Comment="Instance" Type="" Visible="false" Group="Basic Parameters" />
+
+
+    <!--**** 'Bit Timings' RefParameters for CAN Modes ****-->
+    <RefParameter Comment="Prescaler (for Time Quantum)" DefaultValue="16" Max="1024" Min="1" Name="Prescaler" Type="integer" Group="Bit Timings Parameters" />
+
+    <RefParameter Comment="ReSynchronization Jump Width" DefaultValue="CAN_SJW_1TQ" Name="SJW" Type="list" Group="Bit Timings Parameters">
+        <PossibleValue Comment="1 Time" Value="CAN_SJW_1TQ" />
+        <PossibleValue Comment="2 Times" Value="CAN_SJW_2TQ" />
+        <PossibleValue Comment="3 Times " Value="CAN_SJW_3TQ" />
+        <PossibleValue Comment="4 Times " Value="CAN_SJW_4TQ" />
+    </RefParameter>
+
+    <RefParameter Comment="Time Quanta in Bit Segment 1" DefaultValue="CAN_BS1_1TQ" Name="BS1" Type="list" Group="Bit Timings Parameters">
+        <PossibleValue Comment="1 Time" Value="CAN_BS1_1TQ" />
+        <PossibleValue Comment="2 Times " Value="CAN_BS1_2TQ" />
+        <PossibleValue Comment="3 Times " Value="CAN_BS1_3TQ" />
+        <PossibleValue Comment="4 Times " Value="CAN_BS1_4TQ" />
+        <PossibleValue Comment="5 Times " Value="CAN_BS1_5TQ" />
+        <PossibleValue Comment="6 Times " Value="CAN_BS1_6TQ" />
+        <PossibleValue Comment="7 Times" Value="CAN_BS1_7TQ" />
+        <PossibleValue Comment="8 Times" Value="CAN_BS1_8TQ" />
+        <PossibleValue Comment="9 Times" Value="CAN_BS1_9TQ" />
+        <PossibleValue Comment="10 Times " Value="CAN_BS1_10TQ" />
+        <PossibleValue Comment="11 Times" Value="CAN_BS1_11TQ" />
+        <PossibleValue Comment="12 Times" Value="CAN_BS1_12TQ" />
+        <PossibleValue Comment="13 Times" Value="CAN_BS1_13TQ" />
+        <PossibleValue Comment="14 Times " Value="CAN_BS1_14TQ" />
+        <PossibleValue Comment="15 Times" Value="CAN_BS1_15TQ" />
+        <PossibleValue Comment="16 Times" Value="CAN_BS1_16TQ" />
+    </RefParameter>
+
+    <RefParameter Comment="Time Quanta in Bit Segment 2" DefaultValue="CAN_BS2_1TQ" Name="BS2" Type="list" Group="Bit Timings Parameters">
+        <PossibleValue Comment="1 Time" Value="CAN_BS2_1TQ" />
+        <PossibleValue Comment="2 Times" Value="CAN_BS2_2TQ" />
+        <PossibleValue Comment="3 Times" Value="CAN_BS2_3TQ" />
+        <PossibleValue Comment="4 Times" Value="CAN_BS2_4TQ" />
+        <PossibleValue Comment="5 Times" Value="CAN_BS2_5TQ" />
+        <PossibleValue Comment="6 Times" Value="CAN_BS2_6TQ" />
+        <PossibleValue Comment="7 Times" Value="CAN_BS2_7TQ" />
+        <PossibleValue Comment="8 Times" Value="CAN_BS2_8TQ" />
+    </RefParameter>
+
+    <RefParameter Comment="Time Quantum" DefaultValue="1000" Name="CalculateTimeQuantum" Type="string" Unit="ns" Group="Bit Timings Parameters" />
+    <RefParameter Comment="Time for one Bit" DefaultValue="1000" Name="CalculateTimeBit" Type="string" Unit="ns" Group="Bit Timings Parameters" />
+
+    <!-- **** CAN BaudRate ****-->
+    <RefParameter Comment="Baud Rate" DefaultValue="1000" Name="CalculateBaudRate" Type="string" Unit="bit/s" Group="Bit Timings Parameters" />
+
+    <!-- **** Transmission RefParameters for CAN Modes ****-->
+    <RefParameter Comment="Time Triggered Communication Mode" DefaultValue="DISABLE" Name="TTCM" Type="list" Group="Basic Parameters">
+        <PossibleValue Comment="Disable" Value="DISABLE" />
+        <PossibleValue Comment="Enable" Value="ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Automatic Bus-Off Management" DefaultValue="DISABLE" Name="ABOM" Type="list" Group="Basic Parameters">
+        <PossibleValue Comment="Disable" Value="DISABLE" />
+        <PossibleValue Comment="Enable" Value="ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Automatic Wake-Up Mode" DefaultValue="DISABLE" Name="AWUM" Type="list" Group="Basic Parameters">
+        <PossibleValue Comment="Disable" Value="DISABLE" />
+        <PossibleValue Comment="Enable" Value="ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Automatic Retransmission" DefaultValue="DISABLE" Name="NART" Type="list" Group="Basic Parameters">
+        <PossibleValue Comment="Disable" Value="DISABLE" />
+        <PossibleValue Comment="Enable" Value="ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Receive Fifo Locked Mode" DefaultValue="DISABLE" Name="RFLM" Type="list" Group="Basic Parameters">
+        <PossibleValue Comment="Disable" Value="DISABLE" />
+        <PossibleValue Comment="Enable" Value="ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Transmit Fifo Priority" DefaultValue="DISABLE" Name="TXFP" Type="list" Group="Basic Parameters">
+        <PossibleValue Comment="Disable" Value="DISABLE" />
+        <PossibleValue Comment="Enable" Value="ENABLE" />
+    </RefParameter>
+
+
+    <!--**** 'Filter' RefParameters Group for CAN Modes ****-->
+    <!--
+	<RefParameter Comment="Start Slave Bank Filter Number" DefaultValue="14" Max="27" Min="1" Name="BankNumber" Type="integer" Visible="false" Group="Filter Parameters"/>
+	<RefParameter Comment="Filter Number" DefaultValue="0" Max="27" Min="0" Name="FilterNumber" Type="integer" Visible="false" Group="Filter Parameters"/>
+
+	<RefParameter Comment="Filter Activation" DefaultValue="DISABLE" Name="FilterActivation" Type="list" Group="Filter Parameters">
+		<PossibleValue Comment="Disable" Value="DISABLE"/>
+		<PossibleValue Comment="Enable" Value="ENABLE"/>
+	</RefParameter>
+	-->
+
+    <!-- Filter Scale : Display only if Filter Activated -->
+    <!--
+	<RefParameter Comment="Filter Scale" DefaultValue="CAN_FILTERSCALE_16BIT" Name="FilterScale" Type="list" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE" Diagnostic=""/>
+		<PossibleValue Comment="Two 16-bit Filters " Value="CAN_FILTERSCALE_16BIT"/>
+		<PossibleValue Comment="One 32-bit Filter " Value="CAN_FILTERSCALE_32BIT"/>
+	</RefParameter>
+	<RefParameter Comment="Filter Scale" DefaultValue="CAN_FILTERSCALE_16BIT" Name="FilterScale" Type="list" Group="Filter Parameters" Visible="false">
+		<PossibleValue Comment="Two 16-bit Filters " Value="CAN_FILTERSCALE_16BIT"/>
+		<PossibleValue Comment="One 32-bit Filter " Value="CAN_FILTERSCALE_32BIT"/>
+	</RefParameter>
+	-->
+
+    <!-- Filter Mode : Display only if Filter Activated -->
+    <!--
+	<RefParameter Comment="Filter Mode" DefaultValue="CAN_FILTERMODE_IDMASK" Name="FilterMode" Type="list" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE" Diagnostic=""/>
+		<PossibleValue Comment="Mask" Value="CAN_FILTERMODE_IDMASK"/>
+		<PossibleValue Comment="Identifier List" Value="CAN_FILTERMODE_IDLIST"/>
+	</RefParameter>
+	<RefParameter Comment="Filter Mode" DefaultValue="CAN_FILTERMODE_IDMASK" Name="FilterMode" Type="list" Group="Filter Parameters" Visible="false">
+		<PossibleValue Comment="Mask" Value="CAN_FILTERMODE_IDMASK"/>
+		<PossibleValue Comment="Identifier List" Value="CAN_FILTERMODE_IDLIST"/>
+	</RefParameter>
+	-->
+
+    <!-- Filter Identification : Display only if Filter Activated, and field depend of Scale & Mode -->
+    <!--
+	<RefParameter Comment="Filter Identification" DefaultValue="0" Max="4294967295" Min="0" Name="FilterId32b" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_32BIT &amp; FilterMode=CAN_FILTERMODE_IDMASK" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="1° Filter Identification" DefaultValue="0" Max="4294967295" Min="0" Name="FilterId32b" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_32BIT &amp; FilterMode=CAN_FILTERMODE_IDLIST" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="1° Filter Identification" DefaultValue="0" Max="4294967295" Min="0" Name="FilterId32b" Type="integer" Group="Filter Parameters" Visible="false"/>
+
+	<RefParameter Comment="1° Filter Identification" DefaultValue="0" Max="65535" Min="0" Name="FilterIdHigh" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_16BIT" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="Filter Identification High [MSB]" DefaultValue="0" Max="65535" Min="0" Name="FilterIdHigh" Type="integer" Group="Filter Parameters" Visible="false"/>
+
+	<RefParameter Comment="2° Filter Identification" DefaultValue="0" Max="65535" Min="0" Name="FilterIdLow" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_16BIT" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="Filter Identification Low [LSB]" DefaultValue="0" Max="65535" Min="0" Name="FilterIdLow" Type="integer" Group="Filter Parameters" Visible="false" />
+	-->
+
+    <!-- Filter Identification Mask : Display only if Filter Activated, and field depend of Scale & Mode -->
+    <!--
+	<RefParameter Comment="Identification Filter Mask" DefaultValue="0" Max="4294967295" Min="0" Name="FilterMaskId32b" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_32BIT &amp; FilterMode=CAN_FILTERMODE_IDMASK" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="2° Filter Identification" DefaultValue="0" Max="4294967295" Min="0" Name="FilterMaskId32b" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_32BIT &amp; FilterMode=CAN_FILTERMODE_IDLIST" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="2° Filter Identification" DefaultValue="0" Max="4294967295" Min="0" Name="FilterMaskId32b" Type="integer" Group="Filter Parameters" Visible="false"/>
+
+	<RefParameter Comment="1° Identification Filter Mask" DefaultValue="0" Max="65535" Min="0" Name="FilterMaskIdHigh" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_16BIT &amp; FilterMode=CAN_FILTERMODE_IDMASK" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="3° Filter Identification" DefaultValue="0" Max="65535" Min="0" Name="FilterMaskIdHigh" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_16BIT &amp; FilterMode=CAN_FILTERMODE_IDLIST" Diagnostic=""/>
+	</RefParameter>
+	<RefParameter Comment="Identification Filter Mask High [MSB]" DefaultValue="0" Max="65535" Min="0" Name="FilterMaskIdHigh" Type="integer" Group="Filter Parameters" Visible="false"/>
+
+	<RefParameter Comment="2° Identification Filter Mask" DefaultValue="0" Max="65535" Min="0" Name="FilterMaskIdLow" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_16BIT &amp; FilterMode=CAN_FILTERMODE_IDMASK" Diagnostic="Filter need to be Activate"/>
+	</RefParameter>
+	<RefParameter Comment="4° Filter Identification" DefaultValue="0" Max="65535" Min="0" Name="FilterMaskIdLow" Type="integer" Group="Filter Parameters">
+		<Condition Expression="FilterActivation=ENABLE &amp; FilterScale=CAN_FILTERSCALE_16BIT &amp; FilterMode=CAN_FILTERMODE_IDLIST" Diagnostic="Filter need to be Activate"/>
+	</RefParameter>
+	<RefParameter Comment="Identification Filter Mask Low [LSB]" DefaultValue="0" Max="65535" Min="0" Name="FilterMaskIdLow" Type="integer" Group="Filter Parameters" Visible="false"/>
+	-->
+
+    <!-- Filter Fifo : Display only if Filter Activated -->
+    <RefParameter Comment="Filter Fifo Assignment" DefaultValue="CAN_FILTER_FIFO0" Name="FilterFIFOAssignment" Type="list" Group="Filter Parameters">
+        <Condition Expression="FilterActivation=ENABLE" Diagnostic="Filter need to be Activate" />
+        <PossibleValue Comment="Filter Fifo 0" Value="CAN_FILTER_FIFO0" />
+        <PossibleValue Comment="Filter Fifo 1 " Value="CAN_FILTER_FIFO1" />
+    </RefParameter>
+    <RefParameter Comment="Filter Fifo Assignment" DefaultValue="CAN_FILTER_FIFO0" Name="FilterFIFOAssignment" Type="list" Group="Filter Parameters" Visible="false">
+        <PossibleValue Comment="Filter Fifo 0" Value="CAN_FILTER_FIFO0" />
+        <PossibleValue Comment="Filter Fifo 1 " Value="CAN_FILTER_FIFO1" />
+    </RefParameter>
+
+
+    <!--**** 'Advanced/Debug' RefParameters for CAN Modes ****-->
+    <RefParameter Comment="Test Mode" DefaultValue="CAN_MODE_NORMAL" Name="Mode" Type="list" Group="Advanced Parameters">
+        <PossibleValue Comment="Normal" Value="CAN_MODE_NORMAL" />
+        <PossibleValue Comment="Loopback" Value="CAN_MODE_LOOPBACK" />
+        <PossibleValue Comment="Silent" Value="CAN_MODE_SILENT" />
+        <PossibleValue Comment="Loopback combined with Silent" Value="CAN_MODE_SILENT_LOOPBACK" />
+    </RefParameter>
+
+
+    <RefMode Name="canBasic" Abstract="true">
+        <Parameter Name="Prescaler" />
+    </RefMode>
+
+    <!-- RefMode for CAN -->
+    <RefMode Name="CAN_Activate" BaseMode="canBasic">
+        <ConfigForMode>Can_Init</ConfigForMode>
+        <!-- 'Bit Timings' Parameters -->
+        <Parameter Name="CalculateTimeQuantum" />
+        <Parameter Name="BS1" />
+        <Parameter Name="BS2" />
+        <Parameter Name="CalculateTimeBit" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="SJW" />
+        <!-- 'Transmission' Parameters -->
+        <Parameter Name="TTCM" />
+        <Parameter Name="ABOM" />
+        <Parameter Name="AWUM" />
+        <Parameter Name="NART" />
+        <Parameter Name="RFLM" />
+        <Parameter Name="TXFP" />
+        <!-- 'Filter' Parameters  -->
+        <!--
+		<Parameter Name="FilterNumber">
+			<PossibleValue>0</PossibleValue>
+		</Parameter>
+		<Parameter Name="FilterActivation"/>
+		<Parameter Name="FilterScale"/>
+		<Parameter Name="FilterMode"/>
+		<Parameter Name="FilterId32b"/>
+		<Parameter Name="FilterIdHigh"/>
+		<Parameter Name="FilterIdLow"/>
+		<Parameter Name="FilterMaskId32b"/>
+		<Parameter Name="FilterMaskIdHigh"/>
+		<Parameter Name="FilterMaskIdLow"/>
+		<Parameter Name="FilterFIFOAssignment"/>
+		-->
+        <!-- Advanced/Debug Parameters -->
+        <Parameter Name="Mode" />
+    </RefMode>
+
+    <!-- ModeLogicOperator for CAN -->
+    <ModeLogicOperator Name="OR">
+        <Mode Name="CAN_State" UserName="Activated">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="CAN_Activate" UserName="Activated">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="RX" />
+                        <Signal Name="TX" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+            <Semaphore>USB_OR_CAN</Semaphore>
+        </Mode>
+    </ModeLogicOperator>
+
+    <!-- RefSignal for CAN -->
+    <RefSignal IOMode="InputFloatingAndPullUp" Name="RX" />
+    <RefSignal IOMode="AlternateFunctionPushPull" Name="TX" />
+</IP>

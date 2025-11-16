@@ -27,47 +27,92 @@
  *  2025-06-06     xqyjlj       initial version
  */
 
+import type { Expression } from 'expr-eval'
 import { Parser } from 'expr-eval'
 
-/**
- * 计算表达式的值。
- *
- * @param expression 表达式字符串（JavaScript 或 TypeScript）
- * @param context 上下文对象，包含变量的值
- * @returns 表达式的计算结果
- */
-export function evaluateExpression<T>(expression: string, context: Record<string, any>, defaultValue: T | null = null): T | null {
-  try {
-    const exp = Parser.parse(expression)
-    return exp.evaluate(context)
+export class Express {
+  private parser = new Parser({
+    operators: {
+      assignment: false,
+    },
+  })
+
+  private cache: Record<string, Expression> = {}
+
+  constructor() {
+    this.parser.functions.is_empty = Express.isEmpty
   }
-  catch (error) {
-    if (error instanceof TypeError && error.message.includes('Cannot read properties of undefined')) {
-      return defaultValue /*! < 如果是访问未定义属性导致的错误，返回默认值 */
+
+  /**
+   * 计算表达式的值。
+   *
+   * @param expression 表达式字符串（https://github.com/silentmatt/expr-eval）
+   * @param context 上下文对象，包含变量的值
+   * @returns 表达式的计算结果
+   */
+  evaluateExpression<T>(expression: string, context: Record<string, any>, defaultValue: T | null = null): T | null {
+    try {
+      let exp: Expression = this.cache[expression]
+      if (!exp) {
+        exp = this.parser.parse(expression)
+        this.cache[expression] = exp
+      }
+      exp = this.parser.parse(expression)
+      const value = exp.evaluate(context)
+      return value
     }
-    console.error(`Expression: "(${expression})" evaluate error:`, error)
-    return defaultValue
+    catch (error) {
+      if (error instanceof TypeError
+        && error.message.includes('Cannot read properties of undefined')) {
+        return defaultValue /*! < 如果是访问未定义属性导致的错误，返回默认值 */
+      }
+      else if (error instanceof Error && error.message.includes('undefined variable')) {
+        return defaultValue /*! < 如果是访问未定义属性导致的错误，返回默认值 */
+      }
+      console.error(`Expression: "(${expression})" evaluate error:`, error)
+      return defaultValue
+    }
   }
-}
 
-/**
- * 提取表达式中的所有变量名称（支持点分隔的成员访问链）。
- * 比如：a、b.c、foo.bar.baz
- *
- * @param expression 表达式字符串（https://github.com/silentmatt/expr-eval）
- * @returns 排序后的唯一变量名列表
- */
-export function evaluateExtract(expression: string): string[] {
-  try {
-    const exp = Parser.parse(expression)
-    return exp.variables({ withMembers: true })
+  /**
+   * 提取表达式中的所有变量名称（支持点分隔的成员访问链）。
+   * 比如：a、b.c、foo.bar.baz
+   *
+   * @param expression 表达式字符串（https://github.com/silentmatt/expr-eval）
+   * @returns 排序后的唯一变量名列表
+   */
+  evaluateExtract(expression: string): string[] {
+    try {
+      const exp = Parser.parse(expression)
+      const functions = Object.keys(this.parser.functions)
+      let variables = exp.variables({ withMembers: true })
+      variables = variables.filter(v => !functions.includes(v))
+      return variables
+    }
+    catch (error) {
+      console.error(`Expression: "(${expression})" evaluate extract:`, error)
+      return []
+    }
   }
-  catch (error) {
-    console.error(`Expression: "(${expression})" evaluate extract:`, error)
-    return []
-  }
-}
 
-export function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  /**
+   * Escape special characters in a string for use in a regular expression.
+   * @param str The string to escape.
+   * @returns The escaped string.
+   */
+  static escapeRegExp(str: string): string {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  }
+
+  static isEmpty(object: any): boolean {
+    if (
+      (object === null)
+      || (typeof object === 'string' && object.length === 0)
+      || (Array.isArray(object) && object.length === 0)
+      || (typeof object === 'object' && Object.keys(object).length === 0)
+    ) {
+      return true
+    }
+    return false
+  }
 }

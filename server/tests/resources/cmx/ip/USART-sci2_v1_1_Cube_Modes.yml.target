@@ -1,0 +1,1102 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        USART-sci2_v1_1_Cube_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-10     xqyjlj       initial version
+#
+
+name: USART
+parameters:
+  usart_address_t:
+    - condition: configs.${IP_INSTANCE}.usart_wake_up_methode_t == 'addressmark'
+      content:
+        type: integer
+        default: 0
+        max: 15
+        min: 0
+        display:
+          zh-cn: Wake-Up Address
+          en: Wake-Up Address
+        description:
+          zh-cn: Wake-Up Address
+          en: Wake-Up Address
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        max: 0
+        min: 0
+        display:
+          zh-cn: Wake-Up Address
+          en: Wake-Up Address
+        description:
+          zh-cn: Wake-Up Address
+          en: Wake-Up Address
+        visible: false
+        readonly: false
+  usart_baud_rate_t:
+    type: integer
+    default: 115200
+    max: 10500000
+    min: 110
+    display:
+      zh-cn: Baud Rate
+      en: Baud Rate
+    description:
+      zh-cn: Baud Rate
+      en: Baud Rate
+    visible: true
+    readonly: false
+  usart_break_detect_length_t:
+    type: enum
+    values:
+      10_b:
+        comment:
+          zh-cn: 10 Bits
+          en: 10 Bits
+      11_b:
+        comment:
+          zh-cn: 11 Bits
+          en: 11 Bits
+    default: 10_b
+    display:
+      zh-cn: Break Detect Length
+      en: Break Detect Length
+    description:
+      zh-cn: Break Detect Length
+      en: Break Detect Length
+    visible: true
+    readonly: false
+  usart_clk_last_bit_t:
+    - condition: configs.${IP_INSTANCE}.usart_virtual_clock_mode_t == 'smartcard'
+      content:
+        type: enum
+        values:
+          smartcard_lastbit_disable:
+            comment:
+              zh-cn: Disable
+              en: Disable
+          smartcard_lastbit_enable:
+            comment:
+              zh-cn: Enable
+              en: Enable
+        default: smartcard_lastbit_disable
+        display:
+          zh-cn: Clock Last Bit
+          en: Clock Last Bit
+        description:
+          zh-cn: Clock Last Bit
+          en: Clock Last Bit
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'sync'
+      content:
+        type: enum
+        values:
+          usart_lastbit_disable:
+            comment:
+              zh-cn: Disable
+              en: Disable
+          usart_lastbit_enable:
+            comment:
+              zh-cn: Enable
+              en: Enable
+        default: usart_lastbit_disable
+        display:
+          zh-cn: Clock Last Bit
+          en: Clock Last Bit
+        description:
+          zh-cn: Clock Last Bit
+          en: Clock Last Bit
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh-cn: Clock Last Bit
+          en: Clock Last Bit
+        description:
+          zh-cn: Clock Last Bit
+          en: Clock Last Bit
+        visible: false
+        readonly: false
+  usart_clk_phase_t:
+    - condition: configs.${IP_INSTANCE}.usart_virtual_clock_mode_t == 'smartcard'
+      content:
+        type: enum
+        values:
+          smartcard_phase_1_edge:
+            comment:
+              zh-cn: One Edge
+              en: One Edge
+          smartcard_phase_2_edge:
+            comment:
+              zh-cn: Two Edge
+              en: Two Edge
+        default: smartcard_phase_1_edge
+        display:
+          zh-cn: Clock Phase
+          en: Clock Phase
+        description:
+          zh-cn: Clock Phase
+          en: Clock Phase
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'sync'
+      content:
+        type: enum
+        values:
+          usart_phase_1_edge:
+            comment:
+              zh-cn: One Edge
+              en: One Edge
+          usart_phase_2_edge:
+            comment:
+              zh-cn: Two Edge
+              en: Two Edge
+        default: usart_phase_1_edge
+        display:
+          zh-cn: Clock Phase
+          en: Clock Phase
+        description:
+          zh-cn: Clock Phase
+          en: Clock Phase
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh-cn: Clock Phase
+          en: Clock Phase
+        description:
+          zh-cn: Clock Phase
+          en: Clock Phase
+        visible: false
+        readonly: false
+  usart_clk_polarity_t:
+    - condition: configs.${IP_INSTANCE}.usart_virtual_clock_mode_t == 'smartcard'
+      content:
+        type: enum
+        values:
+          smartcard_polarity_low:
+            comment:
+              zh-cn: Low
+              en: Low
+          smartcard_polarity_high:
+            comment:
+              zh-cn: High
+              en: High
+        default: smartcard_polarity_low
+        display:
+          zh-cn: Clock Polarity
+          en: Clock Polarity
+        description:
+          zh-cn: Clock Polarity
+          en: Clock Polarity
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'sync'
+      content:
+        type: enum
+        values:
+          usart_polarity_low:
+            comment:
+              zh-cn: Low
+              en: Low
+          usart_polarity_high:
+            comment:
+              zh-cn: High
+              en: High
+        default: usart_polarity_low
+        display:
+          zh-cn: Clock Polarity
+          en: Clock Polarity
+        description:
+          zh-cn: Clock Polarity
+          en: Clock Polarity
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 0
+        display:
+          zh-cn: Clock Polarity
+          en: Clock Polarity
+        description:
+          zh-cn: Clock Polarity
+          en: Clock Polarity
+        visible: false
+        readonly: false
+  usart_calculate_speed_t:
+    type: string
+    default: '5000000'
+    display:
+      zh-cn: SmartCard Clock Frequency
+      en: SmartCard Clock Frequency
+    description:
+      zh-cn: SmartCard Clock Frequency
+      en: SmartCard Clock Frequency
+    visible: true
+    readonly: false
+  usart_guard_time_t:
+    type: integer
+    default: 0
+    max: 255
+    min: 0
+    display:
+      zh-cn: Guard Time
+      en: Guard Time
+    description:
+      zh-cn: Guard Time
+      en: Guard Time
+    visible: true
+    readonly: false
+  usart_hw_flow_ctl_t:
+    - condition: (configs.${IP_INSTANCE}.usart_ctrl_hardware_flow_control_rs232_t == 'rts_only')
+      content:
+        type: enum
+        values:
+          rts:
+            comment:
+              zh-cn: RTS Only
+              en: RTS Only
+        default: rts
+        display:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.usart_ctrl_hardware_flow_control_rs232_t == 'cts_only')
+      content:
+        type: enum
+        values:
+          cts:
+            comment:
+              zh-cn: CTS Only
+              en: CTS Only
+        default: cts
+        display:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.usart_ctrl_hardware_flow_control_rs232_t == 'cts_rts')
+      content:
+        type: enum
+        values:
+          rts_cts:
+            comment:
+              zh-cn: RTS/CTS
+              en: RTS/CTS
+        default: rts_cts
+        display:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          none:
+            comment:
+              zh-cn: None
+              en: None
+        default: none
+        display:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        description:
+          zh-cn: Hardware Flow Control
+          en: Hardware Flow Control
+        visible: false
+        readonly: false
+  usart_ir_da_mode_t:
+    type: enum
+    values:
+      lowpower:
+        comment:
+          zh-cn: Low Power
+          en: Low Power
+      normal:
+        comment:
+          zh-cn: Normal Power
+          en: Normal Power
+    default: normal
+    display:
+      zh-cn: IrDa Mode
+      en: IrDa Mode
+    description:
+      zh-cn: IrDa Mode
+      en: IrDa Mode
+    visible: true
+    readonly: false
+  usart_mode_t:
+    type: enum
+    values:
+      tx_rx:
+        comment:
+          zh-cn: Receive and Transmit
+          en: Receive and Transmit
+      rx:
+        comment:
+          zh-cn: Receive Only
+          en: Receive Only
+      tx:
+        comment:
+          zh-cn: Transmit Only
+          en: Transmit Only
+    default: tx_rx
+    display:
+      zh-cn: Data Direction
+      en: Data Direction
+    description:
+      zh-cn: Data Direction
+      en: Data Direction
+    visible: true
+    readonly: false
+  usart_nack_state_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: NAck if Parity Error
+      en: NAck if Parity Error
+    description:
+      zh-cn: NAck if Parity Error
+      en: NAck if Parity Error
+    visible: true
+    readonly: false
+  usart_over_sampling_t:
+    - condition: ((configs.${IP_INSTANCE}.usart_virtual_mode_t == 'sync') or (configs.${IP_INSTANCE}.usart_virtual_mode_t ==
+        'irda') or (configs.${IP_INSTANCE}.usart_virtual_mode_t == 'smartcard') or (configs.${IP_INSTANCE}.usart_ctrl_mode_t
+        == 'lin'))
+      content:
+        type: enum
+        values:
+          'null':
+            comment:
+              zh-cn: 'null'
+              en: 'null'
+        default: 'null'
+        display:
+          zh-cn: Over Sampling
+          en: Over Sampling
+        description:
+          zh-cn: Over Sampling
+          en: Over Sampling
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          uart_oversampling_16:
+            comment:
+              zh-cn: 16 Samples
+              en: 16 Samples
+        default: uart_oversampling_16
+        display:
+          zh-cn: Over Sampling
+          en: Over Sampling
+        description:
+          zh-cn: Over Sampling
+          en: Over Sampling
+        visible: true
+        readonly: false
+  usart_parity_t:
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'smartcard'
+      content:
+        type: enum
+        values:
+          even:
+            comment:
+              zh-cn: Even
+              en: Even
+          odd:
+            comment:
+              zh-cn: Odd
+              en: Odd
+        default: even
+        display:
+          zh-cn: Parity
+          en: Parity
+        description:
+          zh-cn: Parity
+          en: Parity
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          none:
+            comment:
+              zh-cn: None
+              en: None
+          even:
+            comment:
+              zh-cn: Even
+              en: Even
+          odd:
+            comment:
+              zh-cn: Odd
+              en: Odd
+        default: none
+        display:
+          zh-cn: Parity
+          en: Parity
+        description:
+          zh-cn: Parity
+          en: Parity
+        visible: true
+        readonly: false
+  usart_prescaler_t:
+    - condition: (configs.${IP_INSTANCE}.usart_ir_da_mode_t == 'normal') and (configs.${IP_INSTANCE}.usart_virtual_mode_t ==
+        'irda')
+      content:
+        type: integer
+        default: 1
+        max: 1
+        min: 1
+        display:
+          zh-cn: Prescaler
+          en: Prescaler
+        description:
+          zh-cn: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.usart_virtual_mode_t == 'smartcard') and
+        (configs.${IP_INSTANCE}.usart_virtual_clock_mode_t == 'smartcard')
+      content:
+        type: integer
+        default: 10
+        max: 31
+        min: 1
+        display:
+          zh-cn: Prescaler
+          en: Prescaler
+        description:
+          zh-cn: The value given in the register is multiplied by 2 to give the division factor of the source clock
+            frequency.
+          en: The value given in the register is multiplied by 2 to give the division factor of the source clock
+            frequency.
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'smartcard'
+      content:
+        type: integer
+        default: 0
+        max: 255
+        min: 1
+        display:
+          zh-cn: Prescaler
+          en: Prescaler
+        description:
+          zh-cn: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: integer
+        default: 10
+        max: 255
+        min: 1
+        display:
+          zh-cn: Prescaler
+          en: Prescaler
+        description:
+          zh-cn: Prescaler
+          en: Prescaler
+        visible: true
+        readonly: false
+  usart_stop_bits_t:
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'sync'
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+          '0_5':
+            comment:
+              zh-cn: '0.5'
+              en: '0.5'
+          '1_5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1'
+        display:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        description:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'asynchronous') and ((false) or (false) or (false))
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+          '0_5':
+            comment:
+              zh-cn: '0.5'
+              en: '0.5'
+          '1_5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1'
+        display:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        description:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'asynchronous') and (false)
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+          '1_5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1'
+        display:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        description:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'smartcard'
+      content:
+        type: enum
+        values:
+          '0_5':
+            comment:
+              zh-cn: '0.5'
+              en: '0.5'
+          '1_5':
+            comment:
+              zh-cn: '1.5'
+              en: '1.5'
+        default: '1_5'
+        display:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        description:
+          zh-cn: Number of Stop Bits. For SmartCard Mode, it's recommended to choose 1.5 Stop Bits (or 0.5 Stop Bit if
+            receiving only).
+          en: Number of Stop Bits. For SmartCard Mode, it's recommended to choose 1.5 Stop Bits (or 0.5 Stop Bit if
+            receiving only).
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          '1':
+            comment:
+              zh-cn: '1'
+              en: '1'
+          '2':
+            comment:
+              zh-cn: '2'
+              en: '2'
+        default: '1'
+        display:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        description:
+          zh-cn: Stop Bits
+          en: Stop Bits
+        visible: true
+        readonly: false
+  usart_virtual_clock_mode_t:
+    type: enum
+    values:
+      sync:
+        comment:
+          zh-cn: ''
+          en: ''
+      smartcard:
+        comment:
+          zh-cn: ''
+          en: ''
+    default: sync
+    display:
+      zh-cn: ''
+      en: ''
+    description:
+      zh-cn: ''
+      en: ''
+    visible: false
+    readonly: false
+  usart_virtual_mode_t:
+    type: enum
+    values:
+      async:
+        comment:
+          zh-cn: ''
+          en: ''
+      sync:
+        comment:
+          zh-cn: ''
+          en: ''
+      irda:
+        comment:
+          zh-cn: ''
+          en: ''
+      smartcard:
+        comment:
+          zh-cn: ''
+          en: ''
+    default: async
+    display:
+      zh-cn: ''
+      en: ''
+    description:
+      zh-cn: ''
+      en: ''
+    visible: false
+    readonly: false
+  usart_wake_up_methode_t:
+    type: enum
+    values:
+      idleline:
+        comment:
+          zh-cn: Idle Line
+          en: Idle Line
+      addressmark:
+        comment:
+          zh-cn: Address Mark
+          en: Address Mark
+    default: idleline
+    display:
+      zh-cn: Wake-Up Method
+      en: Wake-Up Method
+    description:
+      zh-cn: Wake-Up Method
+      en: Wake-Up Method
+    visible: true
+    readonly: false
+  usart_word_length_t:
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'sync'
+      content:
+        type: enum
+        values:
+          8_b:
+            comment:
+              zh-cn: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          9_b:
+            comment:
+              zh-cn: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: 8_b
+        display:
+          zh-cn: Word Length
+          en: Word Length
+        description:
+          zh-cn: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'irda'
+      content:
+        type: enum
+        values:
+          8_b:
+            comment:
+              zh-cn: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          9_b:
+            comment:
+              zh-cn: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: 8_b
+        display:
+          zh-cn: Word Length
+          en: Word Length
+        description:
+          zh-cn: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: configs.${IP_INSTANCE}.usart_virtual_mode_t == 'smartcard'
+      content:
+        type: enum
+        values:
+          9_b:
+            comment:
+              zh-cn: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: 9_b
+        display:
+          zh-cn: Word Length
+          en: Word Length
+        description:
+          zh-cn: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'lin')
+      content:
+        type: enum
+        values:
+          8_b:
+            comment:
+              zh-cn: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+        default: 8_b
+        display:
+          zh-cn: Word Length
+          en: Word Length
+        description:
+          zh-cn: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          8_b:
+            comment:
+              zh-cn: 8 Bits (including Parity)
+              en: 8 Bits (including Parity)
+          9_b:
+            comment:
+              zh-cn: 9 Bits (including Parity)
+              en: 9 Bits (including Parity)
+        default: 8_b
+        display:
+          zh-cn: Word Length
+          en: Word Length
+        description:
+          zh-cn: Word Length
+          en: Word Length
+        visible: true
+        readonly: false
+  usart_ctrl_mode_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      asynchronous:
+        comment:
+          zh-cn: Asynchronous
+          en: Asynchronous
+        signals:
+          ${IP_INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      synchronous:
+        comment:
+          zh-cn: Synchronous
+          en: Synchronous
+        signals:
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPull
+          ${IP_INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      half_duplex_single_wire_mode:
+        comment:
+          zh-cn: Single Wire (Half-Duplex)
+          en: Single Wire (Half-Duplex)
+        signals:
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      multiprocessor_communication:
+        comment:
+          zh-cn: Multiprocessor Communication
+          en: Multiprocessor Communication
+        signals:
+          ${IP_INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      ir_da:
+        comment:
+          zh-cn: IrDA
+          en: IrDA
+        signals:
+          ${IP_INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      lin:
+        comment:
+          zh-cn: LIN
+          en: LIN
+        signals:
+          ${IP_INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      smart_card:
+        comment:
+          zh-cn: SmartCard
+          en: SmartCard
+        signals:
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+      smart_card_with_clock:
+        comment:
+          zh-cn: SmartCard with Card Clock
+          en: SmartCard with Card Clock
+        signals:
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPullUp
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPull
+    default: disable
+    display:
+      zh-cn: MODE
+      en: MODE
+    description:
+      zh-cn: MODE
+      en: MODE
+    visible: true
+    readonly: false
+  usart_ctrl_hardware_flow_control_rs232_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      cts_only:
+        comment:
+          zh-cn: CTS Only
+          en: CTS Only
+        signals:
+          ${IP_INSTANCE}:CTS:
+            mode: GPIO:InputFloatingAndPullUp
+      rts_only:
+        comment:
+          zh-cn: RTS Only
+          en: RTS Only
+        signals:
+          ${IP_INSTANCE}:RTS:
+            mode: GPIO:AlternateFunctionPushPull
+      cts_rts:
+        comment:
+          zh-cn: CTS/RTS
+          en: CTS/RTS
+        signals:
+          ${IP_INSTANCE}:CTS:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:RTS:
+            mode: GPIO:AlternateFunctionPushPull
+    default: disable
+    display:
+      zh-cn: HARDWARE FLOW CONTROL (RS232)
+      en: HARDWARE FLOW CONTROL (RS232)
+    description:
+      zh-cn: HARDWARE FLOW CONTROL (RS232)
+      en: HARDWARE FLOW CONTROL (RS232)
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      usart_ctrl_mode_t: {}
+      usart_ctrl_hardware_flow_control_rs232_t:
+        condition: (configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'asynchronous')
+  configurations:
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'asynchronous'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - async
+            default: async
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_hw_flow_ctl_t: {}
+          usart_mode_t: {}
+          usart_over_sampling_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'synchronous'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - sync
+            default: sync
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_clk_polarity_t: {}
+          usart_clk_phase_t: {}
+          usart_clk_last_bit_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'half_duplex_single_wire_mode'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - async
+            default: async
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_over_sampling_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'multiprocessor_communication'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - async
+            default: async
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_over_sampling_t: {}
+          usart_wake_up_methode_t: {}
+          usart_address_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'ir_da'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - irda
+            default: irda
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_mode_t: {}
+          usart_ir_da_mode_t: {}
+          usart_prescaler_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'lin'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - async
+            default: async
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_break_detect_length_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'smart_card'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - smartcard
+            default: smartcard
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_nack_state_t: {}
+          usart_guard_time_t: {}
+    - condition: configs.${IP_INSTANCE}.usart_ctrl_mode_t == 'smart_card_with_clock'
+      content:
+        refParameters:
+          usart_baud_rate_t: {}
+          usart_virtual_mode_t:
+            values:
+              - smartcard
+            default: smartcard
+          usart_virtual_clock_mode_t:
+            values:
+              - smartcard
+            default: smartcard
+          usart_word_length_t: {}
+          usart_parity_t: {}
+          usart_stop_bits_t: {}
+          usart_mode_t: {}
+          usart_nack_state_t: {}
+          usart_guard_time_t: {}
+          usart_prescaler_t: {}
+          usart_calculate_speed_t: {}
+          usart_clk_polarity_t: {}
+          usart_clk_phase_t: {}
+          usart_clk_last_bit_t: {}
+activated: (configs.${IP_INSTANCE}.usart_ctrl_mode_t != 'disable') or
+  (configs.${IP_INSTANCE}.usart_ctrl_hardware_flow_control_rs232_t != 'disable')

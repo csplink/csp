@@ -30,7 +30,11 @@
 import type ChipPackage from '~/components/ChipPackage.vue'
 import type ClockView from '~/components/ClockView.vue'
 import type PanZoom from '~/components/containers/PanZoom.vue'
+import type CoderGenDumpDialog from '~/components/dialogs/CoderGenDumpDialog.vue'
+import type TitleMenuBar from '~/components/TitleMenuBar.vue'
 
 export type ChipPackageInstance = InstanceType<typeof ChipPackage> & unknown
 export type ClockViewInstance = InstanceType<typeof ClockView> & unknown
 export type PanZoomInstance = InstanceType<typeof PanZoom> & unknown
+export type CoderGenDumpDialogInstance = InstanceType<typeof CoderGenDumpDialog> & unknown
+export type TitleMenuBarInstance = InstanceType<typeof TitleMenuBar> & unknown

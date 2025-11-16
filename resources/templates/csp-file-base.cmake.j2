@@ -20,78 +20,151 @@
  # Date           Author       Notes
  # ------------   ----------   -----------------------------------------------
  # 2025-05-15     xqyjlj       initial version
+ # 2025-10-10     xqyjlj       add cmake-format support
  #}
-##
-## -----------------------------------------------------------------------------
-##  @author:            {{ CSP.author }}
-##  @file:              {{ CSP.file }}
-##  @brief:             {{ CSP.brief }}
-##  @version:           {{ CSP.version }}
-##  @hal:               {{ CSP.project.vendor }}.{{ CSP.project.gen.hal }}@{{ CSP.project.gen.hal_version }}
-##  @project:           {{ CSP.project.name }}
-##  @targetChip:        {{ CSP.project.target_chip }}
-##  @time:              {{ CSP.time }}
-##
-## -----------------------------------------------------------------------------
-##  @attention
-##
-##  Copyright (C) {{ CSP.Year }} csplink software.
-##  All rights reserved.
-##
-## -----------------------------------------------------------------------------
-##
+{#- Macro to strip leading 'v' or 'V' from version string -#}
+{%- macro strip_version_prefix(version) -%}
+{%- if version.startswith('v') or version.startswith('V') -%}
+{{ version[1:] }}
+{%- else -%}
+{{ version }}
+{%- endif -%}
+{%- endmacro -%}
+# cmake-format: off
+#
+# ------------------------------------------------------------------------------
+#  @author:            {{ CSP.author }}
+#  @file:              {{ CSP.file }}
+#  @brief:             {{ CSP.brief }}
+#  @version:           {{ CSP.version }}
+#  @hal:               {{ CSP.project.vendor }}.{{ CSP.project.gen.hal }}@{{ CSP.project.gen.halVersion }}
+#  @project:           {{ CSP.project.name }}
+#  @targetChip:        {{ CSP.project.targetChip }}
+#  @time:              {{ CSP.time }}
+#
+# ------------------------------------------------------------------------------
+#  @attention
+#
+#  Copyright (C) {{ CSP.year }} csplink software.
+#  All rights reserved.
+#
+# ------------------------------------------------------------------------------
+#
+# cmake-format: on
+cmake_minimum_required(VERSION {{ strip_version_prefix(CSP.project.gen.builderVersion) }})
 
-##==< user code begin header, do not change this comment!
+
+# --< user code begin header, do not change this comment!
 {{ CSP.user_code["header"] }}
-##==> user code end header, do not change this comment!
+# --> user code end header, do not change this comment!
 
-############################### project settings ###############################
+# ----------------------------- project settings ----------------------------- #
+{%- set content %}
 {%- block project_settings %}
 {%- endblock %}
-##==< user code begin project settings, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin project settings, do not change this comment!
 {{ CSP.user_code["project settings"] }}
-##==> user code end project settings, do not change this comment!
+# --> user code end project settings, do not change this comment!
 
-################################## toolchains ##################################
+# -------------------------------- toolchains -------------------------------- #
+{%- set content %}
 {%- block toolchains %}
 {%- endblock %}
-##==< user code begin toolchains, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin toolchains, do not change this comment!
 {{ CSP.user_code["toolchains"] }}
-##==> user code end toolchains, do not change this comment!
+# --> user code end toolchains, do not change this comment!
 
-################################# project info #################################
+# ------------------------------- project info ------------------------------- #
+{%- set content %}
 {%- block project_info %}
 {%- endblock %}
-##==< user code begin project info, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin project info, do not change this comment!
 {{ CSP.user_code["project info"] }}
-##==> user code end project info, do not change this comment!
+# --> user code end project info, do not change this comment!
 
-##################################### flags ####################################
+# ----------------------------------- flags ---------------------------------- #
+{%- set content %}
 {%- block flags %}
 {%- endblock %}
-##==< user code begin flags, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin flags, do not change this comment!
 {{ CSP.user_code["flags"] }}
-##==> user code end flags, do not change this comment!
+# --> user code end flags, do not change this comment!
 
-##################################### files ####################################
+# ----------------------------------- files ---------------------------------- #
+{%- set content %}
 {%- block files %}
 {%- endblock %}
-##==< user code begin files, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin files, do not change this comment!
 {{ CSP.user_code["files"] }}
-##==> user code end files, do not change this comment!
+# --> user code end files, do not change this comment!
 {##}
+{%- set content %}
 {%- block includes %}
 {%- endblock %}
-##==< user code begin includes, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin includes, do not change this comment!
 {{ CSP.user_code["includes"] }}
-##==> user code end includes, do not change this comment!
-{##}
-{%- block files_includes %}
-{%- endblock %}
+# --> user code end includes, do not change this comment!
 
-#################################### command ###################################
+# -------------------------------- executable -------------------------------- #
+{%- set content %}
+{%- block executable %}
+{%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin executable, do not change this comment!
+{{ CSP.user_code["executable"] }}
+# --> user code end executable, do not change this comment!
+
+# ---------------------------------- command --------------------------------- #
+{%- set content %}
 {%- block command %}
 {%- endblock %}
-##==< user code begin command, do not change this comment!
+{%- endset %}
+{%- if content.strip() %}
+# cmake-format: off
+{{- content }}
+# cmake-format: on
+{%- endif %}
+# --< user code begin command, do not change this comment!
 {{ CSP.user_code["command"] }}
-##==> user code end command, do not change this comment!
+# --> user code end command, do not change this comment!

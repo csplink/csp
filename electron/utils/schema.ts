@@ -32,6 +32,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import Ajv from 'ajv'
 import yaml from 'yaml'
+import { getResourceFolder } from './settings'
 
 export function validateDataBySchema(folder: string, data: any, schema: string): { result: boolean, errors?: ErrorObject[] | null } {
   const content = fs.readFileSync(path.join(folder, 'database', 'schema', `${schema}.yml`), 'utf-8')
@@ -41,4 +42,38 @@ export function validateDataBySchema(folder: string, data: any, schema: string):
   const result = validate(data)
   const errors = validate.errors
   return { result, errors }
+}
+
+export function getJsonData(file: string, schema: string, _default: any) {
+  if (!fs.existsSync(file)) {
+    console.error(`The file '${file}' is not exits.`)
+    return _default
+  }
+
+  const content = fs.readFileSync(file, 'utf-8')
+  const parsedData = JSON.parse(content)
+  const result = validateDataBySchema(getResourceFolder(), parsedData, schema)
+  if (!result.result) {
+    console.error(`Failed to load file '${file}'`)
+    console.error(result.errors)
+    return _default
+  }
+  return parsedData
+}
+
+export function getYamlData(file: string, schema: string, _default: any) {
+  if (!fs.existsSync(file)) {
+    console.error(`The file '${file}' is not exits.`)
+    return _default
+  }
+
+  const content = fs.readFileSync(file, 'utf-8')
+  const parsedData = yaml.parse(content)
+  const result = validateDataBySchema(getResourceFolder(), parsedData, schema)
+  if (!result.result) {
+    console.error(`Failed to load file '${file}'`)
+    console.error(result.errors)
+    return _default
+  }
+  return parsedData
 }

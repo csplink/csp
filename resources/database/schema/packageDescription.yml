@@ -1,0 +1,87 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        package_description.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+$schema: "http://json-schema.org/draft-07/schema#"
+type: object
+properties:
+  author:
+    type: object
+    properties:
+      name:
+        type: string
+        minLength: 1
+      email:
+        type: string
+        minLength: 1
+        pattern: '^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$'
+      website:
+        type: object
+        properties:
+          blog:
+            type: string
+            minLength: 1
+            pattern: 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+          github:
+            $ref: "#/properties/author/properties/website/properties/blog"
+    required: [name, email, website]
+  name:
+    type: string
+    minLength: 1
+  version:
+    type: string
+  license:
+    type: string
+    minLength: 1
+  type:
+    enum: [hal, toolchains]
+  vendor:
+    type: string
+    minLength: 1
+  url:
+    type: object
+    properties:
+      en:
+        $ref: "#/properties/author/properties/website/properties/blog"
+    required: [en]
+  vendorUrl:
+    $ref: "#/properties/url"
+  description:
+    type: object
+    properties:
+      en:
+        type: string
+        minLength: 1
+    required: [en]
+  support:
+    $ref: "#/properties/author/properties/email"
+required:
+  - author
+  - name
+  - version
+  - license
+  - type
+  - vendor
+  - url
+  - vendorUrl
+  - description
+  - support

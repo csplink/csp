@@ -21,7 +21,7 @@ documents:
         en: STM32H7 Series overview presentation
         zh-cn: null
       size: 8 MB
-      version: '1.0'
+      version: "1.0"
     stm32-stm8_embedded_software_solutions.pdf:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32-stm8_embedded_software_solutions.pdf
@@ -31,7 +31,7 @@ documents:
         en: STM32 and STM8 embedded software solutions
         zh-cn: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
     stm32_eval-tools_portfolio:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32_eval-tools_portfolio.pdf
@@ -41,7 +41,7 @@ documents:
         en: STM32 Development Boards Portfolio
         zh-cn: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
     stm32_stm8_functional-safety-packages:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32_stm8_functional-safety-packages.pdf
@@ -51,7 +51,7 @@ documents:
         en: Microcontrollers Functional Safety Packages
         zh-cn: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
     stm32-stm8_software_development_tools.pdf:
       url:
         en: https://www.st.com/resource/en/product_presentation/stm32-stm8_software_development_tools.pdf
@@ -61,7 +61,7 @@ documents:
         en: STM32 and STM8 software development tools
         zh-cn: null
       size: 1 MB
-      version: '04.2020'
+      version: "04.2020"
     microcontrollers-stm32-family-overview:
       url:
         en: https://www.st.com/resource/en/product_presentation/microcontrollers-stm32-family-overview.pdf
@@ -71,7 +71,7 @@ documents:
         en: Microcontrollers and microprocessors STM32 Family Overview
         zh-cn: null
       size: 8 MB
-      version: '1.0'
+      version: "1.0"
     microcontrollers-stm32h7rs-lines-overview:
       url:
         en: https://www.st.com/resource/en/product_presentation/microcontrollers-stm32h7rs-lines-overview.pdf
@@ -81,7 +81,7 @@ documents:
         en: Microcontrollers STM32H7R/S High Performance lines product overview presentation
         zh-cn: null
       size: 4 MB
-      version: '1.0'
+      version: "1.0"
   flyers:
     flstm32nucleo:
       url:
@@ -92,7 +92,7 @@ documents:
         en: STM32 Nucleo boards - Unified scalable offering
         zh-cn: null
       size: 1 MB
-      version: '1.0'
+      version: "1.0"
     flstm32trust:
       url:
         en: https://www.st.com/resource/en/flyer/flstm32trust.pdf
@@ -102,7 +102,7 @@ documents:
         en: STM32Trust An ecosystem for embedded security
         zh-cn: null
       size: 170 KB
-      version: '1.0'
+      version: "1.0"
     flstm32f7h7:
       url:
         en: https://www.st.com/resource/en/flyer/flstm32f7h7.pdf
@@ -112,7 +112,7 @@ documents:
         en: STM32F7x0 & STM32H750 High-performance Value lines
         zh-cn: null
       size: 470 KB
-      version: '19.08'
+      version: "19.08"
     flstm32h7vl:
       url:
         en: https://www.st.com/resource/en/flyer/flstm32h7vl.pdf
@@ -122,7 +122,7 @@ documents:
         en: STM32H750 &amp; STM32H7B0 High-performance Value lines
         zh-cn: null
       size: 406 KB
-      version: '20.01'
+      version: "20.01"
     flstm32h7rs:
       url:
         en: https://www.st.com/resource/en/flyer/flstm32h7rs.pdf
@@ -133,7 +133,7 @@ documents:
           \ & secure bootflash MCU"
         zh-cn: null
       size: 2 MB
-      version: '1.0'
+      version: "1.0"
   datasheets:
     DM00496677:
       url:
@@ -145,7 +145,7 @@ documents:
           and analog interfaces, crypto
         zh-cn: null
       size: 19 MB
-      version: '7.0'
+      version: "7.0"
   brochures:
     brstm32h7:
       url:
@@ -156,7 +156,7 @@ documents:
         en: STM32H7 series Powered by Arm® Cortex®-M7
         zh-cn: null
       size: 1 MB
-      version: '20.09'
+      version: "20.09"
   application_notes:
     CD00004479:
       url:
@@ -167,7 +167,7 @@ documents:
         en: EMC design guide for STM8, STM32 and legacy MCUs
         zh-cn: null
       size: 689 KB
-      version: '4.0'
+      version: "4.0"
     CD00167594:
       url:
         en: https://www.st.com/resource/en/application_note/an2606-stm32-microcontroller-system-memory-boot-mode-stmicroelectronics.pdf
@@ -177,7 +177,7 @@ documents:
         en: STM32 microcontroller system memory boot mode
         zh-cn: null
       size: 6 MB
-      version: '64.0'
+      version: "64.0"
     CD00259245:
       url:
         en: https://www.st.com/resource/en/application_note/an3126-audio-and-waveform-generation-using-the-dac-in-stm32-products-stmicroelectronics.pdf
@@ -187,7 +187,7 @@ documents:
         en: Audio and waveform generation using the DAC in STM32 products
         zh-cn: null
       size: 868 KB
-      version: '4.0'
+      version: "4.0"
     CD00264342:
       url:
         en: https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -197,7 +197,7 @@ documents:
         en: USART protocol used in the STM32 bootloader
         zh-cn: null
       size: 1 MB
-      version: '18.0'
+      version: "18.0"
     CD00264379:
       url:
         en: https://www.st.com/resource/en/application_note/an3156-usb-dfu-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -207,7 +207,7 @@ documents:
         en: USB DFU protocol used in the STM32 bootloader
         zh-cn: null
       size: 364 KB
-      version: '16.0'
+      version: "16.0"
     DM00072315:
       url:
         en: https://www.st.com/resource/en/application_note/an4221-i2c-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -217,7 +217,7 @@ documents:
         en: I2C protocol used in the STM32 bootloader
         zh-cn: null
       size: 1 MB
-      version: '13.0'
+      version: "13.0"
     DM00081379:
       url:
         en: https://www.st.com/resource/en/application_note/an4286-spi-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -227,7 +227,7 @@ documents:
         en: SPI protocol used in the STM32 bootloader
         zh-cn: null
       size: 920 KB
-      version: '14.0'
+      version: "14.0"
     DM00121475:
       url:
         en: https://www.st.com/resource/en/application_note/an4539-hrtim-cookbook-stmicroelectronics.pdf
@@ -237,7 +237,7 @@ documents:
         en: HRTIM cookbook
         zh-cn: null
       size: 1 MB
-      version: '4.0'
+      version: "4.0"
     DM00129215:
       url:
         en: https://www.st.com/resource/en/application_note/an4566-extending-the-dac-performance-of-stm32-microcontrollers-stmicroelectronics.pdf
@@ -247,7 +247,7 @@ documents:
         en: Extending the DAC performance of STM32 microcontrollers
         zh-cn: null
       size: 379 KB
-      version: '4.0'
+      version: "4.0"
     DM00160482:
       url:
         en: https://www.st.com/resource/en/application_note/an4655-virtually-increasing-the-number-of-serial-communication-peripherals-in-stm32-applications-stmicroelectronics.pdf
@@ -258,7 +258,7 @@ documents:
           STM32 applications
         zh-cn: null
       size: 338 KB
-      version: '1.1'
+      version: "1.1"
     DM00220769:
       url:
         en: https://www.st.com/resource/en/application_note/an4750-handling-of-soft-errors-in-stm32-applications-stmicroelectronics.pdf
@@ -268,7 +268,7 @@ documents:
         en: Handling of soft errors in STM32 applications
         zh-cn: null
       size: 410 KB
-      version: '2.1'
+      version: "2.1"
     DM00236305:
       url:
         en: https://www.st.com/resource/en/application_note/an4776-generalpurpose-timer-cookbook-for-stm32-microcontrollers-stmicroelectronics.pdf
@@ -278,7 +278,7 @@ documents:
         en: General-purpose timer cookbook for STM32 microcontrollers
         zh-cn: null
       size: 2 MB
-      version: '3.0'
+      version: "3.0"
     DM00257177:
       url:
         en: https://www.st.com/resource/en/application_note/an4803-highspeed-si-simulations-using-ibis-and-boardlevel-simulations-using-hyperlynx-si-on-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -289,7 +289,7 @@ documents:
           HyperLynx® SI on STM32 MCUs and MPUs
         zh-cn: null
       size: 3 MB
-      version: '3.0'
+      version: "3.0"
     DM00272913:
       url:
         en: https://www.st.com/resource/en/application_note/an4839-level-1-cache-on-stm32f7-series-and-stm32h7-series-stmicroelectronics.pdf
@@ -299,7 +299,7 @@ documents:
         en: Level 1 cache on STM32F7 Series and STM32H7 Series
         zh-cn: null
       size: 151 KB
-      version: '2.0'
+      version: "2.0"
     DM00306681:
       url:
         en: https://www.st.com/resource/en/application_note/an4891-stm32h72x-stm32h73x-and-singlecore-stm32h74x75x-system-architecture-and-performance-stmicroelectronics.pdf
@@ -310,7 +310,7 @@ documents:
           and performance
         zh-cn: null
       size: 1 MB
-      version: '6.0'
+      version: "6.0"
     DM00354244:
       url:
         en: https://www.st.com/resource/en/application_note/an4989-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf
@@ -320,7 +320,7 @@ documents:
         en: STM32 microcontroller debug toolbox
         zh-cn: null
       size: 7 MB
-      version: '3.0'
+      version: "3.0"
     DM00354333:
       url:
         en: https://www.st.com/resource/en/application_note/an4990-getting-started-with-sigmadelta-digital-interface-on-applicable-stm32-microcontrollers-stmicroelectronics.pdf
@@ -331,7 +331,7 @@ documents:
           microcontrollers
         zh-cn: null
       size: 1 MB
-      version: '1.0'
+      version: "1.0"
     DM00380469:
       url:
         en: https://www.st.com/resource/en/application_note/an5027-interfacing-pdm-digital-microphones-using-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -341,7 +341,7 @@ documents:
         en: Interfacing PDM digital microphones using STM32 MCUs and MPUs
         zh-cn: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00393275:
       url:
         en: https://www.st.com/resource/en/application_note/an5033-stm32cube-mcu-package-examples-for-stm32h7-series-stmicroelectronics.pdf
@@ -351,7 +351,7 @@ documents:
         en: STM32Cube MCU Package examples for STM32H7 Series
         zh-cn: null
       size: 646 KB
-      version: '7.0'
+      version: "7.0"
     DM00431633:
       url:
         en: https://www.st.com/resource/en/application_note/an5073-receiving-spdif-audio-stream-with-the-stm32f4f7h7-series-stmicroelectronics.pdf
@@ -361,7 +361,7 @@ documents:
         en: Receiving S/PDIF audio stream with the STM32F4/F7/H7 Series
         zh-cn: null
       size: 989 KB
-      version: '2.0'
+      version: "2.0"
     DM00514974:
       url:
         en: https://www.st.com/resource/en/application_note/an5188-external-memory-code-execution-on-stm32f7x0-value-line-stm32h750-value-line-stm32h7b0-value-line-and-stm32h730-value-line-mcus-stmicroelectronics.pdf
@@ -372,7 +372,7 @@ documents:
           line, STM32H7B0 Value line and STM32H730 Value line MCUs
         zh-cn: null
       size: 639 KB
-      version: '3.0'
+      version: "3.0"
     DM00609692:
       url:
         en: https://www.st.com/resource/en/application_note/an5312-migration-from-revy-to-revv-for-stm32h743753-and-stm32h750-value-line-microcontrollers-stmicroelectronics.pdf
@@ -383,7 +383,7 @@ documents:
           microcontrollers
         zh-cn: null
       size: 334 KB
-      version: '1.0'
+      version: "1.0"
     DM00628458:
       url:
         en: https://www.st.com/resource/en/application_note/an5354-getting-started-with-the-stm32h7-series-mcu-16bit-adc-stmicroelectronics.pdf
@@ -393,17 +393,17 @@ documents:
         en: Getting started with the STM32H7 Series MCU 16-bit ADC
         zh-cn: null
       size: 422 KB
-      version: '1.0'
+      version: "1.0"
     DM00227538:
       url:
         en: https://www.st.com/resource/en/application_note/an4760-quadspi-interface-on-stm32-microcontrollers-and-microprocessors--stmicroelectronics.pdf
         zh-cn: null
       type: pdf
       description:
-        en: 'Quad-SPI interface on STM32 microcontrollers and microprocessors '
+        en: "Quad-SPI interface on STM32 microcontrollers and microprocessors "
         zh-cn: null
       size: 3 MB
-      version: '4.0'
+      version: "4.0"
     DM00315319:
       url:
         en: https://www.st.com/resource/en/application_note/an4899-stm32-microcontroller-gpio-hardware-settings-and-lowpower-consumption-stmicroelectronics.pdf
@@ -413,7 +413,7 @@ documents:
         en: STM32 microcontroller GPIO hardware settings and low-power consumption
         zh-cn: null
       size: 677 KB
-      version: '3.0'
+      version: "3.0"
     DM00768710:
       url:
         en: https://www.st.com/resource/en/application_note/an5612-esd-protection-of-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -423,7 +423,7 @@ documents:
         en: ESD protection of STM32 MCUs and MPUs
         zh-cn: null
       size: 2 MB
-      version: '1.1'
+      version: "1.1"
     DM00355687:
       url:
         en: https://www.st.com/resource/en/application_note/an4991-how-to-wake-up-an-stm32-microcontroller-from-lowpower-mode-with-the-usart-or-the-lpuart-stmicroelectronics.pdf
@@ -434,7 +434,7 @@ documents:
           or the LPUART
         zh-cn: null
       size: 464 KB
-      version: '6.0'
+      version: "6.0"
     DM00272912:
       url:
         en: https://www.st.com/resource/en/application_note/an4838-introduction-to-memory-protection-unit-management-on-stm32-mcus-stmicroelectronics.pdf
@@ -444,7 +444,7 @@ documents:
         en: Introduction to memory protection unit management on STM32 MCUs
         zh-cn: null
       size: 519 KB
-      version: '8.0'
+      version: "8.0"
     DM00947488:
       url:
         en: https://www.st.com/resource/en/application_note/an5927-i3c-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
@@ -454,7 +454,7 @@ documents:
         en: I3C protocol used in the STM32 bootloader
         zh-cn: null
       size: 675 KB
-      version: '2.0'
+      version: "2.0"
     DM00296349:
       url:
         en: https://www.st.com/resource/en/application_note/an4879-introduction-to-usb-hardware-and-pcb-guidelines-using-stm32-mcus-stmicroelectronics.pdf
@@ -464,7 +464,7 @@ documents:
         en: Introduction to USB hardware and PCB guidelines using STM32 MCUs
         zh-cn: null
       size: 1 MB
-      version: '9.0'
+      version: "9.0"
     DM00536349:
       url:
         en: https://www.st.com/resource/en/application_note/an5225-introduction-to-usb-typec-power-delivery-for-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -474,18 +474,18 @@ documents:
         en: Introduction to USB Type-C® Power Delivery for STM32 MCUs and MPUs
         zh-cn: null
       size: 2 MB
-      version: '7.0'
+      version: "7.0"
     DM00623136:
       url:
         en: https://www.st.com/resource/en/application_note/an5342--how-to-use-error-correction-code-ecc-management-for-internal-memories-protection-on-stm32-mcus-stmicroelectronics.pdf
         zh-cn: null
       type: pdf
       description:
-        en: ' How to use error correction code (ECC) management for internal memories
-          protection on STM32 MCUs'
+        en: " How to use error correction code (ECC) management for internal memories
+          protection on STM32 MCUs"
         zh-cn: null
       size: 566 KB
-      version: '6.0'
+      version: "6.0"
     DM00337873:
       url:
         en: https://www.st.com/resource/en/application_note/an4938-getting-started-with-stm32h74xig-and-stm32h75xig-mcu-hardware-development-stmicroelectronics.pdf
@@ -495,7 +495,7 @@ documents:
         en: Getting started with STM32H74xI/G and STM32H75xI/G MCU hardware development
         zh-cn: null
       size: 1 MB
-      version: '7.0'
+      version: "7.0"
     DM00722433:
       url:
         en: https://www.st.com/resource/en/application_note/an5537-how-to-use-adc-oversampling-techniques-to-improve-signaltonoise-ratio-on-stm32-mcus-stmicroelectronics.pdf
@@ -506,7 +506,7 @@ documents:
           on STM32 MCUs
         zh-cn: null
       size: 879 KB
-      version: '1.0'
+      version: "1.0"
     DM00395696:
       url:
         en: https://www.st.com/resource/en/application_note/an5036-guidelines-for-thermal-management-on-stm32-applications-stmicroelectronics.pdf
@@ -516,7 +516,7 @@ documents:
         en: Guidelines for thermal management on STM32 applications
         zh-cn: null
       size: 5 MB
-      version: '7.0'
+      version: "7.0"
     DM00355688:
       url:
         en: https://www.st.com/resource/en/application_note/an4992-introduction-to-secure-firmware-install-sfi-for-stm32-mcus-stmicroelectronics.pdf
@@ -526,7 +526,7 @@ documents:
         en: Introduction to secure firmware install (SFI) for STM32 MCUs
         zh-cn: null
       size: 2 MB
-      version: '16.0'
+      version: "16.0"
     DM00660346:
       url:
         en: https://www.st.com/resource/en/application_note/an5405-how-to-use-fdcan-bootloader-protocol-on-stm32-mcus-stmicroelectronics.pdf
@@ -536,7 +536,7 @@ documents:
         en: How to use FDCAN bootloader protocol on STM32 MCUs
         zh-cn: null
       size: 720 KB
-      version: '6.0'
+      version: "6.0"
     DM00806050:
       url:
         en: https://www.st.com/resource/en/application_note/an5690-how-to-use-vrefbuf-peripheral-on-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -546,7 +546,7 @@ documents:
         en: How to use VREFBUF peripheral on STM32 MCUs and MPUs
         zh-cn: null
       size: 787 KB
-      version: '4.0'
+      version: "4.0"
     DM00073853:
       url:
         en: https://www.st.com/resource/en/application_note/an4230-introduction-to-random-number-generation-validation-using-the-nist-statistical-test-suite-for-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -557,7 +557,7 @@ documents:
           test suite for STM32 MCUs and MPUs
         zh-cn: null
       size: 1 MB
-      version: '11.0'
+      version: "11.0"
     CD00221665:
       url:
         en: https://www.st.com/resource/en/application_note/an2867-guidelines-for-oscillator-design-on-stm8afals-and-stm32-mcusmpus-stmicroelectronics.pdf
@@ -567,7 +567,7 @@ documents:
         en: Guidelines for oscillator design on STM8AF/AL/S and STM32 MCUs/MPUs
         zh-cn: null
       size: 3 MB
-      version: '22.0'
+      version: "22.0"
     DM00042534:
       url:
         en: https://www.st.com/resource/en/application_note/an4013-introduction-to-timers-for-stm32-mcus-stmicroelectronics.pdf
@@ -577,7 +577,7 @@ documents:
         en: Introduction to timers for STM32 MCUs
         zh-cn: null
       size: 682 KB
-      version: '12.0'
+      version: "12.0"
     DM00080497:
       url:
         en: https://www.st.com/resource/en/application_note/an4277-how-to-use-pwm-shutdown-for-motor-control-and-digital-power-conversion-on-stm32-mcus-stmicroelectronics.pdf
@@ -588,7 +588,7 @@ documents:
           on STM32 MCUs
         zh-cn: null
       size: 1 MB
-      version: '7.0'
+      version: "7.0"
     DM00151811:
       url:
         en: https://www.st.com/resource/en/application_note/an4635-how-to-optimize-lpuart-power-consumption-on-stm32-mcus-stmicroelectronics.pdf
@@ -598,7 +598,7 @@ documents:
         en: How to optimize LPUART power consumption on STM32 MCUs
         zh-cn: null
       size: 1 MB
-      version: '9.0'
+      version: "9.0"
     DM00226326:
       url:
         en: https://www.st.com/resource/en/application_note/an4759-introduction-to-using-the-hardware-realtime-clock-rtc-and-the-tamper-management-unit-tamp-with-stm32-mcus-stmicroelectronics.pdf
@@ -609,7 +609,7 @@ documents:
           management unit (TAMP) with STM32 MCUs
         zh-cn: null
       size: 2 MB
-      version: '9.0'
+      version: "9.0"
     DM00287603:
       url:
         en: https://www.st.com/resource/en/application_note/an4861-introduction-to-lcdtft-display-controller-ltdc-on-stm32-mcus-stmicroelectronics.pdf
@@ -619,7 +619,7 @@ documents:
         en: Introduction to LCD-TFT display controller (LTDC) on STM32 MCUs
         zh-cn: null
       size: 3 MB
-      version: '5.0'
+      version: "5.0"
     DM00327191:
       url:
         en: https://www.st.com/resource/en/application_note/an4908-getting-started-with-usart-automatic-baud-rater-detection-for-stm32-mcus-stmicroelectronics.pdf
@@ -629,7 +629,7 @@ documents:
         en: Getting started with USART automatic baud rater detection for STM32 MCUs
         zh-cn: null
       size: 999 KB
-      version: '7.0'
+      version: "7.0"
     DM00338361:
       url:
         en: https://www.st.com/resource/en/application_note/an4943-how-to-use-chromart-accelerator-to-refresh-an-lcdtft-display-on-stm32-mcus-stmicroelectronics.pdf
@@ -640,7 +640,7 @@ documents:
           MCUs
         zh-cn: null
       size: 501 KB
-      version: '4.0'
+      version: "4.0"
     DM00493651:
       url:
         en: https://www.st.com/resource/en/application_note/an5156-introduction-to-security-for-stm32-mcus-stmicroelectronics.pdf
@@ -650,7 +650,7 @@ documents:
         en: Introduction to security for STM32 MCUs
         zh-cn: null
       size: 4 MB
-      version: '10.0'
+      version: "10.0"
     DM00525510:
       url:
         en: https://www.st.com/resource/en/application_note/an5200-getting-started-with-stm32h7-mcus-sdmmc-host-controller-stmicroelectronics.pdf
@@ -660,7 +660,7 @@ documents:
         en: Getting started with STM32H7 MCUs SDMMC host controller
         zh-cn: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00535045:
       url:
         en: https://www.st.com/resource/en/application_note/an5224-introduction-to-dmamux-for-stm32-mcus-stmicroelectronics.pdf
@@ -670,7 +670,7 @@ documents:
         en: Introduction to DMAMUX for STM32 MCUs
         zh-cn: null
       size: 373 KB
-      version: '6.0'
+      version: "6.0"
     DM00711428:
       url:
         en: https://www.st.com/resource/en/application_note/an5507-how-to-use-crc-to-check-the-integrity-of-the-internal-flash-memory-on-stm32h7-mcus-stmicroelectronics.pdf
@@ -681,7 +681,7 @@ documents:
           STM32H7 MCUs
         zh-cn: null
       size: 314 KB
-      version: '2.0'
+      version: "2.0"
     DM01000754:
       url:
         en: https://www.st.com/resource/en/application_note/an5996-migrating-from-stm32h730-and-stm32h750-to-stm32h7rx7sx-mcus-stmicroelectronics.pdf
@@ -691,7 +691,7 @@ documents:
         en: Migrating from STM32H730 and STM32H750 to STM32H7Rx/7Sx MCUs
         zh-cn: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00725181:
       url:
         en: https://www.st.com/resource/en/application_note/an5543-guidelines-for-enhanced-spi-communication-on-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -701,7 +701,7 @@ documents:
         en: Guidelines for enhanced SPI communication on STM32 MCUs and MPUs
         zh-cn: null
       size: 496 KB
-      version: '4.0'
+      version: "4.0"
     DM00622045:
       url:
         en: https://www.st.com/resource/en/application_note/an5337-guidelines-for-estimating-stm32h7-mcus-lifetime-stmicroelectronics.pdf
@@ -711,7 +711,7 @@ documents:
         en: Guidelines for estimating STM32H7 MCUs lifetime
         zh-cn: null
       size: 378 KB
-      version: '3.0'
+      version: "3.0"
     DM00356635:
       url:
         en: https://www.st.com/resource/en/application_note/an4996-how-to-use-the-jpeg-codec-peripheral-on-stm32-mcus-stmicroelectronics.pdf
@@ -721,7 +721,7 @@ documents:
         en: How to use the JPEG codec peripheral on STM32 MCUs
         zh-cn: null
       size: 1 MB
-      version: '4.0'
+      version: "4.0"
     DM00625700:
       url:
         en: https://www.st.com/resource/en/application_note/an5348-introduction-to-fdcan-peripherals-for-stm32-mcus-stmicroelectronics.pdf
@@ -731,7 +731,7 @@ documents:
         en: Introduction to FDCAN peripherals for STM32 MCUs
         zh-cn: null
       size: 862 KB
-      version: '5.0'
+      version: "5.0"
     CD00211314:
       url:
         en: https://www.st.com/resource/en/application_note/cd00211314-how-to-optimize-the-adc-accuracy-in-the-stm32-mcus-stmicroelectronics.pdf
@@ -741,7 +741,7 @@ documents:
         en: How to optimize the ADC accuracy in the STM32 MCUs
         zh-cn: null
       size: 1 MB
-      version: '10.0'
+      version: "10.0"
     CD00173820:
       url:
         en: https://www.st.com/resource/en/application_note/an2639-soldering-recommendations-and-package-information-for-leadfree-ecopack2-mcus-and-mpus-stmicroelectronics.pdf
@@ -752,7 +752,7 @@ documents:
           MCUs and MPUs
         zh-cn: null
       size: 537 KB
-      version: '8.0'
+      version: "8.0"
     DM00373474:
       url:
         en: https://www.st.com/resource/en/application_note/an5020-introduction-to-digital-camera-interface-dcmi-for-stm32-mcus-stmicroelectronics.pdf
@@ -762,7 +762,7 @@ documents:
         en: Introduction to digital camera interface (DCMI) for STM32 MCUs
         zh-cn: null
       size: 3 MB
-      version: '4.0'
+      version: "4.0"
   application_notes_for_related_tools_&_software:
     DM00089670:
       url:
@@ -773,7 +773,7 @@ documents:
         en: Getting started with STemWin Library
         zh-cn: null
       size: 1 MB
-      version: '5.0'
+      version: "5.0"
     DM00105610:
       url:
         en: https://www.st.com/resource/en/application_note/an4435-guidelines-for-obtaining-ulcsaiec-607301603351-class-b-certification-in-any-stm32-application-stmicroelectronics.pdf
@@ -784,7 +784,7 @@ documents:
           in any STM32 application
         zh-cn: null
       size: 1 MB
-      version: '10.0'
+      version: "10.0"
     DM00161366:
       url:
         en: https://www.st.com/resource/en/application_note/an4657-stm32-inapplication-programming-iap-using-the-usart-stmicroelectronics.pdf
@@ -794,7 +794,7 @@ documents:
         en: STM32 in-application programming (IAP) using the USART
         zh-cn: null
       size: 332 KB
-      version: '3.0'
+      version: "3.0"
     DM00273990:
       url:
         en: https://www.st.com/resource/en/application_note/an4841-digital-signal-processing-for-stm32-microcontrollers-using-cmsis-stmicroelectronics.pdf
@@ -804,7 +804,7 @@ documents:
         en: Digital signal processing for STM32 microcontrollers using CMSIS
         zh-cn: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00306681:
       url:
         en: https://www.st.com/resource/en/application_note/an4891-stm32h72x-stm32h73x-and-singlecore-stm32h74x75x-system-architecture-and-performance-stmicroelectronics.pdf
@@ -815,7 +815,7 @@ documents:
           and performance
         zh-cn: null
       size: 1 MB
-      version: '6.0'
+      version: "6.0"
     DM00360392:
       url:
         en: https://www.st.com/resource/en/application_note/an5001-stm32cube-expansion-package-for-stm32h7-series-mdma-stmicroelectronics.pdf
@@ -825,7 +825,7 @@ documents:
         en: STM32Cube Expansion Package for STM32H7 Series MDMA
         zh-cn: null
       size: 219 KB
-      version: '3.0'
+      version: "3.0"
     DM00368706:
       url:
         en: https://www.st.com/resource/en/application_note/an5014-stm32h7x3-smart-power-management-expansion-package-for-stm32cube-stmicroelectronics.pdf
@@ -835,7 +835,7 @@ documents:
         en: STM32H7x3 smart power management Expansion Package for STM32Cube
         zh-cn: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00393275:
       url:
         en: https://www.st.com/resource/en/application_note/an5033-stm32cube-mcu-package-examples-for-stm32h7-series-stmicroelectronics.pdf
@@ -845,7 +845,7 @@ documents:
         en: STM32Cube MCU Package examples for STM32H7 Series
         zh-cn: null
       size: 646 KB
-      version: '7.0'
+      version: "7.0"
     DM00414677:
       url:
         en: https://www.st.com/resource/en/application_note/an5056-integration-guide-for-the-xcubesbsfu-stm32cube-expansion-package-stmicroelectronics.pdf
@@ -855,7 +855,7 @@ documents:
         en: Integration guide for the X-CUBE-SBSFU STM32Cube Expansion Package
         zh-cn: null
       size: 8 MB
-      version: '8.0'
+      version: "8.0"
     DM00629854:
       url:
         en: https://www.st.com/resource/en/application_note/an5360-getting-started-with-projects-based-on-the-stm32mp1-series-in-stm32cubeide-stmicroelectronics.pdf
@@ -865,7 +865,7 @@ documents:
         en: Getting started with projects based on the STM32MP1 Series in STM32CubeIDE
         zh-cn: null
       size: 737 KB
-      version: '1.0'
+      version: "1.0"
     DM00629855:
       url:
         en: https://www.st.com/resource/en/application_note/an5361-getting-started-with-projects-based-on-dualcore-stm32h7-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf
@@ -876,7 +876,7 @@ documents:
           in STM32CubeIDE
         zh-cn: null
       size: 1 MB
-      version: '4.0'
+      version: "4.0"
     DM00652038:
       url:
         en: https://www.st.com/resource/en/application_note/an5394-getting-started-with-projects-based-on-the-stm32l5-series-in-stm32cubeide-stmicroelectronics.pdf
@@ -886,7 +886,7 @@ documents:
         en: Getting started with projects based on the STM32L5 Series in STM32CubeIDE
         zh-cn: null
       size: 1 MB
-      version: '3.0'
+      version: "3.0"
     DM00663511:
       url:
         en: https://www.st.com/resource/en/application_note/an5418-how-to-build-a-simple-usbpd-sink-application-with-stm32cubemx-stmicroelectronics.pdf
@@ -896,7 +896,7 @@ documents:
         en: How to build a simple USB-PD sink application with STM32CubeMX
         zh-cn: null
       size: 11 MB
-      version: '5.0'
+      version: "5.0"
     DM00670808:
       url:
         en: https://www.st.com/resource/en/application_note/an5426-migrating-graphics-middleware-projects-from-stm32cubemx-540-to-stm32cubemx-550-stmicroelectronics.pdf
@@ -907,7 +907,7 @@ documents:
           5.5.0
         zh-cn: null
       size: 479 KB
-      version: '1.0'
+      version: "1.0"
     DM00736854:
       url:
         en: https://www.st.com/resource/en/application_note/an5564-getting-started-with-projects-based-on-dualcore-stm32wl-microcontrollers-in-stm32cubeide-stmicroelectronics.pdf
@@ -918,7 +918,7 @@ documents:
           in STM32CubeIDE
         zh-cn: null
       size: 1 MB
-      version: '2.0'
+      version: "2.0"
     DM00290631:
       url:
         en: https://www.st.com/resource/en/application_note/an4865-lowpower-timer-lptim-applicative-use-cases-on-stm32-mcus-and-mpus-stmicroelectronics.pdf
@@ -928,7 +928,7 @@ documents:
         en: Low-power timer (LPTIM) applicative use cases on STM32 MCUs and MPUs
         zh-cn: null
       size: 278 KB
-      version: '7.0'
+      version: "7.0"
     DM00811430:
       url:
         en: https://www.st.com/resource/en/application_note/an5698-adapting-the-xcubestl-functional-safety-package-for-stm32-iec-61508-compliant-to-other-safety-standards-stmicroelectronics.pdf
@@ -939,7 +939,7 @@ documents:
           compliant) to other safety standards
         zh-cn: null
       size: 243 KB
-      version: '2.0'
+      version: "2.0"
     DM00826986:
       url:
         en: https://www.st.com/resource/en/application_note/an5731-stm32cubemx-and-stm32cubeide-threadsafe-solution-stmicroelectronics.pdf
@@ -949,7 +949,7 @@ documents:
         en: STM32CubeMX and STM32CubeIDE thread-safe solution
         zh-cn: null
       size: 700 KB
-      version: '1.0'
+      version: "1.0"
     DM00686079:
       url:
         en: https://www.st.com/resource/en/application_note/an5450-stm32h7a37b3-lines-and-stm32h7b0-value-line-smart-power-management-expansion-package-for-stm32cube-stmicroelectronics.pdf
@@ -960,7 +960,7 @@ documents:
           Package for STM32Cube
         zh-cn: null
       size: 2 MB
-      version: '1.0'
+      version: "1.0"
     DM00118362:
       url:
         en: https://www.st.com/resource/en/application_note/an4502-stm32-smbuspmbus-expansion-package-for-stm32cube-stmicroelectronics.pdf
@@ -970,7 +970,7 @@ documents:
         en: STM32 SMBus/PMBus™ expansion package for STM32Cube™
         zh-cn: null
       size: 1 MB
-      version: '4.0'
+      version: "4.0"
     DM00965631:
       url:
         en: https://www.st.com/resource/en/application_note/an5952-how-to-use-cmake-in-stm32cubeide-stmicroelectronics.pdf
@@ -980,7 +980,7 @@ documents:
         en: How to use CMake in STM32CubeIDE
         zh-cn: null
       size: 648 KB
-      version: '1.0'
+      version: "1.0"
     DM00151811:
       url:
         en: https://www.st.com/resource/en/application_note/an4635-how-to-optimize-lpuart-power-consumption-on-stm32-mcus-stmicroelectronics.pdf
@@ -990,7 +990,7 @@ documents:
         en: How to optimize LPUART power consumption on STM32 MCUs
         zh-cn: null
       size: 1 MB
-      version: '9.0'
+      version: "9.0"
     DM00413494:
       url:
         en: https://www.st.com/resource/en/application_note/an5054-how-to-perform-secure-programming-using-stm32cubeprogrammer-stmicroelectronics.pdf
@@ -1000,7 +1000,7 @@ documents:
         en: How to perform secure programming using STM32CubeProgrammer
         zh-cn: null
       size: 7 MB
-      version: '17.0'
+      version: "17.0"
     DM01063297:
       url:
         en: https://www.st.com/resource/en/application_note/an6088-how-to-use-mce-for-encryptiondecryption-on-stm32-mcus-stmicroelectronics.pdf
@@ -1010,7 +1010,7 @@ documents:
         en: How to use MCE for encryption/decryption on STM32 MCUs
         zh-cn: null
       size: 550 KB
-      version: '1.0'
+      version: "1.0"
     DM01114150:
       url:
         en: https://www.st.com/resource/en/application_note/an6179-how-to-integrate-the-stl-firmware-into-a-time-critical-user-application-stmicroelectronics.pdf
@@ -1020,7 +1020,7 @@ documents:
         en: How to integrate the STL firmware into a time critical user application
         zh-cn: null
       size: 1 MB
-      version: '1.0'
+      version: "1.0"
   design_notes_&_tips:
     DM00528068:
       url:
@@ -1031,7 +1031,7 @@ documents:
         en: MIcrophone array beamforming in the PCM and PDM domain
         zh-cn: null
       size: 3 MB
-      version: '1.0'
+      version: "1.0"
   programming_manuals:
     DM00237416:
       url:
@@ -1042,7 +1042,7 @@ documents:
         en: STM32F7 Series and STM32H7 Series Cortex®-M7 processor programming manual
         zh-cn: null
       size: 5 MB
-      version: '5.0'
+      version: "5.0"
   references:
     DM00314099:
       url:
@@ -1054,7 +1054,7 @@ documents:
           32-bit MCUs
         zh-cn: null
       size: 38 MB
-      version: '8.0'
+      version: "8.0"
   technical_notes_&_articles:
     DM00103228:
       url:
@@ -1066,7 +1066,7 @@ documents:
           use
         zh-cn: null
       size: 1 MB
-      version: '4.0'
+      version: "4.0"
     DM00156958:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1204-tape-and-reel-shipping-media-for-stm32-microcontrollers-in-bga-packages-stmicroelectronics.pdf
@@ -1076,7 +1076,7 @@ documents:
         en: Tape and reel shipping media for STM32 microcontrollers in BGA packages
         zh-cn: null
       size: 745 KB
-      version: '2.1'
+      version: "2.1"
     DM00156961:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1205-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-fpn-packages-stmicroelectronics.pdf
@@ -1087,7 +1087,7 @@ documents:
           packages
         zh-cn: null
       size: 753 KB
-      version: '3.0'
+      version: "3.0"
     DM00156963:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1206-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-qfp-packages-stmicroelectronics.pdf
@@ -1098,7 +1098,7 @@ documents:
           packages
         zh-cn: null
       size: 830 KB
-      version: '3.0'
+      version: "3.0"
     DM00157969:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1207-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-so-packages-stmicroelectronics.pdf
@@ -1109,7 +1109,7 @@ documents:
           packages
         zh-cn: null
       size: 755 KB
-      version: '1.0'
+      version: "1.0"
     DM00158090:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1208-tape-and-reel-shipping-media-for-stm8-and-stm32-microcontrollers-in-tssop-and-ssop-packages-stmicroelectronics.pdf
@@ -1120,7 +1120,7 @@ documents:
           and SSOP packages
         zh-cn: null
       size: 743 KB
-      version: '1.0'
+      version: "1.0"
     DM00926061:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1433-reference-device-marking-schematics-for-stm32-microcontrollers-and-microprocessors-stmicroelectronics.pdf
@@ -1130,18 +1130,18 @@ documents:
         en: Reference device marking schematics for STM32 microcontrollers and microprocessors
         zh-cn: null
       size: 1 MB
-      version: '5.0'
+      version: "5.0"
     DM01011952:
       url:
         en: https://www.st.com/resource/en/technical_note/tn1489-security-bulletin-tn1489stpsirt-physical-attacks-on-stm32-and-stm32cube-firmware-stmicroelectronics.pdf
         zh-cn: null
       type: pdf
       description:
-        en: 'Security bulletin TN1489-ST-PSIRT: Physical attacks on STM32 and STM32Cube
-          firmware'
+        en: "Security bulletin TN1489-ST-PSIRT: Physical attacks on STM32 and STM32Cube
+          firmware"
         zh-cn: null
       size: 157 KB
-      version: '1.0'
+      version: "1.0"
   bsdl_files:
     stm32h7_bsdl:
       url:
@@ -1152,7 +1152,7 @@ documents:
         en: STM32H7 Boundary Scan Decription Language (BSDL) files
         zh-cn: null
       size: 453 KB
-      version: '4.0'
+      version: "4.0"
   ibis_models:
     stm32h7_ibis:
       url:
@@ -1163,7 +1163,7 @@ documents:
         en: STM32H7 IBIS models
         zh-cn: null
       size: 33 MB
-      version: '5.0'
+      version: "5.0"
   system_view_description:
     stm32h7-svd:
       url:
@@ -1174,7 +1174,7 @@ documents:
         en: STM32H7 System View Description
         zh-cn: null
       size: 4 MB
-      version: '1.9'
+      version: "1.9"
   user_manuals:
     DM00773159:
       url:
@@ -1185,7 +1185,7 @@ documents:
         en: STM32H7 dual-core series safety manual
         zh-cn: null
       size: 4 MB
-      version: '2.0'
+      version: "2.0"
     DM00456785:
       url:
         en: https://www.st.com/resource/en/user_manual/um2331-stm32h7-singlecore-series-safety-manual-stmicroelectronics.pdf
@@ -1195,7 +1195,7 @@ documents:
         en: STM32H7 single-core series safety manual
         zh-cn: null
       size: 7 MB
-      version: '9.0'
+      version: "9.0"
     DM01018418:
       url:
         en: https://www.st.com/resource/en/user_manual/um3252-stm32h7-series-ulcsaiec-607301603351-selftest-library-user-guide-stmicroelectronics.pdf
@@ -1205,7 +1205,7 @@ documents:
         en: STM32H7 series UL/CSA/IEC 60730-1/60335-1 self-test library user guide
         zh-cn: null
       size: 2 MB
-      version: '1.0'
+      version: "1.0"
   errata:
     DM00368411:
       url:
@@ -1216,7 +1216,7 @@ documents:
         en: STM32H742xI/G, STM32H743xI/G, STM32H750xB, STM32H753xI device errata
         zh-cn: null
       size: 2 MB
-      version: '13.0'
+      version: "13.0"
   security_bulletin:
     DM01127359:
       url:
@@ -1227,12 +1227,12 @@ documents:
         en: EUCLEAK protection statement for STMicroelectronics certified products
         zh-cn: null
       size: 111 KB
-      version: '1.0'
+      version: "1.0"
 hals:
   - csp_hal_stm32h7
 hasPowerPad: false
 illustrate:
-  en: ''
+  en: ""
   zh-cn: null
 introduction:
   en: High-performance and DSP with DP-FPU, Arm Cortex-M7 MCU with 128KBytes of Flash
@@ -1243,412 +1243,412 @@ modules:
   Analog:
     ADC1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     ADC2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     ADC3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     COMP1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     COMP2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     DAC1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     OPAMP1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     OPAMP2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     VREFBUF:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   System Core:
     CORTEX_M7:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     IWDG1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     RAMECC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     RCC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SYS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     WWDG1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     GPIO:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     DMA:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     BDMA:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     MDMA:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     NVIC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Computing:
     CRC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     DFSDM1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Security:
     CRYP:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     HASH:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     RNG:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Multimedia:
     DCMI:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     DMA2D:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     HDMI_CEC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2S1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2S2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2S3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     JPEG:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LTDC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SAI1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SAI2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SAI3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SAI4:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPDIFRX1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Debug:
     DEBUG:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Connectivity:
     ETH:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     FDCAN1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     FDCAN2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     FMC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2C1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2C2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2C3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     I2C4:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LPUART1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     MDIOS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     QUADSPI:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SDMMC1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SDMMC2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPI1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPI2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPI3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPI4:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPI5:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SPI6:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     SWPMI1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     UART4:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     UART5:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     UART7:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     UART8:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USART1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USART2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USART3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USART6:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USB_OTG_FS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USB_OTG_HS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Misc:
     FATFS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     FREERTOS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LIBJPEG:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LWIP:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     MBEDTLS:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     PDM2PCM:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USB_DEVICE:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     USB_HOST:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     MEMORYMAP:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Timers:
     HRTIM:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LPTIM1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LPTIM2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LPTIM3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LPTIM4:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     LPTIM5:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     RTC:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM1:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM2:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM3:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM4:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM5:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM6:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM7:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM8:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM12:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM13:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM14:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM15:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM16:
       description:
-        en: ''
+        en: ""
         zh-cn: null
     TIM17:
       description:
-        en: ''
+        en: ""
         zh-cn: null
   Power:
     PWR:
       description:
-        en: ''
+        en: ""
         zh-cn: null
 package: TFBGA240
 url:
@@ -1666,8 +1666,8 @@ builder:
       - armcc
       - armclang
 linker:
-  defaultHeapSize: '0x200'
-  defaultStackSize: '0x400'
+  defaultHeapSize: "0x200"
+  defaultStackSize: "0x400"
 pins:
   VSS-1:
     position: A1

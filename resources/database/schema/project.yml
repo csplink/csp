@@ -21,7 +21,7 @@
 # 2025-05-15     xqyjlj       initial version
 #
 
-$schema: 'http://json-schema.org/draft-07/schema#'
+$schema: "http://json-schema.org/draft-07/schema#"
 type: object
 properties:
   version:
@@ -50,9 +50,9 @@ properties:
       linker:
         type: object
         properties:
-          defaultHeapSize:
+          heapSize:
             type: integer
-          defaultStackSize:
+          stackSize:
             type: integer
       useToolchainsPackage:
         type: boolean
@@ -69,5 +69,5 @@ properties:
         type: string
       toolchainsVersion:
         type: string
-    required: [hal, builder, toolchains]
+    required: [hal, builder, builderVersion, toolchains]
 required: [version, name, vendor, targetChip]

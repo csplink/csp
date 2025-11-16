@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V3.0" IPType="service" IpGroup="" Name="NVIC" Version="STM32F103G" xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+    <About>NVIC: Nested Vectored Interrupt Controller</About>
+    <RefParameter Comment="Priority Group" DefaultValue="NVIC_PRIORITYGROUP_4" Group="" Name="PriorityGroup" Type="list">
+        <PossibleValue Comment="4 bits for pre-emption priority 0 bits for subpriority" Semaphore="NVIC_PRIORITYGROUP_4" Value="NVIC_PRIORITYGROUP_4" />
+        <Condition Diagnostic="4 bits for pre-emption priority if FreeRTOS in use" Expression="S_FREERTOS" />
+    </RefParameter>
+    <RefParameter Comment="Priority Group" DefaultValue="NVIC_PRIORITYGROUP_4" Group="" Name="PriorityGroup" Type="list">
+        <PossibleValue Comment="0 bits for pre-emption priority 4 bits for subpriority" Semaphore="NVIC_PRIORITYGROUP_0" Value="NVIC_PRIORITYGROUP_0" />
+        <PossibleValue Comment="1 bits for pre-emption priority 3 bits for subpriority" Semaphore="NVIC_PRIORITYGROUP_1" Value="NVIC_PRIORITYGROUP_1" />
+        <PossibleValue Comment="2 bits for pre-emption priority 2 bits for subpriority" Semaphore="NVIC_PRIORITYGROUP_2" Value="NVIC_PRIORITYGROUP_2" />
+        <PossibleValue Comment="3 bits for pre-emption priority 1 bits for subpriority" Semaphore="NVIC_PRIORITYGROUP_3" Value="NVIC_PRIORITYGROUP_3" />
+        <PossibleValue Comment="4 bits for pre-emption priority 0 bits for subpriority" Semaphore="NVIC_PRIORITYGROUP_4" Value="NVIC_PRIORITYGROUP_4" />
+        <Condition Diagnostic="" Expression="!S_FREERTOS" />
+    </RefParameter>
+    <RefParameter Comment="Preemption Priority" DefaultValue="0" Group="" Max="0" Min="0" Name="PreemptionPriority" Type="integer">
+        <Condition Diagnostic="0 bits for pre-emption priority" Expression="NVIC_PRIORITYGROUP_0" />
+    </RefParameter>
+    <RefParameter Comment="Preemption Priority" DefaultValue="0" Group="" Max="1" Min="0" Name="PreemptionPriority" Type="integer">
+        <Condition Diagnostic="1 bits for pre-emption priority" Expression="NVIC_PRIORITYGROUP_1" />
+    </RefParameter>
+    <RefParameter Comment="Preemption Priority" DefaultValue="0" Group="" Max="3" Min="0" Name="PreemptionPriority" Type="integer">
+        <Condition Diagnostic="2 bits for pre-emption priority" Expression="NVIC_PRIORITYGROUP_2" />
+    </RefParameter>
+    <RefParameter Comment="Preemption Priority" DefaultValue="0" Group="" Max="7" Min="0" Name="PreemptionPriority" Type="integer">
+        <Condition Diagnostic="3 bits for pre-emption priority" Expression="NVIC_PRIORITYGROUP_3" />
+    </RefParameter>
+    <RefParameter Comment="Preemption Priority" DefaultValue="0" Group="" Max="15" Min="0" Name="PreemptionPriority" Type="integer">
+        <Condition Diagnostic="4 bits for pre-emption priority" Expression="NVIC_PRIORITYGROUP_4" />
+    </RefParameter>
+    <RefParameter Comment="Sub Priority" DefaultValue="0" Group="" Max="15" Min="0" Name="SubPriority" Type="integer">
+        <Condition Diagnostic="4 bits for subpriority" Expression="NVIC_PRIORITYGROUP_0" />
+    </RefParameter>
+    <RefParameter Comment="Sub Priority" DefaultValue="0" Group="" Max="7" Min="0" Name="SubPriority" Type="integer">
+        <Condition Diagnostic="3 bits for subpriority" Expression="NVIC_PRIORITYGROUP_1" />
+    </RefParameter>
+    <RefParameter Comment="Sub Priority" DefaultValue="0" Group="" Max="3" Min="0" Name="SubPriority" Type="integer">
+        <Condition Diagnostic="2 bits for subpriority" Expression="NVIC_PRIORITYGROUP_2" />
+    </RefParameter>
+    <RefParameter Comment="Sub Priority" DefaultValue="0" Group="" Max="1" Min="0" Name="SubPriority" Type="integer">
+        <Condition Diagnostic="1 bits for subpriority" Expression="NVIC_PRIORITYGROUP_3" />
+    </RefParameter>
+    <RefParameter Comment="Sub Priority" DefaultValue="0" Group="" Max="0" Min="0" Name="SubPriority" Type="integer">
+        <Condition Diagnostic="0 bits for subpriority" Expression="NVIC_PRIORITYGROUP_4" />
+    </RefParameter>
+    <RefParameter Comment="Interrupt Table" DefaultValue="" Group="" Name="IRQn" Type="list" Visible="false">
+        <PossibleValue Comment="Non maskable interrupt" Value="NonMaskableInt_IRQn:N,IF_HAL::HAL_RCC_NMI_IRQHandler:CSSEnabled" />
+        <PossibleValue Comment="Hard fault interrupt" Value="HardFault_IRQn:N,W1:::" />
+        <PossibleValue Comment="Memory management fault" Value="MemoryManagement_IRQn:Y,W1:::" />
+        <PossibleValue Comment="Prefetch fault, memory access fault" Value="BusFault_IRQn:Y,W1:::" />
+        <PossibleValue Comment="Undefined instruction or illegal state" Value="UsageFault_IRQn:Y,W1:::" />
+        <PossibleValue Comment="System service call via SWI instruction" Value="SVCall_IRQn:Y,RTOS::NONE:" />
+        <PossibleValue Comment="Debug monitor" Value="DebugMonitor_IRQn:Y::NONE:" />
+        <PossibleValue Comment="Pendable request for system service" Value="PendSV_IRQn:Y,RTOS::NONE:" />
+        <PossibleValue Comment="System tick timer" Value="SysTick_IRQn:Y:::" />
+        <PossibleValue Comment="Window watchdog interrupt" Value="WWDG_IRQn:Y:WWDG:HAL_WWDG_IRQHandler:" />
+        <PossibleValue Comment="PVD interrupt through EXTI line 16" Value="PVD_IRQn:Y,NO_ARG::HAL_PWR_PVD_IRQHandler:" />
+        <PossibleValue Comment="Tamper interrupt" Condition="RTC_TAMPER_INTERRUPT" Diagnostic="" Value="TAMPER_IRQn:Y,HAL:RTC:HAL_RTCEx_TamperIRQHandler:" />
+        <PossibleValue Comment="RTC global interrupt" Value="RTC_IRQn:Y,HAL:RTC:HAL_RTCEx_RTCIRQHandler:" />
+        <PossibleValue Comment="Flash global interrupt" Value="FLASH_IRQn:Y,NO_ARG::HAL_FLASH_IRQHandler:" />
+        <PossibleValue Comment="RCC global interrupt" Value="RCC_IRQn:Y:RCC:NONE:" />
+        <PossibleValue Comment="EXTI line0 interrupt" Value="EXTI0_IRQn:Y,EXTI:EXTI0:HAL_GPIO_EXTI_IRQHandler:0,0" />
+        <PossibleValue Comment="EXTI line1 interrupt" Value="EXTI1_IRQn:Y,EXTI:EXTI1:HAL_GPIO_EXTI_IRQHandler:1,1" />
+        <PossibleValue Comment="EXTI line2 interrupt" Value="EXTI2_IRQn:Y,EXTI:EXTI2:HAL_GPIO_EXTI_IRQHandler:2,2" />
+        <PossibleValue Comment="EXTI line3 interrupt" Value="EXTI3_IRQn:Y,EXTI:EXTI3:HAL_GPIO_EXTI_IRQHandler:3,3" />
+        <PossibleValue Comment="EXTI line4 interrupt" Value="EXTI4_IRQn:Y,EXTI:EXTI4:HAL_GPIO_EXTI_IRQHandler:4,4" />
+        <PossibleValue Comment="DMA1 channel1 global interrupt" Value="DMA1_Channel1_IRQn:Y,DMAL0:DMA:DMA1:1,1" />
+        <PossibleValue Comment="DMA1 channel2 global interrupt" Value="DMA1_Channel2_IRQn:Y,DMAL0:DMA:DMA1:2,2" />
+        <PossibleValue Comment="DMA1 channel3 global interrupt" Value="DMA1_Channel3_IRQn:Y,DMAL0:DMA:DMA1:3,3" />
+        <PossibleValue Comment="DMA1 channel4 global interrupt" Value="DMA1_Channel4_IRQn:Y,DMAL0:DMA:DMA1:4,4" />
+        <PossibleValue Comment="DMA1 channel5 global interrupt" Value="DMA1_Channel5_IRQn:Y,DMAL0:DMA:DMA1:5,5" />
+        <PossibleValue Comment="DMA1 channel6 global interrupt" Value="DMA1_Channel6_IRQn:Y,DMAL0:DMA:DMA1:6,6" />
+        <PossibleValue Comment="DMA1 channel7 global interrupt" Value="DMA1_Channel7_IRQn:Y,DMAL0:DMA:DMA1:7,7" />
+        <PossibleValue Comment="ADC1 and ADC2 global interrupts" Condition="ADC2_Exist" Diagnostic="static" Value="ADC1_2_IRQn:Y,2V1:ADC1,ADC2:ADC,ADC:" />
+        <PossibleValue Comment="ADC1 global interrupt" Condition="!ADC2_Exist" Diagnostic="static" Value="ADC1_IRQn:Y:ADC1:HAL_ADC_IRQHandler:" />
+        <PossibleValue Comment="USB high priority or CAN TX interrupts" Condition="CAN_Exist" Diagnostic="static" Value="USB_HP_CAN1_TX_IRQn:Y,2V1:CAN,USB:CAN,PCD:can,pcd_USB_FS" />
+        <PossibleValue Comment="USB low priority or CAN RX0 interrupts" Condition="CAN_Exist" Diagnostic="static" Value="USB_LP_CAN1_RX0_IRQn:Y,2V1:CAN,USB:CAN,PCD:can,pcd_USB_FS" />
+        <PossibleValue Comment="USB high priority interrupt" Condition="!CAN_Exist" Diagnostic="static" Value="USB_HP_IRQn:Y:USB:HAL_PCD_IRQHandler:" />
+        <PossibleValue Comment="USB low priority interrupt" Condition="!CAN_Exist" Diagnostic="static" Value="USB_LP_IRQn:Y:USB:HAL_PCD_IRQHandler:" />
+        <PossibleValue Comment="CAN RX1 interrupt" Condition="CAN_Exist" Diagnostic="static" Value="CAN1_RX1_IRQn:Y:CAN:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN SCE interrupt" Condition="CAN_Exist" Diagnostic="static" Value="CAN1_SCE_IRQn:Y:CAN:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN1 TX interrupt" Condition="CAN1_Exist" Diagnostic="static" Value="CAN1_TX_IRQn:Y:CAN1:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN1 RX0 interrupt" Condition="CAN1_Exist" Diagnostic="static" Value="CAN1_RX0_IRQn:Y:CAN1:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN1 RX1 interrupt" Condition="CAN1_Exist" Diagnostic="static" Value="CAN1_RX1_IRQn:Y:CAN1:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN1 SCE interrupt" Condition="CAN1_Exist" Diagnostic="static" Value="CAN1_SCE_IRQn:Y:CAN1:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="EXTI line[9:5] interrupts" Value="EXTI9_5_IRQn:Y,EXTI:EXTI5,EXTI6,EXTI7,EXTI8,EXTI9:HAL_GPIO_EXTI_IRQHandler:5,9" />
+        <PossibleValue Comment="TIM1 break interrupt and TIM9 global interrupt" Condition="TIM1_Exist&amp;TIM9_Exist" Diagnostic="static" Value="TIM1_BRK_TIM9_IRQn:Y,2V1:TIM1,TIM9:TIM,TIM:" />
+        <PossibleValue Comment="TIM1 update interrupt and TIM10 global interrupt" Condition="TIM1_Exist&amp;TIM10_Exist" Diagnostic="static" Value="TIM1_UP_TIM10_IRQn:Y,2V1:TIM1,TIM10:TIM,TIM:" />
+        <PossibleValue Comment="TIM1 trigger and commutation interrupts and TIM11 global interrupt" Condition="TIM1_Exist&amp;TIM11_Exist" Diagnostic="static" Value="TIM1_TRG_COM_TIM11_IRQn:Y,2V1:TIM1,TIM11:TIM,TIM:" />
+        <PossibleValue Comment="TIM1 break interrupt" Condition="!TIM9_Exist" Diagnostic="static" Value="TIM1_BRK_IRQn:Y:TIM1:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM1 update interrupt" Condition="!TIM10_Exist" Diagnostic="static" Value="TIM1_UP_IRQn:Y:TIM1:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM1 trigger and commutation interrupts" Condition="!TIM11_Exist" Diagnostic="static" Value="TIM1_TRG_COM_IRQn:Y:TIM1:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM9 global interrupt" Condition="!TIM1_Exist" Diagnostic="static" Value="TIM9_IRQn:Y:TIM9:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM10 global interrupt" Condition="!TIM1_Exist" Diagnostic="static" Value="TIM10_IRQn:Y:TIM10:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM11 global interrupt" Condition="!TIM1_Exist" Diagnostic="static" Value="TIM11_IRQn:Y:TIM11:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM1 capture compare interrupt" Value="TIM1_CC_IRQn:Y:TIM1:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM2 global interrupt" Value="TIM2_IRQn:Y:TIM2:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM3 global interrupt" Value="TIM3_IRQn:Y:TIM3:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM4 global interrupt" Value="TIM4_IRQn:Y:TIM4:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="I2C1 event interrupt" Condition="!I2C1_SMBUSF1_Enable" Diagnostic="" Value="I2C1_EV_IRQn:Y,1H:I2C1:I2C_EV,SMBUS_EV:" />
+        <PossibleValue Comment="I2C1 error interrupt" Condition="!I2C1_SMBUSF1_Enable" Diagnostic="" Value="I2C1_ER_IRQn:Y,1H:I2C1:I2C_ER,SMBUS_ER:" />
+        <PossibleValue Comment="I2C2 event interrupt" Condition="!I2C2_SMBUSF1_Enable" Diagnostic="" Value="I2C2_EV_IRQn:Y,1H:I2C2:I2C_EV,SMBUS_EV:" />
+        <PossibleValue Comment="I2C2 error interrupt" Condition="!I2C2_SMBUSF1_Enable" Diagnostic="" Value="I2C2_ER_IRQn:Y,1H:I2C2:I2C_ER,SMBUS_ER:" />
+        <PossibleValue Comment="SPI1 global interrupt" Value="SPI1_IRQn:Y:SPI1::" />
+        <PossibleValue Comment="SPI2 global interrupt" Value="SPI2_IRQn:Y:SPI2,I2S2::" />
+        <PossibleValue Comment="USART1 global interrupt" Value="USART1_IRQn:Y:USART1::" />
+        <PossibleValue Comment="USART2 global interrupt" Value="USART2_IRQn:Y:USART2::" />
+        <PossibleValue Comment="USART3 global interrupt" Value="USART3_IRQn:Y:USART3::" />
+        <PossibleValue Comment="EXTI line[15:10] interrupts" Value="EXTI15_10_IRQn:Y,EXTI:EXTI10,EXTI11,EXTI12,EXTI13,EXTI14,EXTI15:HAL_GPIO_EXTI_IRQHandler:10,15" />
+        <PossibleValue Comment="RTC alarm interrupt through EXTI line 17" Condition="RTC_ALARM_INTERRUPT" Diagnostic="" Value="RTC_Alarm_IRQn:Y,HAL:RTC:HAL_RTC_AlarmIRQHandler:" />
+        <PossibleValue Comment="USB wake-up interrupt through EXTI line 18" Value="USBWakeUp_IRQn:Y:USB:HAL_PCD_IRQHandler:" />
+        <PossibleValue Comment="USB OTG FS wake-up interrupt through EXTI line 18" Value="OTG_FS_WKUP_IRQn:Y,USB:USB_OTG_FS::" />
+        <PossibleValue Comment="TIM8 break interrupt and TIM12 global interrupt" Condition="TIM8_Exist&amp;TIM12_Exist" Diagnostic="static" Value="TIM8_BRK_TIM12_IRQn:Y,2V1:TIM8,TIM12:TIM,TIM:" />
+        <PossibleValue Comment="TIM8 update interrupt and TIM13 global interrupt" Condition="TIM8_Exist&amp;TIM13_Exist" Diagnostic="static" Value="TIM8_UP_TIM13_IRQn:Y,2V1:TIM8,TIM13:TIM,TIM:" />
+        <PossibleValue Comment="TIM8 trigger and commutation interrupts and TIM14 global interrupt" Condition="TIM8_Exist&amp;TIM14_Exist" Diagnostic="static" Value="TIM8_TRG_COM_TIM14_IRQn:Y,2V1:TIM8,TIM14:TIM,TIM:" />
+        <PossibleValue Comment="TIM8 break interrupt" Condition="!TIM12_Exist" Diagnostic="static" Value="TIM8_BRK_IRQn:Y:TIM8:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM8 update interrupt" Condition="!TIM13_Exist" Diagnostic="static" Value="TIM8_UP_IRQn:Y:TIM8:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM8 trigger and commutation interrupts" Condition="!TIM14_Exist" Diagnostic="static" Value="TIM8_TRG_COM_IRQn:Y:TIM8:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM12 global interrupt" Condition="!TIM8_Exist" Diagnostic="static" Value="TIM12_IRQn:Y:TIM12:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM13 global interrupt" Condition="!TIM8_Exist" Diagnostic="static" Value="TIM13_IRQn:Y:TIM13:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM14 global interrupt" Condition="!TIM8_Exist" Diagnostic="static" Value="TIM14_IRQn:Y:TIM14:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM8 capture compare interrupt" Value="TIM8_CC_IRQn:Y:TIM8:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="ADC3 global interrupt" Value="ADC3_IRQn:Y:ADC3:HAL_ADC_IRQHandler:" />
+        <PossibleValue Comment="FSMC global interrupt" Value="FSMC_IRQn:Y:FSMC::" />
+        <PossibleValue Comment="SDIO global interrupt" Value="SDIO_IRQn:Y:SDIO::" />
+        <PossibleValue Comment="TIM5 global interrupt" Value="TIM5_IRQn:Y:TIM5:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="SPI3 global interrupt" Value="SPI3_IRQn:Y:SPI3,I2S3::" />
+        <PossibleValue Comment="UART4 global interrupt" Value="UART4_IRQn:Y:UART4::" />
+        <PossibleValue Comment="UART5 global interrupt" Value="UART5_IRQn:Y:UART5::" />
+        <PossibleValue Comment="TIM6 global interrupt" Value="TIM6_IRQn:Y:TIM6:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="TIM7 global interrupt" Value="TIM7_IRQn:Y:TIM7:HAL_TIM_IRQHandler:" />
+        <PossibleValue Comment="DMA2 channel1 global interrupt" Value="DMA2_Channel1_IRQn:Y,DMAL0:DMA:DMA2:1,1" />
+        <PossibleValue Comment="DMA2 channel2 global interrupt" Value="DMA2_Channel2_IRQn:Y,DMAL0:DMA:DMA2:2,2" />
+        <PossibleValue Comment="DMA2 channel3 global interrupt" Value="DMA2_Channel3_IRQn:Y,DMAL0:DMA:DMA2:3,3" />
+        <PossibleValue Comment="DMA2 channel4 and channel5 global interrupts" Condition="!CAN2_Exist" Diagnostic="static" Value="DMA2_Channel4_5_IRQn:Y,DMAL0:DMA:DMA2:4,5" />
+        <PossibleValue Comment="DMA2 channel4 global interrupt" Condition="CAN2_Exist" Diagnostic="static" Value="DMA2_Channel4_IRQn:Y,DMAL0:DMA:DMA2:4,4" />
+        <PossibleValue Comment="DMA2 channel5 global interrupt" Condition="CAN2_Exist" Diagnostic="static" Value="DMA2_Channel5_IRQn:Y,DMAL0:DMA:DMA2:5,5" />
+        <PossibleValue Comment="Ethernet global interrupt" Value="ETH_IRQn:Y:ETH:HAL_ETH_IRQHandler:" />
+        <PossibleValue Comment="Ethernet wake-up interrupt through EXTI line 19" Value="ETH_WKUP_IRQn:Y:ETH:HAL_ETH_IRQHandler:" />
+        <PossibleValue Comment="CAN2 TX interrupt" Value="CAN2_TX_IRQn:Y:CAN2:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN2 RX0 interrupt" Value="CAN2_RX0_IRQn:Y:CAN2:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN2 RX1 interrupt" Value="CAN2_RX1_IRQn:Y:CAN2:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="CAN2 SCE interrupt" Value="CAN2_SCE_IRQn:Y:CAN2:HAL_CAN_IRQHandler:" />
+        <PossibleValue Comment="USB OTG FS global interrupt" Value="OTG_FS_IRQn:Y,USB:USB_OTG_FS::" />
+    </RefParameter>
+</IP>

@@ -32,7 +32,7 @@ import { defineStore } from 'pinia'
 export const useTitleMenuStore = defineStore('TitleMenu', {
   state: () => {
     return {
-      show: true,
+      show: false,
     }
   },
 })

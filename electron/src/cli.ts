@@ -29,15 +29,11 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import { cac } from 'cac'
-import { setProjectPath } from '../database'
+import { Command } from 'commander'
+import pkg from '../../package.json'
+import { checkProjectByPath, processArgs } from '../utils'
 
-interface CliArgsType {
-  runMode?: string
-  projectFile?: string
-}
-
-export const args: CliArgsType = { runMode: 'startup' }
+export { processArgs as args } from '../utils'
 
 const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
 
@@ -54,23 +50,32 @@ else {
 
 const argv = ['node', 'csp', ...electronArgs]
 
-const cli = cac('csp')
+const cli = new Command()
 
-cli.command('[file]', 'CSP project file')
-  .action((file) => {
+cli.name('csp')
+  .description('CSP (Chip Support Package) - A powerful tool for chip configuration and code generation')
+  .version(pkg.version, '-v, --version', 'Display version number')
+
+cli.argument('[file]', 'CSP project file')
+  .option('-b, --backend-url <url>', 'Backend URL (default: http://127.0.0.1:55432)')
+  .action((file, options) => {
+    if (options.backendUrl) {
+      processArgs.backendUrl = options.backendUrl
+    }
+
     if (file) {
       let absolutePath = path.resolve(file)
       absolutePath = absolutePath.replace(/\\/g, '/')
       if (!fs.existsSync(absolutePath)) {
-        console.error(`The file ${absolutePath} is not exist.`)
-        process.exit(1)
+        console.error(`The file ${absolutePath} does not exist.`)
+        return
       }
-      args.projectFile = absolutePath
-      setProjectPath(absolutePath)
-      args.runMode = 'main'
+      processArgs.projectPath = absolutePath
+
+      if (checkProjectByPath(absolutePath)) {
+        processArgs.runMode = 'main'
+      }
     }
   })
 
-cli.help()
-cli.version('v0.0.1')
 cli.parse(argv)

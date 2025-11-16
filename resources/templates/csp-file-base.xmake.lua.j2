@@ -20,63 +20,107 @@
  # Date           Author       Notes
  # ------------   ----------   -----------------------------------------------
  # 2025-05-15     xqyjlj       initial version
+ # 2025-10-10     xqyjlj       add LuaFormatter support
  #}
+{#- Macro to strip leading 'v' or 'V' from version string -#}
+{%- macro strip_version_prefix(version) -%}
+{%- if version.startswith('v') or version.startswith('V') -%}
+{{ version[1:] }}
+{%- else -%}
+{{ version }}
+{%- endif -%}
+{%- endmacro -%}
 --
 -- -----------------------------------------------------------------------------
 --  @author:            {{ CSP.author }}
 --  @file:              {{ CSP.file }}
 --  @brief:             {{ CSP.brief }}
 --  @version:           {{ CSP.version }}
---  @hal:               {{ CSP.project.vendor }}.{{ CSP.project.gen.hal }}@{{ CSP.project.gen.hal_version }}
+--  @hal:               {{ CSP.project.vendor }}.{{ CSP.project.gen.hal }}@{{ CSP.project.gen.halVersion }}
 --  @project:           {{ CSP.project.name }}
---  @targetChip:        {{ CSP.project.target_chip }}
+--  @targetChip:        {{ CSP.project.targetChip }}
 --  @time:              {{ CSP.time }}
 --
 -- -----------------------------------------------------------------------------
 --  @attention
 --
---  Copyright (C) {{ CSP.Year }} csplink software.
+--  Copyright (C) {{ CSP.year }} csplink software.
 --  All rights reserved.
 --
 -- -----------------------------------------------------------------------------
 --
-set_xmakever("2.8.6")
+set_xmakever("{{ strip_version_prefix(CSP.project.gen.builderVersion) }}")
 
 ----< user code begin header, do not change this comment!
 {{ CSP.user_code["header"] }}
 ----> user code end header, do not change this comment!
 
 -------------------------------- project rules ---------------------------------
+{%- set content %}
 {%- block project_rules %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+-- LuaFormatter off
+{{- content }}
+-- LuaFormatter on
+{%- endif %}
 ----< user code begin project rules, do not change this comment!
 {{ CSP.user_code["project rules"] }}
 ----> user code end project rules, do not change this comment!
 
 -------------------------------- project config --------------------------------
+{%- set content %}
 {%- block project_configs %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+-- LuaFormatter off
+{{- content }}
+-- LuaFormatter on
+{%- endif %}
 ----< user code begin project configs, do not change this comment!
 {{ CSP.user_code["project configs"] }}
 ----> user code end project configs, do not change this comment!
 
 ----------------------------------- includes -----------------------------------
+{%- set content %}
 {%- block includes %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+-- LuaFormatter off
+{{- content }}
+-- LuaFormatter on
+{%- endif %}
 ----< user code begin includes, do not change this comment!
 {{ CSP.user_code["includes"] }}
 ----> user code end includes, do not change this comment!
 
 ---------------------------------- toolchains ----------------------------------
+{%- set content %}
 {%- block toolchains %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+-- LuaFormatter off
+{{- content }}
+-- LuaFormatter on
+{%- endif %}
 ----< user code begin toolchains, do not change this comment!
 {{ CSP.user_code["toolchains"] }}
 ----> user code end toolchains, do not change this comment!
 
 ------------------------------------- flags ------------------------------------
+{%- set content %}
 {%- block flags %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+-- LuaFormatter off
+{{- content }}
+-- LuaFormatter on
+{%- endif %}
 ----< user code begin flags, do not change this comment!
 {{ CSP.user_code["flags"] }}
 ----> user code end flags, do not change this comment!
@@ -90,22 +134,43 @@ target("{{ CSP.project.name }}")
 do
     set_kind("binary")
     ------------------------------ target configs ------------------------------
+{%- set content %}
 {%- block target_configs %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+    -- LuaFormatter off
+{{- content }}
+    -- LuaFormatter on
+{%- endif %}
     ----< user code begin target configs, do not change this comment!
 {{ CSP.user_code["target configs"] }}
     ----> user code end target configs, do not change this comment!
 
     ------------------------------- target files -------------------------------
+{%- set content %}
 {%- block target_files %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+    -- LuaFormatter off
+{{- content }}
+    -- LuaFormatter on
+{%- endif %}
     ----< user code begin target files, do not change this comment!
 {{ CSP.user_code["target files"] }}
     ----> user code end target files, do not change this comment!
 
     ------------------------------- target script ------------------------------
+{%- set content %}
 {%- block target_script %}
 {%- endblock %}
+{%- endset %}
+{%- if content.strip() %}
+    -- LuaFormatter off
+{{- content }}
+    -- LuaFormatter on
+{%- endif %}
     ----< user code begin target script, do not change this comment!
 {{ CSP.user_code["target script"] }}
     ----> user code end target script, do not change this comment!

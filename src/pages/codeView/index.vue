@@ -27,37 +27,75 @@
  *  2025-07-06     xqyjlj       initial version
 -->
 <script setup lang="ts">
-import type { CoderDumpResponseType } from '~/composables'
-import type { Project } from '~/database'
+import type { CoderGenDumpDialogInstance } from '~/components/instance'
+import type { CoderDumpResponseType } from '~/utils'
+import { ElNotification } from 'element-plus'
 import JSZip from 'jszip'
 import { onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { coderDump } from '~/composables'
-import { saveFileWithDialog } from '~/composables/io'
-import { useProjectManager } from '~/database'
+import { saveFileWithDialog, useProjectManager, useServerManager } from '~/utils'
 
 const projectManager = useProjectManager()
+const severManager = useServerManager()
 const route = useRoute()
+const { t } = useI18n()
+
+const project = projectManager.get()!
+
 const codeRef = ref<string>('')
 const languageRef = ref('c')
-const projectRef = ref<Project>()
 const coderDumpResponseRef = ref<CoderDumpResponseType>()
 const fileTreeModelRef = ref<Record<string, boolean>>({})
+const dialog = ref<CoderGenDumpDialogInstance>()
 
 async function loadCode() {
-  await coderDump(projectRef.value?.origin ?? null, projectRef.value?.path() ?? '', true).then((response) => {
-    coderDumpResponseRef.value = response
-    fileTreeModelRef.value = {}
-    for (const [key, value] of Object.entries(response.files)) {
-      if (value.diff) {
-        fileTreeModelRef.value[key] = true
+  dialog.value?.show()
+  dialog.value?.reset()
+
+  try {
+    await severManager.server.coderDump(
+      project.origin,
+      project.path(),
+      true,
+      (count: number, index: number, file: string) => {
+        dialog.value?.updateProgress(count, index, file)
+      },
+    ).then((response) => {
+      coderDumpResponseRef.value = response
+      fileTreeModelRef.value = {}
+      for (const [key, value] of Object.entries(response.files)) {
+        if (value.diff) {
+          fileTreeModelRef.value[key] = true
+        }
+        else {
+          fileTreeModelRef.value[key] = false
+        }
       }
-      else {
-        fileTreeModelRef.value[key] = false
-      }
-    }
-    codeRef.value = ''
-  })
+      codeRef.value = ''
+
+      ElNotification({
+        title: t('label.success'),
+        message: t('message.dumpSuccess'),
+        duration: 3000,
+        offset: 35,
+        type: 'success',
+      })
+    })
+  }
+  catch (error) {
+    console.error(t('message.dumpFailed'), error)
+    ElNotification({
+      title: t('label.error'),
+      message: t('message.dumpFailed'),
+      duration: 0,
+      offset: 35,
+      type: 'error',
+    })
+  }
+  finally {
+    dialog.value?.hide()
+  }
 }
 
 watch(() => route.fullPath, (newValue, _oldValue) => {
@@ -91,22 +129,53 @@ async function handleCodeFileTreeSave(files: string[], name: string) {
   }
 }
 
-function handleCodeFileTreeGenerate(files: string[]) {
-  console.log(files)
+async function handleCodeFileTreeGenerate(files: string[]) {
+  dialog.value?.show()
+  dialog.value?.reset()
+
+  await project?.save()
+
+  try {
+    await severManager.server.coderGenerate(
+      project.path(),
+      undefined,
+      files,
+      (count: number, index: number, file: string) => {
+        dialog.value?.updateProgress(count, index, file)
+      },
+    ).then(() => {
+      ElNotification({
+        title: t('label.success'),
+        message: t('message.generateSuccess'),
+        duration: 3000,
+        offset: 35,
+        type: 'success',
+      })
+    })
+  }
+  catch (error) {
+    console.error(t('message.generateFailed'), error)
+    ElNotification({
+      title: t('label.error'),
+      message: t('message.generateFailed'),
+      duration: 0,
+      offset: 35,
+      type: 'error',
+    })
+  }
+  finally {
+    dialog.value?.hide()
+  }
 }
 
 onMounted(async () => {
-  const project = projectManager.get()
-  if (project) {
-    projectRef.value = project
-    await loadCode()
-  }
+  await loadCode()
 })
 </script>
 
 <template>
   <el-splitter>
-    <el-splitter-panel min="5%">
+    <el-splitter-panel min="250" size="250">
       <CodeFileTree
         :files="fileTreeModelRef"
         @content="handleCodeFileTreeShowChoose"
@@ -119,6 +188,8 @@ onMounted(async () => {
       <CodeView :code="codeRef" :language="languageRef" />
     </el-splitter-panel>
   </el-splitter>
+
+  <CoderGenDumpDialog ref="dialog" />
 </template>
 
 <style scoped>
@@ -134,5 +205,19 @@ onMounted(async () => {
   flex: 1;
   min-width: 0;
   min-height: 0;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.loading-info {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.loading-info p {
+  margin: 5px 0;
 }
 </style>

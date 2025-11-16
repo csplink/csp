@@ -1,7 +1,5 @@
 name: APM32F103ZET6
-clockTree:
-  svg: APM32F103
-  ip: RCM
+clockTree: APM32F103
 core: ARM Cortex-M3
 frequency: 96
 io: 112
@@ -19,10 +17,10 @@ documents:
         zh-cn: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
       type: pdf
       description:
-        en: ''
+        en: ""
         zh-cn: null
       size: 3.4 MB
-      version: '1.7'
+      version: "1.7"
   errata:
     APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
       url:
@@ -30,10 +28,10 @@ documents:
         zh-cn: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
       type: pdf
       description:
-        en: ''
+        en: ""
         zh-cn: null
       size: 582 KB
-      version: '1.0'
+      version: "1.0"
   references:
     APM32F103xCxDxE用户手册V1.5:
       url:
@@ -41,20 +39,76 @@ documents:
         zh-cn: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
       type: pdf
       description:
-        en: ''
+        en: ""
         zh-cn: null
       size: 9.4 MB
-      version: '1.5'
+      version: "1.5"
 hals: [csp_hal_apm32f1]
 hasPowerPad: false
 illustrate:
-  en: ''
+  en: |
+    The **APM32F103xDxE** series MCU is based on the **32-bit Arm® Cortex®-M3 core**,
+    with a maximum operating frequency of **96 MHz** and built-in **FPU (Floating Point Unit)**
+    for efficient arithmetic operations.
+
+    ### Key Features
+    - **High-performance core**: 32-bit Arm® Cortex®-M3, up to 96 MHz
+    - **Hardware acceleration**: Supports **FPU** for floating-point calculations
+    - **Enhanced peripherals**:
+      - **EMMC controller** for external memory expansion
+      - **USB and CAN** can be used simultaneously
+    - **On-chip resources**: Integrated memory, timers, ADC/DAC
+    - **System advantages**: Low power consumption, large capacity, portability,
+      and fast Flash erase/program speed
+
+    ### Certifications
+    - **IEC 61508 SIL2** functional safety certified (China)
+    - **USB-IF** compliance test passed
+    - Meets **industrial-grade reliability standards**
+
+    ### Application Scenarios
+    - Model aircraft
+    - Handheld gimbals
+    - Barcode scanners
+    - Alarms and smart locks
+    - Electronic scales
+    - Industrial and IoT devices requiring performance and reliability
+
+    ---
+
+    With its **high performance and reliability**, the APM32F103xDxE series MCU
+    is an ideal choice for industrial control, consumer electronics, and IoT applications.
+
   zh-cn: |
-    APM32F103xDxE系列MCU，基于32位Arm® Cortex®-M3内核，最高工作主频96MHz，支持FPU浮点运算单元，配置增强型外部存储控制器EMMC，
-    支持USB和CAN接口同时使用；集成片上储存器、定时器以及数据转换器等多种外设接口，具有功耗低、容量大、可移植性好、Flash擦除/编程速度快等特点。
-    目前已经通过中国IEC61508 SIL2认证和USB-IF测试，符合工业级高可靠性标准。适用于航模飞机、手持云台、扫码枪、报警器、密码锁、电子秤等领域。
+    **APM32F103xDxE** 系列 MCU 基于 **32 位 Arm® Cortex®-M3 内核**，最高工作主频可达 **96 MHz**，并内置 **FPU 浮点运算单元**，在性能与能效之间实现良好平衡。
+
+    ### 主要特性
+    - **高性能内核**：32 位 Arm® Cortex®-M3，主频 96 MHz
+    - **硬件加速**：支持 **FPU 浮点运算单元**
+    - **增强型外设**：
+      - **EMMC 控制器**，便于外部存储扩展
+      - **USB 与 CAN 接口** 可同时使用
+    - **片上资源丰富**：集成存储器、定时器、ADC/DAC
+    - **优秀的系统特性**：功耗低、容量大、可移植性好、Flash 擦除/编程速度快
+
+    ### 认证与标准
+    - 已通过 **中国 IEC 61508 SIL2 功能安全认证**
+    - 已通过 **USB-IF 测试**
+    - 符合 **工业级高可靠性标准**
+
+    ### 典型应用领域
+    - 航模飞机
+    - 手持云台
+    - 扫码枪
+    - 报警器、密码锁
+    - 电子秤
+    - 其他工业与消费类应用
+
+    ---
+
+    凭借其 **高性能与高可靠性**，**APM32F103xDxE 系列 MCU** 是工业控制、消费电子和物联网应用的理想选择。
 introduction:
-  en: ''
+  en: ""
   zh-cn: 具有 512KB Flash和 96MHz CPU的主流 Arm Cortex-M3 超值系列 MCU
 modules:
   peripherals:
@@ -128,16 +182,16 @@ package: LQFP144
 url:
   en: https://global.geehy.com/product/fifth/APM32F103
   zh-cn: https://geehy.com/product/fifth/APM32F103
-builder:
+builders:
   XMake:
-    v2.8.1: [gcc_arm_none_eabi]
+    v2.8.1: [gcc-arm-none-eabi]
   CMake:
-    v3.7: [gcc_arm_none_eabi]
+    v3.7: [gcc-arm-none-eabi]
   MDK-Arm:
     v5.27: [default]
 linker:
-  defaultHeapSize: '0x200'
-  defaultStackSize: '0x400'
+  defaultHeapSize: "0x200"
+  defaultStackSize: "0x400"
 pins:
   PE2:
     position: 1
@@ -150,7 +204,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE3:
     position: 2
     type: I/O
@@ -162,7 +216,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE4:
     position: 3
     type: I/O
@@ -174,7 +228,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE5:
     position: 4
     type: I/O
@@ -186,7 +240,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE6:
     position: 5
     type: I/O
@@ -198,7 +252,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VBAT:
     position: 6
     type: power
@@ -213,7 +267,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC14:
     position: 8
     type: I/O
@@ -224,7 +278,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC15:
     position: 9
     type: I/O
@@ -237,7 +291,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PF0:
     position: 10
     type: I/O
@@ -247,7 +301,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF1:
     position: 11
     type: I/O
@@ -257,7 +311,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF2:
     position: 12
     type: I/O
@@ -267,7 +321,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF3:
     position: 13
     type: I/O
@@ -277,7 +331,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF4:
     position: 14
     type: I/O
@@ -287,7 +341,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF5:
     position: 15
     type: I/O
@@ -297,7 +351,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-5:
     position: 16
     type: power
@@ -314,7 +368,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF7:
     position: 19
     type: I/O
@@ -325,7 +379,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF8:
     position: 20
     type: I/O
@@ -336,7 +390,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF9:
     position: 21
     type: I/O
@@ -348,7 +402,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF10:
     position: 22
     type: I/O
@@ -359,7 +413,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   RCM-OSC-IN:
     position: 23
     type: I/O
@@ -385,7 +439,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC1:
     position: 27
     type: I/O
@@ -398,7 +452,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC2:
     position: 28
     type: I/O
@@ -411,7 +465,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC3:
     position: 29
     type: I/O
@@ -424,7 +478,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSSA:
     position: 30
     type: power
@@ -455,7 +509,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA1:
     position: 35
     type: I/O
@@ -471,7 +525,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA2:
     position: 36
     type: I/O
@@ -487,7 +541,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA3:
     position: 37
     type: I/O
@@ -503,7 +557,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-4:
     position: 38
     type: power
@@ -524,7 +578,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA5:
     position: 41
     type: I/O
@@ -538,7 +592,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA6:
     position: 42
     type: I/O
@@ -554,7 +608,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA7:
     position: 43
     type: I/O
@@ -570,7 +624,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC4:
     position: 44
     type: I/O
@@ -582,7 +636,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC5:
     position: 45
     type: I/O
@@ -594,7 +648,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB0:
     position: 46
     type: I/O
@@ -609,7 +663,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB1:
     position: 47
     type: I/O
@@ -624,7 +678,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB2:
     position: 48
     type: I/O
@@ -633,7 +687,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PF11:
     position: 49
     type: I/O
@@ -645,7 +699,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF12:
     position: 50
     type: I/O
@@ -655,7 +709,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-6:
     position: 51
     type: power
@@ -671,7 +725,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF14:
     position: 54
     type: I/O
@@ -681,7 +735,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PF15:
     position: 55
     type: I/O
@@ -693,7 +747,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG0:
     position: 56
     type: I/O
@@ -703,7 +757,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG1:
     position: 57
     type: I/O
@@ -713,7 +767,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PE7:
     position: 58
     type: I/O
@@ -726,7 +780,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE8:
     position: 59
     type: I/O
@@ -739,7 +793,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE9:
     position: 60
     type: I/O
@@ -753,7 +807,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-7:
     position: 61
     type: power
@@ -772,7 +826,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE11:
     position: 64
     type: I/O
@@ -787,7 +841,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE12:
     position: 65
     type: I/O
@@ -800,7 +854,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE13:
     position: 66
     type: I/O
@@ -813,7 +867,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE14:
     position: 67
     type: I/O
@@ -826,7 +880,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE15:
     position: 68
     type: I/O
@@ -841,7 +895,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB10:
     position: 69
     type: I/O
@@ -854,7 +908,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB11:
     position: 70
     type: I/O
@@ -869,7 +923,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-1:
     position: 71
     type: power
@@ -890,7 +944,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB13:
     position: 74
     type: I/O
@@ -904,7 +958,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB14:
     position: 75
     type: I/O
@@ -917,7 +971,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB15:
     position: 76
     type: I/O
@@ -932,7 +986,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD8:
     position: 77
     type: I/O
@@ -945,7 +999,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD9:
     position: 78
     type: I/O
@@ -959,7 +1013,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD10:
     position: 79
     type: I/O
@@ -972,7 +1026,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD11:
     position: 80
     type: I/O
@@ -987,7 +1041,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD12:
     position: 81
     type: I/O
@@ -1001,7 +1055,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD13:
     position: 82
     type: I/O
@@ -1013,7 +1067,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-8:
     position: 83
     type: power
@@ -1032,7 +1086,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD15:
     position: 86
     type: I/O
@@ -1047,7 +1101,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PG2:
     position: 87
     type: I/O
@@ -1057,7 +1111,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG3:
     position: 88
     type: I/O
@@ -1067,7 +1121,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG4:
     position: 89
     type: I/O
@@ -1077,7 +1131,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG5:
     position: 90
     type: I/O
@@ -1087,7 +1141,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG6:
     position: 91
     type: I/O
@@ -1097,7 +1151,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG7:
     position: 92
     type: I/O
@@ -1107,7 +1161,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG8:
     position: 93
     type: I/O
@@ -1115,7 +1169,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-9:
     position: 94
     type: power
@@ -1135,7 +1189,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC7:
     position: 97
     type: I/O
@@ -1149,7 +1203,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC8:
     position: 98
     type: I/O
@@ -1162,7 +1216,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC9:
     position: 99
     type: I/O
@@ -1176,7 +1230,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA8:
     position: 100
     type: I/O
@@ -1189,7 +1243,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA9:
     position: 101
     type: I/O
@@ -1202,7 +1256,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA10:
     position: 102
     type: I/O
@@ -1214,7 +1268,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA11:
     position: 103
     type: I/O
@@ -1230,7 +1284,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA12:
     position: 104
     type: I/O
@@ -1244,7 +1298,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA13:
     position: 105
     type: I/O
@@ -1255,7 +1309,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   NC:
     position: 106
     type: nc
@@ -1275,7 +1329,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PA15:
     position: 110
     type: I/O
@@ -1293,7 +1347,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC10:
     position: 111
     type: I/O
@@ -1306,7 +1360,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC11:
     position: 112
     type: I/O
@@ -1321,7 +1375,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PC12:
     position: 113
     type: I/O
@@ -1334,7 +1388,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD0:
     position: 114
     type: I/O
@@ -1347,7 +1401,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD1:
     position: 115
     type: I/O
@@ -1360,7 +1414,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD2:
     position: 116
     type: I/O
@@ -1373,7 +1427,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD3:
     position: 117
     type: I/O
@@ -1385,7 +1439,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD4:
     position: 118
     type: I/O
@@ -1397,7 +1451,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD5:
     position: 119
     type: I/O
@@ -1409,7 +1463,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-10:
     position: 120
     type: power
@@ -1427,7 +1481,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PD7:
     position: 123
     type: I/O
@@ -1440,7 +1494,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PG9:
     position: 124
     type: I/O
@@ -1452,7 +1506,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG10:
     position: 125
     type: I/O
@@ -1463,7 +1517,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG11:
     position: 126
     type: I/O
@@ -1475,7 +1529,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG12:
     position: 127
     type: I/O
@@ -1485,7 +1539,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG13:
     position: 128
     type: I/O
@@ -1495,7 +1549,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PG14:
     position: 129
     type: I/O
@@ -1505,7 +1559,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-11:
     position: 130
     type: power
@@ -1522,7 +1576,7 @@ pins:
       - GPIO:Input
       - GPIO:Output
       - GPIO:Analog
-      - GPIO:EXTI
+      - GPIO:EINT
   PB3:
     position: 133
     type: I/O
@@ -1537,7 +1591,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB4:
     position: 134
     type: I/O
@@ -1551,7 +1605,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB5:
     position: 135
     type: I/O
@@ -1566,7 +1620,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB6:
     position: 136
     type: I/O
@@ -1579,7 +1633,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB7:
     position: 137
     type: I/O
@@ -1593,7 +1647,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   BOOT0:
     position: 138
     type: boot
@@ -1610,7 +1664,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PB9:
     position: 140
     type: I/O
@@ -1625,7 +1679,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE0:
     position: 141
     type: I/O
@@ -1637,7 +1691,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   PE1:
     position: 142
     type: I/O
@@ -1648,7 +1702,7 @@ pins:
       - GPIO:Output
       - GPIO:Analog
       - GPIO:EVENTOUT
-      - GPIO:EXTI
+      - GPIO:EINT
   VSS-3:
     position: 143
     type: power

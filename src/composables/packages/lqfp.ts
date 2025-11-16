@@ -27,7 +27,7 @@
  *  2025-05-07     xqyjlj       initial version
  */
 
-import type { PackageModelType } from './base'
+import type { PackageModelPinType, PackageModelType } from './base'
 import { IPackageBase } from './base'
 
 export class LQFP extends IPackageBase {
@@ -41,15 +41,13 @@ export class LQFP extends IPackageBase {
   }
 
   async getPackageModel(): Promise<PackageModelType | null> {
-    const summaryPins = this._summary.pins
-
-    const count = Object.keys(summaryPins).length
+    const count = Object.keys(this._pins).length
     const num = count / 4
 
     const body = {
-      name: this._summary.name,
-      vendor: this._summary.vendor,
-      package: this._summary.package,
+      name: this._name,
+      vendor: this._vendor,
+      package: `LQFP${count}`,
       x: this.PIN_WIDTH,
       y: this.PIN_WIDTH,
       width: this._get_body_length(num),
@@ -57,16 +55,16 @@ export class LQFP extends IPackageBase {
       rotation: 0,
     }
 
-    const pins = []
-    for (const [name, pin] of Object.entries(summaryPins)) {
+    const pins: PackageModelPinType[] = []
+    for (const [name, pin] of Object.entries(this._pins)) {
       const position = pin.position - 1
       const width = this.PIN_LENGTH
       const height = this.PIN_HEIGHT
       let x = 0
       let y = 0
-      let label_x = 0
-      let label_y = 0
-      let label_align = 'right'
+      let labelX = 0
+      let labelY = 0
+      let labelAlign = 'right'
       let rotation = 0
       let direction = 'left'
 
@@ -74,9 +72,9 @@ export class LQFP extends IPackageBase {
         const index = position
         x = this.PIN_WIDTH - this.PIN_LENGTH
         y = index * (this.PIN_HEIGHT + this.PIN_SPACING) + this.PIN_WIDTH + this.PIN_SPACING
-        label_x = 0
-        label_y = y
-        label_align = 'right'
+        labelX = 0
+        labelY = y
+        labelAlign = 'right'
         rotation = 0
         direction = 'left'
       }
@@ -84,9 +82,9 @@ export class LQFP extends IPackageBase {
         const index = position - num
         x = index * (this.PIN_HEIGHT + this.PIN_SPACING) + this.PIN_WIDTH + this.PIN_SPACING
         y = this.PIN_WIDTH + this._get_body_length(num) + this.PIN_LENGTH
-        label_x = x
-        label_y = y + (this.PIN_WIDTH - this.PIN_LENGTH)
-        label_align = 'right'
+        labelX = x
+        labelY = y + (this.PIN_WIDTH - this.PIN_LENGTH)
+        labelAlign = 'right'
         rotation = -90
         direction = 'bottom'
       }
@@ -94,9 +92,9 @@ export class LQFP extends IPackageBase {
         const index = position - 2 * num
         x = this.PIN_WIDTH + this._get_body_length(num)
         y = this.PIN_WIDTH + this._get_body_length(num) - (index + 1) * (this.PIN_HEIGHT + this.PIN_SPACING)
-        label_x = x + this.PIN_LENGTH
-        label_y = y
-        label_align = 'left'
+        labelX = x + this.PIN_LENGTH
+        labelY = y
+        labelAlign = 'left'
         rotation = 0
         direction = 'right'
       }
@@ -104,16 +102,15 @@ export class LQFP extends IPackageBase {
         const index = position - 3 * num
         x = this.PIN_WIDTH + this._get_body_length(num) - (index + 1) * (this.PIN_HEIGHT + this.PIN_SPACING)
         y = this.PIN_WIDTH
-        label_x = x
-        label_y = y - this.PIN_LENGTH
-        label_align = 'left'
+        labelX = x
+        labelY = y - this.PIN_LENGTH
+        labelAlign = 'left'
         rotation = -90
         direction = 'top'
       }
 
       pins.push({
         name,
-        type: pin.type,
         position,
         width,
         height,
@@ -121,13 +118,13 @@ export class LQFP extends IPackageBase {
         y,
         rotation,
         direction,
-        functions: pin.functions(),
+        pin,
         label: {
           width: this.PIN_WIDTH - this.PIN_LENGTH,
           height,
-          x: label_x,
-          y: label_y,
-          align: label_align,
+          x: labelX,
+          y: labelY,
+          align: labelAlign,
         },
       })
     }

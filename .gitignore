@@ -14,7 +14,6 @@ src/typed-router.d.ts
 
 # vscode
 .vscode/*
-!.vscode/settings.json
 
 # python
 __pycache__
@@ -31,6 +30,7 @@ resources/repository
 resources/packages
 resources/database/schema/*.json
 resources/database/**/*.xml
+resources/server
 
 # build
 build
@@ -41,3 +41,6 @@ build-*
 
 # .vitepress
 docs/.vitepress/cache
+
+# ai
+CLAUDE.md

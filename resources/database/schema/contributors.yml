@@ -21,14 +21,14 @@
 # 2025-05-15     xqyjlj       initial version
 #
 
-$schema: 'http://json-schema.org/draft-07/schema#'
+$schema: "http://json-schema.org/draft-07/schema#"
 type: array
 items:
   type: object
   properties:
     avatar:
       type: string
-      pattern: '^avatar/.*$'
+      pattern: "^avatar/.*$"
     contributions:
       type: integer
     htmlUrl:

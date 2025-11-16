@@ -1,0 +1,339 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        SDIO-sdmmc_v1_2_Cube_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-10     xqyjlj       initial version
+#
+
+name: SDIO
+parameters:
+  sdio_bus_wide_t:
+    - condition: (configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'mmc_8_bits_wide_bus')
+      content:
+        type: enum
+        values:
+          8_b:
+            comment:
+              zh-cn: Bus wide 8-bit data
+              en: Bus wide 8-bit data
+        default: 8_b
+        display:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        description:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'sd_4_bits_wide_bus') or (configs.${IP_INSTANCE}.sdio_ctrl_mode_t
+        == 'mmc_4_bits_wide_bus')
+      content:
+        type: enum
+        values:
+          4_b:
+            comment:
+              zh-cn: Bus wide 4-bit data
+              en: Bus wide 4-bit data
+        default: 4_b
+        display:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        description:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'sd_1_bit') or (configs.${IP_INSTANCE}.sdio_ctrl_mode_t ==
+        'mmc_1_bit')
+      content:
+        type: enum
+        values:
+          1_b:
+            comment:
+              zh-cn: Bus wide 1-bit data
+              en: Bus wide 1-bit data
+        default: 1_b
+        display:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        description:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        visible: false
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          1_b:
+            comment:
+              zh-cn: Bus wide 1-bit data
+              en: Bus wide 1-bit data
+        default: 1_b
+        display:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        description:
+          zh-cn: Wide bus mode
+          en: Wide bus mode
+        visible: false
+        readonly: false
+  sdio_clock_bypass_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: SDIO Clock divider bypass
+      en: SDIO Clock divider bypass
+    description:
+      zh-cn: SDIO Clock divider bypass
+      en: SDIO Clock divider bypass
+    visible: true
+    readonly: false
+  sdio_clock_div_t:
+    type: integer
+    default: 0
+    max: 255
+    min: 0
+    display:
+      zh-cn: SDIOCLK clock divide factor
+      en: SDIOCLK clock divide factor
+    description:
+      zh-cn: SDIO_CK = SDIOCLK / [CLKDIV + 2]. The output clock frequency can vary between 187 KHz and 24 MHz. It is
+        advised to keep the default ClockDiv value (0) to have a maximum SDIO_CK frequency of 24 MHz.
+      en: SDIO_CK = SDIOCLK / [CLKDIV + 2]. The output clock frequency can vary between 187 KHz and 24 MHz. It is
+        advised to keep the default ClockDiv value (0) to have a maximum SDIO_CK frequency of 24 MHz.
+    visible: true
+    readonly: false
+  sdio_clock_edge_t:
+    type: enum
+    values:
+      rising:
+        comment:
+          zh-cn: Rising transition
+          en: Rising transition
+      falling:
+        comment:
+          zh-cn: Falling transition
+          en: Falling transition
+    default: rising
+    display:
+      zh-cn: Clock transition on which the bit capture is made
+      en: Clock transition on which the bit capture is made
+    description:
+      zh-cn: Clock transition on which the bit capture is made
+      en: Clock transition on which the bit capture is made
+    visible: true
+    readonly: false
+  sdio_clock_power_save_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable the power save for the clock
+          en: Disable the power save for the clock
+      enable:
+        comment:
+          zh-cn: Enable the power save for the clock
+          en: Enable the power save for the clock
+    default: disable
+    display:
+      zh-cn: SDIO Clock output enable when the bus is idle
+      en: SDIO Clock output enable when the bus is idle
+    description:
+      zh-cn: SDIO Clock output enable when the bus is idle
+      en: SDIO Clock output enable when the bus is idle
+    visible: true
+    readonly: false
+  sdio_hardware_flow_control_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: The hardware control flow is disabled
+          en: The hardware control flow is disabled
+      enable:
+        comment:
+          zh-cn: The hardware control flow is enabled
+          en: The hardware control flow is enabled
+    default: disable
+    display:
+      zh-cn: SDIO hardware flow control
+      en: SDIO hardware flow control
+    description:
+      zh-cn: SDIO hardware flow control
+      en: SDIO hardware flow control
+    visible: true
+    readonly: false
+  sdio_ctrl_mode_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      sd_1_bit:
+        comment:
+          zh-cn: SD 1 bit
+          en: SD 1 bit
+        signals:
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:CMD:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D0:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+      sd_4_bits_wide_bus:
+        comment:
+          zh-cn: SD 4 bits Wide bus
+          en: SD 4 bits Wide bus
+        signals:
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:CMD:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D0:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D1:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D2:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D3:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+      mmc_1_bit:
+        comment:
+          zh-cn: MMC 1 bit
+          en: MMC 1 bit
+        signals:
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:CMD:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D0:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+      mmc_4_bits_wide_bus:
+        comment:
+          zh-cn: MMC 4 bits Wide bus
+          en: MMC 4 bits Wide bus
+        signals:
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:CMD:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D0:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D1:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D2:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D3:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+      mmc_8_bits_wide_bus:
+        comment:
+          zh-cn: MMC 8 bits Wide bus
+          en: MMC 8 bits Wide bus
+        signals:
+          ${IP_INSTANCE}:CK:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:CMD:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D0:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D1:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D2:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D3:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D4:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D5:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D6:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+          ${IP_INSTANCE}:D7:
+            mode: GPIO:AlternateFunctionPushPullHighSpeedDefault
+    default: disable
+    display:
+      zh-cn: MODE
+      en: MODE
+    description:
+      zh-cn: MODE
+      en: MODE
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      sdio_ctrl_mode_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'sd_1_bit'
+      content:
+        refParameters:
+          sdio_clock_edge_t: {}
+          sdio_clock_bypass_t: {}
+          sdio_clock_power_save_t: {}
+          sdio_bus_wide_t: {}
+          sdio_hardware_flow_control_t: {}
+          sdio_clock_div_t: {}
+    - condition: configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'sd_4_bits_wide_bus'
+      content:
+        refParameters:
+          sdio_clock_edge_t: {}
+          sdio_clock_bypass_t: {}
+          sdio_clock_power_save_t: {}
+          sdio_bus_wide_t: {}
+          sdio_hardware_flow_control_t: {}
+          sdio_clock_div_t: {}
+    - condition: configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'mmc_1_bit'
+      content:
+        refParameters:
+          sdio_clock_edge_t: {}
+          sdio_clock_bypass_t: {}
+          sdio_clock_power_save_t: {}
+          sdio_bus_wide_t: {}
+          sdio_hardware_flow_control_t: {}
+          sdio_clock_div_t: {}
+    - condition: configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'mmc_4_bits_wide_bus'
+      content:
+        refParameters:
+          sdio_clock_edge_t: {}
+          sdio_clock_bypass_t: {}
+          sdio_clock_power_save_t: {}
+          sdio_bus_wide_t: {}
+          sdio_hardware_flow_control_t: {}
+          sdio_clock_div_t: {}
+    - condition: configs.${IP_INSTANCE}.sdio_ctrl_mode_t == 'mmc_8_bits_wide_bus'
+      content:
+        refParameters:
+          sdio_clock_edge_t: {}
+          sdio_clock_bypass_t: {}
+          sdio_clock_power_save_t: {}
+          sdio_bus_wide_t: {}
+          sdio_hardware_flow_control_t: {}
+          sdio_clock_div_t: {}
+activated: (configs.${IP_INSTANCE}.sdio_ctrl_mode_t != 'disable')

@@ -28,32 +28,104 @@
 -->
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import type { ProcessRunModeType } from '@/electron/types'
+import type { TitleMenuBarInstance } from './components/instance'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useSystemStore } from '~/utils'
 
 const i18n = useI18n()
+
+const systemRunMode = ref<ProcessRunModeType>('startup')
+const menuBar = ref<TitleMenuBarInstance>()
+
 const locale = computed(() => (i18n.messages.value[i18n.locale.value] as import('element-plus/es/locale').Language))
+const showMenuTitle = computed(() => systemRunMode.value === 'main')
+
+onMounted(() => {
+  const runMode = useSystemStore().args.runMode
+  systemRunMode.value = runMode
+})
 </script>
 
 <template>
   <el-config-provider namespace="ep" :locale="locale">
-    <TitleHeader />
+    <TitleHeader :show-menu="showMenuTitle" :show-title="showMenuTitle">
+      <TitleMenuBar ref="menuBar" />
+    </TitleHeader>
     <div class="main_window flex">
-      <NavigationSide />
-      <RouterView v-slot="{ Component }">
-        <KeepAlive>
-          <Component :is="Component" />
-        </KeepAlive>
-      </RouterView>
+      <template v-if="systemRunMode === 'main'">
+        <NavigationSide
+          @generate="() => menuBar?.generate()"
+        />
+      </template>
+      <el-splitter layout="vertical">
+        <el-splitter-panel>
+          <RouterView v-slot="{ Component }">
+            <KeepAlive>
+              <Component :is="Component" />
+            </KeepAlive>
+          </RouterView>
+        </el-splitter-panel>
+        <el-splitter-panel v-if="systemRunMode === 'main'" size="250">
+          <el-tabs type="border-card">
+            <el-tab-pane :label="$t('label.logs')">
+              <LogViewer />
+            </el-tab-pane>
+            <el-tab-pane :label="$t('label.problems')">
+              User
+            </el-tab-pane>
+          </el-tabs>
+        </el-splitter-panel>
+      </el-splitter>
     </div>
   </el-config-provider>
 </template>
+
+<style scoped>
+.ep-splitter {
+  position: static;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+::v-deep(.ep-splitter-panel) {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ep-tabs {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+::v-deep(.ep-tabs__content) {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+::v-deep(.ep-tab-pane) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+</style>
 
 <style>
 html,
 body,
 #app {
-  text-align: center;
   color: var(--ep-text-color-primary);
   display: flex;
   flex-direction: column;

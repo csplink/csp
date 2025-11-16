@@ -1,0 +1,95 @@
+<!-- splash.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Splash Screen</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      .splash-screen {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+      }
+
+      .splash-content {
+        text-align: center;
+        color: white;
+      }
+
+      .logo-container {
+        margin-bottom: 2rem;
+      }
+
+      .logo {
+        width: 120px;
+        height: 120px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .loading-text {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 0;
+        opacity: 0.9;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="splash-screen">
+      <div class="splash-content">
+        <div class="logo-container">
+          <img src="./images/logo.svg" alt="CSP Logo" class="logo" />
+        </div>
+        <div class="loading-container">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

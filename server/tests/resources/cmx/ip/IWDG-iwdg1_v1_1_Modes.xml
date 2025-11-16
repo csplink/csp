@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V3.0" IPType="service" Name="IWDG" Version="iwdg1_v1_1" IpGroup="System" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../db/IP_Modes_V3_0.xsd" xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+    <About>IWDG: Independent WatchDoG</About>
+
+    <RefParameter Name="Instance" Comment="IWDG instance" DefaultValue="IWDG" Type="list" Visible="false" />
+    <RefParameter Name="Prescaler" Comment="IWDG counter clock prescaler" DefaultValue="IWDG_PRESCALER_4" Type="list" Group="Watchdog Clocking">
+        <PossibleValue Value="IWDG_PRESCALER_4" Comment="4" />
+        <PossibleValue Value="IWDG_PRESCALER_8" Comment="8" />
+        <PossibleValue Value="IWDG_PRESCALER_16" Comment="16" />
+        <PossibleValue Value="IWDG_PRESCALER_32" Comment="32" />
+        <PossibleValue Value="IWDG_PRESCALER_64" Comment="64" />
+        <PossibleValue Value="IWDG_PRESCALER_128" Comment="128" />
+        <PossibleValue Value="IWDG_PRESCALER_256" Comment="256" />
+    </RefParameter>
+    <RefParameter Name="Reload" Comment="IWDG down-counter reload value" DefaultValue="4095" Max="4095" Min="0" Type="integer" Group="Watchdog Clocking" />
+
+    <RefMode Name="IWDG_Activate" HalMode="IWDG">
+        <ConfigForMode>IWDG_Init</ConfigForMode>
+        <Parameter Name="Prescaler" Group="Clocking" />
+        <Parameter Name="Reload" Group="Clocking" />
+    </RefMode>
+
+    <!-- ModeLogicOperator for IWDG -->
+    <ModeLogicOperator Name="OR">
+        <Mode Name="IWDG_State" UserName="Activated">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="IWDG_Activate" UserName="Activated">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_IWDG" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+    </ModeLogicOperator>
+
+    <!-- RefSignal for IWDG -->
+    <RefSignal Name="VS_IWDG" Virtual="true" />
+
+    <Semaphore>IWDGUsed_ForRCC</Semaphore>
+</IP>

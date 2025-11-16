@@ -27,11 +27,12 @@
 import os
 
 import jsonschema
-import yaml
 from loguru import logger
+from packages.package import Package
+from public.csp.project import Project
+from ruamel.yaml import YAML
 
 from .sys import SysUtils
-from public.csp.project import Project
 
 
 class ProjectUtils:
@@ -46,43 +47,62 @@ class ProjectUtils:
             "r",
             encoding="utf-8",
         ) as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+            yaml = YAML()
+            schema = yaml.load(f.read())
             jsonschema.validate(instance=project, schema=schema)
         return True
 
     @staticmethod
-    @logger.catch(default=Project({}, ""))
-    def load_project(file: str) -> Project:
+    @logger.catch(default=Project({}))
+    def load_project_from_file(file: str) -> Project:
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
-                project = yaml.load(f.read(), Loader=yaml.FullLoader)
-                succeed = ProjectUtils.check_project(project)
-            if succeed:
-                return Project(project, file)
-            else:
-                return Project({}, "")
+                yaml = YAML()
+                project = yaml.load(f.read())
+                return ProjectUtils.load_project(project, file)
         else:
             logger.error(f"{file} is not file!")
-            return Project({}, "")
+            return Project({})
+
+    @staticmethod
+    @logger.catch(default=Project({}))
+    def load_project(project: dict, file: str) -> Project:
+        yaml = YAML()
+        succeed = ProjectUtils.check_project(project)
+        if succeed:
+            p = Project(project)
+            index = Package().index()
+            hal_folder = index.path("hal", p.gen.hal, p.gen.halVersion)
+            toolchains_folder = index.path(
+                "toolchains", p.gen.toolchains, p.gen.toolchainsVersion
+            )
+            user_data = {
+                "hal_folder": hal_folder,
+                "toolchains_folder": toolchains_folder,
+                "path": file,
+            }
+            return Project(project, user_data)
+        else:
+            return Project({})
 
     @staticmethod
     def check_generate_setting_valid(project: Project) -> tuple[bool, str]:
-        if project.gen.use_toolchains_package and not os.path.isdir(
+        if project.gen.useToolchainsPackage and not os.path.isdir(
             project.toolchains_folder()
         ):
             if project.gen.toolchains != "default":
                 return (
                     False,
-                    f"the toolchains folder does not exist! maybe the toolchains '{project.gen.toolchains}:{project.gen.toolchains_version}' is not installed yet",
+                    f"the toolchains folder does not exist! maybe the toolchains '{project.gen.toolchains}:{project.gen.toolchainsVersion}' is not installed yet",
                 )
         elif not os.path.isdir(project.hal_folder()):
             return (
                 False,
-                f"the hal folder does not exist! maybe the hal '{project.gen.hal}:{project.gen.hal_version}' is not installed yet",
+                f"the hal folder does not exist! maybe the hal '{project.gen.hal}:{project.gen.halVersion}' is not installed yet",
             )
         elif project.gen.builder == "":
             return False, "the builder is not set"
-        elif project.gen.builder_version == "":
+        elif project.gen.builderVersion == "":
             return (
                 False,
                 f"the builder {project.gen.builder!r} version is not set",

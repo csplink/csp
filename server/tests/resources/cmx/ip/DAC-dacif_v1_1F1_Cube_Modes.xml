@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V4.0" IPType="peripheral" Name="DAC" Version="dacif_v1_1F1_Cube"
+    xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../../../../../../doc/V4/Development/Specifications/db/IP_Modes.xsd"
+    xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+    <About>DAC: Digital to Analog Converter</About>
+    <Semaphore>$IpInstance</Semaphore>
+    <RefParameter Comment="Channel" DefaultValue="DAC_CHANNEL_1" Name="DAC_Channel" Type="list" Group="DAC Out1 Settings" Visible="false">
+        <PossibleValue Comment="DAC_CHANNEL_1" Value="DAC_CHANNEL_1" />
+    </RefParameter>
+    <RefParameter Comment="Channel" DefaultValue="DAC$Index" Name="Instance" Type="list" Group="DAC Out1 Settings" Visible="false" />
+
+
+    <RefParameter Comment="Trigger" DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger" Type="list" Group="DAC Out1 Settings">
+        <Condition Diagnostic="MISC_REMAP_SEMAPHORE" Expression="MISC_REMAP_SEMAPHORE&amp;TIM5_Exist&amp;DIE428" />
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE" />
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove" />
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="MISC_REMAP_SEMAPHORE" Diagnostic="&lt;html&gt;TIM5 TRGO event can't be used if Miscellaneous features remapping is enabled. &lt;br&gt; It could be disabled through the SYS IP into the tree view.&lt;/html&gt;" Action="Disable" />
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE" />
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9" Condition="!External_Trigger_$IpInstance" Diagnostic="" Action="Remove" />
+    </RefParameter>
+    <RefParameter Comment="Trigger" DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger" Type="list" Group="DAC Out1 Settings">
+        <Condition Diagnostic="" Expression="!MISC_REMAP_SEMAPHORE&amp;TIM15_Exist&amp;DIE428" />
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE" />
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove" />
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!MISC_REMAP_SEMAPHORE" Diagnostic="&lt;html&gt;Miscellaneous features remapping is disabled.&lt;br&gt; It could be enabled through the SYS IP into the tree view.&lt;/html&gt;" Action="Disable" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE" />
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9" Condition="!External_Trigger_$IpInstance" Diagnostic="" Action="Remove" />
+    </RefParameter>
+    <RefParameter Comment="Trigger" DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger" Type="list" Group="DAC Out1 Settings">
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE" />
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist|!DIE420|!DIE428" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE" />
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9" Condition="!External_Trigger_$IpInstance" Diagnostic="" Action="Remove" />
+    </RefParameter>
+    <!--    <RefParameter Comment="Trigger" DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger" Type="list" Group="DAC Out1 Settings">
+        <Condition Diagnostic="External Trigger" Expression="MISC_REMAP_SEMAPHORE"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="TIM5_Exist" Diagnostic="Miscellaneous features remapping is enabled" Action="Disable"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger" DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger" Type="list" Group="DAC Out1 Settings">
+        <Condition Diagnostic="External Trigger" Expression="(DIE428)"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="Miscellaneous features remapping is diabled" Action="Disable"/>
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger" DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger" Type="list" Group="DAC Out1 Settings">
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist|!DIE420" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+    </RefParameter>
+    -->
+
+    <RefParameter Comment="Output Buffer" DefaultValue="DAC_OUTPUTBUFFER_ENABLE" Name="DAC_OutputBuffer" Type="list" Group="DAC Out1 Settings">
+        <PossibleValue Comment="Enable" Value="DAC_OUTPUTBUFFER_ENABLE" />
+        <PossibleValue Comment="Disable" Value="DAC_OUTPUTBUFFER_DISABLE" />
+    </RefParameter>
+
+    <!-- DISABLE triangle wave generation OUT1-->
+    <RefParameter Comment="Triangle Amplitude" DefaultValue="null" Name="TriangleAmplitude" Type="list" Group="DAC Out1 Settings" Visible="false">
+        <Condition Expression="(WaveGeneration=DISABLE)|(WaveGeneration=NoiseWaveGeneration)" Diagnostic="DISABLE wave generation" />
+    </RefParameter>
+    <!-- amplitude for triangle OUT1 -->
+    <RefParameter Comment="Maximum Triangle Amplitude" DefaultValue="DAC_TRIANGLEAMPLITUDE_1" Name="TriangleAmplitude" Type="list" Group="DAC Out1 Settings">
+        <Condition Expression="WaveGeneration=TriangleWaveGeneration" Diagnostic="DISABLE wave generation" />
+        <PossibleValue Comment="1" Value="DAC_TRIANGLEAMPLITUDE_1" />
+        <PossibleValue Comment="3" Value="DAC_TRIANGLEAMPLITUDE_3" />
+        <PossibleValue Comment="7" Value="DAC_TRIANGLEAMPLITUDE_7" />
+        <PossibleValue Comment="15" Value="DAC_TRIANGLEAMPLITUDE_15" />
+        <PossibleValue Comment="31" Value="DAC_TRIANGLEAMPLITUDE_31" />
+        <PossibleValue Comment="63" Value="DAC_TRIANGLEAMPLITUDE_63" />
+        <PossibleValue Comment="127" Value="DAC_TRIANGLEAMPLITUDE_127" />
+        <PossibleValue Comment="255" Value="DAC_TRIANGLEAMPLITUDE_255" />
+        <PossibleValue Comment="511" Value="DAC_TRIANGLEAMPLITUDE_511" />
+        <PossibleValue Comment="1023" Value="DAC_TRIANGLEAMPLITUDE_1023" />
+        <PossibleValue Comment="2047" Value="DAC_TRIANGLEAMPLITUDE_2047" />
+        <PossibleValue Comment="4095" Value="DAC_TRIANGLEAMPLITUDE_4095" />
+    </RefParameter>
+    <RefParameter Comment="Maximum Triangle Amplitude" DefaultValue="DAC_TRIANGLEAMPLITUDE_1" Name="TriangleAmplitude" Type="list" Group="DAC Out1 Settings">
+        <PossibleValue Comment="1" Value="DAC_TRIANGLEAMPLITUDE_1" />
+        <PossibleValue Comment="3" Value="DAC_TRIANGLEAMPLITUDE_3" />
+        <PossibleValue Comment="7" Value="DAC_TRIANGLEAMPLITUDE_7" />
+        <PossibleValue Comment="15" Value="DAC_TRIANGLEAMPLITUDE_15" />
+        <PossibleValue Comment="31" Value="DAC_TRIANGLEAMPLITUDE_31" />
+        <PossibleValue Comment="63" Value="DAC_TRIANGLEAMPLITUDE_63" />
+        <PossibleValue Comment="127" Value="DAC_TRIANGLEAMPLITUDE_127" />
+        <PossibleValue Comment="255" Value="DAC_TRIANGLEAMPLITUDE_255" />
+        <PossibleValue Comment="511" Value="DAC_TRIANGLEAMPLITUDE_511" />
+        <PossibleValue Comment="1023" Value="DAC_TRIANGLEAMPLITUDE_1023" />
+        <PossibleValue Comment="2047" Value="DAC_TRIANGLEAMPLITUDE_2047" />
+        <PossibleValue Comment="4095" Value="DAC_TRIANGLEAMPLITUDE_4095" />
+    </RefParameter>
+    <!-- DISABLE noise wave generation OUT1-->
+    <RefParameter Comment="Noise Amplitude" DefaultValue="null" Name="NoiseAmplitude" Type="list" Group="DAC Out1 Settings" Visible="false">
+        <Condition Expression="(WaveGeneration=DISABLE)|(WaveGeneration=TriangleWaveGeneration)" Diagnostic="DISABLE wave generation" />
+    </RefParameter>
+    <!-- amplitude for Noise OUT1-->
+    <RefParameter Comment="Noise Amplitude" DefaultValue="DAC_LFSRUNMASK_BIT0" Name="NoiseAmplitude" Type="list" Group="DAC Out1 Settings">
+        <Condition Expression="WaveGeneration=NoiseWaveGeneration" Diagnostic="DISABLE wave generation" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bit0 " Value="DAC_LFSRUNMASK_BIT0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[1:0] " Value="DAC_LFSRUNMASK_BITS1_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[2:0] " Value="DAC_LFSRUNMASK_BITS2_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[3:0] " Value="DAC_LFSRUNMASK_BITS3_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[4:0] " Value="DAC_LFSRUNMASK_BITS4_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[5:0] " Value="DAC_LFSRUNMASK_BITS5_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[6:0] " Value="DAC_LFSRUNMASK_BITS6_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[7:0] " Value="DAC_LFSRUNMASK_BITS7_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[8:0] " Value="DAC_LFSRUNMASK_BITS8_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[9:0] " Value="DAC_LFSRUNMASK_BITS9_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[10:0] " Value="DAC_LFSRUNMASK_BITS10_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[11:0] " Value="DAC_LFSRUNMASK_BITS11_0" />
+    </RefParameter>
+    <RefParameter Comment="Noise Amplitude" DefaultValue="DAC_LFSRUNMASK_BIT0" Name="NoiseAmplitude" Type="list" Group="DAC Out1 Settings">
+        <PossibleValue Comment="Unmask DAC channel LFSR bit0 " Value="DAC_LFSRUNMASK_BIT0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[1:0] " Value="DAC_LFSRUNMASK_BITS1_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[2:0] " Value="DAC_LFSRUNMASK_BITS2_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[3:0] " Value="DAC_LFSRUNMASK_BITS3_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[4:0] " Value="DAC_LFSRUNMASK_BITS4_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[5:0] " Value="DAC_LFSRUNMASK_BITS5_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[6:0] " Value="DAC_LFSRUNMASK_BITS6_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[7:0] " Value="DAC_LFSRUNMASK_BITS7_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[8:0] " Value="DAC_LFSRUNMASK_BITS8_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[9:0] " Value="DAC_LFSRUNMASK_BITS9_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[10:0] " Value="DAC_LFSRUNMASK_BITS10_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[11:0] " Value="DAC_LFSRUNMASK_BITS11_0" />
+    </RefParameter>
+
+    <RefParameter Name="WaveGeneration" Comment="Wave generation mode" Type="list" DefaultValue="DISABLE" Group="DAC Out1 Settings" Visible="false">
+        <Condition Expression="DAC_Trigger=DAC_TRIGGER_NONE" Diagnostic="DAC Trigger on OUT1 disabled" />
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+    </RefParameter>
+    <RefParameter Name="WaveGeneration" Comment="Wave generation mode" Type="list" DefaultValue="DISABLE" Group="DAC Out1 Settings">
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+        <PossibleValue Value="TriangleWaveGeneration" Comment="Triangle wave generation" />
+        <PossibleValue Value="NoiseWaveGeneration" Comment="Noise wave generation" />
+    </RefParameter>
+
+    <!-- OUT2 paramaters-->
+    <RefParameter Comment="DAC Channel" DefaultValue="DAC_CHANNEL_2" Name="DAC_Channel2" Type="list" Group="DAC Out1 Settings" Visible="false">
+        <PossibleValue Comment="DAC_CHANNEL_2" Value="DAC_CHANNEL_2" />
+    </RefParameter>
+
+    <RefParameter Name="WaveGeneration2" Comment="Wave generation mode " Type="list" DefaultValue="DISABLE" Group="DAC Out2 Settings" Visible="false">
+        <Condition Expression="DAC_Trigger2=DAC_TRIGGER_NONE" Diagnostic="DAC Trigger on OUT2 disabled" />
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+    </RefParameter>
+    <RefParameter Name="WaveGeneration2" Comment="Wave generation mode " Type="list" DefaultValue="DISABLE" Group="DAC Out2 Settings">
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+        <PossibleValue Value="TriangleWaveGeneration" Comment="Triangle wave generation" />
+        <PossibleValue Value="NoiseWaveGeneration" Comment="Noise wave generation" />
+    </RefParameter>
+
+    <RefParameter Comment="Triangle Amplitude " DefaultValue="null" Name="TriangleAmplitude2" Type="list" Group="DAC Out2 Settings" Visible="false">
+        <Condition Expression="(WaveGeneration2=DISABLE)|(WaveGeneration2=NoiseWaveGeneration)" Diagnostic="DISABLE wave generation" />
+    </RefParameter>
+    <RefParameter Comment="Maximum Triangle Amplitude " DefaultValue="DAC_TRIANGLEAMPLITUDE_1" Name="TriangleAmplitude2" Type="list" Group="DAC Out2 Settings">
+        <Condition Expression="(WaveGeneration2=TriangleWaveGeneration)" Diagnostic="DISABLE wave generation" />
+        <PossibleValue Comment="1" Value="DAC_TRIANGLEAMPLITUDE_1" />
+        <PossibleValue Comment="3" Value="DAC_TRIANGLEAMPLITUDE_3" />
+        <PossibleValue Comment="7" Value="DAC_TRIANGLEAMPLITUDE_7" />
+        <PossibleValue Comment="15" Value="DAC_TRIANGLEAMPLITUDE_15" />
+        <PossibleValue Comment="31" Value="DAC_TRIANGLEAMPLITUDE_31" />
+        <PossibleValue Comment="63" Value="DAC_TRIANGLEAMPLITUDE_63" />
+        <PossibleValue Comment="127" Value="DAC_TRIANGLEAMPLITUDE_127" />
+        <PossibleValue Comment="255" Value="DAC_TRIANGLEAMPLITUDE_255" />
+        <PossibleValue Comment="511" Value="DAC_TRIANGLEAMPLITUDE_511" />
+        <PossibleValue Comment="1023" Value="DAC_TRIANGLEAMPLITUDE_1023" />
+        <PossibleValue Comment="2047" Value="DAC_TRIANGLEAMPLITUDE_2047" />
+        <PossibleValue Comment="4095" Value="DAC_TRIANGLEAMPLITUDE_4095" />
+    </RefParameter>
+    <RefParameter Comment="Maximum Triangle Amplitude " DefaultValue="DAC_TRIANGLEAMPLITUDE_1" Name="TriangleAmplitude2" Type="list" Group="DAC Out2 Settings">
+        <PossibleValue Comment="1" Value="DAC_TRIANGLEAMPLITUDE_1" />
+        <PossibleValue Comment="3" Value="DAC_TRIANGLEAMPLITUDE_3" />
+        <PossibleValue Comment="7" Value="DAC_TRIANGLEAMPLITUDE_7" />
+        <PossibleValue Comment="15" Value="DAC_TRIANGLEAMPLITUDE_15" />
+        <PossibleValue Comment="31" Value="DAC_TRIANGLEAMPLITUDE_31" />
+        <PossibleValue Comment="63" Value="DAC_TRIANGLEAMPLITUDE_63" />
+        <PossibleValue Comment="127" Value="DAC_TRIANGLEAMPLITUDE_127" />
+        <PossibleValue Comment="255" Value="DAC_TRIANGLEAMPLITUDE_255" />
+        <PossibleValue Comment="511" Value="DAC_TRIANGLEAMPLITUDE_511" />
+        <PossibleValue Comment="1023" Value="DAC_TRIANGLEAMPLITUDE_1023" />
+        <PossibleValue Comment="2047" Value="DAC_TRIANGLEAMPLITUDE_2047" />
+        <PossibleValue Comment="4095" Value="DAC_TRIANGLEAMPLITUDE_4095" />
+    </RefParameter>
+    <!-- DISABLE noise wave generation OUT2-->
+    <RefParameter Comment="Noise Amplitude " DefaultValue="null" Name="NoiseAmplitude2" Type="list" Group="DAC Out2 Settings" Visible="false">
+        <Condition Expression="(WaveGeneration2=DISABLE)|(WaveGeneration2=TriangleWaveGeneration)" Diagnostic="DISABLE wave generation" />
+    </RefParameter>
+    <!-- amplitude for Noise OUT2-->
+    <RefParameter Comment="Noise Amplitude " DefaultValue="DAC_LFSRUNMASK_BIT0" Name="NoiseAmplitude2" Type="list" Group="DAC Out2 Settings">
+        <Condition Expression="WaveGeneration2=NoiseWaveGeneration" Diagnostic="DISABLE wave generation" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bit0 " Value="DAC_LFSRUNMASK_BIT0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[1:0] " Value="DAC_LFSRUNMASK_BITS1_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[2:0] " Value="DAC_LFSRUNMASK_BITS2_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[3:0] " Value="DAC_LFSRUNMASK_BITS3_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[4:0] " Value="DAC_LFSRUNMASK_BITS4_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[5:0] " Value="DAC_LFSRUNMASK_BITS5_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[6:0] " Value="DAC_LFSRUNMASK_BITS6_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[7:0] " Value="DAC_LFSRUNMASK_BITS7_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[8:0] " Value="DAC_LFSRUNMASK_BITS8_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[9:0] " Value="DAC_LFSRUNMASK_BITS9_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[10:0] " Value="DAC_LFSRUNMASK_BITS10_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[11:0] " Value="DAC_LFSRUNMASK_BITS11_0" />
+    </RefParameter>
+    <RefParameter Comment="Noise Amplitude " DefaultValue="DAC_LFSRUNMASK_BIT0" Name="NoiseAmplitude2" Type="list" Group="DAC Out2 Settings">
+        <PossibleValue Comment="Unmask DAC channel LFSR bit0 " Value="DAC_LFSRUNMASK_BIT0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[1:0] " Value="DAC_LFSRUNMASK_BITS1_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[2:0] " Value="DAC_LFSRUNMASK_BITS2_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[3:0] " Value="DAC_LFSRUNMASK_BITS3_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[4:0] " Value="DAC_LFSRUNMASK_BITS4_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[5:0] " Value="DAC_LFSRUNMASK_BITS5_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[6:0] " Value="DAC_LFSRUNMASK_BITS6_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[7:0] " Value="DAC_LFSRUNMASK_BITS7_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[8:0] " Value="DAC_LFSRUNMASK_BITS8_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[9:0] " Value="DAC_LFSRUNMASK_BITS9_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[10:0] " Value="DAC_LFSRUNMASK_BITS10_0" />
+        <PossibleValue Comment="Unmask DAC channel LFSR bits[11:0] " Value="DAC_LFSRUNMASK_BITS11_0" />
+    </RefParameter>
+    <!--    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <Condition Diagnostic="External Trigger" Expression="External_Trigger_$IpInstance&amp;MISC_REMAP_SEMAPHORE"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="TIM5_Exist" Diagnostic="Miscellaneous features remapping is enabled." Action="Disable"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <Condition Diagnostic="External Trigger" Expression="External_Trigger_$IpInstance&amp;(DIE428)"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="Miscellaneous features remapping is diabled" Action="Disable"/>
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+         <Condition Diagnostic="External Trigger" Expression="External_Trigger_$IpInstance"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist|!DIE420" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <Condition Diagnostic="External Trigger" Expression="MISC_REMAP_SEMAPHORE"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="TIM5_Exist" Diagnostic="Miscellaneous features remapping is enabled" Action="Disable"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <Condition Diagnostic="External Trigger" Expression="(DIE428)"/>
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="Miscellaneous features remapping is diabled" Action="Disable"/>
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9"/>
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <PossibleValue Comment="None" Value="DAC_TRIGGER_NONE"/>
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist|!DIE420" Diagnostic="available only if TIMx exists" Action="Remove"/>
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE"/>
+    </RefParameter>-->
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <Condition Diagnostic="MISC_REMAP_SEMAPHORE" Expression="MISC_REMAP_SEMAPHORE&amp;TIM5_Exist&amp;DIE428" />
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE" />
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove" />
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="MISC_REMAP_SEMAPHORE" Diagnostic="&lt;html&gt;TIM5 TRGO event can't be used if Miscellaneous features remapping is enabled. &lt;br&gt; It could be disabled through the SYS IP into the tree view.&lt;/html&gt;" Action="Disable" />
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove" />
+
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE" />
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9" Condition="!External_Trigger_$IpInstance" Diagnostic="" Action="Remove" />
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <Condition Diagnostic="" Expression="!MISC_REMAP_SEMAPHORE&amp;TIM15_Exist&amp;DIE428" />
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE" />
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="" Action="Remove" />
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!MISC_REMAP_SEMAPHORE" Diagnostic="&lt;html&gt;Miscellaneous features remapping is disabled.&lt;br&gt; It could be enabled through the SYS IP into the tree view.&lt;/html&gt;" Action="Disable" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE" />
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9" Condition="!External_Trigger_$IpInstance" Diagnostic="" Action="Remove" />
+    </RefParameter>
+    <RefParameter Comment="Trigger " DefaultValue="DAC_TRIGGER_NONE" Name="DAC_Trigger2" Type="list" Group="DAC Out2 Settings">
+        <PossibleValue Comment="None " Value="DAC_TRIGGER_NONE" />
+        <PossibleValue Comment="Timer 2 Trigger Out event " Value="DAC_TRIGGER_T2_TRGO" Condition="!TIM2_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 3 Trigger Out event " Value="DAC_TRIGGER_T3_TRGO" Condition="!TIM3_Exist|(!DIE420&amp;!DIE428&amp;!DIE418)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 4 Trigger Out event " Value="DAC_TRIGGER_T4_TRGO" Condition="!TIM4_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 5 Trigger Out event " Value="DAC_TRIGGER_T5_TRGO" Condition="!TIM5_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 6 Trigger Out event " Value="DAC_TRIGGER_T6_TRGO" Condition="!TIM6_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 7 Trigger Out event " Value="DAC_TRIGGER_T7_TRGO" Condition="!TIM7_Exist" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 8 Trigger Out event " Value="DAC_TRIGGER_T8_TRGO" Condition="!TIM8_Exist|(!DIE430&amp;!DIE414)" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Timer 15 Trigger Out event " Value="DAC_TRIGGER_T15_TRGO" Condition="!TIM15_Exist|!DIE420|!DIE428" Diagnostic="available only if TIMx exists" Action="Remove" />
+        <PossibleValue Comment="Software trigger" Value="DAC_TRIGGER_SOFTWARE" />
+        <PossibleValue Comment="External line 9" Value="DAC_TRIGGER_EXT_IT9" Condition="!External_Trigger_$IpInstance" Diagnostic="" Action="Remove" />
+    </RefParameter>
+    <RefParameter Comment="Output Buffer " DefaultValue="DAC_OUTPUTBUFFER_ENABLE" Name="DAC_OutputBuffer2" Type="list" Group="DAC Out2 Settings">
+        <PossibleValue Comment="Enable" Value="DAC_OUTPUTBUFFER_ENABLE" />
+        <PossibleValue Comment="Disable" Value="DAC_OUTPUTBUFFER_DISABLE" />
+    </RefParameter>
+
+    <!--RemapTrigger -->
+    <!--<RefMode Name="remap" Abstract="true">
+        <Condition Expression="AFIORemp1|AFIORemp2" Diagnostic=""/>
+        <ConfigForMode>RemapTrigger</ConfigForMode>
+    </RefMode>
+    <RefMode Name="remap" Abstract="true">
+
+    </RefMode>-->
+    <RefMode Name="DAC_OUT1" Comment="DAC Out1 Mode" Abstract="true">
+        <ConfigForMode>DAC_ChannelConfig</ConfigForMode>
+        <ConfigForMode>DAC_Init</ConfigForMode>
+        <ConfigForMode>DAC_TriangleWaveGenerate1</ConfigForMode>
+        <ConfigForMode>DAC_NoiseWaveGenerate1</ConfigForMode>
+        <Parameter Name="DAC_OutputBuffer" />
+        <Parameter Name="DAC_Trigger" />
+        <Parameter Name="DAC_Channel">
+            <PossibleValue>DAC_CHANNEL_1</PossibleValue>
+        </Parameter>
+        <Parameter Name="WaveGeneration" />
+        <Parameter Name="TriangleAmplitude" />
+        <Parameter Name="NoiseAmplitude" />
+    </RefMode>
+    <RefMode Name="DAC_OUT1" Comment="DAC Out1 Mode" Abstract="true">
+        <ConfigForMode>DAC_ChannelConfig</ConfigForMode>
+        <ConfigForMode>DAC_Init</ConfigForMode>
+        <ConfigForMode>DAC_TriangleWaveGenerate1</ConfigForMode>
+        <ConfigForMode>DAC_NoiseWaveGenerate1</ConfigForMode>
+        <Parameter Name="DAC_OutputBuffer" />
+        <Parameter Name="DAC_Trigger" />
+        <Parameter Name="DAC_Channel">
+            <PossibleValue>DAC_CHANNEL_1</PossibleValue>
+        </Parameter>
+        <Parameter Name="WaveGeneration" />
+        <Parameter Name="TriangleAmplitude" />
+        <Parameter Name="NoiseAmplitude" />
+    </RefMode>
+    <RefMode Name="DAC_OUT2" Comment="DAC Out2 Mode" Abstract="true">
+        <ConfigForMode>DAC_ChannelConfig2</ConfigForMode>
+        <ConfigForMode>DAC_Init</ConfigForMode>
+        <ConfigForMode>DAC_TriangleWaveGenerate2</ConfigForMode>
+        <ConfigForMode>DAC_NoiseWaveGenerate2</ConfigForMode>
+        <Parameter Name="DAC_OutputBuffer2" />
+        <Parameter Name="DAC_Trigger2" />
+        <Parameter Name="DAC_Channel2">
+            <PossibleValue>DAC_CHANNEL_2</PossibleValue>
+        </Parameter>
+        <Parameter Name="WaveGeneration2" />
+        <Parameter Name="TriangleAmplitude2" />
+        <Parameter Name="NoiseAmplitude2" />
+    </RefMode>
+    <RefMode Name="DAC_Init" Comment="DAC Initialisation" Abstract="true">
+        <ConfigForMode>DAC_Init</ConfigForMode>
+    </RefMode>
+    <RefMode Name="External-Trigger" Comment="External-Trigger" Abstract="true">
+
+    </RefMode>
+    <ModeLogicOperator Name="OR">
+        <Mode Name="DAC_OUT1" UserName="OUT1 Configuration">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="DAC_OUT1">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OUT1" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_OUT1_Conf</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+            <!--<Condition Expression="DAC_Base" Diagnostic="Calendar should be activated"/>  -->
+        </Mode>
+        <Mode Name="DAC_OUT2" UserName="OUT2 Configuration">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="DAC_OUT2">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OUT2" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_OUT2_Conf</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+            <!--<Condition Expression="DAC_Base" Diagnostic="Calendar should be activated"/>-->
+        </Mode>
+        <Mode Name="External-Trigger" UserName="External Trigger">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="External-Trigger">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="EXTI9" />
+                    </SignalLogicalOp>
+                    <Condition Expression="$IpInstance_OUT1_Conf|$IpInstance_OUT2_Conf" Diagnostic="External Trigger should be available only if an OUT Configuration is selected" />
+                    <Semaphore>External_Trigger_$IpInstance</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+            <!--<Condition Expression="DAC_Base" Diagnostic="DAC Configuration should be activated"/>-->
+        </Mode>
+    </ModeLogicOperator>
+    <!--	<RefSignal IOMode="EXTI" Name="EXTI9"/>-->
+    <RefSignal IOMode="EXTI" Name="EXTI9" ShareableGroupName="GPXTI9" /> <!-- GPXTI is a keyword -->
+    <RefSignal IOMode="Analog" Name="OUT1" ShareableGroupName="COMP_$IpInstance1_group" />
+    <RefSignal IOMode="Analog" Name="OUT2" ShareableGroupName="COMP_$IpInstance2_group" />
+</IP>

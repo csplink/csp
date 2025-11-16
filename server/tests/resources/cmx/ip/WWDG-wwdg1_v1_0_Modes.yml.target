@@ -1,0 +1,135 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        WWDG-wwdg1_v1_0_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-10-31     xqyjlj       initial version
+#
+
+name: WWDG
+parameters:
+  wwdg_counter_t:
+    type: integer
+    default: 64
+    max: 127
+    min: configs.${IP_INSTANCE}.wwdg_window_t
+    display:
+      zh-cn: WWDG free-running downcounter value
+      en: WWDG free-running downcounter value
+    description:
+      zh-cn: |-
+        Specifies the WWDG counter value.
+        It is decremented every (4096 x 2**WDGTB) PCLK cycles.
+        A reset is produced when it is decremented from 0x40 to 0x3F (T6 becomes cleared).
+      en: |-
+        Specifies the WWDG counter value.
+        It is decremented every (4096 x 2**WDGTB) PCLK cycles.
+        A reset is produced when it is decremented from 0x40 to 0x3F (T6 becomes cleared).
+    visible: true
+    readonly: false
+  wwdg_ewi_mode_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Early wakeup interrupt
+      en: Early wakeup interrupt
+    description:
+      zh-cn: When set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared
+        by hardware after a reset.
+      en: When set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by
+        hardware after a reset.
+    visible: true
+    readonly: false
+  wwdg_prescaler_t:
+    type: enum
+    values:
+      /1:
+        comment:
+          zh-cn: /1
+          en: /1
+      /2:
+        comment:
+          zh-cn: /2
+          en: /2
+      /4:
+        comment:
+          zh-cn: /4
+          en: /4
+      /8:
+        comment:
+          zh-cn: /8
+          en: /8
+    default: /1
+    display:
+      zh-cn: WWDG counter clock prescaler
+      en: WWDG counter clock prescaler
+    description:
+      zh-cn: The resulting value of the clock is equal to (PCLK/4096)/prescaler for example (PCLK/4096)/8.
+      en: The resulting value of the clock is equal to (PCLK/4096)/prescaler for example (PCLK/4096)/8.
+    visible: true
+    readonly: false
+  wwdg_window_t:
+    type: integer
+    default: 64
+    max: 127
+    min: 64
+    display:
+      zh-cn: WWDG window value
+      en: WWDG window value
+    description:
+      zh-cn: |-
+        Specifies the WWDG window value to be compared to the downcounter. If the software reloads the counter while the counter is greater than the
+        value stored in the window register, then a reset is generated.
+      en: |-
+        Specifies the WWDG window value to be compared to the downcounter. If the software reloads the counter while the counter is greater than the
+        value stored in the window register, then a reset is generated.
+    visible: true
+    readonly: false
+  wwdg_ctrl_state_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: ACTIVATED
+      en: ACTIVATED
+    description:
+      zh-cn: ACTIVATED
+      en: ACTIVATED
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      wwdg_ctrl_state_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.wwdg_ctrl_state_t
+      content:
+        refParameters:
+          wwdg_prescaler_t: {}
+          wwdg_window_t: {}
+          wwdg_counter_t: {}
+          wwdg_ewi_mode_t: {}
+activated: (configs.${IP_INSTANCE}.wwdg_ctrl_state_t)

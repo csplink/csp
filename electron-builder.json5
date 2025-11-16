@@ -16,11 +16,23 @@
       "from": "resources",
       "to": "resources",
       "filter": ["**/*"]
+    },
+    {
+      "from": "server/public",
+      "to": "resources/server/public",
+      "filter": ["**/*"]
     }
   ],
   "mac": {
     "target": [
       "dmg"
+    ],
+    "extraFiles": [
+      {
+        "from": "build-server/csp-server",
+        "to": "resources/server/csp-server",
+        "filter": ["**/*"]
+      }
     ],
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
   },
@@ -31,6 +43,13 @@
         "arch": [
           "x64"
         ]
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "build-server/csp-server.exe",
+        "to": "resources/server/csp-server.exe",
+        "filter": ["**/*"]
       }
     ],
     "icon": "resources/images/logo.ico",
@@ -45,6 +64,13 @@
   "linux": {
     "target": [
       "AppImage"
+    ],
+    "extraFiles": [
+      {
+        "from": "build-server/csp-server",
+        "to": "resources/server/csp-server",
+        "filter": ["**/*"]
+      }
     ],
     "artifactName": "${productName}-Linux-${version}.${ext}"
   }

@@ -69,7 +69,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "~/styles/theme/index.scss" as *;`,
+        additionalData: `@use "~/styles/themes/index.scss" as *;`,
         api: 'modern-compiler',
       },
     },
@@ -105,7 +105,20 @@ export default defineConfig({
       dts: 'src/components.d.ts',
     }),
     prismjsPlugin({
-      languages: ['c', 'cpp', 'python', 'armasm', 'linker-script', 'json', 'yaml', 'xml', 'markdown', 'lua', 'gitignore'],
+      languages: [
+        'c',
+        'cpp',
+        'cmake',
+        'python',
+        'armasm',
+        'linker-script',
+        'json',
+        'yaml',
+        'xml',
+        'markdown',
+        'lua',
+        'gitignore',
+      ],
       plugins: ['line-numbers', 'inline-color', 'match-braces', 'diff-highlight'],
       theme: 'default',
       css: true,

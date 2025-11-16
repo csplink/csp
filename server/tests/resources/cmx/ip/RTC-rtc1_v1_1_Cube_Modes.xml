@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP xmlns="http://mcd.rou.st.com/modules.php?name=mcu" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" DBVersion="V4.0" IPType="peripheral" Name="RTC" Version="rtc1_v1_1_Cube" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu file:///C:/Users/gadachah/Documents/IP_Modes.xsd">
+
+    <!-- Generic RefParameters for RTC -->
+    <RefParameter Comment="Instance" DefaultValue="RTC" Name="Instance" Type="" Visible="false" />
+
+    <!-- General parameters -->
+    <RefParameter Comment="Auto Predivider Calculation" DefaultValue="RTC_AUTO_1_SECOND" Group="General" Name="AutoPrediv" Type="list">
+        <PossibleValue Comment="Enabled" Value="RTC_AUTO_1_SECOND" />
+        <PossibleValue Comment="Disabled" Value="0" />
+    </RefParameter>
+    <RefParameter Comment="Asynchronous Predivider value" DefaultValue="RTC_AUTO_1_SECOND" Group="General" Name="AsynchPrediv" Type="list">
+        <Condition Diagnostic="" Expression="AutoPrediv = RTC_AUTO_1_SECOND" />
+        <PossibleValue Comment="Automatic Predivider Calculation Enabled" Value="RTC_AUTO_1_SECOND" />
+    </RefParameter>
+    <RefParameter Comment="Asynchronous Predivider value" DefaultValue="1048575" Group="General" Max="1048575" Min="0" Name="AsynchPrediv" Type="integer" />
+    <RefParameter Comment="Asynchronous Predivider value" DefaultValue="1048575" Group="General" Max="1048575" Min="0" Name="AsynchPrediv" Type="integer" Visible="false" />
+
+
+    <!-- Output Signal for Alarm A, Alarm B, WAKEUP -->
+
+    <RefParameter Comment="Output" DefaultValue="RTC_OUTPUTSOURCE_NONE" Group="General" Name="OutPut" Type="list">
+        <Condition Diagnostic="" Expression="TAMPER_ENABLED|RTC_noOutput" />
+        <PossibleValue Comment="No output on the TAMPER pin" Value="RTC_OUTPUTSOURCE_NONE" />
+    </RefParameter>
+
+    <RefParameter Comment="Output" DefaultValue="RTC_OUTPUTSOURCE_ALARM" Group="General" Name="OutPut" Type="list">
+        <PossibleValue Comment="Alarm pulse signal on the TAMPER pin" Value="RTC_OUTPUTSOURCE_ALARM" Semaphore="RTC_ALARM_INTERRUPT" />
+        <PossibleValue Comment="RTC clock with a frequency divided by 64 on the TAMPER pin" Value="RTC_OUTPUTSOURCE_CALIBCLOCK" />
+        <PossibleValue Comment="Second pulse signal on the TAMPER pin" Semaphore="RTC_GLOBAL_INTERRUPT_ON" Value="RTC_OUTPUTSOURCE_SECOND" />
+    </RefParameter>
+
+    <!-- Calendar Time parameters -->
+    <RefParameter Comment="Data Format" DefaultValue="RTC_FORMAT_BCD" Group="Calendar Time" Name="Format" Type="list">
+        <PossibleValue Comment="Binary data format" Value="RTC_FORMAT_BIN" />
+        <PossibleValue Comment="BCD data format" Value="RTC_FORMAT_BCD" />
+    </RefParameter>
+
+    <!-- Hours -->
+    <RefParameter Comment="Hours" DefaultValue="0" Group="Calendar Time" Max="23" Min="0" Name="Hours" Type="decimal" />
+    <RefParameter Comment="Hours" DefaultValue="+0x+Hours" Group="Calendar Time" Name="HoursARG" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Hours" DefaultValue="+Hours" Group="Calendar Time" Name="HoursARG" Type="string" Visible="false" />
+
+    <!-- Minutes -->
+    <RefParameter Comment="Minutes" DefaultValue="0" Group="Calendar Time" Max="59" Min="0" Name="Minutes" Type="decimal" />
+    <RefParameter Comment="Minutes" DefaultValue="+0x+Minutes" Group="Calendar Time" Name="MinutesARG" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Minutes" DefaultValue="+Minutes" Group="Calendar Time" Name="MinutesARG" Type="string" Visible="false" />
+
+    <!-- Seconds -->
+    <RefParameter Comment="Seconds" DefaultValue="0" Group="Calendar Time" Max="59" Min="0" Name="Seconds" Type="decimal" />
+    <RefParameter Comment="Seconds" DefaultValue="+0x+Seconds" Group="Calendar Time" Name="SecondsARG" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Seconds" DefaultValue="+Seconds" Group="Calendar Time" Name="SecondsARG" Type="string" Visible="false" />
+    <!-- Calendar Date parameters -->
+    <RefParameter Comment="Week Day" DefaultValue="RTC_WEEKDAY_MONDAY" Group="Calendar Date" Name="WeekDay" Type="list">
+        <PossibleValue Comment="Monday" Value="RTC_WEEKDAY_MONDAY" />
+        <PossibleValue Comment="Tuesday" Value="RTC_WEEKDAY_TUESDAY" />
+        <PossibleValue Comment="Wednesday" Value="RTC_WEEKDAY_WEDNESDAY" />
+        <PossibleValue Comment="Thursday" Value="RTC_WEEKDAY_THURSDAY" />
+        <PossibleValue Comment="Friday" Value="RTC_WEEKDAY_FRIDAY" />
+        <PossibleValue Comment="Saturday" Value="RTC_WEEKDAY_SATURDAY" />
+        <PossibleValue Comment="Sunday" Value="RTC_WEEKDAY_SUNDAY" />
+    </RefParameter>
+    <RefParameter Comment="Month" DefaultValue="RTC_MONTH_JANUARY" Group="Calendar Date" Name="Month" Type="list">
+        <PossibleValue Comment="January" Value="RTC_MONTH_JANUARY" Semaphore="Jan" />
+        <PossibleValue Comment="February" Value="RTC_MONTH_FEBRUARY" Semaphore="Feb" />
+        <PossibleValue Comment="March" Value="RTC_MONTH_MARCH" Semaphore="Mar" />
+        <PossibleValue Comment="April" Value="RTC_MONTH_APRIL" Semaphore="Apr" />
+        <PossibleValue Comment="May" Value="RTC_MONTH_MAY" Semaphore="May" />
+        <PossibleValue Comment="June" Value="RTC_MONTH_JUNE" Semaphore="Jun" />
+        <PossibleValue Comment="July" Value="RTC_MONTH_JULY" Semaphore="Jul" />
+        <PossibleValue Comment="August" Value="RTC_MONTH_AUGUST" Semaphore="Aug" />
+        <PossibleValue Comment="September" Value="RTC_MONTH_SEPTEMBER" Semaphore="Sep" />
+        <PossibleValue Comment="October" Value="RTC_MONTH_OCTOBER" Semaphore="Oct" />
+        <PossibleValue Comment="November" Value="RTC_MONTH_NOVEMBER" Semaphore="Nov" />
+        <PossibleValue Comment="December" Value="RTC_MONTH_DECEMBER" Semaphore="Dec" />
+    </RefParameter>
+    <RefParameter Comment="Date" DefaultValue="1" Group="Calendar Date" Max="29" Min="1" Name="Date" Type="decimal">
+        <!-- To check the bissextile year -->
+        <Condition Diagnostic="" Expression="Feb &amp; (Year=4 | Year=8 | Year=12 | Year=16 | Year=20 | Year=24 | Year=28 | Year=32
+													|Year=36 | Year=40 | Year=44 | Year=48 | Year=52 | Year=56 | Year=60 | Year=64
+													| Year=68 | Year=72 | Year=76 | Year=80 | Year=84 | Year=88 | Year=92 | Year=96)" />
+    </RefParameter>
+    <RefParameter Comment="Date" DefaultValue="1" Group="Calendar Date" Max="28" Min="1" Name="Date" Type="decimal">
+        <Condition Diagnostic="" Expression="Feb" />
+    </RefParameter>
+    <RefParameter Comment="Date" DefaultValue="1" Group="Calendar Date" Max="30" Min="1" Name="Date" Type="decimal">
+        <Condition Diagnostic="" Expression="Apr | Jun | Sep | Nov" />
+    </RefParameter>
+    <RefParameter Comment="Date" DefaultValue="1" Group="Calendar Date" Max="31" Min="1" Name="Date" Type="decimal" />
+    <RefParameter Comment="Date" DefaultValue="+0x+Date" Group="Calendar Date" Name="DateARG" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Date" DefaultValue="+Date" Group="Calendar Date" Name="DateARG" Type="string" Visible="false" />
+
+    <RefParameter Comment="Year" DefaultValue="0" Group="Calendar Date" Max="99" Min="0" Name="Year" Type="decimal" />
+    <RefParameter Comment="Year" DefaultValue="+0x+Year" Group="Calendar Date" Name="YearARG" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Year" DefaultValue="+Year" Group="Calendar Date" Name="YearARG" Type="string" Visible="false" />
+
+
+    <!-- Alarm A parameters -->
+
+    <!-- Hours -->
+    <RefParameter Comment="Hours" DefaultValue="0" Group="Alarm A" Max="23" Min="0" Name="Hours_A" Type="decimal">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+    </RefParameter>
+    <RefParameter Comment="Hours" DefaultValue="+0x+Hours_A" Group="Alarm A" Name="HoursARG_A" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM &amp; Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Hours" DefaultValue="+Hours_A" Group="Alarm A" Name="HoursARG_A" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+    </RefParameter>
+    <RefParameter Comment="Hours" DefaultValue="null" Group="Alarm A" Name="Hours_A" Type="list" Visible="false" />
+
+    <!-- Minutes -->
+    <RefParameter Comment="Minutes" DefaultValue="0" Group="Alarm A" Max="59" Min="0" Name="Minutes_A" Type="decimal">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+    </RefParameter>
+    <RefParameter Comment="Minutes" DefaultValue="+0x+Minutes_A" Group="Alarm A" Name="MinutesARG_A" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM &amp; Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Minutes" DefaultValue="+Minutes_A" Group="Alarm A" Name="MinutesARG_A" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+    </RefParameter>
+    <RefParameter Comment="Minutes" DefaultValue="null" Group="Alarm A" Name="Minutes_A" Type="list" Visible="false" />
+
+    <!-- Seconds -->
+    <RefParameter Comment="Seconds" DefaultValue="0" Group="Alarm A" Max="59" Min="0" Name="Seconds_A" Type="decimal">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+    </RefParameter>
+    <RefParameter Comment="Seconds" DefaultValue="+0x+Seconds_A" Group="Alarm A" Name="SecondsARG_A" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM &amp; Format=RTC_FORMAT_BCD" />
+    </RefParameter>
+    <RefParameter Comment="Seconds" DefaultValue="+Seconds_A" Group="Alarm A" Name="SecondsARG_A" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+    </RefParameter>
+    <RefParameter Comment="Seconds" DefaultValue="null" Group="Alarm A" Name="Seconds_A" Type="list" Visible="false" />
+
+
+    <RefParameter Comment="Alarm" DefaultValue="RTC_ALARM_A" Group="Alarm A" Name="Alarm_A" Type="list" Visible="true">
+        <Condition Diagnostic="" Expression="OutPut=RTC_OUTPUTSOURCE_ALARM" />
+        <PossibleValue Comment="ALARM A" Value="RTC_ALARM_A" />
+    </RefParameter>
+    <RefParameter Comment="Alarm" DefaultValue="null" Group="Alarm A" Name="Alarm_A" Type="list" Visible="false">
+	</RefParameter>
+    <!-- Time Stamp parameters -->
+
+    <!-- ################################## Tamper parameters ##################################################-->
+    <RefParameter Comment="Tamper" DefaultValue="RTC_TAMPER_1" Group="Tamper" Name="Tamper" Type="list" Visible="false">
+        <PossibleValue Comment="Tamper" Value="RTC_TAMPER_1" />
+    </RefParameter>
+
+    <RefParameter Comment="Tamper Trigger" DefaultValue="RTC_TAMPERTRIGGER_LOWLEVEL" Group="Tamper" Name="Trigger" Type="list">
+        <PossibleValue Comment="Rising Edge" Value="RTC_TAMPERTRIGGER_LOWLEVEL" />
+        <PossibleValue Comment="Falling Edge" Value="RTC_TAMPERTRIGGER_HIGHLEVEL" />
+    </RefParameter>
+
+
+    <!-- setSecond config -->
+    <!--<RefMode Name="RTC_SetSecond" HalMode="RTC" Abstract="true">
+            <Condition Expression="RTC_GLOBAL_INTERRUPT_ON" Diagnostic=""/>
+		<ConfigForMode>RTC_SetSecond_IT</ConfigForMode>
+        </RefMode>
+        <RefMode Name="RTC_SetSecond" HalMode="RTC" Abstract="true">
+        </RefMode> Revert modif done in bug #303011 -->
+    <!-- RefMode for intern -->
+    <RefMode Abstract="true" HalMode="RTC" Name="RTC_Enabled">
+        <ConfigForMode>RTC_Init_Only</ConfigForMode>
+        <!-- Basic Parameters -->
+        <Parameter Name="Format" />
+        <Parameter Name="AutoPrediv" />
+        <Parameter Name="AsynchPrediv" />
+        <Parameter Name="OutPut" />
+    </RefMode>
+
+    <RefMode Abstract="true" HalMode="RTC" Name="RTC_Calendar">
+        <ConfigForMode>RTC_Init</ConfigForMode>
+        <!-- Basic Parameters -->
+        <Parameter Name="AutoPrediv" />
+        <Parameter Name="AsynchPrediv" />
+        <Parameter Name="OutPut" />
+        <!-- Calendar Settings -->
+        <Parameter Name="Format" />
+        <Parameter Name="Hours" />
+        <Parameter Name="Minutes" />
+        <Parameter Name="Seconds" />
+        <!-- Parameter Name="SubSeconds"/-->
+        <Parameter Name="WeekDay" />
+        <Parameter Name="Month" />
+        <Parameter Name="Date" />
+        <Parameter Name="Year" />
+    </RefMode>
+
+    <RefMode Abstract="true" HalMode="RTC" Name="RTC_Init_And_Calender_Settings">
+        <ConfigForMode>RTC_Init</ConfigForMode>
+        <!-- Basic Parameters -->
+        <Parameter Name="AutoPrediv" />
+        <Parameter Name="AsynchPrediv" />
+        <Parameter Name="OutPut" />
+        <!-- Calendar Settings -->
+        <Parameter Name="Format" />
+        <Parameter Name="Hours" />
+        <Parameter Name="Minutes" />
+        <Parameter Name="Seconds" />
+        <Parameter Name="WeekDay" />
+        <Parameter Name="Month" />
+        <Parameter Name="Date" />
+        <Parameter Name="Year" />
+    </RefMode>
+
+    <RefMode Abstract="true" HalMode="RTC" Name="Tamper_basic">
+        <ConfigForMode>RTC_Init_Only</ConfigForMode>
+        <!-- Basic Parameters -->
+        <Parameter Name="AutoPrediv" />
+        <Parameter Name="AsynchPrediv" />
+        <Parameter Name="OutPut" />
+        <!-- Calendar Settings -->
+    </RefMode>
+
+    <RefMode Abstract="true" HalMode="RTC" Name="Date">
+        <ConfigForMode>RTC_SetDate</ConfigForMode>
+        <Parameter Name="WeekDay" />
+        <Parameter Name="Month" />
+        <Parameter Name="Date" />
+        <Parameter Name="Year" />
+    </RefMode>
+
+
+    <RefMode BaseMode="Tamper_basic" HalMode="RTC" Name="Tamper">
+        <Condition Diagnostic="" Expression="TAMPER_IRQn" />
+        <ConfigForMode>RTC_SetTamper_IT</ConfigForMode>
+        <Parameter Name="Tamper">
+            <PossibleValue>RTC_TAMPER_1</PossibleValue>
+        </Parameter>
+        <Parameter Name="Trigger" />
+    </RefMode>
+    <RefMode BaseMode="Tamper_basic" HalMode="RTC" Name="Tamper">
+        <ConfigForMode>RTC_SetTamper</ConfigForMode>
+        <Parameter Name="Tamper">
+            <PossibleValue>RTC_TAMPER_1</PossibleValue>
+        </Parameter>
+        <Parameter Name="Trigger" />
+    </RefMode>
+
+
+    <RefMode BaseMode="RTC_Init_And_Calender_Settings" HalMode="RTC" Name="RTC OUT">
+        <Condition Diagnostic="" Expression="RTC_Alarm_IRQn|RTC_IRQn" />
+        <ConfigForMode>RTC_SetAlarm_A_IT</ConfigForMode>
+        <Parameter Name="Alarm_A" />
+        <Parameter Name="Hours_A" />
+        <Parameter Name="Minutes_A" />
+        <Parameter Name="Seconds_A" />
+    </RefMode>
+    <RefMode BaseMode="RTC_Init_And_Calender_Settings" HalMode="RTC" Name="RTC OUT">
+        <ConfigForMode>RTC_SetAlarm_A</ConfigForMode>
+        <Parameter Name="Alarm_A" />
+        <Parameter Name="Hours_A" />
+        <Parameter Name="Minutes_A" />
+        <Parameter Name="Seconds_A" />
+    </RefMode>
+    <RefMode BaseMode="RTC_Init_And_Calender_Settings" HalMode="RTC" Name="RTC_OUT_NO">
+        <Condition Diagnostic="" Expression="RTC_Alarm_IRQn|RTC_IRQn" />
+        <ConfigForMode>RTC_SetAlarm_A_IT</ConfigForMode>
+        <Parameter Name="Alarm_A" />
+        <Parameter Name="Hours_A" />
+        <Parameter Name="Minutes_A" />
+        <Parameter Name="Seconds_A" />
+    </RefMode>
+    <RefMode BaseMode="RTC_Init_And_Calender_Settings" HalMode="RTC" Name="RTC_OUT_NO">
+        <ConfigForMode>RTC_SetAlarm_A</ConfigForMode>
+        <Parameter Name="Alarm_A" />
+        <Parameter Name="Hours_A" />
+        <Parameter Name="Minutes_A" />
+        <Parameter Name="Seconds_A" />
+    </RefMode>
+
+    <!--##################################################################################################-->
+    <!--############################################# Modes Definition ###################################-->
+    <!--##################################################################################################-->
+
+    <ModeLogicOperator Name="OR">
+
+        <Mode Name="Activate Clock Source">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="RTC_Enabled" UserName="Activate Clock Source">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_RTC_Activate" />
+                    </SignalLogicalOp>
+                    <Semaphore>RTC_ENABLED</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+
+        <Mode Name="Activate Calendar">
+            <Condition Diagnostic="RTC is already used for system time base" Expression="!SYS_$IpInstance &amp; RTC_ENABLED" />
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="RTC_Calendar" UserName="Activate Calendar">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_RTC_Calendar" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="RTC OUT">
+            <Condition Diagnostic="RTC is already used for system time base" Expression="!SYS_$IpInstance &amp; RTC_ENABLED" />
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="RTC_OUT_NO" UserName="No RTC Output">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="No_RTC_Output" />
+                    </SignalLogicalOp>
+                    <Semaphore>RTC_noOutput</Semaphore>
+                    <!--Semaphore>RTC_ALARM_INTERRUPT</Semaphore-->
+                </Mode>
+                <Mode Name="RTC OUT" UserName="RTC Output on the Tamper pin">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OUT" />
+                    </SignalLogicalOp>
+                    <!--Semaphore>RTC_ALARM_INTERRUPT</Semaphore-->
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+
+        <Mode Name="Tamper">
+            <Condition Diagnostic="RTC is already used for system time base" Expression="!SYS_$IpInstance &amp; RTC_ENABLED" />
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="Tamper" UserName="Tamper Output">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="TAMPER" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+            <Semaphore>RTC_TAMPER_INTERRUPT</Semaphore>
+            <Semaphore>TAMPER_ENABLED</Semaphore>
+        </Mode>
+
+    </ModeLogicOperator>
+
+    <!-- RefSignals-->
+    <RefSignal IOMode="System" Name="TAMPER" />
+    <RefSignal IOMode="System" Name="OUT" />
+    <!-- Virtual RefSignals-->
+    <RefSignal Name="VS_RTC_Activate" Virtual="true" />
+    <RefSignal Name="VS_RTC_Calendar" Virtual="true" />
+    <RefSignal Name="No_RTC_Output" Virtual="true" />
+    <RefSignal Name="VS_RTC_Alarm_A_Intern" Virtual="true" />
+    <Semaphore>RTCUsed_ForRCC</Semaphore>
+</IP>

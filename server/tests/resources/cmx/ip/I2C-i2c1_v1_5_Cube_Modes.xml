@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP xmlns="http://mcd.rou.st.com/modules.php?name=mcu" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" DBVersion="V4.0" IPType="peripheral" Name="I2C" Version="i2c1_v1_5_Cube" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../../../../../../doc/V4/Development/Specifications/db/IP_Modes.xsd">
+    <About>I2C: Inter Integrated Circuit interface</About>
+    <RefParameter Comment="Instance" DefaultValue="I2C$Index" Name="Instance" Type="" Visible="false" />
+
+    <!-- I2C Speed Mode -->
+    <RefParameter Comment="I2C Speed Mode " DefaultValue="I2C_Standard" Group="Timing configuration" Name="I2C_Speed_Mode" Type="list">
+        <Condition Diagnostic="" Expression="$IpInstance_SMBUS_Enable" />
+        <PossibleValue Comment="Standard Mode" Value="I2C_Standard" />
+    </RefParameter>
+    <RefParameter Comment="I2C Speed Mode " DefaultValue="I2C_Standard" Group="Master Features" Name="I2C_Mode" Type="list">
+        <PossibleValue Comment="Standard Mode" Value="I2C_Standard" />
+        <PossibleValue Action="disable" Comment="Fast Mode" Condition="(RCC:APB1Freq_Value &lt; 4000000)" Diagnostic="APB1 Frequency should be &gt; 4 MHz" Value="I2C_Fast" />
+    </RefParameter>
+    <!--Specifies if The analog noise filter is present on the SDA and SCL inputs-->
+    <RefParameter Comment="Analog Filter" DefaultValue="SMBUS_ANALOGFILTER_ENABLE" Group="Timing configuration" Name="SMBusAnalogFilter" Type="list" Visible="true">
+        <PossibleValue Comment="Enabled" Value="SMBUS_ANALOGFILTER_ENABLE" />
+        <PossibleValue Comment="Disabled" Value="SMBUS_ANALOGFILTER_DISABLE" />
+        <Condition Diagnostic="" Expression="DIE419|STM32F423CHUx|STM32F423RHTx|STM32F423MHYx|STM32F423VHTx|STM32F423VHHx|STM32F423ZHJx|STM32F423ZHTx" />
+    </RefParameter>
+    <RefParameter Comment="Analog Filter" DefaultValue="null" Group="Timing configuration" Name="SMBusAnalogFilter" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <!--Specifies if The analog noise filter is present on the SDA and SCL inputs-->
+    <RefParameter Comment="Analog Filter" DefaultValue="I2C_ANALOGFILTER_ENABLE" Group="Timing configuration" Name="Analog_Filter" Type="list" Visible="true">
+        <PossibleValue Comment="Disabled" Value="I2C_ANALOGFILTER_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="I2C_ANALOGFILTER_ENABLE" />
+        <Condition Diagnostic="" Expression="DIE419|STM32F423CHUx|STM32F423RHTx|STM32F423MHYx|STM32F423VHTx|STM32F423VHHx|STM32F423ZHJx|STM32F423ZHTx" />
+    </RefParameter>
+    <RefParameter Comment="Coefficient of Digital Filter" DefaultValue="0" Group="Timing configuration" Max="15" Min="0" Name="I2C_Coeff_DF" Type="integer" Visible="true" NoCheckOpt="false">
+        <Condition Diagnostic="" Expression="DIE419|STM32F423CHUx|STM32F423RHTx|STM32F423MHYx|STM32F423VHTx|STM32F423VHHx|STM32F423ZHJx|STM32F423ZHTx" />
+    </RefParameter>
+    <RefParameter Comment="I2C Clock Speed (Hz)" DefaultValue="400000" Group="Master Features" Max="400000" Min="1" Name="ClockSpeed" Type="integer">
+        <Condition Diagnostic="Speed &gt; at 100Khz" Expression="I2C_Mode = I2C_Fast" />
+        <Description>Fast up to 400 Khz</Description>
+    </RefParameter>
+    <RefParameter Comment="I2C Clock Speed (Hz)" DefaultValue="100000" Group="Master Features" Max="100000" Min="1" Name="ClockSpeed" Type="integer">
+        <Description>standard up to 100KHz</Description>
+    </RefParameter>
+
+    <RefParameter Comment="Clock Speed (Hz)" DefaultValue="100000" Group="Timing configuration" Max="100000" Min="1" Name="SmbusClockSpeed" Type="integer">
+        <Condition Diagnostic="" Expression="STM32F4" />
+        <Description>standard up to 100KHz</Description>
+    </RefParameter>
+    <RefParameter Comment="SMBUS Clock Speed (Hz)" DefaultValue="null" Group="Timing configuration" Max="100000" Min="1" Name="SmbusClockSpeed" Type="integer" Visible="false">
+    </RefParameter>
+
+    <RefParameter Comment="Fast Mode Duty Cycle" DefaultValue="I2C_DUTYCYCLE_2" Group="Master Features" Name="DutyCycle" Type="list" Visible="true">
+        <Condition Diagnostic="Speed &gt; at 100Khz" Expression="I2C_Mode = I2C_Fast" />
+        <PossibleValue Comment="Duty cycle Tlow/Thigh = 2" Value="I2C_DUTYCYCLE_2" />
+        <PossibleValue Comment="Duty cycle Tlow/Thigh = 16/9" Value="I2C_DUTYCYCLE_16_9" />
+    </RefParameter>
+
+    <RefParameter Comment="Fast Mode Duty Cycle" DefaultValue="I2C_DUTYCYCLE_2" Group="Master Features" Name="DutyCycle" Type="list" Visible="false">
+        <PossibleValue Comment="Duty cycle Tlow/Thigh = 2" Value="I2C_DUTYCYCLE_2" />
+    </RefParameter>
+
+    <!-- OwnAddress and OwnAddress1 parameters are both declared to handle the shit in case of 7-bits addressing and the no-Shift in case of 10-bits addressing-->
+    <RefParameter Comment="Primary slave address" DefaultValue="0" Group="Slave Features" Max="127" Min="0" Name="OwnAddress" Type="integer">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="AddressingMode=I2C_ADDRESSINGMODE_7BIT" />
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+    </RefParameter>
+
+    <RefParameter Comment="Primary slave address" DefaultValue="0" Group="Slave Features" Max="127" Min="0" Name="OwnAddress" Type="integer">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="DualAddressMode=I2C_DUALADDRESS_ENABLE" />
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="0" Group="Slave Features" Max="1023" Min="0" Name="OwnAddress" Type="integer">
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="=(OwnAddress*2)" Group="Slave Features" Max="1023" Min="0" Name="OwnAddress1" Type="integer" Visible="false">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="AddressingMode=I2C_ADDRESSINGMODE_7BIT" />
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="=OwnAddress" Group="Slave Features" Max="1023" Min="0" Name="OwnAddress1" Type="integer" Visible="false">
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+    </RefParameter>
+
+    <!--RefParameter Comment="Primary Address Length selection : 7 bit" DefaultValue="I2C_ADDRESSINGMODE_7BIT" Name="AddressingMode" Type="integer" Group="Slave Features"-->
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="I2C_ADDRESSINGMODE_7BIT" Group="Slave Features" Name="AddressingMode" Type="list">
+        <Condition Diagnostic="When Dual address is enabled we can have a primary address only on 7 bits length" Expression="DualAddressMode=I2C_DUALADDRESS_ENABLE" />
+        <PossibleValue Comment="7-bit" Value="I2C_ADDRESSINGMODE_7BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="I2C_ADDRESSINGMODE_7BIT" Group="Slave Features" Name="AddressingMode" Type="list">
+        <Condition Diagnostic="When Dual address is enabled we can have a primary address only on 7 bits length" Expression="DualAddressMode=I2C_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment="7-bit" Value="I2C_ADDRESSINGMODE_7BIT" />
+        <PossibleValue Comment="10-bit" Value="I2C_ADDRESSINGMODE_10BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="null" Group="Slave" Name="AddressingMode" Type="list" Visible="false" />
+
+    <!-- Secondary slave address -->
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="Slave Features" Max="0" Min="0" Name="OwnAddress2" Type="integer" Visible="false">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="DualAddressMode=I2C_DUALADDRESS_DISABLE" />
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+    </RefParameter>
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="Slave Features" Max="127" Min="0" Name="OwnAddress2" Type="integer" Visible="true">
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+    </RefParameter>
+
+    <!--specifier seconde address pour slave avec 7 bit adressage et dual mode activer -->
+    <RefParameter Comment="Secondary slave address" DefaultValue="=(OwnAddress2*2)" Group="Slave Features" Max="127" Min="0" Name="OwnAddress22" Type="integer" Visible="false">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="DualAddressMode=I2C_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment=" 0" Value="0" />
+    </RefParameter>
+    <RefParameter Comment="Secondary slave address" DefaultValue="=(OwnAddress2*2)" Group="Slave Features" Max="127" Min="0" Name="OwnAddress22" Type="integer" Visible="false">
+    </RefParameter>
+
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="I2C_DUALADDRESS_DISABLE" Group="Slave Features" Name="DualAddressMode" Type="list">
+        <Condition Diagnostic="When primary address is 7 bits length we can have a dual address" Expression="AddressingMode=I2C_ADDRESSINGMODE_7BIT" />
+        <PossibleValue Comment="Disabled" Value="I2C_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="I2C_DUALADDRESS_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="I2C_DUALADDRESS_DISABLE" Group="Slave Features" Name="DualAddressMode" Type="list">
+        <PossibleValue Comment="Disabled" Value="I2C_DUALADDRESS_DISABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="General Call address detection" DefaultValue="I2C_GENERALCALL_DISABLE" Group="Slave Features" Name="GeneralCallMode" Type="list">
+        <PossibleValue Comment="Disabled" Value="I2C_GENERALCALL_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="I2C_GENERALCALL_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Clock No Stretch Mode" DefaultValue="I2C_NOSTRETCH_DISABLE" Group="Slave Features" Name="NoStretchMode" Type="list">
+        <PossibleValue Comment="Disabled" Value="I2C_NOSTRETCH_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="I2C_NOSTRETCH_ENABLE" />
+    </RefParameter>
+
+    <!-- Specifies the acknoledge mask address second slave own address if dual addressing mode is selected-->
+    <RefParameter Comment="Secondary Address Mask" DefaultValue="I2C_OA2_NOMASK" Group="Slave Features" Name="OwnAddress2Masks" Type="list" Visible="true">
+        <Condition Diagnostic="" Expression=" (DualAddressMode=I2C_DUALADDRESS_ENABLE) " />
+        <PossibleValue Comment="No mask" Value="I2C_OA2_NOMASK" />
+        <PossibleValue Comment="OA2[1] masked" Value="I2C_OA2_MASK01" />
+        <PossibleValue Comment="OA2[2:1] masked" Value="I2C_OA2_MASK02" />
+        <PossibleValue Comment="OA2[3:1] masked" Value="I2C_OA2_MASK03" />
+        <PossibleValue Comment="OA2[4:1] masked" Value="I2C_OA2_MASK04" />
+        <PossibleValue Comment="OA2[5:1] masked" Value="I2C_OA2_MASK05" />
+        <PossibleValue Comment="OA2[6:1] masked" Value="I2C_OA2_MASK06" />
+        <PossibleValue Comment="OA2[7:1] masked" Value="I2C_OA2_MASK07" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary Address Mask" DefaultValue="I2C_OA2_NOMASK" Group="Slave Features" Name="OwnAddress2Masks" Type="list" Visible="false">
+        <PossibleValue Comment="No mask" Value="I2C_OA2_NOMASK" />
+    </RefParameter>
+    <!--SMBus Mode-->
+    <!--Timeout configuration-->
+
+    <!--Specifies if Idle clock timeout detection enable  -->
+    <RefParameter Comment="Idle Clock Timeout Detection" DefaultValue="SMBUS_TIDLE_DISABLED" Group="Timeout configuration" Name="TIDLE" Type="list">
+        <PossibleValue Comment="Enabled" Value="SMBUS_TIDLE_ENABLED" />
+        <PossibleValue Comment="Disabled" Semaphore="$IpInstance_TIDLE_DISABLED" Value="SMBUS_TIDLE_DISABLED" />
+    </RefParameter>
+
+    <!--Specifies the Timout Register value  -->
+    <RefParameter Comment="Timeout" DefaultValue="0x00008019" Group="Timeout configuration" Name="Timeout" Type="string">
+        <Condition Diagnostic="" Expression="STM32L0" />
+    </RefParameter>
+    <RefParameter Comment="Timeout" DefaultValue="0x00008061" Group="Timeout configuration" Name="Timeout" Type="string">
+        <Condition Diagnostic="" Expression="STM32F0|STM32F3" />
+    </RefParameter>
+    <RefParameter Comment="Timeout" DefaultValue="0x00008030" Group="Timeout configuration" Name="Timeout" Type="string">
+        <Condition Diagnostic="" Expression="STM32L4|STM32WB" />
+    </RefParameter>
+    <RefParameter Comment="Timeout" DefaultValue="0x000080C3" Group="Timeout configuration" Name="Timeout" Type="string">
+        <Condition Diagnostic="" Expression="STM32G0|STM32G4" />
+    </RefParameter>
+    <RefParameter Comment="Timeout" DefaultValue="null" Group="Timeout configuration" Name="Timeout" Type="string" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="Timeout" DefaultValue="0x00008019" Group="Timeout configuration" Name="Timeout" Type="string" />
+    <!--SMBus Features -->
+    <!-- Specifies if Packet Error Check mode is selected-->
+    <RefParameter Comment="Packet Error Check Mode" DefaultValue="null" Group="SMBus Features" Name="SMBusPacketErrorCheckMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="Packet Error Check Mode" DefaultValue="SMBUS_PEC_DISABLE" Group="SMBus Features" Name="SMBusPacketErrorCheckMode" Type="list">
+        <Condition Diagnostic="" Expression="STM32L0|STM32L4|STM32F4" />
+        <PossibleValue Comment="PEC Disabled" Value="SMBUS_PEC_DISABLE" />
+        <PossibleValue Comment="PEC Enabled" Value="SMBUS_PEC_ENABLE" />
+    </RefParameter>
+    <RefParameter Comment="Packet Error Check Mode" DefaultValue="SMBUS_PEC_DISABLE" Group="SMBus Features" Name="SMBusPacketErrorCheckMode" Type="list">
+        <PossibleValue Comment="PEC Disabled" Value="SMBUS_PEC_DISABLE" />
+        <PossibleValue Comment="PEC Enabled" Value="SMBUS_PEC_ENABLE" />
+    </RefParameter>
+    <!-- Specifies which mode of Periphal is selected-->
+    <RefParameter Comment="Peripheral Mode" DefaultValue="null" Group="SMBus Features" Name="SMBusPeripheralMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Mode" DefaultValue="SMBUS_PERIPHERAL_MODE_SMBUS_SLAVE" Group="SMBus Features" Name="SMBusPeripheralMode" Type="list">
+        <PossibleValue Comment="Peripheral Mode Smbus Master " Value="SMBUS_PERIPHERAL_MODE_SMBUS_HOST" />
+        <PossibleValue Comment="Peripheral Mode Smbus Slave" Value="SMBUS_PERIPHERAL_MODE_SMBUS_SLAVE" />
+        <PossibleValue Comment="Peripheral Mode Smbus Slave ARP" Value="SMBUS_PERIPHERAL_MODE_SMBUS_SLAVE_ARP" />
+        <Description>In case of switching your device form Slave ARP to Master (Peripheral mode SMBus Master) on your application, you need to set addressing mode parameters. And if you are using SMBUS device protocol and Host mode(Peripheral mode SMBus Master), please make sure that there may be at most one host in your system.</Description>
+    </RefParameter>
+    <!--SMBus Slave Features -->
+    <!--RefParameter Comment="Primary Address Length selection : 7 bit" DefaultValue="SMBUS_ADDRESSINGMODE_7BIT" Name="SMBusAddressingMode" Type="integer" Group="SMBus Slave Features"-->
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="null" Group="SMBus Slave Features" Name="SMBusAddressingMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="SMBUS_ADDRESSINGMODE_7BIT" Group="SMBus Slave Features" Name="SMBusAddressingMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="(SMBusPeripheralMode=SMBUS_PERIPHERAL_MODE_SMBUS_SLAVE_ARP)" />
+        <PossibleValue Comment="7-bit" Value="SMBUS_ADDRESSINGMODE_7BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="SMBUS_ADDRESSINGMODE_7BIT" Group="SMBus Slave Features" Name="SMBusAddressingMode" Type="list">
+        <Condition Diagnostic="" Expression="!(STM32F1|STM32F2|STM32L1)" />
+        <PossibleValue Comment="7-bit" Value="SMBUS_ADDRESSINGMODE_7BIT" />
+        <Description>The Parameter " SMBusAddressingMode " is not supported by LL Driver</Description>
+    </RefParameter>
+    <RefParameter Comment="Primary Address Length selection" DefaultValue="null" Group="SMBus Slave Features" Name="SMBusAddressingMode" Type="list" Visible="false" />
+
+    <RefParameter Comment="Primary slave address" DefaultValue="1" Group="SMBus Slave Features" Max="127" Min="1" Name="SMBusOwnAddress" Type="integer">
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+        <Condition Diagnostic="Address value from 1 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLE &amp; SMBusAddressingMode=SMBUS_ADDRESSINGMODE_7BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="1" Group="SMBus Slave Features" Max="1023" Min="1" Name="SMBusOwnAddress" Type="integer">
+        <Condition Diagnostic="Address value from 1 to 1023" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLE &amp; SMBusAddressingMode=SMBUS_ADDRESSINGMODE_10BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="1" Group="SMBus Slave Features" Max="1023" Min="1" Name="SMBusOwnAddress" Type="integer" Visible="true">
+        <Condition Diagnostic="Address value from 0 to 1023" Expression="SMBusAddressingMode=SMBUS_ADDRESSINGMODE_10BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="=SMBusOwnAddress*2" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress1" Type="integer" Visible="true">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusAddressingMode=SMBUS_ADDRESSINGMODE_7BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="=SMBusOwnAddress" Group="SMBus Slave Features" Max="1023" Min="0" Name="SMBusOwnAddress1" Type="integer" Visible="true">
+        <Condition Diagnostic="Address value from 0 to 1023" Expression="SMBusAddressingMode=SMBUS_ADDRESSINGMODE_10BIT" />
+    </RefParameter>
+    <RefParameter Comment="Primary slave address" DefaultValue="=null" Group="SMBus Slave Features" Max="1023" Min="0" Name="SMBusOwnAddress" Type="integer" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress2" Type="integer" Visible="false">
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+        <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment=" 0" Value="0" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress2" Type="integer" Visible="true">
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+        <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress2" Type="integer" Visible="false">
+        <Description>The generated value of the address is shifted left by 1 bit.</Description>
+        <!-- <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLED"/> -->
+    </RefParameter>
+
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress22" Type="integer" Visible="false">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment=" 0" Value="0" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary slave address" DefaultValue="=SMBusOwnAddress2*2" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress22" Type="integer" Visible="false">
+        <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary slave address" DefaultValue="0" Group="SMBus Slave Features" Max="127" Min="0" Name="SMBusOwnAddress22" Type="integer" Visible="false">
+        <!-- <Condition Diagnostic="Address value from 0 to 127" Expression="SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLED"/> -->
+    </RefParameter>
+
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="null" Group="SMBus Slave Features" Name="SMBusDualAddressMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="SMBUS_DUALADDRESS_DISABLE" Group="SMBus Slave Features" Name="SMBusDualAddressMode" Type="list">
+        <Condition Diagnostic="When primary address is 7 bits length we can have a dual address" Expression="(SMBusAddressingMode=SMBUS_ADDRESSINGMODE_7BIT) &amp;(STM32G0 |STM32WB |STM32G4)" />
+        <PossibleValue Comment="Disabled" Value="SMBUS_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="SMBUS_DUALADDRESS_ENABLE" />
+        <Description>The Parameter " SMBusDualAddressMode " is not supported by LL Driver</Description>
+    </RefParameter>
+
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="SMBUS_DUALADDRESS_DISABLE" Group="SMBus Slave Features" Name="SMBusDualAddressMode" Type="list">
+        <Condition Diagnostic="" Expression=" !(SMBusPeripheralMode=SMBUS_PERIPHERAL_MODE_SMBUS_SLAVE_ARP) &amp; !(SMBusAddressingMode=SMBUS_ADDRESSINGMODE_10BIT)" />
+        <PossibleValue Comment="Disabled" Value="SMBUS_DUALADDRESS_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="SMBUS_DUALADDRESS_ENABLE" />
+    </RefParameter>
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="SMBUS_DUALADDRESS_DISABLE" Group="SMBus Slave Features" Name="SMBusDualAddressMode" Type="list" Visible="true">
+        <Condition Diagnostic="" Expression="(SMBusAddressingMode=SMBUS_ADDRESSINGMODE_10BIT)" />
+        <PossibleValue Comment="Disabled" Value="SMBUS_DUALADDRESS_DISABLE" />
+    </RefParameter>
+    <RefParameter Comment="Dual Address Acknowledged" DefaultValue="null" Group="SMBus Slave Features" Name="SMBusDualAddressMode" Type="list" Visible="false" />
+
+    <RefParameter Comment="General Call Address Detection" DefaultValue="null" Group="SMBus Slave Features" Name="SMBusGeneralCallMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="General Call Address Detection" DefaultValue="SMBUS_GENERALCALL_DISABLE" Group="SMBus Slave Features" Name="SMBusGeneralCallMode" Type="list">
+        <PossibleValue Comment="Disabled" Value="SMBUS_GENERALCALL_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="SMBUS_GENERALCALL_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Clock No Stretch Mode" DefaultValue="null" Group="SMBus Slave Features" Name="SMBusNoStretchMode" Type="list" Visible="false">
+        <Condition Diagnostic="" Expression="STM32F1|STM32F2|STM32L1" />
+    </RefParameter>
+    <RefParameter Comment="Clock No Stretch Mode" DefaultValue="SMBUS_NOSTRETCH_DISABLE" Group="SMBus Slave Features" Name="SMBusNoStretchMode" Type="list">
+        <PossibleValue Comment="Disabled" Value="SMBUS_NOSTRETCH_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="SMBUS_NOSTRETCH_ENABLE" />
+    </RefParameter>
+    <!-- Specifies the acknoledge mask address second slave own address if dual addressing mode is selected-->
+    <RefParameter Comment="Secondary Address Mask" DefaultValue="SMBUS_OA2_NOMASK" Group="SMBus Slave Features" Name="SMBusOwnAddress2Masks" Type="list" Visible="true">
+        <Condition Diagnostic="" Expression=" (SMBusDualAddressMode=SMBUS_DUALADDRESS_ENABLE) " />
+        <PossibleValue Comment="No mask" Value="SMBUS_OA2_NOMASK" />
+        <PossibleValue Comment="OA2[1] masked" Value="SMBUS_OA2_MASK01" />
+        <PossibleValue Comment="OA2[2:1] masked" Value="SMBUS_OA2_MASK02" />
+        <PossibleValue Comment="OA2[3:1] masked" Value="SMBUS_OA2_MASK03" />
+        <PossibleValue Comment="OA2[4:1] masked" Value="SMBUS_OA2_MASK04" />
+        <PossibleValue Comment="OA2[5:1] masked" Value="SMBUS_OA2_MASK05" />
+        <PossibleValue Comment="OA2[6:1] masked" Value="SMBUS_OA2_MASK06" />
+        <PossibleValue Comment="OA2[7:1] masked" Value="SMBUS_OA2_MASK07" />
+    </RefParameter>
+
+    <RefParameter Comment="Secondary Address Mask" DefaultValue="SMBUS_OA2_NOMASK" Group="SMBus Slave Features" Name="SMBusOwnAddress2Masks" Type="list" Visible="false">
+        <PossibleValue Comment="No mask" Value="SMBUS_OA2_NOMASK" />
+    </RefParameter>
+
+    <!-- RefMode for I2C -->
+    <RefMode HalMode="I2C" Name="I2C">
+        <ConfigForMode>I2C</ConfigForMode>
+        <ConfigForMode>I2C_Analogue</ConfigForMode>
+        <ConfigForMode>I2C_DigitalFolter</ConfigForMode>
+        <Parameter Name="I2C_Mode" />
+        <Parameter Name="ClockSpeed" />
+        <Parameter Name="DutyCycle" />
+        <Parameter Name="I2C_Coeff_DF" />
+        <Parameter Name="Analog_Filter" />
+        <Parameter Name="NoStretchMode" />
+        <Parameter Name="AddressingMode" />
+        <Parameter Name="DualAddressMode" />
+        <Parameter Name="OwnAddress" />
+        <Parameter Name="OwnAddress2" />
+        <Parameter Name="GeneralCallMode" />
+        <Parameter Name="OwnAddress2Masks" />
+        <Parameter Name="Instance" />
+    </RefMode>
+    <!-- RefMode for SMBus -->
+    <RefMode Abstract="true" Name="SMBus_common">
+        <ConfigForMode>SMBus_init</ConfigForMode>
+        <ConfigForMode>FASTMODE_Config</ConfigForMode>
+        <Parameter Name="SmbusClockSpeed" />
+        <Parameter Name="SMBusAnalogFilter" />
+        <Parameter Name="SMBusOwnAddress" />
+        <Parameter Name="SMBusAddressingMode" />
+        <Parameter Name="SMBusDualAddressMode" />
+        <Parameter Name="SMBusOwnAddress2" />
+        <Parameter Name="SMBusOwnAddress2Masks" />
+        <Parameter Name="SMBusGeneralCallMode" />
+        <Parameter Name="SMBusNoStretchMode" />
+        <Parameter Name="SMBusPacketErrorCheckMode" />
+        <Parameter Name="SMBusPeripheralMode" />
+        <Parameter Name="Timeout" />
+    </RefMode>
+
+    <RefMode BaseMode="SMBus_common" HalMode="SMBUS" Name="SMBus-two-wire-Interface">
+        <ConfigForMode>SMBus_init</ConfigForMode>
+        <ConfigForMode>FASTMODE_Config</ConfigForMode>
+
+    </RefMode>
+
+    <RefMode BaseMode="SMBus_common" HalMode="SMBUS" Name="SMBus-Alert-mode">
+        <ConfigForMode>SMBus_init</ConfigForMode>
+        <ConfigForMode>SMBus_alert</ConfigForMode>
+        <ConfigForMode>FASTMODE_Config</ConfigForMode>
+    </RefMode>
+    <!-- Signals -->
+    <ModeLogicOperator Name="OR">
+        <Mode Name="I2C">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="I2C">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="SCL" />
+                        <Signal Name="SDA" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_Dma</Semaphore>
+                </Mode>
+                <Mode Name="SMBus-Alert-mode" RemoveCondition="STM32F1|STM32F2|STM32L1">
+                    <Semaphore>$IpInstance_SMBUS_Enable</Semaphore>
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="SCL" />
+                        <Signal Name="SDA" />
+                        <Signal Name="SMBA" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="SMBus-Alert-mode" RemoveCondition="!(STM32F1|STM32F2|STM32L1)">
+                    <Semaphore>$IpInstance_SMBUSF1_Enable</Semaphore>
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="SCL" />
+                        <Signal Name="SDA" />
+                        <Signal Name="SMBA" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="SMBus-two-wire-Interface" RemoveCondition="STM32F1|STM32F2|STM32L1">
+                    <Semaphore>$IpInstance_SMBUS_Enable</Semaphore>
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="SCL" />
+                        <Signal Name="SDA" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="SMBus-two-wire-Interface" RemoveCondition="!(STM32F1|STM32F2|STM32L1)">
+                    <Semaphore>$IpInstance_SMBUSF1_Enable</Semaphore>
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="SCL" />
+                        <Signal Name="SDA" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+    </ModeLogicOperator>
+    <RefSignal IOMode="AlternateFunctionOpenDrainNoPullOrPullUp" Name="SCL" />
+    <RefSignal IOMode="AlternateFunctionOpenDrainNoPullOrPullUp" Name="SDA" />
+    <RefSignal IOMode="AlternateFunctionOpenDrainNoPullOrPullUp" Name="SMBA" />
+    <Semaphore>$IpInstanceUsed_ForRCC</Semaphore>
+</IP>

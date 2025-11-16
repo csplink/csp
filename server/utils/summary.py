@@ -24,15 +24,14 @@
 # 2025-07-21     xqyjlj       initial version
 #
 
-import json
 import os
 
 import jsonschema
-import yaml
 from loguru import logger
+from public.csp.summary import Summary
+from ruamel.yaml import YAML
 
 from .sys import SysUtils
-from public.csp.summary import Summary
 
 
 class SummaryUtils:
@@ -48,7 +47,8 @@ class SummaryUtils:
             "r",
             encoding="utf-8",
         ) as f:
-            schema = yaml.load(f.read(), Loader=yaml.FullLoader)
+            yaml = YAML()
+            schema = yaml.load(f.read())
             jsonschema.validate(instance=summary, schema=schema)
         return True
 
@@ -60,7 +60,8 @@ class SummaryUtils:
         )
         if os.path.isfile(file):
             with open(file, "r", encoding="utf-8") as f:
-                summary = yaml.load(f.read(), Loader=yaml.FullLoader)
+                yaml = YAML()
+                summary = yaml.load(f.read())
                 succeed = SummaryUtils.__check_summary(summary)
             if succeed:
                 return Summary(summary)

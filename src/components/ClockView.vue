@@ -1,7 +1,7 @@
 <!--
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        ClockView.vue
+ *  @file        CtView.vue
  *  @brief
  *
  * ****************************************************************************
@@ -28,594 +28,358 @@
 -->
 
 <script lang="ts" setup>
-import type { ElInput } from 'element-plus'
-import type Konva from 'konva'
-import type { PanZoomMenuItemModelType } from './containers/PanZoom'
-import type { PanZoomInstance } from '~/components/instance'
-import type { Ip, IpClockTreeElementUnit, IpParameter, IpParameterEnum, IpParameterRadio, Project, Summary } from '~/database'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useClockTreeManager, useIpManager, useProjectManager, useSummaryManager } from '~/database'
-import { escapeRegExp } from '~/utils/express'
+import type { ClockTreeEdgeType } from '@/electron/types'
+import type { Connection, Edge, Node } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { useVueFlow, VueFlow } from '@vue-flow/core'
+import { MiniMap } from '@vue-flow/minimap'
+import { toSvg } from 'html-to-image'
+import { onMounted, ref, shallowRef, watch } from 'vue'
+import { useClockTreeManager } from '~/database'
+import { isDev, useProjectManager } from '~/utils'
 
-type ModelType = RectModelType | CircleModelType
+import {
+  alignBottom,
+  alignHorizontalCenter,
+  alignLeft,
+  alignRight,
+  alignTop,
+  alignVerticalCenter,
+  distributeHorizontally,
+  distributeVertically,
+  updateEdgesAnimation,
+} from './clockTree/CtUtils'
+import '@vue-flow/core/dist/style.css'
+import '@vue-flow/core/dist/theme-default.css'
 
-interface BaseModelType {
-  cls: string
-  x: number
-  y: number
-  path: string
-  refParameter: string
-  output: string[]
-  input: string[]
-  number: number
-  name: string
-  parameter: IpParameter
-}
-
-interface RectModelType extends BaseModelType {
-  width: number
-  height: number
-  value: number | string
-  display: string
-  readonly: boolean
-  type: string
-  menu: PanZoomMenuItemModelType[]
-}
-
-interface CircleModelType extends BaseModelType {
-  r: number
-  value: boolean
-  group: string
-}
-
-interface InputConfigType {
-  x: number
-  y: number
-  scaleX: number
-  scaleY: number
-  show: boolean
-  width: number
-  height: number
-  model?: ModelType[]
-  value: string | number
-}
-
-const ipManager = useIpManager()
-const clockTreeManager = useClockTreeManager()
 const projectManager = useProjectManager()
-const summaryManager = useSummaryManager()
-const i18n = useI18n()
+const clockTreeManager = useClockTreeManager()
+const {
+  addEdges,
+  updateNode,
+  getNodes,
+  getEdges,
+  getSelectedNodes,
+  getSelectedEdges,
+  fitView,
+  zoomIn,
+  zoomOut,
+  vueFlowRef,
+} = useVueFlow()
 
-const projectRef = ref<Project>()
-const summaryRef = ref<Summary>()
-const clockTreeIpRef = ref<Ip>()
-const panZoomRef = ref<PanZoomInstance>()
-const svgImageRef = ref<HTMLImageElement>()
-const rectModelsRef = ref<Record<string, RectModelType>>({}) /*! < 注意，此处的key为svg element name */
-const circleModelsRef = ref<Record<string, CircleModelType>>({}) /*! < 注意，此处的key为svg element name */
-const allModelsRef = ref<Record<string, ModelType>>({}) /*! < 注意，此处的key为refParameter */
-const radioGroupModelsRef = ref<Record<string, Record<string, CircleModelType>>>({}) /*! < [group][svg element name] */
-const inputConfigRef = ref<InputConfigType>({
-  x: 0,
-  y: 0,
-  show: false,
-  scaleX: 1,
-  scaleY: 1,
-  width: 0,
-  height: 0,
-  value: '',
-})
+const project = projectManager.get()!
+const clockTree = clockTreeManager.get(project.vendor, project.targetChip)!
 
-const inputRef = ref<InstanceType<typeof ElInput>>()
+const isDevMode = ref(false)
+const nodes = shallowRef<Node[]>([])
+const edges = shallowRef<Edge[]>([])
+const isLayoutLocked = ref(true)
 
-const modelWidth = computed(() => svgImageRef.value?.width || 0)
-const modelHeight = computed(() => svgImageRef.value?.height || 0)
+function buildNodes(): Node[] {
+  const rtn: Node[] = []
 
-let lastRectModel: RectModelType | null = null
-
-function rescale() {
-  panZoomRef.value?.rescale()
-}
-
-function zoomIn() {
-  panZoomRef.value?.zoomIn()
-}
-
-function zoomOut() {
-  panZoomRef.value?.zoomOut()
-}
-
-function setClockTree(vendor: string, name: string) {
-  const clockTree = clockTreeManager.get(vendor, name)
-  if (!clockTree) {
-    console.error('Clock tree content not found')
-    return
-  }
-  if (!clockTreeIpRef.value?.clockTree) {
-    console.error('Clock tree not found')
-    return
+  for (const [name, node] of Object.entries(clockTree.nodes)) {
+    const n: Node = {
+      id: name,
+      type: node.type,
+      data: { output: 0, node },
+      position: node.position,
+      width: 200,
+    }
+    watch(
+      () => node.enabled.value,
+      (v: boolean) => {
+        n.selectable = v
+        n.class = v ? '' : 'ct-un-focusable'
+        updateNode(n.id, { selectable: v, class: v ? '' : 'ct-un-focusable' }, { replace: false })
+      },
+      { immediate: true },
+    )
+    rtn.push(n)
   }
 
-  let svg = clockTree.svg
-  for (const [name, lang] of Object.entries(clockTreeIpRef.value.clockTree.i18n)) {
-    const value = lang.get(i18n.locale.value)
-    if (value !== '') {
-      svg = svg.replace(new RegExp(escapeRegExp(name), 'g'), value)
-    }
+  return rtn
+}
+
+function buildEdges(): Edge[] {
+  const rtn: Edge[] = []
+
+  for (const [name, edge] of Object.entries(clockTree.edges)) {
+    rtn.push({
+      id: name,
+      type: edge.type,
+      source: edge.source,
+      target: edge.target,
+      sourceHandle: edge.sourceHandle,
+      targetHandle: edge.targetHandle,
+      label: edge.label,
+    })
   }
 
-  const project = projectRef.value!
-  const rectModels: Record<string, RectModelType> = {}
-  const circleModels: Record<string, CircleModelType> = {}
-  const radioGroupModels: Record<string, Record<string, CircleModelType>> = {}
-  const allModels: Record<string, ModelType> = {}
-  for (const [name, geometry] of Object.entries(clockTree.widgets)) {
-    const element: IpClockTreeElementUnit = clockTreeIpRef.value.clockTree.elements[name]
-    const refParameter = element.refParameter
-    const parameter = clockTreeIpRef.value.parameters[refParameter]
-    const path = `${summaryRef.value!.clockTree.ip}.${refParameter}`
-    let result = project.configs.get(path)
+  return rtn
+}
 
-    const baseModel: BaseModelType = {
-      x: geometry.x,
-      y: geometry.y,
-      path,
-      refParameter,
-      output: element.output,
-      input: element.input,
-      cls: parameter.type === 'radio' ? 'circle' : 'rect',
-      number: 0,
-      name,
-      parameter,
+function handSaveCommand() {
+  for (const n of getNodes.value) {
+    const node = clockTree.nodes[n.id]
+    node.position.x = Number.parseFloat(n.position.x.toFixed(2))
+    node.position.y = Number.parseFloat(n.position.y.toFixed(2))
+  }
+
+  const es: Record<string, ClockTreeEdgeType> = {}
+  for (const e of getEdges.value) {
+    const id = `(${e.source}@${e.sourceHandle})->(${e.target}@${e.targetHandle})`
+    const edge = clockTree.edges[id]
+    es[id] = {
+      source: e.source,
+      target: e.target,
+      sourceHandle: e.sourceHandle!,
+      targetHandle: e.targetHandle!,
+      label: e.label as string,
+      type: edge?.type ?? 'ct-smoothstep',
     }
+  }
+  clockTree.updateEdges(es)
 
-    if (result == null) {
-      result = parameter.default
-      project.configs.set(path, result)
-    }
+  clockTreeManager.save(project.vendor, project.targetChip)
+}
 
-    if (parameter.type === 'radio') {
-      const parameterTyped = parameter as IpParameterRadio
-      if (!radioGroupModels[parameterTyped.group]) {
-        radioGroupModels[parameterTyped.group] = {}
-      }
+function handExportCommand() {
+  downloadSvg()
+}
 
-      let model
-      if (allModels[refParameter]) {
-        model = allModels[refParameter] as CircleModelType
-      }
-      else {
-        model = {
-          ...baseModel,
-          r: geometry.width / 2,
-          value: result,
-          group: parameterTyped.group,
+function downloadSvg() {
+  toSvg(vueFlowRef.value!, { filter: (node) => {
+    return !node.classList?.contains('vue-flow__background')
+      && !node.classList?.contains('vue-flow__minimap')
+  } })
+    .then((dataUrl) => {
+      const link = document.createElement('a')
+      link.href = dataUrl
+      link.download = `${project.targetChip}-clock-tree.svg`
+      link.click()
+    })
+    .catch((error) => {
+      console.error('oops, something went wrong!', error)
+    })
+}
 
-        }
-        allModels[refParameter] = model
-      }
-      if (result) {
-        projectRef.value?.configs.set(`${summaryRef.value!.clockTree.ip}.${parameterTyped.group}`, refParameter)
-      }
-      radioGroupModels[parameterTyped.group][name] = model
-      circleModels[name] = model
+function toggleLayoutLock() {
+  isLayoutLocked.value = !isLayoutLocked.value
+}
+
+function handConnect(connection: Connection) {
+  addEdges({ ...connection, type: 'smoothstep' })
+}
+
+watch(getSelectedNodes, () => {
+  updateEdgesAnimation(getSelectedNodes.value, getNodes.value, getEdges.value)
+}, { deep: true })
+
+watch(getSelectedEdges, (edges) => {
+  for (const edge of getEdges.value) {
+    const e = edges.find(e => e.id === edge.id)
+    if (e) {
+      edge.zIndex = 999
     }
     else {
-      let model
-      if (allModels[refParameter]) {
-        model = allModels[refParameter] as RectModelType
-      }
-      else {
-        const menuModel: PanZoomMenuItemModelType[] = []
-        let display = ''
-        if (parameter.type === 'enum') {
-          const parameterTyped = parameter as IpParameterEnum
-          display = parameterTyped.values[result].comment.get(i18n.locale.value)
-          for (const [key, uint] of Object.entries(parameterTyped.values)) {
-            menuModel.push({
-              key,
-              command: uint.comment.get(i18n.locale.value),
-              divided: false,
-              preserveIconWidth: false,
-            })
-          }
-        }
-
-        model = {
-          ...baseModel,
-          width: geometry.width,
-          height: geometry.height,
-          value: result ?? parameter.default,
-          display,
-          readonly: parameter.readonly,
-          type: parameter.type,
-          menu: menuModel,
-        }
-        allModels[refParameter] = model
-      }
-      rectModels[name] = model
-    }
-  }
-  allModelsRef.value = allModels
-  rectModelsRef.value = rectModels
-  circleModelsRef.value = circleModels
-  radioGroupModelsRef.value = radioGroupModels
-
-  const blob = new Blob([svg], { type: 'image/svg+xml' })
-  const url = URL.createObjectURL(blob)
-
-  const img = new window.Image()
-  img.src = url
-  img.onload = () => {
-    URL.revokeObjectURL(url)
-    svgImageRef.value = img
-  }
-}
-
-function onProjectConfigChanged(payload: { path: string[], oldValue: any, newValue: any }) {
-  const [path, value] = [payload.path, payload.newValue]
-  if (path.length === 2) {
-    const instance = clockTreeIpRef.value!.instance
-    if (instance === path[0]) {
-      const param = path[1]
-      if (param in allModelsRef.value) {
-        const model = allModelsRef.value[param]
-        if (model.cls === 'rect') {
-          const modelTyped = model as RectModelType
-          if (modelTyped.type === 'enum') {
-            modelTyped.display = (modelTyped.parameter as IpParameterEnum).values[value].comment.get(i18n.locale.value)
-          }
-        }
-        else {
-          const modelTyped = model as CircleModelType
-          modelTyped.value = value
-        }
-      }
-    }
-  }
-}
-
-function clampRectToContainer(
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  scaleX: number,
-  scaleY: number,
-) {
-  const container = panZoomRef.value?.container
-  if (!container)
-    return { x, y }
-
-  const { width: limitX, height: limitY } = container.getBoundingClientRect()
-  const realWidth = width * scaleX
-  const realHeight = height * scaleY
-
-  const clamp = (coord: number, size: number, limit: number, move: (delta: number) => void) => {
-    if (coord < 0) {
-      move(-coord)
-      return 0
-    }
-    if (coord + size > limit) {
-      const delta = coord + size - limit
-      move(-delta)
-      return limit - size
-    }
-    return coord
-  }
-
-  x = clamp(x, realWidth, limitX, dx => panZoomRef.value?.moveRel(dx, 0))
-  y = clamp(y, realHeight, limitY, dy => panZoomRef.value?.moveRel(0, dy))
-
-  return { x, y }
-}
-
-function showInput(x: number, y: number, width: number, height: number, scaleX: number, scaleY: number, model: RectModelType) {
-  if (!(panZoomRef.value && panZoomRef.value.container)) {
-    return
-  }
-  ({ x, y } = clampRectToContainer(x, y, width, height, scaleX, scaleY))
-
-  inputConfigRef.value.x = x
-  inputConfigRef.value.y = y
-  inputConfigRef.value.scaleX = scaleX
-  inputConfigRef.value.scaleY = scaleY
-  inputConfigRef.value.width = width
-  inputConfigRef.value.height = height
-  inputConfigRef.value.show = true
-
-  model.display = '' /* !< 隐藏当前文本（使用input显示） */
-  if (lastRectModel) {
-    lastRectModel.display = '1111111' // TODO
-  }
-
-  lastRectModel = model
-
-  nextTick(() => {
-    inputRef.value?.focus()
-  })
-}
-
-function hideInput() {
-  if (lastRectModel) {
-    lastRectModel.display = '1111111' // TODO
-  }
-
-  inputConfigRef.value.show = false
-
-  lastRectModel = null
-}
-
-function showSelect(x: number, y: number, width: number, height: number, scaleX: number, scaleY: number, model: RectModelType) {
-  panZoomRef.value?.openMenu(model.refParameter, {
-    x,
-    y: y + (height * scaleY),
-    maxWidth: width,
-    minWidth: width,
-    adjustPadding: 0,
-    adjustPosition: false,
-    yOffset: 0,
-  }, model.menu, {
-    noStyle: true,
-    scaleX,
-    scaleY,
-  })
-}
-
-function handClick(event: Konva.KonvaEventObject<MouseEvent>) {
-  event.evt.preventDefault()
-  if (panZoomRef.value && panZoomRef.value.container) {
-    const shape = event.target
-    const stage = shape.getStage()
-    const model: ModelType | undefined = shape.attrs.model
-
-    if (model === undefined) {
-      hideInput()
-    }
-    else if (model.cls === 'circle') {
-      const modelTyped = model as CircleModelType
-      for (const [key, unit] of Object.entries(radioGroupModelsRef.value[modelTyped.group])) {
-        if (key !== model.name) {
-          projectRef.value?.configs.set(unit.path, false)
-        }
-        else {
-          projectRef.value?.configs.set(unit.path, true)
-          projectRef.value?.configs.set(`${summaryRef.value!.clockTree.ip}.${modelTyped.group}`, unit.refParameter)
-        }
-      }
-    }
-    else if (model.cls === 'rect') {
-      const modelTyped = model as RectModelType
-      const x = shape.getAbsolutePosition().x
-      const y = shape.getAbsolutePosition().y
-
-      if (!modelTyped.readonly) {
-        if (modelTyped.type === 'enum') {
-          showSelect(x, y, shape.attrs.width, shape.attrs.height, stage?.attrs.scaleX, stage?.attrs.scaleY, modelTyped)
-          hideInput()
-        }
-        else {
-          showInput(x, y, shape.attrs.width, shape.attrs.height, stage?.attrs.scaleX, stage?.attrs.scaleY, modelTyped)
-        }
-      }
-    }
-  }
-}
-
-function handMenuSelect(name: string, _command: string, item: PanZoomMenuItemModelType) {
-  const model = allModelsRef.value[name]
-  if (model === undefined) { /* empty */ }
-  else if (model.cls === 'rect') {
-    const modelTyped = model as RectModelType
-    projectRef.value?.configs.set(modelTyped.path, item.key)
-  }
-}
-
-function handResize() {
-  hideInput()
-}
-
-function handZoom() {
-  hideInput()
-}
-
-function handDragstart() {
-  hideInput()
-}
-
-function handRectMouseenter(event: Konva.KonvaEventObject<MouseEvent>) {
-  event.evt.preventDefault()
-  if (panZoomRef.value && panZoomRef.value.container) {
-    const container = panZoomRef.value.container
-    const shape = event.target
-    const model: RectModelType = shape.attrs.model
-
-    if (!model.readonly) {
-      if (model.type === 'enum') {
-        container.style.cursor = 'pointer'
-      }
-      else {
-        container.style.cursor = 'text'
-      }
-    }
-  }
-}
-
-function handRectMouseleave(event: Konva.KonvaEventObject<MouseEvent>) {
-  event.evt.preventDefault()
-  if (panZoomRef.value && panZoomRef.value.container) {
-    const container = panZoomRef.value.container
-    container.style.cursor = 'default'
-  }
-}
-
-function handRadioMouseenter(event: Konva.KonvaEventObject<MouseEvent>) {
-  event.evt.preventDefault()
-  if (panZoomRef.value && panZoomRef.value.container) {
-    const container = panZoomRef.value.container
-    container.style.cursor = 'pointer'
-  }
-}
-
-function handRadioMouseleave(event: Konva.KonvaEventObject<MouseEvent>) {
-  event.evt.preventDefault()
-  if (panZoomRef.value && panZoomRef.value.container) {
-    const container = panZoomRef.value.container
-    container.style.cursor = 'default'
-  }
-}
-
-onMounted(() => {
-  const project = projectManager.get()
-  if (project) {
-    projectRef.value = project
-    const summary = summaryManager.get(project.vendor, project.targetChip)
-    if (summary) {
-      summaryRef.value = summary
-      const ip = ipManager.getPeripheral(project.vendor, summary.clockTree.ip)
-      if (ip) {
-        clockTreeIpRef.value = ip
-        setClockTree(project.vendor, summary.clockTree.svg)
-        project.configs.emitter.on('configChanged', onProjectConfigChanged)
-      }
+      edge.zIndex = 0
     }
   }
 })
 
-onBeforeUnmount(() => {
-  if (projectRef.value && summaryRef.value && clockTreeIpRef.value) {
-    projectRef.value.configs.emitter.off('configChanged', onProjectConfigChanged)
-  }
+onMounted(async () => {
+  isDevMode.value = await isDev()
+  nodes.value = buildNodes()
+  edges.value = buildEdges()
 })
 
 defineExpose({
-  rescale,
+  rescale: fitView,
   zoomIn,
   zoomOut,
+  downloadSvg,
 })
 </script>
 
 <template>
-  <div class="pan-zoom-container flex">
-    <PanZoom
-      ref="panZoomRef"
-      :model-width="modelWidth"
-      :model-height="modelHeight"
-      @click="handClick"
-      @resize="handResize"
-      @zoom="handZoom"
-      @dragstart="handDragstart"
-      @menu-select="handMenuSelect"
-    >
-      <v-layer>
-        <v-image
-          v-if="svgImageRef"
-          :config="{
-            image: svgImageRef,
-          }"
-        />
-        <v-group
-          v-for="[name, model] of Object.entries(rectModelsRef)"
-          :key="name"
-          @mouseenter="handRectMouseenter($event)"
-          @mouseleave="handRectMouseleave($event)"
-        >
-          <v-rect
-            :config="{
-              x: model.x,
-              y: model.y,
-              width: model.width,
-              height: model.height,
-              stroke: `${model.readonly ? 'black' : '#409eff'}`,
-              fill: 'transparent',
-              strokeWidth: model.readonly ? 1 : 2,
-              model,
-            }"
+  <el-splitter>
+    <el-splitter-panel>
+      <div v-if="isDevMode" class="clock-toolbar">
+        <el-tooltip :content="$t('command.save')" placement="right">
+          <el-button @click="handSaveCommand()">
+            <i class="ri-save-line" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.export')" placement="right">
+          <el-button @click="handExportCommand()">
+            <i class="ri-export-line" />
+          </el-button>
+        </el-tooltip>
+        <el-divider direction="horizontal" />
+        <el-tooltip :content="isLayoutLocked ? '解锁布局' : '锁定布局'" placement="right">
+          <el-button :type="isLayoutLocked ? 'primary' : ''" @click="toggleLayoutLock()">
+            <i :class="isLayoutLocked ? 'ri-lock-line' : 'ri-lock-unlock-line'" />
+          </el-button>
+        </el-tooltip>
+        <el-divider direction="horizontal" />
+        <el-tooltip :content="$t('command.alignLeft')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 2" @click="alignLeft(getSelectedNodes)">
+            <i class="ri-align-item-left-line" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.alignHorizontalCenter')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 2" @click="alignHorizontalCenter(getSelectedNodes)">
+            <i class="ri-align-item-horizontal-center-line" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.alignRight')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 2" @click="alignRight(getSelectedNodes)">
+            <i class="ri-align-item-right-line" />
+          </el-button>
+        </el-tooltip>
+        <el-divider direction="horizontal" />
+        <el-tooltip :content="$t('command.alignTop')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 2" @click="alignTop(getSelectedNodes)">
+            <i class="ri-align-item-top-line" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.alignVerticalCenter')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 2" @click="alignVerticalCenter(getSelectedNodes)">
+            <i class="ri-align-item-vertical-center-line" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.alignBottom')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 2" @click="alignBottom(getSelectedNodes)">
+            <i class="ri-align-item-bottom-line" />
+          </el-button>
+        </el-tooltip>
+        <el-divider direction="horizontal" />
+        <el-tooltip :content="$t('command.distributeHorizontally')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 3" @click="distributeHorizontally(getSelectedNodes)">
+            <i class="ri-flip-horizontal-line" />
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.distributeVertically')" placement="right">
+          <el-button :disabled="getSelectedNodes.length < 3" @click="distributeVertically(getSelectedNodes)">
+            <i class="ri-flip-vertical-line" />
+          </el-button>
+        </el-tooltip>
+      </div>
+      <VueFlow
+        :nodes="nodes"
+        :edges="edges"
+        :nodes-draggable="!isLayoutLocked"
+        fit-view-on-init
+        elevate-edges-on-select
+        :min-zoom="0.2"
+        :max-zoom="4"
+        @connect="handConnect"
+      >
+        <template #node-ct-input-number="props">
+          <CtInputNumberNode :id="props.id" :data="props.data" :node="props.data.node" />
+        </template>
+        <template #node-ct-select="props">
+          <CtSelectNode :id="props.id" :data="props.data" :node="props.data.node" />
+        </template>
+        <template #node-ct-radio="props">
+          <CtRadioNode :id="props.id" :data="props.data" :node="props.data.node" />
+        </template>
+        <template #node-ct-output="props">
+          <CtOutputNode :id="props.id" :node="props.data.node" />
+        </template>
+        <template #node-ct-probe="props">
+          <CtProbeNode :id="props.id" :data="props.data" :node="props.data.node" />
+        </template>
+        <template #edge-ct-smoothstep="props">
+          <CtSmoothstepEdge
+            :id="props.id"
+            :source-x="props.sourceX"
+            :source-y="props.sourceY"
+            :target-x="props.targetX"
+            :target-y="props.targetY"
+            :data="props.data"
+            :style="props.style"
+            :label="props.label as string"
           />
-          <v-text
-            :config="{
-              x: model.x,
-              y: model.y,
-              width: model.width,
-              height: model.height,
-              fill: 'black',
-              wrap: 'none',
-              verticalAlign: 'middle',
-              ellipsis: true,
-              text: ` ${model.display}`,
-              fontSize: 14,
-              model,
-            }"
+        </template>
+        <template #edge-ct-cliff="props">
+          <CtCliffEdge
+            :id="props.id"
+            :source-x="props.sourceX"
+            :source-y="props.sourceY"
+            :target-x="props.targetX"
+            :target-y="props.targetY"
+            :data="props.data"
+            :label="props.label as string"
           />
-        </v-group>
-        <v-group
-          v-for="[name, model] of Object.entries(circleModelsRef)"
-          :key="name"
-          @mouseenter="handRadioMouseenter($event)"
-          @mouseleave="handRadioMouseleave($event)"
-        >
-          <v-circle
-            :config="{
-              x: model.x + model.r,
-              y: model.y + model.r,
-              radius: model.r,
-              stroke: 'black',
-              fill: 'white',
-              strokeWidth: 1,
-              model,
-            }"
-          />
-          <v-circle
-            v-if="model.value"
-            :config="{
-              x: model.x + model.r,
-              y: model.y + model.r,
-              radius: model.r * 0.5,
-              fill: '#41ae3c',
-              model,
-            }"
-          />
-        </v-group>
-      </v-layer>
-    </PanZoom>
-    <el-input
-      v-show="inputConfigRef.show"
-      ref="inputRef"
-      v-model="inputConfigRef.value"
-      :style="{
-        position: 'absolute',
-        top: `${inputConfigRef.y}px`,
-        left: `${inputConfigRef.x}px`,
-        width: `${inputConfigRef.width}px`,
-        height: `${inputConfigRef.height}px`,
-        transform: `scale(${inputConfigRef.scaleX}, ${inputConfigRef.scaleY})`,
-        transformOrigin: 'left top',
-      }"
-    />
-  </div>
+        </template>
+
+        <template v-if="isDevMode">
+          <Background />
+          <MiniMap />
+        </template>
+      </VueFlow>
+    </el-splitter-panel>
+    <el-splitter-panel v-if="isDevMode" min="250" max="20%" size="250">
+      <PropertyPanel
+        :selected-nodes="getSelectedNodes"
+        :selected-edges="getSelectedEdges"
+      />
+    </el-splitter-panel>
+  </el-splitter>
 </template>
 
+<style>
+.vue-flow__node {
+  background-color: var(--ep-bg-color-page);
+}
+
+.vue-flow__node .title {
+  text-wrap: nowrap;
+}
+
+.vue-flow__node.ct-un-focusable {
+  filter: grayscale(1);
+  cursor: not-allowed;
+  box-shadow: 0 0 10px var(--ep-color-warning-dark-2);
+}
+</style>
+
 <style scoped>
-.pan-zoom-container {
+.ep-splitter {
+  position: static;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+}
+
+::v-deep(.ep-splitter-panel) {
+  display: flex;
   flex: 1;
   min-width: 0;
   min-height: 0;
-  position: relative;
 }
 
-::v-deep(.ep-input__wrapper) {
-  box-shadow: none;
-  border-radius: 0px;
-  border-image: none;
-  border-image-width: 0px;
-  background-color: transparent;
-  transition-duration: 0s;
-  color: black;
-  padding: 0px 0px 1px 0px;
+.clock-toolbar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0px 2px;
+  border-right: solid 1px var(--ep-menu-border-color);
+  background: var(--ep-bg-color-page);
 }
 
-::v-deep(.ep-input__inner) {
-  color: black;
+.clock-toolbar .ep-button {
+  margin-left: 0;
+  height: 32px;
+  padding: 0px 0px;
+  width: 32px;
+}
+
+.clock-toolbar .ep-divider {
+  margin: 5px 0px;
 }
 </style>

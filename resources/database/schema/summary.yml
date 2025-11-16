@@ -21,22 +21,15 @@
 # 2025-05-15     xqyjlj       initial version
 #
 
-$schema: 'http://json-schema.org/draft-07/schema#'
+$schema: "http://json-schema.org/draft-07/schema#"
 type: object
 properties:
   name:
     type: string
     minLength: 1
   clockTree:
-    type: object
-    properties:
-      svg:
-        type: string
-        minLength: 1
-      ip:
-        type: string
-        minLength: 1
-    required: [svg, ip]
+    type: string
+    minLength: 1
   core:
     type: string
     minLength: 1
@@ -57,22 +50,22 @@ properties:
     type: string
     minLength: 1
   vendorUrl:
-    $ref: '#/properties/url'
+    $ref: "#/properties/url"
   documents:
     type: object
     properties:
       datasheets:
         type: object
         patternProperties:
-          '.*':
+          ".*":
             type: object
             properties:
               url:
-                $ref: '#/properties/url'
+                $ref: "#/properties/url"
               type:
                 enum: [pdf]
               description:
-                $ref: '#/properties/illustrate'
+                $ref: "#/properties/illustrate"
               size:
                 type: string
                 minLength: 1
@@ -81,9 +74,9 @@ properties:
                 pattern: '^(?:v|V)?\d+(?:\.\d+){1,2}$'
             required: [url, type, description, size, version]
       errata:
-        $ref: '#/properties/documents/properties/datasheets'
+        $ref: "#/properties/documents/properties/datasheets"
       references:
-        $ref: '#/properties/documents/properties/datasheets'
+        $ref: "#/properties/documents/properties/datasheets"
   illustrate:
     type: object
     properties:
@@ -91,7 +84,7 @@ properties:
         type: [string]
     required: [en]
   introduction:
-    $ref: '#/properties/illustrate'
+    $ref: "#/properties/illustrate"
   modules:
     type: object
     additionalProperties: false
@@ -105,7 +98,7 @@ properties:
             additionalProperties: false
             properties:
               description:
-                $ref: '#/properties/illustrate'
+                $ref: "#/properties/illustrate"
               define:
                 type: string
                 minLength: 1
@@ -113,12 +106,12 @@ properties:
                 type: object
                 additionalProperties: false
                 patternProperties:
-                  '^[A-Za-z0-9_+-]+$':
+                  "^[A-Za-z0-9_+-]+$":
                     $ref: '#/properties/modules/properties/peripherals/patternProperties/^[A-Za-z0-9_\s+-]+$'
             # required:
             #   - define
       middlewares:
-        $ref: '#/properties/modules/properties/peripherals'
+        $ref: "#/properties/modules/properties/peripherals"
     required: [peripherals, middlewares]
   url:
     type: object
@@ -127,7 +120,7 @@ properties:
         type: string
         pattern: 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     required: [en]
-  builder:
+  builders:
     type: object
     properties:
       XMake:
@@ -140,9 +133,9 @@ properties:
               type: string
               minLength: 1
       CMake:
-        $ref: '#/properties/builder/properties/XMake'
+        $ref: "#/properties/builders/properties/XMake"
       MDK-Arm:
-        $ref: '#/properties/builder/properties/XMake'
+        $ref: "#/properties/builders/properties/XMake"
   hals:
     type: array
     items:
@@ -161,18 +154,18 @@ properties:
         oneOf:
           - type: integer
           - type: string
-            pattern: '^0x[0-9A-Fa-f]+$'
+            pattern: "^0x[0-9A-Fa-f]+$"
       defaultStackSize:
         oneOf:
           - type: integer
           - type: string
-            pattern: '^0x[0-9A-Fa-f]+$'
+            pattern: "^0x[0-9A-Fa-f]+$"
     required: [defaultStackSize]
   pins:
     type: object
     additionalProperties: false
     patternProperties:
-      '^[A-Za-z0-9_+-]+(?:.*)?$':
+      "^[A-Za-z0-9_+-]+(?:.*)?$":
         type: object
         properties:
           position:
@@ -185,13 +178,13 @@ properties:
             type: array
             items:
               type: string
-              pattern: '^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$'
+              pattern: "^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$"
             minItems: 1
           modes:
             type: array
             items:
               type: string
-              pattern: '^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$'
+              pattern: "^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$"
             minItems: 1
         required: [position, type]
 required:
@@ -209,7 +202,7 @@ required:
   - introduction
   - modules
   - url
-  - builder
+  - builders
   - hals
   - hasPowerPad
   - package

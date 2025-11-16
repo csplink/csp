@@ -1,0 +1,477 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        SYS-STM32F10x_sys_v1_0_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-10     xqyjlj       initial version
+#
+
+name: SYS
+parameters:
+  sys_instance_t:
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim1')
+      content:
+        type: enum
+        values:
+          tim1:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim1
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim2')
+      content:
+        type: enum
+        values:
+          tim2:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim2
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim3')
+      content:
+        type: enum
+        values:
+          tim3:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim3
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim4')
+      content:
+        type: enum
+        values:
+          tim4:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim4
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim5')
+      content:
+        type: enum
+        values:
+          tim5:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim5
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim6')
+      content:
+        type: enum
+        values:
+          tim6:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim6
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim7')
+      content:
+        type: enum
+        values:
+          tim7:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim7
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: (configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim8')
+      content:
+        type: enum
+        values:
+          tim8:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: tim8
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: SYS_RTC
+      content:
+        type: enum
+        values:
+          rtc:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: rtc
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          sys_tick:
+            comment:
+              zh-cn: ''
+              en: ''
+        default: sys_tick
+        display:
+          zh-cn: ''
+          en: ''
+        description:
+          zh-cn: ''
+          en: ''
+        visible: false
+        readonly: false
+  sys_ctrl_debug_t:
+    type: enum
+    values:
+      no_debug:
+        comment:
+          zh-cn: No Debug
+          en: No Debug
+      serial_wire:
+        comment:
+          zh-cn: Serial Wire
+          en: Serial Wire
+        signals:
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+      jtag_4_pins:
+        comment:
+          zh-cn: JTAG (4 pins)
+          en: JTAG (4 pins)
+        signals:
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+      jtag_5_pins:
+        comment:
+          zh-cn: JTAG (5 pins)
+          en: JTAG (5 pins)
+        signals:
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:NJTRST:
+            mode: GPIO:System
+      trace_asynchronous_sw:
+        comment:
+          zh-cn: Trace Asynchronous Sw
+          en: Trace Asynchronous Sw
+        signals:
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+      trace_synchro_1bit_jtag:
+        comment:
+          zh-cn: JTAG with Trace Synchro(1 bit)
+          en: JTAG with Trace Synchro(1 bit)
+        signals:
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED0:
+            mode: GPIO:System
+      trace_synchro_2bits_jtag:
+        comment:
+          zh-cn: JTAG with Trace Synchro(2 bits)
+          en: JTAG with Trace Synchro(2 bits)
+        signals:
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED1:
+            mode: GPIO:System
+      trace_synchro_4bits_jtag:
+        comment:
+          zh-cn: JTAG with Trace Synchro(4 bits)
+          en: JTAG with Trace Synchro(4 bits)
+        signals:
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDI:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTDO-TRACESWO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED1:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED2:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED3:
+            mode: GPIO:System
+      trace_synchro_1bit_sw:
+        comment:
+          zh-cn: Trace Synchro Sw (1 bit)
+          en: Trace Synchro Sw (1 bit)
+        signals:
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED0:
+            mode: GPIO:System
+      trace_synchro_2bits_sw:
+        comment:
+          zh-cn: Trace Synchro Sw (2 bits)
+          en: Trace Synchro Sw (2 bits)
+        signals:
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED1:
+            mode: GPIO:System
+      trace_synchro_4bits_sw:
+        comment:
+          zh-cn: Trace Synchro Sw (4 bits)
+          en: Trace Synchro Sw (4 bits)
+        signals:
+          ${IP_INSTANCE}:JTMS-SWDIO:
+            mode: GPIO:System
+          ${IP_INSTANCE}:JTCK-SWCLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACECLK:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED0:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED1:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED2:
+            mode: GPIO:System
+          ${IP_INSTANCE}:TRACED3:
+            mode: GPIO:System
+    default: no_debug
+    display:
+      zh-cn: DEBUG
+      en: DEBUG
+    description:
+      zh-cn: DEBUG
+      en: DEBUG
+    visible: true
+    readonly: false
+  sys_ctrl_wake_up0_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      sys_wake_up0:
+        comment:
+          zh-cn: SYS_WakeUp0
+          en: SYS_WakeUp0
+        signals:
+          ${IP_INSTANCE}:WKUP:
+            mode: GPIO:System
+    default: disable
+    display:
+      zh-cn: SYSTEM WAKE-UP
+      en: SYSTEM WAKE-UP
+    description:
+      zh-cn: SYSTEM WAKE-UP
+      en: SYSTEM WAKE-UP
+    visible: true
+    readonly: false
+  sys_ctrl_time_base_t:
+    type: enum
+    values:
+      sys_tick:
+        comment:
+          zh-cn: SysTick
+          en: SysTick
+      tim1:
+        comment:
+          zh-cn: TIM1
+          en: TIM1
+      tim2:
+        comment:
+          zh-cn: TIM2
+          en: TIM2
+      tim3:
+        comment:
+          zh-cn: TIM3
+          en: TIM3
+      tim4:
+        comment:
+          zh-cn: TIM4
+          en: TIM4
+      tim5:
+        comment:
+          zh-cn: TIM5
+          en: TIM5
+      tim6:
+        comment:
+          zh-cn: TIM6
+          en: TIM6
+      tim7:
+        comment:
+          zh-cn: TIM7
+          en: TIM7
+      tim8:
+        comment:
+          zh-cn: TIM8
+          en: TIM8
+    default: sys_tick
+    display:
+      zh-cn: TIMEBASE SOURCE
+      en: TIMEBASE SOURCE
+    description:
+      zh-cn: TIMEBASE SOURCE
+      en: TIMEBASE SOURCE
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      sys_ctrl_debug_t: {}
+      sys_ctrl_wake_up0_t: {}
+      sys_ctrl_time_base_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim1'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim2'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim3'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim4'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim5'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim6'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim7'
+      content:
+        refParameters:
+          sys_instance_t: {}
+    - condition: configs.${IP_INSTANCE}.sys_ctrl_time_base_t == 'tim8'
+      content:
+        refParameters:
+          sys_instance_t: {}
+activated: 'true'

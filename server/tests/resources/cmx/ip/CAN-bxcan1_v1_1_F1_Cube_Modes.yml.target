@@ -1,0 +1,415 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        CAN-bxcan1_v1_1_F1_Cube_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-10     xqyjlj       initial version
+#
+
+name: CAN
+parameters:
+  can_abom_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Automatic Bus-Off Management
+      en: Automatic Bus-Off Management
+    description:
+      zh-cn: Automatic Bus-Off Management
+      en: Automatic Bus-Off Management
+    visible: true
+    readonly: false
+  can_awum_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Automatic Wake-Up Mode
+      en: Automatic Wake-Up Mode
+    description:
+      zh-cn: Automatic Wake-Up Mode
+      en: Automatic Wake-Up Mode
+    visible: true
+    readonly: false
+  can_bs1_t:
+    type: enum
+    values:
+      1_tq:
+        comment:
+          zh-cn: 1 Time
+          en: 1 Time
+      2_tq:
+        comment:
+          zh-cn: '2 Times '
+          en: '2 Times '
+      3_tq:
+        comment:
+          zh-cn: '3 Times '
+          en: '3 Times '
+      4_tq:
+        comment:
+          zh-cn: '4 Times '
+          en: '4 Times '
+      5_tq:
+        comment:
+          zh-cn: '5 Times '
+          en: '5 Times '
+      6_tq:
+        comment:
+          zh-cn: '6 Times '
+          en: '6 Times '
+      7_tq:
+        comment:
+          zh-cn: 7 Times
+          en: 7 Times
+      8_tq:
+        comment:
+          zh-cn: 8 Times
+          en: 8 Times
+      9_tq:
+        comment:
+          zh-cn: 9 Times
+          en: 9 Times
+      10_tq:
+        comment:
+          zh-cn: '10 Times '
+          en: '10 Times '
+      11_tq:
+        comment:
+          zh-cn: 11 Times
+          en: 11 Times
+      12_tq:
+        comment:
+          zh-cn: 12 Times
+          en: 12 Times
+      13_tq:
+        comment:
+          zh-cn: 13 Times
+          en: 13 Times
+      14_tq:
+        comment:
+          zh-cn: '14 Times '
+          en: '14 Times '
+      15_tq:
+        comment:
+          zh-cn: 15 Times
+          en: 15 Times
+      16_tq:
+        comment:
+          zh-cn: 16 Times
+          en: 16 Times
+    default: 1_tq
+    display:
+      zh-cn: Time Quanta in Bit Segment 1
+      en: Time Quanta in Bit Segment 1
+    description:
+      zh-cn: Time Quanta in Bit Segment 1
+      en: Time Quanta in Bit Segment 1
+    visible: true
+    readonly: false
+  can_bs2_t:
+    type: enum
+    values:
+      1_tq:
+        comment:
+          zh-cn: 1 Time
+          en: 1 Time
+      2_tq:
+        comment:
+          zh-cn: 2 Times
+          en: 2 Times
+      3_tq:
+        comment:
+          zh-cn: 3 Times
+          en: 3 Times
+      4_tq:
+        comment:
+          zh-cn: 4 Times
+          en: 4 Times
+      5_tq:
+        comment:
+          zh-cn: 5 Times
+          en: 5 Times
+      6_tq:
+        comment:
+          zh-cn: 6 Times
+          en: 6 Times
+      7_tq:
+        comment:
+          zh-cn: 7 Times
+          en: 7 Times
+      8_tq:
+        comment:
+          zh-cn: 8 Times
+          en: 8 Times
+    default: 1_tq
+    display:
+      zh-cn: Time Quanta in Bit Segment 2
+      en: Time Quanta in Bit Segment 2
+    description:
+      zh-cn: Time Quanta in Bit Segment 2
+      en: Time Quanta in Bit Segment 2
+    visible: true
+    readonly: false
+  can_calculate_baud_rate_t:
+    type: string
+    default: '1000'
+    display:
+      zh-cn: Baud Rate
+      en: Baud Rate
+    description:
+      zh-cn: Baud Rate
+      en: Baud Rate
+    visible: true
+    readonly: false
+  can_calculate_time_bit_t:
+    type: string
+    default: '1000'
+    display:
+      zh-cn: Time for one Bit
+      en: Time for one Bit
+    description:
+      zh-cn: Time for one Bit
+      en: Time for one Bit
+    visible: true
+    readonly: false
+  can_calculate_time_quantum_t:
+    type: string
+    default: '1000'
+    display:
+      zh-cn: Time Quantum
+      en: Time Quantum
+    description:
+      zh-cn: Time Quantum
+      en: Time Quantum
+    visible: true
+    readonly: false
+  can_mode_t:
+    type: enum
+    values:
+      normal:
+        comment:
+          zh-cn: Normal
+          en: Normal
+      loopback:
+        comment:
+          zh-cn: Loopback
+          en: Loopback
+      silent:
+        comment:
+          zh-cn: Silent
+          en: Silent
+      silent_loopback:
+        comment:
+          zh-cn: Loopback combined with Silent
+          en: Loopback combined with Silent
+    default: normal
+    display:
+      zh-cn: Test Mode
+      en: Test Mode
+    description:
+      zh-cn: Test Mode
+      en: Test Mode
+    visible: true
+    readonly: false
+  can_nart_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Automatic Retransmission
+      en: Automatic Retransmission
+    description:
+      zh-cn: Automatic Retransmission
+      en: Automatic Retransmission
+    visible: true
+    readonly: false
+  can_prescaler_t:
+    type: integer
+    default: 16
+    max: 1024
+    min: 1
+    display:
+      zh-cn: Prescaler (for Time Quantum)
+      en: Prescaler (for Time Quantum)
+    description:
+      zh-cn: Prescaler (for Time Quantum)
+      en: Prescaler (for Time Quantum)
+    visible: true
+    readonly: false
+  can_rflm_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Receive Fifo Locked Mode
+      en: Receive Fifo Locked Mode
+    description:
+      zh-cn: Receive Fifo Locked Mode
+      en: Receive Fifo Locked Mode
+    visible: true
+    readonly: false
+  can_sjw_t:
+    type: enum
+    values:
+      1_tq:
+        comment:
+          zh-cn: 1 Time
+          en: 1 Time
+      2_tq:
+        comment:
+          zh-cn: 2 Times
+          en: 2 Times
+      3_tq:
+        comment:
+          zh-cn: '3 Times '
+          en: '3 Times '
+      4_tq:
+        comment:
+          zh-cn: '4 Times '
+          en: '4 Times '
+    default: 1_tq
+    display:
+      zh-cn: ReSynchronization Jump Width
+      en: ReSynchronization Jump Width
+    description:
+      zh-cn: ReSynchronization Jump Width
+      en: ReSynchronization Jump Width
+    visible: true
+    readonly: false
+  can_ttcm_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Time Triggered Communication Mode
+      en: Time Triggered Communication Mode
+    description:
+      zh-cn: Time Triggered Communication Mode
+      en: Time Triggered Communication Mode
+    visible: true
+    readonly: false
+  can_txfp_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      enable:
+        comment:
+          zh-cn: Enable
+          en: Enable
+    default: disable
+    display:
+      zh-cn: Transmit Fifo Priority
+      en: Transmit Fifo Priority
+    description:
+      zh-cn: Transmit Fifo Priority
+      en: Transmit Fifo Priority
+    visible: true
+    readonly: false
+  can_ctrl_state_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: Disable
+          en: Disable
+      can_activate:
+        comment:
+          zh-cn: Activated
+          en: Activated
+        signals:
+          ${IP_INSTANCE}:RX:
+            mode: GPIO:InputFloatingAndPullUp
+          ${IP_INSTANCE}:TX:
+            mode: GPIO:AlternateFunctionPushPull
+    default: disable
+    display:
+      zh-cn: ACTIVATED
+      en: ACTIVATED
+    description:
+      zh-cn: ACTIVATED
+      en: ACTIVATED
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      can_ctrl_state_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.can_ctrl_state_t == 'can_activate'
+      content:
+        refParameters:
+          can_prescaler_t: {}
+          can_calculate_time_quantum_t: {}
+          can_bs1_t: {}
+          can_bs2_t: {}
+          can_calculate_time_bit_t: {}
+          can_calculate_baud_rate_t: {}
+          can_sjw_t: {}
+          can_ttcm_t: {}
+          can_abom_t: {}
+          can_awum_t: {}
+          can_nart_t: {}
+          can_rflm_t: {}
+          can_txfp_t: {}
+          can_mode_t: {}
+activated: (configs.${IP_INSTANCE}.can_ctrl_state_t != 'disable')

@@ -28,136 +28,127 @@
 -->
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import pkg from '~/../package.json'
+import { useSettingsManager } from '~/utils'
 
 const { t } = useI18n()
+const settings = useSettingsManager().settings
 
-// interface CategoriesType {
-//   [key: string]: {
-//     title: string
-//     icon: string
-//   }
-// }
-
-// const categories = ref<CategoriesType>({
-//   system: { title: t('settings.systemSetting'), icon: 'Setting' },
-// })
-// const activeCategoryRef = ref('system')
-const langOptions = ref([
-  { label: '简体中文', value: 'zh-cn' },
-  { label: 'English', value: 'en' },
-])
-const themeOptions = ref([
+const themeOptions = computed(() => [
   { label: t('settings.light'), value: 'light' },
   { label: t('settings.dark'), value: 'dark' },
-  { label: t('settings.autoTheme'), value: 'dark' },
+  { label: t('settings.autoTheme'), value: 'auto' },
 ])
+
+const langOptions = [
+  { label: '简体中文', value: 'zh-cn' },
+  { label: 'English', value: 'en' },
+]
+
+const formModel = {
+  theme: settings.system.theme,
+  themeColor: settings.system.themeColor,
+  language: settings.system.language,
+  autoUpdate: settings.system.autoUpdate,
+  telemetry: settings.system.telemetry,
+  crashReports: settings.system.crashReports,
+  autoSave: settings.system.autoSave,
+}
 </script>
 
 <template>
-  <div class="setting-content">
-    <h2>{{ $t('settings.personalization') }}</h2>
-    <el-card shadow="never">
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.applicationTheme') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-select class="settings-options">
-            <el-option v-for="(lang, index) in themeOptions" :key="index" :label="lang.label" :value="lang.value" />
+  <div class="g-settings-container">
+    <el-form :model="formModel" label-position="left" label-width="auto">
+      <div class="g-settings-section">
+        <h2 class="g-settings-title">
+          {{ $t('settings.personalization') }}
+        </h2>
+        <el-form-item class="g-settings-item" :label="$t('settings.applicationTheme')">
+          <el-select v-model="formModel.theme.value">
+            <el-option
+              v-for="option in themeOptions"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+            />
           </el-select>
-        </el-col>
-      </el-row>
-      <el-divider />
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.themeColor') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-color-picker />
-        </el-col>
-      </el-row>
-    </el-card>
+        </el-form-item>
+        <el-form-item class="g-settings-item" :label="$t('settings.themeColor')">
+          <el-color-picker v-model="formModel.themeColor.value" show-alpha />
+        </el-form-item>
+      </div>
 
-    <h2>{{ $t('settings.system') }}</h2>
-    <el-card shadow="never">
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.language') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-select class="settings-options">
-            <el-option v-for="(lang, index) in langOptions" :key="index" :label="lang.label" :value="lang.value" />
+      <div class="g-settings-section">
+        <h2 class="g-settings-title">
+          {{ $t('settings.system') }}
+        </h2>
+        <el-form-item class="g-settings-item" :label="$t('settings.language')">
+          <el-select v-model="formModel.language.value" class="settings-select">
+            <el-option
+              v-for="option in langOptions"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+            />
           </el-select>
-        </el-col>
-      </el-row>
-    </el-card>
+        </el-form-item>
+      </div>
 
-    <h2>{{ $t('settings.softwareUpdate') }}</h2>
-    <el-card shadow="never">
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.update') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-switch />
-        </el-col>
-      </el-row>
-    </el-card>
+      <div class="g-settings-section">
+        <h2 class="g-settings-title">
+          {{ $t('settings.softwareUpdate') }}
+        </h2>
+        <el-form-item class="g-settings-item">
+          <el-switch
+            v-model="formModel.autoUpdate.value"
+            :active-text="$t('settings.autoUpdate')"
+          />
+        </el-form-item>
+      </div>
 
-    <h2>{{ $t('settings.about') }}</h2>
-    <el-card shadow="never">
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.help') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-button circle>
-            <el-icon><More /></el-icon>
-          </el-button>
-        </el-col>
-      </el-row>
-      <el-divider />
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.feedback') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-button circle>
-            <el-icon><More /></el-icon>
-          </el-button>
-        </el-col>
-      </el-row>
-      <el-divider />
-      <el-row :gutter="20">
-        <el-col class="label-col" :span="20">
-          <el-text>
-            {{ $t('settings.about') }}
-          </el-text>
-        </el-col>
-        <el-col class="widget-col" :span="4">
-          <el-button circle>
-            <el-icon><More /></el-icon>
-          </el-button>
-        </el-col>
-      </el-row>
-    </el-card>
+      <div class="g-settings-section">
+        <h2 class="g-settings-title">
+          {{ $t('settings.privacy') }}
+        </h2>
+        <el-form-item class="g-settings-item">
+          <el-switch
+            v-model="formModel.telemetry.value"
+            :active-text="$t('settings.telemetry')"
+          />
+        </el-form-item>
+        <el-form-item class="g-settings-item">
+          <el-switch
+            v-model="formModel.crashReports.value"
+            :active-text="$t('settings.crashReports')"
+          />
+        </el-form-item>
+      </div>
+
+      <div class="g-settings-section">
+        <h2 class="g-settings-title">
+          {{ $t('settings.about') }}
+        </h2>
+        <el-descriptions class="g-settings-item" :column="1" :border="true">
+          <el-descriptions-item :label="$t('settings.version')">
+            {{ pkg.version }}
+          </el-descriptions-item>
+          <el-descriptions-item :label="$t('settings.license')">
+            Apache License 2.0
+          </el-descriptions-item>
+          <el-descriptions-item :label="$t('settings.author')">
+            xqyjlj
+          </el-descriptions-item>
+        </el-descriptions>
+      </div>
+
+      <div class="g-settings-section">
+        <h2 class="g-settings-title">
+          {{ $t('startup.contributors') }}
+        </h2>
+        <ContributorsList />
+      </div>
+    </el-form>
   </div>
 </template>
-
-<style scoped>
-@import '~/styles/element/settings.scss';
-</style>

@@ -18,49 +18,95 @@
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2025-05-15     xqyjlj       initial version
+# 2025-10-05     xqyjlj       initial version
+# 2025-10-12     xqyjlj       complete schema based on clockTree.d.ts
 #
 
-$schema: 'http://json-schema.org/draft-07/schema#'
+$schema: "http://json-schema.org/draft-07/schema#"
+description: "Clock Tree configuration schema"
 type: object
+additionalProperties: false
 properties:
-  elements:
+  instance:
+    type: string
+    description: "The instance identifier for the clock tree"
+  edges:
     type: object
     additionalProperties: false
+    description: "Collection of edges in the clock tree"
     patternProperties:
-      '.*':
-        type: object
-        properties:
-          refParameter:
-            type: string
-            pattern: '^[A-Za-z0-9_.+-]+:[A-Za-z0-9_.+-]+$'
-          type:
-            enum: [divisor, multiplexed, multiple]
-          enable:
-            anyOf:
-              - type: string
-              - type: boolean
-          output:
-            type: array
-            items:
-              type: string
-              pattern: '^[A-Za-z0-9_.+-]+$'
-          input:
-            $ref: '#/properties/elements/patternProperties/.*/properties/output'
-          z:
-            type: integer
-        required: [refParameter]
-  i18n:
+      ".*":
+        $ref: "#/definitions/$edge$"
+  nodes:
     type: object
     additionalProperties: false
+    description: "Collection of nodes in the clock tree"
     patternProperties:
-      '^\$\(.*\)$':
-        $ref: '#/properties/$language$'
-  $language$:
+      ".*":
+        $ref: "#/definitions/$node$"
+required: [instance, edges, nodes]
+definitions:
+  $edge$:
     type: object
+    required:
+      - type
+      - source
+      - target
     properties:
-      en:
+      type:
         type: string
-    required: [en]
-
-required: [elements]
+        enum:
+          - "ct-smoothstep"
+          - "ct-cliff"
+        description: "Type of edge connection"
+      source:
+        type: string
+        description: "Source node identifier"
+      target:
+        type: string
+        description: "Target node identifier"
+      sourceHandle:
+        type: string
+        description: "Source handle identifier"
+      targetHandle:
+        type: string
+        description: "Target handle identifier"
+      label:
+        type: string
+        description: "Optional edge label"
+    additionalProperties: false
+  $node$:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        type: string
+        enum:
+          - "ct-input-number"
+          - "ct-output"
+          - "ct-select"
+          - "ct-radio"
+          - "ct-probe"
+        description: "Type of node component"
+      position:
+        type: object
+        required:
+          - x
+          - y
+        properties:
+          x:
+            type: number
+            description: "X coordinate position"
+          y:
+            type: number
+            description: "Y coordinate position"
+        additionalProperties: false
+      unit:
+        type: string
+        enum:
+          - "U"
+          - "K"
+          - "M"
+        description: "Unit for node values"
+    additionalProperties: false

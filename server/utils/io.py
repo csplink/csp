@@ -27,6 +27,8 @@
 
 import os
 
+from ruamel.yaml import YAML
+
 
 class IoUtils:
     @staticmethod
@@ -35,3 +37,12 @@ class IoUtils:
             return []
         with open(path, "r") as f:
             return f.readlines()
+
+    @staticmethod
+    def read_yaml(file: str):
+        with open(file, "r", encoding="utf-8") as f:
+            yaml = YAML()
+            return yaml.load(f.read())
+
+
+IO_UTILS = IoUtils()

@@ -28,15 +28,26 @@
 -->
 
 <script lang="ts" setup>
+import { nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
+const emit = defineEmits(['generate'])
 
 const router = useRouter()
 const route = useRoute()
 
 function handleSelect(index: string) {
+  if (!index)
+    return
   if (!route.path.startsWith(index)) {
-    router.push(index)
+    nextTick(() => {
+      router.push(index)
+    })
   }
+}
+
+function handleGenerate() {
+  emit('generate')
 }
 </script>
 
@@ -48,44 +59,51 @@ function handleSelect(index: string) {
     @select="handleSelect"
   >
     <el-menu-item index="/chipConfigure">
-      <el-icon><Cpu /></el-icon>
+      <el-icon><i class="ri-cpu-line" /></el-icon>
       <template #title>
         CPU
       </template>
     </el-menu-item>
     <el-menu-item index="/clockConfigure">
-      <el-icon><Clock /></el-icon>
+      <el-icon><i class="ri-time-line" /></el-icon>
       <template #title>
         {{ $t('mainNavigation.clock') }}
       </template>
     </el-menu-item>
     <el-menu-item index="/codeView">
-      <el-icon><DataBoard /></el-icon>
+      <el-icon><i class="ri-code-box-line" /></el-icon>
       <template #title>
         {{ $t('mainNavigation.code') }}
       </template>
     </el-menu-item>
     <div class="spacer" />
+    <li
+      class="ep-menu-item"
+      @click="handleGenerate"
+    >
+      <el-tooltip
+        :content="$t('mainNavigation.generate')"
+        placement="right"
+      >
+        <div class="ep-menu-tooltip__trigger">
+          <el-icon><i class="ri-ai-generate" /></el-icon>
+        </div>
+      </el-tooltip>
+    </li>
     <el-menu-item index="/nav/4">
-      <el-icon><Promotion /></el-icon>
-      <template #title>
-        {{ $t('mainNavigation.generate') }}
-      </template>
-    </el-menu-item>
-    <el-menu-item index="/nav/4">
-      <el-icon><Coffee /></el-icon>
+      <el-icon><i class="ri-cup-line" /></el-icon>
       <template #title>
         {{ $t('mainNavigation.sponsor') }}
       </template>
     </el-menu-item>
-    <el-menu-item index="/nav/4">
-      <el-icon><Management /></el-icon>
+    <el-menu-item index="/packageManager">
+      <el-icon><i class="ri-kanban-view" /></el-icon>
       <template #title>
         {{ $t('mainNavigation.packages') }}
       </template>
     </el-menu-item>
     <el-menu-item index="/settings">
-      <el-icon><Setting /></el-icon>
+      <el-icon><i class="ri-settings-line" /></el-icon>
       <template #title>
         {{ $t('mainNavigation.settings') }}
       </template>
