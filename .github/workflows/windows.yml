@@ -1,0 +1,91 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        windows.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-10-21     xqyjlj       initial version
+#
+
+name: windows
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: ⬆️ release
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    env:
+      CI_PROJECT_DIR: ${{ github.workspace }}
+      GITHUB_CSPLINK_DEVELOPER_TOKEN: ${{ github.token }}
+    steps:
+      - name: ⬇️ checkout csp
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 📦 Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 📦 setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.10.11
+
+      - name: 👷 Install
+        shell: bash
+        run: |
+          pnpm install --frozen-lockfile --no-verify-store-integrity
+          pnpm server:install
+
+      - name: 🔨 Build
+        shell: bash
+        run: |
+          pnpm release
+
+          CSP_VERSION=$(npm pkg get version | tr -d '"')
+          mv -v release/${CSP_VERSION}/csp-Windows-${CSP_VERSION}-Setup.exe csp-windows-setup-${{ github.ref_name }}.exe
+          pushd release/${CSP_VERSION}/
+            mv -v win-unpacked csp-windows-portable-${{ github.ref_name }}
+            7z a csp-windows-portable-${{ github.ref_name }}.zip csp-windows-portable-${{ github.ref_name }}
+          popd
+          mv -v release/${CSP_VERSION}/csp-windows-portable-${{ github.ref_name }}.zip csp-windows-portable-${{ github.ref_name }}.zip
+          mv -v build-server/csp-server.exe csp-windows-server-${{ github.ref_name }}.exe
+      - name: ⬆️ create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: csp ${{ github.ref_name }}
+          draft: true
+          prerelease: true
+          token: ${{ secrets.RELEASE_TOKEN }}
+          files: |
+            csp-windows-setup-${{ github.ref_name }}.exe
+            csp-windows-portable-${{ github.ref_name }}.zip
+            csp-windows-server-${{ github.ref_name }}.exe
