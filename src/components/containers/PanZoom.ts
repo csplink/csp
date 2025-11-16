@@ -34,4 +34,5 @@ export interface PanZoomMenuItemModelType {
   highlight?: boolean
   preserveIconWidth?: boolean
   data?: any
+  icon?: string
 }

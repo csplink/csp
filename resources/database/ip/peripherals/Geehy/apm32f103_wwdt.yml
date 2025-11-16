@@ -1,0 +1,135 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_wwdt.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-02     xqyjlj       initial version
+#
+
+name: WWDT
+parameters:
+  wwdt_counter_t:
+    type: integer
+    default: 64
+    max: 127
+    min: configs.${IP_INSTANCE}.wwdt_window_t
+    display:
+      zh-cn: 计数器值（向下计数）
+      en: free-running downcounter value
+    description:
+      zh-cn: |-
+        指定 WWDT 计数器值。
+        每 (4096 x 2^TBPSC) 个 PCLK 周期递减一次。
+        当从 0x40 递减到 0x3F 时产生复位（CNT6 被清零）。
+      en: |-
+        Specifies the WWDT counter value.
+        It is decremented every (4096 x 2^TBPSC) PCLK cycles.
+        A reset is produced when it is decremented from 0x40 to 0x3F (CNT6 becomes cleared).
+    visible: true
+    readonly: false
+  wwdt_ewi_mode_t:
+    type: enum
+    values:
+      disable:
+        comment:
+          zh-cn: 禁用
+          en: Disable
+      enable:
+        comment:
+          zh-cn: 启用
+          en: Enable
+    default: disable
+    display:
+      zh-cn: 早期唤醒中断
+      en: Early wakeup interrupt
+    description:
+      zh-cn: 当设置时，计数器达到值 0x40 时会发生中断。此中断只能在复位后由硬件清除。
+      en: When set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by
+        hardware after a reset.
+    visible: true
+    readonly: false
+  wwdt_prescaler_t:
+    type: enum
+    values:
+      /1:
+        comment:
+          zh-cn: /1
+          en: /1
+      /2:
+        comment:
+          zh-cn: /2
+          en: /2
+      /4:
+        comment:
+          zh-cn: /4
+          en: /4
+      /8:
+        comment:
+          zh-cn: /8
+          en: /8
+    default: /1
+    display:
+      zh-cn: 预分频器
+      en: Clock prescaler
+    description:
+      zh-cn: 生成的时钟值等于 (PCLK/4096)/预分频器值，例如 (PCLK/4096)/8。
+      en: The resulting value of the clock is equal to (PCLK/4096)/prescaler for example (PCLK/4096)/8.
+    visible: true
+    readonly: false
+  wwdt_window_t:
+    type: integer
+    default: 64
+    max: 127
+    min: 64
+    display:
+      zh-cn: 窗口值
+      en: Window value
+    description:
+      zh-cn: 指定要与递减计数器比较的 WWDT 窗口值。如果软件在计数器大于窗口寄存器中存储的值时重新加载计数器，则会产生复位。
+      en: Specifies the WWDT window value to be compared to the downcounter. If the software reloads the counter while the counter is greater than the value stored in the window register, then a reset is generated.
+    visible: true
+    readonly: false
+  wwdt_ctrl_state_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: 使能
+      en: Activated
+    description:
+      zh-cn: 使能
+      en: Activated
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      wwdt_ctrl_state_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.wwdt_ctrl_state_t
+      content:
+        refParameters:
+          wwdt_prescaler_t: {}
+          wwdt_window_t: {}
+          wwdt_counter_t: {}
+          wwdt_ewi_mode_t: {}
+diagrams:
+  - condition: configs.${IP_INSTANCE}.wwdt_ctrl_state_t
+    content:
+      images:
+        - ${DIAGRAMS_FOLDER}/wwdg-down.svg
+activated: (configs.${IP_INSTANCE}.wwdt_ctrl_state_t)

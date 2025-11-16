@@ -1,0 +1,1215 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_rcm.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-05-15     xqyjlj       initial version
+#
+
+name: RCM
+parameters:
+  rcm_lse_clk_input_t:
+    type: float
+    display:
+      zh-cn: LSE 晶振
+      en: LSE OSC
+    description:
+      zh-cn: LSE 晶振
+      en: LSE OSC
+    default: 32768
+    readonly: false
+    visible: false
+    max: 32768
+    min: 32768
+    enabled: configs.RCM.rcm_lse_clock_source_t != 'disable'
+  rcm_hse_clk_input_t:
+    - condition: configs.RCM.rcm_hse_clock_source_t == 'bypass'
+      content:
+        type: float
+        display:
+          zh-cn: HSE 晶振
+          en: HSE OSC
+        description:
+          zh-cn: HSE 晶振
+          en: HSE OSC
+        default: 8000000
+        readonly: false
+        visible: false
+        max: 25000000
+        min: 1000000
+        enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+    - condition: default
+      content:
+        type: float
+        display:
+          zh-cn: HSE 晶振
+          en: HSE OSC
+        description:
+          zh-cn: HSE 晶振
+          en: HSE OSC
+        default: 8000000
+        readonly: false
+        visible: false
+        max: 16000000
+        min: 4000000
+        enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+  rcm_hse_clk_div_rtc_t:
+    type: enum
+    values:
+      "/128":
+        comment:
+          zh-cn: /128
+          en: /128
+    display:
+      zh-cn: 用于 RTC 的 HSE 分频器
+      en: HSE Divider for RTC
+    description:
+      zh-cn: 用于 RTC 的 HSE 分频器
+      en: HSE Divider for RTC
+    default: "/128"
+    readonly: true
+    visible: false
+    enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+  rcm_rtc_clk_mux_t:
+    type: enum
+    values:
+      hse_div128:
+        comment:
+          zh-cn: HSE/128
+          en: HSE/128
+        enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+      lse:
+        comment:
+          zh-cn: LSE
+          en: LSE
+        enabled: configs.RCM.rcm_lse_clock_source_t != 'disable'
+      lsi:
+        comment:
+          zh-cn: LSI
+          en: LSI
+    display:
+      zh-cn: RTC时钟复用器
+      en: RTC Clock Mux
+    description:
+      zh-cn: RTC时钟复用器
+      en: RTC Clock Mux
+    default: lsi
+    readonly: false
+    visible: false
+  rcm_rtc_clk_output_t:
+    - condition: default
+      content:
+        type: float
+        display:
+          zh-cn: RTC 时钟
+          en: RTC clock
+        description:
+          zh-cn: RTC 时钟
+          en: RTC clock
+        default: 40000
+        readonly: true
+        visible: false
+        enabled: false
+  rcm_lsi_clk_input_t:
+    type: float
+    display:
+      zh-cn: LSI 源
+      en: LSI Source
+    description:
+      zh-cn: LSI 源
+      en: LSI Source
+    default: 40000
+    readonly: true
+    visible: false
+  rcm_iwdt_clk_output_t:
+    type: float
+    display:
+      zh-cn: IWDT 时钟
+      en: IWDT clock
+    description:
+      zh-cn: IWDT 时钟
+      en: IWDT clock
+    default: 40000
+    readonly: true
+    visible: false
+    enabled: configs.IWDT.iwdt_ctrl_state_t
+  rcm_hsi_clk_input_t:
+    type: float
+    display:
+      zh-cn: HSI 源
+      en: HSI Source
+    description:
+      zh-cn: HSI 源
+      en: HSI Source
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_system_clk_mux_t:
+    type: enum
+    values:
+      hsi:
+        comment:
+          zh-cn: HSI
+          en: HSI
+      hse:
+        comment:
+          zh-cn: HSE
+          en: HSE
+        enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+      pll:
+        comment:
+          zh-cn: PLL
+          en: PLL
+    display:
+      zh-cn: 系统时钟复用器
+      en: System Clock Mux
+    description:
+      zh-cn: 系统时钟复用器
+      en: System Clock Mux
+    default: hsi
+    readonly: false
+    visible: false
+  rcm_fmc_clk_output_t:
+    type: float
+    display:
+      zh-cn: FMC 时钟
+      en: FMC Clock
+    description:
+      zh-cn: FMC 时钟
+      en: FMC Clock
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_pll_clk_mux_t:
+    type: enum
+    values:
+      hsi_div2:
+        comment:
+          zh-cn: HSI
+          en: HSI
+      hse:
+        comment:
+          zh-cn: HSE
+          en: HSE
+        enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+    display:
+      zh-cn: PLL时钟复用器
+      en: PLL Clock Mux
+    description:
+      zh-cn: PLL时钟复用器
+      en: PLL Clock Mux
+    default: hsi_div2
+    readonly: false
+    visible: false
+  rcm_mco_clk_mux_t:
+    type: enum
+    values:
+      pll_div2:
+        comment:
+          zh-cn: PLL
+          en: PLL
+      hsi:
+        comment:
+          zh-cn: HSI
+          en: HSI
+      hse:
+        comment:
+          zh-cn: HSE
+          en: HSE
+      system:
+        comment:
+          zh-cn: System
+          en: System
+    display:
+      zh-cn: MCO时钟复用器
+      en: MCO Clock Mux
+    description:
+      zh-cn: MCO时钟复用器
+      en: MCO Clock Mux
+    default: hsi
+    readonly: false
+    visible: false
+    enabled: configs.RCM.rcm_mco_enabled_t == 'enabled'
+  rcm_hsi_clk_div_pll_t:
+    type: enum
+    values:
+      "2":
+        comment:
+          zh-cn: /2
+          en: /2
+    display:
+      zh-cn: 用于 PLL 的 HSI RC 分频器
+      en: HSI RC Divider for PLL
+    description:
+      zh-cn: 用于 PLL 的 HSI RC 分频器
+      en: HSI RC Divider for PLL
+    default: "2"
+    readonly: true
+    visible: false
+  rcm_hse_clk_div_pll_t:
+    type: enum
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+    display:
+      zh-cn: 用于 PLL 的 HSE 分频器
+      en: HSE Divider for PLL
+    description:
+      zh-cn: 用于 PLL 的 HSE 分频器
+      en: HSE Divider for PLL
+    default: "/1"
+    readonly: false
+    visible: false
+    enabled: configs.RCM.rcm_hse_clock_source_t != 'disable'
+  rcm_pll_clk_t:
+    - condition: default
+      content:
+        type: float
+        display:
+          zh-cn: PLL 时钟
+          en: PLL clock
+        description:
+          zh-cn: PLL 时钟
+          en: PLL clock
+        default: 4000000
+        readonly: true
+        visible: false
+  rcm_pll_clk_mul_t:
+    - condition: default
+      content:
+        type: enum
+        display:
+          zh-cn: PLL 倍频器
+          en: PLL Multiplier
+        values:
+          "*2":
+            comment:
+              zh-cn: "*2"
+              en: "*2"
+          "*3":
+            comment:
+              zh-cn: "*3"
+              en: "*3"
+          "*4":
+            comment:
+              zh-cn: "*4"
+              en: "*4"
+          "*5":
+            comment:
+              zh-cn: "*5"
+              en: "*5"
+          "*6":
+            comment:
+              zh-cn: "*6"
+              en: "*6"
+          "*7":
+            comment:
+              zh-cn: "*7"
+              en: "*7"
+          "*8":
+            comment:
+              zh-cn: "*8"
+              en: "*8"
+          "*9":
+            comment:
+              zh-cn: "*9"
+              en: "*9"
+          "*10":
+            comment:
+              zh-cn: "*10"
+              en: "*10"
+          "*11":
+            comment:
+              zh-cn: "*11"
+              en: "*11"
+          "*12":
+            comment:
+              zh-cn: "*12"
+              en: "*12"
+          "*13":
+            comment:
+              zh-cn: "*13"
+              en: "*13"
+          "*14":
+            comment:
+              zh-cn: "*14"
+              en: "*14"
+          "*15":
+            comment:
+              zh-cn: "*15"
+              en: "*15"
+          "*16":
+            comment:
+              zh-cn: "*16"
+              en: "*16"
+        description:
+          zh-cn: PLL 倍频器
+          en: PLL Multiplier
+        default: "*2"
+        readonly: false
+        visible: false
+  rcm_sys_clk_t:
+    type: float
+    display:
+      zh-cn: 系统时钟
+      en: System clock
+    description:
+      zh-cn: 系统时钟
+      en: System clock
+    default: 8000000
+    readonly: true
+    visible: false
+    max: 96000000
+    min: 0
+  rcm_i2s_clk_out_t:
+    type: float
+    display:
+      zh-cn: I2S2 时钟
+      en: I2S2 clock
+    description:
+      zh-cn: I2S2 时钟
+      en: I2S2 clock
+    default: 8000000
+    readonly: true
+    visible: false
+    enabled: false
+  rcm_ahb_clk_div_hclk_t:
+    type: enum
+    display:
+      zh-cn: AHB 分频器
+      en: AHB CLK Divider
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+      "/4":
+        comment:
+          zh-cn: /4
+          en: /4
+      "/8":
+        comment:
+          zh-cn: /8
+          en: /8
+      "/16":
+        comment:
+          zh-cn: /16
+          en: /16
+      "/64":
+        comment:
+          zh-cn: /64
+          en: /64
+      "/128":
+        comment:
+          zh-cn: /128
+          en: /128
+      "/256":
+        comment:
+          zh-cn: /256
+          en: /256
+      "/512":
+        comment:
+          zh-cn: /512
+          en: /512
+    description:
+      zh-cn: AHB 分频器
+      en: AHB CLK Divider
+    default: "/1"
+    readonly: false
+    visible: false
+  rcm_hclk_t:
+    - condition: default
+      content:
+        type: float
+        display:
+          zh-cn: AHB 时钟
+          en: AHB clock
+        description:
+          zh-cn: AHB 时钟
+          en: AHB clock
+        default: 8000000
+        readonly: true
+        visible: false
+  rcm_hclk_out_t:
+    type: float
+    display:
+      zh-cn: HCLK 输出
+      en: HCLK Output
+    description:
+      zh-cn: SDIO 时钟
+      en: SDIO clock
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_fclk_out_t:
+    type: float
+    display:
+      zh-cn: FCLK 输出
+      en: FCLK Output
+    description:
+      zh-cn: SDIO 时钟
+      en: SDIO clock
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_hclk_div_sys_timer_clk_t:
+    type: enum
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/8":
+        comment:
+          zh-cn: /8
+          en: /8
+    display:
+      zh-cn: Cortex 系统定时器时钟分频器
+      en: Cortex system timer divider
+    description:
+      zh-cn: Cortex 系统定时器时钟分频器
+      en: Cortex system timer divider
+    default: "/1"
+    readonly: true
+    visible: false
+  rcm_sys_timer_clk_out_t:
+    type: float
+    display:
+      zh-cn: Cortex 系统定时器时钟
+      en: Cortex system timer clock
+    description:
+      zh-cn: Cortex 系统定时器时钟
+      en: Cortex system timer clock
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_apb1_div_t:
+    type: enum
+    display:
+      zh-cn: APB1 分频器
+      en: APB1 CLK Divider
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+      "/4":
+        comment:
+          zh-cn: /4
+          en: /4
+      "/8":
+        comment:
+          zh-cn: /8
+          en: /8
+      "/16":
+        comment:
+          zh-cn: /16
+          en: /16
+    description:
+      zh-cn: APB1 分频器
+      en: APB1 CLK Divider
+    default: "/1"
+    readonly: false
+    visible: false
+  rcm_apb1_peripherals_out_t:
+    type: float
+    display:
+      zh-cn: APB1 总线外设时钟
+      en: APB1 peripheral clocks
+    description:
+      zh-cn: APB1 总线外设时钟
+      en: APB1 peripheral clocks
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_apb1_timers_mul_t:
+    - condition: configs.RCM.rcm_apb1_div_t == '/1'
+      content:
+        type: enum
+        display:
+          zh-cn: APB1 倍频器
+          en: APB1 CLK Multiplier
+        values:
+          "*1":
+            comment:
+              zh-cn: "*1"
+              en: "*1"
+        description:
+          zh-cn: APB1 倍频器
+          en: APB1 CLK Multiplier
+        default: "*1"
+        readonly: true
+        visible: false
+    - condition: default
+      content:
+        type: enum
+        display:
+          zh-cn: APB1 倍频器
+          en: APB1 CLK Multiplier
+        values:
+          "*2":
+            comment:
+              zh-cn: "*2"
+              en: "*2"
+        description:
+          zh-cn: APB1 倍频器
+          en: APB1 CLK Multiplier
+        default: "*2"
+        readonly: true
+        visible: false
+  rcm_apb1_timers_out_t:
+    type: float
+    display:
+      zh-cn: APB1 总线定时器时钟
+      en: APB1 timer clocks
+    description:
+      zh-cn: APB1 总线定时器时钟
+      en: APB1 timer clocks
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_apb2_div_t:
+    type: enum
+    display:
+      zh-cn: APB2 分频器
+      en: APB2 CLK Divider
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+      "/4":
+        comment:
+          zh-cn: /4
+          en: /4
+      "/8":
+        comment:
+          zh-cn: /8
+          en: /8
+      "/16":
+        comment:
+          zh-cn: /16
+          en: /16
+    description:
+      zh-cn: APB2 分频器
+      en: APB2 CLK Divider
+    default: "/1"
+    readonly: false
+    visible: false
+  rcm_apb2_peripherals_out_t:
+    type: float
+    display:
+      zh-cn: APB2 总线外设时钟
+      en: APB2 peripheral clocks
+    description:
+      zh-cn: APB2 总线外设时钟
+      en: APB2 peripheral clocks
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_apb2_timers_mul_t:
+    - condition: configs.RCM.rcm_apb2_div_t == '/1'
+      content:
+        type: enum
+        display:
+          zh-cn: APB2 倍频器
+          en: APB2 CLK Multiplier
+        values:
+          "*1":
+            comment:
+              zh-cn: "*1"
+              en: "*1"
+        description:
+          zh-cn: APB2 倍频器
+          en: APB2 CLK Multiplier
+        default: "*1"
+        readonly: true
+        visible: false
+    - condition: default
+      content:
+        type: enum
+        display:
+          zh-cn: APB2 倍频器
+          en: APB2 CLK Multiplier
+        values:
+          "*2":
+            comment:
+              zh-cn: "*2"
+              en: "*2"
+        description:
+          zh-cn: APB2 倍频器
+          en: APB2 CLK Multiplier
+        default: "*2"
+        readonly: true
+        visible: false
+  rcm_apb2_timers_out_t:
+    type: float
+    display:
+      zh-cn: APB2 总线定时器时钟
+      en: APB2 timer clocks
+    description:
+      zh-cn: APB2 总线定时器时钟
+      en: APB2 timer clocks
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_adc_clk_div_t:
+    type: enum
+    display:
+      zh-cn: ADC 时钟分频器
+      en: ADC Clk Divider
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+      "/4":
+        comment:
+          zh-cn: /4
+          en: /4
+      "/8":
+        comment:
+          zh-cn: /8
+          en: /8
+      "/16":
+        comment:
+          zh-cn: /16
+          en: /16
+    description:
+      zh-cn: ADC 时钟分频器
+      en: ADC Clk Divider
+    default: "/1"
+    readonly: false
+    visible: false
+    enabled: false
+  rcm_adc_clk_out_t:
+    type: float
+    display:
+      zh-cn: ADC 时钟
+      en: ADC clock
+    description:
+      zh-cn: ADC 时钟
+      en: ADC clock
+    default: 4000000
+    readonly: true
+    visible: false
+    max: 14000000
+    min: 0
+    enabled: false
+  rcm_fpu_clk_div_t:
+    type: enum
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+    display:
+      zh-cn: FPU 时钟分频器
+      en: FPU Clk Divider
+    description:
+      zh-cn: FPU 时钟分频器
+      en: FPU Clk Divider
+    default: "/1"
+    readonly: false
+    visible: false
+  rcm_fpu_clk_out_t:
+    type: float
+    display:
+      zh-cn: FPU 时钟
+      en: FPU clock
+    description:
+      zh-cn: FPU 时钟
+      en: FPU clock
+    default: 8000000
+    readonly: true
+    visible: false
+  rcm_sdio_clk_out_t:
+    type: float
+    display:
+      zh-cn: SDIO 时钟
+      en: SDIO clock
+    description:
+      zh-cn: SDIO 时钟
+      en: SDIO clock
+    default: 8000000
+    readonly: true
+    visible: false
+    enabled: false
+  rcm_usb_clk_div_t:
+    type: enum
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/1.5":
+        comment:
+          zh-cn: /1.5
+          en: /1.5
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+      "/2.5":
+        comment:
+          zh-cn: /2.5
+          en: /2.5
+    display:
+      zh-cn: USB 时钟分频器
+      en: USB Clk Divider
+    description:
+      zh-cn: USB 时钟分频器
+      en: USB Clk Divider
+    default: "/1"
+    readonly: false
+    visible: false
+    enabled: false
+  rcm_usb_clk_out_t:
+    type: float
+    display:
+      zh-cn: USB 时钟
+      en: USB clock
+    description:
+      zh-cn: USB 时钟
+      en: USB clock
+    default: 48000000
+    readonly: true
+    visible: false
+    max: 48120000
+    min: 47880000
+    enabled: false
+  rcm_smc_clk_out_t:
+    type: float
+    display:
+      zh-cn: SMC 时钟
+      en: SMC clock
+    description:
+      zh-cn: SMC 时钟
+      en: SMC clock
+    default: 8000000
+    readonly: true
+    visible: false
+    enabled: false
+  rcm_dmc_clk_out_t:
+    type: float
+    display:
+      zh-cn: DMC 时钟
+      en: DMC clock
+    description:
+      zh-cn: SMC 时钟
+      en: SMC clock
+    default: 8000000
+    readonly: true
+    visible: false
+    enabled: false
+  rcm_sdram_clk_div_t:
+    type: enum
+    values:
+      "/1":
+        comment:
+          zh-cn: /1
+          en: /1
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+      "/4":
+        comment:
+          zh-cn: /4
+          en: /4
+    display:
+      zh-cn: SDRAM 时钟分频器
+      en: SDRAM Clk Divider
+    description:
+      zh-cn: SDRAM 时钟分频器
+      en: SDRAM Clk Divider
+    default: "/1"
+    readonly: false
+    visible: false
+    enabled: false
+  rcm_sdram_clk_out_t:
+    type: float
+    display:
+      zh-cn: SDRAM 时钟
+      en: SDRAM clock
+    description:
+      zh-cn: SDRAM 时钟
+      en: SDRAM clock
+    default: 8000000
+    readonly: true
+    visible: false
+    enabled: false
+  rcm_pll_clk_div_mco_clk_t:
+    type: enum
+    values:
+      "/2":
+        comment:
+          zh-cn: /2
+          en: /2
+    display:
+      zh-cn: 用于 MCO 的 PLL 分频器
+      en: PLL Divider for MCO
+    description:
+      zh-cn: 用于 MCO 的 PLL 分频器
+      en: PLL Divider for MCO
+    default: "/2"
+    readonly: true
+    visible: false
+    enabled: false
+  rcm_mco_clk_out_t:
+    type: float
+    display:
+      zh-cn: MCO 时钟
+      en: MCO clock
+    description:
+      zh-cn: MCO 时钟
+      en: MCO clock
+    default: 8000000
+    readonly: true
+    visible: false
+    max: 50000000
+    min: 0
+    enabled: configs.RCM.rcm_mco_enabled_t == 'enabled'
+  rcm_hsi_calibration_t:
+    type: integer
+    display:
+      zh-cn: HSI 校准值
+      en: HSI Calibration Value
+    description:
+      zh-cn: HSI 校准值
+      en: HSI Calibration Value
+    default: 16
+    readonly: false
+    max: 31
+    min: 0
+  rcm_flash_latency_t:
+    - condition: (configs.RCM.rcm_sys_clk_freq_value_t > 0) and (configs.RCM.rcm_sys_clk_freq_value_t <= 24000000)
+      content:
+        type: enum
+        values:
+          "0":
+            comment:
+              zh-cn: 0 等待周期 (1 CPU 周期)
+              en: 0 WS (1 CPU cycle)
+        display:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        default: "0"
+        readonly: true
+    - condition: (configs.RCM.rcm_sys_clk_freq_value_t > 24000000) and (configs.RCM.rcm_sys_clk_freq_value_t <= 48000000)
+      content:
+        type: enum
+        values:
+          "1":
+            comment:
+              zh-cn: 1 等待周期 (2 CPU 周期)
+              en: 1 WS (2 CPU cycle)
+        display:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        default: "1"
+        readonly: true
+    - condition: (configs.RCM.rcm_sys_clk_freq_value_t > 48000000) and (configs.RCM.rcm_sys_clk_freq_value_t <= 76000000)
+      content:
+        type: enum
+        values:
+          "2":
+            comment:
+              zh-cn: 2 等待周期 (3 CPU 周期)
+              en: 2 WS (3 CPU cycle)
+        display:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        default: "2"
+        readonly: true
+    - condition: default
+      content:
+        type: enum
+        values:
+          "3":
+            comment:
+              zh-cn: 3 等待周期 (4 CPU 周期)
+              en: 3 WS (4 CPU cycle)
+        display:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        description:
+          zh-cn: Flash 等待周期
+          en: Flash Wait State
+        default: "3"
+        readonly: true
+  rcm_css_t:
+    - condition: "((configs.RCM.rcm_pll_clk_selector_t == 'rcm_pll_hse_t') and
+        (configs.RCM.rcm_system_clk_selector_t == 'rcm_system_clk_pll_t') or
+        (configs.RCM.rcm_system_clk_selector_t == 'rcm_system_clk_hse_t')) and
+        (configs.RCM.rcm_hse_clock_source_t != 'disable')"
+      content:
+        type: enum
+        display:
+          zh-cn: 时钟安全系统
+          en: Clock Security System
+        values:
+          rcm_css_disable:
+            comment:
+              zh-cn: CSS 关闭
+              en: CSS Disable
+          rcm_css_enable:
+            comment:
+              zh-cn: CSS 打开
+              en: CSS Enable
+        description:
+          zh-cn: 时钟安全系统
+          en: Clock Security System
+        default: rcm_css_disable
+        readonly: false
+        visible: false
+    - condition: default
+      content:
+        type: enum
+        display:
+          zh-cn: 时钟安全系统
+          en: Clock Security System
+        values:
+          rcm_css_disable:
+            comment:
+              zh-cn: CSS 关闭
+              en: CSS Disable
+        description:
+          zh-cn: 时钟安全系统
+          en: Clock Security System
+        default: rcm_css_disable
+        readonly: false
+        visible: false
+  rcm_hse_clock_source_t:
+    type: enum
+    values:
+      bypass:
+        comment:
+          zh-cn: 旁路时钟源
+          en: BYPASS Clock Source
+        signals:
+          RCM:OSC-IN:
+            mode: GPIO:System
+          RCM:OSC-OUT:
+            mode: GPIO:System
+      oscillator:
+        comment:
+          zh-cn: 晶体/陶瓷谐振器
+          en: Crystal/Ceramic Resonator
+        signals:
+          RCM:OSC-IN:
+            mode: GPIO:System
+          RCM:OSC-OUT:
+            mode: GPIO:System
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+    display:
+      zh-cn: HSE 模式
+      en: High Speed Clock (HSE) source
+    description:
+      zh-cn: HSE 模式
+      en: High Speed Clock (HSE) source
+    default: disable
+    readonly: false
+  rcm_lse_clock_source_t:
+    type: enum
+    values:
+      bypass:
+        comment:
+          zh-cn: 旁路时钟源
+          en: BYPASS Clock Source
+        signals:
+          RCM:OSC32-IN:
+            mode: GPIO:System
+          RCM:OSC32-OUT:
+            mode: GPIO:System
+      oscillator:
+        comment:
+          zh-cn: 晶体/陶瓷谐振器
+          en: Crystal/Ceramic Resonator
+        signals:
+          RCM:OSC32-IN:
+            mode: GPIO:System
+          RCM:OSC32-OUT:
+            mode: GPIO:System
+      disable:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+    display:
+      zh-cn: LSE 模式
+      en: Low Speed Clock (LSE) source
+    description:
+      zh-cn: LSE 模式
+      en: Low Speed Clock (LSE) source
+    default: disable
+    readonly: false
+  rcm_prefetch_buffer_enabled_t:
+    - condition: configs.RCM.rcm_ahb_div_t != '1'
+      content:
+        type: enum
+        values:
+          rcm_prefetch_buffer_enable:
+            comment:
+              zh-cn: 使能
+              en: Enable
+        display:
+          zh-cn: Flash 预取缓冲区
+          en: Prefetch Buffer
+        description:
+          zh-cn: Flash 预取缓冲区
+          en: Prefetch Buffer
+        default: rcm_prefetch_buffer_enable
+        readonly: false
+    - condition: default
+      content:
+        type: enum
+        values:
+          rcm_prefetch_buffer_enable:
+            comment:
+              zh-cn: 使能
+              en: Enable
+          rcm_prefetch_buffer_disable:
+            comment:
+              zh-cn: 关闭
+              en: Disable
+        display:
+          zh-cn: Flash 预取缓冲区
+          en: Prefetch Buffer
+        description:
+          zh-cn: Flash 预取缓冲区
+          en: Prefetch Buffer
+        default: rcm_prefetch_buffer_enable
+        readonly: false
+  rcm_mco_enabled_t:
+    type: enum
+    values:
+      enabled:
+        comment:
+          zh-cn: 使能
+          en: Enable
+        signals:
+          RCM:MCO:
+            mode: GPIO:AlternateFunctionPushPull
+      disabled:
+        comment:
+          zh-cn: 关闭
+          en: Disable
+    display:
+      zh-cn: 主时钟输出
+      en: Master Clock Output
+    description:
+      zh-cn: 主时钟输出
+      en: Master Clock Output
+    default: disabled
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      rcm_hse_clock_source_t: {}
+      rcm_lse_clock_source_t: {}
+      rcm_hsi_calibration_t: {}
+      rcm_mco_enabled_t: {}
+  configurations:
+    refParameters:
+      rcm_flash_latency_t: {}
+      rcm_prefetch_buffer_enabled_t: {}
+  clockTree:
+    refParameters:
+      rcm_lse_clk_input_t: {}
+      rcm_hse_clk_input_t: {}
+      rcm_hse_clk_div_rtc_t: {}
+      rcm_rtc_clk_mux_t: {}
+      rcm_rtc_clk_output_t: {}
+      rcm_lsi_clk_input_t: {}
+      rcm_iwdt_clk_output_t: {}
+      rcm_hsi_clk_input_t: {}
+      rcm_system_clk_mux_t: {}
+      rcm_fmc_clk_output_t: {}
+      rcm_pll_clk_mux_t: {}
+      rcm_mco_clk_mux_t: {}
+      rcm_hsi_clk_div_pll_t: {}
+      rcm_hse_clk_div_pll_t: {}
+      rcm_pll_clk_t: {}
+      rcm_pll_clk_mul_t: {}
+      rcm_sys_clk_t: {}
+      rcm_i2s_clk_out_t: {}
+      rcm_ahb_clk_div_hclk_t: {}
+      rcm_hclk_t: {}
+      rcm_hclk_out_t: {}
+      rcm_fclk_out_t: {}
+      rcm_hclk_div_sys_timer_clk_t: {}
+      rcm_sys_timer_clk_out_t: {}
+      rcm_apb1_div_t: {}
+      rcm_apb1_peripherals_out_t: {}
+      rcm_apb1_timers_mul_t: {}
+      rcm_apb1_timers_out_t: {}
+      rcm_apb2_div_t: {}
+      rcm_apb2_peripherals_out_t: {}
+      rcm_apb2_timers_mul_t: {}
+      rcm_apb2_timers_out_t: {}
+      rcm_adc_clk_div_t: {}
+      rcm_adc_clk_out_t: {}
+      rcm_fpu_clk_div_t: {}
+      rcm_fpu_clk_out_t: {}
+      rcm_sdio_clk_out_t: {}
+      rcm_usb_clk_div_t: {}
+      rcm_usb_clk_out_t: {}
+      rcm_smc_clk_out_t: {}
+      rcm_dmc_clk_out_t: {}
+      rcm_sdram_clk_div_t: {}
+      rcm_sdram_clk_out_t: {}
+      rcm_pll_clk_div_mco_clk_t: {}
+      rcm_mco_clk_out_t: {}

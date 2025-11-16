@@ -1,0 +1,1169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V3.0" IPType="service" IpGroup="" Name="DMA" Version="STM32F103G_dma_v1_0" xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+    <About>DMA: Direct Memory Access</About>
+    <RefParameter Comment="Channel" DefaultValue="" Group="" Name="Instance" Type="list">
+        <PossibleValue Comment="DMA1 Channel 1" Value="DMA1_Channel1" />
+        <PossibleValue Comment="DMA1 Channel 2" Value="DMA1_Channel2" />
+        <PossibleValue Comment="DMA1 Channel 3" Value="DMA1_Channel3" />
+        <PossibleValue Comment="DMA1 Channel 4" Value="DMA1_Channel4" />
+        <PossibleValue Comment="DMA1 Channel 5" Value="DMA1_Channel5" />
+        <PossibleValue Comment="DMA1 Channel 6" Value="DMA1_Channel6" />
+        <PossibleValue Comment="DMA1 Channel 7" Value="DMA1_Channel7" />
+        <PossibleValue Comment="DMA2 Channel 1" Value="DMA2_Channel1" />
+        <PossibleValue Comment="DMA2 Channel 2" Value="DMA2_Channel2" />
+        <PossibleValue Comment="DMA2 Channel 3" Value="DMA2_Channel3" />
+        <PossibleValue Comment="DMA2 Channel 4" Value="DMA2_Channel4" />
+        <PossibleValue Comment="DMA2 Channel 5" Value="DMA2_Channel5" />
+    </RefParameter>
+    <RefParameter Comment="Direction" DefaultValue="DMA_PERIPH_TO_MEMORY" Group="" Name="Direction" Type="list">
+        <PossibleValue Comment="Peripheral To Memory" Value="DMA_PERIPH_TO_MEMORY" />
+        <PossibleValue Comment="Memory To Peripheral" Value="DMA_MEMORY_TO_PERIPH" />
+        <PossibleValue Comment="Memory To Memory" Value="DMA_MEMORY_TO_MEMORY" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Increment" DefaultValue="DMA_PINC_ENABLE" Group="" Name="PeriphInc" Type="list">
+        <PossibleValue Comment="Peripheral Inc Enable" Value="DMA_PINC_ENABLE" />
+        <PossibleValue Comment="Peripheral Inc Disable" Value="DMA_PINC_DISABLE" />
+        <Condition Diagnostic="" Expression="Direction=DMA_MEMORY_TO_MEMORY" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Increment" DefaultValue="DMA_PINC_DISABLE" Group="" Name="PeriphInc" Type="list">
+        <PossibleValue Comment="Peripheral Inc Enable" Value="DMA_PINC_ENABLE" />
+        <PossibleValue Comment="Peripheral Inc Disable" Value="DMA_PINC_DISABLE" />
+    </RefParameter>
+    <RefParameter Comment="Memory Increment" DefaultValue="DMA_MINC_ENABLE" Group="" Name="MemInc" Type="list">
+        <PossibleValue Comment="Memory Inc Enable" Value="DMA_MINC_ENABLE" />
+        <PossibleValue Comment="Memory Inc Disable" Value="DMA_MINC_DISABLE" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Data Alignment" DefaultValue="DMA_PDATAALIGN_BYTE" Group="" Name="PeriphDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_PDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_PDATAALIGN_HALFWORD" />
+        <Condition Diagnostic="" Expression="(TEMP_SPI1_IP_SEM&amp;SPI1_DATASIZE_BYTE)|(TEMP_SPI2_IP_SEM&amp;SPI2_DATASIZE_BYTE)|(TEMP_SPI3_IP_SEM&amp;SPI3_DATASIZE_BYTE)" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Data Alignment" DefaultValue="DMA_PDATAALIGN_HALFWORD" Group="" Name="PeriphDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_PDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_PDATAALIGN_HALFWORD" />
+        <Condition Diagnostic="" Expression="(TEMP_SPI1_IP_SEM&amp;SPI1_DATASIZE_HALFWORD)|(TEMP_SPI2_IP_SEM&amp;SPI2_DATASIZE_HALFWORD)|(TEMP_SPI3_IP_SEM&amp;SPI3_DATASIZE_HALFWORD)" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Data Alignment" DefaultValue="DMA_PDATAALIGN_HALFWORD" Group="" Name="PeriphDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_PDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_PDATAALIGN_HALFWORD" />
+        <PossibleValue Comment="Word" Value="DMA_PDATAALIGN_WORD" />
+        <Condition Diagnostic="" Expression="(TEMP_ADC1_REQUEST_SEM|TEMP_ADC3_REQUEST_SEM|TEMP_DAC_CH1_REQUEST_SEM|TEMP_DAC_CH2_REQUEST_SEM|TEMP_TIM1_IP_SEM|TEMP_TIM2_IP_SEM|TEMP_TIM3_IP_SEM|TEMP_TIM4_IP_SEM|TEMP_TIM5_IP_SEM|TEMP_TIM6_IP_SEM|TEMP_TIM7_IP_SEM|TEMP_TIM8_IP_SEM)" />
+    </RefParameter>
+    <RefParameter Comment="Peripheral Data Alignment" DefaultValue="DMA_PDATAALIGN_BYTE" Group="" Name="PeriphDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_PDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_PDATAALIGN_HALFWORD" />
+        <PossibleValue Comment="Word" Value="DMA_PDATAALIGN_WORD" />
+    </RefParameter>
+    <RefParameter Comment="Memomry Data Alignment" DefaultValue="DMA_MDATAALIGN_WORD" Group="" Name="MemDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_MDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_MDATAALIGN_HALFWORD" />
+        <PossibleValue Comment="Word" Value="DMA_MDATAALIGN_WORD" />
+        <Condition Diagnostic="" Expression="TEMP_SDIO_REQUEST_SEM" />
+    </RefParameter>
+    <RefParameter Comment="Memomry Data Alignment" DefaultValue="DMA_MDATAALIGN_HALFWORD" Group="" Name="MemDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_MDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_MDATAALIGN_HALFWORD" />
+        <PossibleValue Comment="Word" Value="DMA_MDATAALIGN_WORD" />
+        <Condition Diagnostic="" Expression="(TEMP_ADC1_REQUEST_SEM|TEMP_ADC3_REQUEST_SEM|TEMP_DAC_CH1_REQUEST_SEM|TEMP_DAC_CH2_REQUEST_SEM|(TEMP_SPI1_IP_SEM&amp;SPI1_DATASIZE_HALFWORD)|(TEMP_SPI2_IP_SEM&amp;SPI2_DATASIZE_HALFWORD)|(TEMP_SPI3_IP_SEM&amp;SPI3_DATASIZE_HALFWORD)|TEMP_TIM1_IP_SEM|TEMP_TIM2_IP_SEM|TEMP_TIM3_IP_SEM|TEMP_TIM4_IP_SEM|TEMP_TIM5_IP_SEM|TEMP_TIM6_IP_SEM|TEMP_TIM7_IP_SEM|TEMP_TIM8_IP_SEM)" />
+    </RefParameter>
+    <RefParameter Comment="Memomry Data Alignment" DefaultValue="DMA_MDATAALIGN_BYTE" Group="" Name="MemDataAlignment" Type="list">
+        <PossibleValue Comment="Byte" Value="DMA_MDATAALIGN_BYTE" />
+        <PossibleValue Comment="Half Word" Value="DMA_MDATAALIGN_HALFWORD" />
+        <PossibleValue Comment="Word" Value="DMA_MDATAALIGN_WORD" />
+    </RefParameter>
+    <RefParameter Comment="Mode" DefaultValue="DMA_NORMAL" Group="" Name="Mode" Type="list">
+        <PossibleValue Comment="Normal" Value="DMA_NORMAL" />
+        <PossibleValue Comment="Circular" Value="DMA_CIRCULAR" />
+    </RefParameter>
+    <RefParameter Comment="Priority" DefaultValue="DMA_PRIORITY_LOW" Group="" Name="Priority" Type="list">
+        <PossibleValue Comment="Low" Value="DMA_PRIORITY_LOW" />
+        <PossibleValue Comment="Medium" Value="DMA_PRIORITY_MEDIUM" />
+        <PossibleValue Comment="High" Value="DMA_PRIORITY_HIGH" />
+        <PossibleValue Comment="Very High" Value="DMA_PRIORITY_VERY_HIGH" />
+    </RefParameter>
+    <RefParameter Comment="Clock Enable Mode" DefaultValue="" Group="" Name="ClockEnableMode" Type="list" Visible="false">
+        <PossibleValue Comment="DMA1 clock enable" Value="__HAL_RCC_DMA1_CLK_ENABLE" />
+        <PossibleValue Comment="DMA2 clock enable" Value="__HAL_RCC_DMA2_CLK_ENABLE" />
+    </RefParameter>
+    <RefParameter Comment="DMA Handle" DefaultValue="" Group="" Name="DMA_Handle" Type="list" Visible="false" />
+    <RefParameter Comment="IP Instance" DefaultValue="" Group="" Name="IpInstance" Type="list" Visible="false" />
+    <RefMode Abstract="true" BaseMode="" Comment="DMA_Request" Name="DMA_Request">
+        <ConfigForMode>HAL_DMA_Init</ConfigForMode>
+        <Parameter Name="Instance" />
+        <Parameter Name="Direction" />
+        <Parameter Name="PeriphInc" />
+        <Parameter Name="MemInc" />
+        <Parameter Name="PeriphDataAlignment" />
+        <Parameter Name="MemDataAlignment" />
+        <Parameter Name="Mode" />
+        <Parameter Name="Priority" />
+        <Parameter Name="DMA_Handle" />
+    </RefMode>
+    <RefMode Abstract="true" BaseMode="" Comment="DMA1" Name="DMA1">
+        <Parameter Name="ClockEnableMode">
+            <PossibleValue>__HAL_RCC_DMA1_CLK_ENABLE</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>DMA</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode Abstract="true" BaseMode="" Comment="DMA2" Name="DMA2">
+        <Parameter Name="ClockEnableMode">
+            <PossibleValue>__HAL_RCC_DMA2_CLK_ENABLE</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>DMA</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="MEMTOMEM" Name="MEMTOMEM">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>DMA</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="ADC1" Name="ADC1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>DMA_Handle</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>ADC1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="ADC3" Name="ADC3">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>DMA_Handle</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>ADC3</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="DAC_CH1" Name="DAC_CH1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>DMA_Handle1</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>DAC</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="DAC_CH2" Name="DAC_CH2">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>DMA_Handle2</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>DAC</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="I2C1_RX" Name="I2C1_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>I2C1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="I2C1_TX" Name="I2C1_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>I2C1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="I2C2_RX" Name="I2C2_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>I2C2</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="I2C2_TX" Name="I2C2_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>I2C2</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SDIO" Name="SDIO">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SDIO</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphDataAlignment">
+            <PossibleValue>DMA_PDATAALIGN_WORD</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SPI1_RX" Name="SPI1_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SPI1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SPI1_TX" Name="SPI1_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SPI1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SPI2_RX" Name="SPI2_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SPI2:I2S2</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SPI2_TX" Name="SPI2_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SPI2:I2S2</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SPI3_RX" Name="SPI3_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SPI3:I2S3</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="SPI3_TX" Name="SPI3_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>SPI3:I2S3</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM1_CH1" Name="TIM1_CH1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC1]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM1</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM1_CH2" Name="TIM1_CH2">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC2]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM1</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM1_CH3" Name="TIM1_CH3">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC3]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM1</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM1_CH4/TRIG/COM" Name="TIM1_CH4/TRIG/COM">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC4]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_TRIGGER]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_COMMUTATION]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM1</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM1_UP" Name="TIM1_UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM1</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM2_CH1" Name="TIM2_CH1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC1]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM2</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM2_CH2/CH4" Name="TIM2_CH2/CH4">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC2]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_CC4]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM2</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM2_CH3" Name="TIM2_CH3">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC3]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM2</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM2_UP" Name="TIM2_UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM2</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM3_CH1/TRIG" Name="TIM3_CH1/TRIG">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC1]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_TRIGGER]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM3</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM3_CH3" Name="TIM3_CH3">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC3]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM3</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM3_CH4/UP" Name="TIM3_CH4/UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC4]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM3</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM4_CH1" Name="TIM4_CH1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC1]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM4</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM4_CH2" Name="TIM4_CH2">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC2]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM4</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM4_CH3" Name="TIM4_CH3">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC3]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM4</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM4_UP" Name="TIM4_UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM4</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM5_CH1" Name="TIM5_CH1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC1]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM5</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM5_CH2" Name="TIM5_CH2">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC2]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM5</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM5_CH3/UP" Name="TIM5_CH3/UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC3]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM5</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM5_CH4/TRIG" Name="TIM5_CH4/TRIG">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC4]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_TRIGGER]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM5</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM6_UP" Name="TIM6_UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM6</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM7_UP" Name="TIM7_UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM7</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM8_CH1" Name="TIM8_CH1">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC1]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM8</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM8_CH2" Name="TIM8_CH2">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC2]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM8</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM8_CH3/UP" Name="TIM8_CH3/UP">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC3]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_UPDATE]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM8</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="TIM8_CH4/TRIG/COM" Name="TIM8_CH4/TRIG/COM">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdma[TIM_DMA_ID_CC4]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_TRIGGER]</PossibleValue>
+            <PossibleValue>hdma[TIM_DMA_ID_COMMUTATION]</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>TIM8</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="UART4_RX" Name="UART4_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>UART4</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="UART4_TX" Name="UART4_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>UART4</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="USART1_RX" Name="USART1_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>USART1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="USART1_TX" Name="USART1_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>USART1</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="USART2_RX" Name="USART2_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>USART2</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="USART2_TX" Name="USART2_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>USART2</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="USART3_RX" Name="USART3_RX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_PERIPH_TO_MEMORY</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmarx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>USART3</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode BaseMode="DMA_Request" Comment="USART3_TX" Name="USART3_TX">
+        <Parameter Name="Direction">
+            <PossibleValue>DMA_MEMORY_TO_PERIPH</PossibleValue>
+        </Parameter>
+        <Parameter Name="DMA_Handle">
+            <PossibleValue>hdmatx</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>DMA_NORMAL</PossibleValue>
+            <PossibleValue>DMA_CIRCULAR</PossibleValue>
+        </Parameter>
+        <Parameter Name="IpInstance">
+            <PossibleValue>USART3</PossibleValue>
+        </Parameter>
+        <Parameter Name="PeriphInc">
+            <PossibleValue>DMA_PINC_DISABLE</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <ModeLogicOperator Name="OR">
+        <Mode Name="DMA1">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="DMA1_Channel1">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="ADC1">
+                            <Semaphore>DMARequest_ADC1</Semaphore>
+                        </Mode>
+                        <Mode Name="TIM2_CH3">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_3_DMA_EnableTIM2" />
+                        </Mode>
+                        <Mode Name="TIM4_CH1">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_1_DMA_EnableTIM4" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA1_Channel2">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SPI1_RX">
+                            <Condition Diagnostic="" Expression="SPI1_DmaReceive" />
+                        </Mode>
+                        <Mode Name="USART3_TX">
+                            <Condition Diagnostic="" Expression="S_USART3_TX_RX|S_USART3_TX" />
+                        </Mode>
+                        <Mode Name="TIM1_CH1">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_1_DMA_EnableTIM1" />
+                        </Mode>
+                        <Mode Name="TIM2_UP" />
+                        <Mode Name="TIM3_CH3">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_3_DMA_EnableTIM3" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA1_Channel3">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SPI1_TX">
+                            <Condition Diagnostic="" Expression="SPI1_DmaTransmit" />
+                        </Mode>
+                        <Mode Name="USART3_RX">
+                            <Condition Diagnostic="" Expression="S_USART3_TX_RX|S_USART3_RX" />
+                        </Mode>
+                        <Mode Name="TIM1_CH2">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_2_DMA_EnableTIM1" />
+                        </Mode>
+                        <Mode Name="TIM3_CH4/UP" />
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA1_Channel4">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SPI2_RX">
+                            <Condition Diagnostic="" Expression="SPI2_DmaReceive|I2S2_RX" />
+                        </Mode>
+                        <Mode Name="USART1_TX">
+                            <Condition Diagnostic="" Expression="S_USART1_TX_RX|S_USART1_TX" />
+                        </Mode>
+                        <Mode Name="I2C2_TX">
+                            <Condition Diagnostic="" Expression="I2C2_Dma" />
+                        </Mode>
+                        <Mode Name="TIM1_CH4/TRIG/COM" />
+                        <Mode Name="TIM4_CH2">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_2_DMA_EnableTIM4" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA1_Channel5">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SPI2_TX">
+                            <Condition Diagnostic="" Expression="SPI2_DmaTransmit|I2S2_TX" />
+                        </Mode>
+                        <Mode Name="USART1_RX">
+                            <Condition Diagnostic="" Expression="S_USART1_TX_RX|S_USART1_RX" />
+                        </Mode>
+                        <Mode Name="I2C2_RX">
+                            <Condition Diagnostic="" Expression="I2C2_Dma" />
+                        </Mode>
+                        <Mode Name="TIM1_UP" />
+                        <Mode Name="TIM2_CH1">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_1_DMA_EnableTIM2" />
+                        </Mode>
+                        <Mode Name="TIM4_CH3">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_3_DMA_EnableTIM4" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA1_Channel6">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="USART2_RX">
+                            <Condition Diagnostic="" Expression="S_USART2_TX_RX|S_USART2_RX" />
+                        </Mode>
+                        <Mode Name="I2C1_TX">
+                            <Condition Diagnostic="" Expression="I2C1_Dma" />
+                        </Mode>
+                        <Mode Name="TIM1_CH3">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_3_DMA_EnableTIM1" />
+                        </Mode>
+                        <Mode Name="TIM3_CH1/TRIG">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_1_DMA_EnableTIM3|Semaphore_Trigger_DMA_EnableTIM3" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA1_Channel7">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="USART2_TX">
+                            <Condition Diagnostic="" Expression="S_USART2_TX_RX|S_USART2_TX" />
+                        </Mode>
+                        <Mode Name="I2C1_RX">
+                            <Condition Diagnostic="" Expression="I2C1_Dma" />
+                        </Mode>
+                        <Mode Name="TIM2_CH2/CH4">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_2_DMA_EnableTIM2|Semaphore_CaptureCompare_4_DMA_EnableTIM2" />
+                        </Mode>
+                        <Mode Name="TIM4_UP" />
+                    </ModeLogicOperator>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="DMA2">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="DMA2_Channel1">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SPI3_RX">
+                            <Condition Diagnostic="" Expression="SPI3_DmaReceive|I2S3_RX" />
+                        </Mode>
+                        <Mode Name="TIM5_CH4/TRIG">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_4_DMA_EnableTIM5|Semaphore_Trigger_DMA_EnableTIM5" />
+                        </Mode>
+                        <Mode Name="TIM8_CH3/UP" />
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA2_Channel2">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SPI3_TX">
+                            <Condition Diagnostic="" Expression="SPI3_DmaTransmit|I2S3_TX" />
+                        </Mode>
+                        <Mode Name="TIM5_CH3/UP" />
+                        <Mode Name="TIM8_CH4/TRIG/COM" />
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA2_Channel3">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="UART4_RX">
+                            <Condition Diagnostic="" Expression="S_UART4_TX_RX|S_UART4_RX" />
+                        </Mode>
+                        <Mode Name="TIM6_UP" />
+                        <Mode Name="DAC_CH1">
+                            <Condition Diagnostic="" Expression="DAC_OUT1_Conf" />
+                        </Mode>
+                        <Mode Name="TIM8_CH1">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_1_DMA_EnableTIM8" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA2_Channel4">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="SDIO" />
+                        <Mode Name="TIM5_CH2">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_2_DMA_EnableTIM5" />
+                        </Mode>
+                        <Mode Name="TIM7_UP" />
+                        <Mode Name="DAC_CH2">
+                            <Condition Diagnostic="" Expression="DAC_OUT2_Conf" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+                <Mode Name="DMA2_Channel5">
+                    <ModeLogicOperator Name="XOR">
+                        <Mode Name="MEMTOMEM" />
+                        <Mode Name="ADC3">
+                            <Semaphore>DMARequest_ADC3</Semaphore>
+                        </Mode>
+                        <Mode Name="UART4_TX">
+                            <Condition Diagnostic="" Expression="S_UART4_TX_RX|S_UART4_TX" />
+                        </Mode>
+                        <Mode Name="TIM5_CH1">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_1_DMA_EnableTIM5" />
+                        </Mode>
+                        <Mode Name="TIM8_CH2">
+                            <Condition Diagnostic="" Expression="Semaphore_CaptureCompare_2_DMA_EnableTIM8" />
+                        </Mode>
+                    </ModeLogicOperator>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+    </ModeLogicOperator>
+</IP>

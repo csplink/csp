@@ -27,41 +27,36 @@
  *  2025-07-13     xqyjlj       initial version
  */
 
-import type { SaveDialogOptions } from 'electron'
-import { Buffer } from 'node:buffer'
-import fs from 'node:fs'
-import { dialog, ipcMain } from 'electron'
+import type { OpenDialogOptions, SaveDialogOptions } from 'electron'
+import * as fs from 'node:fs/promises'
+import path from 'node:path'
+import { ipcMain } from 'electron'
+import { saveFileWithDialog, showOpenDialog } from '../utils'
 
 export function registerIoHandler() {
   ipcMain.handle('io:saveFileWithDialog', async (_event, payload: { content: string | ArrayBuffer, options?: SaveDialogOptions }) => {
-    const { content } = payload
-    let buffer: string | Buffer
-    if (typeof content === 'string') {
-      buffer = content
-    }
-    else {
-      buffer = Buffer.from(content)
-    }
-
-    const { filePath, canceled } = await dialog.showSaveDialog({
-      ...payload.options,
-    })
-
-    if (canceled || !filePath) {
-      return { success: false }
-    }
-
+    return await saveFileWithDialog(payload.content, payload.options)
+  })
+  ipcMain.handle('io:showOpenDialog', async (_event, payload: { options?: OpenDialogOptions }) => {
+    return await showOpenDialog(payload.options)
+  })
+  ipcMain.handle('io:mkdir', async (_event, dirPath: string) => {
     try {
-      await fs.promises.writeFile(filePath, buffer, 'utf8')
-      return { success: true, path: filePath }
+      const fullPath = path.resolve(dirPath)
+      await fs.mkdir(fullPath, { recursive: true })
+      return { success: true, path: fullPath }
     }
-    catch (error) {
-      if (error instanceof Error) {
-        return { success: false, message: error.message }
-      }
-      else {
-        return { success: false, message: 'Unknown error' }
-      }
+    catch (err: any) {
+      return { success: false, error: err.message }
+    }
+  })
+  ipcMain.handle('io:writeFile', async (_event, payload: { path: string, content: string }) => {
+    try {
+      await fs.writeFile(payload.path, payload.content, 'utf8')
+      return { success: true, path: payload.path }
+    }
+    catch (err: any) {
+      return { success: false, error: err.message }
     }
   })
 }

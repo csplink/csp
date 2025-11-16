@@ -1,0 +1,50 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        apm32f103_crc.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-02     xqyjlj       initial version
+#
+
+name: CRC
+parameters:
+  crc_ctrl_state_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: 使能
+      en: Activated
+    description:
+      zh-cn: 使能
+      en: Activated
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      crc_ctrl_state_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.crc_ctrl_state_t
+      content:
+        refParameters: {}
+diagrams:
+  - condition: configs.${IP_INSTANCE}.crc_ctrl_state_t
+    content:
+      images:
+        - ${DIAGRAMS_FOLDER}/crc-0x4C11DB7.svg
+activated: (configs.${IP_INSTANCE}.crc_ctrl_state_t)

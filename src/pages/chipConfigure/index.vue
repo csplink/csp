@@ -29,13 +29,14 @@
 
 <script setup lang="ts">
 import type { ChipPackageInstance } from '~/components/instance'
-import type { Ip, Project, Summary } from '~/database'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { useIpManager, useProjectManager, useSummaryManager } from '~/database'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useIpManager } from '~/database'
+import { useProjectManager } from '~/utils'
 
 const projectManager = useProjectManager()
 const ipManager = useIpManager()
-const summaryManager = useSummaryManager()
+
+const project = projectManager.get()!
 
 const chipPackageRef = ref<ChipPackageInstance>()
 const ipInfoRef = ref({
@@ -43,9 +44,7 @@ const ipInfoRef = ref({
   containers: [] as string[],
   channel: '',
 })
-const projectRef = ref<Project>()
-const summaryRef = ref<Summary>()
-let currentIp: Ip | null = null
+let stopConfigurationsWatchHandle: (() => void) | null = null
 
 function chipPackageZoomIn() {
   chipPackageRef.value?.zoomIn()
@@ -60,41 +59,44 @@ function chipPackageZoomOut() {
 }
 
 function handModuleTreeClick(name: string) {
-  if (projectRef.value) {
-    const project = projectRef.value
-    const ip = ipManager.getPeripheral(project.vendor, name)
+  const ip = ipManager.getPeripheral(project.vendor, name)
 
-    cleanUpCurrentIp()
-    const containers = []
+  chipPackageRef.value?.highlightByNames([])
+  stopConfigurationsWatch()
+  const containers = []
 
-    if (!ip) {
-      console.error(`The ip '${name}' is not found.`)
-      return
-    }
+  if (!ip) {
+    console.error(`The ip '${name}' is not found.`)
+    return
+  }
 
-    currentIp = ip
+  if (Object.keys(ip.containers.overview.refParameters.value).length > 0) {
+    containers.push('overview')
+  }
+  if (Object.keys(ip.containers.modes.refParameters.value).length > 0) {
+    containers.push('modes')
+  }
+  if (Object.keys(ip.containers.configurations.refParameters.value).length > 0 || ip.diagrams.images.value.length > 0) {
+    containers.push('configurations')
+  }
 
-    if (Object.keys(ip.containers.overview.refParameters).length > 0) {
-      containers.push('overview')
-    }
-    if (Object.keys(ip.containers.modes.refParameters).length > 0) {
-      containers.push('modes')
-    }
-    if (Object.keys(ip.containers.configurations.refParameters).length > 0) {
-      containers.push('configurations')
-    }
+  stopConfigurationsWatchHandle = watch(
+    () => [ip.containers.configurations.refParameters.value, ip.diagrams.images.value],
+    () => {
+      handModuleTreeClick(name)
+    },
+    { immediate: false },
+  )
 
-    ip.containers.configurations.emitter.on('changed', onIpContainersChanged)
-
-    ipInfoRef.value = {
-      ip: name,
-      containers,
-      channel: '',
-    }
+  ipInfoRef.value = {
+    ip: name,
+    containers,
+    channel: '',
   }
 }
 
 function handModuleTreeCommand(command: string, args: any) {
+  chipPackageRef.value?.highlightByNames([])
   if (command === 'highlight') {
     chipPackageRef.value?.highlightBySignals(args)
   }
@@ -113,36 +115,24 @@ function handIpConfiguratorSelect(pins: string[]) {
   }
 }
 
-function onIpContainersChanged() {
-  handModuleTreeClick(currentIp?.instance ?? '')
-}
-
-function cleanUpCurrentIp() {
-  if (currentIp) {
-    currentIp.containers.configurations.emitter.off('changed', onIpContainersChanged)
-    currentIp = null
+function stopConfigurationsWatch() {
+  if (stopConfigurationsWatchHandle) {
+    stopConfigurationsWatchHandle()
+    stopConfigurationsWatchHandle = null
   }
 }
 
-onMounted(async () => {
-  const project = projectManager.get()
-  if (project) {
-    projectRef.value = project
-    const summary = summaryManager.get(project.vendor, project.targetChip)
-    if (summary) {
-      summaryRef.value = summary
-    }
-  }
+onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  cleanUpCurrentIp()
+  stopConfigurationsWatch()
 })
 </script>
 
 <template>
   <el-splitter>
-    <el-splitter-panel min="5%">
+    <el-splitter-panel min="250" size="10%">
       <ModuleTree
         @click="handModuleTreeClick"
         @command="handModuleTreeCommand"
@@ -164,15 +154,15 @@ onBeforeUnmount(() => {
             />
           </el-card>
         </el-splitter-panel>
+        <!-- channel 用于修改外设多通道场景，例如 GPIO 的 pin -->
         <el-splitter-panel v-if="ipInfoRef.channel">
           <el-card>
             <template #header>
               {{ ipInfoRef.channel }} {{ $t(`chipConfigure.configurations`) }}
             </template>
             <IpConfigurator
-              :instance="ipInfoRef.ip"
+              :instance="`${ipInfoRef.ip}@${ipInfoRef.channel}`"
               type="channel"
-              :channel="ipInfoRef.channel"
               @pin-select="handIpConfiguratorPinSelect"
               @select="handIpConfiguratorSelect"
             />
@@ -180,20 +170,26 @@ onBeforeUnmount(() => {
         </el-splitter-panel>
       </el-splitter>
     </el-splitter-panel>
-    <el-splitter-panel min-size="20%" size="56%">
+    <el-splitter-panel min="20%" size="60%">
       <div class="chip-package-div flex">
         <ChipPackage ref="chipPackageRef" />
       </div>
-      <div class="my-4 items-center justify-center">
-        <el-button circle @click="chipPackageZoomIn">
-          <el-icon><ZoomIn /></el-icon>
-        </el-button>
-        <el-button circle @click="chipPackageRescale">
-          <el-icon><FullScreen /></el-icon>
-        </el-button>
-        <el-button circle @click="chipPackageZoomOut">
-          <el-icon><ZoomOut /></el-icon>
-        </el-button>
+      <div class="my-4 items-center justify-center" style="text-align: center;">
+        <el-tooltip :content="$t('command.zoomIn')">
+          <el-button circle @click="chipPackageZoomIn">
+            <el-icon><i class="ri-zoom-in-line" /></el-icon>
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.fullScreen')">
+          <el-button circle @click="chipPackageRescale">
+            <el-icon><i class="ri-fullscreen-line" /></el-icon>
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.zoomOut')">
+          <el-button circle @click="chipPackageZoomOut">
+            <el-icon><i class="ri-zoom-out-line" /></el-icon>
+          </el-button>
+        </el-tooltip>
       </div>
     </el-splitter-panel>
   </el-splitter>

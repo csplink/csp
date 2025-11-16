@@ -27,12 +27,43 @@
  *  2025-04-29     xqyjlj       initial version
  */
 
+import { readFile } from 'node:fs/promises'
 import { pathToFileURL } from 'node:url'
 import { net, protocol } from 'electron'
+import { getRealTheme } from '../utils'
 
 export function registerProtocolHandler() {
   protocol.handle('local', (request) => {
     const filePath = request.url.slice('local:///'.length)
+    return net.fetch(pathToFileURL(filePath).toString())
+  })
+
+  protocol.handle('diagrams', async (request) => {
+    const urlWithoutProtocol = decodeURIComponent(request.url.slice('diagrams:///'.length))
+    const [filePath, queryString] = urlWithoutProtocol.split('?')
+    const params: Record<string, string> = {}
+    if (queryString) {
+      queryString.split('&').forEach((pair) => {
+        const [key, value] = pair.split('=')
+        if (key)
+          params[key] = value ?? ''
+      })
+    }
+    const theme = params.theme ?? 'auto'
+
+    let data = await readFile(filePath, 'utf-8')
+
+    if (filePath.endsWith('.svg')) {
+      const actualTheme = theme === 'auto' ? getRealTheme() : theme
+      const color = actualTheme === 'dark' ? '#e5eaf3' : '#303133'
+
+      data = data.replace(/rgb\s*\(\s*0\s*,\s*0\s*,\s*0\s*\)/gi, color)
+
+      return new Response(data, {
+        headers: { 'Content-Type': 'image/svg+xml' },
+      })
+    }
+
     return net.fetch(pathToFileURL(filePath).toString())
   })
 }

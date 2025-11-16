@@ -32,7 +32,7 @@
 :root {
   // #region @imengyu/vue3-context-menu
   /*! < Backgroud */
-  --mx-menu-backgroud: var(--ep-menu-bg-color) !important;
+  --mx-menu-backgroud: var(--ep-bg-color-page) !important;
   --mx-menu-hover-backgroud: var(--ep-menu-hover-bg-color) !important;
   --mx-menu-active-backgroud: var(--ep-menu-hover-bg-color) !important;
   --mx-menu-open-backgroud: var(--mx-menu-hover-backgroud) !important;
@@ -74,6 +74,13 @@
   --mx-menu-placeholder-width: 24px;
 
   // #endregion
+
+  // #region clock-tree
+  --ct-vue-flow-node-selected-color: #6f3381;
+  --ct-vue-flow-node-animated-color: #ec4899;
+  --ct-vue-flow-handle-source-background-color: #5ec697;
+  --ct-vue-flow-handle-target-background-color: #2563eb;
+  // #endregion
 }
 
 body {
@@ -112,4 +119,8 @@ code {
   left: 0;
   width: 100%;
   height: 2px;
+}
+
+.ep-tooltip {
+  user-select: text;
 }

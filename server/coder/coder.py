@@ -37,26 +37,36 @@ from pathlib import Path
 from types import ModuleType
 
 import jinja2
+from blinker import Signal
 from loguru import logger
+from public.csp.project import Project
+from public.csp.summary import Summary
+from utils.sys import SYS_UTILS
 
 from .filters import FILTERS
-from public.csp.project import Project
-from utils.sys import SYS_UTILS
-from public.csp.summary import Summary
 
 
 class Coder:
+    __emitter = {
+        "dump": Signal("dump"),
+        "generate": Signal("generate"),
+    }
+
     def __init__(self, project: Project, summary: Summary):
         self._project = project
         self._summary = summary
-        self._files = {}
+        self.files_table = {}
         self._generator = None
 
         sys.path = SYS_UTILS.sys_path() + [f"{project.hal_folder()}/tools/generator"]
         self._generator = self._load_generator()
-        self._files = self._get_files_table()
+        self.files_table = self._get_files_table()
 
-    def generate(self, output: str = ""):
+    @property
+    def emitter(self):
+        return self.__emitter
+
+    def generate(self, output: str | None = None, files: list[str] | None = None):
         if not self._check_hal_folder():
             return
 
@@ -66,27 +76,53 @@ class Coder:
         data = self._get_loaded_data()
         env = self._get_environment()
 
-        count = 0
-        for file, info in self._files.items():
+        gen_files = []
+        for file, info in self.files_table.items():
             if info.get("gen", True):
-                count += 1
-        index = 0
-        for file, info in self._files.items():
-            if info.get("gen", True):
-                index += 1
-                context = self._render(file, info, env, data)
-                path = f"{output}/{file}".replace("\\", "/")
-                if context:
-                    changed = self._check_file_changed(path, context)
-                    if changed:
-                        with open(path, "w", encoding="utf-8") as file:
-                            file.write(context)
-                    else:
-                        pass
-                else:
-                    logger.error(f"file {path!r} gen failed.")
+                gen_files.append(file)
 
-        for file, info in self._files.items():
+        if files is not None and len(files) > 0:
+            l = []
+            for file in files:
+                if file in gen_files:
+                    l.append(file)
+                else:
+                    logger.warning(
+                        f"file {file!r} is not included in the generation list."
+                    )
+            gen_files = l
+
+        count = len(gen_files)
+        index = 0
+        for file in gen_files:
+            info = self.files_table[file]
+            index += 1
+            context = self._render(file, info, env, data)
+            path = f"{output}/{file}".replace("\\", "/")
+            if context:
+                changed = self._check_file_changed(path, context)
+                if changed:
+                    self.__emitter["generate"].send(
+                        "coder",
+                        file=path,
+                        index=index,
+                        count=count,
+                        write=True,
+                    )
+                    with open(path, "w", encoding="utf-8") as file:
+                        file.write(context)
+                else:
+                    self.__emitter["generate"].send(
+                        "coder",
+                        file=path,
+                        index=index,
+                        count=count,
+                        write=False,
+                    )
+            else:
+                logger.error(f"file {path!r} gen failed.")
+
+        for file, info in self.files_table.items():
             if not info.get("gen", True):
                 path = f"{output}/{file}".replace("\\", "/")
                 if os.path.isfile(path):
@@ -95,7 +131,7 @@ class Coder:
         self._copy_library()
 
     def dump(self) -> dict:
-        if len(self._files) == 0:
+        if len(self.files_table) == 0:
             return {}
 
         data = self._get_loaded_data()
@@ -103,34 +139,31 @@ class Coder:
 
         context_table = {}
         count = 0
-        for file, info in self._files.items():
+        for file, info in self.files_table.items():
             if info.get("gen", True):
                 count += 1
 
         index = 0
-        for file, info in self._files.items():
+        for file, info in self.files_table.items():
             if info.get("gen", True):
                 index += 1
                 suffix = Path(file).suffix
                 context = self._render(file, info, env, data)
+                self.__emitter["dump"].send(
+                    "coder",
+                    file=file,
+                    index=index,
+                    count=count,
+                )
                 if context is not None:
                     context_table[file] = context
                 else:
                     logger.error(f"file {file!r} gen failed.")
 
-            # self.dumped.emit(file)
-
         return context_table
 
-    def deploy(self):
-        if self._generator is None:
-            return
-
-        data = self._generator.deploy(self._project, self._project.folder())
-        return data
-
     def files_list(self) -> list[str]:
-        return list(self._files.keys())
+        return list(self.files_table.keys())
 
     def _load_generator(self) -> ModuleType | None:
         if self._check_hal_folder():
@@ -176,8 +209,9 @@ class Coder:
             return False
         return True
 
-    def _match_user(
-        self, path: str, prefix1: str, suffix1: str, prefix2: str, suffix2: str
+    @staticmethod
+    def match_user(
+        path: str, prefix1: str, suffix1: str, prefix2: str, suffix2: str
     ) -> dict:
         code = {}
         if os.path.isfile(path):
@@ -224,13 +258,13 @@ class Coder:
                 return ""
 
             if suffix == ".h" or suffix == ".c":
-                args["user_code"] = self._match_user(
+                args["user_code"] = self.match_user(
                     abs_path, r"/\*\*<", r" \*/", r"/\*\*>", r" \*/"
                 )
             elif Path(abs_path).name == "xmake.lua":
-                args["user_code"] = self._match_user(abs_path, "----<", "", "---->", "")
+                args["user_code"] = self.match_user(abs_path, "----<", "", "---->", "")
             elif Path(abs_path).name == "CMakeLists.txt":
-                args["user_code"] = self._match_user(abs_path, "##==<", "", "##==>", "")
+                args["user_code"] = self.match_user(abs_path, "# --<", "", "# -->", "")
 
             args["file"] = os.path.basename(path)
             args["brief"] = info.get(
@@ -271,7 +305,6 @@ class Coder:
                     f"{package_folder}/tools/generator/templates",
                 ]
             ),
-            line_comment_prefix="//",
         )
 
         # env.add_extension("jinja2.ext.i18n")
@@ -308,7 +341,7 @@ class Coder:
             "summary": self._summary,
         }
 
-        if self._project.gen.use_toolchains_package:
+        if self._project.gen.useToolchainsPackage:
             data["toolchainsPath"] = self._project.toolchains_folder()
 
         return data

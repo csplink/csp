@@ -28,95 +28,70 @@
 -->
 
 <script setup lang="ts">
-import { onActivated, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
-
-const { t } = useI18n()
-const router = useRouter()
-const route = useRoute()
-
-interface CategoriesType {
-  [key: string]: {
-    title: string
-    icon: string
-  }
-}
-
-const categoriesRef = ref<CategoriesType>({
-  system: { title: t('settings.systemSetting'), icon: 'Setting' },
-  generate: { title: t('settings.generateSetting'), icon: 'Setting' },
-})
-
-const activeCategoryRef = ref('system')
-
-function handleSelect(key: string) {
-  if (activeCategoryRef.value !== key) {
-    activeCategoryRef.value = key
-    router.push(`/settings/${key}`)
-  }
-}
-
-onActivated(() => {
-  if (route.path === '/settings/system' && activeCategoryRef.value !== 'system') {
-    router.push(`/settings/${activeCategoryRef.value}`)
-  }
-})
+import Generate from './generate.vue'
+import System from './system.vue'
 </script>
 
 <template>
-  <div class="setting-container">
-    <div class="setting-sidebar">
-      <el-menu
-        class="setting-menu"
-        :default-active="activeCategoryRef"
-        @select="handleSelect"
-      >
-        <el-menu-item v-for="[key, category] in Object.entries(categoriesRef)" :key="key" :index="key">
-          <el-icon><component :is="category.icon" /></el-icon>
-          <span>{{ category.title }}</span>
-        </el-menu-item>
-      </el-menu>
-    </div>
-    <div class="setting-main">
-      <h1>{{ categoriesRef[activeCategoryRef].title }}</h1>
-      <el-divider />
-
+  <el-tabs tab-position="left" class="demo-tabs">
+    <el-tab-pane :label="$t('settings.systemSetting')">
       <el-scrollbar class="setting-scrollbar">
-        <RouterView />
+        <System />
       </el-scrollbar>
-    </div>
-  </div>
+    </el-tab-pane>
+    <el-tab-pane :label="$t('settings.generateSetting')">
+      <el-scrollbar class="setting-scrollbar">
+        <Generate />
+      </el-scrollbar>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <style scoped>
-@import '~/styles/element/settings.scss';
-
-.setting-container {
-  display: flex;
+.ep-tabs {
   flex: 1;
-}
-
-.setting-sidebar {
   display: flex;
+  min-width: 0;
+  min-height: 0;
 }
 
-.setting-menu {
-  width: 200px;
-}
-
-.setting-main {
-  flex: 1;
+::v-deep(.ep-tabs__content) {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
-.setting-main h1 {
-  text-align: left;
-  margin-left: 20px;
+::v-deep(.ep-tab-pane) {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .setting-scrollbar {
   flex: 1;
+}
+</style>
+
+<style>
+.g-settings-container {
+  padding: 0px 20px;
+}
+
+.g-settings-section {
+  padding: 20px;
+}
+
+.g-settings-title {
+  display: flex;
+  font-size: 18px;
+  padding-bottom: 10px;
+}
+
+.g-settings-item {
+  margin-bottom: 20px;
 }
 </style>

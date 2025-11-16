@@ -25,9 +25,8 @@
 #
 
 import copy
-import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 
 class SysUtils:
@@ -49,19 +48,75 @@ class SysUtils:
 
     @staticmethod
     def version() -> str:
+        """
+        @brief      Get the version of this software.
+        @return     The version of this software.
+        @note       It is a static method.
+        """
         return "0.0.6"
 
     @staticmethod
+    def is_dev() -> bool:
+        """
+        @brief      Check if the software is running in development mode.
+        @return     @c true if the software is running in development mode, @c false otherwise.
+        @note       It is a static method.
+        """
+        return sys.argv[0].endswith(".py")
+
+    @staticmethod
     def resource_folder() -> str:
-        return str(Path(SysUtils.exe_folder()).parent / "resources")
+        """
+        @brief      Get the folder of the resources.
+        @return     The folder of the resources.
+        @details    In development mode, it is the folder of the resources under the parent folder of the executable file.
+                    In production mode, it is the same as the folder of the executable file.
+        @note       It is a static method.
+        """
+        if SysUtils.is_dev():
+            return str(Path(SysUtils.exe_folder()).parent / "resources")
+        else:
+            return str(Path(SysUtils.exe_folder()).parent)
 
     @staticmethod
     def database_folder() -> str:
+        """
+        @brief      Get the folder of the database.
+        @return     The folder of the database.
+        @details    It is the subfolder "database" of the resource folder.
+        @note       It is a static method.
+        """
         return str(Path(SysUtils.resource_folder()) / "database")
 
     @staticmethod
     def templates_folder() -> str:
+        """
+        @brief      Get the folder of the templates.
+        @return     The folder of the templates.
+        @details    It is the subfolder "templates" of the resource folder.
+        @note       It is a static method.
+        """
         return str(Path(SysUtils.resource_folder()) / "templates")
+
+    @staticmethod
+    def packages_folder() -> str:
+        """
+        @brief      Get the folder of the packages.
+        @return     The folder of the packages.
+        @details    It is the subfolder "packages" of the resource folder.
+        @note       It is a static method.
+        """
+        return str(Path.home() / ".csp" / "packages")
+
+    @staticmethod
+    def packages_index_file() -> str:
+        """
+        @brief      Get the file path of the package index.
+        @return     The file path of the package index as a string.
+        @details    It is the "packages.index" file located in the "packages" subfolder of the database folder.
+        @note       It is a static method.
+        """
+        return str(Path(SysUtils.packages_folder()) / "packages.index")
 
 
 SYS_UTILS = SysUtils()

@@ -34,6 +34,9 @@ export default antfu(
     formatters: true,
     unocss: true,
     vue: true,
+    markdown: false,
+    yaml: false,
+    jsonc: false,
   },
   {
     rules: {
@@ -45,6 +48,7 @@ export default antfu(
       'dist',
       'public',
       'node_modules',
+      'resources',
       'components.d.ts',
       'docs/.vitepress/cache',
       '**/dist/**',

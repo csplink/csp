@@ -32,7 +32,7 @@ import type { RouteRecordRaw } from 'vue-router'
 const routes: Readonly<RouteRecordRaw[]> = [
   {
     path: '/',
-    component: () => import('~/pages/startup/index.vue'),
+    component: () => import('~/pages/welcome/index.vue'),
   },
   {
     path: '/chipConfigure',
@@ -47,13 +47,21 @@ const routes: Readonly<RouteRecordRaw[]> = [
     component: () => import('~/pages/codeView/index.vue'),
   },
   {
+    path: '/createProject',
+    component: () => import('~/pages/createProject/index.vue'),
+  },
+  {
+    path: '/welcome',
+    component: () => import('~/pages/welcome/index.vue'),
+  },
+  {
+    path: '/packageManager',
+    component: () => import('~/pages/packageManager/index.vue'),
+  },
+  {
     path: '/settings',
     component: () => import('~/pages/settings/index.vue'),
     children: [
-      {
-        path: '',
-        redirect: '/settings/system',
-      },
       {
         path: 'system',
         component: () => import('~/pages/settings/system.vue'),
@@ -71,3 +79,26 @@ const routes: Readonly<RouteRecordRaw[]> = [
 ]
 
 export default routes
+
+function collectImports(rs: Readonly<RouteRecordRaw[]>): Promise<unknown>[] {
+  const imports: Promise<unknown>[] = []
+
+  for (const r of rs) {
+    if (typeof r.component === 'function') {
+      const result = (r.component as () => Promise<unknown>)()
+      if (result instanceof Promise) {
+        imports.push(result)
+      }
+    }
+
+    if (r.children) {
+      imports.push(...collectImports(r.children))
+    }
+  }
+
+  return imports
+}
+
+export function loadAllRoutes() {
+  return Promise.all(collectImports(routes))
+}

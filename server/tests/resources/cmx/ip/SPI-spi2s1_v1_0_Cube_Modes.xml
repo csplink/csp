@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP xmlns="http://mcd.rou.st.com/modules.php?name=mcu" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" DBVersion="V4.0" IPType="peripheral" IpGroup="Connectivity" Name="SPI" Version="spi2s1_v1_0_Cube" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../../../../../../doc/V4/Development/Specifications/db/IP_Modes.xsd">
+    <About>SPI: Serial Peripheral Interface</About>
+
+    <!-- Generic RefParameters for SPI -->
+    <RefParameter Comment="Instance" DefaultValue="SPI$Index" Name="Instance" Type="" Visible="false" />
+
+    <!-- Virtual Mode Parameter, to define RefParameter in function of NSS -->
+    <RefParameter Comment="" DefaultValue="VM_NSSSOFT" Group="Basic Parameters" Name="VirtualNSS" Type="list" Visible="false">
+        <PossibleValue Comment="" Value="VM_NSSSOFT" />
+        <PossibleValue Comment="" Value="VM_NSSHARD" />
+    </RefParameter>
+
+    <!-- Virtual Type Parameter, to define RefParameter in function of Master/Slave -->
+    <RefParameter Comment="" DefaultValue="VM_MASTER" Group="Basic Parameters" Name="VirtualType" Type="list" Visible="false">
+        <PossibleValue Comment="" Value="VM_MASTER" />
+        <PossibleValue Comment="" Value="VM_SLAVE" />
+    </RefParameter>
+
+    <RefParameter Comment="Mode" DefaultValue="SPI_MODE_SLAVE" Group="Basic Parameters" Name="Mode" Type="list" Visible="false">
+        <PossibleValue Comment="Slave" Value="SPI_MODE_SLAVE" />
+        <PossibleValue Comment="Master" Value="SPI_MODE_MASTER" />
+    </RefParameter>
+
+    <!--
+	<RefParameter Comment="Bidirectional Mode" DefaultValue="SPI_BIDIRECTIONAL_DISABLED" Name="BidirectionalMode" Type="list" Group="Basic Parameters" Visible="false">
+		<PossibleValue Comment="Disabled" Value="SPI_BIDIRECTIONAL_DISABLED"/>
+		<PossibleValue Comment="Enabled" Value="SPI_BIDIRECTIONAL_ENABLED"/>
+	</RefParameter>
+	-->
+
+    <RefParameter Comment="Direction" DefaultValue="SPI_DIRECTION_2LINES" Group="Basic Parameters" Name="Direction" Type="list" Visible="false">
+        <PossibleValue Comment="2 Lines Unidirectionnal" Value="SPI_DIRECTION_2LINES" />
+        <PossibleValue Comment="2 Lines with Receive only" Value="SPI_DIRECTION_2LINES_RXONLY" />
+        <PossibleValue Comment="1 Line Bidirectionnal" Value="SPI_DIRECTION_1LINE" />
+    </RefParameter>
+
+    <RefParameter Comment="Frame Format" DefaultValue="SPI_TIMODE_DISABLE" Group="Basic Parameters" Name="TIMode" Type="list">
+        <PossibleValue Comment="Motorola" Value="SPI_TIMODE_DISABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="Data Size" DefaultValue="SPI_DATASIZE_8BIT" Group="Basic Parameters" Name="DataSize" Type="list">
+        <PossibleValue Comment="8 Bits" Semaphore="$IpInstance_DATASIZE_BYTE" Value="SPI_DATASIZE_8BIT" />
+        <PossibleValue Comment="16 Bits" Semaphore="$IpInstance_DATASIZE_HALFWORD" Value="SPI_DATASIZE_16BIT" />
+    </RefParameter>
+
+    <RefParameter Comment="First Bit" DefaultValue="SPI_FIRSTBIT_MSB" Group="Basic Parameters" Name="FirstBit" Type="list">
+        <Condition Diagnostic="" Expression="TIMode = SPI_TIMODE_DISABLE" />
+        <PossibleValue Comment="MSB First" Value="SPI_FIRSTBIT_MSB" />
+        <PossibleValue Comment="LSB First" Value="SPI_FIRSTBIT_LSB" />
+    </RefParameter>
+    <RefParameter Comment="First Bit" DefaultValue="null" Group="Basic Parameters" Max="1" Min="0" Name="FirstBit" Type="integer" Visible="false" />
+
+    <!-- Clock RefParameters for SPI -->
+    <RefParameter Comment="Prescaler (for Baud Rate)" DefaultValue="SPI_BAUDRATEPRESCALER_2" Group="Clock Parameters" Name="BaudRatePrescaler" Type="list">
+        <Condition Diagnostic="" Expression="$IpInstance_Master" />
+        <PossibleValue Comment="2" Value="SPI_BAUDRATEPRESCALER_2" />
+        <PossibleValue Comment="4" Value="SPI_BAUDRATEPRESCALER_4" />
+        <PossibleValue Comment="8" Value="SPI_BAUDRATEPRESCALER_8" />
+        <PossibleValue Comment="16" Value="SPI_BAUDRATEPRESCALER_16" />
+        <PossibleValue Comment="32" Value="SPI_BAUDRATEPRESCALER_32" />
+        <PossibleValue Comment="64" Value="SPI_BAUDRATEPRESCALER_64" />
+        <PossibleValue Comment="128" Value="SPI_BAUDRATEPRESCALER_128" />
+        <PossibleValue Comment="256" Value="SPI_BAUDRATEPRESCALER_256" />
+    </RefParameter>
+    <RefParameter Comment="Prescaler (for Baud Rate)" DefaultValue="null" Group="Clock Parameters" Name="BaudRatePrescaler" Type="list" Visible="false" />
+
+    <RefParameter Comment="Baud Rate" DefaultValue="8000000" Group="Clock Parameters" Max="18000000" Min="0" Name="CalculateBaudRate" Type="string">
+        <Description>Calculated Baudrate value based on SPI Clock source and Prescaler</Description>
+        <Condition Diagnostic="" Expression="$IpInstance_Master &amp; (DIE430 | DIE414)" />
+    </RefParameter>
+    <RefParameter Comment="Baud Rate" DefaultValue="12000000" Group="Clock Parameters" Max="12000000" Min="0" Name="CalculateBaudRate" Type="string">
+        <Description>Calculated Baudrate value based on SPI Clock source and Prescaler</Description>
+        <Condition Diagnostic="" Expression="$IpInstance_Master &amp; (DIE428 | DIE420)" />
+    </RefParameter>
+
+    <RefParameter Comment="Baud Rate" DefaultValue="null" Group="Clock Parameters" Max="18000000" Min="0" Name="CalculateBaudRate" Type="string" Visible="false">
+        <Description>Calculated Baudrate value based on SPI Clock source and Prescaler</Description>
+    </RefParameter>
+
+    <RefParameter Comment="Clock Polarity (CPOL)" DefaultValue="SPI_POLARITY_LOW" Group="Clock Parameters" Name="CLKPolarity" Type="list">
+        <Condition Diagnostic="" Expression="TIMode = SPI_TIMODE_DISABLE" />
+        <PossibleValue Comment="Low" Value="SPI_POLARITY_LOW" />
+        <PossibleValue Comment="High" Value="SPI_POLARITY_HIGH" />
+    </RefParameter>
+    <RefParameter Comment="Clock Polarity" DefaultValue="null" Group="Clock Parameters" Max="1" Min="0" Name="CLKPolarity" Type="integer" Visible="false" />
+
+    <RefParameter Comment="Clock Phase (CPHA)" DefaultValue="SPI_PHASE_1EDGE" Group="Clock Parameters" Name="CLKPhase" Type="list">
+        <Description>1 Edge means the first clock transition is the first data capture edge (value 0) AND 2 Edge means the second clock transition is the first data capture edge (value 1)</Description>
+        <Condition Diagnostic="" Expression="TIMode = SPI_TIMODE_DISABLE" />
+        <PossibleValue Comment="1 Edge" Value="SPI_PHASE_1EDGE" />
+        <PossibleValue Comment="2 Edge" Value="SPI_PHASE_2EDGE" />
+    </RefParameter>
+    <RefParameter Comment="Clock Phase" DefaultValue="null" Group="Clock Parameters" Max="1" Min="0" Name="CLKPhase" Type="integer" Visible="false" />
+
+
+    <!-- Advanced RefParameters for SPI -->
+    <RefParameter Comment="CRC Calculation" DefaultValue="SPI_CRCCALCULATION_DISABLE" Group="Advanced Parameters" Name="CRCCalculation" Type="list">
+        <PossibleValue Comment="Disabled" Value="SPI_CRCCALCULATION_DISABLE" />
+        <PossibleValue Comment="Enabled" Value="SPI_CRCCALCULATION_ENABLE" />
+    </RefParameter>
+
+    <RefParameter Comment="CRC Polynomial" DefaultValue="X1+X3" Group="Advanced Parameters" Max="8" Name="CRCPolynomial" Type="polynomial">
+        <Condition Diagnostic="" Expression="(CRCCalculation = SPI_CRCCALCULATION_ENABLE) &amp; (DataSize = SPI_DATASIZE_8BIT)" />
+    </RefParameter>
+    <RefParameter Comment="CRC Polynomial" DefaultValue="X1+X3" Group="Advanced Parameters" Max="16" Name="CRCPolynomial" Type="polynomial">
+        <Condition Diagnostic="" Expression="(CRCCalculation = SPI_CRCCALCULATION_ENABLE) &amp; (DataSize = SPI_DATASIZE_16BIT)" />
+    </RefParameter>
+    <RefParameter Comment="CRC Polynomial" DefaultValue="10" Group="Advanced Parameters" Name="CRCPolynomial" Type="list" Visible="false">
+        <PossibleValue Comment="X1+X3" Value="10" />
+    </RefParameter>
+
+    <RefParameter Comment="NSS Signal Type" DefaultValue="SPI_NSS_HARD_OUTPUT" Group="Advanced Parameters" Name="NSS" Type="list">
+        <Condition Diagnostic="" Expression="$IpInstance_NSSHARD_Output" />
+        <PossibleValue Comment="Output Hardware" Value="SPI_NSS_HARD_OUTPUT" />
+    </RefParameter>
+    <RefParameter Comment="NSS Signal Type" DefaultValue="SPI_NSS_HARD_INPUT" Group="Advanced Parameters" Name="NSS" Type="list">
+        <Condition Diagnostic="" Expression="$IpInstance_NSSHARD_Input" />
+        <PossibleValue Comment="Input Hardware" Value="SPI_NSS_HARD_INPUT" />
+    </RefParameter>
+    <RefParameter Comment="NSS Signal Type" DefaultValue="SPI_NSS_SOFT" Group="Advanced Parameters" Name="NSS" Type="list">
+        <PossibleValue Comment="Software" Value="SPI_NSS_SOFT" />
+    </RefParameter>
+    <RefParameter Comment="NSS Signal Type" DefaultValue="SPI_NSS_SOFT" Group="Advanced Parameters" Name="NSS" Type="list" Visible="false">
+        <PossibleValue Comment="Software" Value="SPI_NSS_SOFT" />
+    </RefParameter>
+
+
+    <!-- RefModes for Hardware NSS -->
+    <RefMode HalMode="SPI" Name="NSS_Signal_Hard_Input">
+        <Parameter Name="VirtualNSS">
+            <PossibleValue>VM_NSSHARD</PossibleValue>
+        </Parameter>
+    </RefMode>
+    <RefMode HalMode="SPI" Name="NSS_Signal_Hard_Output">
+        <Parameter Name="VirtualNSS">
+            <PossibleValue>VM_NSSHARD</PossibleValue>
+        </Parameter>
+    </RefMode>
+
+
+    <!-- RefModes for 'Full-Duplex Master' SPI -->
+    <RefMode Name="Full_Duplex_Master">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_2LINES</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Full-Duplex Slave' SPI -->
+    <RefMode Name="Full_Duplex_Slave">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_2LINES</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Half-Duplex Master' SPI -->
+    <RefMode Name="Simplex_Bidirectional_Master">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_1LINE</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Half-Duplex Slave' SPI -->
+    <RefMode Name="Simplex_Bidirectional_Slave">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_1LINE</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Receive Only Master' SPI -->
+    <RefMode Name="RX_Only_Simplex_Unidirect_Master">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_2LINES_RXONLY</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Receive Only Slave' SPI -->
+    <RefMode Name="RX_Only_Simplex_Unidirect_Slave">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_2LINES_RXONLY</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Transmit Only Master' SPI -->
+    <RefMode Name="TX_Only_Simplex_Unidirect_Master">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_MASTER</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_2LINES</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+    <!-- RefModes for 'Transmit Only Slave' SPI -->
+    <RefMode Name="TX_Only_Simplex_Unidirect_Slave">
+        <ConfigForMode>Spi_Init</ConfigForMode>
+        <!-- Selected Mode Fixed Parameters -->
+        <Parameter Name="VirtualType">
+            <PossibleValue>VM_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Mode">
+            <PossibleValue>SPI_MODE_SLAVE</PossibleValue>
+        </Parameter>
+        <Parameter Name="Direction">
+            <PossibleValue>SPI_DIRECTION_2LINES</PossibleValue>
+        </Parameter>
+        <!-- Selected Mode User Generic Parameters -->
+        <Parameter Name="TIMode" />
+        <Parameter Name="DataSize" />
+        <Parameter Name="FirstBit" />
+        <!-- Selected Mode User Clock Parameters -->
+        <Parameter Name="BaudRatePrescaler" />
+        <Parameter Name="CalculateBaudRate" />
+        <Parameter Name="CLKPolarity" />
+        <Parameter Name="CLKPhase" />
+        <!-- Selected Mode User Advanced Parameters -->
+        <Parameter Name="CRCCalculation" />
+        <Parameter Name="CRCPolynomial" />
+        <Parameter Name="NSS" />
+    </RefMode>
+
+
+    <!-- ModeLogicOperator for SPI -->
+    <ModeLogicOperator Name="OR">
+        <Mode Name="Mode">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="Full_Duplex_Master" UserName="Full-Duplex Master">
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="InputFloatingAndPullUp" Name="MISO" />
+                        <Signal Name="MOSI" />
+                        <Signal Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_Master</Semaphore>
+                    <Semaphore>$IpInstance_DmaTransmit</Semaphore>
+                    <Semaphore>$IpInstance_DmaReceive</Semaphore>
+                </Mode>
+                <Mode Name="Full_Duplex_Slave" UserName="Full-Duplex Slave">
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="AlternateFunctionOpenDrainAndPushPullDefaultPP" Name="MISO" />
+                        <Signal IOMode="InputFloatingAndPullUp" Name="MOSI" />
+                        <Signal IOMode="InputFloating" Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_DmaTransmit</Semaphore>
+                    <Semaphore>$IpInstance_DmaReceive</Semaphore>
+                    <Semaphore>$IpInstance_Slave</Semaphore>
+                </Mode>
+                <Mode Name="Simplex_Bidirectional_Master" UserName="Half-Duplex Master">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="MOSI" />
+                        <Signal Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_Master</Semaphore>
+                    <Semaphore>$IpInstance_DmaTransmit</Semaphore>
+                    <Semaphore>$IpInstance_DmaReceive</Semaphore>
+                </Mode>
+                <Mode Name="Simplex_Bidirectional_Slave" UserName="Half-Duplex Slave">
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="AlternateFunctionOpenDrainAndPushPullDefaultPP" Name="MISO" />
+                        <Signal IOMode="InputFloating" Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_DmaTransmit</Semaphore>
+                    <Semaphore>$IpInstance_DmaReceive</Semaphore>
+                </Mode>
+                <Mode Name="RX_Only_Simplex_Unidirect_Master" UserName="Receive Only Master">
+                    <!-- SPI is in 'Full-Duplex' Mode, but only 'Master In' line is on pinout -->
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="InputFloatingAndPullUp" Name="MISO" />
+                        <Signal Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_Master</Semaphore>
+                    <Semaphore>$IpInstance_DmaReceive</Semaphore>
+                </Mode>
+                <Mode Name="RX_Only_Simplex_Unidirect_Slave" UserName="Receive Only Slave">
+                    <!-- SPI is in 'Full-Duplex' Mode, but only 'Slave In' line is on pinout -->
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="InputFloatingAndPullUp" Name="MOSI" />
+                        <Signal IOMode="InputFloating" Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_DmaReceive</Semaphore>
+                </Mode>
+                <Mode Name="TX_Only_Simplex_Unidirect_Master" UserName="Transmit Only Master">
+                    <!-- SPI is in 'Full-Duplex' Mode, but only 'Master Out' line is on pinout -->
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="MOSI" />
+                        <Signal Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_Master</Semaphore>
+                    <Semaphore>$IpInstance_DmaTransmit</Semaphore>
+                </Mode>
+                <Mode Name="TX_Only_Simplex_Unidirect_Slave" UserName="Transmit Only Slave">
+                    <!-- SPI is in 'Full-Duplex' Mode, but only 'Slave Out' line is on pinout -->
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="AlternateFunctionOpenDrainAndPushPullDefaultPP" Name="MISO" />
+                        <Signal IOMode="InputFloating" Name="SCK" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_DmaTransmit</Semaphore>
+                    <Semaphore>$IpInstance_Slave</Semaphore>
+                    <Semaphore>$IpInstance_Transmit</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+            <Semaphore>$IpInstance</Semaphore>
+            <Condition Diagnostic="I2S$IpNumber must be disabled" Expression="!I2S$IpNumber_Used" />
+        </Mode>
+
+        <Mode Name="NSS_Signal" UserName="Hardware NSS Signal">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="NSS_Signal_Hard_Input" UserName="Hardware NSS Input Signal">
+                    <SignalLogicalOp Name="AND">
+                        <Signal IOMode="Input" Name="NSS" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_NSSHARD_Input</Semaphore>
+                </Mode>
+
+                <Mode Name="NSS_Signal_Hard_Output" UserName="Hardware NSS Output Signal">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="NSS" />
+                    </SignalLogicalOp>
+                    <Semaphore>$IpInstance_NSSHARD_Output</Semaphore>
+                    <Condition Diagnostic="$IpInstance must have a master mode selected" Expression="$IpInstance_Master" />
+                </Mode>
+            </ModeLogicOperator>
+            <Condition Diagnostic="I2S$IpNumber must be disabled" Expression="!I2S$IpNumber_Used" />
+            <Condition Diagnostic="$IpInstance must have a mode selected" Expression="$IpInstance" />
+        </Mode>
+    </ModeLogicOperator>
+
+    <!-- RefSignal for SPI -->
+    <RefSignal IOMode="AlternateFunctionPushPull" Name="MISO" />
+    <RefSignal IOMode="AlternateFunctionPushPull" Name="MOSI" />
+    <RefSignal IOMode="AlternateFunctionPushPull" Name="SCK" />
+    <RefSignal IOMode="AlternateFunctionPushPull" Name="NSS" />
+</IP>

@@ -28,10 +28,9 @@
  */
 
 import type {
-  IpClockTreeElementUnitType,
-  IpClockTreeType,
   IpContainersType,
-  IpExpressionType,
+  IpDiagramsObjectConditionType,
+  IpDiagramsObjectType,
   IpObjectConditionType,
   IpObjectType,
   IpParameterType,
@@ -39,197 +38,227 @@ import type {
   IpParameterValueUnitType,
   IpRefParameterType,
   IpType,
-} from '@/electron/database'
-import type { Emitter } from 'mitt'
-import type { App } from 'vue'
-import type { ValueHub } from '~/events'
-import mitt from 'mitt'
-import { inject } from 'vue'
-import { evaluateExpression, evaluateExtract } from '~/utils/express'
-import { I18n } from './i18n'
+} from '@/electron/types'
+import type { App, ComputedRef, Ref, WritableComputedRef } from 'vue'
+import type { Summary } from './summary'
+import type { VueI18nType } from '~/i18n'
+import type { Project, ProjectConfigsPinUnitType } from '~/utils'
+import { computed, inject, ref, watch, watchEffect } from 'vue'
+import { I18n } from '~/i18n'
+import { Express } from '~/utils'
 
 // #region typedef
 
-// eslint-disable-next-line ts/consistent-type-definitions
-type IpEvent = {
-  activatedChanged: { name: string, oldValue: boolean, newValue: boolean }
-}
-
 export class Ip {
-  private _origin: IpType
-  private _parameters?: Record<string, IpParameter>
-  private _parametersConditions: Record<string, IpCondition<IpParameterType>> = {}
-  private _containers?: IpContainers
-  private _presets?: Record<string, IpObject>
-  private _pins?: Record<string, Record<string, Record<string, IpPin>>>
-  private _clockTree?: IpClockTree
-  private _instance: string
-  private _valueHub: ValueHub
-  private _emitter = mitt<IpEvent>()
-  private _activated?: boolean
+  private _parameters: Record<string, ComputedRef<IpParameter>>
+  private _containers: IpContainers
+  private _presets: Record<string, IpObject>
   private _activatedDependencies: string[] = []
-  private _signals?: string[]
+  private _express = new Express()
+  private _diagrams: IpDiagramsObject
+  private _ip_prefixed: string = ''
+  private _ip_suffix: string = ''
 
-  constructor(instance: string, origin: IpType, valueHub: ValueHub) {
-    this._instance = instance
-    this._origin = origin
-    this._valueHub = valueHub
+  activated: Ref<boolean>
+
+  constructor(
+    private _instance: string,
+    private _origin: IpType,
+    private _project: Project,
+    public locale: WritableComputedRef<string>,
+    public summary: Summary,
+  ) {
+    this.activated = ref(this.buildActivated())
+    this._parameters = this.buildParameters()
+    this._containers = new IpContainers(this._origin.containers ?? {}, this._parameters, this)
+    this._presets = this.buildPresets()
+    this._diagrams = new IpDiagramsObject(this._origin.diagrams, this)
+
+    if (_instance.startsWith(this.name)) {
+      this._ip_prefixed = _instance.replace(new RegExp(`^${this.name}`), '')
+    }
+
+    if (_instance.endsWith(this.name)) {
+      this._ip_suffix = _instance.replace(new RegExp(`${this.name}$`), '')
+    }
+
+    watchEffect(() => {
+      if (this.activated.value) {
+        this._project.modules.add(this._instance)
+      }
+      else {
+        this._project.modules.delete(this._instance)
+      }
+    })
   }
 
   get origin(): IpType {
     return this._origin
   }
 
-  get parameters(): Record<string, IpParameter> {
-    if (!this._parameters) {
-      this._parameters = {}
-      for (const [name, value] of Object.entries(this._origin.parameters)) {
-        if (Array.isArray(value)) {
-          const condition = new IpCondition<IpParameterType>(name, value, this)
-          this._parametersConditions[name] = condition
-          const parameters = condition.current
-          if (parameters) {
-            this._parameters[name] = this._createParameter(parameters, name)
-          }
-          condition.emitter.on('changed', (payload: { name: string, oldValue: IpParameter, newValue: IpParameter }) => {
-            console.debug(`Parameter condition changed: ${payload.name}`, payload)
-          })
-        }
-        else {
-          this._parameters[name] = this._createParameter(value, name)
-        }
-      }
-    }
+  get name(): string {
+    return this._origin.name
+  }
+
+  get parameters(): Record<string, ComputedRef<IpParameter>> {
     return this._parameters
   }
 
   get containers(): IpContainers {
-    if (!this._containers) {
-      this._containers = new IpContainers(this._origin.containers ?? {}, this.parameters, this)
-    }
     return this._containers
   }
 
   get presets(): Record<string, IpObject> {
-    if (!this._presets) {
-      this._presets = {}
-      for (const [presetName, presetValue] of Object.entries(this._origin.presets ?? {})) {
-        this._presets[presetName] = new IpObject(presetValue, this.parameters, this)
-      }
-    }
     return this._presets
   }
 
-  get pins(): Record<string, Record<string, Record<string, IpPin>>> | null {
-    if (this._origin.pins) {
-      if (!this._pins) {
-        this._pins = {}
-        for (const [name, value] of Object.entries(this._origin.pins)) {
-          this._pins[name] = {}
-          for (const [subName, subValue] of Object.entries(value)) {
-            this._pins[name][subName] = {}
-            for (const [pinName, pinValue] of Object.entries(subValue)) {
-              this._pins[name][subName][pinName] = new IpPin(pinValue)
-            }
-          }
-        }
-      }
-      return this._pins
-    }
-    return null
-  }
-
-  get activated(): boolean {
-    if (this._activated === undefined) {
-      if (this._origin.activated !== undefined) {
-        const condition = this.getExpression(this._origin.activated)
-        this._activated = evaluateExpression<boolean>(condition, this.valueHub().values(), false) as boolean
-        const set = new Set<string>()
-        evaluateExtract(condition).forEach((item) => {
-          set.add(item)
-        })
-        this._activatedDependencies = Array.from(set)
-        this.valueHub().emitter.on('valueChanged', this._onValueHubValueChanged.bind(this))
-      }
-      else {
-        this._activated = true
-      }
-    }
-    return this._activated
-  }
+  //   get pins(): Record<string, Record<string, Record<string, IpPin>>> | null {
+  //     if (this._origin.pins) {
+  //       if (!this._pins) {
+  //         this._pins = {}
+  //         for (const [name, value] of Object.entries(this._origin.pins)) {
+  //           this._pins[name] = {}
+  //           for (const [subName, subValue] of Object.entries(value)) {
+  //             this._pins[name][subName] = {}
+  //             for (const [pinName, pinValue] of Object.entries(subValue)) {
+  //               this._pins[name][subName][pinName] = new IpPin(pinValue)
+  //             }
+  //           }
+  //         }
+  //       }
+  //       return this._pins
+  //     }
+  //     return null
+  //   }
 
   get instance(): string {
     return this._instance
   }
 
-  get emitter(): Emitter<IpEvent> {
-    return this._emitter
+  get prefixed(): string {
+    return this._ip_prefixed
   }
 
-  get signals(): string[] {
-    if (!this._signals) {
-      const signals = new Set<string>()
-      for (const [_name, parameter] of Object.entries(this.parameters)) {
-        if (parameter.type === 'enum') {
-          const parameterEnum = parameter as IpParameterEnum
-          for (const signal of parameterEnum.signals) {
-            signals.add(signal)
-          }
+  get suffix(): string {
+    return this._ip_suffix
+  }
+
+  get isPinIp(): boolean {
+    return this._instance === this.summary.pinInstance
+  }
+
+  get diagrams(): IpDiagramsObject {
+    return this._diagrams
+  }
+
+  signals = computed((): string[] => {
+    const signals = new Set<string>()
+    for (const [_name, parameter] of Object.entries(this.parameters)) {
+      if (parameter.value.type === 'enum') {
+        const parameterEnum = parameter.value as IpParameterEnum
+        for (const signal of parameterEnum.allSignals) {
+          signals.add(signal)
         }
       }
-      this._signals = Array.from(signals)
-      this._signals.sort()
     }
-    return this._signals
-  }
-
-  get clockTree(): IpClockTree | null {
-    if (this._clockTree === undefined) {
-      if (this._origin.clockTree) {
-        this._clockTree = new IpClockTree(this._origin.clockTree)
-      }
-    }
-    return this._clockTree ?? null
-  }
+    const rtn = Array.from(signals)
+    rtn.sort()
+    return rtn
+  })
 
   getExpression(expr: string) {
-    expr = expr.replace(/\$\{INSTANCE\}/g, this._instance)
+    /**
+     * ${IP_INSTANCE}: 当前 IP 实例名称
+     * ${IP_PREFIXED}: 当前 IP 实例前缀，例如 SIP vs QSPI = Q
+     * ${IP_SUFFIXED}: 当前 IP 实例后缀，例如 SIP vs SPI1 = 1
+     */
+    expr = expr.replace(/\$\{IP_INSTANCE\}/g, this._instance)
+    expr = expr.replace(/\$\{IP_PREFIXED\}/g, this._ip_prefixed)
+    expr = expr.replace(/\$\{IP_SUFFIXED\}/g, this._ip_suffix)
     return expr
   }
 
-  valueHub(): ValueHub {
-    return this._valueHub
+  project(): Project {
+    return this._project
   }
 
-  private _createParameter(parameter: IpParameterType, name: string): IpParameter {
-    if (parameter.type === 'enum') {
-      return new IpParameterEnum(parameter, name, this)
+  express(): Express {
+    return this._express
+  }
+
+  buildParameters(channel: string = ''): Record<string, ComputedRef<IpParameter>> {
+    const rtn: Record<string, ComputedRef<IpParameter>> = {}
+    for (const [name, value] of Object.entries(this._origin.parameters)) {
+      if (Array.isArray(value)) {
+        const condition = new IpCondition<IpParameterType>(name, value, this)
+        const parameters: IpParameter[] = []
+
+        for (const obj of value) {
+          parameters.push(this._createParameter(obj.content, name, channel))
+        }
+
+        rtn[name] = computed((): IpParameter => parameters[condition.index.value])
+      }
+      else {
+        const parameter = this._createParameter(value, name, channel)
+        rtn[name] = computed((): IpParameter => parameter)
+      }
     }
-    else if (parameter.type === 'float') {
-      return new IpParameterNumber(parameter, name, this)
-    }
-    else if (parameter.type === 'integer') {
-      return new IpParameterNumber(parameter, name, this)
-    }
-    else if (parameter.type === 'boolean') {
-      return new IpParameterBoolean(parameter, name, this)
-    }
-    else if (parameter.type === 'radio') {
-      return new IpParameterRadio(parameter, name, this)
+    return rtn
+  }
+
+  private buildActivated(): boolean {
+    if (this._origin.activated !== undefined) {
+      const condition = this.getExpression(this._origin.activated)
+      const result = this._express.evaluateExpression<boolean>(condition, this.project().origin, false) ?? false
+
+      const set = new Set<string>()
+      this._express.evaluateExtract(condition).forEach((item) => {
+        set.add(item)
+      })
+      this._activatedDependencies = Array.from(set)
+      this.project().emitter.on('changed', this._onProjectConfigChanged.bind(this))
+
+      return result
     }
     else {
-      return new IpParameterString(parameter, name, this)
+      return true
     }
   }
 
-  private _onValueHubValueChanged(payload: { path: string[], oldValue: any, newValue: any }) {
-    if (this._activatedDependencies.includes(payload.path.join('.'))) {
+  private _createParameter(parameter: IpParameterType, name: string, channel: string = ''): IpParameter {
+    if (parameter.type === 'enum') {
+      return new IpParameterEnum(parameter, name, channel, this)
+    }
+    else if (parameter.type === 'float') {
+      return new IpParameterNumber(parameter, name, channel, this)
+    }
+    else if (parameter.type === 'integer') {
+      return new IpParameterNumber(parameter, name, channel, this)
+    }
+    else if (parameter.type === 'boolean') {
+      return new IpParameterBoolean(parameter, name, channel, this)
+    }
+    else {
+      return new IpParameterString(parameter, name, channel, this)
+    }
+  }
+
+  private buildPresets(): Record<string, IpObject> {
+    const presets: Record<string, IpObject> = {}
+    for (const [presetName, presetValue] of Object.entries(this._origin.presets ?? {})) {
+      presets[presetName] = new IpObject(presetValue, this._parameters, this)
+    }
+    return presets
+  }
+
+  private _onProjectConfigChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const changedPath = payload.path.join('.')
+    if (this._activatedDependencies.some(dep => changedPath.startsWith(dep))) {
       const condition = this.getExpression(this._origin.activated ?? '')
-      const value = evaluateExpression<boolean>(condition, this.valueHub().values(), false) as boolean
-      if (value !== this._activated) {
-        const oldValue = this._activated
-        this._activated = value
-        this._emitter.emit('activatedChanged', { name: this._instance, oldValue: (oldValue as boolean), newValue: value })
+      const value = this._express.evaluateExpression<boolean>(condition, this.project().origin, false) ?? false
+      if (value !== this.activated.value) {
+        this.activated.value = value
       }
     }
   }
@@ -241,39 +270,48 @@ export type IpParameter =
   IpParameterEnum |
   IpParameterNumber |
   IpParameterBoolean |
-  IpParameterRadio |
   IpParameterString
 
 export class IpParameterBase {
-  protected _origin: IpParameterType
-  private _display?: I18n
-  private _description?: I18n
-  protected _parent: Ip
-  private _name: string
+  private _display: I18n
+  private _description: I18n
+  private _enableDependencies: string[] = []
+  protected _path
 
-  constructor(origin: IpParameterType, name: string, parent: Ip) {
-    this._origin = origin
-    this._name = name
-    this._parent = parent
+  enabled: Ref<boolean>
+
+  constructor(
+    protected _origin: IpParameterType,
+    protected _name: string,
+    protected _channel: string = '',
+    protected _parent: Ip,
+  ) {
+    if (_channel) {
+      this._path = `${this._parent.instance}.${this._channel}.${this._name}`
+    }
+    else {
+      this._path = `${this._parent.instance}.${this._name}`
+    }
+
+    this._display = new I18n(this._origin.display ?? { en: '' })
+    this._description = new I18n(this._origin.description ?? { en: '' })
+
+    this.enabled = ref(this.buildEnable())
   }
 
   get origin(): IpParameterType {
     return this._origin
   }
 
-  get display(): I18n {
-    return this._display ??= new I18n(this._origin.display ?? { en: '' })
-  }
+  display = computed((): string => this._display.get(this._parent.locale.value))
 
-  get description(): I18n {
-    return this._description ??= new I18n(this._origin.description ?? { en: '' })
-  }
+  description = computed((): string => this._description.get(this._parent.locale.value))
 
   get readonly(): boolean {
     return this._origin.readonly ?? false
   }
 
-  get type(): 'string' | 'boolean' | 'enum' | 'integer' | 'float' | 'radio' {
+  get type(): 'string' | 'boolean' | 'enum' | 'integer' | 'float' {
     return this._origin.type
   }
 
@@ -281,23 +319,52 @@ export class IpParameterBase {
     return this._origin.visible ?? true
   }
 
-  get expression(): IpExpression | null {
-    if (this._origin.expression) {
-      return new IpExpression(this._origin.expression)
-    }
-    return null
-  }
-
   get name(): string {
     return this._name
+  }
+
+  get path(): string {
+    return this._path
+  }
+
+  private buildEnable(): boolean {
+    if (this._origin.enabled === undefined) {
+      return true
+    }
+    else if (typeof this._origin.enabled === 'boolean') {
+      return this._origin.enabled
+    }
+    else {
+      const condition = this._origin.enabled
+      const result = this._parent.express().evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false
+
+      const set = new Set<string>()
+      this._parent.express().evaluateExtract(condition).forEach((item) => {
+        set.add(item)
+      })
+      this._enableDependencies = Array.from(set)
+      this._parent.project().emitter.on('changed', this._onProjectConfigChanged.bind(this))
+
+      return result
+    }
+  }
+
+  private _onProjectConfigChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const changedPath = payload.path.join('.')
+    if (this._enableDependencies.some(dep => changedPath.startsWith(dep))) {
+      const condition = this._origin.enabled as string
+      const value = this._parent.express().evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false
+      if (value !== this.enabled.value) {
+        this.enabled.value = value
+      }
+    }
   }
 }
 
 export class IpParameterValueUnitSignalUnit {
-  private _origin: IpParameterValueUnitSignalUnitType
-
-  constructor(origin: IpParameterValueUnitSignalUnitType) {
-    this._origin = origin
+  constructor(
+    private _origin: IpParameterValueUnitSignalUnitType,
+  ) {
   }
 
   get mode(): string {
@@ -306,194 +373,513 @@ export class IpParameterValueUnitSignalUnit {
 }
 
 export class IpParameterValueUnit {
-  private _origin: IpParameterValueUnitType
-  private _signals?: Record<string, IpParameterValueUnitSignalUnit> | null
-  private _comment?: I18n
-  private _parent: Ip
+  private _signals: Record<string, IpParameterValueUnitSignalUnit> | null
+  private _comment: I18n
+  private _enableDependencies: string[] = []
 
-  constructor(origin: IpParameterValueUnitType, parent: Ip) {
-    this._origin = origin
-    this._parent = parent
+  enabled: Ref<boolean>
+
+  constructor(
+    private _origin: IpParameterValueUnitType,
+    private _parent: Ip,
+  ) {
+    this._comment = new I18n(this._origin.comment ?? { en: '' })
+    this._signals = this.buildSignals()
+
+    this.enabled = ref(this.buildEnable())
   }
 
-  get expression(): IpExpression | null {
-    if (this._origin.expression) {
-      return new IpExpression(this._origin.expression)
+  comment = computed((): string => this._comment.get(this._parent.locale.value))
+
+  get signals(): Record<string, IpParameterValueUnitSignalUnit> | null {
+    return this._signals
+  }
+
+  private buildSignals(): Record<string, IpParameterValueUnitSignalUnit> | null {
+    if (this._origin.signals) {
+      const signals: Record<string, IpParameterValueUnitSignalUnit> = {}
+      for (const [name, value] of Object.entries(this._origin.signals)) {
+        const key = this._parent.getExpression(name)
+        signals[key] = new IpParameterValueUnitSignalUnit(value)
+      }
+      return signals
     }
     return null
   }
 
-  get comment(): I18n {
-    return this._comment ??= new I18n(this._origin.comment ?? { en: '' })
+  get pins(): string[] {
+    const pins = [...this._parent.summary.findPinsBySignals(Object.keys(this.signals ?? {}))]
+    return pins
   }
 
-  get signals(): Record<string, IpParameterValueUnitSignalUnit> | null {
-    if (this._signals === undefined) {
-      if (this._origin.signals) {
-        this._signals = {}
-        for (const [name, value] of Object.entries(this._origin.signals)) {
-          const key = this._parent.getExpression(name)
-          this._signals[key] = new IpParameterValueUnitSignalUnit(value)
-        }
+  valid = computed((): { isEnabled: boolean, reason: string } => {
+    const { available, conflicts } = this.checkAvailability()
+
+    if (!available) {
+      const reasons = []
+
+      for (const [key, value] of Object.entries(conflicts)) {
+        reasons.push(`${key} -> ${value}`)
       }
-      else {
-        this._signals = null
+
+      return {
+        isEnabled: false,
+        reason: `引脚冲突` + `:\r\n${reasons.join('\r\n')}`,
       }
     }
-    return this._signals
+
+    return {
+      isEnabled: true,
+      reason: '',
+    }
+  })
+
+  private checkAvailability(): { available: boolean, conflicts: Record<string, string> } {
+    const conflicts: Record<string, string> = {}
+    const pins = this._parent.project().configs.get<Record<string, ProjectConfigsPinUnitType>>('pins', {})
+
+    for (const signalName of Object.keys(this.signals ?? {})) {
+      const pinNames = this._parent.summary.findPinsBySignals([signalName])
+      for (const pinName of pinNames) {
+        const pinConfig = pins[pinName]
+        if (pinConfig && pinConfig.locked === true && pinConfig.function !== signalName) {
+          conflicts[pinName] = pinConfig.function ?? ''
+        }
+      }
+    }
+
+    return {
+      available: Object.keys(conflicts).length === 0,
+      conflicts,
+    }
+  }
+
+  private buildEnable(): boolean {
+    if (this._origin.enabled === undefined) {
+      return true
+    }
+    else if (typeof this._origin.enabled === 'boolean') {
+      return this._origin.enabled
+    }
+    else {
+      const condition = this._origin.enabled
+      const result = this._parent.express().evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false
+
+      const set = new Set<string>()
+      this._parent.express().evaluateExtract(condition).forEach((item) => {
+        set.add(item)
+      })
+      this._enableDependencies = Array.from(set)
+      this._parent.project().emitter.on('changed', this._onProjectConfigChanged.bind(this))
+
+      return result
+    }
+  }
+
+  private _onProjectConfigChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const changedPath = payload.path.join('.')
+    if (this._enableDependencies.some(dep => changedPath.startsWith(dep))) {
+      const condition = this._origin.enabled as string
+      const value = this._parent.express().evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false
+      if (value !== this.enabled.value) {
+        this.enabled.value = value
+      }
+    }
   }
 }
 
 export class IpParameterEnum extends IpParameterBase {
-  private _values?: Record<string, IpParameterValueUnit>
-  private _signals?: string[]
+  private _values: Record<string, IpParameterValueUnit>
+  private _allSignals: string[]
+  private _value: Ref<string>
+
+  constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
+    super(origin, name, channel, parent)
+    this._values = this.buildValues()
+    this._allSignals = this.buildAllSignals()
+    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
+  }
 
   get default(): string {
     return this._origin.default as string
   }
 
   get values(): Record<string, IpParameterValueUnit> {
-    if (!this._values) {
-      this._values = {}
-      for (const [name, value] of Object.entries(this._origin.values ?? {})) {
-        this._values[name] = new IpParameterValueUnit(value, this._parent)
-      }
-    }
     return this._values
   }
 
-  get signals(): string[] {
-    if (!this._signals) {
-      const signals = new Set<string>()
-      for (const [_name, value] of Object.entries(this.values)) {
-        if (value.signals) {
-          for (const signal of Object.keys(value.signals)) {
-            signals.add(signal)
-          }
+  get allSignals(): string[] {
+    return this._allSignals
+  }
+
+  private buildValues(): Record<string, IpParameterValueUnit> {
+    const values: Record<string, IpParameterValueUnit> = {}
+    for (const [name, value] of Object.entries(this._origin.values ?? {})) {
+      values[name] = new IpParameterValueUnit(value, this._parent)
+    }
+    return values
+  }
+
+  private buildAllSignals(): string[] {
+    const signals = new Set<string>()
+    for (const [_name, value] of Object.entries(this._values)) {
+      if (value.signals) {
+        for (const signal of Object.keys(value.signals)) {
+          signals.add(signal)
         }
       }
-      this._signals = Array.from(signals)
-      this._signals.sort()
     }
-    return this._signals
+    const allSignals = Array.from(signals)
+    allSignals.sort()
+    return allSignals
+  }
+
+  value = computed({
+    get: (): string => this._value.value,
+    set: (value: string | null) => {
+      this._parent.project().configs.set(this._path, value ?? this.default)
+    },
+  })
+
+  signals = computed(() => {
+    return this.values[this.value.value]?.signals ?? null
+  })
+
+  private _onProjectConfigsChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const path = payload.path.join('.')
+    if (path === this._path) {
+      this._value.value = payload.newValue
+    }
+    else if (this._path.startsWith(path)) {
+      this._value.value = this._parent.project().configs.get(this._path, this.default)
+    }
   }
 }
 
 export class IpParameterNumber extends IpParameterBase {
+  private _express
+  private _dependencies: Record<string, string[]> = {}
+  private _expressions: Record<string, string> = {}
+  private _value: Ref<number>
+
+  max = ref(Number.MAX_SAFE_INTEGER)
+  min = ref(Number.MIN_SAFE_INTEGER)
+
+  constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
+    super(origin, name, channel, parent)
+
+    this._express = parent.express()
+
+    if (typeof origin.max === 'number') {
+      this.max.value = origin.max
+    }
+    else if (typeof origin.max === 'string') {
+      this.max.value = this.buildValue('max', Number.MAX_SAFE_INTEGER)
+    }
+
+    if (typeof origin.min === 'number') {
+      this.min.value = origin.min
+    }
+    else if (typeof origin.min === 'string') {
+      this.min.value = this.buildValue('min', Number.MIN_SAFE_INTEGER)
+    }
+
+    if (typeof origin.min === 'string' || typeof origin.max === 'string') {
+      this._parent.project().emitter.on('changed', this._onProjectChanged.bind(this))
+    }
+
+    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
+  }
+
   get default(): number {
     return this._origin.default as number
   }
 
-  get max(): number {
-    return this._origin.max as number ?? Infinity
+  value = computed({
+    get: (): number => this._value.value,
+    set: (value: number | null) => {
+      this._parent.project().configs.set(this._path, value)
+    },
+  })
+
+  private buildValue(prop: 'max' | 'min', defaultValue: number): number {
+    const expression = this._parent.getExpression(this._origin[prop] as string)
+    const value = this._express.evaluateExpression<number>(expression, this._parent.project().origin, defaultValue) ?? defaultValue
+    const set = new Set<string>()
+    this._express.evaluateExtract(expression).forEach((item) => {
+      set.add(item)
+    })
+    this._dependencies[prop] = Array.from(set)
+    this._expressions[prop] = expression
+    return value
   }
 
-  get min(): number {
-    return this._origin.min as number ?? -Infinity
+  private buildValueFromHook(prop: 'max' | 'min', defaultValue: number): number {
+    const expression = this._expressions[prop]
+    const value = this._express.evaluateExpression<number>(expression, this._parent.project().origin, defaultValue) ?? defaultValue
+    return value
+  }
+
+  private _onProjectChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const changedPath = payload.path.join('.')
+    if (this._dependencies.max?.some(dep => changedPath.startsWith(dep))) {
+      this.max.value = this.buildValueFromHook('max', Number.MAX_SAFE_INTEGER)
+    }
+
+    if (this._dependencies.min?.some(dep => changedPath.startsWith(dep))) {
+      this.min.value = this.buildValueFromHook('min', Number.MIN_SAFE_INTEGER)
+    }
+  }
+
+  getValue(value: number): number {
+    if (value < this.min.value || value > this.max.value) {
+      value = this.default /*! < 第一次选用默认值 */
+    }
+
+    if (value < this.min.value || value > this.max.value) {
+      value = this.min.value /*! < 默认值也不满足要求，选择最小值 */
+    }
+    return value
+  }
+
+  private _onProjectConfigsChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const path = payload.path.join('.')
+    if (path === this._path) {
+      this._value.value = payload.newValue
+    }
+    else if (this._path.startsWith(path)) {
+      this._value.value = this._parent.project().configs.get(this._path, this.default)
+    }
   }
 }
 
 export class IpParameterBoolean extends IpParameterBase {
+  private _value: Ref<boolean>
+
+  constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
+    super(origin, name, channel, parent)
+    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
+  }
+
   get default(): boolean {
     return this._origin.default as boolean
   }
-}
 
-export class IpParameterRadio extends IpParameterBase {
-  get default(): boolean {
-    return this._origin.default as boolean
-  }
+  value = computed({
+    get: (): boolean => this._value.value,
+    set: (value: boolean | null) => {
+      this._parent.project().configs.set(this._path, value ?? this.default)
+    },
+  })
 
-  get group(): string {
-    return this._origin.group as string
+  private _onProjectConfigsChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const path = payload.path.join('.')
+    if (path === this._path) {
+      this._value.value = payload.newValue
+    }
+    else if (this._path.startsWith(path)) {
+      this._value.value = this._parent.project().configs.get(this._path, this.default)
+    }
   }
 }
 
 export class IpParameterString extends IpParameterBase {
+  private _value: Ref<string>
+
+  constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
+    super(origin, name, channel, parent)
+    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
+  }
+
   get default(): string {
     return this._origin.default as string
   }
+
+  value = computed({
+    get: (): string => this._value.value,
+    set: (value: string | null) => {
+      this._parent.project().configs.set(this._path, value ?? this.default)
+    },
+  })
+
+  private _onProjectConfigsChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const path = payload.path.join('.')
+    if (path === this._path) {
+      this._value.value = payload.newValue
+    }
+    else if (this._path.startsWith(path)) {
+      this._value.value = this._parent.project().configs.get(this._path, this.default)
+    }
+  }
+}
+
+export function isEnumParameter(parameter: IpParameter): parameter is IpParameterEnum {
+  return parameter.type === 'enum'
+}
+
+export function isNumberParameter(parameter: IpParameter): parameter is IpParameterNumber {
+  return parameter.type === 'integer' || parameter.type === 'float'
+}
+
+export function isBooleanParameter(parameter: IpParameter): parameter is IpParameterBoolean {
+  return parameter.type === 'boolean'
+}
+
+export function isStringParameter(parameter: IpParameter): parameter is IpParameterString {
+  return parameter.type === 'string'
 }
 
 // #endregion
 
-// eslint-disable-next-line ts/consistent-type-definitions
-type IpObjectEvent = {
-  changed: void
-}
-
 export class IpObject {
-  protected _origin: IpObjectType | IpObjectConditionType[]
-  protected _parameters: Record<string, IpParameter>
-  protected _refParameters?: Record<string, IpRefParameter>
-  protected _refParametersConditions: IpCondition<IpObjectType>[] = []
-  protected _parent: Ip
-  protected _emitter = mitt<IpObjectEvent>()
+  protected _condition?: IpCondition<IpObjectType>
+  protected _refParametersCache: Record<string, IpRefParameter>[] = []
 
-  constructor(origin: IpObjectType | IpObjectConditionType[], parameters: Record<string, IpParameter>, parent: Ip) {
-    this._origin = origin
-    this._parameters = parameters
-    this._parent = parent
+  constructor(
+    private _origin: IpObjectType | IpObjectConditionType[],
+    private _parameters: Record<string, ComputedRef<IpParameter>>,
+    private _parent: Ip,
+  ) {
+    this.buildRefParameters()
+
+    if (!this._parent.isPinIp) {
+      /**
+当 refParameters 变化时，恢复默认值
+configurations:
+  - condition: configs.${IP_INSTANCE}.usart_control_mode_t == 'asynchronous'
+    content:
+      refParameters:
+        usart_virtual_mode_t:
+          values:
+            - asynchronous
+          default: asynchronous
+  - condition: configs.${IP_INSTANCE}.usart_control_mode_t == 'synchronous'
+    content:
+      refParameters:
+        usart_virtual_mode_t:
+          values:
+            - synchronous
+          default: synchronous
+       */
+      watch(
+        () => this.refParameters.value,
+        (refParameters: Record<string, IpRefParameter>) => {
+          for (const [_name, ref] of Object.entries(refParameters)) {
+            const parameter = ref.parameter.value
+            if (isEnumParameter(parameter)) {
+              if (!(parameter.value.value in ref.values.value)) {
+                parameter.value.value = (ref.default.value as string)
+              }
+            }
+
+            /* !< 防止为空 */
+            if (parameter.value.value === ref.default.value) {
+              parameter.value.value = ref.default.value
+            }
+          }
+        },
+        { immediate: true },
+      )
+    }
   }
 
   get origin(): IpObjectType | IpObjectConditionType[] {
     return this._origin
   }
 
-  get refParameters(): Record<string, IpRefParameter> {
-    if (!this._refParameters) {
-      this._refParameters = {}
-      let refParameters: Record<string, IpRefParameterType> = {}
-      if (Array.isArray(this._origin)) {
-        const condition = new IpCondition<IpObjectType>('refParameters', this._origin, this._parent)
-        this._refParametersConditions.push(condition)
-        refParameters = condition.current?.refParameters ?? {}
-        condition.emitter.on('changed', this._onConditionChanged.bind(this))
+  refParameters = computed((): Record<string, IpRefParameter> => {
+    if (this._condition) {
+      const index = this._condition.index.value
+      if (index === -1) {
+        return {}
       }
-      else {
-        refParameters = this._origin.refParameters ?? {}
+      return this._refParametersCache[index]
+    }
+    else {
+      return this._refParametersCache[0]
+    }
+  })
+
+  private buildRefParameters() {
+    if (Array.isArray(this._origin)) {
+      this._condition = new IpCondition<IpObjectType>('refParameters', this._origin, this._parent)
+
+      for (const obj of this._origin) {
+        const refs: Record<string, IpRefParameter> = {}
+        for (const [name, value] of Object.entries(obj.content.refParameters ?? {})) {
+          const parameter = this._parameters[name]
+          refs[name] = new IpRefParameter(name, value, parameter, this._parent)
+        }
+        this._refParametersCache.push(refs)
       }
-      for (const [name, value] of Object.entries(refParameters)) {
+    }
+    else {
+      const refs: Record<string, IpRefParameter> = {}
+      for (const [name, value] of Object.entries(this._origin.refParameters ?? {})) {
         const parameter = this._parameters[name]
-        this._refParameters[name] = new IpRefParameter(name, value, parameter, this._parent)
+        refs[name] = new IpRefParameter(name, value, parameter, this._parent)
       }
+      this._refParametersCache.push(refs)
     }
-    return this._refParameters
   }
-
-  get emitter(): Emitter<IpObjectEvent> {
-    return this._emitter
-  }
-
-  private _onConditionChanged(payload: { name: string, oldValue: IpObjectType | null, newValue: IpObjectType | null }) {
-    this._refParameters = {}
-    for (const [name, value] of Object.entries(payload.newValue?.refParameters ?? {})) {
-      const parameter = this._parameters[name]
-      this._refParameters[name] = new IpRefParameter(name, value, parameter, this._parent)
-    }
-    this._emitter.emit('changed')
-  }
-}
-
-// eslint-disable-next-line ts/consistent-type-definitions
-type IpObjectUnitEvent = {
-  conditionChanged: { name: string, oldValue: boolean, newValue: boolean }
 }
 
 export class IpRefParameter {
-  private _origin: IpRefParameterType
-  private _parameter: IpParameter
-  private _condition?: boolean
-  private _parent: Ip
   private _dependencies: string[] = []
-  private _emitter = mitt<IpObjectUnitEvent>()
-  private _name: string
+  private _express: Express
+  condition: Ref<boolean>
 
-  constructor(name: string, origin: IpRefParameterType, parameter: IpParameter, parent: Ip) {
-    this._name = name
-    this._origin = origin
-    this._parameter = parameter
-    this._parent = parent
+  constructor(
+    private _name: string,
+    private _origin: IpRefParameterType,
+    private _parameter: ComputedRef<IpParameter>,
+    private _parent: Ip,
+  ) {
+    this._express = _parent.express()
+    this.condition = ref(this.buildCondition())
+
+    /**
+当 condition 变化时，恢复默认值
+modes:
+  refParameters:
+    usart_control_mode_t: {}
+    usart_control_hardware_flow_control_rs232_t:
+      condition: configs.${IP_INSTANCE}.usart_control_mode_t == 'asynchronous'
+     */
+    watch(
+      () => this.condition.value,
+      (value: boolean) => {
+        if (!value) {
+          this.parameter.value.value.value = this.default.value
+        }
+      },
+      { immediate: true },
+    )
+
+    /**
+当 condition 变化时，恢复默认值
+rcm_apb1_timers_mul_t:
+  - condition: configs.RCM.rcm_apb1_div_t == '/1'
+    content:
+      ...
+  - condition: default
+    content:
+      ...
+     */
+    watch(
+      () => this.parameter.value,
+      (p: IpParameter) => {
+        if (isEnumParameter(p)) {
+          if (!(p.value.value in this.values.value)) {
+            p.value.value = (this.default.value as string)
+          }
+        }
+      },
+    )
   }
 
   get name(): string {
@@ -504,53 +890,64 @@ export class IpRefParameter {
     return this._origin
   }
 
-  get values(): string[] {
-    return this._origin.values ?? Object.keys(this._parameter.origin.values ?? {})
-  }
-
-  get default(): string | number | boolean {
-    return this._origin.default ?? this._parameter.default
-  }
-
-  get readonly(): boolean {
-    return this._origin.readonly ?? this._parameter.readonly ?? false
-  }
-
-  get condition(): boolean {
-    if (this._condition === undefined) {
-      if (this._origin.condition !== undefined) {
-        const condition = this._parent.getExpression(this._origin.condition)
-        this._condition = evaluateExpression<boolean>(condition, this._parent.valueHub().values(), false) as boolean
-        const set = new Set<string>()
-        evaluateExtract(condition).forEach((item) => {
-          set.add(item)
-        })
-        this._dependencies = Array.from(set)
-        this._parent.valueHub().emitter.on('valueChanged', this._onValueHubValueChanged.bind(this))
-      }
-      else {
-        this._condition = true
+  values = computed((): Record<string, IpParameterValueUnit> => {
+    if (!isEnumParameter(this.parameter.value)) {
+      return {}
+    }
+    const vs: Record<string, IpParameterValueUnit> = {}
+    if (this._values.length === 0) {
+      for (const [name, value] of Object.entries(this.parameter.value.values ?? {})) {
+        vs[name] = value
       }
     }
-    return this._condition
+    else {
+      for (const name of this._values) {
+        vs[name] = this.parameter.value.values[name]
+      }
+    }
+    return vs
+  })
+
+  get _values(): string[] {
+    return this.origin.values ?? []
   }
 
-  get parameter(): IpParameter {
-    return this._parameter
+  default = computed((): string | number | boolean => {
+    return this._origin.default ?? this.parameter.value.default
+  })
+
+  readonly = computed((): boolean => {
+    return (this._origin.readonly ?? this.parameter.value.readonly ?? false) || !this.condition.value
+  })
+
+  parameter = computed((): IpParameter => this._parameter.value)
+
+  private buildCondition(): boolean {
+    if (this._origin.condition !== undefined) {
+      const condition = this._parent.getExpression(this._origin.condition)
+      const result = this._express.evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false
+
+      const set = new Set<string>()
+      this._express.evaluateExtract(condition).forEach((item) => {
+        set.add(item)
+      })
+      this._dependencies = Array.from(set)
+      this._parent.project().emitter.on('changed', this._onProjectConfigChanged.bind(this))
+
+      return result
+    }
+    else {
+      return true
+    }
   }
 
-  get emitter(): Emitter<IpObjectUnitEvent> {
-    return this._emitter
-  }
-
-  private _onValueHubValueChanged(payload: { path: string[], oldValue: any, newValue: any }) {
-    if (this._dependencies.includes(payload.path.join('.'))) {
+  private _onProjectConfigChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const changedPath = payload.path.join('.')
+    if (this._dependencies.some(dep => changedPath.startsWith(dep))) {
       const condition = this._parent.getExpression(this._origin.condition ?? '')
-      const value = evaluateExpression<boolean>(condition, this._parent.valueHub().values(), false) as boolean
-      if (value !== this._condition) {
-        const oldValue = this._condition
-        this._condition = value
-        this._emitter.emit('conditionChanged', { name: this._name, oldValue: (oldValue as boolean), newValue: value })
+      const value = this._express.evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false
+      if (value !== this.condition.value) {
+        this.condition.value = value
       }
     }
   }
@@ -560,17 +957,20 @@ export class IpContainerObject extends IpObject {
 }
 
 export class IpContainers {
-  private _origin: IpContainersType
-  private _parameters: Record<string, IpParameter>
-  private _overview?: IpContainerObject
-  private _modes?: IpContainerObject
-  private _configurations?: IpContainerObject
-  private _parent: Ip
+  private _overview: IpContainerObject
+  private _modes: IpContainerObject
+  private _configurations: IpContainerObject
+  private _clockTree: IpContainerObject
 
-  constructor(origin: IpContainersType, parameters: Record<string, IpParameter>, parent: Ip) {
-    this._origin = origin
-    this._parameters = parameters
-    this._parent = parent
+  constructor(
+    private _origin: IpContainersType,
+    private _parameters: Record<string, ComputedRef<IpParameter>>,
+    private _parent: Ip,
+  ) {
+    this._overview = new IpContainerObject(this._origin.overview ?? {}, this._parameters, this._parent)
+    this._modes = new IpContainerObject(this._origin.modes ?? {}, this._parameters, this._parent)
+    this._configurations = new IpContainerObject(this._origin.configurations ?? {}, this._parameters, this._parent)
+    this._clockTree = new IpContainerObject(this._origin.clockTree ?? {}, this._parameters, this._parent)
   }
 
   get origin(): IpContainersType {
@@ -578,36 +978,29 @@ export class IpContainers {
   }
 
   get overview(): IpContainerObject {
-    if (!this._overview) {
-      this._overview = new IpContainerObject(this._origin.overview ?? {}, this._parameters, this._parent)
-    }
     return this._overview
   }
 
   get modes(): IpContainerObject {
-    if (!this._modes) {
-      this._modes = new IpContainerObject(this._origin.modes ?? {}, this._parameters, this._parent)
-    }
     return this._modes
   }
 
   get configurations(): IpContainerObject {
-    if (!this._configurations) {
-      this._configurations = new IpContainerObject(this._origin.configurations ?? {}, this._parameters, this._parent)
-    }
     return this._configurations
+  }
+
+  get clockTree(): IpContainerObject {
+    return this._clockTree
   }
 }
 
+// TODO:
 export class IpPin {
-  private _origin: {
-    default: boolean
-  }
-
-  constructor(origin: {
-    default: boolean
-  }) {
-    this._origin = origin
+  constructor(
+    private _origin: {
+      default: boolean
+    },
+  ) {
   }
 
   get default(): boolean {
@@ -615,65 +1008,43 @@ export class IpPin {
   }
 }
 
-export class IpExpression {
-  private _origin: IpExpressionType
-
-  constructor(origin: IpExpressionType) {
-    this._origin = origin
-  }
-
-  get display(): string {
-    return this._origin.display
-  }
-
-  get real(): number {
-    return 0
-  }
-}
-
-// eslint-disable-next-line ts/consistent-type-definitions
-type IpConditionEvent = {
-  changed: { name: string, oldValue: any, newValue: any }
-}
-
 export class IpCondition<T> {
-  private _name: string
-  private _origin: { condition: string, content: T }[]
-  private _current: T | null = null
-  private _parent: Ip
   private _dependencies: string[]
-  private _emitter = mitt<IpConditionEvent>()
 
-  constructor(name: string, origin: { condition: string, content: T }[], parent: Ip) {
-    this._name = name
-    this._origin = origin
-    this._parent = parent
+  private _express: Express
+  private _map: Record<string, T> = {}
+  private _key: Ref<string>
+
+  constructor(
+    private _name: string,
+    private _origin: { condition: string, content: T }[],
+    private _parent: Ip,
+  ) {
+    this._express = _parent.express()
 
     const set = new Set<string>()
-    let defaultValue = null
+    let key = 'default'
+
     for (const item of this._origin) {
       const condition = this._parent.getExpression(item.condition)
+      item.condition = condition
+      this._map[condition] = item.content
 
-      if (condition === 'default') {
-        defaultValue = item.content
-      }
-      else {
-        evaluateExtract(condition).forEach((item) => {
+      if (condition !== 'default') {
+        this._express.evaluateExtract(condition).forEach((item) => {
           set.add(item)
         })
 
-        if (evaluateExpression<boolean>(condition, this._parent.valueHub().values(), false) === true) {
-          this._current = item.content
+        if ((this._express.evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false) === true) {
+          key = condition
         }
       }
     }
-    if (this._current === null) {
-      this._current = defaultValue
-    }
 
+    this._key = ref(key)
     this._dependencies = Array.from(set)
 
-    this._parent.valueHub().emitter.on('valueChanged', this._onValueHubValueChanged.bind(this))
+    this._parent.project().emitter.on('changed', this._onProjectConfigChanged.bind(this))
   }
 
   get name(): string {
@@ -684,107 +1055,76 @@ export class IpCondition<T> {
     return this._origin
   }
 
-  get current(): T | null {
-    return this._current
-  }
+  current = computed(() => this._map[this._key.value] ?? null)
 
-  get emitter(): Emitter<IpConditionEvent> {
-    return this._emitter
-  }
+  index = computed(() => this._origin.findIndex(item => item.condition === this._key.value))
 
-  private _onValueHubValueChanged(payload: { path: string[], oldValue: any, newValue: any }) {
-    if (this._dependencies.includes(payload.path.join('.'))) {
-      let defaultValue
-      let value = null
-      for (const item of this._origin) {
-        const condition = this._parent.getExpression(item.condition)
-        if (condition === 'default') {
-          defaultValue = item.content
-        }
-        else {
-          if (evaluateExpression<boolean>(condition, this._parent.valueHub().values(), false) === true) {
-            value = item.content
+  private _onProjectConfigChanged(payload: { path: string[], newValue: any, oldValue: any }) {
+    const changedPath = payload.path.join('.')
+    if (this._dependencies.some(dep => changedPath.startsWith(dep))) {
+      let key = 'default'
+      for (const condition of Object.keys(this._map)) {
+        if (condition !== 'default') {
+          if ((this._express.evaluateExpression<boolean>(condition, this._parent.project().origin, false) ?? false) === true) {
+            key = condition
           }
         }
       }
-      if (value === undefined && defaultValue !== undefined) {
-        value = defaultValue
-      }
 
-      if (value !== this._current) {
-        const oldValue = this._current
-        this._current = value
-        this._emitter.emit('changed', { name: this.name, oldValue, newValue: value })
+      if (key !== this._key.value) {
+        this._key.value = key
       }
     }
   }
 }
 
-export class IpClockTree {
-  private _origin: IpClockTreeType
-  private _elements?: Record<string, IpClockTreeElementUnit>
-  private _i18n?: Record<string, I18n>
+export class IpDiagramsObject {
+  protected _condition?: IpCondition<IpDiagramsObjectType>
+  protected _refImagesCache: string[][] = []
 
-  constructor(origin: IpClockTreeType) {
-    this._origin = origin
+  constructor(
+    private _origin: IpDiagramsObjectType | IpDiagramsObjectConditionType[] | undefined,
+    private _parent: Ip,
+  ) {
+    this.buildImages()
   }
 
-  get origin(): IpClockTreeType {
+  get origin(): IpDiagramsObjectType | IpDiagramsObjectConditionType[] | undefined {
     return this._origin
   }
 
-  get elements(): Record<string, IpClockTreeElementUnit> {
-    if (!this._elements) {
-      this._elements = {}
-      const rawElements = this._origin.elements ?? {}
-      for (const [name, element] of Object.entries(rawElements)) {
-        this._elements[name] = new IpClockTreeElementUnit(element)
+  images = computed((): string[] => {
+    if (this._origin === undefined) {
+      return []
+    }
+
+    if (this._condition) {
+      const index = this._condition.index.value
+      if (index === -1) {
+        return []
+      }
+      return this._refImagesCache[index]
+    }
+    else {
+      return this._refImagesCache[0]
+    }
+  })
+
+  private buildImages() {
+    if (this._origin === undefined) {
+      return
+    }
+
+    if (Array.isArray(this._origin)) {
+      this._condition = new IpCondition<IpDiagramsObjectType>('images', this._origin, this._parent)
+
+      for (const obj of this._origin) {
+        this._refImagesCache.push(obj.content.images)
       }
     }
-    return this._elements
-  }
-
-  get i18n(): Record<string, I18n> {
-    if (!this._i18n) {
-      this._i18n = {}
-      const rawI18n = this._origin.i18n ?? {}
-      for (const [name, entry] of Object.entries(rawI18n)) {
-        this._i18n[name] = new I18n(entry)
-      }
+    else {
+      this._refImagesCache.push(this._origin.images)
     }
-    return this._i18n
-  }
-}
-
-export class IpClockTreeElementUnit {
-  private _origin: IpClockTreeElementUnitType
-
-  constructor(origin: IpClockTreeElementUnitType) {
-    this._origin = origin
-  }
-
-  get origin(): IpClockTreeElementUnitType {
-    return this._origin
-  }
-
-  get refParameter(): string {
-    return this._origin.refParameter ?? ''
-  }
-
-  get type(): string {
-    return this._origin.type ?? ''
-  }
-
-  get enable(): string | boolean | null {
-    return this._origin.enable ?? null
-  }
-
-  get output(): string[] {
-    return this._origin.output ?? []
-  }
-
-  get input(): string[] {
-    return this._origin.input ?? []
   }
 }
 
@@ -795,10 +1135,18 @@ export class IpManager {
     peripherals: {},
   }
 
-  private _valueHub: ValueHub
+  private _project: Project | null = null
+  private _i18n: VueI18nType | null = null
 
-  constructor(valueHub: ValueHub) {
-    this._valueHub = valueHub
+  constructor() {
+  }
+
+  setProject(project: Project | null) {
+    this._project = project
+  }
+
+  setI18n(i18n: VueI18nType) {
+    this._i18n = i18n
   }
 
   getPeripheral(vendor: string, name: string): Ip | null {
@@ -811,7 +1159,11 @@ export class IpManager {
     }
   }
 
-  async loadPeripheral(vendor: string, name: string, define: string) {
+  async loadPeripheral(vendor: string, name: string, define: string, summary: Summary) {
+    if (!this._project) {
+      return
+    }
+
     const vendorMap = this._map.peripherals[vendor]
     if (vendorMap?.[name]) {
       return vendorMap[name]
@@ -819,25 +1171,31 @@ export class IpManager {
 
     const content = await window.electron.invoke('database:getIp', 'peripherals', vendor, define) as IpType
     if (content) {
-      const instance: Ip = new Ip(name, content, this._valueHub);
+      const instance: Ip = new Ip(name, content, this._project, this._i18n!.global.locale, summary);
       (this._map.peripherals[vendor] ??= {})[name] = instance
     }
   }
 }
 
-export function createIpManagerPlugin(valueHub: ValueHub) {
-  const manager = new IpManager(valueHub)
+export function createIpManagerPlugin() {
+  const manager = new IpManager()
 
   return {
-    value: manager,
+    manager,
     plugin: {
       install(app: App) {
-        app.provide('database:ipManager', manager)
+        app.provide('database@ipManager', manager)
       },
+    },
+    setProject(project: Project | null) {
+      manager.setProject(project)
+    },
+    setI18n(i18n: VueI18nType) {
+      manager.setI18n(i18n)
     },
   }
 }
 
 export function useIpManager(): IpManager {
-  return inject('database:ipManager')!
+  return inject('database@ipManager')!
 }

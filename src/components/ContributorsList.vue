@@ -28,9 +28,9 @@
 -->
 
 <script setup lang="ts">
-import type { Contributor } from '~/database'
+import type { Contributor } from '~/utils'
 import { ref } from 'vue'
-import { useContributorManager } from '~/database'
+import { useContributorManager } from '~/utils'
 
 const contributorManager = useContributorManager()
 
@@ -64,7 +64,7 @@ loadImages()
   </div>
 </template>
 
-<style>
+<style scoped>
 .avatar-container {
   display: flex;
   flex-wrap: wrap;

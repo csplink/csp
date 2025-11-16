@@ -1,0 +1,100 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        IWDG-iwdg1_v1_1_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-10-31     xqyjlj       initial version
+#
+
+name: IWDG
+parameters:
+  iwdg_prescaler_t:
+    type: enum
+    values:
+      /4:
+        comment:
+          zh-cn: /4
+          en: /4
+      /8:
+        comment:
+          zh-cn: /8
+          en: /8
+      /16:
+        comment:
+          zh-cn: /16
+          en: /16
+      /32:
+        comment:
+          zh-cn: /32
+          en: /32
+      /64:
+        comment:
+          zh-cn: /64
+          en: /64
+      /128:
+        comment:
+          zh-cn: /128
+          en: /128
+      /256:
+        comment:
+          zh-cn: /256
+          en: /256
+    default: /4
+    display:
+      zh-cn: IWDG counter clock prescaler
+      en: IWDG counter clock prescaler
+    description:
+      zh-cn: IWDG counter clock prescaler
+      en: IWDG counter clock prescaler
+    visible: true
+    readonly: false
+  iwdg_reload_t:
+    type: integer
+    default: 4095
+    max: 4095
+    min: 0
+    display:
+      zh-cn: IWDG down-counter reload value
+      en: IWDG down-counter reload value
+    description:
+      zh-cn: IWDG down-counter reload value
+      en: IWDG down-counter reload value
+    visible: true
+    readonly: false
+  iwdg_ctrl_state_t:
+    type: boolean
+    default: false
+    display:
+      zh-cn: ACTIVATED
+      en: ACTIVATED
+    description:
+      zh-cn: ACTIVATED
+      en: ACTIVATED
+    visible: true
+    readonly: false
+containers:
+  modes:
+    refParameters:
+      iwdg_ctrl_state_t: {}
+  configurations:
+    - condition: configs.${IP_INSTANCE}.iwdg_ctrl_state_t
+      content:
+        refParameters:
+          iwdg_prescaler_t: {}
+          iwdg_reload_t: {}
+activated: (configs.${IP_INSTANCE}.iwdg_ctrl_state_t)

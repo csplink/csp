@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V4.0"
+    IPType="peripheral"
+    Name="USB"
+    Version="usb1_v1_1_Cube" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance"
+    ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../../../../../../doc/V4/Development/Specifications/db/IP_Modes.xsd"
+    xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+
+    <About>USB: Universal Serial Bus</About>
+
+    <!-- Generic RefParameters for USB Full Speed Device Mode -->
+    <RefParameter Name="Instance" DefaultValue="USB" Comment="Instance" Type="" Visible="false" />
+
+    <RefParameter Comment="Speed" DefaultValue="PCD_SPEED_FULL" Name="DeviceSpeed" Type="List" Group="Basic Parameters">
+        <PossibleValue Comment="Full Speed 12MBit/s" Value="PCD_SPEED_FULL" />
+    </RefParameter>
+
+    <!-- Bug356587 -->
+    <RefParameter Comment="Device endpoints number" DefaultValue="8" Name="dev_endpoints" Min="1" Max="8" Type="integer" Group="" Visible="false">
+        <Condition Expression="414-f103" Diagnostic="" />
+    </RefParameter>
+    <RefParameter Comment="Device endpoints number" DefaultValue="8" Name="dev_endpoints" Min="1" Max="8" Type="integer" Group="" Visible="false">
+        <Condition Expression="412-f103" Diagnostic="" />
+    </RefParameter>
+    <RefParameter Comment="Device endpoints number" DefaultValue="8" Name="dev_endpoints" Min="1" Max="8" Type="integer" Group="" Visible="false">
+        <Condition Expression="410-f103" Diagnostic="" />
+    </RefParameter>
+    <RefParameter Comment="Device endpoints number" DefaultValue="8" Name="dev_endpoints" Min="1" Max="8" Type="integer" Group="" Visible="false">
+	</RefParameter>
+
+    <!-- Tracker 54428
+	<RefParameter Comment="Endpoint 0 Max Packet size" DefaultValue="DEP0CTL_MPS_8" Name="ep0_mps" Type="List" Group="Basic Parameters" Visible="true">
+		<PossibleValue Value="DEP0CTL_MPS_64" Comment="64 Bytes"/>
+		<PossibleValue Value="DEP0CTL_MPS_32" Comment="32 Bytes"/>
+		<PossibleValue Value="DEP0CTL_MPS_16" Comment="16 Bytes"/>
+		<PossibleValue Value="DEP0CTL_MPS_8"  Comment="8 Bytes"/>
+	</RefParameter>
+	-->
+    <!--
+	<RefParameter Comment="Endpoint 0 Max Packet size" DefaultValue="64" Name="ep0_mps" Min="8" Max="64" Type="integer" Group="" Visible="true">
+	</RefParameter>
+	-->
+
+    <RefParameter Comment="Physical interface" DefaultValue="null" Name="phy_itface" Type="List" Group="Basic Parameters" Visible="false">
+        <PossibleValue Value="PCD_PHY_EMBEDDED" Comment="Internal Phy" />
+    </RefParameter>
+
+    <!-- Tracker 313108 -->
+    <!--<RefParameter Comment="Sof Enable" DefaultValue="DISABLE" Name="Sof_enable" Type="List" Group="Basic Parameters" Visible="false">-->
+    <RefParameter Comment="Sof Enable" DefaultValue="null" Name="Sof_enable" Type="List" Group="Basic Parameters" Visible="false">
+	</RefParameter>
+
+    <RefParameter Comment="Low Power" DefaultValue="DISABLE" Name="low_power_enable" Type="List" Group="Power Parameters" Visible="true">
+        <PossibleValue Value="ENABLE" Comment="Enabled" Semaphore="$IpInstance_INTERRUPT_WAKEUP_ON" />
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+        <!--<Description>This mode is not supproted on CubeMx V4.2</Description>-->
+    </RefParameter>
+
+    <RefParameter Comment="Link Power Management" DefaultValue="DISABLE" Name="lpm_enable" Type="List" Group="Power Parameters" Visible="true">
+        <Condition Expression="low_power_enable = ENABLE" Diagnostic="" />
+        <PossibleValue Value="ENABLE" Comment="Enabled" />
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+    </RefParameter>
+
+    <RefParameter Comment="Link Power Management" DefaultValue="DISABLE" Name="lpm_enable" Type="List" Group="Power Parameters" Visible="true">
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+    </RefParameter>
+
+    <!-- We Don't have the VBUS pin, so this functionality cannot be activated.We generated the field with DISABLE value -->
+    <RefParameter Comment="Battery Charging" DefaultValue="DISABLE" Name="battery_charging_enable" Type="List" Group="Power Parameters" Visible="true">
+        <!--<PossibleValue Value="ENABLE" Comment="Enabled"/>-->
+        <PossibleValue Value="DISABLE" Comment="Disabled" />
+    </RefParameter>
+
+    <RefMode Name="Device" HalMode="PCD">
+        <ConfigForMode>PCD_Init_FS</ConfigForMode>
+        <Parameter Name="DeviceSpeed" />
+        <Parameter Name="dev_endpoints" />
+        <!--<Parameter Name="ep0_mps"/>-->
+        <!-- Tracker 299003
+		<Parameter Name="phy_itface">
+			<PossibleValue>PCD_PHY_EMBEDDED</PossibleValue>
+		</Parameter>
+		-->
+        <Parameter Name="Sof_enable" />
+        <Parameter Name="low_power_enable" />
+        <Parameter Name="lpm_enable" />
+        <Parameter Name="battery_charging_enable" />
+
+    </RefMode>
+
+    <ModeLogicOperator Name="OR">
+        <Mode Name="Device" UserName="Device (FS)">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="Device" UserName="Device (FS)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="DM" />
+                        <Signal Name="DP" />
+                    </SignalLogicalOp>
+                    <Semaphore>MW_USB_MW_DEVICE</Semaphore>
+                    <!--Tracker 299137
+						<Condition Expression="!USB_OR_CAN" Diagnostic="USB IP can be selected if CAN IP is not selected"/>	-->
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+
+        <!--
+		<Mode Name="Activate_OE" UserName="Activate OE">
+			<ModeLogicOperator Name="OR">
+				<Mode Name="Activate_OE">
+					<SignalLogicalOp Name="AND">
+						<Signal Name="OE"/>
+					</SignalLogicalOp>
+					<Condition Expression="MW_USB_MW_DEVICE" Diagnostic="USB IP must be selected"/>
+				</Mode>
+			</ModeLogicOperator>
+		</Mode>
+		-->
+
+    </ModeLogicOperator>
+    <RefSignal IOMode="System" Name="DM" />
+    <RefSignal IOMode="System" Name="DP" />
+    <!--<RefSignal IOMode="AlternateFunctionPushPull" Name="OE"/>-->
+
+    <!-- Clock Semaphore for this IP. -->
+    <Semaphore>USBUsed_ForRCC</Semaphore>
+</IP>

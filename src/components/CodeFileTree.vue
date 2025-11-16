@@ -94,6 +94,20 @@ function getFileType(file: string) {
       return 'xml'
     case 'gitignore':
       return 'gitignore'
+    case 'lua':
+      if (file === 'xmake.lua') {
+        return 'xmake'
+      }
+      return 'lua'
+    case 'xmake':
+      return 'xmake'
+    case 'txt':
+      if (file === 'CMakeLists.txt') {
+        return 'cmake'
+      }
+      return ''
+    case 'cmake':
+      return 'cmake'
     default:
       return ''
   }
@@ -214,10 +228,10 @@ function handGenerateCommand() {
   }
 
   if (data.children) {
-    emit('generate', collectAllKeys(data), data.label)
+    emit('generate', collectAllKeys(data))
   }
   else {
-    emit('generate', [data.key], data.label)
+    emit('generate', [data.key])
   }
 }
 
@@ -248,6 +262,7 @@ onBeforeUnmount(() => {
         :props="defaultProps"
         :highlight-current="true"
         :default-expand-all="true"
+        :expand-on-click-node="false"
         @current-change="handleNodeClick"
         @node-contextmenu="handleContextMenu"
       >
@@ -277,6 +292,15 @@ onBeforeUnmount(() => {
             <template v-else-if="data.type === 'gitignore'">
               <MaterialGit />
             </template>
+            <template v-else-if="data.type === 'lua'">
+              <MaterialLua />
+            </template>
+            <template v-else-if="data.type === 'xmake'">
+              <MaterialXmake />
+            </template>
+            <template v-else-if="data.type === 'cmake'">
+              <MaterialCmake />
+            </template>
             <template v-else>
               <MaterialFile />
             </template>
@@ -291,11 +315,10 @@ onBeforeUnmount(() => {
       v-model:show="menuShowRef"
       :options="menuOptionsComponentRef"
     >
-      <context-menu-item :label="$t('titleHeader.fileGenerate')" @click="handGenerateCommand()" />
+      <context-menu-item icon="ri-ai-generate" :label="$t('command.generate')" @click="handGenerateCommand()" />
+      <context-menu-item icon="ri-save-3-line" :label="$t('command.saveAs')" @click="handSaveAsCommand()" />
       <context-menu-separator />
-      <context-menu-item :label="$t('titleHeader.fileSaveAs')" @click="handSaveAsCommand()" />
-      <context-menu-separator />
-      <context-menu-item :label="$t('codeFileTree.diff')" :disabled="(!menuCurrentDataRef?.highlight) || menuCurrentDataRef?.children !== undefined" @click="handDiffMenuCommand()" />
+      <context-menu-item icon="ri-exchange-2-line" :label="$t('command.diff')" :disabled="(!menuCurrentDataRef?.highlight) || menuCurrentDataRef?.children !== undefined" @click="handDiffMenuCommand()" />
     </context-menu>
   </div>
 </template>

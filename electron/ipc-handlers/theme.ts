@@ -27,16 +27,16 @@
  *  2025-04-29     xqyjlj       initial version
  */
 
+import type { IpcMainEvent } from 'electron'
+import type { SystemBrowserWindow } from '../types'
 import { BrowserWindow, ipcMain } from 'electron'
 
 export function registerThemeHandler() {
-  ipcMain.on('theme-change', (_event, { color, symbolColor }) => {
-    const win = BrowserWindow.getFocusedWindow()
-    if (win) {
-      win.setTitleBarOverlay({
-        color,
-        symbolColor,
-      })
-    }
+  ipcMain.on('theme:set', (event: IpcMainEvent, { color, symbolColor }) => {
+    const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
+    win.setTitleBarOverlay({
+      color,
+      symbolColor,
+    })
   })
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V3.0" IPType="service" Name="WWDG" Version="wwdg1_v1_0" IpGroup="System" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../db/IP_Modes_V3_0.xsd" xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+
+    <About>WWDG: Window WatchDog</About>
+
+    <RefParameter Comment="WWDG instance" DefaultValue="WWDG" Name="Instance" Type="list" Visible="false" />
+
+    <RefParameter Name="Prescaler" Comment="WWDG counter clock prescaler" DefaultValue="WWDG_PRESCALER_1" Type="list" Group="Watchdog Clocking">
+        <PossibleValue Value="WWDG_PRESCALER_1" Comment="1" />
+        <PossibleValue Value="WWDG_PRESCALER_2" Comment="2" />
+        <PossibleValue Value="WWDG_PRESCALER_4" Comment="4" />
+        <PossibleValue Value="WWDG_PRESCALER_8" Comment="8" />
+        <Description>The resulting value of the clock is equal to (PCLK/4096)/prescaler for example (PCLK/4096)/8.</Description>
+    </RefParameter>
+
+    <RefParameter Name="Window" Comment="WWDG window value" DefaultValue="64" Max="127" Min="64" Type="integer" Group="Watchdog Clocking">
+        <Description>Specifies the WWDG window value to be compared to the downcounter. If the software reloads the counter while the counter is greater than the
+value stored in the window register, then a reset is generated.</Description>
+    </RefParameter>
+
+    <RefParameter Name="Counter" Comment="WWDG free-running downcounter value" DefaultValue="64" Max="127" Min="=#Window" Type="integer" Group="Watchdog Clocking">
+        <Description>Specifies the WWDG counter value.&lt;br&gt;It is decremented every (4096 x 2**WDGTB) PCLK cycles.&lt;br&gt;A reset is produced when it is decremented from 0x40 to 0x3F (T6 becomes cleared).</Description>
+    </RefParameter>
+
+    <RefParameter Comment="Early wakeup interrupt" DefaultValue="WWDG_EWI_DISABLE" Name="EWIMode" Type="list" Group="Watchdog Interrupt">
+        <Description>When set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by hardware after a reset.</Description>
+        <PossibleValue Comment="Disable" Value="WWDG_EWI_DISABLE" />
+        <PossibleValue Comment="Enable" Value="WWDG_EWI_ENABLE" />
+    </RefParameter>
+
+    <RefMode Name="WWDG_Activate" HalMode="WWDG">
+        <Condition Diagnostic="" Expression="STM32F0|STM32F1|STM32F2|STM32F3|STM32F4|STM32F7|STM32L0|STM32L1|STM32L4|STM32WB" />
+        <ConfigForMode>WWDG_Init</ConfigForMode>
+        <Parameter Name="Prescaler" />
+        <Parameter Name="Window" />
+        <Parameter Name="Counter" />
+        <Parameter Name="EWIMode" />
+    </RefMode>
+
+    <RefMode Name="WWDG_Activate" HalMode="WWDG">
+        <ConfigForMode>WWDG_Init</ConfigForMode>
+        <Parameter Name="Prescaler" />
+        <Parameter Name="Window" />
+        <Parameter Name="Counter" />
+    </RefMode>
+
+    <!-- ModeLogicOperator for WWDG -->
+    <ModeLogicOperator Name="OR">
+        <Mode Name="WWDG_State" UserName="Activated">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="WWDG_Activate" UserName="Activated">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_WWDG" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+    </ModeLogicOperator>
+
+    <!-- RefSignal for WWDG -->
+    <RefSignal Name="VS_WWDG" Virtual="true" />
+</IP>

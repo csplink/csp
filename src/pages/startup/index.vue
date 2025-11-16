@@ -28,6 +28,18 @@
 -->
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { createWindow, openProject } from '~/utils'
+
+const i18n = useI18n()
+
+async function handNewProject() {
+  createWindow({ runMode: 'createProject', backendUrl: 'http://127.0.0.1:55432' })
+}
+
+async function handOpenProject() {
+  await openProject(i18n)
+}
 </script>
 
 <template>
@@ -37,10 +49,10 @@
         {{ $t('startup.command') }}
       </template>
       <div class="btn-group mb-4 flex justify-center">
-        <el-button type="primary">
-          {{ $t('startup.newSocProject') }}
+        <el-button type="primary" @click="handNewProject">
+          {{ $t('startup.newChipProject') }}
         </el-button>
-        <el-button type="primary">
+        <el-button type="primary" @click="handOpenProject">
           {{ $t('startup.openProject') }}
         </el-button>
       </div>

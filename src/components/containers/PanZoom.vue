@@ -80,6 +80,39 @@ watch(
   },
 )
 
+/** ***********  ✨ Windsurf Command ⭐  */
+/**
+ * Open a context menu.
+ *
+ * @param {string} key - The key of the context menu.
+ * @param {MenuOptions} options - The options of the context menu.
+ * @param {PanZoomMenuItemModelType[]} model - The model of the context menu.
+ * @param {{ noStyle?: boolean, scaleX?: number, scaleY?: number }} style - The style of the context menu.
+ * @example
+ * openMenu('pan-zoom-menu', {
+ *   getContainer: () => containerRef.value,
+ *   customClass: 'custom-context-menu',
+ *   mouseScroll: true,
+ * }, [
+ *   {
+ *     key: 'pan-zoom-menu-zoom-in',
+ *     command: 'zoom-in',
+ *     divided: true,
+ *     icon: 'ri-zoom-in-line',
+ *   },
+ *   {
+ *     key: 'pan-zoom-menu-zoom-out',
+ *     command: 'zoom-out',
+ *     divided: true,
+ *     icon: 'ri-zoom-out-line',
+ *   },
+ * ], {
+ *   noStyle: true,
+ *   scaleX: 1.5,
+ *   scaleY: 1.5,
+ * })
+ */
+/** *****  7154dce1-ddd3-4dae-87a5-e4f8d39792ca  */
 function openMenu(key: string, options: MenuOptions, model: PanZoomMenuItemModelType[], style: {
   noStyle?: boolean
   scaleX?: number
@@ -244,7 +277,7 @@ function handCommand(item: PanZoomMenuItemModelType) {
 }
 
 onMounted(() => {
-  let firstResize = false
+  let firstResize = 0
   if (containerRef.value) {
     menuOptionsComponentRef.value = {
       x: 0,
@@ -260,9 +293,9 @@ onMounted(() => {
 
       emit('resize')
 
-      if (!firstResize) {
+      if (firstResize < 2) {
         rescale()
-        firstResize = true
+        firstResize++
       }
 
       stageConfigRef.value.width = rect.width
@@ -345,6 +378,7 @@ defineExpose({
           :label="menuModel.command"
           :checked="menuModel.highlight"
           :preserve-icon-width="menuModel.preserveIconWidth"
+          :icon="menuModel.icon"
           @click="handCommand(menuModel)"
         />
       </div>

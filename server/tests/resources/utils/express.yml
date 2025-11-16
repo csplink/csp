@@ -1,0 +1,769 @@
+SYS_TIM1:
+  context:
+    SYS_TIM1:
+      - bool
+SYS_TIM2:
+  context:
+    SYS_TIM2:
+      - bool
+SYS_TIM3:
+  context:
+    SYS_TIM3:
+      - bool
+SYS_TIM4:
+  context:
+    SYS_TIM4:
+      - bool
+SYS_TIM5:
+  context:
+    SYS_TIM5:
+      - bool
+SYS_TIM6:
+  context:
+    SYS_TIM6:
+      - bool
+SYS_TIM7:
+  context:
+    SYS_TIM7:
+      - bool
+SYS_TIM8:
+  context:
+    SYS_TIM8:
+      - bool
+SYS_TIM9:
+  context:
+    SYS_TIM9:
+      - bool
+SYS_TIM10:
+  context:
+    SYS_TIM10:
+      - bool
+SYS_TIM11:
+  context:
+    SYS_TIM11:
+      - bool
+SYS_TIM12:
+  context:
+    SYS_TIM12:
+      - bool
+SYS_TIM13:
+  context:
+    SYS_TIM13:
+      - bool
+SYS_TIM14:
+  context:
+    SYS_TIM14:
+      - bool
+SYS_TIM15:
+  context:
+    SYS_TIM15:
+      - bool
+SYS_TIM16:
+  context:
+    SYS_TIM16:
+      - bool
+SYS_TIM17:
+  context:
+    SYS_TIM17:
+      - bool
+SYS_TIM18:
+  context:
+    SYS_TIM18:
+      - bool
+SYS_TIM19:
+  context:
+    SYS_TIM19:
+      - bool
+SYS_TIM20:
+  context:
+    SYS_TIM20:
+      - bool
+SYS_TIM21:
+  context:
+    SYS_TIM21:
+      - bool
+SYS_TIM22:
+  context:
+    SYS_TIM22:
+      - bool
+SYS_TIM23:
+  context:
+    SYS_TIM23:
+      - bool
+SYS_RTC:
+  context:
+    SYS_RTC:
+      - bool
+'!TIM1':
+  context:
+    TIM1:
+      - bool
+'!TIM2':
+  context:
+    TIM2:
+      - bool
+'!TIM3':
+  context:
+    TIM3:
+      - bool
+'!TIM4':
+  context:
+    TIM4:
+      - bool
+'!TIM5':
+  context:
+    TIM5:
+      - bool
+'!TIM6':
+  context:
+    TIM6:
+      - bool
+'!TIM7':
+  context:
+    TIM7:
+      - bool
+'!TIM8':
+  context:
+    TIM8:
+      - bool
+'!TIM9':
+  context:
+    TIM9:
+      - bool
+'!TIM10':
+  context:
+    TIM10:
+      - bool
+'!TIM11':
+  context:
+    TIM11:
+      - bool
+'!TIM12':
+  context:
+    TIM12:
+      - bool
+'!TIM13':
+  context:
+    TIM13:
+      - bool
+'!TIM14':
+  context:
+    TIM14:
+      - bool
+'!TIM15':
+  context:
+    TIM15:
+      - bool
+'!TIM16':
+  context:
+    TIM16:
+      - bool
+'!TIM17':
+  context:
+    TIM17:
+      - bool
+'!TIM18':
+  context:
+    TIM18:
+      - bool
+'!TIM19':
+  context:
+    TIM19:
+      - bool
+'!TIM20':
+  context:
+    TIM20:
+      - bool
+'!TIM21':
+  context:
+    TIM21:
+      - bool
+'!TIM22':
+  context:
+    TIM22:
+      - bool
+'!TIM23':
+  context:
+    TIM23:
+      - bool
+VirtualMode = IrDA:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+$IpInstance_LIN:
+  context:
+    $IpInstance_LIN:
+      - bool
+VirtualMode = IrDA & WordLength=WORDLENGTH_8B:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_8B:
+      - rhs
+VirtualMode = IrDA & WordLength=WORDLENGTH_9B:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_9B:
+      - rhs
+WordLength=WORDLENGTH_8B:
+  context:
+    WordLength:
+      - lhs
+    WORDLENGTH_8B:
+      - rhs
+WordLength=WORDLENGTH_9B:
+  context:
+    WordLength:
+      - lhs
+    WORDLENGTH_9B:
+      - rhs
+StopBits=UART_STOPBITS_1:
+  context:
+    StopBits:
+      - lhs
+    UART_STOPBITS_1:
+      - rhs
+StopBits=UART_STOPBITS_2:
+  context:
+    StopBits:
+      - lhs
+    UART_STOPBITS_2:
+      - rhs
+VirtualMode = IrDA & $IpInstance_PARITY_NONE:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    $IpInstance_PARITY_NONE:
+      - bool
+VirtualMode = IrDA & $IpInstance_PARITY_EVEN:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    $IpInstance_PARITY_EVEN:
+      - bool
+VirtualMode = IrDA & $IpInstance_PARITY_ODD:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    $IpInstance_PARITY_ODD:
+      - bool
+$IpInstance_PARITY_NONE:
+  context:
+    $IpInstance_PARITY_NONE:
+      - bool
+$IpInstance_PARITY_EVEN:
+  context:
+    $IpInstance_PARITY_EVEN:
+      - bool
+$IpInstance_PARITY_ODD:
+  context:
+    $IpInstance_PARITY_ODD:
+      - bool
+VirtualMode = IrDA & S_$IpInstance_TX_RX:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    S_$IpInstance_TX_RX:
+      - bool
+VirtualMode = IrDA & S_$IpInstance_TX:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    S_$IpInstance_TX:
+      - bool
+VirtualMode = IrDA & S_$IpInstance_RX:
+  context:
+    VirtualMode:
+      - lhs
+    IrDA:
+      - rhs
+    S_$IpInstance_RX:
+      - bool
+S_$IpInstance_TX_RX:
+  context:
+    S_$IpInstance_TX_RX:
+      - bool
+S_$IpInstance_TX:
+  context:
+    S_$IpInstance_TX:
+      - bool
+S_$IpInstance_RX:
+  context:
+    S_$IpInstance_RX:
+      - bool
+(VirtualMode = Lin) | (VirtualMode = IrDA):
+  context:
+    VirtualMode:
+      - lhs
+    Lin:
+      - rhs
+    IrDA:
+      - rhs
+IrDAMode = IRDA_POWERMODE_NORMAL:
+  context:
+    IrDAMode:
+      - lhs
+    IRDA_POWERMODE_NORMAL:
+      - rhs
+DIE436|DIE427|DIE437|DIE416|STM32F1:
+  context:
+    DIE436:
+      - bool
+    DIE427:
+      - bool
+    DIE437:
+      - bool
+    DIE416:
+      - bool
+    STM32F1:
+      - bool
+WakeUpMethode = UART_WAKEUPMETHOD_ADDRESSMARK:
+  context:
+    WakeUpMethode:
+      - lhs
+    UART_WAKEUPMETHOD_ADDRESSMARK:
+      - rhs
+VirtualMode = VM_SYNC:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+VirtualMode = VM_IRDA:
+  context:
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+VirtualMode = VM_SMARTCARD:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+VirtualMode = VM_SYNC & WordLength=WORDLENGTH_8B:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_8B:
+      - rhs
+VirtualMode = VM_SYNC & WordLength=WORDLENGTH_9B:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_9B:
+      - rhs
+VirtualMode = VM_IRDA & WordLength=WORDLENGTH_8B:
+  context:
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_8B:
+      - rhs
+VirtualMode = VM_IRDA & WordLength=WORDLENGTH_9B:
+  context:
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_9B:
+      - rhs
+VirtualMode = VM_SMARTCARD & WordLength=WORDLENGTH_9B:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+    WordLength:
+      - lhs
+    WORDLENGTH_9B:
+      - rhs
+'$IpInstance_Asynchronous & (STM32F0 | STM32F3 | STM32L4) ':
+  context:
+    $IpInstance_Asynchronous:
+      - bool
+    STM32F0:
+      - bool
+    STM32F3:
+      - bool
+    STM32L4:
+      - bool
+$IpInstance_Asynchronous & STM32L0:
+  context:
+    $IpInstance_Asynchronous:
+      - bool
+    STM32L0:
+      - bool
+(VirtualMode = VM_SYNC) & StopBits=STOPBITS_2:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    StopBits:
+      - lhs
+    STOPBITS_2:
+      - rhs
+(VirtualMode = VM_SYNC) & StopBits=STOPBITS_1:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    StopBits:
+      - lhs
+    STOPBITS_1:
+      - rhs
+VirtualMode = VM_SYNC & StopBits=STOPBITS_1_5:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    StopBits:
+      - lhs
+    STOPBITS_1_5:
+      - rhs
+VirtualMode = VM_SYNC & StopBits=STOPBITS_0_5:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    StopBits:
+      - lhs
+    STOPBITS_0_5:
+      - rhs
+$IpInstance_Asynchronous & StopBits=STOPBITS_1:
+  context:
+    $IpInstance_Asynchronous:
+      - bool
+    StopBits:
+      - lhs
+    STOPBITS_1:
+      - rhs
+$IpInstance_Asynchronous & StopBits=STOPBITS_2:
+  context:
+    $IpInstance_Asynchronous:
+      - bool
+    StopBits:
+      - lhs
+    STOPBITS_2:
+      - rhs
+$IpInstance_Asynchronous & StopBits=STOPBITS_1_5:
+  context:
+    $IpInstance_Asynchronous:
+      - bool
+    StopBits:
+      - lhs
+    STOPBITS_1_5:
+      - rhs
+VirtualMode = VM_SMARTCARD & StopBits=STOPBITS_1_5:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+    StopBits:
+      - lhs
+    STOPBITS_1_5:
+      - rhs
+VirtualMode = VM_SMARTCARD & StopBits=STOPBITS_0_5:
+  context:
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+    StopBits:
+      - lhs
+    STOPBITS_0_5:
+      - rhs
+StopBits=STOPBITS_1:
+  context:
+    StopBits:
+      - lhs
+    STOPBITS_1:
+      - rhs
+StopBits=STOPBITS_2:
+  context:
+    StopBits:
+      - lhs
+    STOPBITS_2:
+      - rhs
+$IpInstance_PARITY_NONE & VirtualMode=VM_SYNC:
+  context:
+    $IpInstance_PARITY_NONE:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+$IpInstance_PARITY_ODD & VirtualMode=VM_SYNC:
+  context:
+    $IpInstance_PARITY_ODD:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+$IpInstance_PARITY_EVEN & VirtualMode=VM_SYNC:
+  context:
+    $IpInstance_PARITY_EVEN:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+$IpInstance_PARITY_NONE & VirtualMode=VM_IRDA:
+  context:
+    $IpInstance_PARITY_NONE:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+$IpInstance_PARITY_EVEN & VirtualMode=VM_IRDA:
+  context:
+    $IpInstance_PARITY_EVEN:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+$IpInstance_PARITY_ODD & VirtualMode=VM_IRDA:
+  context:
+    $IpInstance_PARITY_ODD:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+(Parity = PARITY_EVEN) & VirtualMode=VM_SMARTCARD:
+  context:
+    Parity:
+      - lhs
+    PARITY_EVEN:
+      - rhs
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+(Parity = PARITY_ODD) & VirtualMode=VM_SMARTCARD:
+  context:
+    Parity:
+      - lhs
+    PARITY_ODD:
+      - rhs
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+S_$IpInstance_TX_RX & VirtualMode=VM_SYNC:
+  context:
+    S_$IpInstance_TX_RX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+S_$IpInstance_TX & VirtualMode=VM_SYNC:
+  context:
+    S_$IpInstance_TX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+S_$IpInstance_RX & VirtualMode=VM_SYNC:
+  context:
+    S_$IpInstance_RX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+S_$IpInstance_TX_RX & VirtualMode=VM_SMARTCARD:
+  context:
+    S_$IpInstance_TX_RX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+S_$IpInstance_TX & VirtualMode=VM_SMARTCARD:
+  context:
+    S_$IpInstance_TX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+S_$IpInstance_RX & VirtualMode=VM_SMARTCARD:
+  context:
+    S_$IpInstance_RX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+S_$IpInstance_TX_RX & VirtualMode=VM_IRDA:
+  context:
+    S_$IpInstance_TX_RX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+S_$IpInstance_TX & VirtualMode=VM_IRDA:
+  context:
+    S_$IpInstance_TX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+S_$IpInstance_RX & VirtualMode=VM_IRDA:
+  context:
+    S_$IpInstance_RX:
+      - bool
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+$IpInstance_R:
+  context:
+    $IpInstance_R:
+      - bool
+$IpInstance_T:
+  context:
+    $IpInstance_T:
+      - bool
+$IpInstance_CTS_RTS:
+  context:
+    $IpInstance_CTS_RTS:
+      - bool
+((VirtualMode = VM_SYNC) | (VirtualMode = VM_IRDA) | (VirtualMode = VM_SMARTCARD) | $IpInstance_LIN):
+  context:
+    VirtualMode:
+      - lhs
+    VM_SYNC:
+      - rhs
+    VM_IRDA:
+      - rhs
+    VM_SMARTCARD:
+      - rhs
+    $IpInstance_LIN:
+      - bool
+VirtualClockMode = VM_SMARTCARD:
+  context:
+    VirtualClockMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+(IrDAMode = IRDA_POWERMODE_NORMAL) & (VirtualMode = VM_IRDA):
+  context:
+    IrDAMode:
+      - lhs
+    IRDA_POWERMODE_NORMAL:
+      - rhs
+    VirtualMode:
+      - lhs
+    VM_IRDA:
+      - rhs
+(VirtualMode=VM_SMARTCARD) & (VirtualClockMode=VM_SMARTCARD):
+  context:
+    VirtualMode:
+      - lhs
+    VM_SMARTCARD:
+      - rhs
+    VirtualClockMode:
+      - lhs
+$IpInstance_Asynchronous:
+  context:
+    $IpInstance_Asynchronous:
+      - bool
+STM32F0|STM32F1|STM32F2|STM32F3|STM32F4|STM32F7|STM32L0|STM32L1|STM32L4|STM32WB:
+  context:
+    STM32F0:
+      - bool
+    STM32F1:
+      - bool
+    STM32F2:
+      - bool
+    STM32F3:
+      - bool
+    STM32F4:
+      - bool
+    STM32F7:
+      - bool
+    STM32L0:
+      - bool
+    STM32L1:
+      - bool
+    STM32L4:
+      - bool
+    STM32WB:
+      - bool
+? F100_Value_Line &((($Index=1|$Index=2)& 
+  USE_ADC1&USE_ADC2)&(ADC1:InjNumberOfConversion=0)&(ADC2:InjNumberOfConversion=0))|((($IpInstance=ADC3|$IpInstance=ADC4)&USE_ADC3&USE_ADC4&(ADC3:InjNumberOfConversion=0)&(ADC4:InjNumberOfConversion=0)))
+: context:
+    F100_Value_Line:
+      - bool
+    $Index:
+      - lhs
+    USE_ADC1:
+      - bool
+    USE_ADC2:
+      - bool
+    ADC1:InjNumberOfConversion:
+      - lhs
+    ADC2:InjNumberOfConversion:
+      - lhs
+    $IpInstance:
+      - lhs
+    ADC3:
+      - rhs
+    ADC4:
+      - rhs
+    USE_ADC3:
+      - bool
+    USE_ADC4:
+      - bool
+    ADC3:InjNumberOfConversion:
+      - lhs
+    ADC4:InjNumberOfConversion:
+      - lhs

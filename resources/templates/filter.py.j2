@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+
+#
+# ------------------------------------------------------------------------------
+#  @author:            {{ CSP.author }}
+#  @file:              {{ CSP.file }}
+#  @version:           {{ CSP.version }}
+#  @time:              {{ CSP.time }}
+#
+# ------------------------------------------------------------------------------
+#  @attention
+#
+#  Copyright (C) {{ CSP.year }} csplink software.
+#  All rights reserved.
+#
+# ------------------------------------------------------------------------------
+#
+
+{%- macro format_value(value) -%}
+    {%- if value is string -%}
+"{{ value }}"
+    {%- else -%}
+{{ value }}
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro format_type(type) -%}
+    {%- if type is string -%}
+{{ type }}
+    {%- else -%}
+{{ " | ".join(type) }}
+    {%- endif -%}
+{%- endmacro -%}
+{# #}
+
+from typing import Literal
+
+from csp.project import Project
+
+# --< user code begin import, do not change this comment!
+{%- if CSP.user_code["import"] and CSP.user_code["import"].strip() %}
+{{ CSP.user_code["import"] }}
+{%- else %}
+# isort: off
+{{ CSP.user_code["import"] }}
+# isort: on
+{%- endif %}
+# --> user code end import, do not change this comment!
+
+# ------------------------------------------------------------------------------
+# region autogen filters
+# fmt: off
+
+
+{%- for name, item in CSP.parameters.items() %}
+    {%- if item.type is string -%}
+        {%- if item.type.endswith("_return_type") %}
+{# #}
+{{ item.type }} = Literal[
+            {%- for value in item["values"] %}
+    "{{ value }}",
+            {%- endfor %}
+]
+{# #}
+        {%- endif %}
+    {%- else %}
+        {%- for type in item.type %}
+            {%- if type.endswith("_return_type") %}
+{# #}
+{{ type }} = Literal[
+                {%- for value in item["values"] %}
+    "{{ value }}",
+                {%- endfor %}
+]
+{# #}
+            {%- endif %}
+        {%- endfor %}
+    {%- endif %}
+{%- endfor -%}
+
+{%- for name, item in CSP.parameters.items() %}
+{# #}
+def {{ name }}(
+    project: Project,
+    {%- if CSP.channel %}
+    channel: str,
+    {%- endif %}
+    instance: str = "{{ CSP.instance }}",
+    default: {{ format_type(item.type) }} = {{ format_value(item.default) }},
+) -> {{ format_type(item.type) }}:
+    return project.configs.get({{ item.path }}, default)
+{# #}
+{%- endfor -%}
+
+{%- if CSP.channel %}
+{# #}
+def {{ CSP.instance.lower() }}_channels(
+    project: Project,
+    instance: str = "{{ CSP.instance }}",
+) -> list[str]:
+    return list(project.configs.get(instance, {}).keys())
+{# #}
+{%- endif %}
+
+{%- if CSP.pin %}
+{# #}
+def pin_function(
+    project: Project,
+    channel: str,
+    default: str = "",
+) -> str:
+    return project.configs.get(f"pins.{channel}.function", default)
+
+
+def pin_label(
+    project: Project,
+    channel: str,
+    default: str = "",
+) -> str:
+    return project.configs.get(f"pins.{channel}.label", default)
+
+
+def pin_locked(
+    project: Project,
+    channel: str,
+    default: bool = False,
+) -> bool:
+    return project.configs.get(f"pins.{channel}.locked", default)
+
+
+def pin_mode(
+    project: Project,
+    channel: str,
+    default: str = "",
+) -> str:
+    return project.configs.get(f"pins.{channel}.mode", default)
+
+
+def pin_channels(
+    project: Project,
+) -> str:
+    return list(project.configs.get("pins", {}).keys())
+{%- endif %}
+{# #}
+{# #}
+# fmt: on
+# endregion
+# ------------------------------------------------------------------------------
+{# #}
+{# #}
+# --< user code begin code, do not change this comment!
+{{ CSP.user_code["code"] }}
+# --> user code end code, do not change this comment!
+{# #}

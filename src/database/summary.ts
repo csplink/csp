@@ -28,39 +28,44 @@
  */
 
 import type {
-  SummaryClockTreeType,
   SummaryDocumentType,
   SummaryDocumentUnitType,
+  SummaryDocumentUnitTypeType,
   SummaryLinkerType,
   SummaryModuleType,
   SummaryModuleUintType,
   SummaryPinType,
   SummaryType,
-} from '@/electron/database'
-import type { App } from 'vue'
+} from '@/electron/types'
+import type { App, WritableComputedRef } from 'vue'
+import type { ClockTreeManager } from './clockTree'
 import type { IpManager } from './ip'
-import { inject } from 'vue'
-import { I18n } from './i18n'
+import { computed, inject } from 'vue'
+import { I18n } from '~/i18n'
 
 // #region typedef
 
 export class Summary {
-  private _origin: SummaryType
-  private _clockTree?: SummaryClockTree
-  private _vendorUrl?: I18n
+  private _vendorUrl: I18n
   private _documents?: SummaryDocument
-  private _illustrate?: I18n
-  private _introduction?: I18n
+  private _illustrate: I18n
+  private _introduction: I18n
   private _modules?: SummaryModule
-  private _url?: I18n
+  private _url: I18n
   private _linker?: SummaryLinker
   private _pins?: Record<string, SummaryPin>
 
   private _moduleList?: Record<string, SummaryModuleUnit>
   private _pinInstance?: string
 
-  constructor(origin: SummaryType) {
-    this._origin = origin
+  constructor(
+    private _origin: SummaryType,
+    public locale: WritableComputedRef<string>,
+  ) {
+    this._vendorUrl = new I18n(this._origin.vendorUrl)
+    this._illustrate = new I18n(this._origin.illustrate)
+    this._introduction = new I18n(this._origin.introduction)
+    this._url = new I18n(this._origin.url)
   }
 
   get origin(): SummaryType {
@@ -71,20 +76,20 @@ export class Summary {
     return this._origin.name
   }
 
-  get clockTree(): SummaryClockTree {
-    return this._clockTree ??= new SummaryClockTree(this._origin.clockTree)
+  get clockTree(): string {
+    return this._origin.clockTree
   }
 
   get vendor(): string {
     return this._origin.vendor
   }
 
-  get vendorUrl(): I18n {
-    return this._vendorUrl ??= new I18n(this._origin.vendorUrl)
-  }
+  vendorUrl = computed(() => {
+    return this._vendorUrl.get(this.locale.value)
+  })
 
   get documents(): SummaryDocument {
-    return this._documents ??= new SummaryDocument(this._origin.documents)
+    return this._documents ??= new SummaryDocument(this._origin.documents, this.locale)
   }
 
   get hals(): string[] {
@@ -95,13 +100,13 @@ export class Summary {
     return this._origin.hasPowerPad
   }
 
-  get illustrate(): I18n {
-    return this._illustrate ??= new I18n(this._origin.illustrate)
-  }
+  illustrate = computed(() => {
+    return this._illustrate.get(this.locale.value)
+  })
 
-  get introduction(): I18n {
-    return this._introduction ??= new I18n(this._origin.introduction)
-  }
+  introduction = computed(() => {
+    return this._introduction.get(this.locale.value)
+  })
 
   get modules(): SummaryModule {
     return this._modules ??= new SummaryModule(this._origin.modules)
@@ -111,12 +116,16 @@ export class Summary {
     return this._origin.package
   }
 
-  get url(): I18n {
-    return this._url ??= new I18n(this._origin.url)
+  url = computed(() => {
+    return this._url.get(this.locale.value)
+  })
+
+  get io(): number {
+    return this._origin.io
   }
 
-  get builder(): Record<string, Record<string, string[]>> {
-    return this._origin.builder
+  get builders(): Record<string, Record<string, string[]>> {
+    return this._origin.builders
   }
 
   get linker(): SummaryLinker | null {
@@ -139,7 +148,7 @@ export class Summary {
     return this._pins
   }
 
-  moduleList(): Record<string, SummaryModuleUnit> {
+  get moduleList(): Record<string, SummaryModuleUnit> {
     if (!this._moduleList) {
       this._moduleList = {}
       for (const group of [this.modules.peripherals, this.modules.middlewares]) {
@@ -153,7 +162,7 @@ export class Summary {
     return this._moduleList
   }
 
-  pinInstance(): string {
+  get pinInstance(): string {
     if (!this._pinInstance) {
       for (const pin of Object.values(this.pins)) {
         if (pin.modes.length > 0) {
@@ -164,36 +173,28 @@ export class Summary {
     }
     return this._pinInstance ?? ''
   }
-}
 
-export class SummaryClockTree {
-  private _origin: SummaryClockTreeType
-
-  constructor(_origin: SummaryClockTreeType) {
-    this._origin = _origin
-  }
-
-  get origin(): SummaryClockTreeType {
-    return this._origin
-  }
-
-  get svg(): string {
-    return this._origin.svg
-  }
-
-  get ip(): string {
-    return this._origin.ip
+  findPinsBySignals(signals: string[]): string[] {
+    const matchedPins: string[] = []
+    for (const [pinName, pin] of Object.entries(this.pins)) {
+      const pinSignals = pin.signals
+      if (signals.some(signal => pinSignals.includes(signal))) {
+        matchedPins.push(pinName)
+      }
+    }
+    return matchedPins
   }
 }
 
 export class SummaryDocument {
-  private _origin: SummaryDocumentType
   private _datasheets?: Record<string, SummaryDocumentUnit>
   private _errata?: Record<string, SummaryDocumentUnit>
   private _references?: Record<string, SummaryDocumentUnit>
 
-  constructor(_origin: SummaryDocumentType) {
-    this._origin = _origin
+  constructor(
+    private _origin: SummaryDocumentType,
+    public locale: WritableComputedRef<string>,
+  ) {
   }
 
   get origin(): SummaryDocumentType {
@@ -203,41 +204,58 @@ export class SummaryDocument {
   private _getUnits(units: Record<string, SummaryDocumentUnitType>) {
     const result: Record<string, SummaryDocumentUnit> = {}
     for (const [key, value] of Object.entries(units)) {
-      result[key] = new SummaryDocumentUnit(value)
+      result[key] = new SummaryDocumentUnit(value, this.locale)
     }
     return result
   }
 
-  get datasheets() {
+  get datasheets(): Record<string, SummaryDocumentUnit> {
     return this._datasheets ??= this._getUnits(this._origin.datasheets ?? {})
   }
 
-  get errata() {
+  get errata(): Record<string, SummaryDocumentUnit> {
     return this._errata ??= this._getUnits(this._origin.errata ?? {})
   }
 
-  get references() {
+  get references(): Record<string, SummaryDocumentUnit> {
     return this._references ??= this._getUnits(this._origin.references ?? {})
   }
 }
 
 export class SummaryDocumentUnit {
-  private _origin: SummaryDocumentUnitType
-  private _url?: I18n
+  private _url: I18n
+  private _description: I18n
 
-  constructor(_origin: SummaryDocumentUnitType) {
-    this._origin = _origin
+  constructor(
+    private _origin: SummaryDocumentUnitType,
+    public locale: WritableComputedRef<string>,
+  ) {
+    this._url = new I18n(this._origin.url)
+    this._description = new I18n(this._origin.description)
   }
 
   get origin(): SummaryDocumentUnitType {
     return this._origin
   }
 
-  get url(): I18n {
-    if (!this._url) {
-      this._url = new I18n(this._origin.url)
-    }
-    return this._url
+  url = computed(() => {
+    return this._url.get(this.locale.value)
+  })
+
+  get type(): SummaryDocumentUnitTypeType {
+    return this._origin.type
+  }
+
+  description = computed(() => {
+    return this._description.get(this.locale.value)
+  })
+
+  get size(): string {
+    return this._origin.size
+  }
+
+  get version(): string {
+    return this._origin.version
   }
 }
 
@@ -378,19 +396,28 @@ export class SummaryPin {
 // #endregion
 
 export class SummaryManager {
-  private _ipManager: IpManager
+  private _clockTreeManager?: ClockTreeManager
+  private _ipManager?: IpManager
   private _map: Record<string, Record<string, Summary>> = {}
 
-  constructor(ipManager: IpManager) {
+  constructor() {
+  }
+
+  setIpManager(ipManager: IpManager) {
     this._ipManager = ipManager
   }
 
-  async load(vendor: string, name: string) {
+  setClockTreeManager(clockTreeManager: ClockTreeManager) {
+    this._clockTreeManager = clockTreeManager
+  }
+
+  async load(vendor: string, name: string, locale: WritableComputedRef<string>) {
     const content = await window.electron.invoke('database:getSummary', vendor, name) as SummaryType
     if (content) {
-      const summary = new Summary(content)
+      const summary = new Summary(content, locale)
 
-      this._loadIpPeripherals(summary.modules.peripherals, summary.vendor);
+      await this._loadIpPeripherals(summary.modules.peripherals, summary)
+      await this._clockTreeManager?.load(vendor, name, summary.clockTree);
 
       (this._map[vendor] ??= {})[name] = summary
     }
@@ -404,31 +431,37 @@ export class SummaryManager {
     return null
   }
 
-  private _loadIpPeripherals(modules: Record<string, SummaryModuleUnit>, vendor: string) {
+  private async _loadIpPeripherals(modules: Record<string, SummaryModuleUnit>, summary: Summary) {
     for (const [name, module] of Object.entries(modules)) {
       if (module.define) {
-        this._ipManager.loadPeripheral(vendor, name, module.define)
+        await this._ipManager?.loadPeripheral(summary.vendor, name, module.define, summary)
       }
       if (module.children) {
-        this._loadIpPeripherals(module.children, vendor)
+        await this._loadIpPeripherals(module.children, summary)
       }
     }
   }
 }
 
-export function createSummaryManagerPlugin(ipManager: IpManager) {
-  const manager = new SummaryManager(ipManager)
+export function createSummaryManagerPlugin() {
+  const manager = new SummaryManager()
 
   return {
-    value: manager,
+    manager,
     plugin: {
       install(app: App) {
-        app.provide('database:summaryManager', manager)
+        app.provide('database@summaryManager', manager)
       },
+    },
+    setIpManager(ipManager: IpManager) {
+      manager.setIpManager(ipManager)
+    },
+    setClockTreeManager(clockTreeManager: ClockTreeManager) {
+      manager.setClockTreeManager(clockTreeManager)
     },
   }
 }
 
 export function useSummaryManager(): SummaryManager {
-  return inject('database:summaryManager')!
+  return inject('database@summaryManager')!
 }

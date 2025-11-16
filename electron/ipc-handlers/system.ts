@@ -24,16 +24,42 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2025-05-23     xqyjlj       initial version
+ *  2025-08-04     xqyjlj       initial version
  */
 
-import { BrowserWindow, ipcMain } from 'electron'
+import type { BrowserWindowArgsType, SystemBrowserWindow } from '@/electron/types'
+import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron'
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { createWindow } from '../src/window'
+import { getExeFolder } from '../utils'
 
 export function registerSystemHandler() {
-  ipcMain.on('system:maximize', (_event) => {
-    const win = BrowserWindow.getFocusedWindow()
-    if (win) {
-      win.maximize()
+  ipcMain.on('system:openUrl', (_event, url: string) => {
+    shell.openExternal(url)
+  })
+  ipcMain.handle('system:getArgs', (event: IpcMainInvokeEvent) => {
+    const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
+    return win.userData
+  })
+  ipcMain.handle('system:isDev', (_event) => {
+    if (!app.isPackaged) {
+      return true
     }
+
+    const devFilePath = join(getExeFolder(), '.dev')
+
+    if (existsSync(devFilePath)) {
+      return true
+    }
+
+    return false
+  })
+  ipcMain.on('system:createWindow', (event: IpcMainEvent, args: BrowserWindowArgsType) => {
+    const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
+    const data = win.userData!
+    args.backendUrl = data.backendUrl
+    createWindow(args)
   })
 }

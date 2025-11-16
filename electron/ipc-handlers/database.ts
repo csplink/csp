@@ -27,171 +27,121 @@
  *  2025-04-29     xqyjlj       initial version
  */
 
-import type {
-  ContributorType,
-  IpType,
-  ProjectType,
-  SummaryType,
-} from '@/electron/database'
+import type { ClockTreeType, IpType, RepositoryType, SummaryType } from '@/electron/types'
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { app, ipcMain } from 'electron'
-import yaml, { Scalar } from 'yaml'
+import { ipcMain } from 'electron'
+import yaml from 'yaml'
 import {
-  getProjectPath,
-} from '../database'
-import { validateDataBySchema } from '../utils'
+  extractYamlHeader,
+  getDefaultYamlHeader,
+  getDiagramsFolder,
+  getResourceFolder,
+  getYamlData,
+  sortObjectKeysDeep,
+} from '../utils'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const __root = path.join(__dirname, '..')
-const __resourcePath = app.isPackaged ? process.resourcesPath : path.join(__root, 'resources')
-const __specialWords = new Set(['yes', 'no', 'on', 'off'])
-
-function getJsonData(file: string, schema: string, _default: any) {
-  if (!fs.existsSync(file)) {
-    console.error(`The file '${file}' is not exits.`)
-    return _default
-  }
-
-  const content = fs.readFileSync(file, 'utf-8')
-  const parsedData = JSON.parse(content)
-  const result = validateDataBySchema(__resourcePath, parsedData, schema)
-  if (!result.result) {
-    console.error(`Failed to load file '${file}'`)
-    console.error(result.errors)
-    return _default
-  }
-  return parsedData
-}
-
-function getYamlData(file: string, schema: string, _default: any) {
-  if (!fs.existsSync(file)) {
-    console.error(`The file '${file}' is not exits.`)
-    return _default
-  }
-
-  const content = fs.readFileSync(file, 'utf-8')
-  const parsedData = yaml.parse(content)
-  const result = validateDataBySchema(__resourcePath, parsedData, schema)
-  if (!result.result) {
-    console.error(`Failed to load file '${file}'`)
-    console.error(result.errors)
-    return _default
-  }
-  return parsedData
-}
-
-function getContributors(): ContributorType[] {
-  const data: ContributorType[] = getJsonData(path.join(__resourcePath, 'contributors', 'contributors'), 'contributors', [])
-  const contributors: ContributorType[] = []
-  data.forEach((element) => {
-    element.avatar = `local:///${path.join(__resourcePath, 'contributors', element.avatar)}`
-    contributors.push(element)
-  })
-  return contributors
+const pathMap = {
+  DIAGRAMS_FOLDER: getDiagramsFolder(),
 }
 
 function getSummary(vendor: string, name: string): SummaryType | null {
-  const data = getYamlData(path.join(__resourcePath, 'database', 'summary', vendor, `${name}.yml`), 'summary', null)
+  const data = getYamlData(path.join(getResourceFolder(), 'database', 'summary', vendor, `${name}.yml`), 'summary', null)
   return data
 }
 
 function getClockTree(vendor: string, name: string): string {
-  const basePath = path.join(__resourcePath, 'database', 'clock', vendor)
-  const svg = fs.readFileSync(path.join(basePath, `${name}.svg`), 'utf-8')
+  const data = getYamlData(path.join(getResourceFolder(), 'database', 'clock', vendor, `${name}.yml`), 'clockTree', null)
+  return data
+}
 
-  return svg
+async function saveClockTree(vendor: string, name: string, clockTree: ClockTreeType) {
+  const p = path.join(getResourceFolder(), 'database', 'clock', vendor, `${name}.yml`)
+
+  /* !< Extract or create header */
+  let header = ''
+  try {
+    const existingContent = await fs.promises.readFile(p, 'utf8')
+    header = extractYamlHeader(existingContent)
+  }
+  catch {
+    /* !< File doesn't exist or can't be read, use default header */
+  }
+
+  if (!header) {
+    header = getDefaultYamlHeader(`${name}.yml`)
+  }
+
+  const wrappedData = sortObjectKeysDeep(clockTree)
+  const yamlContent = yaml.stringify(wrappedData, {
+    defaultStringType: 'PLAIN',
+  })
+
+  await fs.promises.writeFile(p, header + yamlContent, 'utf8')
 }
 
 function getIp(type: string, vendor: string, name: string): IpType | null {
-  const data = getYamlData(path.join(__resourcePath, 'database', 'ip', type, vendor, `${name}.yml`), 'ip', null)
-  return data
-}
+  const folder = path.join(getResourceFolder(), 'database', 'ip', type, vendor)
+  const data = getYamlData(path.join(folder, `${name}.yml`), 'ip', null) as IpType
+  if (!data?.diagrams)
+    return data
 
-function getProject(): ProjectType | null {
-  const data = getYamlData(getProjectPath(), 'project', null)
-  return data
-}
+  const resolveImages = (images: string[]): string[] => {
+    return images.map((image) => {
+      let src = image
 
-function sortKeysDeep(obj: any): any {
-  if (Array.isArray(obj)) {
-    return obj.map(sortKeysDeep)
-  }
-  else if (obj && typeof obj === 'object') {
-    return Object.keys(obj)
-      .sort()
-      .reduce((acc, key) => {
-        acc[key] = sortKeysDeep(obj[key])
-        return acc
-      }, {} as any)
-  }
-  return obj
-}
+      for (const [key, value] of Object.entries(pathMap)) {
+        const pattern = new RegExp(`\\$\\{${key}\\}`, 'g')
+        src = src.replace(pattern, value)
+      }
 
-/**
- * Wrap special strings with single quote.
- *
- * In YAML, words like 'yes', 'no', 'on', 'off' are special strings that
- * cannot be used as keys directly. This function wraps these words with
- * single quotes to make them valid.
- *
- * @param obj the object to be wrapped
- * @returns the wrapped object
- */
-function wrapSpecialStrings(obj: any): any {
-  if (typeof obj === 'string') {
-    if (__specialWords.has(obj.toLowerCase())) {
-      const scalar = new Scalar(obj)
-      scalar.type = 'QUOTE_SINGLE'
-      return scalar
-    }
-    return obj
-  }
-  else if (Array.isArray(obj)) {
-    return obj.map(wrapSpecialStrings)
-  }
-  else if (obj && typeof obj === 'object') {
-    const result: Record<string, any> = {}
-    for (const key in obj) {
-      result[key] = wrapSpecialStrings(obj[key])
-    }
-    return result
-  }
-  return obj
-}
+      if (!path.isAbsolute(src)) {
+        src = path.join(folder, src)
+      }
 
-function saveProject(project: ProjectType) {
-  const projectPath = getProjectPath()
-  if (projectPath) {
-    const wrappedData = wrapSpecialStrings(sortKeysDeep(project))
-    const content = yaml.stringify(wrappedData, {
-      defaultStringType: 'PLAIN',
+      return `diagrams:///${src}`
     })
-    fs.writeFileSync(projectPath, content, 'utf8')
   }
+
+  if (Array.isArray(data.diagrams)) {
+    for (const diagram of data.diagrams) {
+      diagram.content.images = resolveImages(diagram.content.images)
+    }
+  }
+  else {
+    data.diagrams.images = resolveImages(data.diagrams.images)
+  }
+
+  return data
+}
+
+function getRepository(): RepositoryType {
+  const _default: RepositoryType = {
+    chips: {},
+    packages: {
+      hal: {},
+      toolchains: {},
+      components: {},
+    },
+  }
+  const data = getYamlData(path.join(getResourceFolder(), 'database', 'repository.yml'), 'repository', _default)
+  return data
 }
 
 export function registerDatabaseHandler() {
-  ipcMain.handle('database:getContributors', async (_event) => {
-    return getContributors()
-  })
   ipcMain.handle('database:getSummary', async (_event, vendor: string, name: string) => {
     return getSummary(vendor, name)
   })
   ipcMain.handle('database:getClockTree', async (_event, vendor: string, name: string) => {
     return getClockTree(vendor, name)
   })
+  ipcMain.on('database:setClockTree', async (_event, vendor: string, name: string, clockTree: ClockTreeType) => {
+    await saveClockTree(vendor, name, clockTree)
+  })
   ipcMain.handle('database:getIp', async (_event, type: string, vendor: string, name: string) => {
     return getIp(type, vendor, name)
   })
-  ipcMain.handle('database:getProject', async (_event) => {
-    return getProject()
-  })
-  ipcMain.handle('database:getProjectPath', async (_event) => {
-    return getProjectPath()
-  })
-  ipcMain.on('database:saveProject', async (_event, project: ProjectType) => {
-    saveProject(project)
+  ipcMain.handle('database:getRepository', async (_event) => {
+    return getRepository()
   })
 }

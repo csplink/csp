@@ -28,8 +28,6 @@
  */
 
 export * from './clockTree'
-export * from './contributors'
-export * from './i18n'
 export * from './ip'
-export * from './project'
+export * from './repository'
 export * from './summary'

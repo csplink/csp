@@ -1,0 +1,325 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        GPIO-STM32F103xC_gpio_v1_0_Modes.yml.target
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-11-09     xqyjlj       initial version
+#
+
+name: GPIO
+parameters:
+  gpio_mode_t:
+    type: enum
+    values:
+      input:
+        comment:
+          zh-cn: Input mode
+          en: Input mode
+      output_pp:
+        comment:
+          zh-cn: Output Push Pull
+          en: Output Push Pull
+      output_od:
+        comment:
+          zh-cn: Output Open Drain
+          en: Output Open Drain
+      af_pp:
+        comment:
+          zh-cn: Alternate Function Push Pull
+          en: Alternate Function Push Pull
+      af_od:
+        comment:
+          zh-cn: Alternate Function Open Drain
+          en: Alternate Function Open Drain
+      analog:
+        comment:
+          zh-cn: Analog mode
+          en: Analog mode
+      it_rising:
+        comment:
+          zh-cn: External Interrupt Mode with Rising edge trigger detection
+          en: External Interrupt Mode with Rising edge trigger detection
+      it_falling:
+        comment:
+          zh-cn: External Interrupt Mode with Falling edge trigger detection
+          en: External Interrupt Mode with Falling edge trigger detection
+      it_rising_falling:
+        comment:
+          zh-cn: External Interrupt Mode with Rising/Falling edge trigger detection
+          en: External Interrupt Mode with Rising/Falling edge trigger detection
+      evt_rising:
+        comment:
+          zh-cn: External Event Mode with Rising edge trigger detection
+          en: External Event Mode with Rising edge trigger detection
+      evt_falling:
+        comment:
+          zh-cn: External Event Mode with Falling edge trigger detection
+          en: External Event Mode with Falling edge trigger detection
+      evt_rising_falling:
+        comment:
+          zh-cn: External Event Mode with Rising/Falling edge trigger detection
+          en: External Event Mode with Rising/Falling edge trigger detection
+    default: input
+    display:
+      zh-cn: GPIO mode
+      en: GPIO mode
+    description:
+      zh-cn: GPIO mode
+      en: GPIO mode
+    visible: true
+    readonly: false
+  gpio_pull_t:
+    type: enum
+    values:
+      nopull:
+        comment:
+          zh-cn: No pull-up and no pull-down
+          en: No pull-up and no pull-down
+      pullup:
+        comment:
+          zh-cn: Pull-up
+          en: Pull-up
+      pulldown:
+        comment:
+          zh-cn: Pull-down
+          en: Pull-down
+    default: nopull
+    display:
+      zh-cn: GPIO Pull-up/Pull-down
+      en: GPIO Pull-up/Pull-down
+    description:
+      zh-cn: GPIO Pull-up/Pull-down
+      en: GPIO Pull-up/Pull-down
+    visible: true
+    readonly: false
+  gpio_speed_t:
+    type: enum
+    values:
+      low:
+        comment:
+          zh-cn: Low
+          en: Low
+      medium:
+        comment:
+          zh-cn: Medium
+          en: Medium
+      high:
+        comment:
+          zh-cn: High
+          en: High
+    default: low
+    display:
+      zh-cn: Maximum output speed
+      en: Maximum output speed
+    description:
+      zh-cn: Maximum output speed
+      en: Maximum output speed
+    visible: true
+    readonly: false
+  gpio_state_t:
+    type: enum
+    values:
+      reset:
+        comment:
+          zh-cn: Low
+          en: Low
+      set:
+        comment:
+          zh-cn: High
+          en: High
+    default: reset
+    display:
+      zh-cn: GPIO output level
+      en: GPIO output level
+    description:
+      zh-cn: GPIO output level
+      en: GPIO output level
+    visible: true
+    readonly: false
+presets:
+  Analog:
+    refParameters:
+      gpio_mode_t:
+        values:
+          - analog
+        default: analog
+  Input:
+    refParameters:
+      gpio_pull_t: {}
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  InputFloating:
+    refParameters:
+      gpio_pull_t:
+        values:
+          - nopull
+        default: nopull
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  InputFloatingAndPullUp:
+    refParameters:
+      gpio_pull_t:
+        values:
+          - nopull
+          - pullup
+        default: nopull
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  InputPullUp:
+    refParameters:
+      gpio_pull_t:
+        values:
+          - pullup
+        default: pullup
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  InputPullDown:
+    refParameters:
+      gpio_pull_t:
+        values:
+          - pulldown
+        default: pulldown
+      gpio_mode_t:
+        values:
+          - input
+        default: input
+  Output:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_pull_t: {}
+      gpio_mode_t:
+        values:
+          - output_pp
+          - output_od
+        default: output_pp
+      gpio_state_t: {}
+  AlternateFunctionPushPull:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+        default: af_pp
+  AlternateFunctionPushPullPULLUP:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+        default: af_pp
+  AlternateFunctionPushPullUp:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+        default: af_pp
+  AlternateFunctionOpenDrain:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_od
+        default: af_od
+  AlternateFunctionOpenDrainAndPushPullDefaultPP:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+          - af_od
+        default: af_pp
+  AlternateFunctionOpenDrainAndPushPull:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+          - af_od
+        default: af_pp
+  AlternateFunctionPushPullHighSpeed:
+    refParameters:
+      gpio_speed_t:
+        values:
+          - high
+        default: high
+      gpio_mode_t:
+        values:
+          - af_pp
+        default: af_pp
+  AlternateFunctionPushPullHighSpeedDefault:
+    refParameters:
+      gpio_speed_t:
+        default: high
+      gpio_mode_t:
+        values:
+          - af_pp
+        default: af_pp
+  EXTI:
+    refParameters:
+      gpio_pull_t: {}
+      gpio_mode_t:
+        values:
+          - it_rising
+          - it_falling
+          - it_rising_falling
+          - evt_rising
+          - evt_falling
+          - evt_rising_falling
+        default: it_rising
+  EVENTOUT:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_pp
+          - af_od
+        default: af_pp
+  AlternateFunctionOpenDrainAndPushPullDefaultOD:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_od
+          - af_pp
+        default: af_od
+  AlternateFunctionOpenDrainNoPullOrPullUp:
+    refParameters:
+      gpio_speed_t: {}
+      gpio_mode_t:
+        values:
+          - af_od
+        default: af_od
+  System:
+    refParameters: {}
+containers:
+  overview:
+    refParameters:
+      gpio_mode_t: {}
+      gpio_pull_t: {}
+      gpio_speed_t: {}
+      gpio_state_t: {}
+activated: not is_empty(configs.GPIO)

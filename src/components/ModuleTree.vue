@@ -30,15 +30,17 @@
 <script setup lang="ts">
 import type { MenuOptions } from '@imengyu/vue3-context-menu'
 import type { ElTree, TreeNode } from 'element-plus'
-import type { Project, Summary, SummaryModuleUnit } from '~/database'
+import type { Ref } from 'vue'
+import type { SummaryModuleUnit } from '~/database'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useIpManager, useProjectManager, useSummaryManager } from '~/database'
+import { useIpManager, useSummaryManager } from '~/database'
+import { useProjectManager } from '~/utils'
 
 interface TreeType {
   key: string
   label: string
-  highlight: boolean
+  highlight: Ref<boolean>
   description?: string
   define?: string
   children?: TreeType[]
@@ -57,11 +59,12 @@ const ipManager = useIpManager()
 const i18n = useI18n()
 const { t } = i18n
 
+const project = projectManager.get()!
+const summary = summaryManager.get(project.vendor, project.targetChip)
+
 const defaultExpandedKeys = ref<string[]>([])
-const treeModelRef = ref<TreeType[]>([])
-const summaryRef = ref<Summary>()
-const projectRef = ref<Project>()
-const treeModelsMapRef = ref<Record<string, TreeType>>({})
+const treeModel = ref<TreeType[]>([])
+const treeModelsMap = ref<Record<string, TreeType>>({})
 const menuHighlightActionModels = ref<string[]>([])
 const menuShowRef = ref(false)
 const menuOptionsComponentRef = ref<MenuOptions>({
@@ -71,28 +74,28 @@ const menuOptionsComponentRef = ref<MenuOptions>({
 })
 
 async function loadModules() {
-  if (!projectRef.value || !summaryRef.value) {
+  if (!summary) {
     return
   }
-  const project = projectRef.value
-  const summary = summaryRef.value
 
   const peripherals = summary.modules.peripherals
   const middlewares = summary.modules.middlewares
 
+  defaultExpandedKeys.value = []
+
   function convertToTree(modules: Record<string, SummaryModuleUnit>, parent: string): TreeType[] {
     return Object.entries(modules).map(([name, module]) => {
       const node_key = `${parent}.${name}`
-      const highlight = project.modules.includes(name)
+      const ip = ipManager.getPeripheral(project.vendor, name)
       defaultExpandedKeys.value.push(node_key)
       const node: TreeType = {
         key: node_key,
         label: name,
-        highlight,
+        highlight: ip?.activated ?? ref(false),
         description: module.description.get(i18n.locale.value),
         define: module.define,
       }
-      treeModelsMapRef.value[name] = node
+      treeModelsMap.value[name] = node
       if (module.children) {
         node.children = convertToTree(module.children, node_key)
       }
@@ -104,17 +107,17 @@ async function loadModules() {
   const peripheralsTree = convertToTree(peripherals, 'peripherals')
   const middlewaresTree = convertToTree(middlewares, 'middlewares')
 
-  treeModelRef.value = [
+  treeModel.value = [
     {
       key: 'peripherals',
       label: t('moduleTree.peripherals'),
-      highlight: false,
+      highlight: ref(false),
       children: peripheralsTree,
     },
     {
       key: 'middlewares',
       label: t('moduleTree.middlewares'),
-      highlight: false,
+      highlight: ref(false),
       children: middlewaresTree,
     },
   ]
@@ -126,33 +129,14 @@ function handleNodeClick(data: TreeType) {
   emit('click', data.label)
 }
 
-function onProjectModulesChanged(payload: { oldValue: string[], newValue: string[] }) {
-  const [oldValue, newValue] = [payload.oldValue, payload.newValue]
-  if (oldValue.length > newValue.length) {
-    const only = oldValue.filter(x => !newValue.includes(x))
-    for (const module of only) {
-      treeModelsMapRef.value[module].highlight = false
-    }
-  }
-  else {
-    const only = newValue.filter(x => !oldValue.includes(x))
-    for (const module of only) {
-      treeModelsMapRef.value[module].highlight = true
-    }
-  }
-}
-
 function handleContextMenu(event: MouseEvent, data: TreeType, _node: TreeNode, _component: InstanceType<typeof ElTree>) {
   event.preventDefault()
 
   const name = data.label
-  const project = projectRef.value
-  if (!project) {
-    return
-  }
+
   const ip = ipManager.getPeripheral(project.vendor, name)
   if (ip) {
-    menuHighlightActionModels.value = ip.signals
+    menuHighlightActionModels.value = ip.signals.value
   }
   else {
     menuHighlightActionModels.value = []
@@ -176,24 +160,11 @@ function handCommand(command: string) {
   emit('command', command, menuHighlightActionModels.value)
 }
 
-onMounted(async () => {
-  const project = projectManager.get()
-  if (project) {
-    projectRef.value = project
-    const summary = summaryManager.get(project.vendor, project.targetChip)
-    if (summary) {
-      summaryRef.value = summary
-      loadModules()
-    }
-    project.emitter.on('modulesChanged', onProjectModulesChanged)
-  }
+onMounted(() => {
+  loadModules()
 })
 
 onBeforeUnmount(() => {
-  const project = projectManager.get()
-  if (project) {
-    project.emitter.off('modulesChanged', onProjectModulesChanged)
-  }
 })
 </script>
 
@@ -203,10 +174,11 @@ onBeforeUnmount(() => {
       <el-tree
         class="module-tree"
         node-key="key"
-        :data="treeModelRef"
+        :data="treeModel"
         :props="defaultProps"
         :default-expanded-keys="defaultExpandedKeys"
         :highlight-current="true"
+        :expand-on-click-node="false"
         @node-click="handleNodeClick"
         @node-contextmenu="handleContextMenu"
       >
@@ -229,7 +201,7 @@ onBeforeUnmount(() => {
       v-model:show="menuShowRef"
       :options="menuOptionsComponentRef"
     >
-      <context-menu-item :label="$t('moduleTree.highlight')" :disabled="menuHighlightActionModels.length === 0" @click="handCommand('highlight')" />
+      <context-menu-item icon="ri-mark-pen-line" :label="$t('command.highlight')" :disabled="menuHighlightActionModels.length === 0" @click="handCommand('highlight')" />
     </context-menu>
   </div>
 </template>

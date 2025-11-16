@@ -44,6 +44,10 @@ function clockViewRescale() {
 function clockViewZoomOut() {
   clockViewRef.value?.zoomOut()
 }
+
+function clockViewDownload() {
+  clockViewRef.value?.downloadSvg()
+}
 </script>
 
 <template>
@@ -51,16 +55,27 @@ function clockViewZoomOut() {
     <div class="clock-div flex">
       <ClockView ref="clockViewRef" />
     </div>
-    <div class="btn-group my-4 items-center justify-center">
-      <el-button circle @click="clockViewZoomIn">
-        <el-icon><ZoomIn /></el-icon>
-      </el-button>
-      <el-button circle @click="clockViewRescale">
-        <el-icon><FullScreen /></el-icon>
-      </el-button>
-      <el-button circle @click="clockViewZoomOut">
-        <el-icon><ZoomOut /></el-icon>
-      </el-button>
+    <div class="my-4 items-center justify-center" style="text-align: center;">
+      <el-tooltip :content="$t('command.zoomIn')">
+        <el-button circle @click="clockViewZoomIn">
+          <el-icon><i class="ri-zoom-in-line" /></el-icon>
+        </el-button>
+      </el-tooltip>
+      <el-tooltip :content="$t('command.fullScreen')">
+        <el-button circle @click="clockViewRescale">
+          <el-icon><i class="ri-fullscreen-line" /></el-icon>
+        </el-button>
+      </el-tooltip>
+      <el-tooltip :content="$t('command.zoomOut')">
+        <el-button circle @click="clockViewZoomOut">
+          <el-icon><i class="ri-zoom-out-line" /></el-icon>
+        </el-button>
+      </el-tooltip>
+      <el-tooltip :content="$t('command.export')">
+        <el-button circle @click="clockViewDownload">
+          <el-icon><i class="ri-export-line" /></el-icon>
+        </el-button>
+      </el-tooltip>
     </div>
   </div>
 </template>

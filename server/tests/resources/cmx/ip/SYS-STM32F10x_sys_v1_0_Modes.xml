@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<IP DBVersion="V3.0" IPType="peripheral" Name="SYS" Version="STM32F10x_sys_v1_0" xmlns:ns0="http://www.w3.org/2001/XMLSchema-instance" ns0:schemaLocation="http://mcd.rou.st.com/modules.php?name=mcu ../../db/IP_Modes_V3_0.xsd" xmlns="http://mcd.rou.st.com/modules.php?name=mcu">
+    <RefParameter Name="instance" DefaultValue="TIM1" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM1" Diagnostic="" />
+        <PossibleValue Value="TIM1" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM2" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM2" Diagnostic="" />
+        <PossibleValue Value="TIM2" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM3" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM3" Diagnostic="" />
+        <PossibleValue Value="TIM3" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM4" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM4" Diagnostic="" />
+        <PossibleValue Value="TIM4" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM5" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM5" Diagnostic="" />
+        <PossibleValue Value="TIM5" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM6" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM6" Diagnostic="" />
+        <PossibleValue Value="TIM6" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM7" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM7" Diagnostic="" />
+        <PossibleValue Value="TIM7" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM8" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM8" Diagnostic="" />
+        <PossibleValue Value="TIM8" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM9" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM9" Diagnostic="" />
+        <PossibleValue Value="TIM9" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM10" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM10" Diagnostic="" />
+        <PossibleValue Value="TIM10" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM11" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM11" Diagnostic="" />
+        <PossibleValue Value="TIM11" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM12" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM12" Diagnostic="" />
+        <PossibleValue Value="TIM12" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM13" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM13" Diagnostic="" />
+        <PossibleValue Value="TIM13" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM14" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM14" Diagnostic="" />
+        <PossibleValue Value="TIM14" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM15" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM15" Diagnostic="" />
+        <PossibleValue Value="TIM15" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM16" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM16" Diagnostic="" />
+        <PossibleValue Value="TIM16" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM17" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM17" Diagnostic="" />
+        <PossibleValue Value="TIM17" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM18" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM18" Diagnostic="" />
+        <PossibleValue Value="TIM18" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM19" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM19" Diagnostic="" />
+        <PossibleValue Value="TIM19" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM20" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM20" Diagnostic="" />
+        <PossibleValue Value="TIM20" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM21" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM21" Diagnostic="" />
+        <PossibleValue Value="TIM21" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM22" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM22" Diagnostic="" />
+        <PossibleValue Value="TIM22" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="TIM23" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_TIM23" Diagnostic="" />
+        <PossibleValue Value="TIM23" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="RTC" Comment="" Type="list" Visible="false">
+        <Condition Expression="SYS_RTC" Diagnostic="" />
+        <PossibleValue Value="RTC" Comment="" />
+    </RefParameter>
+    <RefParameter Name="instance" DefaultValue="SysTick" Comment="" Type="list" Visible="false">
+        <PossibleValue Value="SysTick" Comment="" />
+    </RefParameter>
+
+    <RefMode Name="TIM">
+        <ConfigForMode>TimSource</ConfigForMode>
+        <Parameter Name="instance" />
+    </RefMode>
+    <RefMode Name="TIM1" BaseMode="TIM" />
+    <RefMode Name="TIM2" BaseMode="TIM" />
+    <RefMode Name="TIM3" BaseMode="TIM" />
+    <RefMode Name="TIM4" BaseMode="TIM" />
+    <RefMode Name="TIM5" BaseMode="TIM" />
+    <RefMode Name="TIM6" BaseMode="TIM" />
+    <RefMode Name="TIM7" BaseMode="TIM" />
+    <RefMode Name="TIM8" BaseMode="TIM" />
+    <RefMode Name="TIM9" BaseMode="TIM" />
+    <RefMode Name="TIM10" BaseMode="TIM" />
+    <RefMode Name="TIM11" BaseMode="TIM" />
+    <RefMode Name="TIM12" BaseMode="TIM" />
+    <RefMode Name="TIM13" BaseMode="TIM" />
+    <RefMode Name="TIM14" BaseMode="TIM" />
+    <RefMode Name="TIM15" BaseMode="TIM" />
+    <RefMode Name="TIM16" BaseMode="TIM" />
+    <RefMode Name="TIM17" BaseMode="TIM" />
+    <RefMode Name="TIM18" BaseMode="TIM" />
+    <RefMode Name="TIM19" BaseMode="TIM" />
+    <RefMode Name="TIM20" BaseMode="TIM" />
+    <RefMode Name="TIM21" BaseMode="TIM" />
+    <RefMode Name="TIM22" BaseMode="TIM" />
+    <RefMode Name="TIM23" BaseMode="TIM" />
+    <RefMode Name="RTC_WKUP">
+        <ConfigForMode>RTCWKPSource</ConfigForMode>
+    </RefMode>
+    <RefMode Name="RTC_ALARM">
+        <ConfigForMode>RTCALARMSource</ConfigForMode>
+    </RefMode>
+
+
+    <RefMode Name="MISC_REMAP">
+        <ConfigForMode>RemapTrigger</ConfigForMode>
+    </RefMode>
+    <RefMode Name="No_Debug">
+        <ConfigForMode>NoJTAGConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Serial_Wire">
+        <ConfigForMode>SerialWireConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="JTAG_4_pins">
+        <ConfigForMode>JTAGNoJTRSTConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="JTAG_5_pins">
+        <ConfigForMode>JTAGConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Asynchronous_SW">
+        <ConfigForMode>SerialWireConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Synchro_1bit_JTAG">
+        <ConfigForMode>JTAGNoJTRSTConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Synchro_2bits_JTAG">
+        <ConfigForMode>JTAGNoJTRSTConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Synchro_4bits_JTAG">
+        <ConfigForMode>JTAGNoJTRSTConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Synchro_1bit_SW">
+        <ConfigForMode>SerialWireConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Synchro_2bits_SW">
+        <ConfigForMode>SerialWireConfig</ConfigForMode>
+    </RefMode>
+    <RefMode Name="Trace_Synchro_4bits_SW">
+        <ConfigForMode>SerialWireConfig</ConfigForMode>
+    </RefMode>
+
+
+    <ModeLogicOperator Name="OR">
+        <Mode Name="Debug" RemoveDisable="true">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="No_Debug" UserName="No Debug">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_ND" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="Serial_Wire" UserName="Serial Wire">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTMS-SWDIO" />
+                    </SignalLogicalOp>
+                    <Semaphore>SWD</Semaphore>
+                </Mode>
+                <Mode Name="JTAG_4_pins" UserName="JTAG (4 pins)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTDI" />
+                        <Signal Name="JTDO-TRACESWO" />
+                        <Signal Name="JTMS-SWDIO" />
+                    </SignalLogicalOp>
+                    <Semaphore>JTAG</Semaphore>
+                </Mode>
+                <Mode Name="JTAG_5_pins" UserName="JTAG (5 pins)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTDI" />
+                        <Signal Name="JTDO-TRACESWO" />
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="NJTRST" />
+                    </SignalLogicalOp>
+                    <Semaphore>JTAG</Semaphore>
+                </Mode>
+
+                <Mode Name="Trace_Asynchronous_SW" UserName="Trace Asynchronous Sw">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTDO-TRACESWO" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="Trace_Synchro_1bit_JTAG" UserName="JTAG with Trace Synchro(1 bit)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTDI" />
+                        <Signal Name="JTDO-TRACESWO" />
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="TRACECLK" />
+                        <Signal Name="TRACED0" />
+                    </SignalLogicalOp>
+                    <Semaphore>JTAG</Semaphore>
+                </Mode>
+                <Mode Name="Trace_Synchro_2bits_JTAG" UserName="JTAG with Trace Synchro(2 bits)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTDI" />
+                        <Signal Name="JTDO-TRACESWO" />
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="TRACECLK" />
+                        <Signal Name="TRACED0" />
+                        <Signal Name="TRACED1" />
+                    </SignalLogicalOp>
+                    <Semaphore>JTAG</Semaphore>
+                </Mode>
+                <Mode Name="Trace_Synchro_4bits_JTAG" UserName="JTAG with Trace Synchro(4 bits)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="JTDI" />
+                        <Signal Name="JTDO-TRACESWO" />
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="TRACECLK" />
+                        <Signal Name="TRACED0" />
+                        <Signal Name="TRACED1" />
+                        <Signal Name="TRACED2" />
+                        <Signal Name="TRACED3" />
+                    </SignalLogicalOp>
+                    <Semaphore>JTAG</Semaphore>
+                </Mode>
+                <Mode Name="Trace_Synchro_1bit_SW" UserName="Trace Synchro Sw (1 bit)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="TRACECLK" />
+                        <Signal Name="TRACED0" />
+                    </SignalLogicalOp>
+                    <Semaphore>SWD</Semaphore>
+                </Mode>
+                <Mode Name="Trace_Synchro_2bits_SW" UserName="Trace Synchro Sw (2 bits)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="TRACECLK" />
+                        <Signal Name="TRACED0" />
+                        <Signal Name="TRACED1" />
+                    </SignalLogicalOp>
+                    <Semaphore>SWD</Semaphore>
+                </Mode>
+                <Mode Name="Trace_Synchro_4bits_SW" UserName="Trace Synchro Sw (4 bits)">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="JTMS-SWDIO" />
+                        <Signal Name="JTCK-SWCLK" />
+                        <Signal Name="TRACECLK" />
+                        <Signal Name="TRACED0" />
+                        <Signal Name="TRACED1" />
+                        <Signal Name="TRACED2" />
+                        <Signal Name="TRACED3" />
+                    </SignalLogicalOp>
+                    <Semaphore>SWD</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+            <Semaphore>Sem_DEBUGMODE</Semaphore>
+        </Mode>
+        <Mode Name="OSC">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="HSE-External-Clock-Source">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OSC_IN" />
+                        <Signal Name="OSC_OUT" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="HSE-External-Oscillator">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OSC_IN" />
+                        <Signal Name="OSC_OUT" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="OSC32">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="LSE-External-Clock-Source">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OSC32_IN" />
+                        <Signal Name="OSC32_OUT" />
+                    </SignalLogicalOp>
+                </Mode>
+                <Mode Name="LSE-External-Oscillator">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="OSC32_IN" />
+                        <Signal Name="OSC32_OUT" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="Clock-out">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="Clock-out">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="MCO" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="SYS_WakeUp0" UserName="System Wake-Up">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="SYS_WakeUp0">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="WKUP" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="SYS-TAMPER">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="SYS-TAMPER">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="TAMPER-RTC" />
+                    </SignalLogicalOp>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+        <Mode Name="MISC_REMAP" UserName="Miscellaneous features remapping (DAC and NVIC)" RemoveCondition="!DIE428">
+            <ModeLogicOperator Name="OR">
+                <Mode Name="MISC_REMAP">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_MISCREMAP" />
+                    </SignalLogicalOp>
+
+                </Mode>
+            </ModeLogicOperator>
+            <Semaphore>MISC_REMAP_SEMAPHORE</Semaphore>
+        </Mode>
+        <Mode Name="TimeBase" UserName="Timebase Source" RemoveDisable="true">
+            <ModeLogicOperator Name="XOR">
+                <Mode Name="SysTick">
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_Systick" />
+                    </SignalLogicalOp>
+                    <Semaphore>S_SysTick</Semaphore>
+                </Mode>
+                <Mode Name="TIM1" RemoveCondition="!TIM1_Exist">
+                    <Condition Expression="!TIM1" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim1" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM1</Semaphore>
+                </Mode>
+                <Mode Name="TIM2" RemoveCondition="!TIM2_Exist">
+                    <Condition Expression="!TIM2" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim2" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM2</Semaphore>
+                </Mode>
+                <Mode Name="TIM3" RemoveCondition="!TIM3_Exist">
+                    <Condition Expression="!TIM3" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim3" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM3</Semaphore>
+                </Mode>
+                <Mode Name="TIM4" RemoveCondition="!TIM4_Exist">
+                    <Condition Expression="!TIM4" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim4" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM4</Semaphore>
+                </Mode>
+                <Mode Name="TIM5" RemoveCondition="!TIM5_Exist">
+                    <Condition Expression="!TIM5" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim5" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM5</Semaphore>
+                </Mode>
+                <Mode Name="TIM6" RemoveCondition="!TIM6_Exist">
+                    <Condition Expression="!TIM6" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim6" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM6</Semaphore>
+                </Mode>
+                <Mode Name="TIM7" RemoveCondition="!TIM7_Exist">
+                    <Condition Expression="!TIM7" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim7" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM7</Semaphore>
+                </Mode>
+                <Mode Name="TIM8" RemoveCondition="!TIM8_Exist">
+                    <Condition Expression="!TIM8" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim8" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM8</Semaphore>
+                </Mode>
+                <Mode Name="TIM9" RemoveCondition="!TIM9_Exist">
+                    <Condition Expression="!TIM9" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim9" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM9</Semaphore>
+                </Mode>
+                <Mode Name="TIM10" RemoveCondition="!TIM10_Exist">
+                    <Condition Expression="!TIM10" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim10" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM10</Semaphore>
+                </Mode>
+                <Mode Name="TIM11" RemoveCondition="!TIM11_Exist">
+                    <Condition Expression="!TIM11" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim11" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM11</Semaphore>
+                </Mode>
+                <Mode Name="TIM12" RemoveCondition="!TIM12_Exist">
+                    <Condition Expression="!TIM12" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim12" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM12</Semaphore>
+                </Mode>
+                <Mode Name="TIM13" RemoveCondition="!TIM13_Exist">
+                    <Condition Expression="!TIM13" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim13" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM13</Semaphore>
+                </Mode>
+                <Mode Name="TIM14" RemoveCondition="!TIM14_Exist">
+                    <Condition Expression="!TIM14" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim14" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM14</Semaphore>
+                </Mode>
+                <Mode Name="TIM15" RemoveCondition="!TIM15_Exist">
+                    <Condition Expression="!TIM15" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim15" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM15</Semaphore>
+                </Mode>
+                <Mode Name="TIM16" RemoveCondition="!TIM16_Exist">
+                    <Condition Expression="!TIM16" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim16" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM16</Semaphore>
+                </Mode>
+                <Mode Name="TIM17" RemoveCondition="!TIM17_Exist">
+                    <Condition Expression="!TIM17" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim17" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM17</Semaphore>
+                </Mode>
+                <Mode Name="TIM18" RemoveCondition="!TIM18_Exist">
+                    <Condition Expression="!TIM18" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim18" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM18</Semaphore>
+                </Mode>
+                <Mode Name="TIM19" RemoveCondition="!TIM19_Exist">
+                    <Condition Expression="!TIM19" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim19" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM19</Semaphore>
+                </Mode>
+                <Mode Name="TIM20" RemoveCondition="!TIM20_Exist">
+                    <Condition Expression="!TIM20" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim20" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM20</Semaphore>
+                </Mode>
+                <Mode Name="TIM21" RemoveCondition="!TIM21_Exist">
+                    <Condition Expression="!TIM21" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim21" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM21</Semaphore>
+                </Mode>
+                <Mode Name="TIM22" RemoveCondition="!TIM22_Exist">
+                    <Condition Expression="!TIM22" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim22" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM22</Semaphore>
+                </Mode>
+                <Mode Name="TIM23" RemoveCondition="!TIM23_Exist">
+                    <Condition Expression="!TIM23" Diagnostic="This IP instance is already used." />
+                    <SignalLogicalOp Name="AND">
+                        <Signal Name="VS_tim23" />
+                    </SignalLogicalOp>
+                    <Semaphore>SYS_TIM23</Semaphore>
+                </Mode>
+            </ModeLogicOperator>
+        </Mode>
+
+    </ModeLogicOperator>
+    <RefSignal IOMode="System" Name="JTCK-SWCLK" />
+    <RefSignal IOMode="System" Name="JTDI" />
+    <RefSignal IOMode="System" Name="JTDO-TRACESWO" />
+    <RefSignal IOMode="System" Name="JTMS-SWDIO" />
+    <RefSignal IOMode="System" Name="NJTRST" />
+    <RefSignal IOMode="GPIO" Name="MCO" />
+    <RefSignal IOMode="System" Name="OSC_IN" />
+    <RefSignal IOMode="System" Name="OSC_OUT" />
+    <RefSignal IOMode="System" Name="OSC32_IN" />
+    <RefSignal IOMode="System" Name="OSC32_OUT" />
+    <RefSignal IOMode="System" Name="TAMPER-RTC" />
+    <RefSignal IOMode="System" Name="TRACECLK" />
+    <RefSignal IOMode="System" Name="TRACED0" />
+    <RefSignal IOMode="System" Name="TRACED1" />
+    <RefSignal IOMode="System" Name="TRACED2" />
+    <RefSignal IOMode="System" Name="TRACED3" />
+    <RefSignal IOMode="System" Name="WKUP" />
+    <RefSignal Name="VS_MISCREMAP" Virtual="true" />
+    <RefSignal Name="VS_ND" Virtual="true" />
+    <RefSignal Name="VS_tim1" Virtual="true" />
+    <RefSignal Name="VS_tim2" Virtual="true" />
+    <RefSignal Name="VS_tim3" Virtual="true" />
+    <RefSignal Name="VS_tim4" Virtual="true" />
+    <RefSignal Name="VS_tim5" Virtual="true" />
+    <RefSignal Name="VS_tim6" Virtual="true" />
+    <RefSignal Name="VS_tim7" Virtual="true" />
+    <RefSignal Name="VS_tim8" Virtual="true" />
+    <RefSignal Name="VS_tim9" Virtual="true" />
+    <RefSignal Name="VS_tim10" Virtual="true" />
+    <RefSignal Name="VS_tim11" Virtual="true" />
+    <RefSignal Name="VS_tim12" Virtual="true" />
+    <RefSignal Name="VS_tim13" Virtual="true" />
+    <RefSignal Name="VS_tim14" Virtual="true" />
+    <RefSignal Name="VS_tim15" Virtual="true" />
+    <RefSignal Name="VS_tim16" Virtual="true" />
+    <RefSignal Name="VS_tim17" Virtual="true" />
+    <RefSignal Name="VS_tim18" Virtual="true" />
+    <RefSignal Name="VS_tim19" Virtual="true" />
+    <RefSignal Name="VS_tim20" Virtual="true" />
+    <RefSignal Name="VS_tim21" Virtual="true" />
+    <RefSignal Name="VS_tim22" Virtual="true" />
+    <RefSignal Name="VS_tim23" Virtual="true" />
+    <RefSignal Name="VS_RTC" Virtual="true" />
+    <RefSignal Name="VS_Systick" Virtual="true" />
+
+</IP>

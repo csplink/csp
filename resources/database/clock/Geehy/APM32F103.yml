@@ -1,0 +1,620 @@
+# Licensed under the Apache License v. 2 (the "License")
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0.html
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
+#
+# @author      xqyjlj
+# @file        APM32F103.yml
+#
+# Change Logs:
+# Date           Author       Notes
+# ------------   ----------   -----------------------------------------------
+# 2025-09-29     xqyjlj       initial version
+#
+
+edges:
+  (rcm_adc_clk_div_t@source)->(rcm_adc_clk_out_t@target):
+    label: ""
+    source: rcm_adc_clk_div_t
+    sourceHandle: source
+    target: rcm_adc_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_ahb_clk_div_hclk_t@source)->(rcm_hclk_t@target):
+    label: ""
+    source: rcm_ahb_clk_div_hclk_t
+    sourceHandle: source
+    target: rcm_hclk_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb1_div_t@source)->(rcm_apb1_peripherals_out_t@target):
+    label: ""
+    source: rcm_apb1_div_t
+    sourceHandle: source
+    target: rcm_apb1_peripherals_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb1_div_t@source)->(rcm_apb1_timers_mul_t@target):
+    label: ""
+    source: rcm_apb1_div_t
+    sourceHandle: source
+    target: rcm_apb1_timers_mul_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb1_timers_mul_t@source)->(rcm_apb1_timers_out_t@target):
+    label: ""
+    source: rcm_apb1_timers_mul_t
+    sourceHandle: source
+    target: rcm_apb1_timers_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb2_div_t@source)->(rcm_adc_clk_div_t@target):
+    label: ""
+    source: rcm_apb2_div_t
+    sourceHandle: source
+    target: rcm_adc_clk_div_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb2_div_t@source)->(rcm_apb2_peripherals_out_t@target):
+    label: ""
+    source: rcm_apb2_div_t
+    sourceHandle: source
+    target: rcm_apb2_peripherals_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb2_div_t@source)->(rcm_apb2_timers_mul_t@target):
+    label: ""
+    source: rcm_apb2_div_t
+    sourceHandle: source
+    target: rcm_apb2_timers_mul_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_apb2_timers_mul_t@source)->(rcm_apb2_timers_out_t@target):
+    label: ""
+    source: rcm_apb2_timers_mul_t
+    sourceHandle: source
+    target: rcm_apb2_timers_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_fpu_clk_div_t@source)->(rcm_fpu_clk_out_t@target):
+    label: ""
+    source: rcm_fpu_clk_div_t
+    sourceHandle: source
+    target: rcm_fpu_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_div_sys_timer_clk_t@source)->(rcm_sys_timer_clk_out_t@target):
+    label: ""
+    source: rcm_hclk_div_sys_timer_clk_t
+    sourceHandle: source
+    target: rcm_sys_timer_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_apb1_div_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_apb1_div_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_apb2_div_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_apb2_div_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_dmc_clk_out_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_dmc_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_fclk_out_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_fclk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_fpu_clk_div_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_fpu_clk_div_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_hclk_div_sys_timer_clk_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_hclk_div_sys_timer_clk_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_hclk_out_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_hclk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_sdio_clk_out_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_sdio_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_sdram_clk_div_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_sdram_clk_div_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hclk_t@source)->(rcm_smc_clk_out_t@target):
+    label: ""
+    source: rcm_hclk_t
+    sourceHandle: source
+    target: rcm_smc_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hse_clk_div_pll_t@source)->(rcm_pll_clk_mux_t@target-hse):
+    label: ""
+    source: rcm_hse_clk_div_pll_t
+    sourceHandle: source
+    target: rcm_pll_clk_mux_t
+    targetHandle: target-hse
+    type: ct-smoothstep
+  (rcm_hse_clk_div_rtc_t@source)->(rcm_rtc_clk_mux_t@target-hse_div128):
+    label: ""
+    source: rcm_hse_clk_div_rtc_t
+    sourceHandle: source
+    target: rcm_rtc_clk_mux_t
+    targetHandle: target-hse_div128
+    type: ct-smoothstep
+  (rcm_hse_clk_input_t@source)->(rcm_hse_clk_div_pll_t@target):
+    label: ""
+    source: rcm_hse_clk_input_t
+    sourceHandle: source
+    target: rcm_hse_clk_div_pll_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hse_clk_input_t@source)->(rcm_hse_clk_div_rtc_t@target):
+    label: ""
+    source: rcm_hse_clk_input_t
+    sourceHandle: source
+    target: rcm_hse_clk_div_rtc_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hse_clk_input_t@source)->(rcm_mco_clk_mux_t@target-hse):
+    label: HSE
+    source: rcm_hse_clk_input_t
+    sourceHandle: source
+    target: rcm_mco_clk_mux_t
+    targetHandle: target-hse
+    type: ct-cliff
+  (rcm_hse_clk_input_t@source)->(rcm_system_clk_mux_t@target-hse):
+    label: ""
+    source: rcm_hse_clk_input_t
+    sourceHandle: source
+    target: rcm_system_clk_mux_t
+    targetHandle: target-hse
+    type: ct-smoothstep
+  (rcm_hsi_clk_div_pll_t@source)->(rcm_pll_clk_mux_t@target-hsi_div2):
+    label: ""
+    source: rcm_hsi_clk_div_pll_t
+    sourceHandle: source
+    target: rcm_pll_clk_mux_t
+    targetHandle: target-hsi_div2
+    type: ct-smoothstep
+  (rcm_hsi_clk_input_t@source)->(rcm_fmc_clk_output_t@target):
+    label: ""
+    source: rcm_hsi_clk_input_t
+    sourceHandle: source
+    target: rcm_fmc_clk_output_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hsi_clk_input_t@source)->(rcm_hsi_clk_div_pll_t@target):
+    label: ""
+    source: rcm_hsi_clk_input_t
+    sourceHandle: source
+    target: rcm_hsi_clk_div_pll_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_hsi_clk_input_t@source)->(rcm_mco_clk_mux_t@target-hsi):
+    label: HSI
+    source: rcm_hsi_clk_input_t
+    sourceHandle: source
+    target: rcm_mco_clk_mux_t
+    targetHandle: target-hsi
+    type: ct-cliff
+  (rcm_hsi_clk_input_t@source)->(rcm_system_clk_mux_t@target-hsi):
+    label: ""
+    source: rcm_hsi_clk_input_t
+    sourceHandle: source
+    target: rcm_system_clk_mux_t
+    targetHandle: target-hsi
+    type: ct-smoothstep
+  (rcm_lse_clk_input_t@source)->(rcm_rtc_clk_mux_t@target-lse):
+    label: ""
+    source: rcm_lse_clk_input_t
+    sourceHandle: source
+    target: rcm_rtc_clk_mux_t
+    targetHandle: target-lse
+    type: ct-smoothstep
+  (rcm_lsi_clk_input_t@source)->(rcm_iwdt_clk_output_t@target):
+    label: ""
+    source: rcm_lsi_clk_input_t
+    sourceHandle: source
+    target: rcm_iwdt_clk_output_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_lsi_clk_input_t@source)->(rcm_rtc_clk_mux_t@target-lsi):
+    label: ""
+    source: rcm_lsi_clk_input_t
+    sourceHandle: source
+    target: rcm_rtc_clk_mux_t
+    targetHandle: target-lsi
+    type: ct-smoothstep
+  (rcm_mco_clk_mux_t@source)->(rcm_mco_clk_out_t@target):
+    label: ""
+    source: rcm_mco_clk_mux_t
+    sourceHandle: source
+    target: rcm_mco_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_pll_clk_div_mco_clk_t@source)->(rcm_mco_clk_mux_t@target-pll_div2):
+    label: ""
+    source: rcm_pll_clk_div_mco_clk_t
+    sourceHandle: source
+    target: rcm_mco_clk_mux_t
+    targetHandle: target-pll_div2
+    type: ct-smoothstep
+  (rcm_pll_clk_mul_t@source)->(rcm_pll_clk_div_mco_clk_t@target):
+    label: PLL
+    source: rcm_pll_clk_mul_t
+    sourceHandle: source
+    target: rcm_pll_clk_div_mco_clk_t
+    targetHandle: target
+    type: ct-cliff
+  (rcm_pll_clk_mul_t@source)->(rcm_system_clk_mux_t@target-pll):
+    label: ""
+    source: rcm_pll_clk_mul_t
+    sourceHandle: source
+    target: rcm_system_clk_mux_t
+    targetHandle: target-pll
+    type: ct-smoothstep
+  (rcm_pll_clk_mul_t@source)->(rcm_usb_clk_div_t@target):
+    label: ""
+    source: rcm_pll_clk_mul_t
+    sourceHandle: source
+    target: rcm_usb_clk_div_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_pll_clk_mux_t@source)->(rcm_pll_clk_t@target):
+    label: ""
+    source: rcm_pll_clk_mux_t
+    sourceHandle: source
+    target: rcm_pll_clk_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_pll_clk_t@source)->(rcm_pll_clk_mul_t@target):
+    label: ""
+    source: rcm_pll_clk_t
+    sourceHandle: source
+    target: rcm_pll_clk_mul_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_rtc_clk_mux_t@source)->(rcm_rtc_clk_output_t@target):
+    label: ""
+    source: rcm_rtc_clk_mux_t
+    sourceHandle: source
+    target: rcm_rtc_clk_output_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_sdram_clk_div_t@source)->(rcm_sdram_clk_out_t@target):
+    label: ""
+    source: rcm_sdram_clk_div_t
+    sourceHandle: source
+    target: rcm_sdram_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_sys_clk_t@source)->(rcm_ahb_clk_div_hclk_t@target):
+    label: ""
+    source: rcm_sys_clk_t
+    sourceHandle: source
+    target: rcm_ahb_clk_div_hclk_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_sys_clk_t@source)->(rcm_i2s_clk_out_t@target):
+    label: ""
+    source: rcm_sys_clk_t
+    sourceHandle: source
+    target: rcm_i2s_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_sys_clk_t@source)->(rcm_mco_clk_mux_t@target-system):
+    label: System
+    source: rcm_sys_clk_t
+    sourceHandle: source
+    target: rcm_mco_clk_mux_t
+    targetHandle: target-system
+    type: ct-cliff
+  (rcm_system_clk_mux_t@source)->(rcm_sys_clk_t@target):
+    label: ""
+    source: rcm_system_clk_mux_t
+    sourceHandle: source
+    target: rcm_sys_clk_t
+    targetHandle: target
+    type: ct-smoothstep
+  (rcm_usb_clk_div_t@source)->(rcm_usb_clk_out_t@target):
+    label: ""
+    source: rcm_usb_clk_div_t
+    sourceHandle: source
+    target: rcm_usb_clk_out_t
+    targetHandle: target
+    type: ct-smoothstep
+instance: RCM
+nodes:
+  rcm_adc_clk_div_t:
+    position:
+      x: 2532.99
+      y: 972.06
+    type: ct-select
+  rcm_adc_clk_out_t:
+    position:
+      x: 2821.69
+      y: 972.06
+    type: ct-output
+    unit: M
+  rcm_ahb_clk_div_hclk_t:
+    position:
+      x: 1549.62
+      y: 473.37
+    type: ct-select
+  rcm_apb1_div_t:
+    position:
+      x: 2257.2
+      y: 473.37
+    type: ct-select
+  rcm_apb1_peripherals_out_t:
+    position:
+      x: 2821.69
+      y: 473.37
+    type: ct-output
+    unit: M
+  rcm_apb1_timers_mul_t:
+    position:
+      x: 2532.99
+      y: 577.65
+    type: ct-select
+  rcm_apb1_timers_out_t:
+    position:
+      x: 2821.69
+      y: 577.65
+    type: ct-output
+    unit: M
+  rcm_apb2_div_t:
+    position:
+      x: 2257.2
+      y: 760.15
+    type: ct-select
+  rcm_apb2_peripherals_out_t:
+    position:
+      x: 2821.69
+      y: 760.26
+    type: ct-output
+    unit: M
+  rcm_apb2_timers_mul_t:
+    position:
+      x: 2532.99
+      y: 858.02
+    type: ct-select
+  rcm_apb2_timers_out_t:
+    position:
+      x: 2821.69
+      y: 858.02
+    type: ct-output
+    unit: M
+  rcm_dmc_clk_out_t:
+    position:
+      x: 2257.2
+      y: -297.15
+    type: ct-output
+    unit: M
+  rcm_fclk_out_t:
+    position:
+      x: 2257.2
+      y: 344.95
+    type: ct-output
+    unit: M
+  rcm_fmc_clk_output_t:
+    position:
+      x: 102.18
+      y: 274.73
+    type: ct-output
+    unit: M
+  rcm_fpu_clk_div_t:
+    position:
+      x: 2257.2
+      y: 88.11
+    type: ct-select
+  rcm_fpu_clk_out_t:
+    position:
+      x: 2821.69
+      y: 88.11
+    type: ct-output
+    unit: M
+  rcm_hclk_div_sys_timer_clk_t:
+    position:
+      x: 2257.2
+      y: 216.53
+    type: ct-select
+  rcm_hclk_out_t:
+    position:
+      x: 2257.2
+      y: -40.31
+    type: ct-output
+    unit: M
+  rcm_hclk_t:
+    position:
+      x: 1867.92
+      y: 473.37
+    type: ct-probe
+    unit: M
+  rcm_hse_clk_div_pll_t:
+    position:
+      x: -170.93
+      y: 709.46
+    type: ct-select
+  rcm_hse_clk_div_rtc_t:
+    position:
+      x: -509.82
+      y: -133.26
+    type: ct-select
+  rcm_hse_clk_input_t:
+    position:
+      x: -772.35
+      y: 473.46
+    type: ct-input-number
+    unit: M
+  rcm_hsi_clk_div_pll_t:
+    position:
+      x: -170.63
+      y: 601.91
+    type: ct-select
+  rcm_hsi_clk_input_t:
+    position:
+      x: -509.82
+      y: 364.63
+    type: ct-input-number
+    unit: M
+  rcm_i2s_clk_out_t:
+    position:
+      x: 1549.62
+      y: -66.53
+    type: ct-output
+    unit: M
+  rcm_iwdt_clk_output_t:
+    position:
+      x: 102.18
+      y: 138.42
+    type: ct-output
+    unit: K
+  rcm_lse_clk_input_t:
+    position:
+      x: -772.35
+      y: -1.86
+    type: ct-input-number
+    unit: K
+  rcm_lsi_clk_input_t:
+    position:
+      x: -509.82
+      y: 138.68
+    type: ct-input-number
+    unit: K
+  rcm_mco_clk_mux_t:
+    position:
+      x: -170.93
+      y: 910.36
+    type: ct-radio
+  rcm_mco_clk_out_t:
+    position:
+      x: 102.18
+      y: 971.09
+    type: ct-output
+    unit: M
+  rcm_pll_clk_div_mco_clk_t:
+    position:
+      x: -509.82
+      y: 881.96
+    type: ct-select
+  rcm_pll_clk_mul_t:
+    position:
+      x: 647.79
+      y: 659.37
+    type: ct-select
+  rcm_pll_clk_mux_t:
+    position:
+      x: 102.18
+      y: 638.49
+    type: ct-radio
+  rcm_pll_clk_t:
+    position:
+      x: 374.99
+      y: 659.37
+    type: ct-probe
+    unit: M
+  rcm_rtc_clk_mux_t:
+    position:
+      x: -223.25
+      y: -42.5
+    type: ct-radio
+  rcm_rtc_clk_output_t:
+    position:
+      x: 102.18
+      y: -1.75
+    type: ct-output
+    unit: K
+  rcm_sdio_clk_out_t:
+    position:
+      x: 2257.2
+      y: 1106.88
+    type: ct-output
+    unit: M
+  rcm_sdram_clk_div_t:
+    position:
+      x: 2257.2
+      y: -425.57
+    type: ct-select
+  rcm_sdram_clk_out_t:
+    position:
+      x: 2821.69
+      y: -425.72
+    type: ct-output
+    unit: M
+  rcm_smc_clk_out_t:
+    position:
+      x: 2257.2
+      y: -168.73
+    type: ct-output
+    unit: M
+  rcm_sys_clk_t:
+    position:
+      x: 1193.4
+      y: 473.37
+    type: ct-probe
+    unit: M
+  rcm_sys_timer_clk_out_t:
+    position:
+      x: 2821.69
+      y: 216.53
+    type: ct-output
+    unit: M
+  rcm_system_clk_mux_t:
+    position:
+      x: 912.49
+      y: 433.03
+    type: ct-radio
+  rcm_usb_clk_div_t:
+    position:
+      x: 920.6
+      y: 659.37
+    type: ct-select
+  rcm_usb_clk_out_t:
+    position:
+      x: 1193.4
+      y: 659.37
+    type: ct-output
+    unit: M
