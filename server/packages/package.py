@@ -27,8 +27,11 @@
 import fnmatch
 import glob
 import os
+import platform
 import shutil
+import tarfile
 import zipfile
+from pathlib import Path
 
 import jsonschema
 from blinker import Signal
@@ -41,14 +44,16 @@ from .index import PackageIndex
 
 
 class Package:
-    __emitter = {
-        "install": Signal("install"),
-    }
 
     def __init__(self):
         super().__init__()
         self.__index = self.get_package_index()
         self.__pdscs = {}
+
+        self.__emitter = {
+            "install": Signal("install"),
+            "make": Signal("make"),
+        }
 
     @logger.catch(default=False)
     def __check_yaml(self, schema_path: str, instance: dict) -> bool:
@@ -242,78 +247,19 @@ class Package:
 
         if os.path.isdir(tmp_folder):
             shutil.rmtree(tmp_folder)
+        if os.path.isfile(tmp_folder):
+            os.remove(tmp_folder)
+        os.makedirs(tmp_folder)
+
         if os.path.isfile(path):
-            if os.path.isfile(tmp_folder):
-                os.remove(tmp_folder)
-            os.makedirs(tmp_folder)
-
-            try:
-                with zipfile.ZipFile(path, "r") as archive:
-                    members = archive.infolist()
-                    extracted = 0
-                    count = len(members)
-                    for index, member in enumerate(members, start=1):
-                        archive.extract(member, path=tmp_folder)
-                        extracted += member.file_size
-                        self.__emitter["install"].send(
-                            "package",
-                            index=index,
-                            count=count,
-                            file=member.filename,
-                        )
-            except Exception as e:
-                logger.error(e)
-                return None
-
-            dirs = os.listdir(tmp_folder)
-            count = len(dirs)
-
-            if count == 1 and os.path.isdir(os.path.join(tmp_folder, dirs[0])):
-                d = os.path.join(tmp_folder, dirs[0])
-                tmp_tmp_folder = os.path.join(repository_folder, "tmp.tmp")
-                shutil.move(d, tmp_tmp_folder)
-                shutil.rmtree(tmp_folder)
-                shutil.move(tmp_tmp_folder, tmp_folder)
+            status = self._install_from_file(path, tmp_folder)
         elif os.path.isdir(path):
-            # Collect all .gitignore files and their patterns from the directory tree
-            gitignore_map = self.__collect_gitignore_patterns(path)
-
-            items = []
-            for root, dirs, files in os.walk(path):
-                # Filter out .git directory
-                dirs[:] = [d for d in dirs if d not in [".git"]]
-
-                # Filter out ignored directories based on .gitignore
-                if gitignore_map:
-                    dirs[:] = [
-                        d
-                        for d in dirs
-                        if not self.__is_ignored(
-                            os.path.join(root, d), path, gitignore_map
-                        )
-                    ]
-
-                for file in files:
-                    source_file = os.path.join(root, file)
-
-                    # Skip files that match .gitignore patterns
-                    if gitignore_map and self.__is_ignored(
-                        source_file, path, gitignore_map
-                    ):
-                        continue
-
-                    rel_path = os.path.relpath(source_file, path)
-                    target_file = os.path.join(tmp_folder, rel_path)
-                    items.append((source_file, target_file))
-
-            count = len(items)
-            for index, (source_file, target_file) in enumerate(items, start=1):
-                os.makedirs(os.path.dirname(target_file), exist_ok=True)
-                shutil.copy2(source_file, target_file)
-                _file = os.path.relpath(target_file, tmp_folder).replace("\\", "/")
-                self.__emitter["install"].send(
-                    "package", index=index, count=count, file=_file
-                )
+            status = self._install_from_dir(path, tmp_folder)
+        else:
+            logger.error(f"invalid package {path!r}")
+            status = False
+        if not status:
+            return None
 
         # ----------------------------------------------------------------------------------------------------------
         package_desc = self.get_package_description(tmp_folder)
@@ -371,3 +317,257 @@ class Package:
         self.save()
 
         return True
+
+    def _detect_file_type(self, file: str) -> str:
+        """Detect file type by reading file header, not extension"""
+        try:
+            with open(file, "rb") as f:
+                header = f.read(10)  # Read first 10 bytes
+
+                # ZIP file magic numbers: PK (0x50 0x4B)
+                if len(header) >= 2 and header[0] == 0x50 and header[1] == 0x4B:
+                    return "zip"
+
+                # TAR.GZ file magic numbers: 1F 8B 08 00
+                if (
+                    len(header) >= 4
+                    and header[0] == 0x1F
+                    and header[1] == 0x8B
+                    and header[2] == 0x08
+                ):
+                    return "tar.gz"
+
+        except Exception as e:
+            logger.error(f"Failed to detect file type: {e}")
+
+        return "unknown"
+
+    def _install_from_file(self, file: str, tmp_folder: str) -> bool:
+        file_type = self._detect_file_type(file)
+
+        try:
+            if file_type == "zip":
+                return self._install_from_zip(file, tmp_folder)
+            elif file_type == "tar.gz":
+                return self._install_from_tar_gz(file, tmp_folder)
+            else:
+                logger.error(f"Unsupported file type: {file_type}")
+                return False
+        except Exception as e:
+            logger.error(e)
+            return False
+
+    def _install_from_zip(self, file: str, tmp_folder: str) -> bool:
+        """Install from ZIP file"""
+        with zipfile.ZipFile(file, "r") as archive:
+            members = archive.infolist()
+            count = len(members)
+            for index, member in enumerate(members, start=1):
+                archive.extract(member, path=tmp_folder)
+                self.__emitter["install"].send(
+                    "package",
+                    index=index,
+                    count=count,
+                    file=member.filename,
+                )
+
+        self._normalize_extracted_structure(tmp_folder)
+        return True
+
+    def _install_from_tar_gz(self, file: str, tmp_folder: str) -> bool:
+        """Install from TAR.GZ file"""
+        with tarfile.open(file, "r:gz") as archive:
+            members = archive.getmembers()
+            count = len(members)
+            for index, member in enumerate(members, start=1):
+                archive.extract(member, path=tmp_folder)
+                self.__emitter["install"].send(
+                    "package",
+                    index=index,
+                    count=count,
+                    file=member.name,
+                )
+
+        self._normalize_extracted_structure(tmp_folder)
+        return True
+
+    def _normalize_extracted_structure(self, tmp_folder: str):
+        """Normalize extracted structure - if only one directory exists, move it up one level"""
+        dirs = os.listdir(tmp_folder)
+        count = len(dirs)
+
+        if count == 1 and os.path.isdir(os.path.join(tmp_folder, dirs[0])):
+            d = os.path.join(tmp_folder, dirs[0])
+            tmp_tmp_folder = os.path.join(os.path.dirname(tmp_folder), "tmp.tmp")
+            shutil.move(d, tmp_tmp_folder)
+            shutil.rmtree(tmp_folder)
+            shutil.move(tmp_tmp_folder, tmp_folder)
+
+    def _install_from_dir(self, path: str, tmp_folder: str) -> bool:
+        # Collect all .gitignore files and their patterns from the directory tree
+        gitignore_map = self.__collect_gitignore_patterns(path)
+
+        items = []
+        for root, dirs, files in os.walk(path):
+            # Filter out .git directory
+            dirs[:] = [d for d in dirs if d not in [".git"]]
+
+            # Filter out ignored directories based on .gitignore
+            if gitignore_map:
+                dirs[:] = [
+                    d
+                    for d in dirs
+                    if not self.__is_ignored(os.path.join(root, d), path, gitignore_map)
+                ]
+
+            for file in files:
+                source_file = os.path.join(root, file)
+
+                # Skip files that match .gitignore patterns
+                if gitignore_map and self.__is_ignored(
+                    source_file, path, gitignore_map
+                ):
+                    continue
+
+                rel_path = os.path.relpath(source_file, path)
+                target_file = os.path.join(tmp_folder, rel_path)
+                items.append((source_file, target_file))
+
+        count = len(items)
+        for index, (source_file, target_file) in enumerate(items, start=1):
+            os.makedirs(os.path.dirname(target_file), exist_ok=True)
+            shutil.copy2(source_file, target_file)
+            _file = os.path.relpath(target_file, tmp_folder).replace("\\", "/")
+            self.__emitter["install"].send(
+                "package", index=index, count=count, file=_file
+            )
+
+        return True
+
+    def make(self, path: str) -> PackageDescription | None:
+        package_desc = self.get_package_description(path)
+        if package_desc is None:
+            return None
+
+        if package_desc.type == "toolchains":
+            plat = platform.system().lower()
+            name = f"{package_desc.name}-{package_desc.version}.{plat}.csppack"
+        else:
+            name = f"{package_desc.name}-{package_desc.version}.csppack"
+
+        self.compress_directory(path, str(Path(path).parent / name))
+
+        return package_desc
+
+    def __collect_files_for_compression(
+        self, directory_path: str
+    ) -> list[tuple[str, str]]:
+        """
+        Collect all files for compression, filtering by .gitignore patterns
+
+        Args:
+            directory_path: Path to directory to collect files from
+
+        Returns:
+            list of tuples: (source_file_path, relative_path_for_archive)
+        """
+        # Collect all .gitignore files and their patterns from the directory tree
+        gitignore_map = self.__collect_gitignore_patterns(directory_path)
+
+        items = []
+        for root, dirs, files in os.walk(directory_path):
+            # Filter out .git directory
+            dirs[:] = [d for d in dirs if d not in [".git"]]
+
+            # Filter out ignored directories based on .gitignore
+            if gitignore_map:
+                dirs[:] = [
+                    d
+                    for d in dirs
+                    if not self.__is_ignored(
+                        os.path.join(root, d), directory_path, gitignore_map
+                    )
+                ]
+
+            for file in files:
+                source_file = os.path.join(root, file)
+
+                # Skip files that match .gitignore patterns
+                if gitignore_map and self.__is_ignored(
+                    source_file, directory_path, gitignore_map
+                ):
+                    continue
+
+                rel_path = os.path.relpath(source_file, directory_path)
+                items.append((source_file, rel_path))
+
+        return items
+
+    def compress_directory(self, directory_path: str, output_path: str) -> str:
+        """
+        Compress directory to zip on Windows or tar.gz on Linux
+
+        Args:
+            directory_path: Path to directory to compress (must be a directory)
+            output_path: Output path for the compressed file
+
+        Returns:
+            str: Path to the compressed file
+
+        Raises:
+            ValueError: If directory_path is not a directory
+            Exception: If compression fails
+        """
+        if not os.path.isdir(directory_path):
+            raise ValueError(f"{directory_path} is not a directory")
+
+        # Collect all files for compression
+        files_to_compress = self.__collect_files_for_compression(directory_path)
+
+        try:
+            current_platform = platform.system().lower()
+
+            if current_platform == "windows":
+                return self._compress_to_zip(files_to_compress, output_path)
+            else:  # Linux and other Unix-like systems
+                return self._compress_to_tar_gz(files_to_compress, output_path)
+
+        except Exception as e:
+            logger.error(f"Failed to compress directory {directory_path}: {e}")
+            raise
+
+    def _compress_to_zip(
+        self, files_to_compress: list[tuple[str, str]], output_path: str
+    ) -> str:
+        """Compress files to ZIP format"""
+        with zipfile.ZipFile(
+            output_path, "w", zipfile.ZIP_DEFLATED, compresslevel=9
+        ) as zipf:
+            count = len(files_to_compress)
+            for index, (source_file, arcname) in enumerate(files_to_compress, start=1):
+                zipf.write(source_file, arcname)
+
+                # Send progress signal with count, index, and file
+                self.__emitter["make"].send(
+                    "package", index=index, count=count, file=arcname
+                )
+
+        logger.info(f"Successfully compressed to {output_path}")
+        return output_path
+
+    def _compress_to_tar_gz(
+        self, files_to_compress: list[tuple[str, str]], output_path: str
+    ) -> str:
+        """Compress files to TAR.GZ format"""
+        with tarfile.open(output_path, "w:gz") as tarf:
+            count = len(files_to_compress)
+            for index, (source_file, arcname) in enumerate(files_to_compress, start=1):
+                tarf.add(source_file, arcname=arcname)
+
+                # Send progress signal with count, index, and file
+                self.__emitter["make"].send(
+                    "package", index=index, count=count, file=arcname
+                )
+
+        logger.info(f"Successfully compressed to {output_path}")
+        return output_path

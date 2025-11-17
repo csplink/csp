@@ -36,6 +36,7 @@ from actions import (
     action_package_description,
     action_package_install,
     action_package_list,
+    action_package_make,
     action_tools_candb_dump,
     action_tools_check_ip,
     action_tools_cmx_ip,
@@ -508,6 +509,19 @@ def cli_package_list(as_json: bool):
     arg = {"json": as_json}
     logger.trace(f"Calling cli/package/list with {arg!r}")
     action_package_list("json" if as_json else "std")
+
+
+@cli.command(name="make-pkg")
+@click.argument("path", required=True)
+@click.option("--progress", is_flag=True, help="Show progress bar.")
+@click.option("--verbose", is_flag=True, help="Verbose output.")
+def cli_package_make(path: str, progress: bool, verbose: bool):
+    """Make a directory to CSP package."""
+    arg = {"path": path, "progress": progress, "verbose": verbose}
+    logger.trace(f"Calling cli/package/make-pkg with {arg!r}")
+
+    if not action_package_make(path, progress, verbose):
+        exit(1)
 
 
 @cli.command(name="serve")
