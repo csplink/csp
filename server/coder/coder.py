@@ -47,16 +47,17 @@ from .filters import FILTERS
 
 
 class Coder:
-    __emitter = {
-        "dump": Signal("dump"),
-        "generate": Signal("generate"),
-    }
 
     def __init__(self, project: Project, summary: Summary):
         self._project = project
         self._summary = summary
         self.files_table = {}
         self._generator = None
+
+        self.__emitter = {
+            "dump": Signal("dump"),
+            "generate": Signal("generate"),
+        }
 
         sys.path = SYS_UTILS.sys_path() + [f"{project.hal_folder()}/tools/generator"]
         self._generator = self._load_generator()

@@ -29,6 +29,7 @@ from .coder_generate import action_coder_generate
 from .package_description import action_package_description
 from .package_install import action_package_install
 from .package_list import action_package_list
+from .package_make import action_package_make
 from .tools_check_ip import action_tools_check_ip
 from .tools_cmx_ip import action_tools_cmx_ip
 from .tools_csp2filter import action_tools_csp2filter
@@ -40,6 +41,7 @@ __all__ = [
     "action_coder_generate",
     "action_package_install",
     "action_package_list",
+    "action_package_make",
     "action_package_description",
     "action_tools_csp2filter",
     "action_tools_cmx_ip",
