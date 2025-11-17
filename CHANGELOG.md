@@ -2,7 +2,10 @@
 
 ## v0.1.0
 
-- ✨ feat: add GPIO, RCM support
+- ✨ feat: Add code preview feature
+- ✨ feat: Add code generation feature
+- ✨ feat: Add clock configuration feature
+- ✨ feat: Add project creation feature
 
 <h1 id="中文"></h1>
 
@@ -10,4 +13,7 @@
 
 ## v0.1.0
 
-- ✨ feat: 添加 GPIO，RCM 支持
+- ✨ feat: 添加代码预览功能
+- ✨ feat: 添加代码生成功能
+- ✨ feat: 添加时钟配置功能
+- ✨ feat: 添加工程创建功能

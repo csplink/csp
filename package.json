@@ -1,7 +1,7 @@
 {
   "name": "csp",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "packageManager": "pnpm@10.13.1",
   "description": "Tools for flexible configuration of chips and boards.",
