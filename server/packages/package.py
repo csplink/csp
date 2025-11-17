@@ -31,6 +31,7 @@ import platform
 import shutil
 import tarfile
 import zipfile
+from io import StringIO
 from pathlib import Path
 
 import jsonschema
@@ -230,9 +231,11 @@ class Package:
     def index(self) -> PackageIndex:
         return self.__index
 
-    def dump(self):
+    def dump(self) -> str:
         yaml = YAML()
-        return yaml.dump(self.__index.origin)
+        stream = StringIO()
+        yaml.dump(self.__index.origin, stream)
+        return stream.getvalue()
 
     def save(self):
         with open(SysUtils.packages_index_file(), "w", encoding="utf-8") as f:
