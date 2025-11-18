@@ -28,6 +28,7 @@
 import datetime
 import os
 import sys
+from pathlib import Path
 
 import click
 from actions import (
@@ -549,7 +550,7 @@ def cli_tools_csp2filter(path: str, channel: bool, pin: bool, output: str):
     logger.trace(f"Calling cli/csp2filter with {arg!r}")
 
     if output is None or not os.path.isdir(output):
-        output = os.path.dirname(path)
+        output = str(Path(path).parent)
 
     if not os.path.isdir(output):
         os.makedirs(output)
@@ -646,7 +647,7 @@ def cli_tools_cmx_ip(path: str, mcu: str, output: str | None, alias: str | None)
         base, _ = os.path.splitext(path)
         output = f"{base}.yml"
     else:
-        output_dir = os.path.dirname(output) or "."
+        output_dir = str(Path(output).parent) or "."
         if not os.path.exists(output_dir):
             logger.error(f"Output directory does not exist: {output_dir}")
             exit(1)
