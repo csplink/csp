@@ -132,7 +132,7 @@ class Package:
 
         # Get relative path from base directory
         rel_path = os.path.relpath(file_path, base_path).replace("\\", "/")
-        file_dir = os.path.dirname(file_path)
+        file_dir = str(Path(file_path).parent)
 
         # Collect applicable patterns from all .gitignore files
         # Process from most general (base) to most specific (closest to file)
@@ -216,7 +216,7 @@ class Package:
             else:
                 return PackageIndex({})
         else:
-            os.makedirs(os.path.dirname(file), exist_ok=True)
+            os.makedirs(str(Path(file).parent), exist_ok=True)
             with open(file, "w"):
                 pass
             return PackageIndex({})
@@ -292,7 +292,7 @@ class Package:
 
         shutil.move(tmp_folder, folder)
         package_path = os.path.relpath(
-            folder, os.path.dirname(SysUtils.packages_index_file())
+            folder, str(Path(SysUtils.packages_index_file()).parent)
         ).replace("\\", "/")
         self.__index.origin.setdefault(kind, {}).setdefault(name, {})[
             version
@@ -401,7 +401,7 @@ class Package:
 
         if count == 1 and os.path.isdir(os.path.join(tmp_folder, dirs[0])):
             d = os.path.join(tmp_folder, dirs[0])
-            tmp_tmp_folder = os.path.join(os.path.dirname(tmp_folder), "tmp.tmp")
+            tmp_tmp_folder = os.path.join(str(Path(tmp_folder).parent), "tmp.tmp")
             shutil.move(d, tmp_tmp_folder)
             shutil.rmtree(tmp_folder)
             shutil.move(tmp_tmp_folder, tmp_folder)
@@ -438,7 +438,7 @@ class Package:
 
         count = len(items)
         for index, (source_file, target_file) in enumerate(items, start=1):
-            os.makedirs(os.path.dirname(target_file), exist_ok=True)
+            os.makedirs(str(Path(target_file).parent), exist_ok=True)
             shutil.copy2(source_file, target_file)
             _file = os.path.relpath(target_file, tmp_folder).replace("\\", "/")
             self.__emitter["install"].send(

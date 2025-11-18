@@ -25,7 +25,7 @@
 #
 
 import json
-import os
+from pathlib import Path
 
 from .configs import Configs
 from .gen import Gen
@@ -83,4 +83,4 @@ class Project:
         return self._user_data.get("path", "")
 
     def folder(self) -> str:
-        return os.path.dirname(self.path())
+        return str(Path(self.path()).parent)
