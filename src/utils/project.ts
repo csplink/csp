@@ -805,7 +805,7 @@ async function getProjectPath(): Promise<string> {
   return await window.electron.invoke('project:getPath')
 }
 
-function setProjectPath(path: string) {
+export function setProjectPath(path: string) {
   window.electron.send('project:setPath', path)
 }
 
@@ -834,4 +834,10 @@ export async function openProject(i18n: UseI18nType) {
 
 export function createProject(path: string, project: ProjectType) {
   window.electron.send('project:create', path, project)
+}
+
+export async function saveAsProject(path: string, name: string, project: ProjectType) {
+  const copy = { ...project }
+  copy.name = name
+  await window.electron.invoke('project:saveAs', path, copy)
 }

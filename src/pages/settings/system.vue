@@ -37,9 +37,9 @@ const { t } = useI18n()
 const settings = useSettingsManager().settings
 
 const themeOptions = computed(() => [
-  { label: t('settings.light'), value: 'light' },
-  { label: t('settings.dark'), value: 'dark' },
-  { label: t('settings.autoTheme'), value: 'auto' },
+  { label: t('label.light'), value: 'light' },
+  { label: t('label.dark'), value: 'dark' },
+  { label: t('label.autoTheme'), value: 'auto' },
 ])
 
 const langOptions = [
@@ -63,9 +63,9 @@ const formModel = {
     <el-form :model="formModel" label-position="left" label-width="auto">
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.personalization') }}
+          {{ $t('label.personalization') }}
         </h2>
-        <el-form-item class="g-settings-item" :label="$t('settings.applicationTheme')">
+        <el-form-item class="g-settings-item" :label="$t('label.applicationTheme')">
           <el-select v-model="formModel.theme.value">
             <el-option
               v-for="option in themeOptions"
@@ -75,16 +75,16 @@ const formModel = {
             />
           </el-select>
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.themeColor')">
+        <el-form-item class="g-settings-item" :label="$t('label.themeColor')">
           <el-color-picker v-model="formModel.themeColor.value" show-alpha />
         </el-form-item>
       </div>
 
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.system') }}
+          {{ $t('label.system') }}
         </h2>
-        <el-form-item class="g-settings-item" :label="$t('settings.language')">
+        <el-form-item class="g-settings-item" :label="$t('label.language')">
           <el-select v-model="formModel.language.value" class="settings-select">
             <el-option
               v-for="option in langOptions"
@@ -98,46 +98,46 @@ const formModel = {
 
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.softwareUpdate') }}
+          {{ $t('label.softwareUpdate') }}
         </h2>
         <el-form-item class="g-settings-item">
           <el-switch
             v-model="formModel.autoUpdate.value"
-            :active-text="$t('settings.autoUpdate')"
+            :active-text="$t('label.autoUpdate')"
           />
         </el-form-item>
       </div>
 
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.privacy') }}
+          {{ $t('label.privacy') }}
         </h2>
         <el-form-item class="g-settings-item">
           <el-switch
             v-model="formModel.telemetry.value"
-            :active-text="$t('settings.telemetry')"
+            :active-text="$t('label.telemetry')"
           />
         </el-form-item>
         <el-form-item class="g-settings-item">
           <el-switch
             v-model="formModel.crashReports.value"
-            :active-text="$t('settings.crashReports')"
+            :active-text="$t('label.crashReports')"
           />
         </el-form-item>
       </div>
 
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.about') }}
+          {{ $t('label.about') }}
         </h2>
         <el-descriptions class="g-settings-item" :column="1" :border="true">
-          <el-descriptions-item :label="$t('settings.version')">
+          <el-descriptions-item :label="$t('label.version')">
             {{ pkg.version }}
           </el-descriptions-item>
-          <el-descriptions-item :label="$t('settings.license')">
+          <el-descriptions-item :label="$t('label.license')">
             Apache License 2.0
           </el-descriptions-item>
-          <el-descriptions-item :label="$t('settings.author')">
+          <el-descriptions-item :label="$t('label.author')">
             xqyjlj
           </el-descriptions-item>
         </el-descriptions>

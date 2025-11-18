@@ -1,7 +1,7 @@
-/**
+<!--
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        settings.ts
+ *  @file        AuthorDialog.vue
  *  @brief
  *
  * ****************************************************************************
@@ -24,36 +24,40 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2025-05-23     xqyjlj       initial version
- */
+ *  2025-11-18     xqyjlj       initial version
+-->
 
-import type { AppSettingsType } from '@/electron/types'
-import { ipcMain } from 'electron'
-import {
-  DEFAULT_SYSTEM_SETTINGS,
-  loadSettingsSync,
-  saveSettingsSync,
-  updateSettingsSync,
-} from '../utils'
+<script lang="ts" setup>
+import { ref } from 'vue'
 
-export function registerSettingsHandler() {
-  ipcMain.handle('settings:load', async (_event): Promise<AppSettingsType> => {
-    return loadSettingsSync()
-  })
+const visible = ref(false)
 
-  ipcMain.on('settings:save', (_event, settings: AppSettingsType) => {
-    saveSettingsSync(settings)
-  })
-
-  ipcMain.on('settings:reset', (_event) => {
-    const defaultSettings: AppSettingsType = {
-      system: DEFAULT_SYSTEM_SETTINGS,
-      recentProjects: [],
-    }
-    saveSettingsSync(defaultSettings)
-  })
-
-  ipcMain.on('settings:update', (_event, path: string, value: any) => {
-    updateSettingsSync(path, value)
-  })
+function show() {
+  visible.value = true
 }
+
+function hide() {
+  visible.value = false
+}
+
+defineExpose({
+  show,
+  hide,
+})
+</script>
+
+<template>
+  <el-dialog
+    v-model="visible"
+    :title="$t('label.author')"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="true"
+    center
+    append-to-body
+  >
+    <div class="author-content">
+      <ContributorsList />
+    </div>
+  </el-dialog>
+</template>

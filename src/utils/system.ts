@@ -48,6 +48,10 @@ export function createWindow(args: BrowserWindowArgsType) {
   window.electron.send('system:createWindow', args)
 }
 
+export function closeWindow() {
+  window.electron.send('system:close')
+}
+
 export const useSystemStore = defineStore('SystemStore', {
   state: () => {
     return {

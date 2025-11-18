@@ -76,6 +76,7 @@ function _loadSettingsSync(): AppSettingsType {
     if (!fs.existsSync(settingsPath)) {
       return {
         system: DEFAULT_SYSTEM_SETTINGS,
+        recentProjects: [],
       }
     }
 
@@ -91,6 +92,7 @@ function _loadSettingsSync(): AppSettingsType {
     console.warn('Failed to load settings, using defaults:', error)
     return {
       system: DEFAULT_SYSTEM_SETTINGS,
+      recentProjects: [],
     }
   }
 }
@@ -182,6 +184,28 @@ export function updateSettingsSync(path: string, value: any) {
   }
   _updateSettingsSync(path, value)
   saveSettingsSync(_appSettings)
+}
+
+export function addRecentProjects(projectPath: string) {
+  const appSettings = loadSettingsSync()
+  appSettings.recentProjects ??= []
+
+  const absolutePath = path.resolve(projectPath)/* !< 强制转为绝对路径 */
+
+  /* !< 如果已存在该项目，先移除 */
+  const existingIndex = appSettings.recentProjects.findIndex(p => p === absolutePath)
+  if (existingIndex !== -1) {
+    appSettings.recentProjects.splice(existingIndex, 1)
+  }
+
+  appSettings.recentProjects.unshift(absolutePath)/* !< 添加到最前面 */
+
+  /* !< 限制最多10个项目 */
+  if (appSettings.recentProjects.length > 10) {
+    appSettings.recentProjects = appSettings.recentProjects.slice(0, 10)
+  }
+
+  saveSettingsSync(appSettings)
 }
 
 export function getExePath(): string {
