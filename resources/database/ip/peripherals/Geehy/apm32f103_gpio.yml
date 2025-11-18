@@ -209,7 +209,6 @@ presets:
   Output:
     refParameters:
       gpio_speed_t: {}
-      gpio_pull_t: {}
       gpio_mode_t:
         values:
           - output_pp
