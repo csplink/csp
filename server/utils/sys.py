@@ -32,7 +32,7 @@ from pathlib import Path
 class SysUtils:
     def __init__(self):
         self._sys_path = copy.deepcopy(sys.path)
-        self._sys_path.append(f"{self.exe_folder()}/public")
+        self._sys_path.append(self.public_folder())
 
     def sys_path(self) -> list[str]:
         return self._sys_path
@@ -40,9 +40,14 @@ class SysUtils:
     @staticmethod
     def exe_folder() -> str:
         """
-        @brief      Get the folder of the executable file.
-        @return     The folder of the executable file.
-        @note       It is a static method.
+        Get the directory where the program was launched from.
+
+        This uses `sys.argv[0]`, which points to:
+        - The script path when running in normal Python (`python script.py`)
+        - The unpacked executable path when running a Nuitka --onefile binary
+
+        Returns:
+            str: The directory containing the launched executable or script.
         """
         return str(Path(sys.argv[0]).parent)
 
@@ -62,7 +67,7 @@ class SysUtils:
         @return     @c true if the software is running in development mode, @c false otherwise.
         @note       It is a static method.
         """
-        return sys.argv[0].endswith(".py")
+        return not "__compiled__" in globals()
 
     @staticmethod
     def resource_folder() -> str:
@@ -76,7 +81,11 @@ class SysUtils:
         if SysUtils.is_dev():
             return str(Path(SysUtils.exe_folder()).parent / "resources")
         else:
-            return str(Path(SysUtils.exe_folder()).parent)
+            app_asar = Path(SysUtils.exe_folder()).parent / "app.asar"
+            if app_asar.exists():
+                return str(app_asar.parent)
+            else:
+                return str(Path(SysUtils.exe_folder()) / "resources")
 
     @staticmethod
     def database_folder() -> str:
@@ -117,6 +126,16 @@ class SysUtils:
         @note       It is a static method.
         """
         return str(Path(SysUtils.packages_folder()) / "packages.index")
+
+    @staticmethod
+    def public_folder() -> str:
+        """
+        @brief      Get the folder of the public files.
+        @return     The folder of the public files.
+        @details    It is the subfolder "public" of the resource folder.
+        @note       It is a static method.
+        """
+        return str(Path(SysUtils.exe_folder()) / "public")
 
 
 SYS_UTILS = SysUtils()
