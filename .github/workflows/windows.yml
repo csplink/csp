@@ -69,7 +69,7 @@ jobs:
         shell: bash
         run: |
           pnpm release
-          . tools/release.sh windows {{ github.ref_name }}
+          . tools/release.sh windows ${{ github.ref_name }}
 
       - name: ⬆️ create release
         uses: softprops/action-gh-release@v2
