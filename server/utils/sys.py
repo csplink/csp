@@ -58,7 +58,7 @@ class SysUtils:
         @return     The version of this software.
         @note       It is a static method.
         """
-        return "0.1.1"
+        return "0.1.2"
 
     @staticmethod
     def is_dev() -> bool:

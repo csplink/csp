@@ -1,9 +1,15 @@
 # Changelog ([中文](#中文))
 
+## v0.1.2
+
+- 🐞 fix: Remove the pull parameter for GPIO in Output mode
+- ✨ feat: Add single-file execution support for csp-server
+- 🐞 fix: Fix the issue where os.path.dirname returns an empty string, causing it to become the root path
+
 ## v0.1.1
 
-✨ feat: Add build package feature
-🐞 fix: Fix the package dump error
+- ✨ feat: Add build package feature
+- 🐞 fix: Fix the package dump error
 
 ## v0.1.0
 
@@ -15,6 +21,12 @@
 <h1 id="中文"></h1>
 
 # 更新日志
+
+## v0.1.2
+
+- 🐞 fix: 删除gpio在Output的pull参数
+- ✨ feat: 增加csp-server单文件执行功能
+- 🐞 fix: 修复os.path.dirname会返回空字符串从而变成根路径的bug
 
 ## v0.1.1
 
