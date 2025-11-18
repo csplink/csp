@@ -108,6 +108,10 @@ export class AppSettings {
     }
     return this._system
   }
+
+  get recentProjects(): string[] {
+    return this._origin.recentProjects ?? []
+  }
 }
 
 // eslint-disable-next-line ts/consistent-type-definitions

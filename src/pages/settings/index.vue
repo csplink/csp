@@ -34,12 +34,12 @@ import System from './system.vue'
 
 <template>
   <el-tabs tab-position="left" class="demo-tabs">
-    <el-tab-pane :label="$t('settings.systemSetting')">
+    <el-tab-pane :label="$t('label.systemSetting')">
       <el-scrollbar class="setting-scrollbar">
         <System />
       </el-scrollbar>
     </el-tab-pane>
-    <el-tab-pane :label="$t('settings.generateSetting')">
+    <el-tab-pane :label="$t('label.generateSetting')">
       <el-scrollbar class="setting-scrollbar">
         <Generate />
       </el-scrollbar>

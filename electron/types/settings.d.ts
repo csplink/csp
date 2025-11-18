@@ -32,6 +32,7 @@ import type { ThemeModeType } from './theme'
 
 export interface AppSettingsType {
   system: SystemSettingsType
+  recentProjects: string[]
 }
 
 export interface SystemSettingsType {

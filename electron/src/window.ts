@@ -31,6 +31,7 @@ import type { IpcMainEvent } from 'electron'
 import type { BrowserWindowArgsType, SystemBrowserWindow } from '../types'
 import path from 'node:path'
 import { BrowserWindow, ipcMain } from 'electron'
+import { addRecentProjects } from '../utils'
 
 const windowList: BrowserWindow[] = []
 
@@ -66,6 +67,7 @@ export function createWindow(args: BrowserWindowArgsType) {
     else {
       splash.loadFile(path.join(RENDERER_DIST, 'splash.html'))
     }
+    addRecentProjects(args.projectPath!)
   }
 
   const window = new BrowserWindow({

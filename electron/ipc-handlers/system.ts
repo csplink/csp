@@ -62,4 +62,8 @@ export function registerSystemHandler() {
     args.backendUrl = data.backendUrl
     createWindow(args)
   })
+  ipcMain.on('system:close', (event: IpcMainEvent) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    win?.close()
+  })
 }

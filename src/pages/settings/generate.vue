@@ -91,21 +91,21 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
     <el-form :model="formModel" label-position="left" label-width="auto" :rules="rules">
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.linker') }}
+          {{ $t('label.linker') }}
         </h2>
-        <el-form-item class="g-settings-item" :label="$t('settings.heapSize')" prop="heapSize">
+        <el-form-item class="g-settings-item" :label="$t('label.heapSize')" prop="heapSize">
           <HexDecInput v-model="formModel.heapSize.value" :disabled="formModel.heapSize.value < 0" />
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.stackSize')" prop="stackSize">
+        <el-form-item class="g-settings-item" :label="$t('label.stackSize')" prop="stackSize">
           <HexDecInput v-model="formModel.stackSize.value" :disabled="formModel.stackSize.value < 0" />
         </el-form-item>
       </div>
 
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.builder') }}
+          {{ $t('label.builder') }}
         </h2>
-        <el-form-item class="g-settings-item" :label="$t('settings.builderTool')" :required="true">
+        <el-form-item class="g-settings-item" :label="$t('label.builderTool')" :required="true">
           <el-select v-model="formModel.builder.value">
             <el-option
               v-for="option in project.gen.builders"
@@ -115,7 +115,7 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
             />
           </el-select>
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.builderVersion')" :required="true">
+        <el-form-item class="g-settings-item" :label="$t('label.builderVersion')" :required="true">
           <el-select v-model="formModel.builderVersion.value">
             <el-option
               v-for="option in project.gen.builderVersions"
@@ -125,7 +125,7 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
             />
           </el-select>
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.toolchains')" :required="true">
+        <el-form-item class="g-settings-item" :label="$t('label.toolchains')" :required="true">
           <el-select v-model="formModel.toolchains.value">
             <el-option
               v-for="option in project.gen.toolchainsList"
@@ -138,10 +138,10 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
         <el-form-item class="g-settings-item">
           <el-switch
             v-model="formModel.useToolchainsPackage.value"
-            :active-text="$t('settings.useToolchains')"
+            :active-text="$t('label.useToolchains')"
           />
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.toolchainsVersion')" :required="formModel.useToolchainsPackage.value">
+        <el-form-item class="g-settings-item" :label="$t('label.toolchainsVersion')" :required="formModel.useToolchainsPackage.value">
           <el-select v-model="formModel.toolchainsVersion.value" :disabled="!formModel.useToolchainsPackage.value">
             <el-option
               v-for="option in project.gen.toolchainsVersions"
@@ -151,22 +151,22 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
             />
           </el-select>
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.toolchainsPath')">
+        <el-form-item class="g-settings-item" :label="$t('label.toolchainsPath')">
           <el-input v-model="formModel.toolchainsPath.value" :disabled="!formModel.useToolchainsPackage.value" :readonly="true" />
         </el-form-item>
       </div>
 
       <div class="g-settings-section">
         <h2 class="g-settings-title">
-          {{ $t('settings.hal') }}
+          {{ $t('label.hal') }}
         </h2>
         <el-form-item class="g-settings-item">
           <el-switch
             v-model="formModel.copyHalLibrary.value"
-            :active-text="$t('settings.copyHalLibrary')"
+            :active-text="$t('label.copyHalLibrary')"
           />
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.hal')" prop="hal" :required="true">
+        <el-form-item class="g-settings-item" :label="$t('label.hal')" prop="hal" :required="true">
           <el-select v-model="formModel.hal.value">
             <el-option
               v-for="option in project.gen.hals"
@@ -176,7 +176,7 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
             />
           </el-select>
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.halVersion')" prop="halVersion" :required="true">
+        <el-form-item class="g-settings-item" :label="$t('label.halVersion')" prop="halVersion" :required="true">
           <el-select v-model="formModel.halVersion.value">
             <el-option
               v-for="option in project.gen.halVersions"
@@ -186,7 +186,7 @@ function linkerValidator(_rule: any, value: number, callback: (error?: Error) =>
             />
           </el-select>
         </el-form-item>
-        <el-form-item class="g-settings-item" :label="$t('settings.halPath')">
+        <el-form-item class="g-settings-item" :label="$t('label.halPath')">
           <el-input v-model="project.gen.halPath.value" :readonly="true" />
         </el-form-item>
       </div>

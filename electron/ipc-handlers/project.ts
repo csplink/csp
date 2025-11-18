@@ -55,19 +55,26 @@ export function registerProjectHandler() {
     if (!checkProjectByPath(path)) {
       return
     }
-    win.close()
     createWindow({ runMode: 'main', projectPath: path, backendUrl: data.backendUrl })
+    win.close()
   })
   ipcMain.handle('project:save', async (event: IpcMainInvokeEvent, project: ProjectType) => {
     const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
     const data = win.userData!
     await saveProject(data.projectPath!, project)
   })
+  ipcMain.handle('project:saveAs', async (event: IpcMainInvokeEvent, newPath: string, project: ProjectType) => {
+    const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
+    const data = win.userData!
+    const projectPath = await createProject(newPath, project)/* !< 创建新项目文件 */
+    createWindow({ runMode: 'main', projectPath, backendUrl: data.backendUrl })/* !< 打开新窗口 */
+    win.close()/* !< 关闭当前窗口 */
+  })
   ipcMain.on('project:create', async (event: IpcMainEvent, path: string, project: ProjectType) => {
     const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
     const data = win.userData!
-    path = await createProject(path, project)
+    const projectPath = await createProject(path, project)
     closeAllSubWindow()
-    createWindow({ runMode: 'main', projectPath: path, backendUrl: data.backendUrl })
+    createWindow({ runMode: 'main', projectPath, backendUrl: data.backendUrl })
   })
 }
