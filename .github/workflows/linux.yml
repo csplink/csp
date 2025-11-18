@@ -69,15 +69,8 @@ jobs:
         shell: bash
         run: |
           pnpm release
+          . tools/release.sh linux {{ github.ref_name }}
 
-          CSP_VERSION=$(npm pkg get version | tr -d '"')
-          mv -v release/${CSP_VERSION}/csp-Linux-${CSP_VERSION}.AppImage csp-linux-setup-${{ github.ref_name }}.AppImage
-          pushd release/${CSP_VERSION}/
-            mv -v linux-unpacked csp-linux-portable-${{ github.ref_name }}
-            tar czf csp-linux-portable-${{ github.ref_name }}.tar.gz csp-linux-portable-${{ github.ref_name }}
-          popd
-          mv -v release/${CSP_VERSION}/csp-linux-portable-${{ github.ref_name }}.tar.gz csp-linux-portable-${{ github.ref_name }}.tar.gz
-          mv -v build-server/csp-server csp-linux-server-${{ github.ref_name }}
       - name: ⬆️ create release
         uses: softprops/action-gh-release@v2
         with:
@@ -88,4 +81,4 @@ jobs:
           files: |
             csp-linux-setup-${{ github.ref_name }}.AppImage
             csp-linux-portable-${{ github.ref_name }}.tar.gz
-            csp-linux-server-${{ github.ref_name }}
+            csp-linux-server-${{ github.ref_name }}.tar.gz

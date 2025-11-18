@@ -32,7 +32,7 @@
     "server:install": "pip install -r server/requirements.txt",
     "server:dev": "python server/csp-server.py --trace serve -p 55432 --debug",
     "server:gen": "python server/csp-server.py --trace gen",
-    "server:build": "python -m nuitka --standalone --assume-yes-for-downloads --output-dir=build-server --output-filename=csp-server --onefile ./server/csp-server.py",
+    "server:build": "python -m nuitka --standalone --assume-yes-for-downloads --output-dir=build-server --output-filename=csp-server --nofollow-import-to=public --onefile ./server/csp-server.py",
     "server:static_isort": "python -m isort server --check-only --profile=black",
     "server:static_black": "python -m black server --check",
     "server:static": "pnpm server:static_isort && pnpm server:static_black",

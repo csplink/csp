@@ -69,15 +69,8 @@ jobs:
         shell: bash
         run: |
           pnpm release
+          . tools/release.sh windows {{ github.ref_name }}
 
-          CSP_VERSION=$(npm pkg get version | tr -d '"')
-          mv -v release/${CSP_VERSION}/csp-Windows-${CSP_VERSION}-Setup.exe csp-windows-setup-${{ github.ref_name }}.exe
-          pushd release/${CSP_VERSION}/
-            mv -v win-unpacked csp-windows-portable-${{ github.ref_name }}
-            7z a csp-windows-portable-${{ github.ref_name }}.zip csp-windows-portable-${{ github.ref_name }}
-          popd
-          mv -v release/${CSP_VERSION}/csp-windows-portable-${{ github.ref_name }}.zip csp-windows-portable-${{ github.ref_name }}.zip
-          mv -v build-server/csp-server.exe csp-windows-server-${{ github.ref_name }}.exe
       - name: ⬆️ create release
         uses: softprops/action-gh-release@v2
         with:
@@ -88,4 +81,4 @@ jobs:
           files: |
             csp-windows-setup-${{ github.ref_name }}.exe
             csp-windows-portable-${{ github.ref_name }}.zip
-            csp-windows-server-${{ github.ref_name }}.exe
+            csp-windows-server-${{ github.ref_name }}.zip
