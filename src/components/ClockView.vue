@@ -158,6 +158,7 @@ function downloadSvg() {
       link.href = dataUrl
       link.download = `${project.targetChip}-clock-tree.svg`
       link.click()
+      link.remove()
     })
     .catch((error) => {
       console.error('oops, something went wrong!', error)

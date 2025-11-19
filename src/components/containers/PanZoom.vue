@@ -222,6 +222,22 @@ function moveRel(x: number, y: number) {
   }
 }
 
+function downloadSvg(name: string) {
+  const stage = stageRef.value?.getStage()
+  const suffix = name.split('.').pop()
+  const dataURL = stage!.toDataURL({
+    mimeType: `image/${suffix}`,
+    pixelRatio: 5,
+    quality: 1,
+  })
+
+  const a = document.createElement('a')
+  a.href = dataURL
+  a.download = name
+  a.click()
+  a.remove()
+}
+
 function handWheel(event: Konva.KonvaEventObject<WheelEvent>) {
   event.evt.preventDefault()
 
@@ -322,6 +338,7 @@ defineExpose({
   zoomIn,
   zoomOut,
   moveRel,
+  downloadSvg,
 })
 </script>
 

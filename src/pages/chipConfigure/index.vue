@@ -58,6 +58,10 @@ function chipPackageZoomOut() {
   chipPackageRef.value?.zoomOut()
 }
 
+function chipPackageDownload() {
+  chipPackageRef.value?.downloadSvg()
+}
+
 function handModuleTreeClick(name: string) {
   const ip = ipManager.getPeripheral(project.vendor, name)
 
@@ -188,6 +192,11 @@ onBeforeUnmount(() => {
         <el-tooltip :content="$t('command.zoomOut')">
           <el-button circle @click="chipPackageZoomOut">
             <el-icon><i class="ri-zoom-out-line" /></el-icon>
+          </el-button>
+        </el-tooltip>
+        <el-tooltip :content="$t('command.export')">
+          <el-button circle @click="chipPackageDownload">
+            <el-icon><i class="ri-export-line" /></el-icon>
           </el-button>
         </el-tooltip>
       </div>
