@@ -69,7 +69,6 @@ class Mode1(Base):
                     else:
                         is_all_virtual = True
                         for op in mode.signal_logical_ops:
-                            print(op.virtual)
                             if not op.virtual:
                                 is_all_virtual = False
                                 break
