@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import type { Contributor } from '~/utils'
 import { ref } from 'vue'
-import { useContributorManager } from '~/utils'
+import { openUrl, useContributorManager } from '~/utils'
 
 const contributorManager = useContributorManager()
 
@@ -59,6 +59,7 @@ loadImages()
         :size="32"
         :src="user.avatar"
         class="avatar-item"
+        @click="openUrl(user.htmlUrl)"
       />
     </el-tooltip>
   </div>
