@@ -33,7 +33,7 @@ import type { Connection, Edge, Node } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
-import { toSvg } from 'html-to-image'
+import { toPng } from 'html-to-image'
 import { onMounted, ref, shallowRef, watch } from 'vue'
 import { useClockTreeManager } from '~/database'
 import { isDev, useProjectManager } from '~/utils'
@@ -149,14 +149,18 @@ function handExportCommand() {
 }
 
 function downloadSvg() {
-  toSvg(vueFlowRef.value!, { filter: (node) => {
-    return !node.classList?.contains('vue-flow__background')
-      && !node.classList?.contains('vue-flow__minimap')
-  } })
+  toPng(vueFlowRef.value!, {
+    quality: 1,
+    pixelRatio: 5,
+    filter: (node) => {
+      return !node.classList?.contains('vue-flow__background')
+        && !node.classList?.contains('vue-flow__minimap')
+    },
+  })
     .then((dataUrl) => {
       const link = document.createElement('a')
       link.href = dataUrl
-      link.download = `${project.targetChip}-clock-tree.svg`
+      link.download = `${project.targetChip}-clock-tree.png`
       link.click()
       link.remove()
     })
