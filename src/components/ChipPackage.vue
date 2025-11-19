@@ -227,6 +227,10 @@ function highlightBySignals(signals: string[]) {
   }
 }
 
+function downloadSvg() {
+  panZoomRef.value?.downloadSvg(`${summary.name}-chip-package.png`)
+}
+
 function handMouseenter(event: Konva.KonvaEventObject<MouseEvent>, pin: PinModelType) {
   event.evt.preventDefault()
   if (panZoomRef.value && panZoomRef.value.container) {
@@ -396,6 +400,7 @@ defineExpose({
   zoomOut,
   highlightByNames,
   highlightBySignals,
+  downloadSvg,
 })
 </script>
 
