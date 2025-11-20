@@ -26,7 +26,7 @@
 
 
 def _do_hex(value: int, length: int = 8) -> str:
-    return f"0x{value:0{length}X}"
+    return f"0x{int(value):0{length}X}"
 
 
 FILTERS = {
