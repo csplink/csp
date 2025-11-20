@@ -64,7 +64,7 @@ async function loadCode() {
     ).then((response) => {
       coderDumpResponseRef.value = response
       fileTreeModelRef.value = {}
-      for (const [key, value] of Object.entries(response.files)) {
+      for (const [key, value] of Object.entries(response)) {
         if (value.diff) {
           fileTreeModelRef.value[key] = true
         }
@@ -105,23 +105,23 @@ watch(() => route.fullPath, (newValue, _oldValue) => {
 })
 
 function handleCodeFileTreeShowChoose(file: string, type: string) {
-  codeRef.value = coderDumpResponseRef.value?.files[file].content ?? ''
+  codeRef.value = coderDumpResponseRef.value?.[file].content ?? ''
   languageRef.value = type
 }
 
 function handleCodeFileTreeShowDiff(file: string) {
-  codeRef.value = coderDumpResponseRef.value?.files[file].diff ?? ''
+  codeRef.value = coderDumpResponseRef.value?.[file].diff ?? ''
   languageRef.value = 'diff'
 }
 
 async function handleCodeFileTreeSave(files: string[], name: string) {
   if (files.length === 1) {
-    saveFileWithDialog(coderDumpResponseRef.value?.files[files[0]].content ?? '', { defaultPath: name })
+    saveFileWithDialog(coderDumpResponseRef.value?.[files[0]].content ?? '', { defaultPath: name })
   }
   else if (files.length > 1) {
     const zip = new JSZip()
     for (const file of files) {
-      zip.file(file, coderDumpResponseRef.value?.files[file].content ?? '')
+      zip.file(file, coderDumpResponseRef.value?.[file].content ?? '')
     }
     const blob = await zip.generateAsync({ type: 'blob' })
     const buffer = await blob.arrayBuffer()

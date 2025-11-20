@@ -24,6 +24,7 @@
 # 2025-07-29     xqyjlj       initial version
 #
 
+import proto.sio_package_install_pb2 as sio_package_install_pb2
 from flask_socketio import emit
 from gevent.lock import Semaphore
 from loguru import logger
@@ -58,9 +59,14 @@ class __Slot:
         count = kwargs["count"]
         index = kwargs["index"]
         file = kwargs["file"]
+        progress = sio_package_install_pb2.SioPackageInstallProgress(
+            count=count,
+            index=index,
+            file=file,
+        )
         emit(
             "package/install.progress",
-            {"count": count, "index": index, "file": file},
+            progress.SerializeToString(),
             to=self.sid,
         )
 

@@ -26,6 +26,7 @@
 
 import os
 
+import proto.sio_coder_generate_pb2 as sio_coder_generate_pb2
 from coder.coder import Coder
 from flask_socketio import emit
 from gevent.lock import Semaphore
@@ -62,9 +63,15 @@ class __Slot:
         count = kwargs["count"]
         index = kwargs["index"]
         file = kwargs["file"]
+        progress = sio_coder_generate_pb2.SioCoderGenerateProgress(
+            count=count,
+            index=index,
+            file=file,
+            write=write,
+        )
         emit(
             "coder/generate.progress",
-            {"count": count, "index": index, "file": file, "write": write},
+            progress.SerializeToString(),
             to=self.sid,
         )
 

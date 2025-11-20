@@ -31,6 +31,11 @@ import sys
 from pathlib import Path
 
 import click
+import proto.sio_coder_dump_pb2 as sio_coder_dump_pb2
+import proto.sio_coder_generate_pb2 as sio_coder_generate_pb2
+import proto.sio_package_description_pb2 as sio_package_description_pb2
+import proto.sio_package_install_pb2 as sio_package_install_pb2
+import proto.sio_package_list_pb2 as sio_package_list_pb2
 from actions import (
     action_coder_dump,
     action_coder_generate,
@@ -46,6 +51,7 @@ from actions import (
 )
 from flask import Flask, abort, jsonify, request
 from flask_socketio import SocketIO
+from google.protobuf.json_format import MessageToDict
 from loguru import logger
 from utils.ip import IpUtils
 from utils.net import NetUtils
@@ -204,24 +210,31 @@ def offline():
 
 
 @socketio.on("sio/coder/dump")
-def sio_coder_dump(data):
+def sio_coder_dump(data: bytes):
     # args: (content: str, path: str, diff: bool=False)
     # emit:
     #   coder/dump.result (success: bool, result?: dict, error?: str)
     #   coder/dump.progress (count: int, index: int, file: str)
     sid: str = request.sid  # type: ignore
 
-    logger.trace(f"{sid!r} calling sio/coder/dump with {data!r}")
+    msg = sio_coder_dump_pb2.SioCoderDumpRequest()
+    msg.ParseFromString(data)
+    arg_content = MessageToDict(msg.content)
+    arg_path = msg.path
+    arg_diff = msg.diff
 
-    arg_content = data.get("content")
-    arg_path = data.get("path")
-    arg_diff = data.get("diff", False)
+    logger.trace(
+        f"{sid!r} calling sio/coder/dump with content:{arg_content!r}, path:{arg_path!r}, diff:{arg_diff!r}"
+    )
 
     if not isinstance(arg_path, str):
         logger.error(f"Called with invalid path: {arg_path!r}")
         socketio.emit(
             "coder/dump.result",
-            {"success": False, "error": "'path' must be a file path string"},
+            sio_coder_dump_pb2.SioCoderDumpResponse(
+                success=False,
+                error="'path' must be a file path string",
+            ).SerializeToString(),
             to=sid,
         )
         return
@@ -231,10 +244,10 @@ def sio_coder_dump(data):
             logger.error(f"Called with invalid content: {arg_content!r}")
             socketio.emit(
                 "coder/dump.result",
-                {
-                    "success": False,
-                    "error": "'project' does not conform to expected schema.",
-                },
+                sio_coder_dump_pb2.SioCoderDumpResponse(
+                    success=False,
+                    error="'project' does not conform to expected schema.",
+                ).SerializeToString(),
                 to=sid,
             )
             return
@@ -245,7 +258,10 @@ def sio_coder_dump(data):
             logger.error(f"Called with invalid path: {arg_path!r}")
             socketio.emit(
                 "coder/dump.result",
-                {"success": False, "error": f"Failed to load file: {arg_path}"},
+                sio_coder_dump_pb2.SioCoderDumpResponse(
+                    success=False,
+                    error=f"Failed to load file: {arg_path}",
+                ).SerializeToString(),
                 to=sid,
             )
             return
@@ -256,10 +272,10 @@ def sio_coder_dump(data):
             logger.error(f"Dump failed: empty result")
             socketio.emit(
                 "coder/dump.result",
-                {
-                    "success": False,
-                    "error": "Unknown error, please see more in server log",
-                },
+                sio_coder_dump_pb2.SioCoderDumpResponse(
+                    success=False,
+                    error="Unknown error, please see more in server log",
+                ).SerializeToString(),
                 to=sid,
             )
             return
@@ -267,33 +283,50 @@ def sio_coder_dump(data):
         logger.trace(f"Dump successful")
         socketio.emit(
             "coder/dump.result",
-            {"success": True, "result": {"files": files}},
+            sio_coder_dump_pb2.SioCoderDumpResponse(
+                success=True,
+                files=files,
+            ).SerializeToString(),
             to=sid,
         )
     except Exception as e:
         logger.exception(f"Dump failed: {str(e)!r}")
-        socketio.emit("coder/dump.result", {"success": False, "error": str(e)}, to=sid)
+        socketio.emit(
+            "coder/dump.result",
+            sio_coder_dump_pb2.SioCoderDumpResponse(
+                success=False,
+                error=str(e),
+            ).SerializeToString(),
+            to=sid,
+        )
 
 
 @socketio.on("sio/coder/generate")
-def sio_coder_generate(data):
+def sio_coder_generate(data: bytes):
     # args: (path: str, output: str, files?: str[])
     # emit:
     #   coder/generate.result (success: bool, error?: str)
     #   coder/generate.progress (count: int, index: int, file: str, write: bool)
     sid: str = request.sid  # type: ignore
 
-    logger.trace(f"{sid!r} calling sio/coder/generate with {data!r}")
+    msg = sio_coder_generate_pb2.SioCoderGenerateRequest()
+    msg.ParseFromString(data)
+    arg_path = msg.path
+    arg_output = msg.output
+    arg_files = list(msg.files)
 
-    arg_path = data.get("path")
-    arg_output = data.get("output")
-    arg_files = data.get("files")
+    logger.trace(
+        f"{sid!r} calling sio/coder/generate with path:{arg_path!r}, output:{arg_output!r}, files:{arg_files!r}"
+    )
 
     if not isinstance(arg_path, str):
         logger.error(f"Called with invalid file path: {arg_path!r}")
         socketio.emit(
             "coder/generate.result",
-            {"success": False, "error": "'file' must be a file path string"},
+            sio_coder_generate_pb2.SioCoderGenerateResponse(
+                success=False,
+                error="'file' must be a file path string",
+            ).SerializeToString(),
             to=sid,
         )
         return
@@ -304,7 +337,10 @@ def sio_coder_generate(data):
             logger.error(f"Called with invalid file path: {arg_path!r}")
             socketio.emit(
                 "coder/generate.result",
-                {"success": False, "error": f"Failed to load file: {arg_path}"},
+                sio_coder_generate_pb2.SioCoderGenerateResponse(
+                    success=False,
+                    error=f"Failed to load file: {arg_path}",
+                ).SerializeToString(),
                 to=sid,
             )
             return
@@ -314,10 +350,10 @@ def sio_coder_generate(data):
             logger.error(f"Generate failed: unknown error")
             socketio.emit(
                 "coder/generate.result",
-                {
-                    "success": False,
-                    "error": "Generation failed, please see more in server log",
-                },
+                sio_coder_generate_pb2.SioCoderGenerateResponse(
+                    success=False,
+                    error="Generation failed, please see more in server log",
+                ).SerializeToString(),
                 to=sid,
             )
             return
@@ -325,52 +361,109 @@ def sio_coder_generate(data):
         logger.trace(f"Generate successful")
         socketio.emit(
             "coder/generate.result",
-            {"success": True},
+            sio_coder_generate_pb2.SioCoderGenerateResponse(
+                success=True,
+            ).SerializeToString(),
             to=sid,
         )
     except Exception as e:
         logger.exception(f"Generate failed: {str(e)!r}")
         socketio.emit(
-            "coder/generate.result", {"success": False, "error": str(e)}, to=sid
+            "coder/generate.result",
+            sio_coder_generate_pb2.SioCoderGenerateResponse(
+                success=False,
+                error=str(e),
+            ).SerializeToString(),
+            to=sid,
         )
 
 
 @socketio.on("sio/package/install")
-def sio_package_install(data):
-    arg_path = data["path"]
+def sio_package_install(data: bytes):
+    # args: (path: str)
+    # emit:
+    #   package/install.result (success: bool, error?: str)
+    #   package/install.progress (count: int, index: int, file: str, write: bool)
     sid: str = request.sid  # type: ignore
 
-    logger.trace(f"{sid!r} calling sio/package/install with {data!r}")
+    msg = sio_package_install_pb2.SioPackageInstallRequest()
+    msg.ParseFromString(data)
+    arg_path = msg.path
+
+    logger.trace(f"{sid!r} calling sio/package/install with path:{arg_path!r}")
 
     if not isinstance(arg_path, str):
         logger.error(f"Called with invalid path: {arg_path!r}")
         socketio.emit(
             "package/install.result",
-            {"success": False, "error": "'path' must be a file path string"},
+            sio_package_install_pb2.SioPackageInstallResponse(
+                success=False,
+                error="'path' must be a file path string",
+            ).SerializeToString(),
             to=sid,
         )
+        return
 
     try:
         package_desc = action_package_install(arg_path, False, False, sid)
         if package_desc is None:
             socketio.emit(
                 "package/install.result",
-                {
-                    "success": False,
-                    "error": "Unknown error, please see more in server log",
-                },
+                sio_package_install_pb2.SioPackageInstallResponse(
+                    success=False,
+                    error="Unknown error, please see more in server log",
+                ).SerializeToString(),
                 to=sid,
             )
             return
+
+        # Convert PackageDescription to protobuf Description
+        description = sio_package_description_pb2.Description()
+        description.name = package_desc.name
+        description.version = package_desc.version
+        description.license = package_desc.license
+        description.type = package_desc.type
+        description.vendor = package_desc.vendor
+        description.support = package_desc.support
+
+        # Convert vendorUrl map
+        for key, value in package_desc.vendorUrl.origin.items():
+            description.vendorUrl[key] = value
+
+        # Convert description map
+        for key, value in package_desc.description.origin.items():
+            description.description[key] = value
+
+        # Convert url map
+        for key, value in package_desc.url.origin.items():
+            description.url[key] = value
+
+        # Convert author
+        author = package_desc.author
+        author_pb = sio_package_description_pb2.Author()
+        author_pb.name = author.name
+        author_pb.email = author.email
+        author_pb.website.blog = author.website.blog
+        author_pb.website.github = author.website.github
+        description.author.CopyFrom(author_pb)
+
         socketio.emit(
             "package/install.result",
-            {"success": True, "result": package_desc.origin},
+            sio_package_install_pb2.SioPackageInstallResponse(
+                success=True,
+                description=description,
+            ).SerializeToString(),
             to=sid,
         )
     except Exception as e:
         logger.exception(f"Install failed: {str(e)!r}")
         socketio.emit(
-            "package/install.result", {"success": False, "error": str(e)}, to=sid
+            "package/install.result",
+            sio_package_install_pb2.SioPackageInstallResponse(
+                success=False,
+                error=str(e),
+            ).SerializeToString(),
+            to=sid,
         )
 
 
@@ -383,46 +476,100 @@ def sio_package_list():
     try:
         result = action_package_list()
         socketio.emit(
-            "package/list.result", {"success": True, "result": result}, to=sid
+            "package/list.result",
+            sio_package_list_pb2.SioPackageListResponse(
+                success=True,
+                packages=result,
+            ).SerializeToString(),
+            to=sid,
         )
     except Exception as e:
         logger.exception(f"List failed: {str(e)!r}")
         socketio.emit(
-            "package/list.result", {"success": False, "error": str(e)}, to=sid
+            "package/list.result",
+            sio_package_list_pb2.SioPackageListResponse(
+                success=False,
+                error=str(e),
+            ).SerializeToString(),
+            to=sid,
         )
 
 
 @socketio.on("sio/package/description")
-def sio_package_description(data):
+def sio_package_description(data: bytes):
     # args: (kind: str, name: str, version: str)
     # emit:
     #   package/description.result (success: bool, error?: str, result?: dict)
-    arg_kind = data["kind"]
-    arg_name = data["name"]
-    arg_version = data["version"]
     sid: str = request.sid  # type: ignore
-    logger.trace(f"{sid!r} calling sio/package/description")
+    msg = sio_package_description_pb2.SioPackageDescriptionRequest()
+    msg.ParseFromString(data)
+    arg_kind = msg.kind
+    arg_name = msg.name
+    arg_version = msg.version
+
+    logger.trace(
+        f"{sid!r} calling sio/package/description with kind:{arg_kind!r}, name:{arg_name!r}, version:{arg_version!r}"
+    )
     try:
         package_desc = action_package_description(arg_kind, arg_name, arg_version)
         if package_desc is None:
             socketio.emit(
                 "package/description.result",
-                {
-                    "success": False,
-                    "error": "Unknown error, please see more in server log",
-                },
+                sio_package_description_pb2.SioPackageDescriptionResponse(
+                    success=False,
+                    error="Unknown error, please see more in server log",
+                ).SerializeToString(),
                 to=sid,
             )
             return
+
+        # Convert PackageDescription to protobuf Description
+        description = sio_package_description_pb2.Description()
+        description.name = package_desc.name
+        description.version = package_desc.version
+        description.license = package_desc.license
+        description.type = package_desc.type
+        description.vendor = package_desc.vendor
+        description.support = package_desc.support
+
+        # Convert vendorUrl map
+        for key, value in package_desc.vendorUrl.origin.items():
+            description.vendorUrl[key] = value
+
+        # Convert description map
+        for key, value in package_desc.description.origin.items():
+            description.description[key] = value
+
+        # Convert url map
+        for key, value in package_desc.url.origin.items():
+            description.url[key] = value
+
+        # Convert author
+        author = package_desc.author
+        author_pb = sio_package_description_pb2.Author()
+        author_pb.name = author.name
+        author_pb.email = author.email
+        author_pb.website.blog = author.website.blog
+        author_pb.website.github = author.website.github
+        description.author.CopyFrom(author_pb)
+
         socketio.emit(
             "package/description.result",
-            {"success": True, "result": package_desc.origin},
+            sio_package_description_pb2.SioPackageDescriptionResponse(
+                success=True,
+                description=description,
+            ).SerializeToString(),
             to=sid,
         )
     except Exception as e:
         logger.exception(f"Description failed: {str(e)!r}")
         socketio.emit(
-            "package/description.result", {"success": False, "error": str(e)}, to=sid
+            "package/description.result",
+            sio_package_description_pb2.SioPackageDescriptionResponse(
+                success=False,
+                error=str(e),
+            ).SerializeToString(),
+            to=sid,
         )
 
 
@@ -675,4 +822,5 @@ def cli_tools_candb_dump(path: str, as_json: bool):
 
 
 if __name__ == "__main__":
+    cli()
     cli()
