@@ -1,7 +1,7 @@
 /**
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        eslint.config.js
+ *  @file        sio_package_description.proto
  *  @brief
  *
  * ****************************************************************************
@@ -24,38 +24,43 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2025-04-26     xqyjlj       initial version
+ *  2025-11-20     xqyjlj       initial version
  */
 
-import antfu from '@antfu/eslint-config'
+syntax = "proto3";
 
-export default antfu(
-  {
-    formatters: true,
-    unocss: true,
-    vue: true,
-    markdown: false,
-    yaml: false,
-    jsonc: false,
-  },
-  {
-    rules: {
-      'node/prefer-global/process': 'off',
-    },
-  },
-  {
-    ignores: [
-      'dist',
-      'public',
-      'node_modules',
-      'resources',
-      'components.d.ts',
-      'docs/.vitepress/cache',
-      '**/dist/**',
-      '**/public/**',
-      '**/node_modules/**',
-      'src/google/protobuf/*',
-      'src/proto/*',
-    ],
-  },
-)
+message SioPackageDescriptionRequest {
+  string kind = 1;
+  string name = 2;
+  string version = 3;
+}
+
+message SioPackageDescriptionResponse {
+  bool success = 1;
+  string error = 2;
+  Description description = 3;
+}
+
+message Website {
+  string blog = 1;
+  string github = 2;
+}
+
+message Author {
+  string name = 1;
+  string email = 2;
+  Website website = 3;
+}
+
+message Description {
+  string name = 1;
+  string version = 2;
+  string license = 3;
+  string type = 4;
+  string vendor = 5;
+  map<string, string> vendorUrl = 6;
+  map<string, string> description = 7;
+  map<string, string> url = 8;
+  string support = 9;
+  Author author = 10;
+}

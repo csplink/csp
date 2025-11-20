@@ -1,7 +1,7 @@
 /**
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        eslint.config.js
+ *  @file        sio_coder_generate.proto
  *  @brief
  *
  * ****************************************************************************
@@ -24,38 +24,26 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2025-04-26     xqyjlj       initial version
+ *  2025-11-21     xqyjlj       initial version
  */
 
-import antfu from '@antfu/eslint-config'
+syntax = "proto3";
 
-export default antfu(
-  {
-    formatters: true,
-    unocss: true,
-    vue: true,
-    markdown: false,
-    yaml: false,
-    jsonc: false,
-  },
-  {
-    rules: {
-      'node/prefer-global/process': 'off',
-    },
-  },
-  {
-    ignores: [
-      'dist',
-      'public',
-      'node_modules',
-      'resources',
-      'components.d.ts',
-      'docs/.vitepress/cache',
-      '**/dist/**',
-      '**/public/**',
-      '**/node_modules/**',
-      'src/google/protobuf/*',
-      'src/proto/*',
-    ],
-  },
-)
+
+message SioCoderGenerateRequest {
+  string path = 1;
+  string output = 2;
+  repeated string files = 3;
+}
+
+message SioCoderGenerateProgress {
+  uint32 count = 1;
+  uint32 index = 2;
+  string file = 3;
+  bool write = 4;
+}
+
+message SioCoderGenerateResponse {
+  bool success = 1;
+  string error = 2;
+}

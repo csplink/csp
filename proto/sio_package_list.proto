@@ -1,7 +1,7 @@
 /**
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        eslint.config.js
+ *  @file        sio_package_list.proto
  *  @brief
  *
  * ****************************************************************************
@@ -24,38 +24,14 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2025-04-26     xqyjlj       initial version
+ *  2025-11-20     xqyjlj       initial version
  */
 
-import antfu from '@antfu/eslint-config'
+syntax = "proto3";
+import "google/protobuf/struct.proto";
 
-export default antfu(
-  {
-    formatters: true,
-    unocss: true,
-    vue: true,
-    markdown: false,
-    yaml: false,
-    jsonc: false,
-  },
-  {
-    rules: {
-      'node/prefer-global/process': 'off',
-    },
-  },
-  {
-    ignores: [
-      'dist',
-      'public',
-      'node_modules',
-      'resources',
-      'components.d.ts',
-      'docs/.vitepress/cache',
-      '**/dist/**',
-      '**/public/**',
-      '**/node_modules/**',
-      'src/google/protobuf/*',
-      'src/proto/*',
-    ],
-  },
-)
+message SioPackageListResponse {
+  bool success = 1;
+  string error = 2;
+  google.protobuf.Struct packages = 3;
+}

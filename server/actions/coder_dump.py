@@ -27,6 +27,7 @@
 import difflib
 from pathlib import Path
 
+import proto.sio_coder_dump_pb2 as sio_coder_dump_pb2
 from coder.coder import Coder
 from flask_socketio import emit
 from public.csp.project import Project
@@ -45,7 +46,11 @@ class __Slot:
         file = kwargs["file"]
         emit(
             "coder/dump.progress",
-            {"count": count, "index": index, "file": file},
+            sio_coder_dump_pb2.SioCoderDumpProgress(
+                count=count,
+                index=index,
+                file=file,
+            ).SerializeToString(),
             to=self.sid,
         )
 

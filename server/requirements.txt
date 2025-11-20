@@ -11,3 +11,5 @@ cantools~=40.7.1
 simpleeval~=1.0.3
 isort~=7.0.0
 black~=25.9.0
+protobuf~=6.33.1
+click~=8.2.1

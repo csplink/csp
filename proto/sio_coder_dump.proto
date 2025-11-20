@@ -1,7 +1,7 @@
 /**
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        eslint.config.js
+ *  @file        sio_coder_dump.proto
  *  @brief
  *
  * ****************************************************************************
@@ -24,38 +24,32 @@
  *  Change Logs:
  *  Date           Author       Notes
  *  ------------   ----------   -----------------------------------------------
- *  2025-04-26     xqyjlj       initial version
+ *  2025-11-20     xqyjlj       initial version
  */
 
-import antfu from '@antfu/eslint-config'
+syntax = "proto3";
+import "google/protobuf/struct.proto";
 
-export default antfu(
-  {
-    formatters: true,
-    unocss: true,
-    vue: true,
-    markdown: false,
-    yaml: false,
-    jsonc: false,
-  },
-  {
-    rules: {
-      'node/prefer-global/process': 'off',
-    },
-  },
-  {
-    ignores: [
-      'dist',
-      'public',
-      'node_modules',
-      'resources',
-      'components.d.ts',
-      'docs/.vitepress/cache',
-      '**/dist/**',
-      '**/public/**',
-      '**/node_modules/**',
-      'src/google/protobuf/*',
-      'src/proto/*',
-    ],
-  },
-)
+
+message SioCoderDumpRequest {
+  google.protobuf.Struct content = 1;
+  string path = 2;
+  bool diff = 3;
+}
+
+message SioCoderDumpProgress {
+  uint32 count = 1;
+  uint32 index = 2;
+  string file = 3;
+}
+
+message SioCoderDumpResponseFile {
+  string content = 1;
+  string diff = 2; /* !< 可选 */
+}
+
+message SioCoderDumpResponse {
+  bool success = 1;
+  string error = 2;
+  map<string, SioCoderDumpResponseFile> files = 3;
+}

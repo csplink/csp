@@ -31,18 +31,19 @@ import type { ProjectType } from '@/electron/types'
 import type { Socket } from 'socket.io-client'
 import type { App } from 'vue'
 import type { PackageDescriptionType, PackageIndexType } from './packages'
+import type { SioCoderDumpResponseFile } from '~/proto/sio_coder_dump'
 import { io } from 'socket.io-client'
 import { inject } from 'vue'
+import { SioCoderDumpProgress, SioCoderDumpRequest, SioCoderDumpResponse } from '~/proto/sio_coder_dump'
+import { SioCoderGenerateProgress, SioCoderGenerateRequest, SioCoderGenerateResponse } from '~/proto/sio_coder_generate'
+import { SioPackageDescriptionRequest, SioPackageDescriptionResponse } from '~/proto/sio_package_description'
+import { SioPackageInstallProgress, SioPackageInstallRequest, SioPackageInstallResponse } from '~/proto/sio_package_install'
+import { SioPackageListResponse } from '~/proto/sio_package_list'
 
 // #region typedef
 
 export interface CoderDumpResponseType {
-  files: {
-    [k: string]: {
-      content: string
-      diff?: string
-    }
-  }
+  [k: string]: SioCoderDumpResponseFile
 }
 
 export interface PackageIndexResponseType {
@@ -79,28 +80,32 @@ export class Server {
     return new Promise((resolve, reject) => {
       const socket = this._socket
       if (onProgress) {
-        socket.on('coder/dump.progress', (data: { count: number, index: number, file: string }) => {
-          onProgress(data.count, data.index, data.file)
+        socket.on('coder/dump.progress', (progress: ArrayBuffer) => {
+          const req = SioCoderDumpProgress.decode(new Uint8Array(progress))
+          onProgress(req.count, req.index, req.file)
         })
       }
 
-      socket.emit('sio/coder/dump', {
-        content,
+      const req = SioCoderDumpRequest.fromPartial({
+        content: content as any,
         path,
         diff,
       })
 
-      socket.once('coder/dump.result', (response: { success: boolean, error?: string, result?: CoderDumpResponseType }) => {
+      const buf = SioCoderDumpRequest.encode(req).finish()
+      socket.emit('sio/coder/dump', buf)
+
+      socket.once('coder/dump.result', (response: ArrayBuffer) => {
         if (onProgress) {
           socket.off('coder/dump.progress')
         }
-
-        if (response.success) {
-          resolve(response.result!)
+        const resp = SioCoderDumpResponse.decode(new Uint8Array(response))
+        if (resp.success) {
+          resolve(resp.files)
         }
         else {
-          console.error(`Failed to coder dump: ${response.error}`)
-          reject(new Error(response.error))
+          console.error(`Failed to coder dump: ${resp.error}`)
+          reject(new Error(resp.error))
         }
       })
     })
@@ -110,7 +115,7 @@ export class Server {
     path: string,
     output?: string,
     files?: string[],
-    onProgress?: (count: number, index: number, file: string) => void,
+    onProgress?: (count: number, index: number, file: string, write: boolean) => void,
     timeout = 2000,
   ): Promise<boolean> {
     const socket = this._socket
@@ -118,8 +123,9 @@ export class Server {
       let timeoutId: ReturnType<typeof setTimeout> | null = null
 
       if (onProgress) {
-        socket.on('coder/generate.progress', (data: { count: number, index: number, file: string }) => {
-          onProgress(data.count, data.index, data.file)
+        socket.on('coder/generate.progress', (progress: ArrayBuffer) => {
+          const req = SioCoderGenerateProgress.decode(new Uint8Array(progress))
+          onProgress(req.count, req.index, req.file, req.write)
         })
       }
 
@@ -131,13 +137,16 @@ export class Server {
         reject(new Error(`coderGenerate timeout after ${timeout}ms`))
       }, timeout)
 
-      socket.emit('sio/coder/generate', {
+      const req = SioCoderGenerateRequest.fromPartial({
         path,
         output,
         files,
       })
 
-      socket.once('coder/generate.result', (response: { success: boolean, error?: string }) => {
+      const buf = SioCoderGenerateRequest.encode(req).finish()
+      socket.emit('sio/coder/generate', buf)
+
+      socket.once('coder/generate.result', (response: ArrayBuffer) => {
         if (timeoutId) {
           clearTimeout(timeoutId)
         }
@@ -145,12 +154,13 @@ export class Server {
           socket.off('coder/generate.progress')
         }
 
-        if (response.success) {
+        const resp = SioCoderGenerateResponse.decode(new Uint8Array(response))
+        if (resp.success) {
           resolve(true)
         }
         else {
-          console.error(`Failed to coder generate: ${response.error}`)
-          reject(new Error(response.error))
+          console.error(`Failed to coder generate: ${resp.error}`)
+          reject(new Error(resp.error))
         }
       })
     })
@@ -160,13 +170,14 @@ export class Server {
     return new Promise((resolve, reject) => {
       this._socket.emit('sio/package/list')
 
-      this._socket.once('package/list.result', (response: { success: boolean, error?: string, result?: PackageIndexType }) => {
-        if (response.success) {
-          resolve(response.result!)
+      this._socket.once('package/list.result', (response: ArrayBuffer) => {
+        const resp = SioPackageListResponse.decode(new Uint8Array(response))
+        if (resp.success) {
+          resolve(resp.packages!)
         }
         else {
-          console.error(`Failed to get package list: ${response.error}`)
-          reject(new Error(response.error))
+          console.error(`Failed to get package list: ${resp.error}`)
+          reject(new Error(resp.error))
         }
       })
     })
@@ -174,19 +185,59 @@ export class Server {
 
   async getPackageDescription(type: string, name: string, version: string): Promise<PackageDescriptionType> {
     return new Promise((resolve, reject) => {
-      this._socket.emit('sio/package/description', { kind: type, name, version })
+      const req = SioPackageDescriptionRequest.fromPartial({
+        kind: type,
+        name,
+        version,
+      })
 
-      this._socket.once('package/description.result', (response: {
-        success: boolean
-        error?: string
-        result?: PackageDescriptionType
-      }) => {
-        if (response.success) {
-          resolve(response.result!)
+      const buf = SioPackageDescriptionRequest.encode(req).finish()
+      this._socket.emit('sio/package/description', buf)
+
+      this._socket.once('package/description.result', (response: ArrayBuffer) => {
+        const resp = SioPackageDescriptionResponse.decode(new Uint8Array(response))
+        if (resp.success) {
+          resolve(resp.description! as PackageDescriptionType)
         }
         else {
-          console.error(`Failed to get package description: ${response.error}`)
-          reject(new Error(response.error))
+          console.error(`Failed to get package description: ${resp.error}`)
+          reject(new Error(resp.error))
+        }
+      })
+    })
+  }
+
+  async packageInstall(
+    path: string,
+    onProgress?: (count: number, index: number, file: string) => void,
+  ): Promise<PackageDescriptionType> {
+    return new Promise((resolve, reject) => {
+      if (onProgress) {
+        this._socket.on('package/install.progress', (progress: ArrayBuffer) => {
+          const req = SioPackageInstallProgress.decode(new Uint8Array(progress))
+          onProgress(req.count, req.index, req.file)
+        })
+      }
+
+      const req = SioPackageInstallRequest.fromPartial({
+        path,
+      })
+
+      const buf = SioPackageInstallRequest.encode(req).finish()
+      this._socket.emit('sio/package/install', buf)
+
+      this._socket.once('package/install.result', (response: ArrayBuffer) => {
+        if (onProgress) {
+          this._socket.off('package/install.progress')
+        }
+
+        const resp = SioPackageInstallResponse.decode(new Uint8Array(response))
+        if (resp.success) {
+          resolve(resp.description as PackageDescriptionType)
+        }
+        else {
+          console.error(`Failed to install package: ${resp.error}`)
+          reject(new Error(resp.error))
         }
       })
     })
