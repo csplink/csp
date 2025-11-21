@@ -35,15 +35,18 @@ cd csp
 # 安装前端和Electron依赖
 pnpm install
 
-# 安装Python后端依赖
-pnpm run action:server-install
+# 安装Python后端依赖，至少需要 python3.10 以上版本
+pnpm server:install
 ```
 
-### 4. 启动开发服务器
+### 4. 启动
 
 ```bash
-# 启动主应用开发服务器
-pnpm run dev
+# 启动后端
+pnpm server:dev
+
+# 启动前端
+pnpm dev
 ```
 
 ## 验证安装
