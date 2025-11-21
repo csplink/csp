@@ -67,6 +67,7 @@ async function handOpenProject() {
       <template #header>
         {{ $t('startup.recentProjects') }}
       </template>
+      <RecentProjectsCard />
     </el-card>
     <el-card class="grid-item">
       <template #header>
@@ -95,6 +96,11 @@ async function handOpenProject() {
   flex-direction: column;
   text-align: left;
   border-radius: 9px;
+}
+
+::v-deep(.ep-card__body) {
+  min-width: 0;
+  min-height: 0;
 }
 
 .btn-group {

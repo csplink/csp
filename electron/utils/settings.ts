@@ -27,13 +27,14 @@
  *  2025-07-26     xqyjlj       initial version
  */
 
-import type { AppSettingsType, SystemSettingsType } from '@/electron/types'
+import type { AppSettingsType, SettingsRecentProjectItemType, SystemSettingsType } from '@/electron/types'
 import fs from 'node:fs'
 import os from 'node:os'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { app, nativeTheme } from 'electron'
 import yaml from 'yaml'
+import { getProject } from './project'
 
 export const DEFAULT_SYSTEM_SETTINGS: SystemSettingsType = {
   theme: 'light',
@@ -76,23 +77,24 @@ function _loadSettingsSync(): AppSettingsType {
     if (!fs.existsSync(settingsPath)) {
       return {
         system: DEFAULT_SYSTEM_SETTINGS,
-        recentProjects: [],
+        recentProjects: {},
       }
     }
 
     const fileContent = fs.readFileSync(settingsPath, 'utf-8')
     const parsedSettings = yaml.parse(fileContent) as AppSettingsType
 
-    return {
-      ...parsedSettings,
-      ..._appSettings,
+    if (Array.isArray(parsedSettings.recentProjects)) {
+      parsedSettings.recentProjects = {} /* !< 兼容旧版本 */
     }
+
+    return parsedSettings
   }
   catch (error) {
     console.warn('Failed to load settings, using defaults:', error)
     return {
       system: DEFAULT_SYSTEM_SETTINGS,
-      recentProjects: [],
+      recentProjects: {},
     }
   }
 }
@@ -150,7 +152,7 @@ export function saveSettingsSync(settings: AppSettingsType) {
 }
 
 function _updateSettingsSync(path: string, value: any) {
-  const keys = path.split('.')
+  const keys = path.split('\0')
   let item: any = _appSettings
 
   for (const key of keys.slice(0, -1)) {
@@ -188,23 +190,41 @@ export function updateSettingsSync(path: string, value: any) {
 
 export function addRecentProjects(projectPath: string) {
   const appSettings = loadSettingsSync()
-  appSettings.recentProjects ??= []
+  appSettings.recentProjects ??= {}
 
-  const absolutePath = path.resolve(projectPath)/* !< 强制转为绝对路径 */
+  const absolutePath = path.resolve(projectPath).replace(/\\/g, '/') /* !< 强制转为绝对路径 */
+  const projectInfo = getProject(absolutePath)
 
-  /* !< 如果已存在该项目，先移除 */
-  const existingIndex = appSettings.recentProjects.findIndex(p => p === absolutePath)
-  if (existingIndex !== -1) {
-    appSettings.recentProjects.splice(existingIndex, 1)
+  if (!projectInfo) {
+    return
   }
 
-  appSettings.recentProjects.unshift(absolutePath)/* !< 添加到最前面 */
-
-  /* !< 限制最多10个项目 */
-  if (appSettings.recentProjects.length > 10) {
-    appSettings.recentProjects = appSettings.recentProjects.slice(0, 10)
+  /* !< 创建新的项目项 */
+  const projectItem: SettingsRecentProjectItemType = {
+    path: absolutePath,
+    lastModified: new Date().toISOString(),
+    projectName: projectInfo?.name,
+    targetChip: projectInfo?.targetChip,
   }
 
+  /* !< 如果已存在该项目，先删除旧的 */
+  if (appSettings.recentProjects[absolutePath]) {
+    delete appSettings.recentProjects[absolutePath]
+  }
+
+  /* !< 添加到最前面 */
+  const newRecentProjects: Record<string, SettingsRecentProjectItemType> = {}
+  newRecentProjects[absolutePath] = projectItem
+
+  /* !< 按时间顺序添加其他项目 */
+  Object.entries(appSettings.recentProjects)
+    .sort(([, a], [, b]) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime())
+    .slice(0, 9)/* !< 限制最多10个项目（包括新添加的） */
+    .forEach(([path, item]) => {
+      newRecentProjects[path] = item
+    })
+
+  appSettings.recentProjects = newRecentProjects
   saveSettingsSync(appSettings)
 }
 

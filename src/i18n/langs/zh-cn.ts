@@ -165,6 +165,9 @@ export default {
     copyHalLibrary: '复制HAL库',
     halVersion: 'HAL版本',
     halPath: 'HAL路径',
+    today: '今天',
+    yesterday: '昨天',
+    daysAgo: '{days} 天前',
   },
   fileType: {
     csp: 'CSP 工程文件',

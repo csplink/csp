@@ -41,19 +41,19 @@ export function registerSettingsHandler() {
     return loadSettingsSync()
   })
 
-  ipcMain.on('settings:save', (_event, settings: AppSettingsType) => {
+  ipcMain.handle('settings:save', (_event, settings: AppSettingsType) => {
     saveSettingsSync(settings)
   })
 
-  ipcMain.on('settings:reset', (_event) => {
+  ipcMain.handle('settings:reset', (_event) => {
     const defaultSettings: AppSettingsType = {
       system: DEFAULT_SYSTEM_SETTINGS,
-      recentProjects: [],
+      recentProjects: loadSettingsSync().recentProjects,
     }
     saveSettingsSync(defaultSettings)
   })
 
-  ipcMain.on('settings:update', (_event, path: string, value: any) => {
+  ipcMain.handle('settings:update', (_event, path: string, value: any) => {
     updateSettingsSync(path, value)
   })
 }

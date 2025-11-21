@@ -30,9 +30,16 @@
 import type { I18nModeType } from './i18n'
 import type { ThemeModeType } from './theme'
 
+export interface SettingsRecentProjectItemType {
+  path: string /* !< 项目路径 */
+  lastModified: string /* !< 上一次修改时间 (ISO 8601 格式) */
+  projectName: string /* !< 工程名 */
+  targetChip: string /* !< 芯片名 */
+}
+
 export interface AppSettingsType {
   system: SystemSettingsType
-  recentProjects: string[]
+  recentProjects: Record<string, SettingsRecentProjectItemType> /* !< key 为项目路径 */
 }
 
 export interface SystemSettingsType {
