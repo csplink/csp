@@ -41,7 +41,7 @@ jobs:
       GITHUB_CSPLINK_DEVELOPER_TOKEN: ${{ github.token }}
     steps:
       - name: ⬇️ checkout csp
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 1
