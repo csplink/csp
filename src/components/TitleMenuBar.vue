@@ -229,7 +229,7 @@ onMounted(() => {
     titleObserver.observe(titleElement, { childList: true })
   }
 
-  for (const path of settings.settings.recentProjects) {
+  for (const path of Object.keys(settings.settings.recentProjects)) {
     recentProjects.value.push(path)
   }
 })

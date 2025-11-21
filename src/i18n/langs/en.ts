@@ -165,6 +165,9 @@ export default {
     copyHalLibrary: 'Copy HAL Library',
     halVersion: 'HAL Version',
     halPath: 'HAL Path',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    daysAgo: '{days} days ago',
   },
   fileType: {
     csp: 'CSP Project File',

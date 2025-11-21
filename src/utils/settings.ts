@@ -27,7 +27,7 @@
  *  2025-07-26     xqyjlj       initial version
  */
 
-import type { AppSettingsType, I18nModeType, SystemSettingsType, ThemeModeType } from '@/electron/types'
+import type { AppSettingsType, I18nModeType, SettingsRecentProjectItemType, SystemSettingsType, ThemeModeType } from '@/electron/types'
 import type { Emitter } from 'mitt'
 import type { App } from 'vue'
 import type { VueI18nType } from '~/i18n'
@@ -62,19 +62,6 @@ export async function resetSettings(): Promise<AppSettingsType> {
   }
 }
 
-/**
- * Update specific settings properties and save via IPC
- */
-export async function updateSettings(updates: Partial<AppSettingsType>): Promise<AppSettingsType> {
-  try {
-    return await window.electron.invoke('settings:update', updates)
-  }
-  catch (error) {
-    console.error('Failed to update settings via IPC:', error)
-    throw error
-  }
-}
-
 // #region typedef
 
 // eslint-disable-next-line ts/consistent-type-definitions
@@ -103,14 +90,25 @@ export class AppSettings {
     if (this._system === undefined) {
       this._system = new SystemSettings(this._origin.system)
       this._system.emitter.on('changed', (payload: { path: string, newValue: any, oldValue: any }) => {
-        this._emitter.emit('changed', { path: `system.${payload.path}`, newValue: payload.newValue, oldValue: payload.oldValue })
+        this._emitter.emit('changed', { path: `system\0${payload.path}`, newValue: payload.newValue, oldValue: payload.oldValue })
       })
     }
     return this._system
   }
 
-  get recentProjects(): string[] {
-    return this._origin.recentProjects ?? []
+  get recentProjects(): Record<string, SettingsRecentProjectItemType> {
+    return this._origin.recentProjects ?? {}
+  }
+
+  /**
+   * 删除指定路径的最近项目
+   */
+  removeRecentProject(projectPath: string): void {
+    if (this._origin.recentProjects?.[projectPath]) {
+      const old = { ...this._origin.recentProjects[projectPath] }
+      delete this._origin.recentProjects[projectPath]
+      this._emitter.emit('changed', { path: `recentProjects\0${projectPath}`, newValue: null, oldValue: old })
+    }
   }
 }
 
@@ -209,7 +207,7 @@ export class SettingsManager {
     this._settings = new AppSettings(await window.electron.invoke('settings:load'))
 
     this._settings.emitter.on('changed', (payload: { path: string, newValue: any, oldValue: any }) => {
-      window.electron.send('settings:update', payload.path, payload.newValue)
+      window.electron.invoke('settings:update', payload.path, payload.newValue)
     })
 
     watchEffect(() => {
