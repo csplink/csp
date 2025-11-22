@@ -343,7 +343,14 @@ defineExpose({
 </template>
 
 <style>
+.mx-menu-bar {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
 .mx-menu-bar-item {
   height: 35px;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 </style>
