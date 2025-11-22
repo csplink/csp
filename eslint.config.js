@@ -51,6 +51,7 @@ export default antfu(
       'resources',
       'components.d.ts',
       'docs/.vitepress/cache',
+      'docs/**/*.md',
       '**/dist/**',
       '**/public/**',
       '**/node_modules/**',

@@ -10,13 +10,20 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '环境搭建', link: '/installation' },
-      { text: '功能介绍', link: '/features' },
+      { text: '软件包', link: '/packages' },
     ],
     sidebar: {
       '/': [
         { text: '介绍', link: '/' },
         { text: '环境搭建', link: '/installation' },
-        { text: '功能介绍', link: '/features' },
+        {
+          text: '软件包',
+          items: [
+            { text: '软件包总览', link: '/packages/' },
+            { text: '工具链', link: '/packages/toolchains' },
+            { text: 'HAL库', link: '/packages/hal' },
+          ],
+        },
       ],
     },
     socialLinks: [
