@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import type { ChipPackageInstance } from '~/components/instance'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useIpManager } from '~/database'
 import { useProjectManager } from '~/utils'
 
@@ -46,19 +46,21 @@ const ipInfoRef = ref({
 })
 let stopConfigurationsWatchHandle: (() => void) | null = null
 
-function chipPackageZoomIn() {
+function handZoomIn() {
   chipPackageRef.value?.zoomIn()
 }
 
-function chipPackageRescale() {
+function handRescale() {
   chipPackageRef.value?.rescale()
 }
 
-function chipPackageZoomOut() {
+function handZoomOut() {
   chipPackageRef.value?.zoomOut()
 }
 
-function chipPackageDownload() {
+async function handDownload() {
+  chipPackageRef.value?.rescale() /* !< 强制重新缩放，否则会导致下载的图像不正确 */
+  await nextTick()
   chipPackageRef.value?.downloadSvg()
 }
 
@@ -180,22 +182,22 @@ onBeforeUnmount(() => {
       </div>
       <div class="my-4 items-center justify-center" style="text-align: center;">
         <el-tooltip :content="$t('command.zoomIn')">
-          <el-button circle @click="chipPackageZoomIn">
+          <el-button circle @click="handZoomIn">
             <el-icon><i class="ri-zoom-in-line" /></el-icon>
           </el-button>
         </el-tooltip>
         <el-tooltip :content="$t('command.fullScreen')">
-          <el-button circle @click="chipPackageRescale">
+          <el-button circle @click="handRescale">
             <el-icon><i class="ri-fullscreen-line" /></el-icon>
           </el-button>
         </el-tooltip>
         <el-tooltip :content="$t('command.zoomOut')">
-          <el-button circle @click="chipPackageZoomOut">
+          <el-button circle @click="handZoomOut">
             <el-icon><i class="ri-zoom-out-line" /></el-icon>
           </el-button>
         </el-tooltip>
         <el-tooltip :content="$t('command.export')">
-          <el-button circle @click="chipPackageDownload">
+          <el-button circle @click="handDownload">
             <el-icon><i class="ri-export-line" /></el-icon>
           </el-button>
         </el-tooltip>
