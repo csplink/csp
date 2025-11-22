@@ -28,9 +28,9 @@
  */
 
 import type { I18nType } from '@/electron/types'
-import type { App } from 'vue'
+import type { App, ShallowRef } from 'vue'
 import type { Server, ServerManager } from './server'
-import { inject } from 'vue'
+import { inject, shallowRef } from 'vue'
 import { I18n } from '~/i18n'
 
 // #region typedef
@@ -168,29 +168,36 @@ export interface PackageIndexType {
 
 export class PackageIndex {
   private _data: PackageIndexType
+  private _ref: ShallowRef<PackageIndexType>
 
   constructor(data: PackageIndexType) {
     this._data = data
+    this._ref = shallowRef(this._data)
   }
 
-  get origin(): PackageIndexType {
-    return this._data
+  get origin(): ShallowRef<PackageIndexType> {
+    return this._ref
+  }
+
+  update(data: PackageIndexType) {
+    this._data = data
+    this._ref.value = this._data
   }
 
   types(): string[] {
-    return Object.keys(this._data)
+    return Object.keys(this.origin.value)
   }
 
   items(kind: string): string[] {
-    return Object.keys(this._data[kind] || {})
+    return Object.keys(this.origin.value[kind] || {})
   }
 
   versions(kind: string, name: string): string[] {
-    return Object.keys((this._data[kind] || {})[name] || {})
+    return Object.keys((this.origin.value[kind] || {})[name] || {})
   }
 
   path(kind: string, name: string, version: string): string {
-    return ((this._data[kind] || {})[name] || {})[version] || ''
+    return ((this.origin.value[kind] || {})[name] || {})[version] || ''
   }
 }
 
@@ -227,6 +234,12 @@ export class PackageManager {
       this._descriptionCache[`${kind}/${name}/${version}`] = new PackageDescription(description)
     }
     return this._descriptionCache[`${kind}/${name}/${version}`]
+  }
+
+  async reload() {
+    this._packageIndex?.update(await this._server.packageList().catch(() => {
+      return {}
+    }))
   }
 }
 

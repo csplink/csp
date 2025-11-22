@@ -33,7 +33,7 @@ import type { ComputedRef } from 'vue'
 import type {
   AboutDialogInstance,
   AuthorDialogInstance,
-  CoderGenDumpDialogInstance,
+  FileProgressDialogInstance,
   SaveAsProjectDialogInstance,
 } from './instance'
 import { MenuBar } from '@imengyu/vue3-context-menu'
@@ -42,7 +42,18 @@ import Mousetrap from 'mousetrap'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { closeWindow, createWindow, openProject, setProjectPath, useProjectManager, useServerManager, useSettingsManager } from '~/utils'
+import {
+  closeWindow,
+  createWindow,
+  openDevTools,
+  openProject,
+  setProjectPath,
+  showOpenDialog,
+  usePackageManager,
+  useProjectManager,
+  useServerManager,
+  useSettingsManager,
+} from '~/utils'
 import 'mousetrap-global-bind'
 
 const projectManager = useProjectManager()
@@ -52,11 +63,12 @@ const route = useRoute()
 const i18n = useI18n()
 const { t } = i18n
 const settings = useSettingsManager()
+const packageManager = usePackageManager()
 
 const project = projectManager.get()!
 
 const titleRef = ref(document.title)
-const coderGenDumpDialog = ref<CoderGenDumpDialogInstance>()
+const fileProgressDialog = ref<FileProgressDialogInstance>()
 const aboutDialog = ref<AboutDialogInstance>()
 const authorDialog = ref<AuthorDialogInstance>()
 const saveAsProjectDialog = ref<SaveAsProjectDialogInstance>()
@@ -68,7 +80,6 @@ const menuData: ComputedRef<MenuBarOptions> = computed(() => ({
   items: [
     {
       label: t('command.file'),
-      icon: 'ri-file-line',
       children: [
         {
           label: t('command.new'),
@@ -134,8 +145,14 @@ const menuData: ComputedRef<MenuBarOptions> = computed(() => ({
       ],
     },
     {
+      label: t('label.packages'),
+      children: [
+        { label: t('command.library'), icon: 'ri-book-shelf-line', divided: true, onClick: () => { handJumpToPackageManager() } },
+        { label: t('command.install'), icon: 'ri-install-line', onClick: async () => { await handInstallPackage() } },
+      ],
+    },
+    {
       label: t('command.help'),
-      icon: 'ri-question-line',
       children: [
         {
           label: t('command.welcome'),
@@ -147,6 +164,14 @@ const menuData: ComputedRef<MenuBarOptions> = computed(() => ({
                 router.push('/welcome')
               })
             }
+          },
+        },
+        {
+          label: t('command.devTools'),
+          icon: 'ri-tools-line',
+          divided: true,
+          onClick: () => {
+            openDevTools()
           },
         },
         { label: t('label.about'), icon: 'ri-information-line', onClick: () => { aboutDialog.value?.show() } },
@@ -173,8 +198,8 @@ function handSaveAsProjectCommand() {
 }
 
 async function handGenerateCommand() {
-  coderGenDumpDialog.value?.show()
-  coderGenDumpDialog.value?.reset()
+  fileProgressDialog.value?.show(t('label.generating'))
+  fileProgressDialog.value?.reset()
 
   await project?.save()
 
@@ -184,7 +209,7 @@ async function handGenerateCommand() {
       undefined,
       [],
       (count: number, index: number, file: string) => {
-        coderGenDumpDialog.value?.updateProgress(count, index, file)
+        fileProgressDialog.value?.updateProgress(count, index, file)
       },
     ).then(() => {
       ElNotification({
@@ -207,7 +232,7 @@ async function handGenerateCommand() {
     })
   }
   finally {
-    coderGenDumpDialog.value?.hide()
+    fileProgressDialog.value?.hide()
   }
 }
 
@@ -217,6 +242,70 @@ async function handNewProject() {
 
 async function handOpenProject() {
   await openProject(i18n)
+}
+
+function handJumpToPackageManager() {
+  if (!route.path.startsWith('/packageManager')) {
+    nextTick(() => {
+      router.push('/packageManager')
+    })
+  }
+}
+
+async function handInstallPackage() {
+  const { filePaths, canceled } = await showOpenDialog(
+    {
+      title: t('message.installPackage'),
+      filters: [
+        { name: t('fileType.csppack'), extensions: ['csppack'] },
+      ],
+    },
+  )
+
+  if (canceled || !filePaths) {
+    return
+  }
+
+  if (filePaths.length !== 1) {
+    return
+  }
+
+  const packagePath = filePaths[0]
+
+  fileProgressDialog.value?.show(t('label.installing'))
+  fileProgressDialog.value?.reset()
+
+  try {
+    await severManager.server.packageInstall(
+      packagePath,
+      (count: number, index: number, file: string) => {
+        fileProgressDialog.value?.updateProgress(count, index, file)
+      },
+    ).then(() => {
+      ElNotification({
+        title: t('label.success'),
+        message: t('message.installSuccess'),
+        duration: 3000,
+        offset: 35,
+        type: 'success',
+      })
+      packageManager.reload()
+      handJumpToPackageManager()
+    })
+  }
+  catch (error) {
+    console.error(t('message.installFailed'), error)
+    ElNotification({
+      title: t('label.error'),
+      message: t('message.installFailed'),
+      duration: 0,
+      offset: 35,
+      type: 'error',
+    })
+  }
+  finally {
+    fileProgressDialog.value?.hide()
+  }
 }
 
 onMounted(() => {
@@ -247,7 +336,7 @@ defineExpose({
 
 <template>
   <MenuBar :options="menuData" />
-  <CoderGenDumpDialog ref="coderGenDumpDialog" />
+  <FileProgressDialog ref="fileProgressDialog" />
   <AboutDialog ref="aboutDialog" />
   <AuthorDialog ref="authorDialog" />
   <SaveAsProjectDialog ref="saveAsProjectDialog" />

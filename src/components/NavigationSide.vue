@@ -67,13 +67,13 @@ function handleGenerate() {
     <el-menu-item index="/clockConfigure">
       <el-icon><i class="ri-time-line" /></el-icon>
       <template #title>
-        {{ $t('mainNavigation.clock') }}
+        {{ $t('label.clock') }}
       </template>
     </el-menu-item>
     <el-menu-item index="/codeView">
       <el-icon><i class="ri-code-box-line" /></el-icon>
       <template #title>
-        {{ $t('mainNavigation.code') }}
+        {{ $t('label.code') }}
       </template>
     </el-menu-item>
     <div class="spacer" />
@@ -82,7 +82,7 @@ function handleGenerate() {
       @click="handleGenerate"
     >
       <el-tooltip
-        :content="$t('mainNavigation.generate')"
+        :content="$t('command.generate')"
         placement="right"
       >
         <div class="ep-menu-tooltip__trigger">
@@ -93,19 +93,19 @@ function handleGenerate() {
     <el-menu-item index="/nav/4">
       <el-icon><i class="ri-cup-line" /></el-icon>
       <template #title>
-        {{ $t('mainNavigation.sponsor') }}
+        {{ $t('label.sponsor') }}
       </template>
     </el-menu-item>
     <el-menu-item index="/packageManager">
-      <el-icon><i class="ri-kanban-view" /></el-icon>
+      <el-icon><i class="ri-book-shelf-line" /></el-icon>
       <template #title>
-        {{ $t('mainNavigation.packages') }}
+        {{ $t('label.packages') }}
       </template>
     </el-menu-item>
     <el-menu-item index="/settings">
       <el-icon><i class="ri-settings-line" /></el-icon>
       <template #title>
-        {{ $t('mainNavigation.settings') }}
+        {{ $t('label.settings') }}
       </template>
     </el-menu-item>
   </el-menu>

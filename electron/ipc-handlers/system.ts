@@ -66,4 +66,8 @@ export function registerSystemHandler() {
     const win = BrowserWindow.fromWebContents(event.sender)
     win?.close()
   })
+  ipcMain.on('system:openDevTools', (event: IpcMainEvent) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    win?.webContents.openDevTools()
+  })
 }

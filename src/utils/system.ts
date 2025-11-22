@@ -52,6 +52,10 @@ export function closeWindow() {
   window.electron.send('system:close')
 }
 
+export function openDevTools() {
+  window.electron.send('system:openDevTools')
+}
+
 export const useSystemStore = defineStore('SystemStore', {
   state: () => {
     return {

@@ -29,30 +29,35 @@ from pathlib import Path
 
 import proto.sio_coder_dump_pb2 as sio_coder_dump_pb2
 from coder.coder import Coder
-from flask_socketio import emit
+from flask_socketio import SocketIO, emit
 from public.csp.project import Project
 from utils.io import IoUtils
 from utils.summary import SummaryUtils
 
 
 class __Slot:
-    def __init__(self):
 
+    def __init__(self):
         self.sid = ""
+        self.socketio: SocketIO | None = None
 
     def on_sio_dump_progress(self, sender, **kwargs):
         count = kwargs["count"]
         index = kwargs["index"]
         file = kwargs["file"]
+
+        progress = sio_coder_dump_pb2.SioCoderDumpProgress(
+            count=count,
+            index=index,
+            file=file,
+        )
         emit(
             "coder/dump.progress",
-            sio_coder_dump_pb2.SioCoderDumpProgress(
-                count=count,
-                index=index,
-                file=file,
-            ).SerializeToString(),
+            progress.SerializeToString(),
             to=self.sid,
         )
+        if self.socketio:
+            self.socketio.sleep(0)
 
 
 def action_coder_dump(
@@ -61,6 +66,7 @@ def action_coder_dump(
     path: str | None,
     content: dict | None,
     sid: str | None = None,
+    socketio: SocketIO | None = None,
 ) -> dict:
     summary = SummaryUtils.load_summary(project.vendor, project.targetChip)
     coder = Coder(project, summary)
@@ -70,6 +76,7 @@ def action_coder_dump(
     if sid:
         slot = __Slot()
         slot.sid = sid
+        slot.socketio = socketio
         coder.emitter["dump"].connect(slot.on_sio_dump_progress)
 
     for file, data in coder.dump().items():

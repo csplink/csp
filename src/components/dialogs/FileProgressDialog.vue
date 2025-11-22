@@ -1,7 +1,7 @@
 <!--
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        CoderGenDumpDialog.vue
+ *  @file        FileProgressDialog.vue
  *  @brief
  *
  * ****************************************************************************
@@ -31,6 +31,7 @@
 import { reactive, ref } from 'vue'
 
 const visible = ref(false)
+const titleRef = ref('')
 const state = reactive({
   progress: 0,
   currentFile: '',
@@ -45,8 +46,9 @@ function updateProgress(total: number, index: number, file: string) {
   state.progress = Math.floor((index / total) * 100)
 }
 
-function show() {
+function show(title: string) {
   visible.value = true
+  titleRef.value = title
 }
 
 function hide() {
@@ -71,7 +73,7 @@ defineExpose({
 <template>
   <el-dialog
     v-model="visible"
-    :title="$t('codeView.loading')"
+    :title="titleRef"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
     :show-close="false"
@@ -79,15 +81,12 @@ defineExpose({
     append-to-body
   >
     <div class="loading-content">
-      <el-progress
-        :percentage="state.progress"
-        :status="state.progress === 100 ? 'success' : ''"
-      />
+      <el-progress :percentage="state.progress" />
       <div class="loading-info">
         <p v-if="state.total > 0">
-          {{ $t('codeView.progress') }}: {{ state.current }}/{{ state.total }}
+          {{ $t('label.progress') }}: {{ state.current }}/{{ state.total }}
         </p>
-        <p>{{ $t('codeView.currentFile') }}: {{ state.currentFile }}</p>
+        <p>{{ $t('label.currentFile') }}: {{ state.currentFile }}</p>
       </div>
     </div>
   </el-dialog>

@@ -32,7 +32,7 @@ import type ClockView from '~/components/ClockView.vue'
 import type PanZoom from '~/components/containers/PanZoom.vue'
 import type AboutDialog from '~/components/dialogs/AboutDialog.vue'
 import type AuthorDialog from '~/components/dialogs/AuthorDialog.vue'
-import type CoderGenDumpDialog from '~/components/dialogs/CoderGenDumpDialog.vue'
+import type FileProgressDialog from '~/components/dialogs/FileProgressDialog.vue'
 import type SaveAsProjectDialog from '~/components/dialogs/SaveAsProjectDialog.vue'
 import type TitleMenuBar from '~/components/TitleMenuBar.vue'
 
@@ -41,6 +41,6 @@ export type ClockViewInstance = InstanceType<typeof ClockView> & unknown
 export type PanZoomInstance = InstanceType<typeof PanZoom> & unknown
 export type AboutDialogInstance = InstanceType<typeof AboutDialog> & unknown
 export type AuthorDialogInstance = InstanceType<typeof AuthorDialog> & unknown
-export type CoderGenDumpDialogInstance = InstanceType<typeof CoderGenDumpDialog> & unknown
+export type FileProgressDialogInstance = InstanceType<typeof FileProgressDialog> & unknown
 export type SaveAsProjectDialogInstance = InstanceType<typeof SaveAsProjectDialog> & unknown
 export type TitleMenuBarInstance = InstanceType<typeof TitleMenuBar> & unknown

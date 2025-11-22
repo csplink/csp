@@ -27,7 +27,7 @@
  *  2025-07-06     xqyjlj       initial version
 -->
 <script setup lang="ts">
-import type { CoderGenDumpDialogInstance } from '~/components/instance'
+import type { FileProgressDialogInstance } from '~/components/instance'
 import type { CoderDumpResponseType } from '~/utils'
 import { ElNotification } from 'element-plus'
 import JSZip from 'jszip'
@@ -47,10 +47,10 @@ const codeRef = ref<string>('')
 const languageRef = ref('c')
 const coderDumpResponseRef = ref<CoderDumpResponseType>()
 const fileTreeModelRef = ref<Record<string, boolean>>({})
-const dialog = ref<CoderGenDumpDialogInstance>()
+const dialog = ref<FileProgressDialogInstance>()
 
 async function loadCode() {
-  dialog.value?.show()
+  dialog.value?.show(t('label.dumping'))
   dialog.value?.reset()
 
   try {
@@ -130,7 +130,7 @@ async function handleCodeFileTreeSave(files: string[], name: string) {
 }
 
 async function handleCodeFileTreeGenerate(files: string[]) {
-  dialog.value?.show()
+  dialog.value?.show(t('label.generating'))
   dialog.value?.reset()
 
   await project?.save()
@@ -189,7 +189,7 @@ onMounted(async () => {
     </el-splitter-panel>
   </el-splitter>
 
-  <CoderGenDumpDialog ref="dialog" />
+  <FileProgressDialog ref="dialog" />
 </template>
 
 <style scoped>
