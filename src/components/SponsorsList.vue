@@ -1,7 +1,7 @@
 <!--
  * ****************************************************************************
  *  @author      xqyjlj
- *  @file        ContributorsList.vue
+ *  @file        SponsorsList.vue
  *  @brief
  *
  * ****************************************************************************
@@ -28,16 +28,23 @@
 -->
 
 <script setup lang="ts">
-import type { Contributor } from '~/utils'
 import { onMounted, ref } from 'vue'
-import { openUrl, useContributorManager } from '~/utils'
+import yaml from 'yaml'
 
-const contributorManager = useContributorManager()
+export interface SponsorType {
+  avatar: string
+  amount: number
+  comment: string
+  name: string
+}
 
-const contributors = ref<Contributor[]>([])
+const sponsors = ref<SponsorType[]>([])
 
 async function loadImages() {
-  contributors.value = await contributorManager.get()
+  const resp = await fetch('./sponsors')
+  const text = await resp.text()
+  const parsedData = yaml.parse(text) as SponsorType[]
+  sponsors.value = parsedData
 }
 
 onMounted(() => {
@@ -48,20 +55,27 @@ onMounted(() => {
 <template>
   <div class="avatar-container">
     <el-tooltip
-      v-for="(user, index) in contributors"
+      v-for="(user, index) in sponsors"
       :key="index"
       popper-class="custom-tooltip"
     >
       <template #content>
         <div class="tooltip-content">
-          <div>{{ user.name }}</div>
+          <div class="sponsor-name">
+            {{ user.name }}
+          </div>
+          <div class="sponsor-amount">
+            ¥{{ user.amount }}
+          </div>
+          <div v-if="user.comment" class="sponsor-comment">
+            {{ user.comment }}
+          </div>
         </div>
       </template>
       <el-avatar
         :size="32"
         :src="user.avatar"
         class="avatar-item"
-        @click="openUrl(user.htmlUrl)"
       />
     </el-tooltip>
   </div>
@@ -76,11 +90,45 @@ onMounted(() => {
 
 .avatar-item {
   transition: transform 0.2s ease;
-  cursor: pointer;
 }
 
 .avatar-item:hover {
   transform: scale(1.1);
   box-shadow: 0 2px 12px var(--ep-text-color-primary);
+}
+
+.custom-tooltip {
+  background: #2c3e50 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  padding: 12px 16px !important;
+  max-width: 200px !important;
+}
+
+.tooltip-content {
+  text-align: center;
+  line-height: 1.5;
+}
+
+.sponsor-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.sponsor-amount {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4caf50;
+  margin-bottom: 4px;
+}
+
+.sponsor-comment {
+  font-size: 12px;
+  color: #bdc3c7;
+  font-style: italic;
+  word-wrap: break-word;
 }
 </style>

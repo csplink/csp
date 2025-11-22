@@ -59,6 +59,10 @@ const routes: Readonly<RouteRecordRaw[]> = [
     component: () => import('~/pages/packageManager/index.vue'),
   },
   {
+    path: '/sponsor',
+    component: () => import('~/pages/sponsor/index.vue'),
+  },
+  {
     path: '/settings',
     component: () => import('~/pages/settings/index.vue'),
     children: [
