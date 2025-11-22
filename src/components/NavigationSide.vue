@@ -90,7 +90,7 @@ function handleGenerate() {
         </div>
       </el-tooltip>
     </li>
-    <el-menu-item index="/nav/4">
+    <el-menu-item index="/sponsor">
       <el-icon><i class="ri-cup-line" /></el-icon>
       <template #title>
         {{ $t('label.sponsor') }}
