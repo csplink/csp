@@ -13,9 +13,6 @@ hero:
     - theme: brand
       text: 快速开始
       link: /installation
-    - theme: alt
-      text: 查看功能
-      link: /features
 
 features:
   - icon: 💻
@@ -54,4 +51,4 @@ CSP (Chip & System Platform) 是一款用于芯片和板卡灵活配置的集成
 - **用户友好**：直观的图形界面降低学习成本，提高开发效率
 - **跨平台兼容**：支持主流操作系统，适应不同开发环境
 
-## 想要开始使用CSP？请查看我们的 [环境搭建指南](/installation)。
+## 想要开始使用CSP？请查看我们的 [环境搭建指南](/installation)
