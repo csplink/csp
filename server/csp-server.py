@@ -36,6 +36,7 @@ import proto.sio_coder_generate_pb2 as sio_coder_generate_pb2
 import proto.sio_package_description_pb2 as sio_package_description_pb2
 import proto.sio_package_install_pb2 as sio_package_install_pb2
 import proto.sio_package_list_pb2 as sio_package_list_pb2
+import proto.sio_package_uninstall_pb2 as sio_package_uninstall_pb2
 from actions import (
     action_coder_dump,
     action_coder_generate,
@@ -43,6 +44,7 @@ from actions import (
     action_package_install,
     action_package_list,
     action_package_make,
+    action_package_uninstall,
     action_tools_candb_dump,
     action_tools_check_ip,
     action_tools_cmx_ip,
@@ -267,7 +269,9 @@ def sio_coder_dump(data: bytes):
             return
 
     try:
-        files = action_coder_dump(project, arg_diff, arg_path, arg_content, sid)
+        files = action_coder_dump(
+            project, arg_diff, arg_path, arg_content, sid, socketio
+        )
         if files is None or len(files) == 0:
             logger.error(f"Dump failed: empty result")
             socketio.emit(
@@ -345,7 +349,9 @@ def sio_coder_generate(data: bytes):
             )
             return
 
-        result = action_coder_generate(project, arg_output, False, sid, arg_files)
+        result = action_coder_generate(
+            project, arg_output, False, arg_files, sid, socketio
+        )
         if not result:
             logger.error(f"Generate failed: unknown error")
             socketio.emit(
@@ -383,7 +389,7 @@ def sio_package_install(data: bytes):
     # args: (path: str)
     # emit:
     #   package/install.result (success: bool, error?: str)
-    #   package/install.progress (count: int, index: int, file: str, write: bool)
+    #   package/install.progress (count: int, index: int, file: str)
     sid: str = request.sid  # type: ignore
 
     msg = sio_package_install_pb2.SioPackageInstallRequest()
@@ -405,7 +411,7 @@ def sio_package_install(data: bytes):
         return
 
     try:
-        package_desc = action_package_install(arg_path, False, False, sid)
+        package_desc = action_package_install(arg_path, False, False, sid, socketio)
         if package_desc is None:
             socketio.emit(
                 "package/install.result",
@@ -467,6 +473,54 @@ def sio_package_install(data: bytes):
         )
 
 
+@socketio.on("sio/package/uninstall")
+def sio_package_uninstall(data: bytes):
+    # args: (type: str, name: str, version: str)
+    # emit:
+    #   package/uninstall.result (success: bool, error?: str)
+    sid: str = request.sid  # type: ignore
+
+    msg = sio_package_uninstall_pb2.SioPackageUninstallRequest()
+    msg.ParseFromString(data)
+    arg_type = msg.type
+    arg_name = msg.name
+    arg_version = msg.version
+
+    logger.trace(
+        f"{sid!r} calling sio/package/uninstall with type:{arg_type!r}, name:{arg_name!r}, version:{arg_version!r}"
+    )
+
+    try:
+        result = action_package_uninstall(arg_type, arg_name, arg_version)
+        if result:
+            socketio.emit(
+                "package/uninstall.result",
+                sio_package_uninstall_pb2.SioPackageUninstallResponse(
+                    success=True,
+                ).SerializeToString(),
+                to=sid,
+            )
+        else:
+            socketio.emit(
+                "package/uninstall.result",
+                sio_package_uninstall_pb2.SioPackageUninstallResponse(
+                    success=False,
+                    error="Unknown error, please see more in server log",
+                ).SerializeToString(),
+                to=sid,
+            )
+    except Exception as e:
+        logger.exception(f"Uninstall failed: {str(e)!r}")
+        socketio.emit(
+            "package/uninstall.result",
+            sio_package_uninstall_pb2.SioPackageUninstallResponse(
+                success=False,
+                error=str(e),
+            ).SerializeToString(),
+            to=sid,
+        )
+
+
 @socketio.on("sio/package/list")
 def sio_package_list():
     # emit:
@@ -497,21 +551,21 @@ def sio_package_list():
 
 @socketio.on("sio/package/description")
 def sio_package_description(data: bytes):
-    # args: (kind: str, name: str, version: str)
+    # args: (type: str, name: str, version: str)
     # emit:
     #   package/description.result (success: bool, error?: str, result?: dict)
     sid: str = request.sid  # type: ignore
     msg = sio_package_description_pb2.SioPackageDescriptionRequest()
     msg.ParseFromString(data)
-    arg_kind = msg.kind
+    arg_type = msg.type
     arg_name = msg.name
     arg_version = msg.version
 
     logger.trace(
-        f"{sid!r} calling sio/package/description with kind:{arg_kind!r}, name:{arg_name!r}, version:{arg_version!r}"
+        f"{sid!r} calling sio/package/description with type:{arg_type!r}, name:{arg_name!r}, version:{arg_version!r}"
     )
     try:
-        package_desc = action_package_description(arg_kind, arg_name, arg_version)
+        package_desc = action_package_description(arg_type, arg_name, arg_version)
         if package_desc is None:
             socketio.emit(
                 "package/description.result",
@@ -620,7 +674,7 @@ def cli_coder_generate(path: str, output: str, progress: bool, files: tuple[str,
     logger.trace(f"Calling cli/coder/generate with {arg!r}")
 
     project = ProjectUtils.load_project_from_file(path)
-    if not action_coder_generate(project, output, progress, None, list(files)):
+    if not action_coder_generate(project, output, progress, list(files)):
         exit(1)
 
 
@@ -646,8 +700,8 @@ def cli_package_uninstall(type: str, name: str, version: str):
     logger.info(
         f"CLI uninstall called with type: {type!r}, name: {name!r}, version: {version!r}"
     )
-    click.secho(f"[暂未实现] uninstall {type}:{name}@{version}", fg="yellow")
-    logger.warning(f"Uninstall feature not implemented for {type}:{name}@{version}")
+    if not action_package_uninstall(type, name, version):
+        exit(1)
 
 
 @cli.command(name="list")

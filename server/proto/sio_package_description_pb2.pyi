@@ -8,13 +8,13 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class SioPackageDescriptionRequest(_message.Message):
     __slots__ = ()
-    KIND_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
-    kind: str
+    type: str
     name: str
     version: str
-    def __init__(self, kind: _Optional[str] = ..., name: _Optional[str] = ..., version: _Optional[str] = ...) -> None: ...
+    def __init__(self, type: _Optional[str] = ..., name: _Optional[str] = ..., version: _Optional[str] = ...) -> None: ...
 
 class SioPackageDescriptionResponse(_message.Message):
     __slots__ = ()

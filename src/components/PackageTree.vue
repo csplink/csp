@@ -28,9 +28,12 @@
 -->
 
 <script setup lang="ts">
-import type { PackageIndex } from '~/utils'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { usePackageManager } from '~/utils'
+import type { MenuOptions } from '@imengyu/vue3-context-menu'
+import type { TreeNode } from 'element-plus'
+import { ElNotification, ElTree } from 'element-plus'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { usePackageManager, useServerManager } from '~/utils'
 
 interface TreeType {
   key: string
@@ -51,20 +54,31 @@ const defaultProps = {
 }
 
 const packageManager = usePackageManager()
+const severManager = useServerManager()
+const i18n = useI18n()
+const { t } = i18n
 
-const packageIndexRef = ref<PackageIndex>()
 const defaultExpandedKeys = ref<string[]>([])
 const treeModelRef = ref<TreeType[]>([])
+const menuShowRef = ref(false)
+const menuOptionsComponentRef = ref<MenuOptions>({
+  x: 0,
+  y: 0,
+  minWidth: 230,
+})
+const currentSelectedNode = ref<TreeType | null>(null)
+
+let stopConfigurationsWatchHandle: (() => void) | null = null
 
 async function loadModules() {
-  if (!packageIndexRef.value) {
+  if (!packageManager.packageIndex.origin.value) {
     return
   }
 
   defaultExpandedKeys.value = []
 
   const tree: TreeType[] = []
-  for (const [type, value1] of Object.entries(packageIndexRef.value.origin)) {
+  for (const [type, value1] of Object.entries(packageManager.packageIndex.origin.value)) {
     const typeTree: TreeType = {
       key: type,
       label: type,
@@ -97,6 +111,19 @@ async function loadModules() {
     }
   }
 
+  /* !< 对最终tree进行排序 */
+  tree.sort((a, b) => a.label.localeCompare(b.label))
+  tree.forEach((typeTree) => {
+    if (typeTree.children) {
+      typeTree.children.sort((a, b) => a.label.localeCompare(b.label))
+      typeTree.children.forEach((nameTree) => {
+        if (nameTree.children) {
+          nameTree.children.sort((a, b) => a.label.localeCompare(b.label))
+        }
+      })
+    }
+  })
+
   treeModelRef.value = tree
 }
 
@@ -106,19 +133,81 @@ function handleNodeClick(data: TreeType) {
   }
 }
 
+function handleContextMenu(event: MouseEvent, data: TreeType, _node: TreeNode, _component: InstanceType<typeof ElTree>) {
+  event.preventDefault()
+
+  /* !< 只有version类型的节点才能卸载 */
+  if (data.type === 'version') {
+    currentSelectedNode.value = data
+    menuOptionsComponentRef.value = {
+      x: event.clientX,
+      y: event.clientY,
+      minWidth: 230,
+    }
+    menuShowRef.value = true
+  }
+}
+
+async function handUninstall() {
+  menuShowRef.value = false
+
+  if (!currentSelectedNode.value || !currentSelectedNode.value.kind || !currentSelectedNode.value.name || !currentSelectedNode.value.version) {
+    return
+  }
+
+  try {
+    await severManager.server.packageUninstall(
+      currentSelectedNode.value.kind,
+      currentSelectedNode.value.name,
+      currentSelectedNode.value.version,
+    )
+
+    ElNotification({
+      title: t('label.success'),
+      message: t('message.uninstallSuccess'),
+      duration: 3000,
+      offset: 35,
+      type: 'success',
+    })
+
+    await packageManager.reload()
+  }
+  catch (error) {
+    console.error(t('message.uninstallFailed'), error)
+    ElNotification({
+      title: t('label.error'),
+      message: t('message.uninstallFailed'),
+      duration: 0,
+      offset: 35,
+      type: 'error',
+    })
+  }
+
+  currentSelectedNode.value = null
+}
+
 onMounted(async () => {
-  packageIndexRef.value = packageManager.packageIndex
-  loadModules()
+  stopConfigurationsWatchHandle = watch(
+    () => packageManager.packageIndex.origin.value,
+    () => {
+      loadModules()
+    },
+    { immediate: true },
+  )
 })
 
 onBeforeUnmount(() => {
+  if (stopConfigurationsWatchHandle) {
+    stopConfigurationsWatchHandle()
+    stopConfigurationsWatchHandle = null
+  }
 })
 </script>
 
 <template>
   <div class="tree-div">
     <el-scrollbar class="tree-scrollbar">
-      <el-tree
+      <ElTree
         class="tree"
         node-key="key"
         :data="treeModelRef"
@@ -127,6 +216,7 @@ onBeforeUnmount(() => {
         :expand-on-click-node="false"
         :highlight-current="true"
         @node-click="handleNodeClick"
+        @node-contextmenu="handleContextMenu"
       >
         <template #default="{ node, data }">
           <div class="tree-node-icon mr-2">
@@ -144,8 +234,14 @@ onBeforeUnmount(() => {
             {{ node.label }}
           </span>
         </template>
-      </el-tree>
+      </ElTree>
     </el-scrollbar>
+    <context-menu
+      v-model:show="menuShowRef"
+      :options="menuOptionsComponentRef"
+    >
+      <context-menu-item icon="ri-uninstall-line" :label="$t('command.uninstall')" @click="handUninstall()" />
+    </context-menu>
   </div>
 </template>
 

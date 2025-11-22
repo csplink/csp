@@ -10,7 +10,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 export const protobufPackage = "";
 
 export interface SioPackageDescriptionRequest {
-  kind: string;
+  type: string;
   name: string;
   version: string;
 }
@@ -61,13 +61,13 @@ export interface Description_UrlEntry {
 }
 
 function createBaseSioPackageDescriptionRequest(): SioPackageDescriptionRequest {
-  return { kind: "", name: "", version: "" };
+  return { type: "", name: "", version: "" };
 }
 
 export const SioPackageDescriptionRequest: MessageFns<SioPackageDescriptionRequest> = {
   encode(message: SioPackageDescriptionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.kind !== "") {
-      writer.uint32(10).string(message.kind);
+    if (message.type !== "") {
+      writer.uint32(10).string(message.type);
     }
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
@@ -90,7 +90,7 @@ export const SioPackageDescriptionRequest: MessageFns<SioPackageDescriptionReque
             break;
           }
 
-          message.kind = reader.string();
+          message.type = reader.string();
           continue;
         }
         case 2: {
@@ -120,7 +120,7 @@ export const SioPackageDescriptionRequest: MessageFns<SioPackageDescriptionReque
 
   fromJSON(object: any): SioPackageDescriptionRequest {
     return {
-      kind: isSet(object.kind) ? globalThis.String(object.kind) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       version: isSet(object.version) ? globalThis.String(object.version) : "",
     };
@@ -128,8 +128,8 @@ export const SioPackageDescriptionRequest: MessageFns<SioPackageDescriptionReque
 
   toJSON(message: SioPackageDescriptionRequest): unknown {
     const obj: any = {};
-    if (message.kind !== "") {
-      obj.kind = message.kind;
+    if (message.type !== "") {
+      obj.type = message.type;
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -145,7 +145,7 @@ export const SioPackageDescriptionRequest: MessageFns<SioPackageDescriptionReque
   },
   fromPartial<I extends Exact<DeepPartial<SioPackageDescriptionRequest>, I>>(object: I): SioPackageDescriptionRequest {
     const message = createBaseSioPackageDescriptionRequest();
-    message.kind = object.kind ?? "";
+    message.type = object.type ?? "";
     message.name = object.name ?? "";
     message.version = object.version ?? "";
     return message;

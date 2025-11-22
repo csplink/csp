@@ -671,7 +671,7 @@ export class ProjectManager {
   private updateToolchainsVersion(project: Project, packageIndex: PackageIndex) {
     const options = []
 
-    const toolchainsPackages = packageIndex.origin.toolchains?.[project.gen.toolchains.value] ?? {}
+    const toolchainsPackages = packageIndex.origin.value.toolchains?.[project.gen.toolchains.value] ?? {}
 
     if (!project.gen.useToolchainsPackage.value) {
       project.gen.toolchainsVersion.value = ''
@@ -727,7 +727,7 @@ export class ProjectManager {
 
   private updateHalVersion(project: Project, packageIndex: PackageIndex) {
     const options = []
-    const halPackages = packageIndex.origin.hal?.[project.gen.hal.value] ?? {}
+    const halPackages = packageIndex.origin.value.hal?.[project.gen.hal.value] ?? {}
     for (const version in halPackages) {
       options.push(version)
     }

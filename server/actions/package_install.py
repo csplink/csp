@@ -24,8 +24,10 @@
 # 2025-07-29     xqyjlj       initial version
 #
 
+import time
+
 import proto.sio_package_install_pb2 as sio_package_install_pb2
-from flask_socketio import emit
+from flask_socketio import SocketIO, emit
 from gevent.lock import Semaphore
 from loguru import logger
 from packages.description import PackageDescription
@@ -39,6 +41,8 @@ class __Slot:
     def __init__(self):
         self.__generated_bar = None
         self.sid = ""
+        self.socketio: SocketIO | None = None
+        self.__last_emit_time = 0
 
     def on_install_progress(self, sender, **kwargs):
         count = kwargs["count"]
@@ -59,16 +63,26 @@ class __Slot:
         count = kwargs["count"]
         index = kwargs["index"]
         file = kwargs["file"]
-        progress = sio_package_install_pb2.SioPackageInstallProgress(
-            count=count,
-            index=index,
-            file=file,
-        )
-        emit(
-            "package/install.progress",
-            progress.SerializeToString(),
-            to=self.sid,
-        )
+
+        # Throttle emissions to at most every 500ms
+        current_time = time.time()
+        time_since_last_emit = current_time - self.__last_emit_time
+
+        # Always emit the final progress update or if enough time has passed
+        if index == count or time_since_last_emit >= 0.05:
+            progress = sio_package_install_pb2.SioPackageInstallProgress(
+                count=count,
+                index=index,
+                file=file,
+            )
+            emit(
+                "package/install.progress",
+                progress.SerializeToString(),
+                to=self.sid,
+            )
+            if self.socketio:
+                self.socketio.sleep(0)
+            self.__last_emit_time = current_time
 
     def on_install(self, sender, **kwargs):
         count = kwargs["count"]
@@ -79,12 +93,17 @@ class __Slot:
 
 
 def _action_package_install(
-    path: str, progress: bool, verbose: bool, sid: str | None = None
+    path: str,
+    progress: bool,
+    verbose: bool,
+    sid: str | None = None,
+    socketio: SocketIO | None = None,
 ) -> PackageDescription | None:
     package = Package()
     slot = __Slot()
-    if sid:
+    if sid and socketio:
         slot.sid = sid
+        slot.socketio = socketio
         package.emitter["install"].connect(slot.on_sio_install_progress)
     else:
         if progress:
@@ -103,7 +122,11 @@ def _action_package_install(
 
 
 def action_package_install(
-    path: str, progress: bool, verbose: bool, sid: str | None = None
+    path: str,
+    progress: bool,
+    verbose: bool,
+    sid: str | None = None,
+    socketio: SocketIO | None = None,
 ) -> PackageDescription | None:
     with __lock:
-        return _action_package_install(path, progress, verbose, sid)
+        return _action_package_install(path, progress, verbose, sid, socketio)

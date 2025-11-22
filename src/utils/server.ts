@@ -39,6 +39,7 @@ import { SioCoderGenerateProgress, SioCoderGenerateRequest, SioCoderGenerateResp
 import { SioPackageDescriptionRequest, SioPackageDescriptionResponse } from '~/proto/sio_package_description'
 import { SioPackageInstallProgress, SioPackageInstallRequest, SioPackageInstallResponse } from '~/proto/sio_package_install'
 import { SioPackageListResponse } from '~/proto/sio_package_list'
+import { SioPackageUninstallRequest, SioPackageUninstallResponse } from '~/proto/sio_package_uninstall'
 
 // #region typedef
 
@@ -186,7 +187,7 @@ export class Server {
   async getPackageDescription(type: string, name: string, version: string): Promise<PackageDescriptionType> {
     return new Promise((resolve, reject) => {
       const req = SioPackageDescriptionRequest.fromPartial({
-        kind: type,
+        type,
         name,
         version,
       })
@@ -237,6 +238,30 @@ export class Server {
         }
         else {
           console.error(`Failed to install package: ${resp.error}`)
+          reject(new Error(resp.error))
+        }
+      })
+    })
+  }
+
+  async packageUninstall(type: string, name: string, version: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const req = SioPackageUninstallRequest.fromPartial({
+        type,
+        name,
+        version,
+      })
+
+      const buf = SioPackageUninstallRequest.encode(req).finish()
+      this._socket.emit('sio/package/uninstall', buf)
+
+      this._socket.once('package/uninstall.result', (response: ArrayBuffer) => {
+        const resp = SioPackageUninstallResponse.decode(new Uint8Array(response))
+        if (resp.success) {
+          resolve(true)
+        }
+        else {
+          console.error(`Failed to get package description: ${resp.error}`)
           reject(new Error(resp.error))
         }
       })

@@ -28,7 +28,7 @@ import os
 
 import proto.sio_coder_generate_pb2 as sio_coder_generate_pb2
 from coder.coder import Coder
-from flask_socketio import emit
+from flask_socketio import SocketIO, emit
 from gevent.lock import Semaphore
 from public.csp.project import Project
 from tqdm import tqdm
@@ -41,6 +41,7 @@ class __Slot:
     def __init__(self):
         self.__generated_bar = None
         self.sid = ""
+        self.socketio: SocketIO | None = None
 
     def on_generate_progress(self, sender, **kwargs):
         write = kwargs["write"]
@@ -74,6 +75,8 @@ class __Slot:
             progress.SerializeToString(),
             to=self.sid,
         )
+        if self.socketio:
+            self.socketio.sleep(0)
 
     def on_generate(self, sender, **kwargs):
         write = kwargs["write"]
@@ -95,14 +98,16 @@ def _action_coder_generate(
     project: Project,
     path: str | None,
     progress: bool,
-    sid: str | None,
     files: list[str] | None,
+    sid: str | None,
+    socketio: SocketIO | None = None,
 ) -> bool:
     summary = SummaryUtils.load_summary(project.vendor, project.targetChip)
     coder = Coder(project, summary)
     slot = __Slot()
     if sid:
         slot.sid = sid
+        slot.socketio = socketio
         coder.emitter["generate"].connect(slot.on_sio_generate_progress)
     else:
         if progress:
@@ -122,8 +127,9 @@ def action_coder_generate(
     project: Project,
     path: str | None,
     progress: bool,
-    sid: str | None = None,
     files: list[str] | None = None,
+    sid: str | None = None,
+    socketio: SocketIO | None = None,
 ) -> bool:
     with __lock:
-        return _action_coder_generate(project, path, progress, sid, files)
+        return _action_coder_generate(project, path, progress, files, sid, socketio)
