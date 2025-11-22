@@ -34,7 +34,7 @@ import { Background } from '@vue-flow/background'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 import { toPng } from 'html-to-image'
-import { onMounted, ref, shallowRef, watch } from 'vue'
+import { nextTick, onMounted, ref, shallowRef, watch } from 'vue'
 import { useClockTreeManager } from '~/database'
 import { isDev, useProjectManager } from '~/utils'
 
@@ -144,7 +144,9 @@ function handSaveCommand() {
   clockTreeManager.save(project.vendor, project.targetChip)
 }
 
-function handExportCommand() {
+async function handExportCommand() {
+  fitView()
+  await nextTick()
   downloadSvg()
 }
 

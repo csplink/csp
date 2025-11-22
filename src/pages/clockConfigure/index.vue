@@ -29,23 +29,25 @@
 
 <script setup lang="ts">
 import type { ClockViewInstance } from '~/components/instance'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 
 const clockViewRef = ref<ClockViewInstance>()
 
-function clockViewZoomIn() {
+function handZoomIn() {
   clockViewRef.value?.zoomIn()
 }
 
-function clockViewRescale() {
+function handRescale() {
   clockViewRef.value?.rescale()
 }
 
-function clockViewZoomOut() {
+function handZoomOut() {
   clockViewRef.value?.zoomOut()
 }
 
-function clockViewDownload() {
+async function handDownload() {
+  clockViewRef.value?.rescale() /* !< 强制重新缩放，否则会导致下载的图像不正确 */
+  await nextTick()
   clockViewRef.value?.downloadSvg()
 }
 </script>
@@ -57,22 +59,22 @@ function clockViewDownload() {
     </div>
     <div class="my-4 items-center justify-center" style="text-align: center;">
       <el-tooltip :content="$t('command.zoomIn')">
-        <el-button circle @click="clockViewZoomIn">
+        <el-button circle @click="handZoomIn">
           <el-icon><i class="ri-zoom-in-line" /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip :content="$t('command.fullScreen')">
-        <el-button circle @click="clockViewRescale">
+        <el-button circle @click="handRescale">
           <el-icon><i class="ri-fullscreen-line" /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip :content="$t('command.zoomOut')">
-        <el-button circle @click="clockViewZoomOut">
+        <el-button circle @click="handZoomOut">
           <el-icon><i class="ri-zoom-out-line" /></el-icon>
         </el-button>
       </el-tooltip>
       <el-tooltip :content="$t('command.export')">
-        <el-button circle @click="clockViewDownload">
+        <el-button circle @click="handDownload">
           <el-icon><i class="ri-export-line" /></el-icon>
         </el-button>
       </el-tooltip>
