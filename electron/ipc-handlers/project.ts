@@ -32,6 +32,7 @@ import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron'
 import { BrowserWindow, ipcMain } from 'electron'
 import { closeAllSubWindow, createWindow } from '../src/window'
 import {
+  addRecentProjects,
   checkProjectByPath,
   createProject,
   getProject,
@@ -42,6 +43,7 @@ export function registerProjectHandler() {
   ipcMain.handle('project:get', async (event: IpcMainInvokeEvent) => {
     const win = BrowserWindow.fromWebContents(event.sender) as SystemBrowserWindow
     const data = win.userData!
+    addRecentProjects(data.projectPath!)
     return getProject(data.projectPath!)
   })
   ipcMain.handle('project:getPath', async (event: IpcMainInvokeEvent) => {
