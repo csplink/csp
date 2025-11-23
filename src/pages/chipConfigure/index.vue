@@ -138,7 +138,7 @@ onBeforeUnmount(() => {
 
 <template>
   <el-splitter>
-    <el-splitter-panel min="250" size="10%">
+    <el-splitter-panel min="250" size="250">
       <ModuleTree
         @click="handModuleTreeClick"
         @command="handModuleTreeCommand"

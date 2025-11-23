@@ -64,18 +64,20 @@ properties:
                 $ref: "#/properties/url"
               type:
                 enum: [pdf]
-              description:
-                $ref: "#/properties/illustrate"
               size:
                 type: string
                 minLength: 1
               version:
                 type: string
                 pattern: '^(?:v|V)?\d+(?:\.\d+){1,2}$'
-            required: [url, type, description, size, version]
+            required: [url, type, size, version]
       errata:
         $ref: "#/properties/documents/properties/datasheets"
       references:
+        $ref: "#/properties/documents/properties/datasheets"
+      applications:
+        $ref: "#/properties/documents/properties/datasheets"
+      faqs:
         $ref: "#/properties/documents/properties/datasheets"
   illustrate:
     type: object

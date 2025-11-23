@@ -32,6 +32,7 @@ import type { AutocompleteFetchSuggestionsCallback } from 'element-plus'
 import type { Repository } from '~/database'
 import { ElMessage } from 'element-plus'
 import { onMounted, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRepositoryManager } from '~/database'
 
 interface SearchResultItem {
@@ -46,6 +47,7 @@ interface RangeItem {
 
 const emit = defineEmits(['update:modelValue'])
 
+const { t } = useI18n()
 const repositoryManager = useRepositoryManager()
 const repository = ref<Repository>()
 const loading = ref(false)
@@ -92,7 +94,7 @@ onMounted(async () => {
     updateFilteredUnits()
   }
   catch (error) {
-    ElMessage.error('加载芯片数据失败')
+    ElMessage.error(t('chipFilter.loadChipDataFailed'))
     console.error(error)
   }
   finally {
@@ -261,9 +263,9 @@ function resetFilters() {
     <el-card>
       <template #header>
         <div class="filter-header">
-          <h3>芯片筛选</h3>
+          <h3>{{ $t('chipFilter.title') }}</h3>
           <el-button type="primary" size="small" @click="resetFilters">
-            重置筛选
+            {{ $t('chipFilter.resetFilters') }}
           </el-button>
         </div>
       </template>
@@ -279,7 +281,7 @@ function resetFilters() {
                 searchChips(query);
                 cb(searchResults);
               }"
-              placeholder="搜索芯片型号"
+              :placeholder="$t('chipFilter.searchChipPlaceholder')"
               popper-class="search-autocomplete"
               clearable
               class="search-input"
@@ -300,9 +302,9 @@ function resetFilters() {
 
           <div class="filter-section">
             <el-collapse v-model="mainActiveNames">
-              <el-collapse-item name="products" title="产品信息">
+              <el-collapse-item name="products" :title="$t('chipFilter.productInfo')">
                 <el-collapse v-model="productsActiveNames">
-                  <el-collapse-item name="vendors" title="厂商 (Vendor)">
+                  <el-collapse-item name="vendors" :title="$t('chipFilter.vendor')">
                     <el-scrollbar class="filter-content-scrollbar">
                       <el-checkbox-group v-model="filters.vendors">
                         <el-checkbox
@@ -314,7 +316,7 @@ function resetFilters() {
                       </el-checkbox-group>
                     </el-scrollbar>
                   </el-collapse-item>
-                  <el-collapse-item name="series" title="系列 (Series)">
+                  <el-collapse-item name="series" :title="$t('chipFilter.series')">
                     <el-scrollbar class="filter-content-scrollbar">
                       <el-checkbox-group v-model="filters.series">
                         <el-checkbox
@@ -326,7 +328,7 @@ function resetFilters() {
                       </el-checkbox-group>
                     </el-scrollbar>
                   </el-collapse-item>
-                  <el-collapse-item name="lines" title="产品线 (Line)">
+                  <el-collapse-item name="lines" :title="$t('chipFilter.line')">
                     <el-scrollbar class="filter-content-scrollbar">
                       <el-checkbox-group v-model="filters.lines">
                         <el-checkbox
@@ -338,7 +340,7 @@ function resetFilters() {
                       </el-checkbox-group>
                     </el-scrollbar>
                   </el-collapse-item>
-                  <el-collapse-item name="packages" title="封装 (Package)">
+                  <el-collapse-item name="packages" :title="$t('chipFilter.package')">
                     <el-scrollbar class="filter-content-scrollbar">
                       <el-checkbox-group v-model="filters.packages">
                         <el-checkbox
@@ -350,7 +352,7 @@ function resetFilters() {
                       </el-checkbox-group>
                     </el-scrollbar>
                   </el-collapse-item>
-                  <el-collapse-item name="cores" title="核心 (Core)">
+                  <el-collapse-item name="cores" :title="$t('chipFilter.core')">
                     <el-scrollbar class="filter-content-scrollbar">
                       <el-checkbox-group v-model="filters.cores">
                         <el-checkbox
@@ -363,7 +365,7 @@ function resetFilters() {
                     </el-scrollbar>
                     <div class="filter-group">
                       <div class="filter-title">
-                        频率 (MHz)
+                        {{ $t('chipFilter.frequency') }}
                       </div>
                       <el-slider
                         v-model="tempSliderValues.frequency"
@@ -378,10 +380,10 @@ function resetFilters() {
                   </el-collapse-item>
                 </el-collapse>
               </el-collapse-item>
-              <el-collapse-item name="memory" title="内存信息">
+              <el-collapse-item name="memory" :title="$t('chipFilter.memoryInfo')">
                 <div class="filter-group">
                   <div class="filter-title">
-                    RAM (KB)
+                    {{ $t('chipFilter.ram') }}
                   </div>
                   <el-slider
                     v-model="tempSliderValues.ram"
@@ -395,7 +397,7 @@ function resetFilters() {
                 </div>
                 <div class="filter-group">
                   <div class="filter-title">
-                    Flash (KB)
+                    {{ $t('chipFilter.flash') }}
                   </div>
                   <el-slider
                     v-model="tempSliderValues.flash"

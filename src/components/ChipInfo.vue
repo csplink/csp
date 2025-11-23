@@ -52,8 +52,9 @@ const md = new MarkdownIt({
 })
 
 const i18n = useI18n()
-
 const summaryManager = useSummaryManager()
+
+const { t } = useI18n()
 const chipSummary = shallowRef<Summary | null>(null)
 const loading = ref(false)
 const activeTab = ref('basic')
@@ -66,19 +67,29 @@ const renderedContent = computed(() => {
 function processDocuments(summary: Summary): Record<string, Record<string, SummaryDocumentUnit>> {
   const processedDocs: Record<string, Record<string, SummaryDocumentUnit>> = {}
 
-  let title = '数据手册'
+  let title = t('chipInfo.datasheets')
   processedDocs[title] = {}
   for (const [name, unit] of Object.entries(summary.documents.datasheets)) {
     processedDocs[title][name] = unit
   }
-  title = '勘误表'
+  title = t('chipInfo.referenceDocs')
   processedDocs[title] = {}
   for (const [name, unit] of Object.entries(summary.documents.references)) {
     processedDocs[title][name] = unit
   }
-  title = '参考文档'
+  title = t('chipInfo.errata')
   processedDocs[title] = {}
   for (const [name, unit] of Object.entries(summary.documents.errata)) {
+    processedDocs[title][name] = unit
+  }
+  title = t('chipInfo.applicationDocs')
+  processedDocs[title] = {}
+  for (const [name, unit] of Object.entries(summary.documents.applications)) {
+    processedDocs[title][name] = unit
+  }
+  title = t('chipInfo.faqs')
+  processedDocs[title] = {}
+  for (const [name, unit] of Object.entries(summary.documents.faqs)) {
     processedDocs[title][name] = unit
   }
 
@@ -118,8 +129,8 @@ async function loadChipInfo() {
     }
   }
   catch (error) {
-    console.error('加载芯片信息失败:', error)
-    ElMessage.error('加载芯片信息失败')
+    console.error('Failed to load chip info', error)
+    ElMessage.error(t('chipInfo.loadChipInfoFailed'))
   }
   finally {
     loading.value = false
@@ -149,19 +160,19 @@ onMounted(() => {
         {{ chipSummary.name }}
       </h2>
       <el-tabs v-model="activeTab" class="chip-tabs">
-        <el-tab-pane label="基本信息" name="basic">
+        <el-tab-pane :label="$t('chipInfo.basicInfo')" name="basic">
           <el-descriptions
             :column="5"
             :border="true"
           >
-            <el-descriptions-item label="名称">
+            <el-descriptions-item :label="$t('chipInfo.name')">
               <div class="url-div" @click="openUrl(chipSummary.url.value)">
                 <el-tooltip :content="chipSummary.url.value">
                   {{ chipSummary.name }}
                 </el-tooltip>
               </div>
             </el-descriptions-item>
-            <el-descriptions-item label="厂商">
+            <el-descriptions-item :label="$t('chipInfo.manufacturer')">
               <div class="url-div" @click="openUrl(chipSummary.vendorUrl.value)">
                 <el-tooltip :content="chipSummary.vendorUrl.value">
                   {{ chipSummary.vendor }}
@@ -171,8 +182,8 @@ onMounted(() => {
             <el-descriptions-item label="IO">
               {{ chipSummary.io }}
             </el-descriptions-item>
-            <el-descriptions-item label="售价" />
-            <el-descriptions-item :rowspan="2" label="封装图">
+            <el-descriptions-item :label="$t('chipInfo.price')" />
+            <el-descriptions-item :rowspan="2" :label="$t('chipInfo.packageDiagram')">
               <el-tooltip>
                 <template #content>
                   <el-image
@@ -187,10 +198,10 @@ onMounted(() => {
                 />
               </el-tooltip>
             </el-descriptions-item>
-            <el-descriptions-item label="封装">
+            <el-descriptions-item :label="$t('chipInfo.package')">
               {{ chipSummary.package }}
             </el-descriptions-item>
-            <el-descriptions-item label="简介">
+            <el-descriptions-item :label="$t('chipInfo.introduction')">
               {{ chipSummary.introduction }}
             </el-descriptions-item>
           </el-descriptions>
@@ -199,45 +210,49 @@ onMounted(() => {
             <div class="markdown-body" v-html="renderedContent" />
           </el-scrollbar>
         </el-tab-pane>
-        <el-tab-pane label="文档" name="docs">
+        <el-tab-pane :label="$t('chipInfo.documents')" name="docs">
           <el-scrollbar class="docs-scrollbar">
-            <el-collapse class="mx-4">
-              <template v-for="[type, docItems] of Object.entries(docs)" :key="type">
-                <el-collapse-item
-                  v-if="Object.keys(docItems).length > 0"
-                  :title="type"
-                >
-                  <div class="docs-list">
-                    <div
-                      v-for="[name, doc] of Object.entries(docItems)"
-                      :key="name"
-                      class="doc-card"
-                      @click="openUrl(doc.url.value)"
-                    >
-                      <div class="doc-icon">
-                        <el-icon size="24">
-                          <i class="ri-file-pdf-2-line" />
-                        </el-icon>
-                      </div>
-                      <div class="doc-info">
-                        <div class="doc-title">
-                          {{ name }}
+            <el-card>
+              <el-collapse class="docs-collapse mx-4">
+                <template v-for="[type, docItems] of Object.entries(docs)" :key="type">
+                  <el-collapse-item
+                    v-if="Object.keys(docItems).length > 0"
+                    :title="type"
+                  >
+                    <div class="docs-list">
+                      <template v-for="[name, doc] of Object.entries(docItems)" :key="name">
+                        <div
+                          class="doc-item"
+                          @click="openUrl(doc.url.value)"
+                        >
+                          <div class="doc-icon">
+                            <i class="ri-file-pdf-2-line" />
+                          </div>
+                          <div class="doc-name">
+                            {{ name }}
+                            <el-tag type="primary">
+                              {{ (doc.version.startsWith('v') || doc.version.startsWith('V')) ? doc.version : `v${doc.version}` }}
+                            </el-tag>
+                          </div>
+                          <div class="doc-type">
+                            {{ doc.type || 'PDF' }}
+                          </div>
+                          <div class="doc-size">
+                            {{ doc.size }}
+                          </div>
                         </div>
-                        <div class="doc-meta">
-                          {{ doc.type || 'PDF' }} · {{ doc.size }}
-                        </div>
-                      </div>
+                      </template>
                     </div>
-                  </div>
-                </el-collapse-item>
-              </template>
-            </el-collapse>
+                  </el-collapse-item>
+                </template>
+              </el-collapse>
+            </el-card>
           </el-scrollbar>
         </el-tab-pane>
       </el-tabs>
     </div>
 
-    <el-empty v-else description="请选择芯片以查看详细信息" />
+    <el-empty v-else :description="$t('chipInfo.selectChipToViewDetails')" />
   </div>
 </template>
 
@@ -249,6 +264,7 @@ onMounted(() => {
   padding: 16px;
   min-width: 0;
   min-height: 0;
+  user-select: text;
 }
 
 .chip-info-content {
@@ -294,10 +310,6 @@ onMounted(() => {
   text-decoration: underline;
 }
 
-/* ::v-deep(.ep-descriptions__content) {
-  user-select: text;
-} */
-
 .markdown-scrollbar {
   flex: 1;
   border: 1px solid var(--ep-border-color);
@@ -308,6 +320,7 @@ onMounted(() => {
   flex: 1;
   text-align: left;
   user-select: text;
+  padding: 20px;
 }
 
 .docs-scrollbar {
@@ -317,55 +330,56 @@ onMounted(() => {
 }
 
 .docs-list {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
+  padding: 8px;
 }
 
-.doc-card {
+.doc-item {
   display: flex;
   align-items: center;
-  padding: 12px;
+  gap: 12px;
+  padding: 0px 12px;
   border-radius: 6px;
-  background-color: var(--ep-fill-color-blank);
-  border: 1px solid var(--ep-border-color);
-  transition: all 0.2s;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.doc-card:hover {
-  background-color: var(--ep-fill-color);
-  transform: translateY(-2px);
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+.doc-item:hover {
+  background-color: var(--ep-fill-color-light);
 }
 
 .doc-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  background-color: var(--ep-color-primary-light-9);
   color: var(--ep-color-primary);
-  margin-right: 12px;
+  font-size: 16px;
+  flex-shrink: 0;
 }
 
-.doc-info {
+.doc-name {
   flex: 1;
-}
-
-.doc-title {
-  font-weight: bold;
-  margin-bottom: 4px;
+  font-weight: 500;
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
-  text-align: left;
+  min-width: 0;
 }
 
-.doc-meta {
-  font-size: 12px;
+.doc-type {
+  color: var(--ep-text-color-regular);
+  font-size: 13px;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+.doc-size {
   color: var(--ep-text-color-secondary);
-  text-align: left;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0.7;
 }
 </style>
