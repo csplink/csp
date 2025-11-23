@@ -31,6 +31,7 @@
 import type { Repository } from '~/database'
 import { ElMessage } from 'element-plus'
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
 import { useRepositoryManager } from '~/database'
 import { saveFileWithDialog } from '~/utils'
@@ -59,6 +60,7 @@ const props = defineProps({
 
 const emit = defineEmits(['select', 'update:modelValue'])
 
+const { t } = useI18n()
 const loading = ref(false)
 const repository = ref<Repository>()
 const repositoryManager = useRepositoryManager()
@@ -93,7 +95,7 @@ async function initRepository() {
     buildChipsMap()
   }
   catch (error) {
-    console.error('加载仓库数据失败', error)
+    console.error('Failed to load repository', error)
   }
   finally {
     loading.value = false
@@ -141,20 +143,20 @@ function handCurrentChange(row: ChipData | null, _old: ChipData | null) {
 function exportToExcel() {
   try {
     const exportData = filteredTableData.value.map(item => ({
-      '芯片型号': item.name,
-      '厂商': item.vendor,
-      '系列': item.series,
-      '产品线': item.line,
-      '封装': item.unit.package,
-      '核心': item.unit.core,
-      'RAM (KB)': item.unit.ram,
-      'Flash (KB)': item.unit.flash,
-      '频率 (MHz)': item.unit.frequency,
+      [t('chipTable.chipModel')]: item.name,
+      [t('chipTable.manufacturer')]: item.vendor,
+      [t('chipTable.series')]: item.series,
+      [t('chipTable.productLine')]: item.line,
+      [t('chipTable.package')]: item.unit.package,
+      [t('chipTable.core')]: item.unit.core,
+      [t('chipTable.ram')]: item.unit.ram,
+      [t('chipTable.flash')]: item.unit.flash,
+      [t('chipTable.frequency')]: item.unit.frequency,
     }))
 
     const worksheet = XLSX.utils.json_to_sheet(exportData)
     const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, '芯片列表')
+    XLSX.utils.book_append_sheet(workbook, worksheet, t('chipTable.chipList'))
 
     const columnWidths = [
       { wch: 15 },
@@ -169,7 +171,7 @@ function exportToExcel() {
     ]
     worksheet['!cols'] = columnWidths
 
-    const fileName = `芯片列表_${new Date().toISOString().split('T')[0]}.xlsx`
+    const fileName = `${t('chipTable.chipList')}_${new Date().toISOString().split('T')[0]}.xlsx`
 
     const arrayBuffer: ArrayBuffer = XLSX.write(workbook, {
       bookType: 'xlsx',
@@ -178,11 +180,11 @@ function exportToExcel() {
 
     saveFileWithDialog(arrayBuffer, { defaultPath: fileName })
 
-    ElMessage.success('导出成功')
+    ElMessage.success(t('chipTable.exportSuccess'))
   }
   catch (error) {
-    console.error('导出Excel失败:', error)
-    ElMessage.error('导出失败')
+    console.error('Failed to export to Excel', error)
+    ElMessage.error(t('chipTable.exportFailed'))
   }
 }
 
@@ -204,18 +206,18 @@ onMounted(() => {
     <el-card v-if="!loading && hasData" shadow="never" class="results-card">
       <template #header>
         <div class="results-header">
-          <h3>筛选结果 ({{ tableData.length }})</h3>
+          <h3>{{ $t('chipTable.filterResults') }} ({{ tableData.length }})</h3>
           <div class="tools-dev">
             <el-input
               v-model="searchText"
-              placeholder="搜索芯片型号"
+              :placeholder="$t('chipTable.searchChipPlaceholder')"
             >
               <template #prefix>
                 <el-icon><i class="ri-search-line" /></el-icon>
               </template>
             </el-input>
             <el-tooltip
-              content="导出为Excel"
+              :content="$t('chipTable.exportToExcel')"
               placement="top"
             >
               <el-button circle @click="exportToExcel">
@@ -233,18 +235,18 @@ onMounted(() => {
         :highlight-current-row="true"
         @current-change="handCurrentChange"
       >
-        <el-table-column prop="name" label="芯片型号" sortable />
-        <el-table-column prop="vendor" label="厂商" sortable />
-        <el-table-column prop="series" label="系列" sortable />
-        <el-table-column prop="line" label="产品线" sortable />
-        <el-table-column prop="unit.package" label="封装" sortable />
-        <el-table-column prop="unit.core" label="核心" sortable />
-        <el-table-column prop="unit.ram" label="RAM (KB)" sortable />
-        <el-table-column prop="unit.flash" label="Flash (KB)" sortable />
-        <el-table-column prop="unit.frequency" label="频率 (MHz)" sortable />
+        <el-table-column prop="name" :label="$t('chipTable.chipModel')" sortable />
+        <el-table-column prop="vendor" :label="$t('chipTable.manufacturer')" sortable />
+        <el-table-column prop="series" :label="$t('chipTable.series')" sortable />
+        <el-table-column prop="line" :label="$t('chipTable.productLine')" sortable />
+        <el-table-column prop="unit.package" :label="$t('chipTable.package')" sortable />
+        <el-table-column prop="unit.core" :label="$t('chipTable.core')" sortable />
+        <el-table-column prop="unit.ram" :label="$t('chipTable.ram')" sortable />
+        <el-table-column prop="unit.flash" :label="$t('chipTable.flash')" sortable />
+        <el-table-column prop="unit.frequency" :label="$t('chipTable.frequency')" sortable />
       </el-table>
     </el-card>
-    <el-empty v-else-if="!loading && !hasData" description="没有找到匹配的芯片" />
+    <el-empty v-else-if="!loading && !hasData" :description="$t('chipTable.noMatchingChipFound')" />
     <el-skeleton v-else animated :rows="5" />
   </div>
 </template>

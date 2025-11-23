@@ -220,18 +220,24 @@ export class SummaryDocument {
   get references(): Record<string, SummaryDocumentUnit> {
     return this._references ??= this._getUnits(this._origin.references ?? {})
   }
+
+  get applications(): Record<string, SummaryDocumentUnit> {
+    return this._getUnits(this._origin.applications ?? {})
+  }
+
+  get faqs(): Record<string, SummaryDocumentUnit> {
+    return this._getUnits(this._origin.faqs ?? {})
+  }
 }
 
 export class SummaryDocumentUnit {
   private _url: I18n
-  private _description: I18n
 
   constructor(
     private _origin: SummaryDocumentUnitType,
     public locale: WritableComputedRef<string>,
   ) {
     this._url = new I18n(this._origin.url)
-    this._description = new I18n(this._origin.description)
   }
 
   get origin(): SummaryDocumentUnitType {
@@ -245,10 +251,6 @@ export class SummaryDocumentUnit {
   get type(): SummaryDocumentUnitTypeType {
     return this._origin.type
   }
-
-  description = computed(() => {
-    return this._description.get(this.locale.value)
-  })
 
   get size(): string {
     return this._origin.size

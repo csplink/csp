@@ -57,6 +57,8 @@ export interface SummaryDocumentType {
   datasheets?: { [k: string]: SummaryDocumentUnitType }
   errata?: { [k: string]: SummaryDocumentUnitType }
   references?: { [k: string]: SummaryDocumentUnitType }
+  applications?: { [k: string]: SummaryDocumentUnitType }
+  faqs?: { [k: string]: SummaryDocumentUnitType }
   [k: string]: unknown
 }
 
@@ -65,7 +67,6 @@ export type SummaryDocumentUnitTypeType = 'pdf'
 export interface SummaryDocumentUnitType {
   url: I18nType
   type: SummaryDocumentUnitTypeType
-  description: I18nType
   size: string
   version: string
 }

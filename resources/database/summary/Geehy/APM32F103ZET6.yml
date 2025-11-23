@@ -11,38 +11,255 @@ vendorUrl:
   zh-cn: https://geehy.com
 documents:
   datasheets:
-    APM32F103xDxE数据手册V1.7:
+    APM32F103xDxE数据手册:
       url:
-        en: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
-        zh-cn: https://geehy.com/uploads/tool/APM32F103xDxE%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%20V1.7.pdf
+        en: https://geehy.com/uploads/tool/APM32F103xDxE数据手册 V2.2.pdf
+        zh-cn: https://geehy.com/uploads/tool/APM32F103xDxE数据手册 V2.2.pdf
       type: pdf
-      description:
-        en: ""
-        zh-cn: null
-      size: 3.4 MB
-      version: "1.7"
-  errata:
-    APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂:
-      url:
-        en: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
-        zh-cn: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_%E5%8A%A0%E5%85%A5%E5%85%AD%E8%BD%B4%E4%BC%A0%E6%84%9F%E5%99%A8%E5%90%8E%EF%BC%8CI2C%E9%80%9A%E8%AE%AFEEPROM%E4%BC%9A%E6%8C%82%E6%AD%BB.pdf
-      type: pdf
-      description:
-        en: ""
-        zh-cn: null
-      size: 582 KB
-      version: "1.0"
+      size: 2.77 MB
+      version: "2.2"
   references:
-    APM32F103xCxDxE用户手册V1.5:
+    APM32F103xCxDxE用户手册:
       url:
-        en: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
-        zh-cn: https://geehy.com/uploads/tool/APM32F103xCxDxE%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C%20V1.5.pdf
+        en: https://geehy.com/uploads/tool/APM32F103xCxDxE用户手册 V1.8.pdf
+        zh-cn: https://geehy.com/uploads/tool/APM32F103xCxDxE用户手册 V1.8.pdf
       type: pdf
-      description:
-        en: ""
-        zh-cn: null
-      size: 9.4 MB
-      version: "1.5"
+      size: 8.86 MB
+      version: "1.8"
+  applications:
+    AN1103_APM32F103 软件模拟SPI读写外部Flash:
+      url:
+        en: https://geehy.com/uploads/tool/AN1103_APM32F103 软件模拟SPI读写外部Flash_V1.0.pdf
+        zh-cn: https://geehy.com/uploads/tool/AN1103_APM32F103 软件模拟SPI读写外部Flash_V1.0.pdf
+      type: pdf
+      size: 1.22 MB
+      version: "1.0"
+    AN1102_APM32F103 软件I2C读写EEPROM:
+      url:
+        en: https://geehy.com/uploads/tool/AN1102_APM32F103 软件I2C读写EEPROM_V1.0.pdf
+        zh-cn: https://geehy.com/uploads/tool/AN1102_APM32F103 软件I2C读写EEPROM_V1.0.pdf
+      type: pdf
+      size: 838.98 KB
+      version: "1.0"
+    AN1111_APM32F103xB硬件开发指南:
+      url:
+        en: https://geehy.com/uploads/tool/AN1111_APM32F103xB硬件开发指南V1.0.pdf
+        zh-cn: https://geehy.com/uploads/tool/AN1111_APM32F103xB硬件开发指南V1.0.pdf
+      type: pdf
+      size: 1.1 MB
+      version: "1.0"
+    AN1153_APM32F103xC应用注意事项:
+      url:
+        en: https://geehy.com/uploads/tool/AN1153_APM32F103xC应用注意事项 V1.0.pdf
+        zh-cn: https://geehy.com/uploads/tool/AN1153_APM32F103xC应用注意事项 V1.0.pdf
+      type: pdf
+      size: 954.39 KB
+      version: "1.0"
+    AN1154_APM32F103xE_USB强制挂起:
+      url:
+        en: https://geehy.com/uploads/tool/AN1154_APM32F103xE_USB强制挂起_V1.0.pdf
+        zh-cn: https://geehy.com/uploads/tool/AN1154_APM32F103xE_USB强制挂起_V1.0.pdf
+      type: pdf
+      size: 731.52 KB
+      version: "1.0"
+  faqs:
+    APM32F103XC_主频&晶振_LCD液晶显示屏初始化出现卡顿和乱码:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220303_APM32F103XC_主频&晶振_LCD液晶显示屏初始化出现卡顿和乱码.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220303_APM32F103XC_主频&晶振_LCD液晶显示屏初始化出现卡顿和乱码.pdf
+      type: pdf
+      size: 664.62 KB
+      version: "1.0"
+    APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂死:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂死.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220306_APM32F103XE_I2C_加入六轴传感器后，I2C通讯EEPROM会挂死.pdf
+      type: pdf
+      size: 581.14 KB
+      version: "1.0"
+    APM32F103XC_TMR_关闭DMA进入睡眠模式出现故障:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220308_APM32F103XC_TMR_关闭DMA进入睡眠模式出现故障.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220308_APM32F103XC_TMR_关闭DMA进入睡眠模式出现故障.pdf
+      type: pdf
+      size: 530.91 KB
+      version: "1.0"
+    APM32F103C8T6_TMR1_TMR1输出异常:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220505_APM32F103C8T6_TMR1_TMR1输出异常.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220505_APM32F103C8T6_TMR1_TMR1输出异常.pdf
+      type: pdf
+      size: 514.34 KB
+      version: "1.0"
+    APM32F103VCT6_Flash_72MHz时开机会异常重启:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220509_APM32F103VCT6_Flash_72MHz时开机会异常重启.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220509_APM32F103VCT6_Flash_72MHz时开机会异常重启.pdf
+      type: pdf
+      size: 158.69 KB
+      version: "1.0"
+    APM32F103RCT6_Flash_擦写失败:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220511_APM32F103RCT6_Flash_擦写失败.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220511_APM32F103RCT6_Flash_擦写失败.pdf
+      type: pdf
+      size: 162.08 KB
+      version: "1.0"
+    APM32F103VBT6_BOOT引脚_低温下开机不工作:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220512_APM32F103VBT6_BOOT引脚_低温下开机不工作.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220512_APM32F103VBT6_BOOT引脚_低温下开机不工作.pdf
+      type: pdf
+      size: 162.41 KB
+      version: "1.0"
+    APM32F103VCT6_GPIO_未使用的IO如何配置:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220514_APM32F103VCT6_GPIO_未使用的IO如何配置.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220514_APM32F103VCT6_GPIO_未使用的IO如何配置.pdf
+      type: pdf
+      size: 495.77 KB
+      version: "1.0"
+    APM32F103RCT6_UART_串口多层并发导致死机:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220516_APM32F103RCT6_UART_串口多层并发导致死机.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220516_APM32F103RCT6_UART_串口多层并发导致死机.pdf
+      type: pdf
+      size: 162.69 KB
+      version: "1.0"
+    APM32F103RCT6_管脚_Vref+对应哪个管脚:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220519_APM32F103RCT6_管脚_Vref+对应哪个管脚.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220519_APM32F103RCT6_管脚_Vref+对应哪个管脚.pdf
+      type: pdf
+      size: 158.04 KB
+      version: "1.0"
+    APM32F103RCT6_CAN_CAN无法进入中断:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220520_APM32F103RCT6_CAN_CAN无法进入中断.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220520_APM32F103RCT6_CAN_CAN无法进入中断.pdf
+      type: pdf
+      size: 160.33 KB
+      version: "1.0"
+    APM32F103VBT6_电源上电后，芯片不启动:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220703_APM32F103VBT6_电源上电后，芯片不启动.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220703_APM32F103VBT6_电源上电后，芯片不启动.pdf
+      type: pdf
+      size: 506.14 KB
+      version: "1.0"
+    APM32F103C8T6_RCM_休眠唤醒后，灯概率性闪烁异常:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220705_APM32F103C8T6_RCM_休眠唤醒后，灯概率性闪烁异常.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220705_APM32F103C8T6_RCM_休眠唤醒后，灯概率性闪烁异常.pdf
+      type: pdf
+      size: 520.31 KB
+      version: "1.0"
+    APM32F103ZET6_UID_只通过UID后32位能否辨别芯片:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220709_APM32F103ZET6_UID_只通过UID后32位能否辨别芯片.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220709_APM32F103ZET6_UID_只通过UID后32位能否辨别芯片.pdf
+      type: pdf
+      size: 507.85 KB
+      version: "1.0"
+    APM32F103VCT6_ESD_输出10KV高压脉冲时，MCU会复位:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220712_APM32F103VCT6_ESD_输出10KV高压脉冲时，MCU会复位.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220712_APM32F103VCT6_ESD_输出10KV高压脉冲时，MCU会复位.pdf
+      type: pdf
+      size: 503.87 KB
+      version: "1.0"
+    APM32F103CBT6_启动问题_无法正常启动:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220719_APM32F103CBT6_启动问题_无法正常启动.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220719_APM32F103CBT6_启动问题_无法正常启动.pdf
+      type: pdf
+      size: 516.61 KB
+      version: "1.0"
+    APM32F103RCT6_IO引脚_老化测试时应注意引脚结构类型:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220722_APM32F103RCT6_IO引脚_老化测试时应注意引脚结构类型.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220722_APM32F103RCT6_IO引脚_老化测试时应注意引脚结构类型.pdf
+      type: pdf
+      size: 519.3 KB
+      version: "1.0"
+    APM32F103VCT6_低功耗问题_STOP模式下的功耗异常偏高:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220907_APM32F103VCT6_低功耗问题_STOP模式下的功耗异常偏高.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220907_APM32F103VCT6_低功耗问题_STOP模式下的功耗异常偏高.pdf
+      type: pdf
+      size: 507.96 KB
+      version: "1.0"
+    APM32F103RCT6_硬件问题_示波器抓取PWM波形异常:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220913_APM32F103RCT6_硬件问题_示波器抓取PWM波形异常.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220913_APM32F103RCT6_硬件问题_示波器抓取PWM波形异常.pdf
+      type: pdf
+      size: 504.63 KB
+      version: "1.0"
+    APM32F103RCT7_CAN_CAN2无法通信:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220918_APM32F103RCT7_CAN_CAN2无法通信.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220918_APM32F103RCT7_CAN_CAN2无法通信.pdf
+      type: pdf
+      size: 498.38 KB
+      version: "1.0"
+    APM32F103VCT6S_USB_MAC电脑无法识别USB设备:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220926_APM32F103VCT6S_USB_MAC电脑无法识别USB设备.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220926_APM32F103VCT6S_USB_MAC电脑无法识别USB设备.pdf
+      type: pdf
+      size: 530.95 KB
+      version: "1.0"
+    APM32F103RCT6_IO端口_复位脚持续拉低时PB4持续输出高电平:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220927_APM32F103RCT6_IO端口_复位脚持续拉低时PB4持续输出高电平.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220927_APM32F103RCT6_IO端口_复位脚持续拉低时PB4持续输出高电平.pdf
+      type: pdf
+      size: 509.49 KB
+      version: "1.0"
+    APM32F103RCT6_晶振问题_使用LSE晶振时RTC无法正常工作:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220928_APM32F103RCT6_晶振问题_使用LSE晶振时RTC无法正常工作.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220928_APM32F103RCT6_晶振问题_使用LSE晶振时RTC无法正常工作.pdf
+      type: pdf
+      size: 508.93 KB
+      version: "1.0"
+    APM32F103RCT6_CAN_CAN2输出异常:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220931_APM32F103RCT6_CAN_CAN2输出异常.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220931_APM32F103RCT6_CAN_CAN2输出异常.pdf
+      type: pdf
+      size: 511.34 KB
+      version: "1.0"
+    APM32F103RBT6_RTC模块_MCU休眠期间RTC每小时误差2分钟:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220932_APM32F103RBT6_RTC模块_MCU休眠期间RTC每小时误差2分钟.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220932_APM32F103RBT6_RTC模块_MCU休眠期间RTC每小时误差2分钟.pdf
+      type: pdf
+      size: 519.76 KB
+      version: "1.0"
+    APM32F103RCT6_CAN_CAN通信丢包:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220933_APM32F103RCT6_CAN_CAN通信丢包.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220933_APM32F103RCT6_CAN_CAN通信丢包.pdf
+      type: pdf
+      size: 500.03 KB
+      version: "1.0"
+    APM32F103CBT6_Flash_某一帧数据写失败:
+      url:
+        en: https://geehy.com/uploads/tool/FAQ20220943_APM32F103CBT6_Flash_某一帧数据写失败.pdf
+        zh-cn: https://geehy.com/uploads/tool/FAQ20220943_APM32F103CBT6_Flash_某一帧数据写失败.pdf
+      type: pdf
+      size: 505.9 KB
+      version: "1.0"
+  errata:
+    APM32F103xE 勘误手册:
+      url:
+        en: https://geehy.com/uploads/tool/APM32F103xE 勘误手册 V2.1.pdf
+        zh-cn: https://geehy.com/uploads/tool/APM32F103xE 勘误手册 V2.1.pdf
+      type: pdf
+      size: 591.22 KB
+      version: "2.1"
 hals: [csp_hal_apm32f1]
 hasPowerPad: false
 illustrate:
