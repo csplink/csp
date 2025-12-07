@@ -28,9 +28,9 @@
 -->
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 
-const visible = ref(false)
+const visible = shallowRef(false)
 
 function show() {
   visible.value = true

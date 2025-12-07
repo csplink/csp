@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import type { ClockTreeNode, IpParameterEnum } from '~/database'
 import { Handle, Position, useNodeConnections, useNodesData, useVueFlow } from '@vue-flow/core'
-import { computed, ref, toValue, watchEffect } from 'vue'
+import { computed, toValue, watchEffect } from 'vue'
 import { isValidSourceConnection, isValidTargetConnection } from './CtUtils'
 
 interface PropsType {
@@ -76,7 +76,14 @@ const input = computed((): number => {
   }
 })
 const title = computed((): string => parameter.value?.display.value || props.id)
-const value = ref(parameter.value?.value ?? '')
+const value = computed({
+  get: (): string => parameter.value?.value.value ?? '',
+  set: (value: string) => {
+    if (parameter.value) {
+      parameter.value.value.value = value
+    }
+  },
+})
 
 watchEffect(() => {
   let output = input.value

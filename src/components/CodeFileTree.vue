@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import type { MenuOptions } from '@imengyu/vue3-context-menu'
 import type { ElTree, TreeNode } from 'element-plus'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, shallowReactive, shallowRef, watch } from 'vue'
 
 interface TreeType {
   key: string
@@ -52,10 +52,10 @@ const defaultProps = {
   label: 'label',
 }
 
-const treeModelRef = ref<TreeType[]>([])
-const menuShowRef = ref(false)
-const menuCurrentDataRef = ref<TreeType>()
-const menuOptionsComponentRef = ref<MenuOptions>({
+const treeModelRef = shallowRef<TreeType[]>([])
+const menuShowRef = shallowRef(false)
+const menuCurrentDataRef = shallowRef<TreeType>()
+const menuOptionsComponentRef = shallowReactive<MenuOptions>({
   x: 0,
   y: 0,
   minWidth: 230,
@@ -183,8 +183,8 @@ function handleContextMenu(event: MouseEvent, data: TreeType, _node: TreeNode, _
   const position = { x: event.clientX, y: event.clientY }
 
   setTimeout(() => {
-    menuOptionsComponentRef.value.x = position.x
-    menuOptionsComponentRef.value.y = position.y
+    menuOptionsComponentRef.x = position.x
+    menuOptionsComponentRef.y = position.y
     menuShowRef.value = true
   }, 1)
 }

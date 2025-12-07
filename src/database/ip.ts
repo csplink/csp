@@ -39,11 +39,11 @@ import type {
   IpRefParameterType,
   IpType,
 } from '@/electron/types'
-import type { App, ComputedRef, Ref, WritableComputedRef } from 'vue'
+import type { App, ComputedRef, ShallowRef, WritableComputedRef } from 'vue'
 import type { Summary } from './summary'
 import type { VueI18nType } from '~/i18n'
 import type { Project, ProjectConfigsPinUnitType } from '~/utils'
-import { computed, inject, ref, watch, watchEffect } from 'vue'
+import { computed, inject, markRaw, shallowRef, watch, watchEffect } from 'vue'
 import { I18n } from '~/i18n'
 import { Express } from '~/utils'
 
@@ -59,7 +59,7 @@ export class Ip {
   private _ip_prefixed: string = ''
   private _ip_suffix: string = ''
 
-  activated: Ref<boolean>
+  activated: ShallowRef<boolean>
 
   constructor(
     private _instance: string,
@@ -68,7 +68,7 @@ export class Ip {
     public locale: WritableComputedRef<string>,
     public summary: Summary,
   ) {
-    this.activated = ref(this.buildActivated())
+    this.activated = shallowRef(this.buildActivated())
     this._parameters = this.buildParameters()
     this._containers = new IpContainers(this._origin.containers ?? {}, this._parameters, this)
     this._presets = this.buildPresets()
@@ -278,7 +278,7 @@ export class IpParameterBase {
   private _enableDependencies: string[] = []
   protected _path
 
-  enabled: Ref<boolean>
+  enabled: ShallowRef<boolean>
 
   constructor(
     protected _origin: IpParameterType,
@@ -296,7 +296,7 @@ export class IpParameterBase {
     this._display = new I18n(this._origin.display ?? { en: '' })
     this._description = new I18n(this._origin.description ?? { en: '' })
 
-    this.enabled = ref(this.buildEnable())
+    this.enabled = shallowRef(this.buildEnable())
   }
 
   get origin(): IpParameterType {
@@ -377,7 +377,7 @@ export class IpParameterValueUnit {
   private _comment: I18n
   private _enableDependencies: string[] = []
 
-  enabled: Ref<boolean>
+  enabled: ShallowRef<boolean>
 
   constructor(
     private _origin: IpParameterValueUnitType,
@@ -386,7 +386,7 @@ export class IpParameterValueUnit {
     this._comment = new I18n(this._origin.comment ?? { en: '' })
     this._signals = this.buildSignals()
 
-    this.enabled = ref(this.buildEnable())
+    this.enabled = shallowRef(this.buildEnable())
   }
 
   comment = computed((): string => this._comment.get(this._parent.locale.value))
@@ -491,13 +491,13 @@ export class IpParameterValueUnit {
 export class IpParameterEnum extends IpParameterBase {
   private _values: Record<string, IpParameterValueUnit>
   private _allSignals: string[]
-  private _value: Ref<string>
+  private _value: ShallowRef<string>
 
   constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
     super(origin, name, channel, parent)
     this._values = this.buildValues()
     this._allSignals = this.buildAllSignals()
-    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._value = shallowRef(this._parent.project().configs.get(this._path, this.default))
     this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
   }
 
@@ -561,10 +561,10 @@ export class IpParameterNumber extends IpParameterBase {
   private _express
   private _dependencies: Record<string, string[]> = {}
   private _expressions: Record<string, string> = {}
-  private _value: Ref<number>
+  private _value: ShallowRef<number>
 
-  max = ref(Number.MAX_SAFE_INTEGER)
-  min = ref(Number.MIN_SAFE_INTEGER)
+  max = shallowRef(Number.MAX_SAFE_INTEGER)
+  min = shallowRef(Number.MIN_SAFE_INTEGER)
 
   constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
     super(origin, name, channel, parent)
@@ -589,7 +589,7 @@ export class IpParameterNumber extends IpParameterBase {
       this._parent.project().emitter.on('changed', this._onProjectChanged.bind(this))
     }
 
-    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._value = shallowRef(this._parent.project().configs.get(this._path, this.default))
     this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
   }
 
@@ -656,11 +656,11 @@ export class IpParameterNumber extends IpParameterBase {
 }
 
 export class IpParameterBoolean extends IpParameterBase {
-  private _value: Ref<boolean>
+  private _value: ShallowRef<boolean>
 
   constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
     super(origin, name, channel, parent)
-    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._value = shallowRef(this._parent.project().configs.get(this._path, this.default))
     this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
   }
 
@@ -687,11 +687,11 @@ export class IpParameterBoolean extends IpParameterBase {
 }
 
 export class IpParameterString extends IpParameterBase {
-  private _value: Ref<string>
+  private _value: ShallowRef<string>
 
   constructor(origin: IpParameterType, name: string, channel: string = '', parent: Ip) {
     super(origin, name, channel, parent)
-    this._value = ref(this._parent.project().configs.get(this._path, this.default))
+    this._value = shallowRef(this._parent.project().configs.get(this._path, this.default))
     this._parent.project().configs.emitter.on('changed', this._onProjectConfigsChanged.bind(this))
   }
 
@@ -831,7 +831,7 @@ configurations:
 export class IpRefParameter {
   private _dependencies: string[] = []
   private _express: Express
-  condition: Ref<boolean>
+  condition: ShallowRef<boolean>
 
   constructor(
     private _name: string,
@@ -840,7 +840,7 @@ export class IpRefParameter {
     private _parent: Ip,
   ) {
     this._express = _parent.express()
-    this.condition = ref(this.buildCondition())
+    this.condition = shallowRef(this.buildCondition())
 
     /**
 当 condition 变化时，恢复默认值
@@ -1013,7 +1013,7 @@ export class IpCondition<T> {
 
   private _express: Express
   private _map: Record<string, T> = {}
-  private _key: Ref<string>
+  private _key: ShallowRef<string>
 
   constructor(
     private _name: string,
@@ -1041,7 +1041,7 @@ export class IpCondition<T> {
       }
     }
 
-    this._key = ref(key)
+    this._key = shallowRef(key)
     this._dependencies = Array.from(set)
 
     this._parent.project().emitter.on('changed', this._onProjectConfigChanged.bind(this))
@@ -1131,9 +1131,9 @@ export class IpDiagramsObject {
 // #endregion
 
 export class IpManager {
-  private _map: Record<string, Record<string, Record<string, Ip>>> = {
+  private _map: Record<string, Record<string, Record<string, Ip>>> = markRaw({
     peripherals: {},
-  }
+  })
 
   private _project: Project | null = null
   private _i18n: VueI18nType | null = null
@@ -1142,11 +1142,13 @@ export class IpManager {
   }
 
   setProject(project: Project | null) {
-    this._project = project
+    if (project) {
+      this._project = markRaw(project)
+    }
   }
 
   setI18n(i18n: VueI18nType) {
-    this._i18n = i18n
+    this._i18n = markRaw(i18n)
   }
 
   getPeripheral(vendor: string, name: string): Ip | null {
@@ -1172,7 +1174,7 @@ export class IpManager {
     const content = await window.electron.invoke('database:getIp', 'peripherals', vendor, define) as IpType
     if (content) {
       const instance: Ip = new Ip(name, content, this._project, this._i18n!.global.locale, summary);
-      (this._map.peripherals[vendor] ??= {})[name] = instance
+      (this._map.peripherals[vendor] ??= {})[name] = markRaw(instance)
     }
   }
 }

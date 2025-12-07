@@ -31,7 +31,7 @@
 import type { MenuOptions } from '@imengyu/vue3-context-menu'
 import type { TreeNode } from 'element-plus'
 import { ElNotification, ElTree } from 'element-plus'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowReactive, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePackageManager, useServerManager } from '~/utils'
 
@@ -59,14 +59,14 @@ const i18n = useI18n()
 const { t } = i18n
 
 const defaultExpandedKeys = ref<string[]>([])
-const treeModelRef = ref<TreeType[]>([])
-const menuShowRef = ref(false)
-const menuOptionsComponentRef = ref<MenuOptions>({
+const treeModelRef = shallowRef<TreeType[]>([])
+const menuShowRef = shallowRef(false)
+const menuOptionsComponentRef = shallowReactive<MenuOptions>({
   x: 0,
   y: 0,
   minWidth: 230,
 })
-const currentSelectedNode = ref<TreeType | null>(null)
+const currentSelectedNode = shallowRef<TreeType | null>(null)
 
 let stopConfigurationsWatchHandle: (() => void) | null = null
 
@@ -139,11 +139,8 @@ function handleContextMenu(event: MouseEvent, data: TreeType, _node: TreeNode, _
   /* !< 只有version类型的节点才能卸载 */
   if (data.type === 'version') {
     currentSelectedNode.value = data
-    menuOptionsComponentRef.value = {
-      x: event.clientX,
-      y: event.clientY,
-      minWidth: 230,
-    }
+    menuOptionsComponentRef.x = event.clientX
+    menuOptionsComponentRef.y = event.clientY
     menuShowRef.value = true
   }
 }

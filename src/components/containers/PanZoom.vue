@@ -32,7 +32,7 @@ import type { MenuOptions } from '@imengyu/vue3-context-menu'
 import type Konva from 'konva'
 import type { StageConfig } from 'konva/lib/Stage'
 import type { PanZoomMenuItemModelType } from './PanZoom'
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, shallowReactive, shallowRef, watch } from 'vue'
 
 interface PropsType {
   modelWidth: number
@@ -48,10 +48,10 @@ const props = defineProps<PropsType>()
 
 const emit = defineEmits(['click', 'menuSelect', 'resize', 'zoom', 'dragstart'])
 
-const tooltipTargetRef = ref<HTMLDivElement>()
-const containerRef = ref<HTMLDivElement>()
-const stageRef = ref<Konva.Stage>()
-const stageConfigRef: StageConfig = ref({
+const tooltipTargetRef = shallowRef<HTMLDivElement>()
+const containerRef = shallowRef<HTMLDivElement>()
+const stageRef = shallowRef<Konva.Stage>()
+const stageConfigRef = shallowReactive<StageConfig>({
   container: containerRef.value,
   scaleX: 0.5,
   scaleY: 0.5,
@@ -61,16 +61,16 @@ const stageConfigRef: StageConfig = ref({
   offsetX: 0,
   offsetY: 0,
 })
-const tooltipConfigRef = ref({
+const tooltipConfigRef = shallowRef({
   visible: false,
   x: 0,
   y: 0,
   placement: 'top',
   content: '',
 })
-const menuConfigRef = ref<MenuConfigType>({})
-const menuShowRef = ref(false)
-const menuOptionsComponentRef = ref<MenuOptions>()
+const menuConfigRef = shallowRef<MenuConfigType>({})
+const menuShowRef = shallowRef(false)
+const menuOptionsComponentRef = shallowRef<MenuOptions>()
 let resizeObserver: ResizeObserver
 
 watch(
@@ -177,8 +177,8 @@ function rescale() {
 
     const scale = Math.min(scaleX, scaleY)
 
-    stageConfigRef.value.scaleX = scale
-    stageConfigRef.value.scaleY = scale
+    stageConfigRef.scaleX = scale
+    stageConfigRef.scaleY = scale
 
     stage.position({
       x: (containerWidth - width * scale) / 2,
@@ -191,20 +191,20 @@ function rescale() {
 
 function zoomIn() {
   const scaleBy = 1.05
-  const oldScale = stageConfigRef.value.scaleX
+  const oldScale = stageConfigRef.scaleX ?? 1
   const newScale = oldScale * scaleBy
-  stageConfigRef.value.scaleX = newScale
-  stageConfigRef.value.scaleY = newScale
+  stageConfigRef.scaleX = newScale
+  stageConfigRef.scaleY = newScale
   emit('zoom')
 }
 
 function zoomOut() {
   const scaleBy = 1.05
-  const oldScale = stageConfigRef.value.scaleX
+  const oldScale = stageConfigRef.scaleX ?? 1
   const newScale = oldScale / scaleBy
   if (newScale >= 0.1) {
-    stageConfigRef.value.scaleX = newScale
-    stageConfigRef.value.scaleY = newScale
+    stageConfigRef.scaleX = newScale
+    stageConfigRef.scaleY = newScale
   }
   emit('zoom')
 }
@@ -246,7 +246,7 @@ function handWheel(event: Konva.KonvaEventObject<WheelEvent>) {
 
   if (stageRef.value) {
     const stage = stageRef.value.getStage()
-    const oldScale = stageConfigRef.value.scaleX
+    const oldScale = stageConfigRef.scaleX ?? 1
     const pointer = stage.getPointerPosition()
     const scaleBy = 1.05
     const direction = event.evt.deltaY > 0 ? -1 : 1
@@ -262,8 +262,8 @@ function handWheel(event: Konva.KonvaEventObject<WheelEvent>) {
         y: contentCenter.y * oldScale + stage.y(),
       }
 
-      stageConfigRef.value.scaleX = newScale
-      stageConfigRef.value.scaleY = newScale
+      stageConfigRef.scaleX = newScale
+      stageConfigRef.scaleY = newScale
 
       const newPos = {
         x: centerScreenPos.x - contentCenter.x * newScale,
@@ -314,8 +314,8 @@ onMounted(() => {
         firstResize++
       }
 
-      stageConfigRef.value.width = rect.width
-      stageConfigRef.value.height = rect.height
+      stageConfigRef.width = rect.width
+      stageConfigRef.height = rect.height
     })
     resizeObserver.observe(containerRef.value)
   }

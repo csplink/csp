@@ -30,16 +30,16 @@
 <script lang="ts" setup>
 import type { MenuOptions } from '@imengyu/vue3-context-menu'
 import type { ScrollbarInstance } from 'element-plus'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, shallowReactive, shallowRef } from 'vue'
 import { saveFileWithDialog } from '~/utils'
 
 const logTypes = ['info', 'warn', 'error'] as const
 const originalConsole: Record<string, any> = {}
 
-const logContainer = ref<HTMLDivElement>()
-const scrollbarRef = ref<ScrollbarInstance>()
-const menuShowRef = ref(false)
-const menuOptionsComponentRef = ref<MenuOptions>({
+const logContainer = shallowRef<HTMLDivElement>()
+const scrollbarRef = shallowRef<ScrollbarInstance>()
+const menuShowRef = shallowRef(false)
+const menuOptionsComponentRef = shallowReactive<MenuOptions>({
   x: 0,
   y: 0,
   minWidth: 230,
@@ -60,8 +60,8 @@ function scrollToBottom() {
 }
 
 function handContextMenu(e: MouseEvent) {
-  menuOptionsComponentRef.value.x = e.clientX
-  menuOptionsComponentRef.value.y = e.clientY
+  menuOptionsComponentRef.x = e.clientX
+  menuOptionsComponentRef.y = e.clientY
   menuShowRef.value = true
 }
 

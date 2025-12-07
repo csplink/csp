@@ -29,7 +29,7 @@
 
 import type { ContributorType } from '@/electron/types'
 import type { App } from 'vue'
-import { inject } from 'vue'
+import { inject, markRaw } from 'vue'
 
 // #region typedef
 
@@ -77,7 +77,7 @@ export class ContributorManager {
   }
 
   async get(): Promise<Contributor[]> {
-    return this._contributors ??= await this._get()
+    return this._contributors ??= markRaw(await this._get())
   }
 }
 

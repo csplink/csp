@@ -29,9 +29,9 @@
 
 <script setup lang="ts">
 import type { ClockViewInstance } from '~/components/instance'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 
-const clockViewRef = ref<ClockViewInstance>()
+const clockViewRef = shallowRef<ClockViewInstance>()
 
 function handZoomIn() {
   clockViewRef.value?.zoomIn()

@@ -30,7 +30,7 @@
 import type { I18nType } from '@/electron/types'
 import type { App, ShallowRef } from 'vue'
 import type { Server, ServerManager } from './server'
-import { inject, shallowRef } from 'vue'
+import { inject, markRaw, shallowRef } from 'vue'
 import { I18n } from '~/i18n'
 
 // #region typedef
@@ -208,16 +208,16 @@ export class PackageIndex {
 export class PackageManager {
   private _packageIndex: PackageIndex | null = null
   private _server: Server
-  private _descriptionCache: Record<string, PackageDescription> = {}
+  private _descriptionCache: Record<string, PackageDescription> = markRaw({})
 
   constructor(server: Server) {
-    this._server = server
+    this._server = markRaw(server)
   }
 
   async init() {
-    this._packageIndex = new PackageIndex(await this._server.packageList().catch(() => {
+    this._packageIndex = markRaw(new PackageIndex(await this._server.packageList().catch(() => {
       return {}
-    }))
+    })))
   }
 
   get packageIndex(): PackageIndex {
@@ -231,15 +231,15 @@ export class PackageManager {
 
     const description = await this._server.getPackageDescription(kind, name, version).catch(() => undefined)
     if (description) {
-      this._descriptionCache[`${kind}/${name}/${version}`] = new PackageDescription(description)
+      this._descriptionCache[`${kind}/${name}/${version}`] = markRaw(new PackageDescription(description))
     }
     return this._descriptionCache[`${kind}/${name}/${version}`]
   }
 
   async reload() {
-    this._packageIndex?.update(await this._server.packageList().catch(() => {
+    this._packageIndex?.update(markRaw(await this._server.packageList().catch(() => {
       return {}
-    }))
+    })))
   }
 }
 

@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import type { Summary } from '~/database'
-import { reactive, ref, watch } from 'vue'
+import { shallowReactive, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import pkg from '~/../package.json'
 import { useSummaryManager } from '~/database'
@@ -44,7 +44,7 @@ interface FormModelType {
   hal: string
 }
 
-const formModel = reactive<FormModelType>({
+const formModel = shallowReactive<FormModelType>({
   projectName: '',
   projectPath: '',
   builder: '',
@@ -57,14 +57,14 @@ const summaryManager = useSummaryManager()
 const i18n = useI18n()
 const { t } = i18n
 
-const builderOptions = ref<string[]>([])
-const builderVersionOptions = ref<string[]>([])
-const toolchainsOptions = ref<string[]>([])
-const halOptions = ref<string[]>([])
+const builderOptions = shallowRef<string[]>([])
+const builderVersionOptions = shallowRef<string[]>([])
+const toolchainsOptions = shallowRef<string[]>([])
+const halOptions = shallowRef<string[]>([])
 
-const filterResult = ref<string[]>([])
-const chip = ref<string>('')
-const dialogVisible = ref(false)
+const filterResult = shallowRef<string[]>([])
+const chip = shallowRef<string>('')
+const dialogVisible = shallowRef(false)
 
 let summary: Summary | null = null
 

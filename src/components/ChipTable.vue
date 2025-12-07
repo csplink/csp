@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import type { Repository } from '~/database'
 import { ElMessage } from 'element-plus'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
 import { useRepositoryManager } from '~/database'
@@ -61,11 +61,11 @@ const props = defineProps({
 const emit = defineEmits(['select', 'update:modelValue'])
 
 const { t } = useI18n()
-const loading = ref(false)
-const repository = ref<Repository>()
+const loading = shallowRef(false)
+const repository = shallowRef<Repository>()
 const repositoryManager = useRepositoryManager()
-const searchText = ref('')
-const allChipsMap = ref<Map<string, ChipData>>(new Map())
+const searchText = shallowRef('')
+const allChipsMap = shallowRef<Map<string, ChipData>>(new Map())
 const tableData = computed(() => {
   if (props.filterResult.length === 0)
     return []

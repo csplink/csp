@@ -28,7 +28,7 @@
 -->
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { shallowReactive, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { saveAsProject, showOpenDialog, useProjectManager } from '~/utils'
 
@@ -37,12 +37,12 @@ interface FormModelType {
   projectPath: string
 }
 
-const formModel = reactive<FormModelType>({
+const formModel = shallowReactive<FormModelType>({
   projectName: '',
   projectPath: '',
 })
 
-const visible = ref(false)
+const visible = shallowRef(false)
 
 const projectManager = useProjectManager()
 const i18n = useI18n()

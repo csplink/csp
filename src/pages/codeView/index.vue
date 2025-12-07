@@ -31,7 +31,7 @@ import type { FileProgressDialogInstance } from '~/components/instance'
 import type { CoderDumpResponseType } from '~/utils'
 import { ElNotification } from 'element-plus'
 import JSZip from 'jszip'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { saveFileWithDialog, useProjectManager, useServerManager } from '~/utils'
@@ -43,11 +43,11 @@ const { t } = useI18n()
 
 const project = projectManager.get()!
 
-const codeRef = ref<string>('')
-const languageRef = ref('c')
-const coderDumpResponseRef = ref<CoderDumpResponseType>()
+const codeRef = shallowRef<string>('')
+const languageRef = shallowRef('c')
+const coderDumpResponseRef = shallowRef<CoderDumpResponseType>()
 const fileTreeModelRef = ref<Record<string, boolean>>({})
-const dialog = ref<FileProgressDialogInstance>()
+const dialog = shallowRef<FileProgressDialogInstance>()
 
 async function loadCode() {
   dialog.value?.show(t('label.dumping'))

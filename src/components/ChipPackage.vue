@@ -29,12 +29,12 @@
 
 <script lang="ts" setup>
 import type Konva from 'konva'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef, ShallowRef } from 'vue'
 import type { PanZoomMenuItemModelType } from './containers/PanZoom'
 import type { PanZoomInstance } from '~/components/instance'
 import type { IPackageBase, PackageModelPinType, PackageModelType } from '~/composables/packages/base'
 import { ElMessageBox } from 'element-plus'
-import { computed, onBeforeUnmount, onMounted, ref, shallowReactive, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, shallowReactive, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as chipPackages from '~/composables/packages'
 import { useSummaryManager } from '~/database'
@@ -42,7 +42,7 @@ import { getTextColorPrimary, usePinsManager, useProjectManager, useThemeStore }
 
 interface PinModelType {
   base: PackageModelPinType
-  highlight: Ref<boolean>
+  highlight: ShallowRef<boolean>
   color: ComputedRef<string>
   textColor: ComputedRef<string>
   comment: ComputedRef<string>
@@ -70,9 +70,9 @@ const summary = summaryManager.get(project.vendor, project.targetChip)!
 const pins = pinsManager.pins
 
 const pinModels = shallowReactive<Record<string, PinModelType>>({})
-const packageModelRef = ref<PackageModelType>()
-const panZoomRef = ref<PanZoomInstance>()
-const textColorPrimaryRef = ref('#ff0000')
+const packageModelRef = shallowRef<PackageModelType>()
+const panZoomRef = shallowRef<PanZoomInstance>()
+const textColorPrimaryRef = shallowRef('#ff0000')
 const modelWidth = computed(() => packageModelRef.value?.width || 0)
 const modelHeight = computed(() => packageModelRef.value?.height || 0)
 let intervalTimerId: number | null = null
@@ -165,7 +165,7 @@ async function loadPackageModel() {
       for (const pin of packageModel.pins) {
         const model: PinModelType = {
           base: pin,
-          highlight: ref(false),
+          highlight: shallowRef(false),
           color: computed((): string => {
             if (model.highlight.value) {
               return HIGHLIGHT_BG_COLOR

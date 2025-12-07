@@ -27,10 +27,10 @@
  *  2025-09-11     xqyjlj       initial version
  */
 
-import type { App, ComputedRef, Ref } from 'vue'
+import type { App, ComputedRef, ShallowReactive } from 'vue'
 import type { Project, ProjectConfigsPinUnitType, ProjectManager } from './project'
 import type { Ip, IpManager, IpParameter, IpRefParameter, SummaryManager, SummaryPin } from '~/database'
-import { computed, inject, ref } from 'vue'
+import { computed, inject, markRaw, shallowReactive } from 'vue'
 import { IpObject } from '~/database'
 
 export class Pin {
@@ -43,7 +43,7 @@ export class Pin {
   private _modePath: string
   private _labelPath: string
   private _lockedPath: string
-  private _state: Ref<ProjectConfigsPinUnitType>
+  private _item: ShallowReactive<ProjectConfigsPinUnitType>
 
   constructor(
     private _name: string,
@@ -61,7 +61,7 @@ export class Pin {
 
     this._parameters = _ip.buildParameters(this._name)
 
-    this._state = ref<ProjectConfigsPinUnitType>({
+    this._item = shallowReactive<ProjectConfigsPinUnitType>({
       function: this._project.configs.get(this._functionPath, ''),
       mode: this._project.configs.get(this._modePath, ''),
       label: this._project.configs.get(this._labelPath, ''),
@@ -75,19 +75,19 @@ export class Pin {
     return this._name
   }
 
-  function = computed((): string => this._state.value.function!)
+  function = computed((): string => this._item.function!)
 
-  mode = computed((): string => this._state.value.mode!)
+  mode = computed((): string => this._item.mode!)
 
   label = computed({
-    get: (): string => this._state.value.label!,
+    get: (): string => this._item.label!,
     set: (value: string | null) => {
       this._project.configs.set(this._labelPath, value)
     },
   })
 
   locked = computed({
-    get: (): boolean => this._state.value.locked!,
+    get: (): boolean => this._item.locked!,
     set: (value: boolean) => {
       this._project.configs.set(this._lockedPath, value)
     },
@@ -181,31 +181,29 @@ export class Pin {
     const path = payload.path.join('.')
 
     if (path === this._functionPath) {
-      this._state.value.function = payload.newValue
+      this._item.function = payload.newValue
     }
     else if (path === this._modePath) {
-      this._state.value.mode = payload.newValue
+      this._item.mode = payload.newValue
     }
     else if (path === this._labelPath) {
-      this._state.value.label = payload.newValue
+      this._item.label = payload.newValue
     }
     else if (path === this._lockedPath) {
-      this._state.value.locked = payload.newValue
+      this._item.locked = payload.newValue
     }
     else if (path === this._path) {
       const value: ProjectConfigsPinUnitType = payload.newValue ?? {}
-      this._state.value = {
-        function: value.function ?? '',
-        mode: value.mode ?? '',
-        label: value.label ?? '',
-        locked: value.locked ?? false,
-      }
+      this._item.function = value.function ?? ''
+      this._item.mode = value.mode ?? ''
+      this._item.label = value.label ?? ''
+      this._item.locked = value.locked ?? false
     }
   }
 }
 
 export class PinsManager {
-  private _pins: Record<string, Pin> = {}
+  private _pins: Record<string, Pin> = markRaw({})
 
   constructor() {
   }
@@ -226,7 +224,7 @@ export function createPinsManagerPlugin() {
         const ip = ipManager.getPeripheral(project.vendor, summary.pinInstance)
         if (ip) {
           for (const [name, summaryPin] of Object.entries(summary.pins)) {
-            manager.pins[name] = new Pin(name, summaryPin, ip)
+            manager.pins[name] = markRaw(new Pin(name, summaryPin, ip))
           }
         }
       }

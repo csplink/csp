@@ -32,7 +32,7 @@ import type { Emitter } from 'mitt'
 import type { App } from 'vue'
 import type { VueI18nType } from '~/i18n'
 import mitt from 'mitt'
-import { computed, inject, reactive, watchEffect } from 'vue'
+import { computed, inject, markRaw, reactive, watchEffect } from 'vue'
 import { applyLocale } from '~/i18n'
 import { applyTheme, applyThemeColor } from './theme'
 
@@ -204,7 +204,7 @@ export class SettingsManager {
   private _settings: AppSettings | null = null
 
   async init(i18n: VueI18nType) {
-    this._settings = new AppSettings(await window.electron.invoke('settings:load'))
+    this._settings = markRaw(new AppSettings(await window.electron.invoke('settings:load')))
 
     this._settings.emitter.on('changed', (payload: { path: string, newValue: any, oldValue: any }) => {
       window.electron.invoke('settings:update', payload.path, payload.newValue)

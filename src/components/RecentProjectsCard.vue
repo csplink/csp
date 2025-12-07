@@ -29,14 +29,14 @@
 
 <script setup lang="ts">
 import type { SettingsRecentProjectItemType } from '@/electron/types'
-import { computed, ref } from 'vue'
+import { computed, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setProjectPath, useSettingsManager } from '~/utils'
 
 const { t } = useI18n()
 const settings = useSettingsManager()
 
-const refreshTrigger = ref(0)
+const refreshTrigger = shallowRef(0)
 
 const recentProjects = computed((): SettingsRecentProjectItemType[] => {
   // eslint-disable-next-line ts/no-unused-expressions

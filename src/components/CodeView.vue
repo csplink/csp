@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import type { ThemeModeType } from '@/electron/types'
 import Prism from 'prismjs'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, shallowRef, watch } from 'vue'
 import { getRealTheme, useThemeStore } from '~/utils'
 
 interface PropsType {
@@ -40,8 +40,8 @@ interface PropsType {
 
 const props = defineProps<PropsType>()
 
-const htmlRef = ref<string>('')
-const codeRef = ref<HTMLElement>()
+const htmlRef = shallowRef<string>('')
+const codeRef = shallowRef<HTMLElement>()
 const themeStore = useThemeStore()
 
 const themeMap = {
