@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import type { ClockTreeNode, IpParameterNumber } from '~/database'
 import { Handle, Position, useNodeConnections, useNodesData, useVueFlow } from '@vue-flow/core'
-import { computed, ref, toValue, watch } from 'vue'
+import { computed, toValue, watch } from 'vue'
 import { isValidSourceConnection, isValidTargetConnection } from './CtUtils'
 
 interface PropsType {
@@ -68,12 +68,20 @@ const input = computed((): number => {
   }
 })
 const title = computed((): string => parameter.value?.display.value || props.id)
-const value = ref(parameter.value?.value ?? 0)
+const value = computed({
+  get: (): number => parameter.value?.value.value ?? 0,
+  set: (value: number) => {
+    if (parameter.value) {
+      parameter.value.value.value = value
+    }
+  },
+})
 
 watch(
   () => input.value,
   (v: number) => {
     updateNodeData(props.id, { output: v }, { replace: false })
+    value.value = v
     if (parameter.value) {
       parameter.value.value.value = v
     }

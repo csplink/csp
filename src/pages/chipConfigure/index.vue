@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import type { ChipPackageInstance } from '~/components/instance'
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, shallowReactive, shallowRef, watch } from 'vue'
 import { useIpManager } from '~/database'
 import { useProjectManager } from '~/utils'
 
@@ -38,8 +38,8 @@ const ipManager = useIpManager()
 
 const project = projectManager.get()!
 
-const chipPackageRef = ref<ChipPackageInstance>()
-const ipInfoRef = ref({
+const chipPackageRef = shallowRef<ChipPackageInstance>()
+const ipInfoRef = shallowReactive({
   ip: '',
   containers: [] as string[],
   channel: '',
@@ -94,11 +94,9 @@ function handModuleTreeClick(name: string) {
     { immediate: false },
   )
 
-  ipInfoRef.value = {
-    ip: name,
-    containers,
-    channel: '',
-  }
+  ipInfoRef.ip = name
+  ipInfoRef.containers = containers
+  ipInfoRef.channel = ''
 }
 
 function handModuleTreeCommand(command: string, args: any) {
@@ -114,10 +112,10 @@ function handIpConfiguratorPinSelect(pins: string[]) {
 
 function handIpConfiguratorSelect(pins: string[]) {
   if (pins.length > 0) {
-    ipInfoRef.value.channel = pins[0]
+    ipInfoRef.channel = pins[0]
   }
   else {
-    ipInfoRef.value.channel = ''
+    ipInfoRef.channel = ''
   }
 }
 

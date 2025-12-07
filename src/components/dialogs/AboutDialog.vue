@@ -27,10 +27,10 @@
  *  2025-11-18     xqyjlj       initial version
 -->
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import pkg from '../../../package.json'
 
-const visible = ref(false)
+const visible = shallowRef(false)
 
 function show() {
   visible.value = true

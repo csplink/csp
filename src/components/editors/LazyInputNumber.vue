@@ -28,7 +28,7 @@
 -->
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 
 interface Props {
   modelValue: number
@@ -50,7 +50,7 @@ const emit = defineEmits<{
   (e: 'change', value: number): void
 }>()
 
-const tempValue = ref<number>(props.modelValue)
+const tempValue = shallowRef<number>(props.modelValue)
 const valid = computed(() => tempValue.value <= props.max && tempValue.value >= props.min)
 
 watch(

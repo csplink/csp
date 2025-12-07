@@ -28,11 +28,11 @@
 -->
 <script setup lang="ts">
 import MarkdownIt from 'markdown-it'
-import { ref, watchEffect } from 'vue'
+import { shallowRef, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import 'github-markdown-css/github-markdown-light.css'
 
-const renderedContent = ref('')
+const renderedContent = shallowRef('')
 const md = new MarkdownIt({
   html: true,
   linkify: true,

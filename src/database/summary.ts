@@ -40,7 +40,7 @@ import type {
 import type { App, WritableComputedRef } from 'vue'
 import type { ClockTreeManager } from './clockTree'
 import type { IpManager } from './ip'
-import { computed, inject } from 'vue'
+import { computed, inject, markRaw } from 'vue'
 import { I18n } from '~/i18n'
 
 // #region typedef
@@ -400,17 +400,17 @@ export class SummaryPin {
 export class SummaryManager {
   private _clockTreeManager?: ClockTreeManager
   private _ipManager?: IpManager
-  private _map: Record<string, Record<string, Summary>> = {}
+  private _map: Record<string, Record<string, Summary>> = markRaw({})
 
   constructor() {
   }
 
   setIpManager(ipManager: IpManager) {
-    this._ipManager = ipManager
+    this._ipManager = markRaw(ipManager)
   }
 
   setClockTreeManager(clockTreeManager: ClockTreeManager) {
-    this._clockTreeManager = clockTreeManager
+    this._clockTreeManager = markRaw(clockTreeManager)
   }
 
   async load(vendor: string, name: string, locale: WritableComputedRef<string>) {
@@ -421,7 +421,7 @@ export class SummaryManager {
       await this._loadIpPeripherals(summary.modules.peripherals, summary)
       await this._clockTreeManager?.load(vendor, name, summary.clockTree);
 
-      (this._map[vendor] ??= {})[name] = summary
+      (this._map[vendor] ??= {})[name] = markRaw(summary)
     }
   }
 

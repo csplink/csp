@@ -34,7 +34,7 @@ import { Background } from '@vue-flow/background'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 import { toPng } from 'html-to-image'
-import { nextTick, onMounted, ref, shallowRef, watch } from 'vue'
+import { nextTick, onMounted, shallowRef, watch } from 'vue'
 import { useClockTreeManager } from '~/database'
 import { isDev, useProjectManager } from '~/utils'
 
@@ -70,10 +70,10 @@ const {
 const project = projectManager.get()!
 const clockTree = clockTreeManager.get(project.vendor, project.targetChip)!
 
-const isDevMode = ref(false)
+const isDevMode = shallowRef(false)
 const nodes = shallowRef<Node[]>([])
 const edges = shallowRef<Edge[]>([])
-const isLayoutLocked = ref(true)
+const isLayoutLocked = shallowRef(true)
 
 function buildNodes(): Node[] {
   const rtn: Node[] = []

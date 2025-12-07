@@ -28,7 +28,7 @@
 -->
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, shallowRef, watch } from 'vue'
 
 interface PropsType {
   modelValue: number
@@ -43,9 +43,9 @@ const props = withDefaults(defineProps<PropsType>(), {
 
 const emit = defineEmits(['change', 'update:modelValue'])
 
-const baseMode = ref<10 | 16>(16)
-const inputValue = ref('')
-const previousValue = ref('')
+const baseMode = shallowRef<10 | 16>(16)
+const inputValue = shallowRef('')
+const previousValue = shallowRef('')
 
 const baseOptions = [
   { label: 'Dec', value: 10 },

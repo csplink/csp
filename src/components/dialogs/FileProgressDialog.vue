@@ -28,11 +28,11 @@
 -->
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { shallowReactive, shallowRef } from 'vue'
 
-const visible = ref(false)
-const titleRef = ref('')
-const state = reactive({
+const visible = shallowRef(false)
+const titleRef = shallowRef('')
+const state = shallowReactive({
   progress: 0,
   currentFile: '',
   total: 0,

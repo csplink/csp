@@ -28,7 +28,7 @@
 -->
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, shallowRef } from 'vue'
 import yaml from 'yaml'
 
 export interface SponsorType {
@@ -38,7 +38,7 @@ export interface SponsorType {
   name: string
 }
 
-const sponsors = ref<SponsorType[]>([])
+const sponsors = shallowRef<SponsorType[]>([])
 
 async function loadImages() {
   const resp = await fetch('./sponsors')

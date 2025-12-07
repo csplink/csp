@@ -38,7 +38,7 @@ import type {
 import type { XYPosition } from '@vue-flow/core'
 import type { App } from 'vue'
 import type { Ip, IpManager, IpParameter } from './ip'
-import { computed, inject } from 'vue'
+import { computed, inject, markRaw } from 'vue'
 
 // #region typedef
 
@@ -166,21 +166,21 @@ export class ClockTreeNode {
 // #endregion
 
 export class ClockTreeManager {
-  private _map: Record<string, Record<string, { clockTree: ClockTree, define: string }>> = {}
+  private _map: Record<string, Record<string, { clockTree: ClockTree, define: string }>> = markRaw({})
   private _ipManager?: IpManager
 
   constructor() {
   }
 
   setIpManager(ipManager: IpManager) {
-    this._ipManager = ipManager
+    this._ipManager = markRaw(ipManager)
   }
 
   async load(vendor: string, name: string, define: string) {
     const content = await window.electron.invoke('database:getClockTree', vendor, define) as ClockTreeType
     if (content) {
       const clockTree = new ClockTree(content, this._ipManager!.getPeripheral(vendor, content.instance)!);
-      (this._map[vendor] ??= {})[name] = { clockTree, define }
+      (this._map[vendor] ??= {})[name] = markRaw({ clockTree, define })
     }
   }
 

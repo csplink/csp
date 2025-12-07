@@ -37,7 +37,7 @@ import type {
   RepositoryType,
 } from '@/electron/types'
 import type { App } from 'vue'
-import { inject } from 'vue'
+import { inject, markRaw } from 'vue'
 import { I18n } from '~/i18n'
 
 // #region typedef
@@ -365,7 +365,7 @@ export class RepositoryManager {
   }
 
   async get(): Promise<Repository> {
-    return this._repository ??= await this._get()
+    return this._repository ??= markRaw(await this._get())
   }
 }
 

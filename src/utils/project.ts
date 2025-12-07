@@ -39,7 +39,7 @@ import type { Summary, SummaryManager } from '~/database'
 import type { UseI18nType, VueI18nType } from '~/i18n'
 import mitt from 'mitt'
 import semver from 'semver'
-import { computed, inject, reactive, ref, watchEffect } from 'vue'
+import { computed, inject, markRaw, reactive, shallowReactive, shallowRef, watchEffect } from 'vue'
 import pkg from '~/../package.json'
 import { Express } from './express'
 import { showOpenDialog } from './io'
@@ -324,14 +324,14 @@ export class ProjectGen {
   private _linker: ProjectGenLinker
   private _emitter = mitt<ProjectGenEventType>()
   private _state
-  builders: string[] = reactive([])
-  builderVersions: string[] = reactive([])
-  toolchainsList: string[] = reactive([])
-  toolchainsVersions: string[] = reactive([])
-  toolchainsPath = ref<string>()
-  hals: string[] = reactive([])
-  halVersions: string[] = reactive([])
-  halPath = ref<string>()
+  builders: string[] = shallowReactive([])
+  builderVersions: string[] = shallowReactive([])
+  toolchainsList: string[] = shallowReactive([])
+  toolchainsVersions: string[] = shallowReactive([])
+  toolchainsPath = shallowRef<string>()
+  hals: string[] = shallowReactive([])
+  halVersions: string[] = shallowReactive([])
+  halPath = shallowRef<string>()
 
   constructor(
     private _origin: ProjectGenType,
@@ -519,7 +519,7 @@ export class ProjectManager {
       if (content) {
         const project = new Project(content, path)
         document.title = project.name
-        this._project = project
+        this._project = markRaw(project)
       }
     }
   }

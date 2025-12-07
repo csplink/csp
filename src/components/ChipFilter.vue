@@ -31,7 +31,7 @@
 import type { AutocompleteFetchSuggestionsCallback } from 'element-plus'
 import type { Repository } from '~/database'
 import { ElMessage } from 'element-plus'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRepositoryManager } from '~/database'
 
@@ -49,11 +49,11 @@ const emit = defineEmits(['update:modelValue'])
 
 const { t } = useI18n()
 const repositoryManager = useRepositoryManager()
-const repository = ref<Repository>()
-const loading = ref(false)
+const repository = shallowRef<Repository>()
+const loading = shallowRef(false)
 
-const searchQuery = ref('')
-const searchResults = ref<SearchResultItem[]>([])
+const searchQuery = shallowRef('')
+const searchResults = shallowRef<SearchResultItem[]>([])
 
 const filters = reactive({
   vendors: [] as string[],

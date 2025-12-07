@@ -28,7 +28,7 @@
 -->
 
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue'
+import { computed, shallowRef, watch, watchEffect } from 'vue'
 
 type UnitType = 'U' | 'K' | 'M'
 
@@ -59,13 +59,13 @@ const unitOptions = [
   { label: 'M', value: 'M', multiplier: 1000000 },
 ]
 
-const unitMode = ref<UnitType>(props.unit)
-const realValue = ref(props.modelValue)
+const unitMode = shallowRef<UnitType>(props.unit)
+const realValue = shallowRef(props.modelValue)
 const multiplier = computed(() => {
   const option = unitOptions.find(opt => opt.value === unitMode.value)
   return option?.multiplier || 1
 })
-const displayValue = ref(calculateDisplayValue(props.modelValue))
+const displayValue = shallowRef(calculateDisplayValue(props.modelValue))
 const valid = computed(() => realValue.value <= props.max && realValue.value >= props.min)
 
 /* !< 监听 modelValue 变化，非编辑状态才更新显示 */

@@ -33,7 +33,7 @@ import type { App } from 'vue'
 import type { PackageDescriptionType, PackageIndexType } from './packages'
 import type { SioCoderDumpResponseFile } from '~/proto/sio_coder_dump'
 import { io } from 'socket.io-client'
-import { inject } from 'vue'
+import { inject, markRaw } from 'vue'
 import { SioCoderDumpProgress, SioCoderDumpRequest, SioCoderDumpResponse } from '~/proto/sio_coder_dump'
 import { SioCoderGenerateProgress, SioCoderGenerateRequest, SioCoderGenerateResponse } from '~/proto/sio_coder_generate'
 import { SioPackageDescriptionRequest, SioPackageDescriptionResponse } from '~/proto/sio_package_description'
@@ -276,7 +276,7 @@ export class ServerManager {
 
   async init() {
     const url = await window.electron.invoke('server:getUrl')
-    this._server = new Server(url)
+    this._server = markRaw(new Server(url))
   }
 
   get server(): Server {

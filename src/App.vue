@@ -30,14 +30,14 @@
 <script lang="ts" setup>
 import type { ProcessRunModeType } from '@/electron/types'
 import type { TitleMenuBarInstance } from './components/instance'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSystemStore } from '~/utils'
 
 const i18n = useI18n()
 
-const systemRunMode = ref<ProcessRunModeType>('startup')
-const menuBar = ref<TitleMenuBarInstance>()
+const systemRunMode = shallowRef<ProcessRunModeType>('startup')
+const menuBar = shallowRef<TitleMenuBarInstance>()
 
 const locale = computed(() => (i18n.messages.value[i18n.locale.value] as import('element-plus/es/locale').Language))
 const showMenuTitle = computed(() => systemRunMode.value === 'main')

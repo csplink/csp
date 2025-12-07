@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import type { ProcessRunModeType } from '@/electron/types'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, shallowRef } from 'vue'
 import { useSystemStore } from '~/utils'
 
 interface PropsType {
@@ -38,8 +38,8 @@ interface PropsType {
 }
 const props = defineProps<PropsType>()
 
-const systemRunMode = ref<ProcessRunModeType>('startup')
-const title = ref(document.title)
+const systemRunMode = shallowRef<ProcessRunModeType>('startup')
+const title = shallowRef(document.title)
 
 let titleObserver: MutationObserver
 

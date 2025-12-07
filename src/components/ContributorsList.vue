@@ -29,12 +29,12 @@
 
 <script setup lang="ts">
 import type { Contributor } from '~/utils'
-import { onMounted, ref } from 'vue'
+import { onMounted, shallowRef } from 'vue'
 import { openUrl, useContributorManager } from '~/utils'
 
 const contributorManager = useContributorManager()
 
-const contributors = ref<Contributor[]>([])
+const contributors = shallowRef<Contributor[]>([])
 
 async function loadImages() {
   contributors.value = await contributorManager.get()

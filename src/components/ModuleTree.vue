@@ -30,9 +30,9 @@
 <script setup lang="ts">
 import type { MenuOptions } from '@imengyu/vue3-context-menu'
 import type { ElTree, TreeNode } from 'element-plus'
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import type { SummaryModuleUnit } from '~/database'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, shallowReactive, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useIpManager, useSummaryManager } from '~/database'
 import { useProjectManager } from '~/utils'
@@ -40,7 +40,7 @@ import { useProjectManager } from '~/utils'
 interface TreeType {
   key: string
   label: string
-  highlight: Ref<boolean>
+  highlight: ShallowRef<boolean>
   description?: string
   define?: string
   children?: TreeType[]
@@ -63,11 +63,10 @@ const project = projectManager.get()!
 const summary = summaryManager.get(project.vendor, project.targetChip)
 
 const defaultExpandedKeys = ref<string[]>([])
-const treeModel = ref<TreeType[]>([])
-const treeModelsMap = ref<Record<string, TreeType>>({})
+const treeModel = shallowRef<TreeType[]>([])
 const menuHighlightActionModels = ref<string[]>([])
-const menuShowRef = ref(false)
-const menuOptionsComponentRef = ref<MenuOptions>({
+const menuShowRef = shallowRef(false)
+const menuOptionsComponentRef = shallowReactive<MenuOptions>({
   x: 0,
   y: 0,
   minWidth: 230,
@@ -91,11 +90,10 @@ async function loadModules() {
       const node: TreeType = {
         key: node_key,
         label: name,
-        highlight: ip?.activated ?? ref(false),
+        highlight: ip?.activated ?? shallowRef(false),
         description: module.description.get(i18n.locale.value),
         define: module.define,
       }
-      treeModelsMap.value[name] = node
       if (module.children) {
         node.children = convertToTree(module.children, node_key)
       }
@@ -111,13 +109,13 @@ async function loadModules() {
     {
       key: 'peripherals',
       label: t('moduleTree.peripherals'),
-      highlight: ref(false),
+      highlight: shallowRef(false),
       children: peripheralsTree,
     },
     {
       key: 'middlewares',
       label: t('moduleTree.middlewares'),
-      highlight: ref(false),
+      highlight: shallowRef(false),
       children: middlewaresTree,
     },
   ]
@@ -150,8 +148,8 @@ function handleContextMenu(event: MouseEvent, data: TreeType, _node: TreeNode, _
    * See https://www.chromestatus.com/feature/5745543795965952
    */
   setTimeout(() => {
-    menuOptionsComponentRef.value.x = position.x
-    menuOptionsComponentRef.value.y = position.y
+    menuOptionsComponentRef.x = position.x
+    menuOptionsComponentRef.y = position.y
     menuShowRef.value = true
   }, 1)
 }

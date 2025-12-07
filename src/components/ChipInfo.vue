@@ -31,7 +31,7 @@
 import type { Summary, SummaryDocumentUnit } from '~/database'
 import { ElMessage } from 'element-plus'
 import MarkdownIt from 'markdown-it'
-import { computed, onMounted, ref, shallowRef, watch } from 'vue'
+import { computed, onMounted, shallowRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSummaryManager } from '~/database'
 import { openUrl } from '~/utils'
@@ -56,8 +56,8 @@ const summaryManager = useSummaryManager()
 
 const { t } = useI18n()
 const chipSummary = shallowRef<Summary | null>(null)
-const loading = ref(false)
-const activeTab = ref('basic')
+const loading = shallowRef(false)
+const activeTab = shallowRef('basic')
 const docs = shallowRef<Record<string, Record<string, SummaryDocumentUnit>>>({})
 
 const renderedContent = computed(() => {

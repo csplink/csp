@@ -39,7 +39,7 @@ import type {
 import { MenuBar } from '@imengyu/vue3-context-menu'
 import { ElNotification } from 'element-plus'
 import Mousetrap from 'mousetrap'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import {
@@ -67,11 +67,11 @@ const packageManager = usePackageManager()
 
 const project = projectManager.get()!
 
-const titleRef = ref(document.title)
-const fileProgressDialog = ref<FileProgressDialogInstance>()
-const aboutDialog = ref<AboutDialogInstance>()
-const authorDialog = ref<AuthorDialogInstance>()
-const saveAsProjectDialog = ref<SaveAsProjectDialogInstance>()
+const titleRef = shallowRef(document.title)
+const fileProgressDialog = shallowRef<FileProgressDialogInstance>()
+const aboutDialog = shallowRef<AboutDialogInstance>()
+const authorDialog = shallowRef<AuthorDialogInstance>()
+const saveAsProjectDialog = shallowRef<SaveAsProjectDialogInstance>()
 const recentProjects = ref<string[]>([])
 
 let titleObserver: MutationObserver

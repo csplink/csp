@@ -29,12 +29,12 @@
 
 <script setup lang="ts">
 import type { PackageDescription } from '~/utils'
-import { ref } from 'vue'
+import { shallowRef } from 'vue'
 import { usePackageManager } from '~/utils'
 
 const packageManager = usePackageManager()
 
-const descriptionRef = ref<PackageDescription>()
+const descriptionRef = shallowRef<PackageDescription>()
 
 async function handPackageTreeClick(kind: string, name: string, version: string) {
   const description = await packageManager.getPackageDescription(kind, name, version)
