@@ -61,14 +61,14 @@ const stageConfigRef = shallowReactive<StageConfig>({
   offsetX: 0,
   offsetY: 0,
 })
-const tooltipConfigRef = shallowRef({
+const tooltipConfigRef = shallowReactive({
   visible: false,
   x: 0,
   y: 0,
   placement: 'top',
   content: '',
 })
-const menuConfigRef = shallowRef<MenuConfigType>({})
+const menuConfigRef = shallowReactive<MenuConfigType>({})
 const menuShowRef = shallowRef(false)
 const menuOptionsComponentRef = shallowRef<MenuOptions>()
 let resizeObserver: ResizeObserver
@@ -118,8 +118,8 @@ function openMenu(key: string, options: MenuOptions, model: PanZoomMenuItemModel
   scaleX?: number
   scaleY?: number
 } = {}) {
-  menuConfigRef.value.key = key
-  menuConfigRef.value.model = model
+  menuConfigRef.key = key
+  menuConfigRef.model = model
 
   const opts: MenuOptions = {
     getContainer: () => containerRef.value as HTMLElement,
@@ -152,15 +152,15 @@ function closeMenu() {
 }
 
 function showTooltip(x: number, y: number, placement: string, content: string) {
-  tooltipConfigRef.value.x = x
-  tooltipConfigRef.value.y = y
-  tooltipConfigRef.value.placement = placement
-  tooltipConfigRef.value.content = content
-  tooltipConfigRef.value.visible = true
+  tooltipConfigRef.x = x
+  tooltipConfigRef.y = y
+  tooltipConfigRef.placement = placement
+  tooltipConfigRef.content = content
+  tooltipConfigRef.visible = true
 }
 
 function hideTooltip() {
-  tooltipConfigRef.value.visible = false
+  tooltipConfigRef.visible = false
 }
 
 function rescale() {
@@ -289,7 +289,7 @@ function handClick(event: Konva.KonvaEventObject<MouseEvent>) {
 }
 
 function handCommand(item: PanZoomMenuItemModelType) {
-  emit('menuSelect', menuConfigRef.value.key, item.command, item)
+  emit('menuSelect', menuConfigRef.key, item.command, item)
 }
 
 onMounted(() => {
