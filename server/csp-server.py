@@ -877,4 +877,3 @@ def cli_tools_candb_dump(path: str, as_json: bool):
 
 if __name__ == "__main__":
     cli()
-    cli()
