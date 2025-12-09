@@ -49,7 +49,7 @@ class SysUtils:
         Returns:
             str: The directory containing the launched executable or script.
         """
-        return str(Path(sys.argv[0]).parent)
+        return str(Path(sys.argv[0]).parent.absolute())
 
     @staticmethod
     def version() -> str:
