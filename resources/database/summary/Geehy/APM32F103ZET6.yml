@@ -325,7 +325,7 @@ illustrate:
 
     凭借其 **高性能与高可靠性**，**APM32F103xDxE 系列 MCU** 是工业控制、消费电子和物联网应用的理想选择。
 introduction:
-  en: ""
+  en: "A mainstream Arm Cortex-M3 value-line MCU featuring a 96 MHz CPU and 512 KB Flash"
   zh-cn: 具有 512KB Flash和 96MHz CPU的主流 Arm Cortex-M3 超值系列 MCU
 modules:
   peripherals:
