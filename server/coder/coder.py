@@ -25,9 +25,7 @@
 #
 
 
-import glob
 import hashlib
-import importlib.util
 import os
 import re
 import sys
@@ -44,6 +42,7 @@ from public.csp.summary import Summary
 from utils.sys import SYS_UTILS
 
 from .filters import FILTERS
+from .generator_loader import GeneratorLoader
 
 
 class Coder:
@@ -59,7 +58,15 @@ class Coder:
             "generate": Signal("generate"),
         }
 
-        sys.path = SYS_UTILS.sys_path() + [f"{project.hal_folder()}/tools/generator"]
+        hal = self._project.gen.hal
+        halVersion = self._project.gen.halVersion
+        hal_folder = Path(self._project.hal_folder())
+
+        self._package_name = f"{hal}_{halVersion}_generator"
+        self._filters_package_name = f"{self._package_name}.filters"
+        self._generator_folder = hal_folder / "tools" / "generator"
+        self._filters_folder = self._generator_folder / "filters"
+
         self._generator = self._load_generator()
         self.files_table = self._get_files_table()
 
@@ -167,16 +174,15 @@ class Coder:
         return list(self.files_table.keys())
 
     def _load_generator(self) -> ModuleType | None:
-        if self._check_hal_folder():
-            spec = importlib.util.spec_from_file_location(
-                "coder", f"{self._project.hal_folder()}/tools/generator/generator.py"
-            )
-            if spec is None or spec.loader is None:
-                return None
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-            return module
-        return None
+        if not self._check_hal_folder():
+            return None
+
+        try:
+            loader = GeneratorLoader(self._package_name, self._generator_folder)
+            return loader.load()
+        except Exception as e:
+            logger.error(f"Failed to load generator: {e}")
+            return None
 
     def _get_files_table(self) -> dict[str, dict[str, str]]:
         if self._generator is None:
@@ -336,13 +342,11 @@ class Coder:
         env.add_extension("jinja2.ext.do")
         env.add_extension("jinja2.ext.loopcontrols")
 
-        files = glob.glob(f"{package_folder}/tools/generator/filters/*.py")
+        files = self._filters_folder.glob("*.py")
         for file in files:
-            spec = importlib.util.spec_from_file_location(Path(file).stem, file)
-            if spec is None or spec.loader is None:
-                break
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
+            stem = file.stem
+            full_name = f"{self._filters_package_name}.{stem}"
+            module = sys.modules[full_name]
             functions = [
                 name for name in dir(module) if callable(getattr(module, name))
             ]

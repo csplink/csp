@@ -25,7 +25,10 @@
 #
 
 
+import hashlib
 import os
+from pathlib import Path
+from typing import Any
 
 from ruamel.yaml import YAML
 
@@ -39,10 +42,18 @@ class IoUtils:
             return f.readlines()
 
     @staticmethod
-    def read_yaml(file: str):
+    def read_yaml(file: str) -> Any:
         with open(file, "r", encoding="utf-8") as f:
             yaml = YAML()
             return yaml.load(f.read())
+
+    @staticmethod
+    def sha1(file: Path) -> str:
+        hash_sha1 = hashlib.sha1()
+        with open(file, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_sha1.update(chunk)
+        return hash_sha1.hexdigest()
 
 
 IO_UTILS = IoUtils()
