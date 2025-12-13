@@ -89,7 +89,13 @@ def {{ name }}(
     instance: str = "{{ CSP.instance }}",
     default: {{ format_type(item.type) }} = {{ format_value(item.default) }},
 ) -> {{ format_type(item.type) }}:
+    {%- if item.type == "int" %}
+    return int(project.configs.get({{ item.path }}, default))
+    {%- elif item.type == "bool" %}
+    return bool(project.configs.get({{ item.path }}, default))
+    {%- else %}
     return project.configs.get({{ item.path }}, default)
+    {%- endif %}
 {# #}
 {%- endfor -%}
 
