@@ -155,7 +155,7 @@ export class ClockTreeNode {
   }
 
   get position(): XYPosition {
-    return this._origin.position
+    return this._origin.position ?? { x: 0, y: 0 }
   }
 
   get unit(): ClockTreeNodeUnitType | undefined {
