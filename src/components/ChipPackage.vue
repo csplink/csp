@@ -152,7 +152,7 @@ async function loadPackageModel() {
 
   const chipPackagesTyped = chipPackages as Record<string, typeof IPackageBase>
   const chipPackageKeys = Object.keys(chipPackagesTyped)
-  let packType = ''
+  let packType = summary.package
   if (summary.package.startsWith('LQFP')) {
     packType = 'LQFP'
   }
