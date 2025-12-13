@@ -24,18 +24,15 @@
 # 2025-07-07     xqyjlj       initial version
 #
 
-import copy
+
 import sys
 from pathlib import Path
 
 
 class SysUtils:
     def __init__(self):
-        self._sys_path = copy.deepcopy(sys.path)
-        self._sys_path.append(self.public_folder())
-
-    def sys_path(self) -> list[str]:
-        return self._sys_path
+        if sys.path[-1] != self.public_folder():
+            sys.path.append(self.public_folder())
 
     @staticmethod
     def exe_folder() -> str:
