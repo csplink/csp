@@ -298,6 +298,9 @@ defineExpose({
         <template #node-ct-probe="props">
           <CtProbeNode :id="props.id" :data="props.data" :node="props.data.node" />
         </template>
+        <template #node-ct-number-label="props">
+          <CNumberLabelNode :id="props.id" :node="props.data.node" />
+        </template>
         <template #edge-ct-smoothstep="props">
           <CtSmoothstepEdge
             :id="props.id"

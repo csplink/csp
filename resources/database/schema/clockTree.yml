@@ -88,6 +88,7 @@ definitions:
           - "ct-select"
           - "ct-radio"
           - "ct-probe"
+          - "ct-number-label"
         description: "Type of node component"
       position:
         type: object
