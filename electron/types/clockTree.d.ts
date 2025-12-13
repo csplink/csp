@@ -44,7 +44,7 @@ export interface ClockTreeEdgeType {
 
 export interface ClockTreeNodeType {
   type: ClockTreeNodeTypeType
-  position: XYPosition
+  position?: XYPosition
   unit?: ClockTreeNodeUnitType
 }
 
