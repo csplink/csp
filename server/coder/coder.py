@@ -201,11 +201,18 @@ class Coder:
         pass
 
     def _check_hal_folder(self) -> bool:
+        if not os.path.isdir(self._project.hal_folder()):
+            logger.error(
+                f"the package({self._project.gen.hal}@{self._project.gen.halVersion!r}) is not installed."
+            )
+            return False
+
+        generator_file = f"{self._project.hal_folder()}/tools/generator/generator.py"
         if not os.path.isfile(
             f"{self._project.hal_folder()}/tools/generator/generator.py"
         ):
             logger.error(
-                f"{self._project.hal_folder()} is not directory! maybe package({self._project.gen.hal}) not yet installed."
+                f"{generator_file} is not exists! maybe package({self._project.gen.hal}) not yet installed."
             )
             return False
         return True
@@ -258,7 +265,23 @@ class Coder:
             except jinja2.exceptions.TemplateNotFound:
                 return ""
 
-            if suffix == ".h" or suffix == ".c":
+            if suffix.lower() in [
+                ".c",
+                ".h",
+                ".cpp",
+                ".hpp",
+                ".cc",
+                ".hh",
+                ".c++",
+                ".h++",
+                ".s",
+                ".ld",
+                ".asm",
+                ".ld",
+                ".lds",
+                ".sct",
+                ".icf",
+            ]:
                 args["user_code"] = self.match_user(
                     abs_path, r"/\*\*<", r" \*/", r"/\*\*>", r" \*/"
                 )
@@ -368,7 +391,7 @@ class Coder:
         project_name = project.name
 
         # target chip
-        tree.find("Targets/Target/TargetOption/TargetCommonOption/Device").text = mdk_cfg["line"]  # type: ignore
+        tree.find("Targets/Target/TargetOption/TargetCommonOption/Device").text = mdk_cfg.get("device") or mdk_cfg["line"]  # type: ignore
 
         # vendor
         tree.find("Targets/Target/TargetOption/TargetCommonOption/Vendor").text = mdk_cfg["vendor"]  # type: ignore
