@@ -31,7 +31,7 @@ from pathlib import Path
 
 class SysUtils:
     def __init__(self):
-        if sys.path[-1] != self.public_folder():
+        if self.public_folder() not in sys.path:
             sys.path.append(self.public_folder())
 
     @staticmethod
