@@ -16,26 +16,22 @@
 # Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        package_description.py
+# @file        types.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2025-08-03     xqyjlj       initial version
+# 2025-12-21     xqyjlj       initial version
 #
 
-from pathlib import Path
+from typing import TypedDict
 
-from packages.description import PackageDescription
-from packages.package import Package
+from typing_extensions import NotRequired
 
 
-def action_package_description(
-    kind: str, name: str, version: str
-) -> PackageDescription | None:
-    package = Package()
-    package_index = package.index()
-    path = package_index.path(kind, name, version)
-    if path is None:
-        return None
-    return package.get_package_description(path)
+class CoderFilesTableItemDict(TypedDict):
+    brief: str
+    template: NotRequired[str]
+    module: NotRequired[str]
+    gen: NotRequired[bool]
+    force: NotRequired[bool]

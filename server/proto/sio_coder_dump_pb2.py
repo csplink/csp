@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1aproto/sio_coder_dump.proto\x1a\x1cgoogle/protobuf/struct.proto\"[\n\x13SioCoderDumpRequest\x12(\n\x07\x63ontent\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04\x64iff\x18\x03 \x01(\x08\"B\n\x14SioCoderDumpProgress\x12\r\n\x05\x63ount\x18\x01 \x01(\r\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0c\n\x04\x66ile\x18\x03 \x01(\t\"9\n\x18SioCoderDumpResponseFile\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x0c\n\x04\x64iff\x18\x02 \x01(\t\"\xb0\x01\n\x14SioCoderDumpResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\r\n\x05\x65rror\x18\x02 \x01(\t\x12/\n\x05\x66iles\x18\x03 \x03(\x0b\x32 .SioCoderDumpResponse.FilesEntry\x1aG\n\nFilesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.SioCoderDumpResponseFile:\x02\x38\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1aproto/sio_coder_dump.proto\x1a\x1cgoogle/protobuf/struct.proto\"[\n\x13SioCoderDumpRequest\x12(\n\x07\x63ontent\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04\x64iff\x18\x03 \x01(\x08\"B\n\x14SioCoderDumpProgress\x12\r\n\x05\x63ount\x18\x01 \x01(\r\x12\r\n\x05index\x18\x02 \x01(\r\x12\x0c\n\x04\x66ile\x18\x03 \x01(\t\"G\n\x18SioCoderDumpResponseFile\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x11\n\x04\x64iff\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x07\n\x05_diff\"\xb0\x01\n\x14SioCoderDumpResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\r\n\x05\x65rror\x18\x02 \x01(\t\x12/\n\x05\x66iles\x18\x03 \x03(\x0b\x32 .SioCoderDumpResponse.FilesEntry\x1aG\n\nFilesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12(\n\x05value\x18\x02 \x01(\x0b\x32\x19.SioCoderDumpResponseFile:\x02\x38\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,9 +39,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_SIOCODERDUMPPROGRESS']._serialized_start=153
   _globals['_SIOCODERDUMPPROGRESS']._serialized_end=219
   _globals['_SIOCODERDUMPRESPONSEFILE']._serialized_start=221
-  _globals['_SIOCODERDUMPRESPONSEFILE']._serialized_end=278
-  _globals['_SIOCODERDUMPRESPONSE']._serialized_start=281
-  _globals['_SIOCODERDUMPRESPONSE']._serialized_end=457
-  _globals['_SIOCODERDUMPRESPONSE_FILESENTRY']._serialized_start=386
-  _globals['_SIOCODERDUMPRESPONSE_FILESENTRY']._serialized_end=457
+  _globals['_SIOCODERDUMPRESPONSEFILE']._serialized_end=292
+  _globals['_SIOCODERDUMPRESPONSE']._serialized_start=295
+  _globals['_SIOCODERDUMPRESPONSE']._serialized_end=471
+  _globals['_SIOCODERDUMPRESPONSE_FILESENTRY']._serialized_start=400
+  _globals['_SIOCODERDUMPRESPONSE_FILESENTRY']._serialized_end=471
 # @@protoc_insertion_point(module_scope)

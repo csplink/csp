@@ -74,13 +74,12 @@ def convert_multiline_strings(data):
                 convert_multiline_strings(v)
 
 
-def action_tools_cmx_ip(src: str, mcu: str, dest: str, alias: str):
-    cmx_mcu = CmxMcu(mcu)
-    cmx_ip = CmxIp(src, alias, cmx_mcu)
+def action_tools_cmx_ip(src_file: Path, mcu_file: Path, dest_file: Path, alias: str):
+    cmx_mcu = CmxMcu(str(mcu_file))
+    cmx_ip = CmxIp(str(src_file), alias, cmx_mcu)
 
     ip = cmx_ip.convert_ip()
 
-    dest_file = Path(dest)
     if dest_file.exists():
         with open(dest_file, "r", encoding="utf-8") as f:
             yaml = YAML()
@@ -104,6 +103,6 @@ def action_tools_cmx_ip(src: str, mcu: str, dest: str, alias: str):
         convert_multiline_strings(ip)
         yaml.dump(ip, f)
 
-    logger.success(f"Updating {dest_file!r}...")
+    logger.success(f"Updating {str(dest_file)!r}...")
 
     return True

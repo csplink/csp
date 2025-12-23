@@ -24,27 +24,24 @@
 # 2025-10-19     xqyjlj       initial version
 #
 
-import glob
 import json
-import os
 from pathlib import Path
 
 from loguru import logger
 from ruamel.yaml import YAML
 
 
-def action_tools_yaml2json(path: str) -> bool:
-    if os.path.isdir(path):
-        files = glob.glob(f"{path}/*.yml", recursive=False)
-    elif os.path.isfile(path):
-        files = [path]
+def action_tools_yaml2json(yaml_path: Path) -> bool:
+    if yaml_path.is_dir():
+        files = list(yaml_path.glob("*.yml"))
+    elif yaml_path.is_file():
+        files = [yaml_path]
     else:
-        logger.error(f"Invalid path: {path!r}")
+        logger.error(f"Invalid path: {yaml_path!r}")
         return False
 
     for yaml_file in files:
-        file = Path(yaml_file)
-        json_file = file.parent / f"{file.stem}.json"
+        json_file = yaml_file.parent / f"{yaml_file.stem}.json"
 
         with open(yaml_file, "r", encoding="utf-8") as fp:
             yaml = YAML()
@@ -53,7 +50,7 @@ def action_tools_yaml2json(path: str) -> bool:
         with open(json_file, "w", encoding="utf-8") as fp:
             json.dump(yaml_data, fp, indent=4, ensure_ascii=False)
 
-        p = str(json_file.absolute()).replace("\\", "/")
+        p = json_file.absolute().as_posix()
         logger.info(f"Updating {p!r}...")  # type: ignore
 
     return True

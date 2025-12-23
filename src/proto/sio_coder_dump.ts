@@ -24,8 +24,7 @@ export interface SioCoderDumpProgress {
 
 export interface SioCoderDumpResponseFile {
   content: string;
-  /** !< 可选 */
-  diff: string;
+  diff?: string | undefined;
 }
 
 export interface SioCoderDumpResponse {
@@ -224,7 +223,7 @@ export const SioCoderDumpProgress: MessageFns<SioCoderDumpProgress> = {
 };
 
 function createBaseSioCoderDumpResponseFile(): SioCoderDumpResponseFile {
-  return { content: "", diff: "" };
+  return { content: "", diff: undefined };
 }
 
 export const SioCoderDumpResponseFile: MessageFns<SioCoderDumpResponseFile> = {
@@ -232,7 +231,7 @@ export const SioCoderDumpResponseFile: MessageFns<SioCoderDumpResponseFile> = {
     if (message.content !== "") {
       writer.uint32(10).string(message.content);
     }
-    if (message.diff !== "") {
+    if (message.diff !== undefined) {
       writer.uint32(18).string(message.diff);
     }
     return writer;
@@ -273,7 +272,7 @@ export const SioCoderDumpResponseFile: MessageFns<SioCoderDumpResponseFile> = {
   fromJSON(object: any): SioCoderDumpResponseFile {
     return {
       content: isSet(object.content) ? globalThis.String(object.content) : "",
-      diff: isSet(object.diff) ? globalThis.String(object.diff) : "",
+      diff: isSet(object.diff) ? globalThis.String(object.diff) : undefined,
     };
   },
 
@@ -282,7 +281,7 @@ export const SioCoderDumpResponseFile: MessageFns<SioCoderDumpResponseFile> = {
     if (message.content !== "") {
       obj.content = message.content;
     }
-    if (message.diff !== "") {
+    if (message.diff !== undefined) {
       obj.diff = message.diff;
     }
     return obj;
@@ -294,7 +293,7 @@ export const SioCoderDumpResponseFile: MessageFns<SioCoderDumpResponseFile> = {
   fromPartial<I extends Exact<DeepPartial<SioCoderDumpResponseFile>, I>>(object: I): SioCoderDumpResponseFile {
     const message = createBaseSioCoderDumpResponseFile();
     message.content = object.content ?? "";
-    message.diff = object.diff ?? "";
+    message.diff = object.diff ?? undefined;
     return message;
   },
 };

@@ -31,11 +31,12 @@ from pathlib import Path
 
 class SysUtils:
     def __init__(self):
-        if self.public_folder() not in sys.path:
-            sys.path.append(self.public_folder())
+        public = self.public_folder().absolute().as_posix()
+        if public not in sys.path:
+            sys.path.append(public)
 
     @staticmethod
-    def exe_folder() -> str:
+    def exe_folder() -> Path:
         """
         Get the directory where the program was launched from.
 
@@ -46,7 +47,7 @@ class SysUtils:
         Returns:
             str: The directory containing the launched executable or script.
         """
-        return str(Path(sys.argv[0]).parent.absolute())
+        return Path(sys.argv[0]).parent.absolute()
 
     @staticmethod
     def version() -> str:
@@ -67,7 +68,7 @@ class SysUtils:
         return not "__compiled__" in globals()
 
     @staticmethod
-    def resource_folder() -> str:
+    def resource_folder() -> Path:
         """
         @brief      Get the folder of the resources.
         @return     The folder of the resources.
@@ -76,63 +77,63 @@ class SysUtils:
         @note       It is a static method.
         """
         if SysUtils.is_dev():
-            return str(Path(SysUtils.exe_folder()).parent / "resources")
+            return SysUtils.exe_folder().parent / "resources"
         else:
-            app_asar = Path(SysUtils.exe_folder()).parent / "app.asar"
+            app_asar = SysUtils.exe_folder().parent / "app.asar"
             if app_asar.exists():
-                return str(app_asar.parent)
+                return app_asar.parent
             else:
-                return str(Path(SysUtils.exe_folder()) / "resources")
+                return SysUtils.exe_folder() / "resources"
 
     @staticmethod
-    def database_folder() -> str:
+    def database_folder() -> Path:
         """
         @brief      Get the folder of the database.
         @return     The folder of the database.
         @details    It is the subfolder "database" of the resource folder.
         @note       It is a static method.
         """
-        return str(Path(SysUtils.resource_folder()) / "database")
+        return SysUtils.resource_folder() / "database"
 
     @staticmethod
-    def templates_folder() -> str:
+    def templates_folder() -> Path:
         """
         @brief      Get the folder of the templates.
         @return     The folder of the templates.
         @details    It is the subfolder "templates" of the resource folder.
         @note       It is a static method.
         """
-        return str(Path(SysUtils.resource_folder()) / "templates")
+        return SysUtils.resource_folder() / "templates"
 
     @staticmethod
-    def packages_folder() -> str:
+    def packages_folder() -> Path:
         """
         @brief      Get the folder of the packages.
         @return     The folder of the packages.
         @details    It is the subfolder "packages" of the resource folder.
         @note       It is a static method.
         """
-        return str(Path.home() / ".csp" / "packages")
+        return Path.home() / ".csp" / "packages"
 
     @staticmethod
-    def packages_index_file() -> str:
+    def packages_index_file() -> Path:
         """
         @brief      Get the file path of the package index.
         @return     The file path of the package index as a string.
         @details    It is the "packages.index" file located in the "packages" subfolder of the database folder.
         @note       It is a static method.
         """
-        return str(Path(SysUtils.packages_folder()) / "packages.index")
+        return SysUtils.packages_folder() / "packages.index"
 
     @staticmethod
-    def public_folder() -> str:
+    def public_folder() -> Path:
         """
         @brief      Get the folder of the public files.
         @return     The folder of the public files.
         @details    It is the subfolder "public" of the resource folder.
         @note       It is a static method.
         """
-        return str(Path(SysUtils.exe_folder()) / "public")
+        return SysUtils.exe_folder() / "public"
 
 
 SYS_UTILS = SysUtils()

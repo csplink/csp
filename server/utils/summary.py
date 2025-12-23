@@ -40,28 +40,35 @@ class SummaryUtils:
         pass
 
     @staticmethod
-    @logger.catch(default=False)
     def __check_summary(summary: dict) -> bool:
         with open(
-            os.path.join(SysUtils.database_folder(), "schema", "summary.yml"),
+            SysUtils.database_folder() / "schema" / "summary.yml",
             "r",
             encoding="utf-8",
         ) as f:
-            yaml = YAML()
+            yaml = YAML(typ="safe")
             schema = yaml.load(f.read())
-            jsonschema.validate(instance=summary, schema=schema)
-        return True
+            validator = jsonschema.Draft7Validator(schema)
+            errors = sorted(validator.iter_errors(summary), key=lambda e: e.path)
+            if not errors:
+                return True
+            for e in errors:
+                logger.error(
+                    f"Summary validation failed: {e.message!r} in {list(e.path)!r} with {list(e.schema_path)!r}"
+                )
+            return False
 
     @staticmethod
-    @logger.catch(default=Summary({}))
     def load_summary(vendor: str, name: str) -> Summary:
-        file = os.path.join(
-            SysUtils.database_folder(), "summary", vendor, f"{name}.yml"
-        )
-        if os.path.isfile(file):
+        file = SysUtils.database_folder() / "summary" / vendor / f"{name}.yml"
+        if file.is_file():
             with open(file, "r", encoding="utf-8") as f:
-                yaml = YAML()
-                summary = yaml.load(f.read())
+                yaml = YAML(typ="safe")
+                try:
+                    summary = yaml.load(f.read())
+                except Exception as e:
+                    logger.error(f"Failed to load summary: {e}")
+                    return Summary({})
                 succeed = SummaryUtils.__check_summary(summary)
             if succeed:
                 return Summary(summary)

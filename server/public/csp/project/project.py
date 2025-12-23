@@ -25,14 +25,28 @@
 #
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 from .configs import Configs
 from .gen import Gen
 
 
+@dataclass
+class ProjectUserData:
+    hal_folder: Optional[Path]
+    toolchains_folder: Optional[Path]
+    path: Path
+
+
 class Project:
-    def __init__(self, data: dict, user_data: dict = {}):
+
+    def __init__(
+        self,
+        data: dict,
+        user_data: ProjectUserData = ProjectUserData(Path(""), Path(""), Path("")),
+    ):
         self._data = data
         self._gen = Gen(self._data.get("gen", {}))
         self._configs = Configs(self._data.get("configs", {}))
@@ -73,14 +87,14 @@ class Project:
     def configs(self) -> Configs:
         return self._configs
 
-    def hal_folder(self) -> str:
-        return self._user_data.get("hal_folder", "")
+    def hal_folder(self) -> Optional[Path]:
+        return self._user_data.hal_folder
 
-    def toolchains_folder(self) -> str:
-        return self._user_data.get("toolchains_folder", "")
+    def toolchains_folder(self) -> Optional[Path]:
+        return self._user_data.toolchains_folder
 
-    def path(self) -> str:
-        return self._user_data.get("path", "")
+    def path(self) -> Path:
+        return self._user_data.path
 
-    def folder(self) -> str:
-        return str(Path(self.path()).parent)
+    def folder(self) -> Path:
+        return self.path().parent

@@ -26,6 +26,7 @@
 
 
 import time
+from pathlib import Path
 
 import jinja2
 from coder.coder import Coder
@@ -105,7 +106,7 @@ def process_parameter(name: str, parameter, channel: bool):
     return result
 
 
-def generate(ip: Ip, channel: bool, pin: bool, output: str):
+def generate(ip: Ip, channel: bool, pin: bool, output: Path):
     parameters = {}
 
     for name, parameter in ip.parameters.items():
@@ -123,8 +124,7 @@ def generate(ip: Ip, channel: bool, pin: bool, output: str):
         "pin": pin,
     }
 
-    path = f"{output}/{ip.name.lower()}.py".replace("\\", "/")
-    data["user_code"] = Coder.match_user(path, "# --<", "", "# -->", "")
+    data["user_code"] = Coder.match_user(output, "# --<", "", "# -->", "")
 
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(SYS_UTILS.templates_folder()),
@@ -137,11 +137,11 @@ def generate(ip: Ip, channel: bool, pin: bool, output: str):
     template = env.get_template("filter.py.j2")
     context = template.render({"CSP": data})
 
-    logger.success(f"generate {path!r}.")
-
-    with open(path, "w", encoding="utf-8") as f:
+    with open(output, "w", encoding="utf-8") as f:
         f.write(context)
 
+    logger.success(f"generate {str(output)!r}.")
 
-def action_tools_csp2filter(ip: Ip, channel: bool, pin: bool, output: str):
+
+def action_tools_csp2filter(ip: Ip, channel: bool, pin: bool, output: Path):
     generate(ip, channel, pin, output)

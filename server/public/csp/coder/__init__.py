@@ -16,26 +16,17 @@
 # Copyright (C) 2025-2025 xqyjlj<xqyjlj@126.com>
 #
 # @author      xqyjlj
-# @file        package_description.py
+# @file        __init__.py
 #
 # Change Logs:
 # Date           Author       Notes
 # ------------   ----------   -----------------------------------------------
-# 2025-08-03     xqyjlj       initial version
+# 2025-12-21     xqyjlj       initial version
 #
 
-from pathlib import Path
 
-from packages.description import PackageDescription
-from packages.package import Package
+from .types import CoderFilesTableItemDict
 
-
-def action_package_description(
-    kind: str, name: str, version: str
-) -> PackageDescription | None:
-    package = Package()
-    package_index = package.index()
-    path = package_index.path(kind, name, version)
-    if path is None:
-        return None
-    return package.get_package_description(path)
+__all__ = [
+    "CoderFilesTableItemDict",
+]

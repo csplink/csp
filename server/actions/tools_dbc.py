@@ -25,16 +25,17 @@
 #
 
 import json
+from pathlib import Path
 
 import cantools
 from cantools.database.can.database import Database
 from loguru import logger
 
 
-def _action_tools_candb_dump(path: str) -> dict:
+def _action_tools_candb_dump(candb_file: Path) -> dict:
     result = {}
     try:
-        db = cantools.database.load_file(path)
+        db = cantools.database.load_file(candb_file)
     except Exception as e:
         logger.critical(e)
         return result
@@ -87,8 +88,8 @@ def _action_tools_candb_dump(path: str) -> dict:
     return result
 
 
-def action_tools_candb_dump(path: str, dump: str) -> dict | None:
-    dbc = _action_tools_candb_dump(path)
+def action_tools_candb_dump(candb_file: Path, dump: str) -> dict | None:
+    dbc = _action_tools_candb_dump(candb_file)
 
     if dump == "json":
         print(json.dumps(dbc, indent=2, ensure_ascii=False))

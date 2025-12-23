@@ -35,14 +35,14 @@ from ruamel.yaml import YAML
 
 class IoUtils:
     @staticmethod
-    def readlines(path: str) -> list[str]:
-        if not os.path.exists(path):
+    def readlines(path: Path) -> list[str]:
+        if not path.is_file():
             return []
         with open(path, "r") as f:
             return f.readlines()
 
     @staticmethod
-    def read_yaml(file: str) -> Any:
+    def readyaml(file: Path) -> Any:
         with open(file, "r", encoding="utf-8") as f:
             yaml = YAML()
             return yaml.load(f.read())
@@ -54,6 +54,42 @@ class IoUtils:
             for chunk in iter(lambda: f.read(4096), b""):
                 hash_sha1.update(chunk)
         return hash_sha1.hexdigest()
+
+    @staticmethod
+    def sha256(file: Path) -> str:
+        hash_sha256 = hashlib.sha256()
+        with open(file, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_sha256.update(chunk)
+        return hash_sha256.hexdigest()
+
+    @staticmethod
+    def sha512(file: Path) -> str:
+        hash_sha512 = hashlib.sha512()
+        with open(file, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_sha512.update(chunk)
+        return hash_sha512.hexdigest()
+
+    @staticmethod
+    def md5(file: Path) -> str:
+        hash_md5 = hashlib.md5()
+        with open(file, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+        return hash_md5.hexdigest()
+
+    @staticmethod
+    def files(path: Path) -> list[Path]:
+        return [f for f in path.iterdir() if f.is_file()]
+
+    @staticmethod
+    def dirs(path: Path) -> list[Path]:
+        return [f for f in path.iterdir() if f.is_dir()]
+
+    @staticmethod
+    def filedirs(path: Path) -> list[Path]:
+        return [f for f in path.iterdir()]
 
 
 IO_UTILS = IoUtils()

@@ -25,7 +25,6 @@
 #
 
 import fnmatch
-import glob
 import os
 import platform
 import shutil
@@ -56,24 +55,34 @@ class Package:
             "make": Signal("make"),
         }
 
-    @logger.catch(default=False)
-    def __check_yaml(self, schema_path: str, instance: dict) -> bool:
-        with open(schema_path, "r", encoding="utf-8") as f:
-            yaml = YAML()
+    def __check_yaml(self, path: Path, instance: dict) -> bool:
+        with open(path, "r", encoding="utf-8") as f:
+            yaml = YAML(typ="safe")
             schema = yaml.load(f.read())
-            jsonschema.validate(instance=instance, schema=schema)
-        return True
-
-    @logger.catch(default=None)
-    def __get_package_description(self, path: str) -> PackageDescription | None:
-        if os.path.isfile(path):
-            with open(path, "r", encoding="utf-8") as f:
-                yaml = YAML()
-                package: dict = yaml.load(f.read())
-                path = os.path.join(
-                    SysUtils.database_folder(), "schema", "packageDescription.yml"
+            validator = jsonschema.Draft7Validator(schema)
+            errors = sorted(validator.iter_errors(instance), key=lambda e: e.path)
+            if not errors:
+                return True
+            for e in errors:
+                logger.error(
+                    f"Package description validation failed: {e.message!r} in {list(e.path)!r} with {list(e.schema_path)!r}"
                 )
-                succeed = self.__check_yaml(path, package)
+            return False
+
+    def __get_package_description(self, path: Path) -> PackageDescription | None:
+        if path.is_file():
+            with open(path, "r", encoding="utf-8") as f:
+                yaml = YAML(typ="safe")
+                try:
+                    package: dict = yaml.load(f.read())
+                except Exception as e:
+                    logger.error(f"Failed to load package description: {e}")
+                    return None
+
+                schema = (
+                    SysUtils.database_folder() / "schema" / "packageDescription.yml"
+                )
+                succeed = self.__check_yaml(schema, package)
             if succeed:
                 return PackageDescription(package)
             else:
@@ -82,11 +91,12 @@ class Package:
             logger.error(f"{path} is not file!")
             return None
 
-    def get_package_description_auto(self, path: str) -> PackageDescription | None:
-        if os.path.isfile(path):
+    def get_package_description_auto(self, path: Path) -> PackageDescription | None:
+        if path.is_file():
             return self.__get_package_description(path)
-        elif os.path.isdir(path):
-            files = glob.glob(f"{path}/*.csppdsc")
+        elif path.is_dir():
+            files = list(path.glob("*.csppdsc"))
+            files.sort()
             count = len(files)
             if count != 1:
                 logger.error(f"invalid package")
@@ -96,16 +106,16 @@ class Package:
         else:
             return None
 
-    def __collect_gitignore_patterns(self, base_path: str) -> dict[str, list[str]]:
+    def __collect_gitignore_patterns(self, base_path: Path) -> dict[str, list[str]]:
         """Collect all .gitignore files and their patterns from the directory tree"""
         gitignore_map = {}
 
         for root, dirs, files in os.walk(base_path):
             # Skip .git directories
             dirs[:] = [d for d in dirs if d != ".git"]
-
-            gitignore_file = os.path.join(root, ".gitignore")
-            if os.path.isfile(gitignore_file):
+            r = Path(root)
+            gitignore_file = r / ".gitignore"
+            if gitignore_file.is_file():
                 patterns = []
                 try:
                     with open(gitignore_file, "r", encoding="utf-8") as f:
@@ -115,7 +125,7 @@ class Package:
                             if line and not line.startswith("#"):
                                 patterns.append(line)
                     if patterns:
-                        gitignore_map[root] = patterns
+                        gitignore_map[r.as_posix()] = patterns
                 except Exception as e:
                     logger.warning(
                         f"Failed to read .gitignore at {gitignore_file}: {e}"
@@ -124,15 +134,15 @@ class Package:
         return gitignore_map
 
     def __is_ignored(
-        self, file_path: str, base_path: str, gitignore_map: dict[str, list[str]]
+        self, file_path: Path, base_path: Path, gitignore_map: dict[str, list[str]]
     ) -> bool:
         """Check if a file should be ignored based on hierarchical .gitignore patterns"""
         if not gitignore_map:
             return False
 
         # Get relative path from base directory
-        rel_path = os.path.relpath(file_path, base_path).replace("\\", "/")
-        file_dir = str(Path(file_path).parent)
+        rel_path = file_path.relative_to(base_path).as_posix()
+        file_dir = file_path.parent.as_posix()
 
         # Collect applicable patterns from all .gitignore files
         # Process from most general (base) to most specific (closest to file)
@@ -142,15 +152,18 @@ class Package:
         for gitignore_dir, patterns in gitignore_map.items():
             # Check if this .gitignore file is in a parent directory of the file
             try:
-                rel_gitignore_path = os.path.relpath(gitignore_dir, base_path)
-                if file_dir.startswith(gitignore_dir) or gitignore_dir == base_path:
+                rel_gitignore_path = str(Path(gitignore_dir).relative_to(base_path))
+                if (
+                    file_dir.startswith(gitignore_dir)
+                    or str(base_path) == gitignore_dir
+                ):
                     # Calculate relative path from this .gitignore's directory
-                    if gitignore_dir == base_path:
+                    if str(base_path) == gitignore_dir:
                         check_path = rel_path
                     else:
-                        check_path = os.path.relpath(file_path, gitignore_dir).replace(
-                            "\\", "/"
-                        )
+                        check_path = file_path.relative_to(
+                            Path(gitignore_dir)
+                        ).as_posix()
 
                     applicable_patterns.append((gitignore_dir, patterns, check_path))
             except ValueError:
@@ -183,13 +196,13 @@ class Package:
                 else:
                     # Check file pattern
                     if fnmatch.fnmatch(check_path, pattern) or fnmatch.fnmatch(
-                        os.path.basename(check_path), pattern
+                        Path(check_path).name, pattern
                     ):
                         is_ignored = not negate
 
         return is_ignored
 
-    def get_package_description(self, path: str) -> PackageDescription | None:
+    def get_package_description(self, path: Path) -> PackageDescription | None:
         if path in self.__pdscs:
             return self.__pdscs[path]
         else:
@@ -197,18 +210,18 @@ class Package:
             self.__pdscs[path] = pdsc
             return pdsc
 
-    @logger.catch(default=PackageIndex({}))
     def __get_package_index(self) -> PackageIndex:
         file = SysUtils.packages_index_file()
-        if os.path.isfile(file):
+        if file.is_file():
             with open(file, "r", encoding="utf-8") as f:
-                yaml = YAML()
-                index = yaml.load(f.read())
-                # noinspection PyArgumentList
+                yaml = YAML(typ="safe")
+                try:
+                    index: dict = yaml.load(f.read())
+                except Exception as e:
+                    logger.error(f"Failed to load package index: {e}")
+                    return PackageIndex({})
                 succeed = self.__check_yaml(
-                    os.path.join(
-                        SysUtils.database_folder(), "schema", "packageIndex.yml"
-                    ),
+                    SysUtils.database_folder() / "schema" / "packageIndex.yml",
                     index,
                 )
             if succeed:
@@ -216,7 +229,7 @@ class Package:
             else:
                 return PackageIndex({})
         else:
-            os.makedirs(str(Path(file).parent), exist_ok=True)
+            file.parent.mkdir(parents=True, exist_ok=True)
             with open(file, "w"):
                 pass
             return PackageIndex({})
@@ -241,22 +254,22 @@ class Package:
         with open(SysUtils.packages_index_file(), "w", encoding="utf-8") as f:
             f.write(self.dump())
 
-    def install(self, path: str) -> PackageDescription | None:
-        if not os.path.exists(path):
+    def install(self, path: Path) -> PackageDescription | None:
+        if not path.exists():
             return None
 
         repository_folder = SysUtils.packages_folder()
-        tmp_folder = os.path.join(repository_folder, "tmp")
+        tmp_folder = repository_folder / "tmp"
 
-        if os.path.isdir(tmp_folder):
+        if tmp_folder.is_dir():
             shutil.rmtree(tmp_folder)
-        if os.path.isfile(tmp_folder):
-            os.remove(tmp_folder)
-        os.makedirs(tmp_folder)
+        if tmp_folder.is_file():
+            tmp_folder.unlink()
+        tmp_folder.mkdir(parents=True)
 
-        if os.path.isfile(path):
+        if path.is_file():
             status = self._install_from_file(path, tmp_folder)
-        elif os.path.isdir(path):
+        elif path.is_dir():
             status = self._install_from_dir(path, tmp_folder)
         else:
             logger.error(f"invalid package {path!r}")
@@ -275,25 +288,19 @@ class Package:
         name = package_desc.name
         version = package_desc.version.lower()
 
-        vendor_folder = os.path.join(
-            repository_folder, kind, vendor.lower(), name.lower()
-        )
-        folder = os.path.join(vendor_folder, version).replace("\\", "/")
-        if os.path.isdir(folder):
+        vendor_folder = repository_folder / kind / vendor.lower() / name.lower()
+        folder = vendor_folder / version
+        if folder.is_dir():
             shutil.rmtree(folder)
-        elif os.path.isfile(folder):
-            os.remove(folder)
+        elif folder.is_file():
+            folder.unlink()
 
-        if not os.path.isdir(vendor_folder):
-            os.makedirs(vendor_folder)
-        elif os.path.isfile(vendor_folder):
-            os.remove(vendor_folder)
-            os.makedirs(vendor_folder)
+        vendor_folder.mkdir(parents=True, exist_ok=True)
 
         shutil.move(tmp_folder, folder)
-        package_path = os.path.relpath(
-            folder, str(Path(SysUtils.packages_index_file()).parent)
-        ).replace("\\", "/")
+        package_path = folder.relative_to(
+            SysUtils.packages_index_file().parent
+        ).as_posix()
         self.__index.origin.setdefault(kind, {}).setdefault(name, {})[
             version
         ] = package_path
@@ -303,11 +310,14 @@ class Package:
 
     def uninstall(self, kind: str, name: str, version: str) -> bool:
         path = self.index().path(kind, name, version)
+        if path is None:
+            logger.error(f"{kind}@{name}:{version} is not installed")
+            return False
 
-        if os.path.isdir(path):
+        if path.is_dir():
             shutil.rmtree(path)
-        elif os.path.isfile(path):
-            os.remove(path)
+        elif path.is_file():
+            path.unlink()
         else:
             logger.error(f"uninstall failed {kind}@{name}:{version}")
             return False
@@ -321,7 +331,7 @@ class Package:
 
         return True
 
-    def _detect_file_type(self, file: str) -> str:
+    def _detect_file_type(self, file: Path) -> str:
         """Detect file type by reading file header, not extension"""
         try:
             with open(file, "rb") as f:
@@ -345,7 +355,7 @@ class Package:
 
         return "unknown"
 
-    def _install_from_file(self, file: str, tmp_folder: str) -> bool:
+    def _install_from_file(self, file: Path, tmp_folder: Path) -> bool:
         file_type = self._detect_file_type(file)
 
         try:
@@ -360,7 +370,7 @@ class Package:
             logger.error(e)
             return False
 
-    def _install_from_zip(self, file: str, tmp_folder: str) -> bool:
+    def _install_from_zip(self, file: Path, tmp_folder: Path) -> bool:
         """Install from ZIP file"""
         with zipfile.ZipFile(file, "r") as archive:
             members = archive.infolist()
@@ -377,7 +387,7 @@ class Package:
         self._normalize_extracted_structure(tmp_folder)
         return True
 
-    def _install_from_tar_gz(self, file: str, tmp_folder: str) -> bool:
+    def _install_from_tar_gz(self, file: Path, tmp_folder: Path) -> bool:
         """Install from TAR.GZ file"""
         with tarfile.open(file, "r:gz") as archive:
             members = archive.getmembers()
@@ -394,19 +404,19 @@ class Package:
         self._normalize_extracted_structure(tmp_folder)
         return True
 
-    def _normalize_extracted_structure(self, tmp_folder: str):
+    def _normalize_extracted_structure(self, tmp_folder: Path):
         """Normalize extracted structure - if only one directory exists, move it up one level"""
-        dirs = os.listdir(tmp_folder)
+        dirs = [f.name for f in tmp_folder.iterdir()]
         count = len(dirs)
 
-        if count == 1 and os.path.isdir(os.path.join(tmp_folder, dirs[0])):
-            d = os.path.join(tmp_folder, dirs[0])
-            tmp_tmp_folder = os.path.join(str(Path(tmp_folder).parent), "tmp.tmp")
+        if count == 1 and (tmp_folder / dirs[0]).is_dir():
+            d = tmp_folder / dirs[0]
+            tmp_tmp_folder = tmp_folder.parent / "tmp.tmp"
             shutil.move(d, tmp_tmp_folder)
             shutil.rmtree(tmp_folder)
             shutil.move(tmp_tmp_folder, tmp_folder)
 
-    def _install_from_dir(self, path: str, tmp_folder: str) -> bool:
+    def _install_from_dir(self, path: Path, tmp_folder: Path) -> bool:
         # Collect all .gitignore files and their patterns from the directory tree
         gitignore_map = self.__collect_gitignore_patterns(path)
 
@@ -420,11 +430,11 @@ class Package:
                 dirs[:] = [
                     d
                     for d in dirs
-                    if not self.__is_ignored(os.path.join(root, d), path, gitignore_map)
+                    if not self.__is_ignored(Path(root) / d, path, gitignore_map)
                 ]
 
             for file in files:
-                source_file = os.path.join(root, file)
+                source_file = Path(root) / file
 
                 # Skip files that match .gitignore patterns
                 if gitignore_map and self.__is_ignored(
@@ -432,22 +442,22 @@ class Package:
                 ):
                     continue
 
-                rel_path = os.path.relpath(source_file, path)
-                target_file = os.path.join(tmp_folder, rel_path)
+                rel_path = source_file.relative_to(path)
+                target_file = tmp_folder / rel_path
                 items.append((source_file, target_file))
 
         count = len(items)
         for index, (source_file, target_file) in enumerate(items, start=1):
-            os.makedirs(str(Path(target_file).parent), exist_ok=True)
+            target_file.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(source_file, target_file)
-            _file = os.path.relpath(target_file, tmp_folder).replace("\\", "/")
+            _file = target_file.relative_to(tmp_folder).as_posix()
             self.__emitter["install"].send(
                 "package", index=index, count=count, file=_file
             )
 
         return True
 
-    def make(self, path: str) -> PackageDescription | None:
+    def make(self, path: Path) -> PackageDescription | None:
         package_desc = self.get_package_description(path)
         if package_desc is None:
             return None
@@ -458,13 +468,13 @@ class Package:
         else:
             name = f"{package_desc.name}-{package_desc.version}.csppack"
 
-        self.compress_directory(path, str(Path(path).parent / name))
+        self.compress_directory(path, path.parent / name)
 
         return package_desc
 
     def __collect_files_for_compression(
-        self, directory_path: str
-    ) -> list[tuple[str, str]]:
+        self, directory_path: Path
+    ) -> list[tuple[Path, str]]:
         """
         Collect all files for compression, filtering by .gitignore patterns
 
@@ -488,12 +498,12 @@ class Package:
                     d
                     for d in dirs
                     if not self.__is_ignored(
-                        os.path.join(root, d), directory_path, gitignore_map
+                        Path(root) / d, directory_path, gitignore_map
                     )
                 ]
 
             for file in files:
-                source_file = os.path.join(root, file)
+                source_file = Path(root) / file
 
                 # Skip files that match .gitignore patterns
                 if gitignore_map and self.__is_ignored(
@@ -501,12 +511,12 @@ class Package:
                 ):
                     continue
 
-                rel_path = os.path.relpath(source_file, directory_path)
+                rel_path = str(source_file.relative_to(directory_path))
                 items.append((source_file, rel_path))
 
         return items
 
-    def compress_directory(self, directory_path: str, output_path: str) -> str:
+    def compress_directory(self, directory_path: Path, output_path: Path) -> Path:
         """
         Compress directory to zip on Windows or tar.gz on Linux
 
@@ -515,13 +525,13 @@ class Package:
             output_path: Output path for the compressed file
 
         Returns:
-            str: Path to the compressed file
+            Path: Path to the compressed file
 
         Raises:
             ValueError: If directory_path is not a directory
             Exception: If compression fails
         """
-        if not os.path.isdir(directory_path):
+        if not directory_path.is_dir():
             raise ValueError(f"{directory_path} is not a directory")
 
         # Collect all files for compression
@@ -540,8 +550,8 @@ class Package:
             raise
 
     def _compress_to_zip(
-        self, files_to_compress: list[tuple[str, str]], output_path: str
-    ) -> str:
+        self, files_to_compress: list[tuple[Path, str]], output_path: Path
+    ) -> Path:
         """Compress files to ZIP format"""
         with zipfile.ZipFile(
             output_path, "w", zipfile.ZIP_DEFLATED, compresslevel=9
@@ -559,8 +569,8 @@ class Package:
         return output_path
 
     def _compress_to_tar_gz(
-        self, files_to_compress: list[tuple[str, str]], output_path: str
-    ) -> str:
+        self, files_to_compress: list[tuple[Path, str]], output_path: Path
+    ) -> Path:
         """Compress files to TAR.GZ format"""
         with tarfile.open(output_path, "w:gz") as tarf:
             count = len(files_to_compress)

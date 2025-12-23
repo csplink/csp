@@ -24,6 +24,7 @@
 # 2025-10-09     xqyjlj       initial version
 #
 import os
+from pathlib import Path
 
 import jsonschema
 from loguru import logger
@@ -39,42 +40,39 @@ class IpUtils:
         pass
 
     @staticmethod
-    @logger.catch(default=False)
     def __check_ip(ip: dict) -> bool:
         with open(
-            os.path.join(SysUtils.database_folder(), "schema", "ip.yml"),
+            SysUtils.database_folder() / "schema" / "ip.yml",
             "r",
             encoding="utf-8",
         ) as f:
-            yaml = YAML()
+            yaml = YAML(typ="safe")
             schema = yaml.load(f.read())
             validator = jsonschema.Draft7Validator(schema)
             errors = sorted(validator.iter_errors(ip), key=lambda e: e.path)
             if not errors:
                 return True
             for e in errors:
-                print("Validation error:", e.message)
-                print("Error path:", list(e.path))
-                print("Error schema path:", list(e.schema_path))
-                logger.error(f"IP validation failed: {e}")
+                logger.error(
+                    f"IP validation failed: {e.message!r} in {list(e.path)!r} with {list(e.schema_path)!r}"
+                )
             return False
-        return True
 
     @staticmethod
-    @logger.catch(default=Ip({}))
     def load_ip(vendor: str, ip_type: str, name: str) -> Ip:
-        file = os.path.join(
-            SysUtils.database_folder(), "ip", ip_type, vendor, f"{name}.yml"
-        )
+        file = SysUtils.database_folder() / "ip" / ip_type / vendor / f"{name}.yml"
         return IpUtils.load_ip_from_file(file)
 
     @staticmethod
-    @logger.catch(default=Ip({}))
-    def load_ip_from_file(file: str) -> Ip:
-        if os.path.isfile(file):
+    def load_ip_from_file(file: Path) -> Ip:
+        if file.is_file():
             with open(file, "r", encoding="utf-8") as f:
-                yaml = YAML()
-                ip = yaml.load(f.read())
+                yaml = YAML(typ="safe")
+                try:
+                    ip: dict = yaml.load(f.read())
+                except Exception as e:
+                    logger.error(f"Failed to load ip: {e}")
+                    return Ip({})
                 succeed = IpUtils.__check_ip(ip)
             if succeed:
                 logger.info(f"Successfully loaded IP: {file}")

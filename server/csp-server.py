@@ -26,9 +26,11 @@
 #
 
 import datetime
+import json
 import os
 import sys
 from pathlib import Path
+from typing import Mapping
 
 import click
 import proto.sio_coder_dump_pb2 as sio_coder_dump_pb2
@@ -51,6 +53,7 @@ from actions import (
     action_tools_csp2filter,
     action_tools_yaml2json,
 )
+from actions.coder_dump import FileItemDict
 from flask import Flask, abort, jsonify, request
 from flask_socketio import SocketIO
 from google.protobuf.json_format import MessageToDict
@@ -63,110 +66,6 @@ from utils.sys import SysUtils
 app = Flask("csp-server")
 socketio = SocketIO(app, cors_allowed_origins="*")
 client_online = {}
-
-
-@app.route("/api/coder/dump", methods=["POST"])
-def api_coder_dump():
-    payload = request.json
-    if payload is None:
-        logger.error("Called with missing JSON payload")
-        abort(400, description="Missing JSON payload.")
-
-    logger.trace(f"Call api/coder/dump with {payload!r}")
-
-    arg_content = payload.get("content")
-    arg_path = payload.get("path")
-    arg_diff = payload.get("diff", False)
-
-    if not isinstance(arg_path, str):
-        logger.error(f"Called with invalid path: {arg_path!r}")
-        abort(400, description="'path' must be a file path string")
-
-    if arg_content:
-        if not ProjectUtils.check_project(arg_content):
-            logger.error(f"Called with invalid content: {arg_content!r}")
-            abort(400, description="'project' does not conform to expected schema.")
-        project = ProjectUtils.load_project(arg_content, arg_path)
-    else:
-        project = ProjectUtils.load_project_from_file(arg_path)
-        if not project.origin:
-            logger.error(f"Called with invalid path: {arg_path!r}")
-            abort(400, description=f"Failed to load file: {arg_path}")
-    try:
-        files = action_coder_dump(project, arg_diff, arg_path, arg_content)
-        if files is None or len(files) == 0:
-            abort(500, description="Unknown error, please see more in server log")
-        return jsonify({"files": files})
-    except Exception as e:
-        logger.exception(f"Dump failed: {str(e)!r}")
-        abort(500, description=str(e))
-
-
-@app.route("/api/coder/generate", methods=["POST"])
-def api_coder_generate():
-    payload = request.json
-    if payload is None:
-        logger.error("Called with missing JSON payload")
-        abort(400, description="Missing JSON payload.")
-
-    logger.trace(f"Call api/coder/generate with {payload!r}")
-
-    arg_path = payload.get("path")
-    arg_output = payload.get("output")
-
-    if not isinstance(arg_path, str):
-        logger.error(f"Called with invalid file path: {arg_path!r}")
-        abort(400, description="'file' must be a file path string")
-
-    try:
-        project = ProjectUtils.load_project_from_file(arg_path)
-        if not project.origin:
-            logger.error(f"Called with invalid file path: {arg_path!r}")
-            abort(400, description=f"Failed to load file: {arg_path}")
-
-        result = action_coder_generate(project, arg_output, False)
-        if not result:
-            abort(500, description="Generation failed, please see more in server log")
-        return jsonify({"success": True})
-    except Exception as e:
-        logger.exception(f"Generate failed: {str(e)!r}")
-        abort(500, description=str(e))
-
-
-@app.route("/api/package/install", methods=["POST"])
-def api_package_install():
-    payload = request.json
-    if payload is None:
-        logger.error("Called with missing JSON payload")
-        abort(400, description="Missing JSON payload.")
-
-    arg_path = payload.get("path")
-
-    logger.trace(f"Call api/package/install with {payload!r}")
-
-    if not isinstance(arg_path, str):
-        logger.error(f"Called with invalid path: {arg_path!r}")
-        abort(400, description="'path' must be a file path string")
-
-    try:
-        package_desc = action_package_install(arg_path, False, False)
-        if package_desc is None:
-            abort(500, description="Unknown error, please see more in server log")
-        return jsonify(package_desc.origin)
-    except Exception as e:
-        logger.exception(f"Install failed: {str(e)!r}")
-        abort(500, description=str(e))
-
-
-@app.route("/api/package/list", methods=["GET"])
-def api_package_list():
-    logger.trace(f"Call api/package/list")
-    try:
-        result = action_package_list()
-        return jsonify(result)
-    except Exception as e:
-        logger.exception(f"List failed: {str(e)!r}")
-        abort(500, description=str(e))
 
 
 @app.route("/api/client/online", methods=["GET"])
@@ -229,17 +128,7 @@ def sio_coder_dump(data: bytes):
         f"{sid!r} calling sio/coder/dump with content:{arg_content!r}, path:{arg_path!r}, diff:{arg_diff!r}"
     )
 
-    if not isinstance(arg_path, str):
-        logger.error(f"Called with invalid path: {arg_path!r}")
-        socketio.emit(
-            "coder/dump.result",
-            sio_coder_dump_pb2.SioCoderDumpResponse(
-                success=False,
-                error="'path' must be a file path string",
-            ).SerializeToString(),
-            to=sid,
-        )
-        return
+    path = Path(arg_path)
 
     if arg_content:
         if not ProjectUtils.check_project(arg_content):
@@ -253,25 +142,23 @@ def sio_coder_dump(data: bytes):
                 to=sid,
             )
             return
-        project = ProjectUtils.load_project(arg_content, arg_path)
+        project = ProjectUtils.load_project(arg_content, path)
     else:
-        project = ProjectUtils.load_project_from_file(arg_path)
+        project = ProjectUtils.load_project_from_file(path)
         if not project.origin:
-            logger.error(f"Called with invalid path: {arg_path!r}")
+            logger.error(f"Called with invalid path: {path.as_posix()!r}")
             socketio.emit(
                 "coder/dump.result",
                 sio_coder_dump_pb2.SioCoderDumpResponse(
                     success=False,
-                    error=f"Failed to load file: {arg_path}",
+                    error=f"Failed to load file: {path.as_posix()!r}",
                 ).SerializeToString(),
                 to=sid,
             )
             return
 
     try:
-        files = action_coder_dump(
-            project, arg_diff, arg_path, arg_content, sid, socketio
-        )
+        files = action_coder_dump(project, arg_diff, path, arg_content, sid, socketio)
         if files is None or len(files) == 0:
             logger.error(f"Dump failed: empty result")
             socketio.emit(
@@ -289,7 +176,7 @@ def sio_coder_dump(data: bytes):
             "coder/dump.result",
             sio_coder_dump_pb2.SioCoderDumpResponse(
                 success=True,
-                files=files,
+                files=convert_sio_coder_dump_response_files(files),
             ).SerializeToString(),
             to=sid,
         )
@@ -323,35 +210,24 @@ def sio_coder_generate(data: bytes):
         f"{sid!r} calling sio/coder/generate with path:{arg_path!r}, output:{arg_output!r}, files:{arg_files!r}"
     )
 
-    if not isinstance(arg_path, str):
-        logger.error(f"Called with invalid file path: {arg_path!r}")
-        socketio.emit(
-            "coder/generate.result",
-            sio_coder_generate_pb2.SioCoderGenerateResponse(
-                success=False,
-                error="'file' must be a file path string",
-            ).SerializeToString(),
-            to=sid,
-        )
-        return
+    path = Path(arg_path)
+    output = Path(arg_output)
 
     try:
-        project = ProjectUtils.load_project_from_file(arg_path)
+        project = ProjectUtils.load_project_from_file(path)
         if not project.origin:
-            logger.error(f"Called with invalid file path: {arg_path!r}")
+            logger.error(f"Called with invalid file path: {path.as_posix()!r}")
             socketio.emit(
                 "coder/generate.result",
                 sio_coder_generate_pb2.SioCoderGenerateResponse(
                     success=False,
-                    error=f"Failed to load file: {arg_path}",
+                    error=f"Failed to load file: {path.as_posix()!r}",
                 ).SerializeToString(),
                 to=sid,
             )
             return
 
-        result = action_coder_generate(
-            project, arg_output, False, arg_files, sid, socketio
-        )
+        result = action_coder_generate(project, output, False, arg_files, sid, socketio)
         if not result:
             logger.error(f"Generate failed: unknown error")
             socketio.emit(
@@ -398,20 +274,10 @@ def sio_package_install(data: bytes):
 
     logger.trace(f"{sid!r} calling sio/package/install with path:{arg_path!r}")
 
-    if not isinstance(arg_path, str):
-        logger.error(f"Called with invalid path: {arg_path!r}")
-        socketio.emit(
-            "package/install.result",
-            sio_package_install_pb2.SioPackageInstallResponse(
-                success=False,
-                error="'path' must be a file path string",
-            ).SerializeToString(),
-            to=sid,
-        )
-        return
+    path = Path(arg_path)
 
     try:
-        package_desc = action_package_install(arg_path, False, False, sid, socketio)
+        package_desc = action_package_install(path, False, False, sid, socketio)
         if package_desc is None:
             socketio.emit(
                 "package/install.result",
@@ -648,16 +514,21 @@ def cli(trace: bool):
             }
         ]
     )
-    logger.add(
-        f"{SysUtils.exe_folder()}/log/csp-server-{today.year}-{today.month}.log",
-        rotation="10 MB",
-        level="TRACE",
+
+    log_file = (
+        SysUtils.exe_folder() / "log" / f"csp-server-{today.year}-{today.month}.log"
     )
+    logger.add(log_file, rotation="10 MB", level="TRACE")
 
 
 @cli.command(name="gen")
-@click.argument("path", required=True)
-@click.option("-o", "--output", help="Output directory.")
+@click.argument("path", required=True, type=click.Path(exists=True, dir_okay=False))
+@click.option(
+    "-o",
+    "--output",
+    help="Output directory.",
+    type=click.Path(exists=False, file_okay=False),
+)
 @click.option("--progress", is_flag=True, help="Show progress bar.")
 @click.option(
     "-f",
@@ -668,26 +539,35 @@ def cli(trace: bool):
     show_default=True,
     help="Generate files (multiple -f allowed).",
 )
-def cli_coder_generate(path: str, output: str, progress: bool, files: tuple[str, ...]):
+def cli_coder_generate(
+    path: str, output: str | None, progress: bool, files: tuple[str, ...]
+):
     """Generate source code and config from project."""
-    arg = {"path": path, "output": output, "progress": progress}
-    logger.trace(f"Calling cli/coder/generate with {arg!r}")
+    log_cli_call("gen", path=path, output=output, progress=progress, files=files)
 
-    project = ProjectUtils.load_project_from_file(path)
-    if not action_coder_generate(project, output, progress, list(files)):
+    project_path = Path(path)
+
+    if output is None:
+        output_path = project_path
+    else:
+        output_path = Path(output)
+
+    project = ProjectUtils.load_project_from_file(project_path)
+    if not action_coder_generate(project, output_path, progress, list(files)):
         exit(1)
 
 
 @cli.command(name="install")
-@click.argument("path", required=True)
+@click.argument("path", required=True, type=click.Path(exists=True))
 @click.option("--progress", is_flag=True, help="Show progress bar.")
 @click.option("--verbose", is_flag=True, help="Verbose output.")
 def cli_package_install(path: str, progress: bool, verbose: bool):
     """Install a CSP package."""
-    arg = {"path": path, "progress": progress, "verbose": verbose}
-    logger.trace(f"Calling cli/package/install with {arg!r}")
+    log_cli_call("install", path=path, progress=progress, verbose=verbose)
 
-    if not action_package_install(path, progress, verbose):
+    p = Path(path)
+
+    if not action_package_install(p, progress, verbose):
         exit(1)
 
 
@@ -697,9 +577,7 @@ def cli_package_install(path: str, progress: bool, verbose: bool):
 @click.option("-v", "--version", required=True, help="Package version.")
 def cli_package_uninstall(type: str, name: str, version: str):
     """Uninstall a CSP package."""
-    logger.info(
-        f"CLI uninstall called with type: {type!r}, name: {name!r}, version: {version!r}"
-    )
+    log_cli_call("uninstall", type=type, name=name, version=version)
     if not action_package_uninstall(type, name, version):
         exit(1)
 
@@ -708,21 +586,21 @@ def cli_package_uninstall(type: str, name: str, version: str):
 @click.option("--json", "as_json", is_flag=True, help="Output as JSON.")
 def cli_package_list(as_json: bool):
     """List installed CSP packages."""
-    arg = {"json": as_json}
-    logger.trace(f"Calling cli/package/list with {arg!r}")
+    log_cli_call("list", as_json=as_json)
     action_package_list("json" if as_json else "std")
 
 
 @cli.command(name="make-pkg")
-@click.argument("path", required=True)
+@click.argument("dir", required=True, type=click.Path(exists=True, file_okay=False))
 @click.option("--progress", is_flag=True, help="Show progress bar.")
 @click.option("--verbose", is_flag=True, help="Verbose output.")
-def cli_package_make(path: str, progress: bool, verbose: bool):
+def cli_package_make(dir: str, progress: bool, verbose: bool):
     """Make a directory to CSP package."""
-    arg = {"path": path, "progress": progress, "verbose": verbose}
-    logger.trace(f"Calling cli/package/make-pkg with {arg!r}")
+    log_cli_call("make-pkg", dir=dir, progress=progress, verbose=verbose)
 
-    if not action_package_make(path, progress, verbose):
+    folder = Path(dir)
+
+    if not action_package_make(folder, progress, verbose):
         exit(1)
 
 
@@ -731,8 +609,7 @@ def cli_package_make(path: str, progress: bool, verbose: bool):
 @click.option("--debug", is_flag=True, help="Enable debug mode.")
 def cli_serve(port: int, debug: bool):
     """Start the CSP backend server."""
-    arg = {"port": port, "debug": debug}
-    logger.trace(f"Calling cli/serve with {arg!r}")
+    log_cli_call("serve", port=port, debug=debug)
 
     port = NetUtils.find_local_available_port(port)
 
@@ -741,138 +618,129 @@ def cli_serve(port: int, debug: bool):
 
 
 @cli.command(name="csp2filter")
-@click.argument("path", required=True)
+@click.argument("ip-yaml", required=True, type=click.Path(exists=True, dir_okay=False))
 @click.option("--channel", is_flag=True, default=False, help="Enable channel mode.")
 @click.option("--pin", is_flag=True, default=False, help="Enable pin parameters.")
-@click.option("-o", "--output", help="Output dir, defaults to {file} dir.")
-def cli_tools_csp2filter(path: str, channel: bool, pin: bool, output: str):
+@click.option(
+    "-o",
+    "--output",
+    help="Output file, defaults to {ip-yaml.prefix}.py.",
+    type=click.Path(exists=False, dir_okay=False),
+)
+def cli_tools_csp2filter(ip_yaml: str, channel: bool, pin: bool, output: str):
     """Generate jinja2 template filter from csp ip file."""
-    arg = {"path": path, "output": output}
-    logger.trace(f"Calling cli/csp2filter with {arg!r}")
+    log_cli_call("csp2filter", ip_yaml=ip_yaml, channel=channel, pin=pin, output=output)
 
-    if output is None or not os.path.isdir(output):
-        output = str(Path(path).parent)
+    ip_yaml_file = Path(ip_yaml)
+    output_file = Path(output) if output else ip_yaml_file.with_suffix(".yml")
 
-    if not os.path.isdir(output):
-        os.makedirs(output)
-
-    ip = IpUtils.load_ip_from_file(path)
-    action_tools_csp2filter(ip, channel, pin, output)
+    ip = IpUtils.load_ip_from_file(ip_yaml_file)
+    action_tools_csp2filter(ip, channel, pin, output_file)
 
 
 @cli.command(name="check-ip")
-@click.argument("path", required=True)
-@click.option("--vendor", help="Vendor name (e.g., Geehy).")
-@click.option("--name", help="IP name (e.g., apm32f103_gpio).")
-@click.option(
-    "--type",
-    "ip_type",
-    type=click.Choice(["peripherals"], case_sensitive=False),
-    help="IP type.",
-)
-def cli_tools_check_ip(path: str, vendor: str, name: str, ip_type: str):
+@click.argument("ip-yaml", required=True, type=click.Path(exists=True, dir_okay=False))
+def cli_tools_check_ip(ip_yaml: str):
     """
     Validate IP configuration file.
-
-    \b
-    Two modes:
-    1. File mode: PATH
-    2. Database mode: --vendor VENDOR --name NAME --type TYPE
-
-    \b
-    Examples:
-      csp-server check-ip path/to/ip.yml
-      csp-server check-ip --vendor Geehy --name apm32f103_gpio --type peripherals
     """
+    log_cli_call("check-ip", ip_yaml=ip_yaml)
 
-    arg = {"path": path, "vendor": vendor, "name": name, "type": ip_type}
-    logger.trace(f"Calling cli/check_ip with {arg!r}")
+    ip_file = Path(ip_yaml)
 
-    # Check if mode 1: file path
-    if path:
-        ip = IpUtils.load_ip_from_file(path)
-        if not action_tools_check_ip(ip):
-            exit(1)
-
-    # Check if mode 2: vendor + name + type
-    elif vendor and name and ip_type:
-        ip = IpUtils.load_ip(vendor, ip_type, name)
-        if not action_tools_check_ip(ip):
-            exit(1)
-
-    # Neither mode
-    else:
-        logger.error(
-            "Error: Must provide either:\n"
-            "  1. --file PATH\n"
-            "  2. --vendor VENDOR --name NAME --type TYPE\n"
-            "Missing required parameters"
-        )
+    ip = IpUtils.load_ip_from_file(ip_file)
+    if not action_tools_check_ip(ip):
         exit(1)
 
 
 @cli.command(name="y2j")
-@click.argument("path", required=True)
-def cli_tools_yaml2json(path: str):
+@click.argument("yaml", required=True, type=click.Path(exists=True))
+def cli_tools_yaml2json(yaml: str):
     """
     Convert yaml file to json file
     """
-    arg = {"path": path}
-    logger.trace(f"Calling cli/yaml2json with {arg!r}")
+    log_cli_call("y2j", yaml=yaml)
 
-    if not action_tools_yaml2json(path):
+    yaml_path = Path(yaml)
+
+    if not action_tools_yaml2json(yaml_path):
         exit(1)
 
 
 @cli.command(name="cmx-ip")
-@click.argument("path", required=True)
-@click.option("--mcu", required=True, help="CubeMX mcu file.")
-@click.option("-o", "--output", help="Output file, defaults to {path.prefix}.yml.")
+@click.argument(
+    "ip-xml",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "--mcu-xml",
+    required=True,
+    help="CubeMX mcu file.",
+    type=click.Path(exists=True, dir_okay=False),
+)
+@click.option(
+    "-o",
+    "--output",
+    help="Output file, defaults to {ip-xml.prefix}.yml.",
+    type=click.Path(exists=False, dir_okay=False),
+)
 @click.option("--alias", help="IP alias.")
-def cli_tools_cmx_ip(path: str, mcu: str, output: str | None, alias: str | None):
+def cli_tools_cmx_ip(ip_xml: str, mcu_xml: str, output: str | None, alias: str | None):
     """
     Convert CubeMX ip file to CSP ip file
     """
-    arg = {"path": path, "mcu": mcu, "output": output, "alias": alias}
-    logger.trace(f"Calling cli/cmx-ip with {arg!r}")
+    log_cli_call("cmx-ip", ip_xml=ip_xml, mcu_xml=mcu_xml, output=output, alias=alias)
 
-    if not os.path.isfile(path):
-        logger.error(f"Input file does not exist: {path}")
-        exit(1)
+    ip_xml_file = Path(ip_xml)
+    mcu_xml_file = Path(mcu_xml)
+    output_file = Path(output) if output else ip_xml_file.with_suffix(".yml")
 
-    if not os.path.isfile(mcu):
-        logger.error(f"MCU file does not exist: {mcu}")
-        exit(1)
-
-    if output is None:
-        base, _ = os.path.splitext(path)
-        output = f"{base}.yml"
-    else:
-        output_dir = str(Path(output).parent) or "."
-        if not os.path.exists(output_dir):
-            logger.error(f"Output directory does not exist: {output_dir}")
-            exit(1)
-        if os.path.isdir(output):
-            logger.error(f"Output path points to a directory, not a file: {output}")
-            exit(1)
-
-    if not action_tools_cmx_ip(path, mcu, output, alias or ""):
+    if not action_tools_cmx_ip(ip_xml_file, mcu_xml_file, output_file, alias or ""):
         exit(1)
 
 
 @cli.command(name="candb-dump")
-@click.argument("path", required=True)
+@click.argument(
+    "candb",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False),
+)
 @click.option("--json", "as_json", is_flag=True, help="Output as JSON.")
-def cli_tools_candb_dump(path: str, as_json: bool):
+def cli_tools_candb_dump(candb: str, as_json: bool):
     """Dump Can database file."""
-    arg = {"path": path, "json": as_json}
-    logger.trace(f"Calling cli/tools/candb-dump with {arg!r}")
+    log_cli_call("candb-dump", candb=candb, as_json=as_json)
 
-    if not os.path.isfile(path):
-        logger.error(f"Input file does not exist: {path}")
-        exit(1)
+    candb_file = Path(candb)
 
-    action_tools_candb_dump(path, "json" if as_json else "std")
+    action_tools_candb_dump(candb_file, "json" if as_json else "std")
+
+
+def log_cli_call(command: str, **kwargs) -> None:
+    logger.trace(f"CLI call {command!r} with {json.dumps(kwargs)!r}")
+
+
+def log_sio_call(command: str, sid: str, **kwargs) -> None:
+    logger.trace(f"SIO({sid!r}) call {command!r} with {json.dumps(kwargs)!r}")
+
+
+def log_api_call(command: str, **kwargs) -> None:
+    logger.trace(f"API call {command!r} with {json.dumps(kwargs)!r}")
+
+
+def convert_sio_coder_dump_response_files(
+    files: Mapping[str, FileItemDict],
+) -> dict[str, sio_coder_dump_pb2.SioCoderDumpResponseFile]:
+    result: dict[str, sio_coder_dump_pb2.SioCoderDumpResponseFile] = {}
+
+    for name, f in files.items():
+        msg = sio_coder_dump_pb2.SioCoderDumpResponseFile(
+            content=f["content"],
+            diff=f.get("diff"),  # optional 字段
+        )
+        result[name] = msg
+
+    return result
 
 
 if __name__ == "__main__":

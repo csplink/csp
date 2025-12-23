@@ -24,6 +24,8 @@
 # 2025-11-17     xqyjlj       initial version
 #
 
+from pathlib import Path
+
 from flask_socketio import emit
 from loguru import logger
 from packages.description import PackageDescription
@@ -70,7 +72,7 @@ class __Slot:
 
 
 def action_package_make(
-    path: str, progress: bool, verbose: bool, sid: str | None = None
+    path: Path, progress: bool, verbose: bool, sid: str | None = None
 ) -> PackageDescription | None:
     package = Package()
     slot = __Slot()
@@ -84,7 +86,7 @@ def action_package_make(
             package.emitter["make"].connect(slot.on_make)
     package_desc = package.make(path)
     if package_desc is None:
-        logger.error(f"Failed to make {path}")
+        logger.error(f"Failed to make {str(path)}")
         return package_desc
     else:
         logger.success(f"Successfully make {package_desc.name}-{package_desc.version}")

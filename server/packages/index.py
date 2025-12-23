@@ -26,6 +26,7 @@
 
 import json
 from pathlib import Path
+from typing import Optional
 
 from utils.sys import SysUtils
 
@@ -50,12 +51,12 @@ class PackageIndex:
     def versions(self, kind: str, name: str) -> list[str]:
         return list(self.__data.get(kind, {}).get(name, {}).keys())
 
-    def path(self, kind: str, name: str, version: str) -> str:
-        path = self.__data.get(kind, {}).get(name, {}).get(version, "")
-        if not path:
-            return path
-        path = Path(path)
-        if path.is_absolute():
-            return str(path).replace("\\", "/")
-        path = str((SysUtils.packages_folder() / path).resolve())
-        return path.replace("\\", "/")
+    def path(self, kind: str, name: str, version: str) -> Optional[Path]:
+        path: str = self.__data.get(kind, {}).get(name, {}).get(version, "")
+        if path == "":
+            return None
+        p = Path(path)
+        if p.is_absolute():
+            return p
+        p = (SysUtils.packages_folder() / p).resolve()
+        return p

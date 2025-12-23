@@ -45,7 +45,7 @@ message SioCoderDumpProgress {
 
 message SioCoderDumpResponseFile {
   string content = 1;
-  string diff = 2; /* !< 可选 */
+  optional string diff = 2;
 }
 
 message SioCoderDumpResponse {

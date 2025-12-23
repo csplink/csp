@@ -25,6 +25,7 @@
 #
 
 import time
+from pathlib import Path
 
 import proto.sio_package_install_pb2 as sio_package_install_pb2
 from flask_socketio import SocketIO, emit
@@ -93,7 +94,7 @@ class __Slot:
 
 
 def _action_package_install(
-    path: str,
+    path: Path,
     progress: bool,
     verbose: bool,
     sid: str | None = None,
@@ -122,7 +123,7 @@ def _action_package_install(
 
 
 def action_package_install(
-    path: str,
+    path: Path,
     progress: bool,
     verbose: bool,
     sid: str | None = None,

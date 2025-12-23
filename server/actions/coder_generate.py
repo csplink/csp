@@ -25,6 +25,7 @@
 #
 
 import os
+from pathlib import Path
 
 import proto.sio_coder_generate_pb2 as sio_coder_generate_pb2
 from coder.coder import Coder
@@ -96,7 +97,7 @@ class __Slot:
 
 def _action_coder_generate(
     project: Project,
-    path: str | None,
+    path: Path,
     progress: bool,
     files: list[str] | None,
     sid: str | None,
@@ -125,7 +126,7 @@ def _action_coder_generate(
 
 def action_coder_generate(
     project: Project,
-    path: str | None,
+    path: Path,
     progress: bool,
     files: list[str] | None = None,
     sid: str | None = None,

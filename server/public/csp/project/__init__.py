@@ -24,8 +24,9 @@
 # 2025-11-05     xqyjlj       initial version
 #
 
-from .project import Project
+from .project import Project, ProjectUserData
 
 __all__ = [
     "Project",
+    "ProjectUserData",
 ]

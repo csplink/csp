@@ -26,8 +26,10 @@
 
 import copy
 import json
+import sys
 
 from packages.package import Package
+from ruamel.yaml import YAML
 
 
 def action_package_list(dump: str = "") -> dict[str, dict[str, dict[str, str]]] | None:
@@ -36,16 +38,12 @@ def action_package_list(dump: str = "") -> dict[str, dict[str, dict[str, str]]] 
     for kind, package in index.items():
         for name, info in package.items():
             for version, _ in info.items():
-                info[version] = package_index.path(kind, name, version)
+                path = package_index.path(kind, name, version)
+                info[version] = path.absolute().as_posix() if path is not None else "?"
 
     if dump == "json":
         print(json.dumps(index, indent=2, ensure_ascii=False))
     elif dump == "std":
-        for kind, package in index.items():
-            print(f"{kind}:")
-            for name, info in package.items():
-                print(f"  {name}:")
-                for version, _ in info.items():
-                    print(f"    {version}: {package_index.path(kind, name, version)}")
+        YAML().dump(index, sys.stdout)
     else:
         return index

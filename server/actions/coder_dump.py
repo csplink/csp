@@ -26,13 +26,20 @@
 
 import difflib
 from pathlib import Path
+from typing import Mapping, TypedDict
 
 import proto.sio_coder_dump_pb2 as sio_coder_dump_pb2
 from coder.coder import Coder
 from flask_socketio import SocketIO, emit
 from public.csp.project import Project
+from typing_extensions import NotRequired
 from utils.io import IoUtils
 from utils.summary import SummaryUtils
+
+
+class FileItemDict(TypedDict):
+    content: str
+    diff: NotRequired[str]
 
 
 class __Slot:
@@ -63,15 +70,15 @@ class __Slot:
 def action_coder_dump(
     project: Project,
     diff: bool,
-    path: str | None,
+    path: Path | None,
     content: dict | None,
     sid: str | None = None,
     socketio: SocketIO | None = None,
-) -> dict:
+) -> dict[str, FileItemDict]:
     summary = SummaryUtils.load_summary(project.vendor, project.targetChip)
     coder = Coder(project, summary)
 
-    files = {}
+    files: dict[str, FileItemDict] = {}
 
     if sid:
         slot = __Slot()
@@ -80,11 +87,11 @@ def action_coder_dump(
         coder.emitter["dump"].connect(slot.on_sio_dump_progress)
 
     for file, data in coder.dump().items():
-        files[file] = {"content": data}
+        files[file.relative_to(project.folder()).as_posix()] = {"content": data}
 
     if diff and path is not None and content is not None:
         for file, data in files.items():
-            lines = IoUtils.readlines(str(Path(project.folder()) / file))
+            lines = IoUtils.readlines(project.folder() / file)
             text: str = data["content"]
             dif = difflib.unified_diff(
                 lines,
