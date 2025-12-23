@@ -25,15 +25,15 @@
 #
 
 
-import os
 import sys
 import unittest
+from pathlib import Path
 
 import click
 from loguru import logger
 from utils.sys import SYS_UTILS
 
-test_folder = os.path.join(SYS_UTILS.exe_folder(), "tests")
+__test_folder = SYS_UTILS.exe_folder() / "tests"
 
 
 @click.group(invoke_without_command=True)
@@ -45,7 +45,8 @@ test_folder = os.path.join(SYS_UTILS.exe_folder(), "tests")
     ),
     help="Logging level.",
 )
-def cli(trace):
+@click.pass_context
+def cli(ctx: click.Context, trace: str):
     """CSP Server TestCase - CSP TestCase CLI."""
 
     logger.configure(
@@ -59,22 +60,83 @@ def cli(trace):
         ]
     )
 
-    discover = unittest.defaultTestLoader.discover(
-        start_dir=test_folder, pattern="tc_*.py", top_level_dir="."
-    )
+    if ctx.invoked_subcommand is not None:
+        return
 
-    print(
-        "find {count} testcases !!!".format(count=discover.countTestCases()), flush=True
-    )
+    discover = discover_tests(__test_folder, "tc_*.py")
 
-    suite = unittest.TestSuite()
-    suite.addTest(discover)
+    print(f"find {discover.countTestCases()} testcases !!!", flush=True)
 
-    runner = unittest.TextTestRunner(verbosity=2)
-    result = runner.run(suite)
+    result = run_testcase(discover)
 
     if len(result.errors) + len(result.failures) != 0:
         exit(1)
+
+
+@cli.command(name="list")
+@click.option(
+    "--verbose",
+    "-v",
+    is_flag=True,
+    help="Show detailed information about test classes and methods",
+)
+def cli_list(verbose):
+    """List all available test cases."""
+
+    discover = discover_tests(__test_folder, "tc_*.py")
+    total = discover.countTestCases()
+
+    if not verbose:
+        print(f"Total test cases: {total}", flush=True)
+        return
+
+    print(f"Total test cases: {total}", flush=True)
+    for test in iter_tests(discover):
+        print(f"  {test.id()}", flush=True)
+
+
+@cli.command(name="run")
+@click.argument("path", required=True, type=click.Path(exists=True))
+def cli_run(path: str):
+    """Run test cases by path (file or directory)."""
+
+    p = Path(path)
+    if p.is_dir():
+        discover = discover_tests(p, "tc_*.py")
+    else:
+        discover = discover_tests(p.parent, p.name)
+
+    result = run_testcase(discover)
+
+    if len(result.errors) + len(result.failures) != 0:
+        exit(1)
+
+
+# ---------------------------------------------------------------------------- #
+
+
+def discover_tests(start_dir: Path, pattern: str) -> unittest.TestSuite:
+    """Discover all tests under test_folder."""
+    loader = unittest.defaultTestLoader
+    return loader.discover(
+        start_dir=str(start_dir),
+        pattern=pattern,
+        top_level_dir=".",
+    )
+
+
+def iter_tests(suite: unittest.TestSuite):
+    """Flatten TestSuite into individual test cases."""
+    for item in suite:
+        if isinstance(item, unittest.TestSuite):
+            yield from iter_tests(item)
+        else:
+            yield item
+
+
+def run_testcase(suite: unittest.TestSuite) -> unittest.result.TestResult:
+    runner = unittest.TextTestRunner(verbosity=1)
+    return runner.run(suite)
 
 
 if __name__ == "__main__":

@@ -24,22 +24,22 @@
 # 2025-10-31     xqyjlj       initial version
 #
 
-import os
 import unittest
+from pathlib import Path
 
 from actions import action_tools_cmx_ip
 from loguru import logger
 from utils.io import IO_UTILS
 from utils.sys import SYS_UTILS
 
-ip_folder = os.path.join(SYS_UTILS.exe_folder(), "tests", "resources", "cmx", "ip")
-mcu_file_path = os.path.join(
-    SYS_UTILS.exe_folder(),
-    "tests",
-    "resources",
-    "cmx",
-    "mcu",
-    "STM32F103Z(C-D-E)Tx.xml",
+ip_folder = SYS_UTILS.exe_folder() / "tests" / "resources" / "cmx" / "ip"
+mcu_file_path = (
+    SYS_UTILS.exe_folder()
+    / "tests"
+    / "resources"
+    / "cmx"
+    / "mcu"
+    / "STM32F103Z(C-D-E)Tx.xml"
 )
 ip_file_list = [
     "CAN-bxcan1_v1_1_F1_Cube_Modes.xml",
@@ -73,14 +73,13 @@ class TcToolsCmxIpFunctional(unittest.TestCase):
 
     def test_system(self):
         for fname in ip_file_list:
-            fpath = os.path.join(ip_folder, fname)
-            base, _ = os.path.splitext(fpath)
-            output = f"{base}.yml"
-            target = f"{base}.yml.target"
+            fpath = Path(ip_folder) / fname
+            output = fpath.with_suffix(".yml")
+            target = fpath.with_suffix(".yml.target")
             logger.info(f"Testing {fname}...")
             action_tools_cmx_ip(fpath, mcu_file_path, output, "")
-            output_yml = IO_UTILS.read_yaml(output)
-            target_yml = IO_UTILS.read_yaml(target)
+            output_yml = IO_UTILS.readyaml(output)
+            target_yml = IO_UTILS.readyaml(target)
             self.assertDictEqual(output_yml, target_yml)
 
     def tearDown(self):

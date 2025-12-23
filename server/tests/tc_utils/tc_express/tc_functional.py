@@ -24,13 +24,11 @@
 # 2025-11-01     xqyjlj       initial version
 #
 
-import os
 import unittest
 
 from loguru import logger
 from ruamel.yaml import YAML
 from utils.express import Express
-from utils.io import IO_UTILS
 from utils.sys import SYS_UTILS
 
 express_list = [
@@ -176,12 +174,8 @@ express_list = [
     "F100_Value_Line &((($Index=1|$Index=2)& USE_ADC1&USE_ADC2)&(ADC1:InjNumberOfConversion=0)&(ADC2:InjNumberOfConversion=0))|((($IpInstance=ADC3|$IpInstance=ADC4)&USE_ADC3&USE_ADC4&(ADC3:InjNumberOfConversion=0)&(ADC4:InjNumberOfConversion=0)))",
 ]
 
-express_file_path = os.path.join(
-    SYS_UTILS.exe_folder(),
-    "tests",
-    "resources",
-    "utils",
-    "express.yml",
+express_file_path = (
+    SYS_UTILS.exe_folder() / "tests" / "resources" / "utils" / "express.yml"
 )
 
 

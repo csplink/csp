@@ -1,0 +1,21 @@
+author:
+  name: xqyjlj
+  email: xqyjlj@126.com
+  website:
+    blog: https://xqyjlj.github.io/
+    github: https://github.com/xqyjlj
+name: gcc-arm-none-eabi
+version: 10.2.1
+license: GPL-3.0
+type: toolchains
+vendor: arm
+vendorUrl:
+  en: https://www.arm.com/
+  zh-cn: https://www.arm.com/
+description:
+  en: Pre-built GNU toolchain for Arm Cortex-A/R and Cortex-M processors
+  zh-cn: 为 Arm Cortex-A/R 和 Cortex-M 处理器预构建的 GNU 工具链
+url:
+  en: https://developer.arm.com/downloads/-/gnu-rm
+  zh-cn: https://developer.arm.com/downloads/-/gnu-rm
+support: xqyjlj@126.com
