@@ -13,3 +13,4 @@ isort~=7.0.0
 black~=25.9.0
 protobuf~=6.33.1
 click~=8.2.1
+pyright~=1.1.407
