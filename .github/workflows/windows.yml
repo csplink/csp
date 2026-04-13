@@ -72,7 +72,7 @@ jobs:
           . tools/release.sh windows ${{ github.ref_name }}
 
       - name: ⬆️ create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: csp ${{ github.ref_name }}
           draft: true
